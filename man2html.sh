@@ -1,14 +1,15 @@
 #!/bin/bash
 
-
   GROFF="groff -mandoc -T utf8 -P -cbuof"
   MANBASE="/usr/share/man/man"
   HTMLDIR="html/en"; TMP=tmp.txt
+  INDEX="$HTMLDIR/manpages.html"
+
 
 # CONVERT ALL FILES YOU FIND IN THE MAN DIRECTORY
 # ---------------------------------------------------------------------- #
 
-  for MANSRC in `find ${MANBASE}* -name "*.*"`
+  for MANSRC in `find ${MANBASE}* -name "*.*" | head -n 10`
    do
       echo "----"; echo "$MANSRC" # PRINT SOME INFORMATION
 
@@ -23,7 +24,7 @@
 
     # FIND TITLE (= NAME + DESCRIPTION)
     # ------------------------------------------------------------------ #
-      L=`grep -in "^NAME$" $TMP | head -n 1 | # FIND NAME (=LINE NUMBER)
+      L=`grep -in "^NAME$" $TMP | head -n 1 | # GREP NAME (=LINE NUMBER)
          cut -d ":" -f 1`; L=`expr $L + 1`    # INCREASE LINE NUMBER + 1
       TITLE=`sed -n "${L}p" $TMP | # SELECT TITLE (=ONE AFTER NAME)
              recode h0..utf8     | # BACK TO UNICODE
@@ -41,10 +42,6 @@
         DESCRIPTION=`echo $TITLE        | # DISPLAY FULL TITLE
                      sed 's/^.* [-—]* //'` # DELETE ALL IN FRONT OF ' - '
 
-      # COLLECT FOR LIST
-      # ---------------------------------------------------------------- #
-        LISTITEM="<span class=\"m\">"
-
       # WRITE TO TEMPORARY FILE
       # ---------------------------------------------------------------- #
         eval "$CAT" "$MANSRC"  | # RUN CAT ON MANSRC
@@ -53,18 +50,12 @@
 
       # MAKE IDENTICAL HTML PAGE FOR EACH NAME
       # ---------------------------------------------------------------- #
-        for NAME in `echo $NAMES | #
-                     sed 's/,/\n/g'`
+        for NAME in `echo $NAMES   | # NAMES SEPARATED BY ,
+                     sed 's/,/\n/g'` # KOMMA TO NEWLINES
          do
           # SET HTML FILE
           # ------------------------------------------------ #
             HTML="$HTMLDIR/${NAME}.html"
-
-          # COLLECT FOR LIST
-          # ------------------------------------------------ #
-            ID=`echo $NAME | md5sum | cut -c 1-6`
-            LISTITEM="${LISTITEM}\
-            <a href=\"${NAME}.html\" id=\"$ID\">$NAME</a>, "
 
           # WRITE HTML FILE
           # ------------------------------------------------ #
@@ -77,14 +68,6 @@
             echo ""                                 >> $HTML
             echo "</pre></body></html>"             >> $HTML
         done
-
-      # COLLECT FOR LIST
-      # ---------------------------------------------------------------- #
-        LISTITEM=`echo ${LISTITEM} | #
-                  sed 's/,$//'`" - \
-       <span class=\"d\">$DESCRIPTION</span> </span>"
-       echo $LISTITEM >> collect.txt
-
       fi
       # ---------------------------------------------------------------- #
   done
@@ -92,6 +75,44 @@
 # CLEAN UP
 # ---------------------------------------------------------------------- #
   rm $TMP
+
+
+# GENERATE LIST
+# ---------------------------------------------------------------------- #
+
+  echo "<html><head><title>manpage index</title>\
+        </head><body><p>" | #
+  tr -s ' ' | sed 's/> </></g' > $INDEX
+
+  for HTML in `ls $HTMLDIR | grep ".html$"`
+   do
+      LI="<span class=\"m\">"
+      TITLE=`grep '<title>' $HTMLDIR/$HTML     | # GREP <title>
+             cut -d ">" -f 2 | cut -d "<" -f 1`  # SELECT BETWEEN ><
+      echo $TITLE
+      NAMES=`echo $TITLE          | # DISPLAY FULL TITLE 
+             sed 's/ [-—]* .*$//' | # DELETE ALL AFTER ' - '
+             sed 's/^[ ]*//'      | # DELETE LEADING BLANKS
+             recode utf8..h0`       # RECODE FOR HTML
+      INFO=`echo $TITLE           | # DISPLAY FULL TITLE
+            sed 's/^.* [-—]* //'  | # DELETE ALL IN FRONT OF ' - '
+            recode utf8..h0`        # RECODE FOR HTML
+
+        for NAME in `echo $NAMES   | # NAMES SEPARATED BY ,
+                     sed 's/,/\n/g'` # KOMMA TO NEWLINES
+         do
+            ID=`echo $NAME | md5sum | cut -c 1-6`
+            LI="${LI}\
+              <a href=\"${NAME}.html\" id=\"$ID\">$NAME</a>, "
+        done
+        LI=`echo ${LI} | #
+            sed 's/,$//'`" - \
+       <span class=\"d\">$INFO</span> </span>"
+        echo $LI >> $INDEX
+  done
+  echo '</p></body></html>' >> $INDEX
+
+
 
 exit 0;
 

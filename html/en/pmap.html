@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pmap - report memory map of a process</title></head>
+<body><pre>
+
+PMAP(1)                           User Commands                          PMAP(1)
+
+
+
+NAME
+       pmap - report memory map of a process
+
+SYNOPSIS
+       pmap [options] pid [...]
+
+DESCRIPTION
+       The pmap command reports the memory map of a process or processes.
+
+OPTIONS
+       -x, --extended
+              Show the extended format.
+
+       -d, --device
+              Show the device format.
+
+       -q, --quiet
+              Do not display some header or footer lines.
+
+       -A, --range low,high
+              Limit  results  to  the given range to low and high address range.
+              Notice that the low and high arguments are single string separated
+              with comma.
+
+       -h, --help
+              Display help text and exit.
+
+       -V, --version
+              Display version information and exit.
+
+EXIT STATUS
+              0      Success.
+              1      Failure.
+              42     Did not find all processes asked for.
+
+SEE ALSO
+       ps(1), pgrep(1)
+
+STANDARDS
+       No standards apply, but pmap looks an awful lot like a SunOS command.
+
+REPORTING BUGS
+       Please send bug reports to &#10216;procps@freelists.org&#10217;
+
+
+
+procps-ng                           June 2011                            PMAP(1)
+
+</pre></body></html>

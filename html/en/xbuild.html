@@ -1,0 +1,222 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xbuild - Mono's tool to build MSBuild project files</title></head>
+<body><pre>
+
+xbuild(1)                                                              xbuild(1)
+
+
+
+NAME
+       xbuild - Mono&apos;s tool to build MSBuild project files
+
+SYNOPSIS
+       xbuild [option] [project-file]
+
+DESCRIPTION
+       xbuild can be used to build MSBuild project files. Integrated Development
+       Environments like MonoDevelop and  &quot;Microsoft  Visual  Studio  .NET&quot;  use
+       msbuild project file format.
+
+       xbuild  takes  the  path of the project or solution file to build, as the
+       main argument.  If no file is specified then it tries to build any  solu&#8208;
+       tion  file  or  project  file  in the current directory, that has a *proj
+       extension.
+
+OPTIONS
+       /target:T1[,TN]
+              List of targets to build
+
+       /property:Name=Value
+              Set or override project properties
+
+       /logger:&lt;logger&gt;
+              Custom logger to log build events
+
+       /toolsversion:version , /tv:version
+              Specify the toolset version to use.
+
+              Eg. /tv:4.0
+                  This would cause 4.0 version of  the  Microsoft.Common.targets
+              (among others) to be used. This overrides
+                  the value specified in a project file.
+
+              Valid values: 2.0, 3.0, 3.5 and 4.0
+
+       /verbosity:&lt;level&gt;
+              Logger  verbosity  level : quiet, minimal, normal, detailed, diag&#8208;
+              nostic
+
+       /validate
+              Validate the project file against the schema
+
+       /validate:&lt;schema&gt;
+              Validate the project file against the specified schema
+
+       /consoleloggerparameters:&lt;params&gt; , /clp:&lt;params&gt;
+              Parameters for the console logger  :  PerfomanceSummary,  Summary,
+              NoSummary, NoItemAndPropertyList, Verbosity
+
+       /filelogger[n] , /fl[n]
+              Logs  the output to a file, named &apos;msbuild.log&apos; by default. If the
+              optional number &apos;n&apos; is specified, then it logs to &apos;msbuild[n].log&apos;
+              .  Parameters  for this logger, including the log file name can be
+              specified via a corresponding /flp[n]  option.  Default  verbosity
+              for file loggers is &apos;detailed. &apos;n&apos; can be between 1-9.
+
+       /fileloggerparameters[n]:&lt;params&gt; , /flp[n]:&lt;params&gt;
+              Parameters for a file logger. This implies a corresponding /fl[n].
+              &apos;n&apos; can be between 1-9, and is used to add upto 10  file  loggers.
+              Parameters can be, besides the ones available for console logger:
+&#12;              LogFile=&lt;file&gt;
+                     File to which the build log will be written.
+
+              Append If  this  is used, then the log file is appended to, else a
+                     new one will be created.
+
+              Encoding=&lt;encoding&gt;
+                     Encoding to use for the log file, eg. UTF-8, ASCII.
+
+              Eg:   xbuild    foo.csproj    /flp:Verbosity=normal    &quot;/flp1:Log&#8208;
+              File=build.log;Append;Encoding=ASCII&quot;
+
+       /nologo
+              Don&apos;t show the initial xbuild banner
+
+       /help  Show xbuild usage
+
+       /version
+              Display xbuild version
+
+ENVIRONMENT VARIABLES
+       XBUILD_EMIT_SOLUTION
+              If  this  variable  is set, then the project file generated from a
+              solution file is emitted.
+
+       XBUILD_LOG_REFERENCE_RESOLVER
+              References are resolved by trying a list of assembly search  paths
+              ($(AssemblySearchPaths)).  If xbuild is unable to resolve a refer&#8208;
+              ence, then it logs details of why the various search paths failed.
+              If this variable is set, then it logs the same even for references
+              that were resolved successfully. These logs show up  if  the  ver&#8208;
+              bosity is set to detailed or higher.
+
+       MSBuildExtensionsPath
+              MSBuild  extensions  are  usually installed in $(MSBuildExtension&#8208;
+              sPath), which xbuild resolves to  $prefix/lib/mono/xbuild  .  When
+              used in Import, like:
+
+                &lt;Import Project=&quot;$(MSBuildExtensionsPath)\TestTargets.targets&quot;/&gt;
+
+              xbuild  tries various values for the msbuild property $(MSBuildEx&#8208;
+              tensionsPath), in order:
+
+                1. Paths specified in the  environment  variable  $MSBuildExten&#8208;
+              sionsPath.
+                2.   /Library/Frameworks/Mono.framework/External/xbuild  on  Mac
+              OSX.
+                3.   $XDG_CONFIG_HOME/xbuild/tasks   (or    Environment.Special&#8208;
+              Folder.ApplicationData)
+                4. $prefix/lib/mono/xbuild (default location)
+
+              Anywhere  else in the project files, $(MSBuildExtensionsPath) will
+              always resolve to the default location. This is a xbuild-only fea&#8208;
+              ture.   This is also applicable for the properties $(MSBuildExten&#8208;
+              sionsPath32) and $(MSBuildExtensionsPath64), and  the  environment
+              variables   have   the  corresponding  names  -  MSBuildExtension&#8208;
+              sPath32/64 .
+
+       XBUILD_FRAMEWORK_FOLDERS_PATH
+              With ToolsVersion 4.0, projects can  target  arbitrary  frameworks
+              referenced by TargetFrameworkMoniker, which is of the format:
+
+                Identifier,Version=&lt;version&gt;[,Profile=&lt;profile&gt;]
+
+              Eg. &quot;.NETFramework,Version=v4.0&quot;
+&#12;              The 3 parts of the moniker are given by the msbuild properties:
+
+                $(TargetFrameworkIdentifier),    $(TargetFrameworkVersion)   and
+              $(TargetFrameworkProfile)
+
+              This moniker maps to a framework description file on disk:
+
+                &lt;framework_root&gt;/Identifier/Version/[Profile]/RedistList/Frame&#8208;
+              workList.xml
+
+              This  file  is used to determine the path where to find the frame&#8208;
+              work assemblies for this particular framework.
+
+              Framework root here is configurable and is resolved in the follow&#8208;
+              ing order:
+
+                1. Paths specified in the environment variable $XBUILD_FRAMEWORK_FOLDERS_PATH
+                2. /Library/Frameworks/Mono.framework/External/xbuild-frameworks on Mac OSX.
+                3. MSBuild property $(TargetFrameworkRoot)
+                4. $prefix/lib/mono/xbuild-frameworks (default location)
+
+              XBuild  tries  the  paths  given  above, in order, till it finds a
+              FrameworkList.xml for the moniker.  Running  with  /v:detailed  or
+              higher verbosity will show the various paths that it tries.
+
+              The FrameworkList.xml itself just has a root element like:
+
+                &lt;FileList    Name=&quot;.NET   Framework  3.5&quot;  TargetFrameworkDirec&#8208;
+              tory=&quot;..\..\..\..\3.5&quot; IncludeFramework=&quot;v3.0&quot;&gt;
+                &lt;/FileList&gt;
+
+              Here the TargetFrameworkDirectory attribute specifies  the  direc&#8208;
+              tory  where  the  assemblies  for this particular framework can be
+              found. If this is not set, then the parent of the folder  contain&#8208;
+              ing the xml file is taken as the framework directory.
+
+              IncludeFramework  attribute  specifies  the version of a framework
+              (under the *same* $(TargetFrameworkIdentifier))  which  should  be
+              included in the final list of Target framework directories.
+
+
+       XBUILD_COLORS
+              If  this  variable  is  set,  it  contains  a  string  of the form
+              &quot;type=foreground,type=..&quot; that specifies which  color  to  use  to
+              display errors/warnings etc on some terminals. Type here can be:
+
+                   errors, warnings, messages or events
+
+                   events: These are project/target/task start and end event
+                           messages.
+
+              The  possible  colors  for  foreground are: black, red, brightred,
+              green,  brightgreen,  yellow,  brightyellow,   blue,   brightblue,
+              magenta,   brightmagenta,   cyan,   brightcyan,  grey,  white  and
+              brightwhite.
+
+              For example, you could set this variable from your shell:
+                   export XBUILD_COLORS
+                   XBUILD_COLORS=errors=brightred,warnings=blue
+
+              You can disable the built-in color scheme by setting this variable
+              to &quot;disable&quot;.
+
+
+NOTES
+       On  Mac  OSX,  for  locating  pkg-config (.pc) files, xbuild additionally
+       looks in &quot;/Library/Frameworks/Mono.framework/External/pkgconfig&quot; .
+
+
+SEE ALSO
+       mono(1),mcs(1)
+
+COPYRIGHT
+       Copyright (C) 2011 Novell, Inc (http://www.novell.com)
+
+MAILING LISTS
+       Visit    http://lists.ximian.com/mailman/listinfo/mono-devel-list     for
+       details.
+
+WEB SITE
+       Visit: http://www.mono-project.com for details
+
+
+
+                                                                       xbuild(1)
+
+</pre></body></html>

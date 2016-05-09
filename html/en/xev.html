@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xev - print contents of X events</title></head>
+<body><pre>
+
+XEV(1)                                                                    XEV(1)
+
+
+
+NAME
+       xev - print contents of X events
+
+SYNOPSIS
+       xev  [-display  displayname]  [-geometry geom] [-bw pixels] [-bs {NotUse&#8208;
+       ful,WhenMapped,Always}] [-id windowid] [-root] [-s] [-name string] [-rv]
+
+DESCRIPTION
+       Xev creates a window and then asks the X server to send it  events  when&#8208;
+       ever  anything  happens  to  the window (such as it being moved, resized,
+       typed in, clicked in, etc.).  You can also attach it to an existing  win&#8208;
+       dow.   It is useful for seeing what causes events to occur and to display
+       the information that they contain; it  is  essentially  a  debugging  and
+       development tool, and should not be needed in normal usage.
+
+OPTIONS
+       -display display
+               This option specifies the X server to contact.
+
+       -geometry geom
+               This  option specifies the size and/or location of the window, if
+               a window is to be created.
+
+       -bw pixels
+               This option specifies the border width for the window.
+
+       -bs {NotUseful,WhenMapped,Always}
+               This option specifies what kind of backing store to give the win&#8208;
+               dow.   The  default is NotUseful. Backing store refers to the the
+               pixels saved off-screen when the X server maintains the  contents
+               of a window; NotUseful means that the xev process will redraw its
+               contents itself, as necessary.
+
+       -id windowid
+               This option specifies that the window with the given id should be
+               monitored, instead of creating a new window.
+
+       -root   This  option  specifies that the root window should be monitored,
+               instead of creating a new window.
+
+       -s      This option specifies that save-unders should be enabled  on  the
+               window.  Save unders are similar to backing store, but they refer
+               rather to the saving of pixels off-screen when the current window
+               obscures  other  windows.  Save unders are only advisory, and are
+               normally set for popup dialogs and other transient windows.
+
+       -name string
+               This option specifies the name to assign to the created window.
+
+       -rv     This option specifies that the window should be in reverse video.
+
+SEE ALSO
+       X(7), xwininfo(1), xdpyinfo(1), Xlib Programmers Manual, X Protocol Spec&#8208;
+       ification
+       See X(7) for a full statement of rights and permissions.
+
+AUTHOR
+       Jim Fulton, MIT X Consortium
+
+
+
+X Version 11                        xev 1.2.0                             XEV(1)
+
+</pre></body></html>

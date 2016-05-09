@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SemWaitTimeout - Lock a semaphore, but only wait up to a specified maximum time.</title></head>
+<body><pre>
+
+SDL_SemWaitTimeout(3)           SDL API Reference          SDL_SemWaitTimeout(3)
+
+
+
+NAME
+       SDL_SemWaitTimeout  -  Lock  a semaphore, but only wait up to a specified
+       maximum time.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_SemWaitTimeout(SDL_sem *sem, Uint32 timeout);
+
+DESCRIPTION
+       SDL_SemWaitTimeout() is a varient of SDL_SemWait with a  maximum  timeout
+       value.  If  the  value  of  the  semaphore  pointed to by sem is positive
+       (greater than zero) it will atomically decrement the semaphore value  and
+       return  0,  otherwise  it  will wait up to timeout milliseconds trying to
+       lock the semaphore. This function is to be avoided if possible  since  on
+       some platforms it is implemented by polling the semaphore every millisec&#8208;
+       ond in a busy loop.
+
+       After SDL_SemWaitTimeout() is successful, the semaphore can  be  released
+       and its count atomically incremented by a successful call to SDL_SemPost.
+
+RETURN VALUE
+       Returns   0   if   the   semaphore  was  successfully  locked  or  either
+       SDL_MUTEX_TIMEOUT or -1 if the timeout period was exceeded or  there  was
+       an error, respectivly.
+
+       If  the  semaphore  was  not  successfully  locked, the semaphore will be
+       unchanged.
+
+EXAMPLES
+       res = SDL_SemWaitTimeout(my_sem, WAIT_TIMEOUT_MILLISEC);
+
+       if (res == SDL_MUTEX_TIMEOUT) {
+               return TRY_AGAIN;
+       }
+       if (res == -1) {
+               return WAIT_ERROR;
+       }
+
+       ...
+
+       SDL_SemPost(my_sem);
+
+SEE ALSO
+       SDL_CreateSemaphore, SDL_DestroySemaphore,  SDL_SemWait,  SDL_SemTryWait,
+       SDL_SemPost, SDL_SemValue
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00        SDL_SemWaitTimeout(3)
+
+</pre></body></html>

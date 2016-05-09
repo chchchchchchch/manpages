@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuKillClient - destroy a client or its remaining resources</title></head>
+<body><pre>
+
+AuKillClient(3)                                                  AuKillClient(3)
+
+
+
+Name
+       AuKillClient - destroy a client or its remaining resources
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       void AuKillClient(server, resource, status)
+           AuServer *server;
+           AuID resource;
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       resource  Specifies  the  resource  associated  with  the  client  to  be
+                 destroyed or the constant AuCloseDownDestroy.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuKillClient forces a close-down of the client that created resource.  If
+       the client has already terminated in either AuCloseDownRetainPermanent or
+       AuCloseDownRetainTemporary  mode,  all  of  the  client&apos;s  resources  are
+       destroyed.  If resource  is  AuCloseDownDestroy,  the  resources  of  all
+       clients that have terminated in AuCloseDownRetainTemporary are destroyed.
+
+Errors
+       AuBadValue.
+
+See Also
+       AuSetCloseDownMode.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - client connections         1.9.3                      AuKillClient(3)
+
+</pre></body></html>

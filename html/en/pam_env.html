@@ -1,0 +1,96 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pam_env - PAM module to set/unset environment variables</title></head>
+<body><pre>
+
+PAM_ENV(8)                      Linux-PAM Manual                      PAM_ENV(8)
+
+
+
+NAME
+       pam_env - PAM module to set/unset environment variables
+
+SYNOPSIS
+       pam_env.so [debug] [conffile=conf-file] [envfile=env-file] [readenv=0|1]
+                  [user_envfile=env-file] [user_readenv=0|1]
+
+DESCRIPTION
+       The pam_env PAM module allows the (un)setting of environment variables.
+       Supported is the use of previously set environment variables as well as
+       PAM_ITEMs such as PAM_RHOST.
+
+       By default rules for (un)setting of variables is taken from the config
+       file /etc/security/pam_env.conf if no other file is specified.
+
+       This module can also parse a file with simple KEY=VAL pairs on separate
+       lines (/etc/environment by default). You can change the default file to
+       parse, with the envfile flag and turn it on or off by setting the readenv
+       flag to 1 or 0 respectively.
+
+       Since setting of PAM environment variables can have side effects to other
+       modules, this module should be the last one on the stack.
+
+OPTIONS
+       conffile=/path/to/pam_env.conf
+           Indicate an alternative pam_env.conf style configuration file to
+           override the default. This can be useful when different services need
+           different environments.
+
+       debug
+           A lot of debug information is printed with syslog(3).
+
+       envfile=/path/to/environment
+           Indicate an alternative environment file to override the default.
+           This can be useful when different services need different
+           environments.
+
+       readenv=0|1
+           Turns on or off the reading of the file specified by envfile (0 is
+           off, 1 is on). By default this option is on.
+
+       user_envfile=filename
+           Indicate an alternative .pam_environment file to override the
+           default. This can be useful when different services need different
+           environments. The filename is relative to the user home directory.
+
+       user_readenv=0|1
+           Turns on or off the reading of the user specific environment file. 0
+           is off, 1 is on. By default this option is on.
+
+MODULE TYPES PROVIDED
+       The auth and session module types are provided.
+
+RETURN VALUES
+       PAM_ABORT
+           Not all relevant data or options could be gotten.
+
+       PAM_BUF_ERR
+           Memory buffer error.
+
+       PAM_IGNORE
+           No pam_env.conf and environment file was found.
+
+       PAM_SUCCESS
+           Environment variables were set.
+
+FILES
+       /etc/security/pam_env.conf
+           Default configuration file
+
+       /etc/environment
+           Default environment file
+
+       $HOME/.pam_environment
+           User specific environment file
+
+SEE ALSO
+       pam_env.conf(5), pam.d(5), pam(7).
+
+AUTHOR
+       pam_env was written by Dave Kinchlea &lt;kinch@kinch.ark.com&gt;.
+
+
+
+Linux-PAM Manual                   06/04/2011                         PAM_ENV(8)
+
+</pre></body></html>

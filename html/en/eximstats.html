@@ -1,0 +1,205 @@
+<html>
+<head><meta charset=utf-8/>
+<title>eximstats - generates statistics from Exim mainlog or syslog files.</title></head>
+<body><pre>
+
+EXIMSTATS(8)                          EXIM4                         EXIMSTATS(8)
+
+
+
+NAME
+       eximstats - generates statistics from Exim mainlog or syslog files.
+
+SYNOPSIS
+        eximstats [Output] [Options] mainlog1 mainlog2 ...
+        eximstats -merge [Options] report.1.txt report.2.txt ... &gt; weekly_report.txt
+
+   Output:
+       -txt
+           Output the results in plain text to STDOUT.
+
+       -txt=filename
+           Output the results in plain text. Filename &apos;-&apos; for STDOUT is
+           accepted.
+
+       -html
+           Output the results in HTML to STDOUT.
+
+       -html=filename
+           Output the results in HTML. Filename &apos;-&apos; for STDOUT is accepted.
+
+       -xls
+           Output the results in Excel compatible Format to STDOUT.  Requires
+           the Spreadsheet::WriteExcel CPAN module.
+
+       -xls=filename
+           Output the results in Excel compatible format. Filename &apos;-&apos; for
+           STDOUT is accepted.
+
+   Options:
+       -hnumber
+           histogram divisions per hour. The default is 1, and 0 suppresses
+           histograms. Valid values are:
+
+           0, 1, 2, 3, 5, 10, 15, 20, 30 or 60.
+
+       -ne Don&apos;t display error information.
+
+       -nr Don&apos;t display relaying information.
+
+       -nr/pattern/
+           Don&apos;t display relaying information that matches.
+
+       -nt Don&apos;t display transport information.
+
+       -nt/pattern/
+           Don&apos;t display transport information that matches
+
+       -qlist
+           List of times for queuing information single 0 item suppresses.
+
+       -tnumber
+           Display top &lt;number&gt; sources/destinations default is 50, 0 suppresses
+           top listing.
+
+       -tnl
+           Omit local sources/destinations in top listing.
+
+       -t_remote_users
+           Include remote users in the top source/destination listings.
+
+       -include_original_destination
+           Include the original destination email addresses rather than just
+           using the final ones.  Useful for finding out which of your mailing
+           lists are receiving mail.
+
+       -show_dtlist
+           Show the delivery times (DT)for all the messages.
+
+           Exim must have been configured to use the +deliver_time logging
+           option for this option to work.
+
+           list is an optional list of times. Eg -show_dt1,2,4,8 will show the
+           number of messages with delivery times under 1 second, 2 seconds, 4
+           seconds, 8 seconds, and over 8 seconds.
+
+       -show_rtlist
+           Show the receipt times for all the messages. The receipt time is
+           defined as the Completed hh:mm:ss - queue_time_overall - the Receipt
+           hh:mm:ss.  These figures will be skewed by pipelined messages so
+           might not be that useful.
+
+           Exim must have been configured to use the +queue_time_overall logging
+           option for this option to work.
+
+           list is an optional list of times. Eg -show_rt1,2,4,8 will show the
+           number of messages with receipt times under 1 second, 2 seconds, 4
+           seconds, 8 seconds, and over 8 seconds.
+
+       -byhost
+           Show results by sending host. This may be combined with -bydomain
+           and/or -byemail and/or -byedomain. If none of these options are
+           specified, then -byhost is assumed as a default.
+
+       -bydomain
+           Show results by sending domain.  May be combined with -byhost and/or
+           -byemail and/or -byedomain.
+
+       -byemail
+           Show results by sender&apos;s email address.  May be combined with -byhost
+           and/or -bydomain and/or -byedomain.
+
+       -byemaildomain or -byedomain
+           Show results by sender&apos;s email domain.  May be combined with -byhost
+           and/or -bydomain and/or -byemail.
+
+       -pattern Description /Pattern/
+           Look for the specified pattern and count the number of lines in which
+           it appears.  This option can be specified multiple times. Eg:
+
+            -pattern &apos;Refused connections&apos; &apos;/refused connection/&apos;
+
+       -merge
+           This option allows eximstats to merge old eximstat reports together.
+           Eg:
+
+            eximstats mainlog.sun &gt; report.sun.txt
+            eximstats mainlog.mon &gt; report.mon.txt
+            eximstats mainlog.tue &gt; report.tue.txt
+            eximstats mainlog.wed &gt; report.web.txt
+            eximstats mainlog.thu &gt; report.thu.txt
+            eximstats mainlog.fri &gt; report.fri.txt
+            eximstats mainlog.sat &gt; report.sat.txt
+            eximstats -merge       report.*.txt &gt; weekly_report.txt
+            eximstats -merge -html report.*.txt &gt; weekly_report.html
+
+           &#183;   You can merge text or html reports and output the results as text
+               or html.
+
+           &#183;   You can use all the normal eximstat output options, but only data
+               included in the original reports can be shown!
+&#12;           &#183;   When merging reports, some loss of accuracy may occur in the top
+               n lists.  This will be towards the ends of the lists.
+
+           &#183;   The order of items in the top n lists may vary when the data
+               volumes round to the same value.
+
+       -charts
+           Create graphical charts to be displayed in HTML output.  Only valid
+           in combination with -html.
+
+           This requires the following modules which can be obtained from
+           http://www.cpan.org/modules/01modules.index.html
+
+           GD
+           GDTextUtil
+           GDGraph
+
+           To install these, download and unpack them, then use the normal perl
+           installation procedure:
+
+            perl Makefile.PL
+            make
+            make test
+            make install
+
+           On Debian GNU/Linux you can use &quot;apt-get install libgd-perl
+           libgd-text-perl libgd-graph-perl&quot; instead.
+
+       -chartdirI &lt;dir&gt;
+           Create the charts in the directory &lt;dir&gt;
+
+       -chartrelI &lt;dir&gt;
+           Specify the relative directory for the &quot;img src=&quot; tags from where to
+           include the charts
+
+       -emptyok
+           Specify that it&apos;s OK to not find any valid log lines. Without this we
+           will output an error message if we don&apos;t find any.
+
+       -d  Debug flag. This outputs the eval()&apos;d parser onto STDOUT which makes
+           it easier to trap errors in the eval section. Remember to add 1 to
+           the line numbers to allow for the title!
+
+DESCRIPTION
+       Eximstats parses exim mainlog and syslog files to output a statistical
+       analysis of the messages processed. By default, a text analysis is
+       generated, but you can request other output formats using flags. See the
+       help (-help) to learn about how to create charts from the tables.
+
+AUTHOR
+       There is a web site at http://www.exim.org
+
+TO DO
+       This program does not perfectly handle messages whose received and
+       delivered log lines are in different files, which can happen when you
+       have multiple mail servers and a message cannot be immediately delivered.
+       Fixing this could be tricky...
+
+       Merging of xls files is not (yet) possible. Be free to implement :)
+
+
+
+perl v5.14.2                       2014-07-21                       EXIMSTATS(8)
+
+</pre></body></html>

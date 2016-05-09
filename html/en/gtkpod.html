@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gtkpod - GTK2 based software for managing songs and playlists on an Apple iPod</title></head>
+<body><pre>
+
+GTKPOD(1)                         gtkpod Manual                        GTKPOD(1)
+
+
+
+NAME
+       gtkpod - GTK2 based software for managing songs and playlists on an Apple
+       iPod
+
+SYNOPSIS
+       gtkpod [-h] [-m path] [-p filename] [--hash filename]
+
+DESCRIPTION
+       This manual page briefly describes the gtkpod command.
+
+OPTIONS
+       gtkpod supports the following options:
+
+       -h, --help
+           Displays the help message.
+
+       -m, --mountpoint path
+           Define the mountpoint of your iPod.
+
+       -p filename
+           Increment playcount for file filename by one.
+
+       --hash filename
+           Print gtkpod hash for file filename.
+
+FILES
+       ~/.gtkpod/prefs
+           Per user configuration file. Should normally only updated through the
+           program itself.
+
+       /etc/gtkpod/prefs
+           Global configuration file. Used if no configuration file exist for
+           the user starting gtkpod.
+
+       ~/.gtkpod/gtkpod.in
+           If this file exists, gtkpod will try to execute it at startup This is
+           done before attempting to mount the iPod directory (optional) or read
+           the iTunesDB (optional).
+
+       ~/.gtkpod/gtkpod.out
+           If this file exists, gtkpod will try to execute it while exiting the
+           program. This is done after attempting to unmount the iPod directory
+           (optional) and sending the &quot;eject&quot; command to the iPod (optional).
+
+       /etc/gtkpod/gtkpod.in, /etc/gtkpod/gtkpod.out
+           Used instead of the per user scripts if the former ones don&apos;t exist
+           and these do.
+
+       ~/.gtkpod/gtkpod.load
+           If this file exists, gtkpod will execute it before loading the
+           contents of an iPod with the iPod&apos;s mountpoint as the only command
+           line argument. Put any commands needed to access the iPod here, for
+           example if you need to mount the iPod manually.
+
+       ~/.gtkpod/gtkpod.eject
+           If this file exists, gtkpod will execute it when ejecting an iPod
+           with the the iPod&apos;s mountpoint as the only command line argument. Put
+           any commands you want to execute after gtkpod has written the changes
+           to the iPod here.  For example:
+
+           sudo eject $1
+&#12;           gtkpod will not attempt to do any magic of it&apos;s own to
+           mount/unmount/eject the iPod.
+
+AUTHOR
+        Jorg Schuler &lt;jcsjcs at users.sourceforge.net&gt;
+        Corey Donohoe &lt;atmos at atmos.org&gt;
+        Adrian Ulrich &lt;pab at blinkenlights.ch&gt;
+        and others
+
+       This manpage was written by Frank Lichtenheld.
+
+COPYRIGHT AND LICENSE
+       This program is free software; you can redistribute it and/or modify it
+       under the terms of the GNU General Public License as published by the
+       Free Software Foundation; either version 2, or (at your option) any later
+       version.
+
+
+
+gtkpod 2.1.2                       2009-01-04                          GTKPOD(1)
+
+</pre></body></html>

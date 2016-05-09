@@ -1,0 +1,185 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pod::Coverage - Checks if the documentation of a module is comprehensive</title></head>
+<body><pre>
+
+Pod::Coverage(3pm)     User Contributed Perl Documentation    Pod::Coverage(3pm)
+
+
+
+NAME
+       Pod::Coverage - Checks if the documentation of a module is comprehensive
+
+SYNOPSIS
+         # in the beginnning...
+         perl -MPod::Coverage=Pod::Coverage -e666
+
+         # all in one invocation
+         use Pod::Coverage package =&gt; &apos;Fishy&apos;;
+
+         # straight OO
+         use Pod::Coverage;
+         my $pc = Pod::Coverage-&gt;new(package =&gt; &apos;Pod::Coverage&apos;);
+         print &quot;We rock!&quot; if $pc-&gt;coverage == 1;
+
+DESCRIPTION
+       Developers hate writing documentation.  They&apos;d hate it even more if their
+       computer tattled on them, but maybe they&apos;ll be even more thankful in the
+       long run.  Even if not, perlmodstyle tells you to, so you must obey.
+
+       This module provides a mechanism for determining if the pod for a given
+       module is comprehensive.
+
+       It expects to find either a &quot;=head(n&gt;1)&quot; or an &quot;=item&quot; block documenting
+       a subroutine.
+
+       Consider:
+        # an imaginary Foo.pm
+        package Foo;
+
+        =item foo
+
+        The foo sub
+
+        = cut
+
+        sub foo {}
+        sub bar {}
+
+        1;
+        __END__
+
+       In this example &quot;Foo::foo&quot; is covered, but &quot;Foo::bar&quot; is not, so the
+       &quot;Foo&quot; package is only 50% (0.5) covered
+
+   Methods
+       Pod::Coverage-&gt;new(package =&gt; $package)
+           Creates a new Pod::Coverage object.
+
+           &quot;package&quot; the name of the package to analyse
+
+           &quot;private&quot; an array of regexen which define what symbols are regarded
+           as private (and so need not be documented) defaults to [ qr/^_/,
+           qr/^(un)?import$/, qr/^DESTROY$/, qr/^AUTOLOAD$/, qr/^bootstrap$/,
+                   qr/^(TIE( SCALAR | ARRAY | HASH | HANDLE ) |
+                        FETCH | STORE | UNTIE | FETCHSIZE | STORESIZE |
+                        POP | PUSH | SHIFT | UNSHIFT | SPLICE | DELETE |
+                        EXISTS | EXTEND | CLEAR | FIRSTKEY | NEXTKEY | PRINT |
+           PRINTF |
+                        WRITE | READLINE | GETC | READ | CLOSE | BINMODE | OPEN
+           |
+                        EOF | FILENO | SEEK | TELL | SCALAR )$/x,
+                   qr/^( MODIFY | FETCH )_( REF | SCALAR | ARRAY | HASH | CODE |
+                                            GLOB | FORMAT | IO )_ATTRIBUTES$/x,
+                   qr/^CLONE(_SKIP)?$/, ]
+
+           This should cover all the usual magical methods for tie()d objects,
+           attributes, generally all the methods that are typically not called
+           by a user, but instead being used internally by perl.
+
+           &quot;also_private&quot; items are appended to the private list
+
+           &quot;trustme&quot; an array of regexen which define what symbols you just want
+           us to assume are properly documented even if we can&apos;t find any docs
+           for them
+
+           If &quot;pod_from&quot; is supplied, that file is parsed for the documentation,
+           rather than using Pod::Find
+
+           If &quot;nonwhitespace&quot; is supplied, then only POD sections which have
+           non-whitespace characters will count towards being documented.
+
+       $object-&gt;coverage
+           Gives the coverage as a value in the range 0 to 1
+
+       $object-&gt;why_unrated
+           &quot;$object-&gt;coverage&quot; may return &quot;undef&quot;, to indicate that it was
+           unable to deduce coverage for a package.  If this happens you should
+           be able to check &quot;why_unrated&quot; to get a useful excuse.
+
+       $object-&gt;naked/$object-&gt;uncovered
+           Returns a list of uncovered routines, will implicitly call coverage
+           if it&apos;s not already been called.
+
+           Note, private and &apos;trustme&apos; identifiers will be skipped.
+
+       $object-&gt;covered
+           Returns a list of covered routines, will implicitly call coverage if
+           it&apos;s not previously been called.
+
+           As with &quot;naked&quot;, private and &apos;trustme&apos; identifiers will be skipped.
+
+   Debugging support
+       In order to allow internals debugging, while allowing the optimiser to do
+       its thang, &quot;Pod::Coverage&quot; uses constant subs to define how it traces.
+
+       Use them like so
+
+        sub Pod::Coverage::TRACE_ALL () { 1 }
+        use Pod::Coverage;
+
+       Supported constants are:
+
+       TRACE_ALL
+           Trace everything.
+
+           Well that&apos;s all there is so far, are you glad you came?
+
+   Inheritance interface
+       These abstract methods while functional in &quot;Pod::Coverage&quot; may make your
+       life easier if you want to extend &quot;Pod::Coverage&quot; to fit your house style
+       more closely.
+
+       NOTE Please consider this interface as in a state of flux until this
+       comment goes away.
+
+       $object-&gt;_CvGV($symbol)
+           Return the GV for the coderef supplied.  Used by &quot;_get_syms&quot; to
+           identify locally defined code.
+
+           You probably won&apos;t need to override this one.
+
+       $object-&gt;_get_syms($package)
+           return a list of symbols to check for from the specified packahe
+
+       _get_pods
+           Extract pod markers from the currently active package.
+
+           Return an arrayref or undef on fail.
+
+       _private_check($symbol)
+           return true if the symbol should be considered private
+
+       _trustme_check($symbol)
+           return true if the symbol is a &apos;trustme&apos; symbol
+
+BUGS
+       Due to the method used to identify documented subroutines &quot;Pod::Coverage&quot;
+       may completely miss your house style and declare your code undocumented.
+       Patches and/or failing tests welcome.
+
+TODO
+       Widen the rules for identifying documentation
+       Improve the code coverage of the test suite.  &quot;Devel::Cover&quot; rocks so
+       hard.
+
+SEE ALSO
+       Test::More, Devel::Cover
+
+AUTHORS
+       Richard Clamp &lt;richardc@unixbeard.net&gt;
+
+       Michael Stevens &lt;mstevens@etla.org&gt;
+
+       some contributions from David Cantrell &lt;david@cantrell.org.uk&gt;
+
+COPYRIGHT
+       Copyright (c) 2001, 2003, 2004, 2006, 2007, 2009 Richard Clamp, Michael
+       Stevens. All rights reserved.  This program is free software; you can
+       redistribute it and/or modify it under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-02-07                 Pod::Coverage(3pm)
+
+</pre></body></html>

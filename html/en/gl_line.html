@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_line - draw a line</title></head>
+<body><pre>
+
+gl_line(3)                     Svgalib User Manual                    gl_line(3)
+
+
+
+NAME
+       gl_line - draw a line
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       void gl_line(int x1, int y1, int x2, int y2, int c);
+
+
+DESCRIPTION
+       Draw a line from point (x1, y1) to (x2, y2) inclusively in color c.
+
+       You  should  not assume that the same drawing trajectory is used when you
+       exchange start and end points.
+
+       To use this program one first sets up a mode with a  regular  vga_setmode
+       call  and  vga_setpage(0),  with possibly a vga_setlinearaddressing call.
+       Then a call to gl_setcontextvga(mode) is made.  This makes  the  informa&#8208;
+       tion about the mode available to gl_line.
+
+       The  pixels are placed directly into video memory using inline coded com&#8208;
+       mands.
+
+
+SEE ALSO
+       svgalib(7), vgagl(7), svgalib.conf(5), threedkit(7), testgl(1), plane(1),
+       wrapdemo(1),   gl_circle(3),   gl_clearscreen(3),   gl_hline(3),  gl_set&#8208;
+       pixel(3), gl_setpixelrgb(3), gl_setcontextvga(3).
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The  exact  source  of  the referenced demo as well as of the
+       original documentation is unknown. This page was modified by Don  Secrest
+       &lt;secrest@uiuc.edu&gt;.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                21 Aug 1999                        gl_line(3)
+
+</pre></body></html>

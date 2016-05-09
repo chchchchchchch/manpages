@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SSL_pending - obtain number of readable bytes buffered in an SSL object</title></head>
+<body><pre>
+
+SSL_pending(3SSL)                    OpenSSL                   SSL_pending(3SSL)
+
+
+
+NAME
+       SSL_pending - obtain number of readable bytes buffered in an SSL object
+
+SYNOPSIS
+        #include &lt;openssl/ssl.h&gt;
+
+        int SSL_pending(const SSL *ssl);
+
+DESCRIPTION
+       SSL_pending() returns the number of bytes which are available inside ssl
+       for immediate read.
+
+NOTES
+       Data are received in blocks from the peer. Therefore data can be buffered
+       inside ssl and are ready for immediate retrieval with SSL_read(3).
+
+RETURN VALUES
+       The number of bytes pending is returned.
+
+BUGS
+       SSL_pending() takes into account only bytes from the TLS/SSL record that
+       is currently being processed (if any).  If the SSL object&apos;s read_ahead
+       flag is set, additional protocol bytes may have been read containing more
+       TLS/SSL records; these are ignored by SSL_pending().
+
+       Up to OpenSSL 0.9.6, SSL_pending() does not check if the record type of
+       pending data is application data.
+
+SEE ALSO
+       SSL_read(3), ssl(3)
+
+
+
+1.0.1e                             2013-02-11                  SSL_pending(3SSL)
+
+</pre></body></html>

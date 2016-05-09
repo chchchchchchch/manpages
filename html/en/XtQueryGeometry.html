@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtQueryGeometry - query the preferred geometry of a child widget</title></head>
+<body><pre>
+
+XtQueryGeometry(3)                XT FUNCTIONS                XtQueryGeometry(3)
+
+
+
+NAME
+       XtQueryGeometry - query the preferred geometry of a child widget
+
+SYNTAX
+       XtGeometryResult XtQueryGeometry(Widget w, XtWidgetGeometry *intended,
+              XtWidgetGeometry *preferred_return);
+
+ARGUMENTS
+       intended  Specifies any changes the parent plans to make to the child&apos;s
+                 geometry or NULL.
+
+       preferred_return
+                 Returns the child widget&apos;s preferred geometry.
+
+       w         Specifies the widget.
+
+DESCRIPTION
+       To discover a child&apos;s preferred geometry, the child&apos;s parent sets any
+       changes that it intends to make to the child&apos;s geometry in the corre&#8208;
+       sponding fields of the intended structure, sets the corresponding bits in
+       intended.request_mode, and calls XtQueryGeometry.
+
+       XtQueryGeometry clears all bits in the preferred_return-&gt;request_mode and
+       checks the query_geometry field of the specified widget&apos;s class record.
+       If query_geometry is not NULL, XtQueryGeometry calls the query_geometry
+       procedure and passes as arguments the specified widget, intended, and
+       preferred_return structures.  If the intended argument is NULL, XtQuery&#8208;
+       Geometry replaces it with a pointer to an XtWidgetGeometry structure with
+       request_mode=0 before calling query_geometry.
+
+SEE ALSO
+       XtConfigureWidget(3), XtMakeGeometryRequest(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                XtQueryGeometry(3)
+
+</pre></body></html>

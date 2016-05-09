@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pngtopnm - convert a Portable Network Graphics file into portable anymap</title></head>
+<body><pre>
+
+pngtopnm(1)                                                          pngtopnm(1)
+
+
+
+NAME
+       pngtopnm - convert a Portable Network Graphics file into portable anymap
+
+SYNOPSIS
+       pngtopnm [-verbose] [-alpha | -mix] [-background color]
+       [-gamma value] [-text file] [-time] [pngfile]
+
+DESCRIPTION
+       Reads  a  Portable Network Graphics as input.  Produces a portable anymap
+       as output.  The type of the output file depends on the input  file  -  if
+       it&apos;s  black  &amp; white, a pbm file is written, else if it&apos;s grayscale a pgm
+       file, else a ppm file.
+
+OPTIONS
+       -verbose
+              Display the format of the input file and the type  of  the  output
+              file.  If  the  chunks are part of the png-file, the alpha, trans&#8208;
+              parency and gamma-values will be indicated.
+
+       -alpha Output the alpha channel or transparency mask of  the  image.  The
+              result is either a pbm file or pgm file, depending on whether dif&#8208;
+              ferent levels of transparency appear.
+
+       -mix   Compose the image with the transparency or alpha  mask  against  a
+              the background. When a background chunk is available that color is
+              taken, else black will do.
+
+       -background color
+              If no background color chunck is present in the png-file, or  when
+              another  color  is  required this parameter can be used to set the
+              background color of images. This is especially useful  for  alpha-
+              channel  images  or those with transparency chunks. The format, to
+              specify  the  color  in,  is  either  (in  the  case  of   orange)
+              &quot;1.0,0.5,0.0&quot;,  where  the values are floats between zero and one,
+              or with the syntax &quot;#RGB&quot;, &quot;#RRGGBB&quot; or &quot;#RRRRGGGGBBBB&quot; where R, G
+              and B are hexa-decimal numbers.
+
+       -gamma value
+              Converts the image to a new display-gamma value. When a gAMA chunk
+              is present in the png-file, the image-gamma value  will  be  used.
+              When  not,  the  image-gamma is considered to be 1.0. Based on the
+              image-gamma and the display-gamma given with this option the  col&#8208;
+              ors written to the pnm-file will be adjusted.
+              Because  the  gamma&apos;s  of  uncompensated  monitors are around 2.6,
+              which results in an image-gamma of 0.45, some  typical  situations
+              are:  when the image-gamma is 0.45 (use -verbose to check) and the
+              picture is too light, your system is gamma-corrected,  so  convert
+              with  &quot;-gamma  1.0&quot;.   When no gAMA chunk is present or the image-
+              gamma is 1.0, use 2.2 to make the picture lighter and 0.45 to make
+              the picture darker.
+
+       -text file
+              Writes  the  tEXt  and  zTXt  chunks  to  a  file,  in a format as
+              described in the pnmtopng man-page.   These  chunks  contain  text
+              comments or annotations.
+
+       -time  Prints the tIME chunk to stderr.
+
+       All flags can be abbreviated to their shortest unique prefix.
+
+SEE ALSO
+       pnmtopng(1), ptot(1), pnmgamma(1), pnm(5)
+&#12;NOTE
+       Instead  of  pngtopnm|pnmtoxxx,  a  specific converter should be used, if
+       available. E.g.  ptot (PNG to TIFF conversion), etc.
+
+BUGS
+       There could be an option to read  the  comment  text  from  pnm  comments
+       instead of a separate file.
+
+       The program could be much faster, with a bit of code optimizing.
+
+AUTHORS
+       Copyright (C) 1995-1997 by Alexander Lehmann
+                               and Willem van Schaik.
+
+
+
+                                 6 January 1997                      pngtopnm(1)
+
+</pre></body></html>

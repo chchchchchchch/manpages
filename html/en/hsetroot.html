@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hsetroot - Another Wallpaper Application</title></head>
+<body><pre>
+
+HSETROOT(1)             Yet Another Wallpaper Application            HSETROOT(1)
+
+
+
+NAME
+       hsetroot - Another Wallpaper Application
+
+SYNOPSIS
+       hsetroot [-screens &lt;bitmask&gt;] [command1 [arg1..]] [command2 [arg1..]]
+
+OPTIONS
+       Generic Options:
+
+       -screens
+              set a screenmask to use.
+              For example 1 will only set the root pixmap of screen 0, 3
+              will set the root pixmap of screen 0 and 1.
+
+       Gradients:
+
+       -add &lt;color&gt;
+              Add a color to range using distance 1
+
+       -addd &lt;color&gt; &lt;distance&gt;
+              Add a color to range using custom distance
+
+       -gradient &lt;angle&gt;
+              Render gradient using specified angle
+
+       -clear Clear the color range
+
+       Solid:
+
+       -solid &lt;color&gt;
+              Render a solid using the specified color
+              Colors are in the #rrbbgg or #rrggbbaa format
+
+       Image Files:
+
+       -center &lt;image&gt;
+              Render an image centered on screen
+
+       -tile &lt;image&gt;
+              Render an image tiled
+
+       -full &lt;image&gt;
+              Render an image maximum aspect
+
+       -fill &lt;image&gt;
+              Render an image strechted
+
+       Manipulations
+
+       -tint &lt;color&gt;
+              Tint the current image
+
+       -blur &lt;radius&gt;
+              Blur the current image
+
+       -sharpen &lt;radius&gt;
+              Sharpen the current image
+
+       -contrast &lt;amount&gt;
+              Adjust contrast of current image
+
+       -brightness &lt;amount&gt;
+              Adjust brightness of current image
+&#12;       -gamma &lt;amount&gt;
+              Adjust gamma level of current image
+
+       -flipv Flip the current image vertically
+
+       -fliph Flip the current image horizontally
+
+       -flipd Flip the current image diagonally
+
+       Misc:
+
+       -alpha &lt;amount&gt;
+              Adjust alpha level for colors and images
+
+       -write &lt;filename&gt;
+              Write current image to file
+
+
+AUTHORS
+       Hyriand &lt;hyriand@thegraveyard.org&gt;  Sent bugreports to: hyriand@thegrave&#8208;
+       yard.org
+
+OTHER
+       This    manual    page    was    written     by     Francesco     Pedrini
+       &lt;francesco.pedrini@gmail.com&gt;  for  the Debian system (but may be used by
+       others).
+
+
+
+User Manual                         Mar 2005                         HSETROOT(1)
+
+</pre></body></html>

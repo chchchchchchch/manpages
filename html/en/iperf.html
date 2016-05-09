@@ -1,0 +1,153 @@
+<html>
+<head><meta charset=utf-8/>
+<title>iperf - perform network throughput tests</title></head>
+<body><pre>
+
+IPERF(1)                          User Manuals                          IPERF(1)
+
+
+
+NAME
+       iperf - perform network throughput tests
+
+SYNOPSIS
+       iperf -s [ options ]
+
+       iperf -c server [ options ]
+
+       iperf -u -s [ options ]
+
+       iperf -u -c server [ options ]
+
+DESCRIPTION
+       iperf  is  a tool for performing network throughput measurements.  It can
+       test either TCP or UDP throughput.  To perform an  iperf  test  the  user
+       must establish both a server (to discard traffic) and a client (to gener&#8208;
+       ate traffic).
+
+GENERAL OPTIONS
+       -f, --format
+              [kmKM]   format to report: Kbits, Mbits, KBytes, MBytes
+
+       -h, --help
+              print a help synopsis
+
+       -i, --interval n
+              pause n seconds between periodic bandwidth reports
+
+       -l, --len n[KM]
+              set length read/write buffer to n (default 8 KB)
+
+       -m, --print_mss
+              print TCP maximum segment size (MTU - TCP/IP header)
+
+       -o, --output &lt;filename&gt;
+              output the report or error message to this specified file
+
+       -p, --port n
+              set server port to listen on/connect to to n (default 5001)
+
+       -u, --udp
+              use UDP rather than TCP
+
+       -w, --window n[KM]
+              TCP window size (socket buffer size)
+
+       -B, --bind &lt;host&gt;
+              bind to &lt;host&gt;, an interface or multicast address
+
+       -C, --compatibility
+              for use with older versions does not sent extra msgs
+
+       -M, --mss n
+              set TCP maximum segment size (MTU - 40 bytes)
+
+       -N, --nodelay
+              set TCP no delay, disabling Nagle&apos;s Algorithm
+
+       -v, --version
+              print version information and quit
+
+       -V, --IPv6Version
+              Set the domain to IPv6
+&#12;       -x, --reportexclude
+              [CDMSV]   exclude C(connection) D(data)  M(multicast)  S(settings)
+              V(server) reports
+
+       -y, --reportstyle C|c
+              if set to C or c report results as CSV (comma separated values)
+
+SERVER SPECIFIC OPTIONS
+       -s, --server
+              run in server mode
+
+       -U, --single_udp
+              run in single threaded UDP mode
+
+       -D, --daemon
+              run the server as a daemon
+
+CLIENT SPECIFIC OPTIONS
+       -b, --bandwidth n[KM]
+              set  target  bandwidth  to  n bits/sec (default 1 Mbit/sec).  This
+              setting requires UDP (-u).
+
+       -c, --client &lt;host&gt;
+              run in client mode, connecting to &lt;host&gt;
+
+       -d, --dualtest
+              Do a bidirectional test simultaneously
+
+       -n, --num n[KM]
+              number of bytes to transmit (instead of -t)
+
+       -r, --tradeoff
+              Do a bidirectional test individually
+
+       -t, --time n
+              time in seconds to transmit for (default 10 secs)
+
+       -F, --fileinput &lt;name&gt;
+              input the data to be transmitted from a file
+
+       -I, --stdin
+              input the data to be transmitted from stdin
+
+       -L, --listenport n
+              port to receive bidirectional tests back on
+
+       -P, --parallel n
+              number of parallel client threads to run
+
+       -T, --ttl n
+              time-to-live, for multicast (default 1)
+
+       -Z, --linux-congestion &lt;algo&gt;
+              set TCP congestion control algorithm (Linux only)
+
+ENVIRONMENT
+       TCP_WINDOW_SIZE
+              Controls the size of TCP buffers.
+
+DIAGNOSTICS
+       This section needs to be filled in.
+
+BUGS
+       Exit statuses are inconsistent.  The threading implementation  is  rather
+       heinous.
+
+AUTHORS
+       Iperf was originally written by Mark Gates and Alex Warshavsky.  Man page
+       and maintence by Jon Dugan &lt;jdugan at x1024 dot  net&gt;.   Other  contribu&#8208;
+       tions  from  Ajay  Tirumala,  Jim  Ferguson,  Feng Qin, Kevin Gibbs, John
+       Estabrook &lt;jestabro  at  ncsa.uiuc.edu&gt;,  Andrew  Gallatin  &lt;gallatin  at
+       gmail.com&gt;, Stephen Hemminger &lt;shemminger at linux-foundation.org&gt;
+
+SEE ALSO
+       http://iperf.sourceforge.net/
+
+
+
+NLANR/DAST                         APRIL 2008                           IPERF(1)
+
+</pre></body></html>

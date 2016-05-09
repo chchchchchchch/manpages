@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Dpkg::Compression::Process - run compression/decompression processes</title></head>
+<body><pre>
+
+Dpkg::Compression::Process(3)     libdpkg-perl     Dpkg::Compression::Process(3)
+
+
+
+NAME
+       Dpkg::Compression::Process - run compression/decompression processes
+
+DESCRIPTION
+       This module provides an object oriented interface to run and manage
+       compression/decompression processes.
+
+METHODS
+       my $proc = Dpkg::Compression::Process-&gt;new(%opts)
+           Create a new instance of the object. Supported options are
+           &quot;compression&quot; and &quot;compression_level&quot; (see corresponding set_*
+           functions).
+
+       $proc-&gt;set_compression($comp)
+           Select the compression method to use. It errors out if the method is
+           not supported according to &quot;compression_is_supported&quot; (of
+           Dpkg::Compression).
+
+       $proc-&gt;set_compression_level($level)
+           Select the compression level to use. It errors out if the level is
+           not valid according to &quot;compression_is_valid_level&quot; (of
+           Dpkg::Compression).
+
+       my @exec = $proc-&gt;get_compress_cmdline()
+       my @exec = $proc-&gt;get_uncompress_cmdline()
+           Returns a list ready to be passed to &quot;exec&quot;, its first element is the
+           program name (either for compression or decompression) and the
+           following elements are parameters for the program.
+
+           When executed the program acts as a filter between its standard input
+           and its standard output.
+
+       $proc-&gt;compress(%opts)
+           Starts a compressor program. You must indicate where it will read its
+           uncompressed data from and where it will write its compressed data
+           to.  This is accomplished by passing one parameter &quot;to_*&quot; and one
+           parameter &quot;from_*&quot; as accepted by Dpkg::IPC::spawn.
+
+           You must call &quot;wait_end_process&quot; after having called this method to
+           properly close the sub-process (and verify that it exited without
+           error).
+
+       $proc-&gt;uncompress(%opts)
+           Starts a decompressor program. You must indicate where it will read
+           its compressed data from and where it will write its uncompressed
+           data to.  This is accomplished by passing one parameter &quot;to_*&quot; and
+           one parameter &quot;from_*&quot; as accepted by Dpkg::IPC::spawn.
+
+           You must call &quot;wait_end_process&quot; after having called this method to
+           properly close the sub-process (and verify that it exited without
+           error).
+
+       $proc-&gt;wait_end_process(%opts)
+           Call Dpkg::IPC::wait_child to wait until the sub-process has exited
+           and verify its return code. Any given option will be forwarded to the
+           &quot;wait_child&quot; function. Most notably you can use the &quot;nocheck&quot; option
+           to verify the return code yourself instead of letting &quot;wait_child&quot; do
+           it for you.
+
+AUTHOR
+       Rapha&#195;&#171;l Hertzog &lt;hertzog@debian.org&gt;.
+
+
+
+1.16.16                            2015-04-09      Dpkg::Compression::Process(3)
+
+</pre></body></html>

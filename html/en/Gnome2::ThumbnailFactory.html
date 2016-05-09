@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::ThumbnailFactory - wrapper for GnomeThumbnailFactory</title></head>
+<body><pre>
+
+Gnome2::ThumbnailFactorUsermContributed Perl DocumeGnome2::ThumbnailFactory(3pm)
+
+
+
+NAME
+       Gnome2::ThumbnailFactory - wrapper for GnomeThumbnailFactory
+
+HIERARCHY
+         Glib::Object
+         +----Gnome2::ThumbnailFactory
+
+METHODS
+   thumbnailfactory = Gnome2::ThumbnailFactory-&gt;new ($size)
+       &#183;   $size (Gnome2::ThumbnailSize)
+
+   boolean = $factory-&gt;can_thumbnail ($uri, $mime_type, $mtime)
+       &#183;   $uri (string)
+
+       &#183;   $mime_type (string)
+
+       &#183;   $mtime (a timestamp)
+
+   $factory-&gt;create_failed_thumbnail ($uri, $mtime)
+       &#183;   $uri (string)
+
+       &#183;   $mtime (a timestamp)
+
+   pixbuf = $factory-&gt;generate_thumbnail ($uri, $mime_type)
+       &#183;   $uri (string)
+
+       &#183;   $mime_type (string)
+
+   boolean = $factory-&gt;has_valid_failed_thumbnail ($uri, $mtime)
+       &#183;   $uri (string)
+
+       &#183;   $mtime (a timestamp)
+
+   string = $factory-&gt;lookup ($uri, $mtime)
+       &#183;   $uri (string)
+
+       &#183;   $mtime (a timestamp)
+
+   $factory-&gt;save_thumbnail ($thumbnail, $uri, $original_mtime)
+       &#183;   $thumbnail (Gtk2::Gdk::Pixbuf)
+
+       &#183;   $uri (string)
+
+       &#183;   $original_mtime (a timestamp)
+
+ENUMS AND FLAGS
+   enum Gnome2::ThumbnailSize
+       &#183;   &apos;normal&apos; / &apos;GNOME_THUMBNAIL_SIZE_NORMAL&apos;
+
+       &#183;   &apos;large&apos; / &apos;GNOME_THUMBNAIL_SIZE_LARGE&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16      Gnome2::ThumbnailFactory(3pm)
+
+</pre></body></html>

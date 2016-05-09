@@ -1,0 +1,44 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSetIOErrorHandler - set handler for fatal IO errors</title></head>
+<body><pre>
+
+AuSetErrorHandler(3)                                        AuSetErrorHandler(3)
+
+
+
+Name
+       AuSetIOErrorHandler - set handler for fatal IO errors
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuBool (*AuSetIOErrorHandler(server, handler))()
+           AuServer *server;
+           AuBool (*handler)(AuServer *);
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       handler   Specifies  the  fatal error handler.  Use NULL to reinstall the
+                 default fatal error handler.
+
+Description
+       AuSetIOErrorHandler sets the fatal I/O error handler and returns the pre&#8208;
+       vious  error handler.  The error handler will be invoked if a system call
+       error occurs (for example, the connection to the server  was  lost).   As
+       this is assumed to be a fatal condition, the error handler routine should
+       not return.  If the I/O error handler does  return,  the  client  process
+       exits.
+
+See Also
+       AuServerName,  AuGetErrorDatabaseText, AuGetErrorText, AuSetErrorHandler,
+       AuSynchronize.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - error handling             1.9.3                 AuSetErrorHandler(3)
+
+</pre></body></html>

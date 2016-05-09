@@ -1,0 +1,35 @@
+<html>
+<head><meta charset=utf-8/>
+<title>debconf-escape - helper when working with debconf's escape capability</title></head>
+<body><pre>
+
+DEBCONF-ESCAPE(1)                    Debconf                   DEBCONF-ESCAPE(1)
+
+
+
+NAME
+       debconf-escape - helper when working with debconf&apos;s escape capability
+
+SYNOPSIS
+        debconf-escape -e &lt; unescaped-text
+        debconf-escape -u &lt; escaped-text
+
+DESCRIPTION
+       When debconf has the &apos;escape&apos; capability set, it will expect commands you
+       send it to have backslashes and newlines escaped (as &quot;\\&quot; and &quot;\n&quot;
+       respectively) and will in turn escape backslashes and newlines in its
+       replies. This can be used, for example, to substitute multi-line strings
+       into templates, or to get multi-line extended descriptions reliably using
+       &quot;METAGET&quot;.
+
+SEE ALSO
+       debconf-devel(7) (available in the debconf-doc package)
+
+AUTHOR
+       Colin Watson &lt;cjwatson@debian.org&gt;
+
+
+
+                                   2012-09-10                  DEBCONF-ESCAPE(1)
+
+</pre></body></html>

@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>id3v2 -  Adds/Modifies/Removes/Views id3v2 tags, converts/lists id3v1 tags</title></head>
+<body><pre>
+
+ID3V2(1)                          User Command                          ID3V2(1)
+
+
+
+NAME
+       id3v2  -   Adds/Modifies/Removes/Views  id3v2  tags, converts/lists id3v1
+       tags
+
+SYNOPSIS
+       id3v2 [ OPTION ] [ FILE ]
+
+OPTIONS
+       -h, --help
+              Display help and exit
+
+       -f, --list-frames
+              Display all possible frames for id3v2
+
+       -L, --list-genres
+              Lists all id3v1 genres
+
+       -v, --version
+              Display version information and exit
+
+       -l, --list
+              Lists the tag(s) on the file(s)
+
+       -R, --list-rfc822
+              Lists using an rfc822-style format for output
+
+       -d, --delete-v2
+              Deletes id3v2 tags
+
+       -s, --delete-v1
+              Deletes id3v1 tags
+
+       -D, --delete-all
+               Deletes both id3v1 and id3v2 tags
+
+       -C, --convert
+               Converts id3v1 tag to id3v2
+
+       -a, --artist ARTIST
+              Set the artist information
+
+       -A, --album ALBUM
+              Set the album title information
+
+       -t, --song SONG
+              Set the song title information
+
+       -c, --comment DESCRIPTION:COMMENT
+              Set the comment information
+
+       -g, --genre num
+              Set the genre number
+
+       -y, --year num
+              Set the year
+
+       -T, --track num/num
+              Set the track number/(optional) total tracks
+
+
+NOTE
+       You can set the value for any id3v2 frame by using &apos;--&apos; and then frame id
+&#12;       For example:
+
+              id3v2 --TIT3 Monkey! file.mp3
+
+       would set the &quot;Subtitle/Description&quot; frame to &quot;Monkey!&quot;.
+
+
+SEE ALSO
+       id3tag(1), id3info(1), id3convert(1)
+
+AUTHOR
+       id3v2 is by myers &lt;myers_carpenter@users.sourceforge.net&gt; with major por&#8208;
+       tions used from id3lib examples. Manual page written for Debian GNU/Linux
+       by Robert Woodcock &lt;rcw@debian.org&gt;.
+
+
+
+                                    May 2000                            ID3V2(1)
+
+</pre></body></html>

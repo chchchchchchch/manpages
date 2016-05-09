@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>getbuildlog - download build logs from Debian auto-builders</title></head>
+<body><pre>
+
+GETBUILDLOG(1)                                                    GETBUILDLOG(1)
+
+
+
+NAME
+       getbuildlog - download build logs from Debian auto-builders
+
+SYNOPSIS
+       getbuildlog package [version-pattern] [architecture-pattern]
+
+DESCRIPTION
+       getbuildlog downloads build logs of package from Debian auto-builders. It
+       downloads build logs of all versions and for all  architectures  if  ver&#8208;
+       sion-pattern  and architecture-pattern are not specified or empty, other&#8208;
+       wise only build logs whose versions match version-pattern and build  logs
+       whose  architectures  match  architecture-pattern will be downloaded. The
+       version and architecture patterns are  interpreted  as  extended  regular
+       expressions as described in grep(1).
+
+       If  version-pattern is &quot;last&quot; then only the logs for the most recent ver&#8208;
+       sion of package found on buildd.debian.org will be downloaded.
+
+       If version-pattern is &quot;last-all&quot; then the logs for the most  recent  ver&#8208;
+       sion found on each build log index will be downloaded.
+
+OPTIONS
+       -h, --help
+              Show usage information and examples.
+
+       -V, --version
+              Show version and copyright information.
+
+EXAMPLES
+       getbuildlog hello 2\.2-1 amd64
+              Download amd64 build log for hello version 2.2-1.
+
+       getbuildlog glibc &quot;&quot; mips.*
+              Download mips(el) build logs of all glibc versions.
+
+       getbuildlog wesnoth .*bpo.*
+              Download all build logs of backported wesnoth versions.
+
+AUTHOR
+       Written by Frank S. Thomas &lt;fst@debian.org&gt;.
+
+
+
+DEBIAN                          Debian Utilities                  GETBUILDLOG(1)
+
+</pre></body></html>

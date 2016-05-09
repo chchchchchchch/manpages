@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>json_xs - JSON::XS commandline utility</title></head>
+<body><pre>
+
+JSON_XS(1p)            User Contributed Perl Documentation           JSON_XS(1p)
+
+
+
+NAME
+       json_xs - JSON::XS commandline utility
+
+SYNOPSIS
+          json_xs [-v] [-f inputformat] [-t outputformat]
+
+DESCRIPTION
+       json_xs converts between some input and output formats (one of them is
+       JSON).
+
+       The default input format is &quot;json&quot; and the default output format is
+       &quot;json-pretty&quot;.
+
+OPTIONS
+       -v  Be slightly more verbose.
+
+       -f fromformat
+           Read a file in the given format from STDIN.
+
+           &quot;fromformat&quot; can be one of:
+
+           json - a json text encoded, either utf-8, utf16-be/le, utf32-be/le
+           storable - a Storable frozen value
+           storable-file - a Storable file (Storable has two incompatible
+           formats)
+           clzf - Compress::LZF format (requires that module to be installed)
+           yaml - YAML (avoid at all costs, requires the YAML module :)
+           eval - evaluate the given code as (non-utf-8) Perl, basically the
+           reverse of &quot;-t dump&quot;
+       -t toformat
+           Write the file in the given format to STDOUT.
+
+           &quot;toformat&quot; can be one of:
+
+           json, json-utf-8 - json, utf-8 encoded
+           json-pretty - as above, but pretty-printed
+           json-utf-16le, json-utf-16be - little endian/big endian utf-16
+           json-utf-32le, json-utf-32be - little endian/big endian utf-32
+           storable - a Storable frozen value in network format
+           storable-file - a Storable file in network format (Storable has two
+           incompatible formats)
+           clzf - Compress::LZF format
+           yaml - YAML
+           dump - Data::Dump
+           dumper - Data::Dumper
+               Note that Data::Dumper doesn&apos;t handle self-referential data
+               structures correctly - use &quot;dump&quot; instead.
+
+EXAMPLES
+          json_xs -t null &lt;isitreally.json
+
+       &quot;JSON Lint&quot; - tries to parse the file isitreally.json as JSON - if it is
+       valid JSON, the command outputs nothing, otherwise it will print an error
+       message and exit with non-zero exit status.
+
+          &lt;src.json json_xs &gt;pretty.json
+
+       Prettify the JSON file src.json to dst.json.
+
+          json_xs -f storable-file &lt;file
+
+       Read the serialised Storable file file and print a human-readable JSON
+       version of it to STDOUT.
+
+          json_xs -f storable-file -t yaml &lt;file
+
+       Same as above, but write YAML instead (not using JSON at all :)
+
+          lwp-request http://cpantesters.perl.org/show/JSON-XS.json | json_xs
+
+       Fetch the cpan-testers result summary &quot;JSON::XS&quot; and pretty-print it.
+
+AUTHOR
+       Copyright (C) 2008 Marc Lehmann &lt;json@schmorp.de&gt;
+
+
+
+perl v5.14.2                       2010-08-17                        JSON_XS(1p)
+
+</pre></body></html>

@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gdk-pixbuf-query-loaders - GdkPixbuf loader registration utility</title></head>
+<body><pre>
+
+GDK-PIXBUF-QUERY-(1)             [FIXME: manual]            GDK-PIXBUF-QUERY-(1)
+
+
+
+NAME
+       gdk-pixbuf-query-loaders - GdkPixbuf loader registration utility
+
+SYNOPSIS
+       gdk-pixbuf-query-loaders [--update-cache] [module...]
+
+DESCRIPTION
+       gdk-pixbuf-query-loaders collects information about loadable modules for
+       gdk-pixbuf and writes it to the default cache file location, or to
+       stdout.
+
+       If called without arguments, it looks for modules in the gdk-pixbuf
+       loader directory.
+
+       If called with arguments, it looks for the specified modules. The
+       arguments may be absolute or relative paths.
+
+       Normally, the output of gdk-pixbuf-queryloaders is written to
+       libdirgdk-pixbuf-2.0/2.10.0/loaders.cache, where gdk-pixbuf looks for it
+       by default. If it is written to some other location, the environment
+       variable GDK_PIXBUF_MODULE_FILE can be set to point gdk-pixbuf at the
+       file.
+
+OPTIONS
+       --update-cache
+           Write the output to the default cache location instead of stdout
+
+ENVIRONMENT
+       The environment variable GDK_PIXBUF_MODULEDIR can be used to specify a
+       different loader directory. The default gdk-pixbuf loader directory is
+       libdir/gdk-pixbuf-2.0/version/loaders.
+
+BUGS
+       None known yet.
+
+
+
+[FIXME: source]                    04/14/2012               GDK-PIXBUF-QUERY-(1)
+
+</pre></body></html>

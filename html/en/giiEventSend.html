@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>giiEventSend - Inject an event into the input</title></head>
+<body><pre>
+
+giiEventSend(3)                        GGI                       giiEventSend(3)
+
+
+
+NAME
+       giiEventSend - Inject an event into the input
+
+SYNOPSIS
+       #include &lt;ggi/gii.h&gt;
+
+       int giiEventSend(gii_input_t inp, gii_event *ev);
+
+
+DESCRIPTION
+       giiEventSend  injects an event into the queue. Such events can be identi&#8208;
+       fied by (event-&gt;any.target == GII_EV_TARGET_QUEUE).  There are three main
+       uses for this function:
+
+       1   Simulating input for independent subprograms.
+
+       2   Sending  events  to  externally  attached  programs  via  specialized
+           inputs, that are actually rather outputs.
+
+       3   Sending command events to inputs, like querying the axis of a  valua&#8208;
+           tor device.
+
+RETURN VALUE
+       giiEventSend returns 0 on success, or an gii-error(3) code otherwise.
+
+SEE ALSO
+       giiEventPoll(3)
+
+
+
+libgii-1.0.x                       2006-12-30                    giiEventSend(3)
+
+</pre></body></html>

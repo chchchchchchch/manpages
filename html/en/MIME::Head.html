@@ -1,0 +1,502 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MIME::Head - MIME message header (a subclass of Mail::Header)</title></head>
+<body><pre>
+
+MIME::Head(3pm)        User Contributed Perl Documentation       MIME::Head(3pm)
+
+
+
+NAME
+       MIME::Head - MIME message header (a subclass of Mail::Header)
+
+SYNOPSIS
+       Before reading further, you should see MIME::Tools to make sure that you
+       understand where this module fits into the grand scheme of things.  Go
+       on, do it now.  I&apos;ll wait.
+
+       Ready?  Ok...
+
+   Construction
+           ### Create a new, empty header, and populate it manually:
+           $head = MIME::Head-&gt;new;
+           $head-&gt;replace(&apos;content-type&apos;, &apos;text/plain; charset=US-ASCII&apos;);
+           $head-&gt;replace(&apos;content-length&apos;, $len);
+
+           ### Parse a new header from a filehandle:
+           $head = MIME::Head-&gt;read(\*STDIN);
+
+           ### Parse a new header from a file, or a readable pipe:
+           $testhead = MIME::Head-&gt;from_file(&quot;/tmp/test.hdr&quot;);
+           $a_b_head = MIME::Head-&gt;from_file(&quot;cat a.hdr b.hdr |&quot;);
+
+   Output
+           ### Output to filehandle:
+           $head-&gt;print(\*STDOUT);
+
+           ### Output as string:
+           print STDOUT $head-&gt;as_string;
+           print STDOUT $head-&gt;stringify;
+
+   Getting field contents
+           ### Is this a reply?
+           $is_reply = 1 if ($head-&gt;get(&apos;Subject&apos;) =~ /^Re: /);
+
+           ### Get receipt information:
+           print &quot;Last received from: &quot;, $head-&gt;get(&apos;Received&apos;, 0);
+           @all_received = $head-&gt;get(&apos;Received&apos;);
+
+           ### Print the subject, or the empty string if none:
+           print &quot;Subject: &quot;, $head-&gt;get(&apos;Subject&apos;,0);
+
+           ### Too many hops?  Count &apos;em and see!
+           if ($head-&gt;count(&apos;Received&apos;) &gt; 5) { ...
+
+           ### Test whether a given field exists
+           warn &quot;missing subject!&quot; if (! $head-&gt;count(&apos;subject&apos;));
+
+   Setting field contents
+           ### Declare this to be an HTML header:
+           $head-&gt;replace(&apos;Content-type&apos;, &apos;text/html&apos;);
+
+   Manipulating field contents
+           ### Get rid of internal newlines in fields:
+           $head-&gt;unfold;
+
+           ### Decode any Q- or B-encoded-text in fields (DEPRECATED):
+           $head-&gt;decode;
+
+   Getting high-level MIME information
+           ### Get/set a given MIME attribute:
+           unless ($charset = $head-&gt;mime_attr(&apos;content-type.charset&apos;)) {
+               $head-&gt;mime_attr(&quot;content-type.charset&quot; =&gt; &quot;US-ASCII&quot;);
+           }
+&#12;           ### The content type (e.g., &quot;text/html&quot;):
+           $mime_type     = $head-&gt;mime_type;
+
+           ### The content transfer encoding (e.g., &quot;quoted-printable&quot;):
+           $mime_encoding = $head-&gt;mime_encoding;
+
+           ### The recommended name when extracted:
+           $file_name     = $head-&gt;recommended_filename;
+
+           ### The boundary text, for multipart messages:
+           $boundary      = $head-&gt;multipart_boundary;
+
+DESCRIPTION
+       A class for parsing in and manipulating RFC-822 message headers, with
+       some methods geared towards standard (and not so standard) MIME fields as
+       specified in the various Multipurpose Internet Mail Extensions RFCs
+       (starting with RFC 2045)
+
+PUBLIC INTERFACE
+   Creation, input, and output
+       new [ARG],[OPTIONS]
+           Class method, inherited.  Creates a new header object.  Arguments are
+           the same as those in the superclass.
+
+       from_file EXPR,OPTIONS
+           Class or instance method.  For convenience, you can use this to parse
+           a header object in from EXPR, which may actually be any expression
+           that can be sent to open() so as to return a readable filehandle.
+           The &quot;file&quot; will be opened, read, and then closed:
+
+               ### Create a new header by parsing in a file:
+               my $head = MIME::Head-&gt;from_file(&quot;/tmp/test.hdr&quot;);
+
+           Since this method can function as either a class constructor or an
+           instance initializer, the above is exactly equivalent to:
+
+               ### Create a new header by parsing in a file:
+               my $head = MIME::Head-&gt;new-&gt;from_file(&quot;/tmp/test.hdr&quot;);
+
+           On success, the object will be returned; on failure, the undefined
+           value.
+
+           The OPTIONS are the same as in new(), and are passed into new() if
+           this is invoked as a class method.
+
+           Note: This is really just a convenience front-end onto &quot;read()&quot;,
+           provided mostly for backwards-compatibility with MIME-parser 1.0.
+
+       read FILEHANDLE
+           Instance (or class) method.  This initiallizes a header object by
+           reading it in from a FILEHANDLE, until the terminating blank line is
+           encountered.  A syntax error or end-of-stream will also halt
+           processing.
+
+           Supply this routine with a reference to a filehandle glob; e.g.,
+           &quot;\*STDIN&quot;:
+
+               ### Create a new header by parsing in STDIN:
+               $head-&gt;read(\*STDIN);
+
+           On success, the self object will be returned; on failure, a false
+           value.
+
+           Note: in the MIME world, it is perfectly legal for a header to be
+           empty, consisting of nothing but the terminating blank line.  Thus,
+           we can&apos;t just use the formula that &quot;no tags equals error&quot;.
+
+           Warning: as of the time of this writing, Mail::Header::read did not
+           flag either syntax errors or unexpected end-of-file conditions (an
+           EOF before the terminating blank line).  MIME::ParserBase takes this
+           into account.
+
+   Getting/setting fields
+       The following are methods related to retrieving and modifying the header
+       fields.  Some are inherited from Mail::Header, but I&apos;ve kept the
+       documentation around for convenience.
+
+       add TAG,TEXT,[INDEX]
+           Instance method, inherited.  Add a new occurence of the field named
+           TAG, given by TEXT:
+
+               ### Add the trace information:
+               $head-&gt;add(&apos;Received&apos;,
+                          &apos;from eryq.pr.mcs.net by gonzo.net with smtp&apos;);
+
+           Normally, the new occurence will be appended to the existing
+           occurences.  However, if the optional INDEX argument is 0, then the
+           new occurence will be prepended.  If you want to be explicit about
+           appending, specify an INDEX of -1.
+
+           Warning: this method always adds new occurences; it doesn&apos;t overwrite
+           any existing occurences... so if you just want to change the value of
+           a field (creating it if necessary), then you probably don&apos;t want to
+           use this method: consider using &quot;replace()&quot; instead.
+
+       count TAG
+           Instance method, inherited.  Returns the number of occurences of a
+           field; in a boolean context, this tells you whether a given field
+           exists:
+
+               ### Was a &quot;Subject:&quot; field given?
+               $subject_was_given = $head-&gt;count(&apos;subject&apos;);
+
+           The TAG is treated in a case-insensitive manner.  This method returns
+           some false value if the field doesn&apos;t exist, and some true value if
+           it does.
+
+       decode [FORCE]
+           Instance method, DEPRECATED.  Go through all the header fields,
+           looking for RFC 1522 / RFC 2047 style &quot;Q&quot; (quoted-printable, sort of)
+           or &quot;B&quot; (base64) encoding, and decode them in-place.  Fellow
+           Americans, you probably don&apos;t know what the hell I&apos;m talking about.
+           Europeans, Russians, et al, you probably do.  &quot;:-)&quot;.
+
+           This method has been deprecated.  See &quot;decode_headers&quot; in
+           MIME::Parser for the full reasons.  If you absolutely must use it and
+           don&apos;t like the warning, then provide a FORCE:
+
+              &quot;I_NEED_TO_FIX_THIS&quot;
+                     Just shut up and do it.  Not recommended.
+                     Provided only for those who need to keep old scripts functioning.
+
+              &quot;I_KNOW_WHAT_I_AM_DOING&quot;
+                     Just shut up and do it.  Not recommended.
+                     Provided for those who REALLY know what they are doing.
+
+           What this method does.  For an example, let&apos;s consider a valid email
+           header you might get:
+
+               From: =?US-ASCII?Q?Keith_Moore?= &lt;moore@cs.utk.edu&gt;
+               To: =?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= &lt;keld@dkuug.dk&gt;
+               CC: =?ISO-8859-1?Q?Andr=E9_?= Pirard &lt;PIRARD@vm1.ulg.ac.be&gt;
+               Subject: =?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=
+                =?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=
+                =?US-ASCII?Q?.._cool!?=
+
+           That basically decodes to (sorry, I can only approximate the Latin
+           characters with 7 bit sequences /o and &apos;e):
+
+               From: Keith Moore &lt;moore@cs.utk.edu&gt;
+               To: Keld J/orn Simonsen &lt;keld@dkuug.dk&gt;
+               CC: Andr&apos;e  Pirard &lt;PIRARD@vm1.ulg.ac.be&gt;
+               Subject: If you can read this you understand the example... cool!
+
+           Note: currently, the decodings are done without regard to the
+           character set: thus, the Q-encoding &quot;=F8&quot; is simply translated to the
+           octet (hexadecimal &quot;F8&quot;), period.  For piece-by-piece decoding of a
+           given field, you want the array context of
+           &quot;MIME::Words::decode_mimewords()&quot;.
+
+           Warning: the CRLF+SPACE separator that splits up long encoded words
+           into shorter sequences (see the Subject: example above) gets lost
+           when the field is unfolded, and so decoding after unfolding causes a
+           spurious space to be left in the field.  THEREFORE: if you&apos;re going
+           to decode, do so BEFORE unfolding!
+
+           This method returns the self object.
+
+           Thanks to Kent Boortz for providing the idea, and the baseline
+           RFC-1522-decoding code.
+
+       delete TAG,[INDEX]
+           Instance method, inherited.  Delete all occurences of the field named
+           TAG.
+
+               ### Remove some MIME information:
+               $head-&gt;delete(&apos;MIME-Version&apos;);
+               $head-&gt;delete(&apos;Content-type&apos;);
+
+       get TAG,[INDEX]
+           Instance method, inherited.  Get the contents of field TAG.
+
+           If a numeric INDEX is given, returns the occurence at that index, or
+           undef if not present:
+
+               ### Print the first and last &apos;Received:&apos; entries (explicitly):
+               print &quot;First, or most recent: &quot;, $head-&gt;get(&apos;received&apos;, 0);
+               print &quot;Last, or least recent: &quot;, $head-&gt;get(&apos;received&apos;,-1);
+
+           If no INDEX is given, but invoked in a scalar context, then INDEX
+           simply defaults to 0:
+
+               ### Get the first &apos;Received:&apos; entry (implicitly):
+               my $most_recent = $head-&gt;get(&apos;received&apos;);
+
+           If no INDEX is given, and invoked in an array context, then all
+           occurences of the field are returned:
+
+               ### Get all &apos;Received:&apos; entries:
+               my @all_received = $head-&gt;get(&apos;received&apos;);
+
+           NOTE: The header(s) returned may end with a newline.  If you don&apos;t
+           want this, then chomp the return value.
+
+       get_all FIELD
+           Instance method.  Returns the list of all occurences of the field, or
+           the empty list if the field is not present:
+
+               ### How did it get here?
+               @history = $head-&gt;get_all(&apos;Received&apos;);
+
+           Note: I had originally experimented with having &quot;get()&quot; return all
+           occurences when invoked in an array context... but that causes a lot
+           of accidents when you get careless and do stuff like this:
+
+               print &quot;\u$field: &quot;, $head-&gt;get($field);
+&#12;           It also made the intuitive behaviour unclear if the INDEX argument
+           was given in an array context.  So I opted for an explicit approach
+           to asking for all occurences.
+
+       print [OUTSTREAM]
+           Instance method, override.  Print the header out to the given
+           OUTSTREAM, or the currently-selected filehandle if none.  The
+           OUTSTREAM may be a filehandle, or any object that responds to a
+           print() message.
+
+           The override actually lets you print to any object that responds to a
+           print() method.  This is vital for outputting MIME entities to
+           scalars.
+
+           Also, it defaults to the currently-selected filehandle if none is
+           given (not STDOUT!), so please supply a filehandle to prevent
+           confusion.
+
+       stringify
+           Instance method.  Return the header as a string.  You can also invoke
+           it as &quot;as_string&quot;.
+
+       unfold [FIELD]
+           Instance method, inherited.  Unfold (remove newlines in) the text of
+           all occurences of the given FIELD.  If the FIELD is omitted, all
+           fields are unfolded.  Returns the &quot;self&quot; object.
+
+   MIME-specific methods
+       All of the following methods extract information from the following
+       fields:
+
+           Content-type
+           Content-transfer-encoding
+           Content-disposition
+
+       Be aware that they do not just return the raw contents of those fields,
+       and in some cases they will fill in sensible (I hope) default values.
+       Use &quot;get()&quot; or &quot;mime_attr()&quot; if you need to grab and process the raw
+       field text.
+
+       Note: some of these methods are provided both as a convenience and for
+       backwards-compatibility only, while others (like recommended_filename())
+       really do have to be in MIME::Head to work properly, since they look for
+       their value in more than one field.  However, if you know that a value is
+       restricted to a single field, you should really use the Mail::Field
+       interface to get it.
+
+       mime_attr ATTR,[VALUE]
+           A quick-and-easy interface to set/get the attributes in structured
+           MIME fields:
+
+               $head-&gt;mime_attr(&quot;content-type&quot;         =&gt; &quot;text/html&quot;);
+               $head-&gt;mime_attr(&quot;content-type.charset&quot; =&gt; &quot;US-ASCII&quot;);
+               $head-&gt;mime_attr(&quot;content-type.name&quot;    =&gt; &quot;homepage.html&quot;);
+
+           This would cause the final output to look something like this:
+
+               Content-type: text/html; charset=US-ASCII; name=&quot;homepage.html&quot;
+
+           Note that the special empty sub-field tag indicates the anonymous
+           first sub-field.
+
+           Giving VALUE as undefined will cause the contents of the named
+           subfield to be deleted:
+
+               $head-&gt;mime_attr(&quot;content-type.charset&quot; =&gt; undef);
+
+           Supplying no VALUE argument just returns the attribute&apos;s value, or
+           undefined if it isn&apos;t there:
+
+               $type = $head-&gt;mime_attr(&quot;content-type&quot;);      ### text/html
+               $name = $head-&gt;mime_attr(&quot;content-type.name&quot;); ### homepage.html
+
+           In all cases, the new/current value is returned.
+
+       mime_encoding
+           Instance method.  Try real hard to determine the content transfer
+           encoding (e.g., &quot;base64&quot;, &quot;binary&quot;), which is returned in all-
+           lowercase.
+
+           If no encoding could be found, the default of &quot;7bit&quot; is returned I
+           quote from RFC 2045 section 6.1:
+
+               This is the default value -- that is, &quot;Content-Transfer-Encoding: 7BIT&quot;
+               is assumed if the Content-Transfer-Encoding header field is not present.
+
+           I do one other form of fixup: &quot;7_bit&quot;, &quot;7-bit&quot;, and &quot;7 bit&quot; are
+           corrected to &quot;7bit&quot;; likewise for &quot;8bit&quot;.
+
+       mime_type [DEFAULT]
+           Instance method.  Try &quot;real hard&quot; to determine the content type
+           (e.g., &quot;text/plain&quot;, &quot;image/gif&quot;, &quot;x-weird-type&quot;, which is returned
+           in all-lowercase.  &quot;Real hard&quot; means that if no content type could be
+           found, the default (usually &quot;text/plain&quot;) is returned.  From RFC 2045
+           section 5.2:
+
+              Default RFC 822 messages without a MIME Content-Type header are
+              taken by this protocol to be plain text in the US-ASCII character
+              set, which can be explicitly specified as:
+
+                 Content-type: text/plain; charset=us-ascii
+
+              This default is assumed if no Content-Type header field is specified.
+
+           Unless this is a part of a &quot;multipart/digest&quot;, in which case
+           &quot;message/rfc822&quot; is the default.  Note that you can also set the
+           default, but you shouldn&apos;t: normally only the MIME parser uses this
+           feature.
+
+       multipart_boundary
+           Instance method.  If this is a header for a multipart message, return
+           the &quot;encapsulation boundary&quot; used to separate the parts.  The
+           boundary is returned exactly as given in the &quot;Content-type:&quot; field;
+           that is, the leading double-hyphen (&quot;--&quot;) is not prepended.
+
+           Well, almost exactly... this passage from RFC 2046 dictates that we
+           remove any trailing spaces:
+
+              If a boundary appears to end with white space, the white space
+              must be presumed to have been added by a gateway, and must be deleted.
+
+           Returns undef (not the empty string) if either the message is not
+           multipart or if there is no specified boundary.
+
+       recommended_filename
+           Instance method.  Return the recommended external filename.  This is
+           used when extracting the data from the MIME stream.  The filename is
+           always returned as a string in Perl&apos;s internal format (the UTF8 flag
+           may be on!)
+
+           Returns undef if no filename could be suggested.
+
+NOTES
+       Why have separate objects for the entity, head, and body?
+           See the documentation for the MIME-tools distribution for the
+           rationale behind this decision.
+
+       Why assume that MIME headers are email headers?
+           I quote from Achim Bohnet, who gave feedback on v.1.9 (I think he&apos;s
+           using the word &quot;header&quot; where I would use &quot;field&quot;; e.g., to refer to
+           &quot;Subject:&quot;, &quot;Content-type:&quot;, etc.):
+
+               There is also IMHO no requirement [for] MIME::Heads to look
+               like [email] headers; so to speak, the MIME::Head [simply stores]
+               the attributes of a complex object, e.g.:
+
+                   new MIME::Head type =&gt; &quot;text/plain&quot;,
+                                  charset =&gt; ...,
+                                  disposition =&gt; ..., ... ;
+
+           I agree in principle, but (alas and dammit) RFC 2045 says otherwise.
+           RFC 2045 [MIME] headers are a syntactic subset of RFC-822 [email]
+           headers.
+
+           In my mind&apos;s eye, I see an abstract class, call it MIME::Attrs, which
+           does what Achim suggests... so you could say:
+
+                my $attrs = new MIME::Attrs type =&gt; &quot;text/plain&quot;,
+                                            charset =&gt; ...,
+                                            disposition =&gt; ..., ... ;
+
+           We could even make it a superclass of MIME::Head: that way,
+           MIME::Head would have to implement its interface, and allow itself to
+           be initiallized from a MIME::Attrs object.
+
+           However, when you read RFC 2045, you begin to see how much MIME
+           information is organized by its presence in particular fields.  I
+           imagine that we&apos;d begin to mirror the structure of RFC 2045 fields
+           and subfields to such a degree that this might not give us a
+           tremendous gain over just having MIME::Head.
+
+       Why all this &quot;occurence&quot; and &quot;index&quot; jazz?  Isn&apos;t every field unique?
+           Aaaaaaaaaahh....no.
+
+           Looking at a typical mail message header, it is sooooooo tempting to
+           just store the fields as a hash of strings, one string per hash
+           entry.  Unfortunately, there&apos;s the little matter of the &quot;Received:&quot;
+           field, which (unlike &quot;From:&quot;, &quot;To:&quot;, etc.) will often have multiple
+           occurences; e.g.:
+
+               Received: from gsfc.nasa.gov by eryq.pr.mcs.net  with smtp
+                   (Linux Smail3.1.28.1 #5) id m0tStZ7-0007X4C;
+                    Thu, 21 Dec 95 16:34 CST
+               Received: from rhine.gsfc.nasa.gov by gsfc.nasa.gov
+                    (5.65/Ultrix3.0-C) id AA13596;
+                    Thu, 21 Dec 95 17:20:38 -0500
+               Received: (from eryq@localhost) by rhine.gsfc.nasa.gov
+                    (8.6.12/8.6.12) id RAA28069;
+                    Thu, 21 Dec 1995 17:27:54 -0500
+               Date: Thu, 21 Dec 1995 17:27:54 -0500
+               From: Eryq &lt;eryq@rhine.gsfc.nasa.gov&gt;
+               Message-Id: &lt;199512212227.RAA28069@rhine.gsfc.nasa.gov&gt;
+               To: eryq@eryq.pr.mcs.net
+               Subject: Stuff and things
+
+           The &quot;Received:&quot; field is used for tracing message routes, and
+           although it&apos;s not generally used for anything other than human
+           debugging, I didn&apos;t want to inconvenience anyone who actually wanted
+           to get at that information.
+
+           I also didn&apos;t want to make this a special case; after all, who knows
+           what other fields could have multiple occurences in the future?  So,
+           clearly, multiple entries had to somehow be stored multiple times...
+           and the different occurences had to be retrievable.
+
+SEE ALSO
+       Mail::Header, Mail::Field, MIME::Words, MIME::Tools
+
+AUTHOR
+       Eryq (eryq@zeegee.com), ZeeGee Software Inc (http://www.zeegee.com).
+       David F. Skoll (dfs@roaringpenguin.com) http://www.roaringpenguin.com
+
+       All rights reserved.  This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+       The more-comprehensive filename extraction is courtesy of Lee E.
+       Brotzman, Advanced Data Solutions.
+
+
+
+perl v5.14.2                       2012-06-08                    MIME::Head(3pm)
+
+</pre></body></html>

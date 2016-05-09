@@ -1,0 +1,137 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-exim4defaults - Manage exim4 daemon default file.</title></head>
+<body><pre>
+
+UPDATE-EXIM4DEFAULTS(8)                                  UPDATE-EXIM4DEFAULTS(8)
+
+
+
+NAME
+       update-exim4defaults - Manage exim4 daemon default file.
+
+SYNOPSIS
+       update-exim4defaults   [   --qflags   flags   ]   [   --queuerunner  com&#8208;
+       bined|queueonly|separate|ppp|no|nodaemon ] [ --queuetime time ] [  --com&#8208;
+       monoptions options ] [ --queuerunneroptions options ] [ --smtplistenerop&#8208;
+       tions options ] [ --remove-common options ] [ --remove-queue options ]  [
+       --remove-smtp options ] [ --force|-f ] [ --help|-h ] [ --init ]
+
+
+DESCRIPTION
+       update-exim4defaults allows one to set run parameters for the Exim daemon
+       in /etc/default/exim4.  Its main purpose is for interaction with packages
+       enhancing  Exim  like virus-scanners that need to change the way the exim
+       daemon is started.
+
+OPTIONS
+       --help|-h
+              Print short usage instructions and exit.
+
+       --qflags flags
+              Set qflags, special flags given to exim directly after  the  &#8220;-q&#8221;.
+              See exim(8) for more information.
+
+       --queuerunner combined|queueonly|separate|ppp|no|nodaemon
+              Should  the  init script start one daemon that listens on the smtp
+              port for incoming connections and runs the queue at regular inter&#8208;
+              vals  (combined)  ,  or  should it start two separate daemons, one
+              listening on the smtp port, the other running the queue (separate)
+              ,  or should the queue only be run by /etc/ppp/ip-up.d/exim4 (ppp)
+              , or shouldn&apos;t we run the queue  at  all,  for  example  if  you&apos;d
+              rather  do  this with cron ? Or should we only start a queuerunner
+              (queueonly) or no daemon at all (nodaemon) ?
+
+       --queuetime time
+              In which intervals should we run the queue? This passed as  option
+              -q&lt;qflags&gt;time to Exim, e.g. -q30m or -qq1h.
+
+       --commonoptions options
+              Options  passed  both  to queue-running and listening instances of
+              Exim.
+
+       --queuerunneroptions options
+              Options only passed to the instance of Exim running the queue.
+
+       --smtplisteneroptions options
+              Options only passed to the instance of Exim listening on the  SMTP
+              port.
+
+       --force|-f
+              Without this option update-exim4defaults exits with an error if at
+              least one of the options --queuetime, --commonoptions, --queuerun&#8208;
+              neroptions  or --smtplisteneroptions is used and the corresponding
+              value in /etc/default/exim4 is already set to a nonempty value.
+
+       --remove-common option
+              Try to remove the given option from COMMONOPTIONS.
+
+       --remove-queue option
+              Try to remove the given option from QUEUERUNNEROPTIONS.
+&#12;       --remove-smtp option
+              Try to remove the given option from SMTPLISTENEROPTIONS.
+
+       The --remove-commands cannot be used at the same time as  any  of  --com&#8208;
+       monoptions,    --queuerunneroptions    or    --smtplisteneroptions.   The
+       --remove-commands will additionally remove whitespace  at  the  beginning
+       and the end of the option and exchange multiple spaces wi a single one.
+
+       --init create  a  default  /etc/default/exim4  file and exit immediately.
+              Unless --force was also specified update-exim4defaults exits (suc&#8208;
+              cessfully)  without  doing  anything if /etc/default/exim4 already
+              exists. All other options are ignored.
+
+
+EXIT STATUS
+       0      change was successful or nothing needed to be done.
+
+       1      generic error: wrong options, unreadable configuration file, etc.
+
+       2      QUEUEINTERVAL was already set.
+
+       4      COMMONOPTIONS was already set.
+
+       8      QUEUERUNNEROPTIONS was already set.
+
+       16     SMTPLISTENEROPTIONS was already set.
+
+       32     QFLAGS was already set.
+
+       64     --remove-something failed, i.e. the value of the  option  was  not
+              changed.
+
+       Exit  codes  2  to  32  will  be summed up, if more than one unsuccessful
+       option was given.
+
+
+FILES
+       /etc/default/exim4
+              The configuration file.
+
+       /etc/init.d/exim4
+              The Exim init-script.
+
+       /etc/ppp/ip-up.d/exim4
+              The queuerunner in this file also uses COMMONOPTIONS and QUEUERUN&#8208;
+              NEROPTIONS and does not run if QUEUERUNNER=no.
+
+
+
+BUGS
+       This  manual  page  needs a major re-work. If somebody knows better groff
+       than us and has more experience in  writing  manual  pages,  any  patches
+       would be greatly appreciated.
+
+
+SEE ALSO
+       exim(8), /usr/share/doc/exim4-base/
+
+
+AUTHOR
+       Andreas Metzler &lt;ametzler at downhill.at.eu.org&gt;
+
+
+
+EXIM4                            March 26, 2003          UPDATE-EXIM4DEFAULTS(8)
+
+</pre></body></html>

@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>foomatic-ppd-options - show the PPD options</title></head>
+<body><pre>
+
+FOOMATIC-PPD-OPTIONS(1)                                  FOOMATIC-PPD-OPTIONS(1)
+
+
+
+NAME
+       foomatic-ppd-options - show the PPD options
+
+SYNOPSIS
+       foomatic-ppd-options [-d=debuglevel] [ ppdfiles ]
+
+
+DESCRIPTION
+       The  foomatic-ppd-options  program reads the specified PPD files or stdin
+       and decodes the PPD file to produce a list of options.   This  is  really
+       just a text based version of other print configuration tools.
+
+
+       The  output  format consists of a set of lines, each starting with a key&#8208;
+       word, followed by a set of options and the default value.  For example:
+
+              makemodel = Tektronix Phaser 350 Foomatic/Postscript (recommended)
+              name=PageSize; default=Letter; options=Letter (US Letter), \
+                  A4 (A4), 11x17 (11x17), A3 (A3), A5 (A5), B5 (B5 \(JIS\)),...
+              name=PageRegion; default=Letter; options=Letter (US Letter), A4 (A4), ...
+
+
+       Each option starts with the name tag, followed by  a  default  value  (if
+       any),  followed  by  the  set  of  options and a comment describing them.
+       Punctuation in the comment is escaped.
+
+   Options
+       -ddebuglevel
+            Set the debug level. 0 disables debug messages.
+
+
+       [ files ]
+            The list of PPD files to read for options.  A &apos;-&apos; causes STDIN to be
+            read.
+
+
+
+EXIT STATUS
+       foomatic-ppd-options  exits with a 0 status if successful, and nonzero if
+       an error.  An error message is also printed on standard error (STDERR).
+
+
+AUTHOR
+       Patrick Powell &lt;papowell at astart.com&gt;
+
+
+BUGS
+       Probably.  But it has been tested.
+
+
+
+
+Foomatic Project                   2003-09-16            FOOMATIC-PPD-OPTIONS(1)
+
+</pre></body></html>

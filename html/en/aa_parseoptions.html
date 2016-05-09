@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>aa_parseoptions - parse the standard command line options used by AA-lib.</title></head>
+<body><pre>
+
+aa_parseoptions(3)                                            aa_parseoptions(3)
+
+
+
+NAME
+       aa_parseoptions - parse the standard command line options used by AA-lib.
+
+SYNOPSIS
+       #include &lt;aalib.h&gt;
+
+       int aa_parseoptions
+       (
+            struct aa_hardware_params *p,
+            aa_renderparams *r,
+            int *argc,
+            char **argv
+       );
+
+PARAMETERS
+       struct aa_hardware_params *p
+              Hardware  parameters  structure to alter. It is expected that this
+              structure only with necessary modifications will be later used  to
+              initialize the AA-lib context.
+
+       aa_renderparams *r
+              Rendering  prameters  structure to alter. It is expected that this
+              structure only with necessary modifications will be later used  to
+              render images.
+
+       int *argc
+              Pointer to argc parameter passed to function &quot;main&quot;.
+
+       char **argv
+              Pointer to argv parameter passed to function &quot;main&quot;.
+
+DESCRIPTION
+       Use  this function to parse the standard command line options used by AA-
+       lib. Every AA-lib program ought to call this function to let user specify
+       some  extra  parameters.   The function alters the aa_hardware_params and
+       aa_renderparams structures and removes known options from  the  argc/argv
+       lists.  It  also parse the AAOPTS environment variable.  When called with
+       NULL for the argc/argv parameters, it parses AAOPTS only. At  least  this
+       call ought to be in every AA-lib program.
+
+RETURNS
+       1  when  sucesfull  and 0 on failure. The program then can print the help
+       text available in aa_help variable.
+
+SEE ALSO
+       save_d(3), mem_d(3), aa_help(3), aa_formats(3),  aa_fonts(3),  aa_dither&#8208;
+       names(3), aa_drivers(3), aa_kbddrivers(3), aa_mousedrivers(3), aa_kbdrec&#8208;
+       ommended(3),  aa_mouserecommended(3),  aa_displayrecommended(3),  aa_def&#8208;
+       params(3),    aa_defrenderparams(3),   aa_scrwidth(3),   aa_scrheight(3),
+       aa_mmwidth(3),    aa_mmheight(3),    aa_imgwidth(3),     aa_imgheight(3),
+       aa_image(3),  aa_text(3), aa_attrs(3), aa_currentfont(3), aa_autoinit(3),
+       aa_autoinitkbd(3), aa_autoinitmouse(3), aa_recommendhi(3),  aa_recommend&#8208;
+       low(3),    aa_init(3),   aa_initkbd(3),   aa_initmouse(3),   aa_close(3),
+       aa_uninitkbd(3),   aa_uninitmouse(3),   aa_fastrender(3),   aa_render(3),
+       aa_puts(3),  aa_printf(3),  aa_gotoxy(3),  aa_hidecursor(3),  aa_showcur&#8208;
+       sor(3), aa_getmouse(3),  aa_hidemouse(3),  aa_showmouse(3),  aa_register&#8208;
+       font(3), aa_setsupported(3), aa_setfont(3), aa_getevent(3), aa_getkey(3),
+       aa_resize(3),    aa_resizehandler(3),    aa_edit(3),    aa_createedit(3),
+       aa_editkey(3),    aa_putpixel(3),   aa_recommendhikbd(3),   aa_recommend&#8208;
+       lowkbd(3), aa_recommendhimouse(3), aa_recommendlowmouse(3), aa_recommend&#8208;
+       hidisplay(3), aa_recommendlowdisplay(3)
+
+
+
+c2man aalib.h                   8 September 1999              aa_parseoptions(3)
+
+</pre></body></html>

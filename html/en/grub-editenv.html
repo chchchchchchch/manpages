@@ -1,0 +1,65 @@
+<html>
+<head><meta charset=utf-8/>
+<title>grub-editenv - edit GRUB environment block</title></head>
+<body><pre>
+
+GRUB-EDITENV(1)                   User Commands                  GRUB-EDITENV(1)
+
+
+
+NAME
+       grub-editenv - edit GRUB environment block
+
+SYNOPSIS
+       grub-editenv [OPTION...] FILENAME COMMAND
+
+DESCRIPTION
+       Tool to edit environment block.
+
+              Commands:
+
+       create Create a blank environment block file.
+
+       list   List the current variables.
+
+       set [name=value ...]
+              Set variables.
+
+       unset [name ....]
+              Delete variables.
+
+       -?, --help
+              give this help list
+
+       --usage
+              give a short usage message
+
+       -v, --verbose
+              Print verbose messages.
+
+       -V, --version
+              print program version
+
+              Options:
+
+       If FILENAME is &apos;-&apos;, the default value /boot/grub/grubenv is used.
+
+REPORTING BUGS
+       Report bugs to &lt;bug-grub@gnu.org&gt;.
+
+SEE ALSO
+       grub-reboot(8), grub-set-default(8)
+
+       The  full  documentation for grub-editenv is maintained as a Texinfo man&#8208;
+       ual.  If the info and grub-editenv programs  are  properly  installed  at
+       your site, the command
+
+              info grub-editenv
+
+       should give you access to the complete manual.
+
+
+
+grub-editenv (GRUB) 1.99-27.1crunchbMay12013                     GRUB-EDITENV(1)
+
+</pre></body></html>

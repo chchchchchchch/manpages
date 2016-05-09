@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_PumpEvents - Pumps the event loop, gathering events from the input devices.</title></head>
+<body><pre>
+
+SDL_PumpEvents(3)               SDL API Reference              SDL_PumpEvents(3)
+
+
+
+NAME
+       SDL_PumpEvents  -  Pumps  the event loop, gathering events from the input
+       devices.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       void SDL_PumpEvents(void);
+
+DESCRIPTION
+       Pumps the event loop, gathering events from the input devices.
+
+       SDL_PumpEvents gathers all the pending input information from devices and
+       places  it  on the event queue. Without calls to SDL_PumpEvents no events
+       would  ever  be  placed  on  the  queue.  Often  calls   the   need   for
+       SDL_PumpEvents  is hidden from the user since SDL_PollEvent and SDL_Wait&#8208;
+       Event implicitly call SDL_PumpEvents. However, if you are not polling  or
+       waiting  for  events  (e.g.  your  filtering  them),  then  you must call
+       SDL_PumpEvents to force an event queue update.
+
+              Note:
+
+              You can only call this function in the thread that set  the  video
+              mode.
+
+SEE ALSO
+       SDL_PollEvent
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59            SDL_PumpEvents(3)
+
+</pre></body></html>

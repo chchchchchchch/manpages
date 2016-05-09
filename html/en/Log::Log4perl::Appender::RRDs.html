@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Appender::RRDs - Log to a RRDtool Archive</title></head>
+<body><pre>
+
+Appender::RRDs(3pm)    User Contributed Perl Documentation   Appender::RRDs(3pm)
+
+
+
+NAME
+       Log::Log4perl::Appender::RRDs - Log to a RRDtool Archive
+
+SYNOPSIS
+           use Log::Log4perl qw(get_logger);
+           use RRDs;
+
+           my $DB = &quot;myrrddb.dat&quot;;
+
+           RRDs::create(
+             $DB, &quot;--step=1&quot;,
+             &quot;DS:myvalue:GAUGE:2:U:U&quot;,
+             &quot;RRA:MAX:0.5:1:120&quot;);
+
+           print time(), &quot;\n&quot;;
+
+           Log::Log4perl-&gt;init(\qq{
+             log4perl.category = INFO, RRDapp
+             log4perl.appender.RRDapp = Log::Log4perl::Appender::RRDs
+             log4perl.appender.RRDapp.dbname = $DB
+             log4perl.appender.RRDapp.layout = Log::Log4perl::Layout::PatternLayout
+             log4perl.appender.RRDapp.layout.ConversionPattern = N:%m
+           });
+
+           my $logger = get_logger();
+
+           for(10, 15, 20, 25) {
+               $logger-&gt;info($_);
+               sleep 1;
+           }
+
+DESCRIPTION
+       &quot;Log::Log4perl::Appender::RRDs&quot; appenders facilitate writing data to
+       RRDtool round-robin archives via Log4perl. For documentation on RRD and
+       its Perl interface &quot;RRDs&quot; (which comes with the distribution), check out
+       &lt;http://rrdtool.org&gt;.
+
+       Messages sent to Log4perl&apos;s RRDs appender are expected to be numerical
+       values (ints or floats), which then are used to run a &quot;rrdtool update&quot;
+       command on an existing round-robin database. The name of this database
+       needs to be set in the appender&apos;s &quot;dbname&quot; configuration parameter.
+
+       If there&apos;s more parameters you wish to pass to the &quot;update&quot; method, use
+       the &quot;rrdupd_params&quot; configuration parameter:
+
+           log4perl.appender.RRDapp.rrdupd_params = --template=in:out
+
+       To read out the round robin database later on, use &quot;rrdtool fetch&quot; or
+       &quot;rrdtool graph&quot; for graphic displays.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                Appender::RRDs(3pm)
+
+</pre></body></html>

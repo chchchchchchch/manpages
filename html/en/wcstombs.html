@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wcstombs - convert a wide-character string to a multibyte string</title></head>
+<body><pre>
+
+WCSTOMBS(3)                 Linux Programmer&apos;s Manual                WCSTOMBS(3)
+
+
+
+NAME
+       wcstombs - convert a wide-character string to a multibyte string
+
+SYNOPSIS
+       #include &lt;stdlib.h&gt;
+
+       size_t wcstombs(char *dest, const wchar_t *src, size_t n);
+
+DESCRIPTION
+       If dest is not a NULL pointer, the wcstombs() function converts the wide-
+       character string src to a multibyte string starting at dest.  At  most  n
+       bytes  are  written to dest.  The conversion starts in the initial state.
+       The conversion can stop for three reasons:
+
+       1. A wide character has been encountered that can not be represented as a
+       multibyte  sequence  (according  to  the  current  locale).  In this case
+       (size_t) -1 is returned.
+
+       2. The length limit forces a stop.  In this  case  the  number  of  bytes
+       written to dest is returned, but the shift state at this point is lost.
+
+       3. The wide-character string has been completely converted, including the
+       terminating null wide character (L&apos;\0&apos;).  In  this  case  the  conversion
+       ends  in the initial state.  The number of bytes written to dest, exclud&#8208;
+       ing the terminating null byte (&apos;\0&apos;), is returned.
+
+       The programmer must ensure that there is room for at  least  n  bytes  at
+       dest.
+
+       If  dest  is  NULL,  n  is ignored, and the conversion proceeds as above,
+       except that the converted bytes are not written out to memory,  and  that
+       no length limit exists.
+
+       In  order to avoid the case 2 above, the programmer should make sure n is
+       greater or equal to wcstombs(NULL,src,0)+1.
+
+RETURN VALUE
+       The wcstombs() function returns the number of bytes that make up the con&#8208;
+       verted  part  of  multibyte  sequence, not including the terminating null
+       byte.  If a wide character was encountered which could not be  converted,
+       (size_t) -1 is returned.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The  behavior  of wcstombs() depends on the LC_CTYPE category of the cur&#8208;
+       rent locale.
+
+       The function wcsrtombs(3) provides a thread safe interface  to  the  same
+       functionality.
+
+SEE ALSO
+       mbstowcs(3), wcsrtombs(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2011-10-16                        WCSTOMBS(3)
+
+</pre></body></html>

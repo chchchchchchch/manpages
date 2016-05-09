@@ -1,0 +1,87 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::AttrIterator - used to represent iterators through Pango::AttrLists</title></head>
+<body><pre>
+
+Pango::AttrIterator(3pmUser Contributed Perl DocumentatiPango::AttrIterator(3pm)
+
+
+
+NAME
+       Pango::AttrIterator - used to represent iterators through
+       Pango::AttrLists
+
+HIERARCHY
+         Glib::Boxed
+         +----Pango::AttrIterator
+
+METHODS
+   list = $iterator-&gt;get_attrs
+       Since: pango 1.2
+
+   ($desc, $lang, $extra_attrs) = $iterator-&gt;get_font
+   attribute or undef = $iterator-&gt;get ($type)
+       &#183;   $type (Pango::AttrType)
+
+   boolean = $iterator-&gt;next
+   (start, end) = $iterator-&gt;range
+ENUMS AND FLAGS
+   enum Pango::AttrType
+       &#183;   &apos;invalid&apos; / &apos;PANGO_ATTR_INVALID&apos;
+
+       &#183;   &apos;language&apos; / &apos;PANGO_ATTR_LANGUAGE&apos;
+
+       &#183;   &apos;family&apos; / &apos;PANGO_ATTR_FAMILY&apos;
+
+       &#183;   &apos;style&apos; / &apos;PANGO_ATTR_STYLE&apos;
+
+       &#183;   &apos;weight&apos; / &apos;PANGO_ATTR_WEIGHT&apos;
+
+       &#183;   &apos;variant&apos; / &apos;PANGO_ATTR_VARIANT&apos;
+
+       &#183;   &apos;stretch&apos; / &apos;PANGO_ATTR_STRETCH&apos;
+
+       &#183;   &apos;size&apos; / &apos;PANGO_ATTR_SIZE&apos;
+
+       &#183;   &apos;font-desc&apos; / &apos;PANGO_ATTR_FONT_DESC&apos;
+
+       &#183;   &apos;foreground&apos; / &apos;PANGO_ATTR_FOREGROUND&apos;
+
+       &#183;   &apos;background&apos; / &apos;PANGO_ATTR_BACKGROUND&apos;
+
+       &#183;   &apos;underline&apos; / &apos;PANGO_ATTR_UNDERLINE&apos;
+
+       &#183;   &apos;strikethrough&apos; / &apos;PANGO_ATTR_STRIKETHROUGH&apos;
+
+       &#183;   &apos;rise&apos; / &apos;PANGO_ATTR_RISE&apos;
+
+       &#183;   &apos;shape&apos; / &apos;PANGO_ATTR_SHAPE&apos;
+
+       &#183;   &apos;scale&apos; / &apos;PANGO_ATTR_SCALE&apos;
+
+       &#183;   &apos;fallback&apos; / &apos;PANGO_ATTR_FALLBACK&apos;
+
+       &#183;   &apos;letter-spacing&apos; / &apos;PANGO_ATTR_LETTER_SPACING&apos;
+
+       &#183;   &apos;underline-color&apos; / &apos;PANGO_ATTR_UNDERLINE_COLOR&apos;
+
+       &#183;   &apos;strikethrough-color&apos; / &apos;PANGO_ATTR_STRIKETHROUGH_COLOR&apos;
+
+       &#183;   &apos;absolute-size&apos; / &apos;PANGO_ATTR_ABSOLUTE_SIZE&apos;
+&#12;       &#183;   &apos;gravity&apos; / &apos;PANGO_ATTR_GRAVITY&apos;
+
+       &#183;   &apos;gravity-hint&apos; / &apos;PANGO_ATTR_GRAVITY_HINT&apos;
+
+SEE ALSO
+       Pango, Glib::Boxed
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15           Pango::AttrIterator(3pm)
+
+</pre></body></html>

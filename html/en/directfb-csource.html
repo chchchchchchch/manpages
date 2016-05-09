@@ -1,0 +1,86 @@
+<html>
+<head><meta charset=utf-8/>
+<title>directfb-csource - C code generation utility for DirectFB surfaces</title></head>
+<body><pre>
+
+
+DIRECTFB-CSOURCE(1)           DirectFB Manual Pages          DIRECTFB-CSOURCE(1)
+
+
+
+NAME
+       directfb-csource - C code generation utility for DirectFB surfaces
+
+
+SYNOPSIS
+       directfb-csource [options] &lt;imagefiles&gt;
+
+
+DESCRIPTION
+       directfb-csource  is  a  small  utility  that reads PNG (Portable Network
+       Graphics) image files and generates C code that can be used to compile an
+       image  into  a DirectFB application.  Below is a simple example to illus&#8208;
+       trate this.
+
+       If multiple PNG image files are passed to directfb-csource, they are com&#8208;
+       bined  into  a  single  surface. The different images can then be blitted
+       from this surface using the array of rectangles that is also dumped. This
+       can be useful for example for icons or sprites.
+
+
+
+OPTIONS
+       --name=identifier
+              Specifies  the  identifier  name  (prefix) for the generated vari&#8208;
+              ables.  If this option is not used, the  identifier  is  generated
+              from the filename. You have to specify an identifer name when pro&#8208;
+              cessing multiple images.
+
+
+       --format=pixelformat
+              Specifies the pixel-format of the generated inline surface. Possi&#8208;
+              ble  values  are  ARGB, RGB32, RGB24, RGB16, RGB15, RGB332, A8 and
+              LUT8.  By default the format is ARGB if the PNG image has an alpha
+              channel or RGB32 otherwise.
+
+
+       --version
+              Output version information.
+
+
+       --help Print brief help and exit.
+
+
+
+EXAMPLE
+       Generate a header file from a PNG image file:
+
+            directfb-csource --name=foo foo.png &gt; foo.h
+
+       Include  the  generated  header  in your application and create a surface
+       using the surface description from the header file:
+
+         #include &lt;directfb.h&gt;
+         #include &quot;foo.h&quot;
+
+         IDirectFB        *dfb;
+         IDirectFBSurface *surface;
+
+         ...
+
+         dfb-&gt;CreateSurface( dfb, &amp;foo_desc, &amp;surface );
+
+
+
+OTHER INFO
+       directfb-csource was inspired by and uses code from gdk-pixbuf-csource, a
+       similar program written by Tim Janik.
+
+       The   canonical   place   to  find  informations  about  DirectFB  is  at
+       http://www.directfb.org/.
+
+
+
+Version 1.2.10                     24 Oct 2003               DIRECTFB-CSOURCE(1)
+
+</pre></body></html>

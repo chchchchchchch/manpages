@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SoundOpenFileForWriting - open an audio file for writing.</title></head>
+<body><pre>
+
+SoundOpenFileForWriting(3)                            SoundOpenFileForWriting(3)
+
+
+
+Name
+       SoundOpenFileForWriting - open an audio file for writing.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       Sound SoundOpenFileForWriting(filename, sound)
+           char *filename;
+           Sound sound;
+
+Arguments
+       filename  Specifies the name of the file.
+
+       sound     Specifies the audio file description.
+
+Description
+       SoundOpenFileForWriting  opens  filename for writing and returns sound or
+       NULL if there was an error.
+
+See Also
+       SoundWriteFile.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+sound                                 1.9.3           SoundOpenFileForWriting(3)
+
+</pre></body></html>

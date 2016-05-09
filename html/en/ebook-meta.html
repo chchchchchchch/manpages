@@ -1,0 +1,115 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ebook-meta - part of calibre</title></head>
+<body><pre>
+
+EBOOK-META(1)                        calibre                       EBOOK-META(1)
+
+
+
+NAME
+       ebook-meta - part of calibre
+
+SYNOPSIS
+       ebook-meta  ebook_file [options]
+
+DESCRIPTION
+       Read/Write metadata from/to ebook files.
+
+       Supported  formats for reading metadata: azw, azw1, azw3, azw4, cbr, cbz,
+       chm, epub, fb2, html, htmlz, imp, lit, lrf, lrx, mobi, odt, oebzip,  opf,
+       pdb,  pdf, pml, pmlz, pobi, prc, rar, rb, rtf, snb, tpz, txt, txtz, updb,
+       zip
+
+       Supported formats for writing metadata:  azw,  azw1,  azw3,  azw4,  epub,
+       htmlz, lrf, mobi, pdb, pdf, prc, rtf, tpz, txtz
+
+       Different  file  types support different kinds of metadata. If you try to
+       set some metadata on a file type that does not support it,  the  metadata
+       will be silently ignored.
+
+       Whenever  you  pass  arguments  to  ebook-meta  that have spaces in them,
+       enclose the arguments in quotation marks.
+
+OPTIONS
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show this help message and exit
+
+       -t, --title
+              Set the title.
+
+       -a, --authors
+              Set the authors. Multiple authors should be  separated  by  the  &amp;
+              character. Author names should be in the order Firstname Lastname.
+
+       --title-sort
+              The  version  of the title to be used for sorting. If unspecified,
+              and the title is specified, it will  be  auto-generated  from  the
+              title.
+
+       --author-sort
+              String  to be used when sorting by author. If unspecified, and the
+              author(s) are  specified,  it  will  be  auto-generated  from  the
+              author(s).
+
+       --cover
+              Set the cover to the specified file.
+
+       -c, --comments
+              Set the ebook description.
+
+       -p, --publisher
+              Set the ebook publisher.
+
+       --category
+              Set the book category.
+
+       -s, --series
+              Set the series this ebook belongs to.
+&#12;       -i, --index
+              Set the index of the book in this series.
+
+       -r, --rating
+              Set the rating. Should be a number between 1 and 5.
+
+       --isbn Set the ISBN of the book.
+
+       --tags Set the tags for the book. Should be a comma separated list.
+
+       -k, --book-producer
+              Set the book producer.
+
+       -l, --language
+              Set the language.
+
+       -d, --date
+              Set the published date.
+
+       --get-cover
+              Get the cover from the ebook and save it at as the specified file.
+
+       --to-opf
+              Specify  the  name of an OPF file. The metadata will be written to
+              the OPF file.
+
+       --from-opf
+              Read metadata from the specified OPF file and use it to set  meta&#8208;
+              data  in  the  ebook.  Metadata specified on the command line will
+              override metadata read from the OPF file
+
+       --lrf-bookid
+              Set the BookID in LRF files
+
+SEE ALSO
+       The User Manual is available at http://manual.calibre-ebook.com
+
+       Created by Kovid Goyal &lt;kovid@kovidgoyal.net&gt;
+
+
+
+ebook-meta (calibre 0.8.51)       January 2013                     EBOOK-META(1)
+
+</pre></body></html>

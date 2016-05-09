@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mk-build-deps - build a package satisfying a package's build-dependencies</title></head>
+<body><pre>
+
+MK-BUILD-DEPS(1)                                                MK-BUILD-DEPS(1)
+
+
+
+NAME
+       mk-build-deps - build a package satisfying a package&apos;s build-dependencies
+
+SYNOPSIS
+       mk-build-deps --help|--version
+
+       mk-build-deps [options] control file | package name ...
+
+DESCRIPTION
+       Given a package name and/or control file, mk-build-deps will use equivs
+       to generate a binary package which may be installed to satisfy all the
+       build dependencies of the given package.
+
+       If --build-dep and/or --build-indep are given, then the resulting binary
+       package(s) will depend solely on the Build-Depends/Build-Depends-Indep
+       dependencies, respectively.
+
+OPTIONS
+       -i, --install
+           Install the generated packages and its build-dependencies.
+
+       -t, --tool
+           When installing the generated package use the specified tool.
+           (default: apt-get --no-install-recommends)
+
+       -r, --remove
+           Remove the package file after installing it. Ignored if used without
+           the --install switch.
+
+       -a foo, --arch foo
+           If the source package has architecture-specific build dependencies,
+           produce a package for architecture foo, not for the system
+           architecture. (If the source package does not have architecture-
+           specific build dependencies, the package produced is always for the
+           pseudo-architecture all.)
+
+       -B, --build-dep
+           Generate a package which only depends on the source package&apos;s Build-
+           Depends dependencies.
+
+       -A, --build-indep
+           Generate a package which only depends on the source package&apos;s Build-
+           Depends-Indep dependencies.
+
+       -h, --help
+           Show a summary of options.
+
+       -v, --version
+           Show version and copyright information.
+
+       -s, --root-cmd
+           Use the specified tool to gain root privileges before installing.
+           Ignored if used without the --install switch.
+
+AUTHOR
+       mk-build-deps is copyright by Vincent Fourmond and was modified for the
+       devscripts package by Adam D. Barratt &lt;adam@adam-barratt.org.uk&gt;.
+
+       This program comes with ABSOLUTELY NO WARRANTY.  You are free to
+       redistribute this code under the terms of the GNU General Public License,
+       version 2 or later.
+
+
+
+Debian Utilities                   2013-12-23                   MK-BUILD-DEPS(1)
+
+</pre></body></html>

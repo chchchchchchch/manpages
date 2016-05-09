@@ -1,0 +1,102 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rfcomm - RFCOMM configuration utility</title></head>
+<body><pre>
+
+RFCOMM(1)                                                              RFCOMM(1)
+
+
+
+NAME
+       rfcomm - RFCOMM configuration utility
+
+SYNOPSIS
+       rfcomm [ options ] &lt; command &gt; &lt; dev &gt;
+
+DESCRIPTION
+       rfcomm  is used to set up, maintain, and inspect the RFCOMM configuration
+       of the Bluetooth subsystem in the Linux kernel. If no command  is  given,
+       or  if the option -a is used, rfcomm prints information about the config&#8208;
+       ured RFCOMM devices.
+
+OPTIONS
+       -h     Gives a list of possible commands.
+
+       -a     Prints information about all configured RFCOMM devices.
+
+       -r     Switch TTY into raw mode (doesn&apos;t work with &quot;bind&quot;).
+
+       -f &lt;file&gt;
+              Specify alternate config file.
+
+       -i &lt;hciX&gt; | &lt;bdaddr&gt;
+              The command is applied to device  -A  Enable  authentication.   -E
+              Enable encryption.  -S Secure connection.  -M Become the master of
+              a piconet.  hciX , which must be the name or  the  address  of  an
+              installed  Bluetooth device. If not specified, the command will be
+              use the first available Bluetooth device.
+
+       -A     Enable authentification
+
+       -E     Enable encryption
+
+       -S     Secure connection
+
+       -M     Become the master of a piconet
+
+       -L &lt;seconds&gt;
+              Set linger timeout
+
+COMMANDS
+       show &lt;dev&gt;
+              Display the information about the specified device.
+
+       connect &lt;dev&gt; [bdaddr] [channel]
+              Connect the RFCOMM device to the remote Bluetooth  device  on  the
+              specified  channel.  If  no  channel is specified, it will use the
+              channel number 1. If also the Bluetooth address is  left  out,  it
+              tries  to  read the data from the config file. This command can be
+              terminated with the key sequence CTRL-C.
+
+       listen &lt;dev&gt; [channel] [cmd]
+              Listen on a specified RFCOMM channel for incoming connections.  If
+              no  channel  is specified, it will use the channel number 1, but a
+              channel must be specified before cmd. If cmd is given, it will  be
+              executed as soon as a client connects. When the child process ter&#8208;
+              minates or the client  disconnect,  the  command  will  terminate.
+              Occurrences  of  {}  in  cmd  will  be replaced by the name of the
+              device used by the connection. This command can be terminated with
+              the key sequence CTRL-C.
+
+       watch &lt;dev&gt; [channel] [cmd]
+              Watch  is  identical  to listen except that when the child process
+              terminates or the client disconnect, the command will restart lis&#8208;
+              tening with the same parameters.
+
+       bind &lt;dev&gt; [bdaddr] [channel]
+              This  binds  the  RFCOMM  device to a remote Bluetooth device. The
+              command did not establish a connection to the  remote  device,  it
+              only creates the binding. The connection will be established right
+              after an application tries to open the RFCOMM device. If no  chan&#8208;
+              nel  number  is  specified,  it  uses the channel number 1. If the
+              Bluetooth address is also left out, it tries to read the data from
+              the config file.
+
+              If  all  is specified for the RFCOMM device, then all devices that
+              have bind yes set in the config will be bound.
+
+       release &lt;dev&gt;
+              This command releases a defined RFCOMM binding.
+
+              If all is specified for the RFCOMM device, then all bindings  will
+              be  removed.   This  command didn&apos;t care about the settings in the
+              config file.
+
+AUTHOR
+       Written by Marcel Holtmann &lt;marcel@holtmann.org&gt;.
+
+
+
+                                 APRIL 28, 2002                        RFCOMM(1)
+
+</pre></body></html>

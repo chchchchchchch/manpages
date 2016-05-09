@@ -1,0 +1,138 @@
+<html>
+<head><meta charset=utf-8/>
+<title>soapsuds - Mono's Remoting Proxy Generator</title></head>
+<body><pre>
+
+soapsuds(1)                                                          soapsuds(1)
+
+
+
+NAME
+       soapsuds - Mono&apos;s Remoting Proxy Generator
+
+SYNOPSIS
+       soapsuds [options] [inputs] [outputs]
+
+DESCRIPTION
+       soapsuds  is  a tool for generating WSDL documents and client proxies for
+       remoting services.  A WSDL document describes the methods that a  service
+       provides  together  with XML schemas of all referenced data structures. A
+       client proxy is a class which offers the same methods as the  service  it
+       represents, but provides no implementation, it just forwards calls to the
+       remote service.
+
+       Generated client proxies are not strictly necessary,  since  the  runtime
+       can  automatically generate proxies from the original service types. How&#8208;
+       ever, it implies the need  of  distributing  the  service  class  to  all
+       clients. In some scenarios a better approach is to use soapsuds to gener&#8208;
+       ate a proxy class which has the same interface as the service, but  with&#8208;
+       out any implementation.
+
+       soapsuds  can generate a WSDL document from a set of types specified with
+       the option -types or can extract the types  from  an  assembly  specified
+       with  -inputassemblyfile.   In  this  last  case,  soapsuds  will include
+       schemas for all serializable classes in the WSDL document.
+
+       Taking as input a WSDL document (or anything from which such document can
+       be  generated)  the  tool  can  generate source code for the client proxy
+       (using the -gc option) or it  can  directly  generate  an  assembly  that
+       implements the proxy (with the -outputassemblyfile option). soapsuds will
+       also generate fake serializable classes for  all  types  defined  in  the
+       schema. However, beware that those classes will lack the semantics of the
+       original classes, since only data structure is generated.
+
+INPUT SOURCES
+       The following sources are available (only one can be specified):
+
+       -urltoschema:url -url:url
+              Url from which to retrieve the WSDL document.
+
+       -types:type1,assembly[,serviceEndPoint][;type2,assembly[,serviceEnd&#8208;
+       Point]]...
+              Specifies  types  for  which  to generate a schema or proxy. If no
+              service endpoint is provided, the  one  provided  with  the  -ser&#8208;
+              viceendpoint option is used.
+
+       -inputassemblyfile:file , -ia:file
+              Assembly that contains the types to export.
+
+       -inputschemafile:schena , -is:schema
+              Schema from which to generate proxy classes.
+
+INPUT OPTIONS
+       The following options are available:
+
+       -inputdirectory:directory , -id:directory
+              Directory where DLLs are located.
+
+       -serviceendpoint:url , -se:url
+              Url of the service to be placed in the WSDL document.
+
+OUTPUTS
+       The  following  output options are available (more than one can be speci&#8208;
+       fied):
+
+       -outputassemblyfile:file , -oa:file
+              Generates the proxy code and compiles it into an assembly with the
+              provided name.
+
+       -outputschemafile:file , -os:file
+              Generates a WSDL document that represents the provided types.
+
+       -generatecode , -gc
+              Generates  proxy  source  code  for  the provided WSDL document or
+              types.
+
+OUTPUT OPTIONS
+       The following options are available:
+
+       -outputdirectory:directory , -od:directory
+              Directory where generated files will be placed.
+
+       -proxynamespace:namespace , -pn:namespace
+              Namespace of the generated proxy.
+
+       -nowrappedproxy , -nowp
+              Do not generate a wrapped proxy.
+
+       -wrappedproxy , -wp
+              Generate a wrapped proxy.
+
+       -strongnamefile:file , -sn:file
+              Strong name file.
+
+GENERAL OPTIONS
+       The following options are available:
+
+       -nologo
+              Supress the startup logo.
+
+       -u:username , -user:username
+              The user name to use when connecting to the server.
+
+       -p:password , -password:password
+              The password to use when connecting to the server.
+
+       -d:domain , -domain:domain
+              The domain to use when connecting to the server.
+
+       -httpproxyname:name , -hpn:name
+              Name of the http proxy.
+
+       -httpproxyport:port , -hpp:port
+              Port of the http proxy.
+
+AUTHORS
+       Lluis Sanchez Gual (lluis@ximian.com)
+
+LICENSE
+       wsdl is released under the terms of the GNU GPL.
+
+SEE ALSO
+       wsdl(1), disco(1), mono(1), mcs(1)
+
+
+
+                                                                     soapsuds(1)
+
+</pre></body></html>

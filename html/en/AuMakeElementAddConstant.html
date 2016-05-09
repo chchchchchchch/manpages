@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuMakeElementAddConstant - initialize an AddConstant element</title></head>
+<body><pre>
+
+AuMakeElementAddConstant(3)                          AuMakeElementAddConstant(3)
+
+
+
+Name
+       AuMakeElementAddConstant - initialize an AddConstant element
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuMakeElementAddConstant(element, input, constant)
+           AuElement *element; /* RETURN */
+           unsigned short input;
+           AuFixedPoint constant;
+
+Arguments
+       element   Returns the initialized element.
+
+       input     Specifies the index of the element to supply the audio data for
+                 this element.
+
+       constant  Specifies the fixed point value to be added to each sample from
+                 input.   Fixed  point  values  can be constructed with AuFixed&#8208;
+                 PointFromSum and AuFixedPointFromFraction.
+
+Description
+       AuMakeElementAddConstant sets the type member of element to  AuElementTy&#8208;
+       peAddConstant  and initializes the addconstant member of element with the
+       remaining arguments.
+
+       AuMakeElementAddConstant is implemented as a macro.
+
+See Also
+       AuMakeElementBundle,   AuMakeElementExportBucket,    AuMakeElementExport&#8208;
+       Client, AuMakeElementExportDevice, AuMakeElementExportMonitor, AuMakeEle&#8208;
+       mentImportBucket,  AuMakeElementImportClient,  AuMakeElementImportDevice,
+       AuMakeElementImportWaveForm,   AuMakeElementMultiplyConstant,  AuMakeEle&#8208;
+       mentSum.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element initialization     1.9.3          AuMakeElementAddConstant(3)
+
+</pre></body></html>

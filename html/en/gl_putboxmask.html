@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_putboxmask - copy a masked  pixmap to a rectangular area</title></head>
+<body><pre>
+
+gl_putboxmask(3)               Svgalib User Manual              gl_putboxmask(3)
+
+
+
+NAME
+       gl_putboxmask - copy a masked  pixmap to a rectangular area
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       void gl_putboxmask(int x, int y, int w, int h, void *dp);
+
+
+DESCRIPTION
+       Copy  the contents of a memory buffer dp to a rectangular bitmap at posi&#8208;
+       tion (x, y) with size (w, h).
+
+       This function works like gl_putbox, but does not write pixmap  pixels  of
+       color  zero.  If  the same pixmap is used often you should consider using
+       the faster gl_putboxmaskcompiled(3).
+
+       Pixmaps are in row-major order. The source pixmap memory has the size w *
+       h * BYTESPERPIXEL.
+
+
+SEE ALSO
+       svgalib(7),  vgagl(7),  svgalib.conf(5), threedkit(7), testgl(1), gl_com&#8208;
+       pileboxmask(3), gl_compiledboxmasksize(3), gl_copybox(3), gl_copyboxfrom&#8208;
+       context(3),  gl_copyboxtocontext(3), gl_fillbox(3), gl_getbox(3), gl_put&#8208;
+       box(3), gl_putboxmaskcompiled(3), gl_putboxpart(3), gl_scalebox(3).
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The  exact  source  of  the referenced demo as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                2 Aug 1997                   gl_putboxmask(3)
+
+</pre></body></html>

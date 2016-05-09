@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>grep-excuses - search the testing excuses files for a specific maintainer</title></head>
+<body><pre>
+
+GREP-EXCUSES(1)                                                  GREP-EXCUSES(1)
+
+
+
+NAME
+       grep-excuses - search the testing excuses files for a specific maintainer
+
+SYNOPSIS
+       grep-excuses [options] [maintainer|package]
+
+DESCRIPTION
+       grep-excuses  downloads the update_excuses.html file and greps it for the
+       specified maintainer name.  The libwww-perl package is required for  this
+       script.   If  no name is given on the command line, first the environment
+       variable DEBFULLNAME is used if it is defined, and failing that, the con&#8208;
+       figuration variable described below is used.
+
+OPTIONS
+       --no-conf, --noconf
+              Do not read any configuration files.  This can only be used as the
+              first option given on the command-line.
+
+       --wipnity, -w
+              Get information  from  &lt;http://release.debian.org/migration/&gt;.   A
+              package name must be given when using this option.
+
+       --help Show a brief usage message.
+
+       --version
+              Show version and copyright information.
+
+CONFIGURATION VARIABLES
+       The  two  configuration  files /etc/devscripts.conf and ~/.devscripts are
+       sourced in that order  to  set  configuration  variables.   Command  line
+       options can be used to override configuration file settings.  Environment
+       variable settings are ignored for this purpose.  The currently recognised
+       variable is:
+
+       GREP_EXCUSES_MAINTAINER
+              The  default  maintainer,  email or package to grep for if none is
+              specified on the command line.
+
+SEE ALSO
+       devscripts.conf(5).
+
+AUTHOR
+       Joey   Hess   &lt;joeyh@debian.org&gt;;   modifications   by   Julian    Gilbey
+       &lt;jdg@debian.org&gt;.
+
+
+
+DEBIAN                          Debian Utilities                 GREP-EXCUSES(1)
+
+</pre></body></html>

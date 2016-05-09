@@ -1,0 +1,86 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ot2kpx - extract kerning information from OpenType fonts</title></head>
+<body><pre>
+
+OT2KPX(1)                         Marc Penninga                        OT2KPX(1)
+
+
+
+NAME
+       ot2kpx - extract kerning information from OpenType fonts
+
+SYNOPSIS
+       ot2kpx  fontfile
+
+DESCRIPTION
+       ot2kpx extract the kerning data from OpenType fonts (both otf and ttf
+       formats) and prints it (in afm format) to &quot;stdout&quot;.
+
+OPTIONS AND ARGUMENTS
+       fontfile
+           The OpenType font (in either otf or ttf format).
+
+RESTRICTIONS
+       -   ot2kpx doesn&apos;t implement all of the OpenType specification.  Things
+           that are missing include: support for font files containing multiple
+           fonts, LookupTables with LookupTypes other than 2, &quot;kern&quot; tables with
+           format other than 0 and ValueRecords with other types of data than
+           just XAdvance data.
+
+           Most of these limitations don&apos;t really matter, since the missing
+           features are rare (the only fonts I know of that use them are the
+           non-western fonts that come with Adobe Reader). Furthermore, some of
+           these features concern (according to the OpenType specification)
+           &quot;define subtle, device-dependent adjustments at specific font sizes
+           or device resolutions&quot;.  Since there&apos;s no way to express such
+           adjustments in afm format, ignoring them seems to be the only option
+           anyway.
+
+       -   ot2kpx collects kerning data first from the &quot;kern&quot; table, then from
+           all LookupTables associated with the &quot;kern&quot; feature; if a kerning
+           pair occurs multiple times, the first value seen is chosen.  There
+           are (or may be) several issues with this approach:
+
+           -   The OpenType specification says that fonts in otf format
+               shouldn&apos;t use the &quot;kern&quot; table at all, just the lookups from the
+               &quot;GPOS&quot; table.  Many such fonts do, however, contain a &quot;kern&quot;
+               table, but no &quot;GPOS&quot; table; so we use the &quot;kern&quot; table anyway.
+
+           -   Instead of reading all LookupTables, it might be better to let
+               the user specify a script and language and process only the
+               LookupTables for those values.  However, at least in the fonts I
+               checked, all script/language combinations eventually point to the
+               same &quot;kern&quot; LookupTables, so this approach wouldn&apos;t make any
+               difference (apart from further complicating the code).
+
+AUTHOR
+       Marc Penninga &lt;marcpenninga@gmail.com&gt;
+
+COPYRIGHT
+       Copyright (C) 2005-2012 Marc Penninga.
+
+LICENSE
+       This program is free software; you can redistribute it and/or modify it
+       under the terms of the GNU General Public License as published by the
+       Free Software Foundation, either version 2 of the License, or (at your
+       option) any later version.  A copy of the GNU General Public License is
+       included with autoinst; see the file GPLv2.txt.
+
+DISCLAIMER
+       This program is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+       Public License for more details.
+
+RECENT CHANGES
+       (See the source code for the rest of the story.)
+
+       2012-02-01  Refactored the code, and fixed a number of bugs in the
+                   process.  Updated the documentation.
+
+
+
+fontools                           2012-03-06                          OT2KPX(1)
+
+</pre></body></html>

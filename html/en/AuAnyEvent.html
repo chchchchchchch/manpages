@@ -1,0 +1,65 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuAnyEvent - any event structure</title></head>
+<body><pre>
+
+AuAnyEvent(3)                                                      AuAnyEvent(3)
+
+
+
+Name
+       AuAnyEvent - any event structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef union _AuEvent
+       {
+           . . .
+           AuAnyEvent auany;
+           . . .
+       }AuEvent;
+
+       typedef struct _AuAnyEvent
+       {
+           int type;
+           AuUint32 serial;
+           AuBool send_event;
+           AuServer *server;
+           AuTime time;
+           AuID id;
+       }AuAnyEvent;
+
+Members
+       type      The event type.  The currently defined event types are AuEvent&#8208;
+                 TypeElementNotify, AuEventTypeGrabNotify, and  AuEventTypeMoni&#8208;
+                 torNotify.
+
+       serial    The  serial ID of the event expanded from the 16 bit value sent
+                 by the server.
+
+       send_event
+                 AuTrue if the event came from a SendEvent protocol request.
+
+       server    The connection to the audio server  that  the  event  was  read
+                 from.
+
+       time      The server time in milliseconds when the event was generated.
+
+       id        The ID of the source of the event.
+
+Description
+       AuAnyEvent  is a generic event structure containing members common to all
+       event types.
+
+See Also
+       AuElementNotifyEvent,  AuMonitorNotifyEvent,   AuGrabNotifyEvent,   AuEr&#8208;
+       rorEvent.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - events                     1.9.3                        AuAnyEvent(3)
+
+</pre></body></html>

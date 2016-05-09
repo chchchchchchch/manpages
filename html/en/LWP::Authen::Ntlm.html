@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>LWP::Authen::Ntlm - Library for enabling NTLM authentication (Microsoft) in LWP</title></head>
+<body><pre>
+
+LWP::Authen::Ntlm(3pm) User Contributed Perl DocumentationLWP::Authen::Ntlm(3pm)
+
+
+
+NAME
+       LWP::Authen::Ntlm - Library for enabling NTLM authentication (Microsoft)
+       in LWP
+
+SYNOPSIS
+        use LWP::UserAgent;
+        use HTTP::Request::Common;
+        my $url = &apos;http://www.company.com/protected_page.html&apos;;
+
+        # Set up the ntlm client and then the base64 encoded ntlm handshake message
+        my $ua = LWP::UserAgent-&gt;new(keep_alive=&gt;1);
+        $ua-&gt;credentials(&apos;www.company.com:80&apos;, &apos;&apos;, &quot;MyDomain\\MyUserCode&quot;, &apos;MyPassword&apos;);
+
+        $request = GET $url;
+        print &quot;--Performing request now...-----------\n&quot;;
+        $response = $ua-&gt;request($request);
+        print &quot;--Done with request-------------------\n&quot;;
+
+        if ($response-&gt;is_success) {print &quot;It worked!-&gt;&quot; . $response-&gt;code . &quot;\n&quot;}
+        else {print &quot;It didn&apos;t work!-&gt;&quot; . $response-&gt;code . &quot;\n&quot;}
+
+DESCRIPTION
+       &quot;LWP::Authen::Ntlm&quot; allows LWP to authenticate against servers that are
+       using the NTLM authentication scheme popularized by Microsoft.  This type
+       of authentication is common on intranets of Microsoft-centric
+       organizations.
+
+       The module takes advantage of the Authen::NTLM module by Mark Bush.
+       Since there is also another Authen::NTLM module available from CPAN by
+       Yee Man Chan with an entirely different interface, it is necessary to
+       ensure that you have the correct NTLM module.
+
+       In addition, there have been problems with incompatibilities between
+       different versions of Mime::Base64, which Bush&apos;s Authen::NTLM makes use
+       of.  Therefore, it is necessary to ensure that your Mime::Base64 module
+       supports exporting of the encode_base64 and decode_base64 functions.
+
+USAGE
+       The module is used indirectly through LWP, rather than including it
+       directly in your code.  The LWP system will invoke the NTLM
+       authentication when it encounters the authentication scheme while
+       attempting to retrieve a URL from a server.  In order for the NTLM
+       authentication to work, you must have a few things set up in your code
+       prior to attempting to retrieve the URL:
+
+       &#183;   Enable persistent HTTP connections
+
+           To do this, pass the &quot;keep_alive=&gt;1&quot; option to the LWP::UserAgent
+           when creating it, like this:
+
+               my $ua = LWP::UserAgent-&gt;new(keep_alive=&gt;1);
+
+       &#183;   Set the credentials on the UserAgent object
+
+           The credentials must be set like this:
+
+              $ua-&gt;credentials(&apos;www.company.com:80&apos;, &apos;&apos;, &quot;MyDomain\\MyUserCode&quot;, &apos;MyPassword&apos;);
+
+           Note that you cannot use the HTTP::Request object&apos;s
+           authorization_basic() method to set the credentials.  Note, too, that
+           the &apos;www.company.com:80&apos; portion only sets credentials on the
+           specified port AND it is case-sensitive (this is due to the way LWP
+           is coded, and has nothing to do with LWP::Authen::Ntlm)
+
+AVAILABILITY
+       General queries regarding LWP should be made to the LWP Mailing List.
+
+       Questions specific to LWP::Authen::Ntlm can be forwarded to
+       jtillman@bigfoot.com
+
+COPYRIGHT
+       Copyright (c) 2002 James Tillman. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+SEE ALSO
+       LWP, LWP::UserAgent, lwpcook.
+
+
+
+perl v5.14.2                       2012-01-14             LWP::Authen::Ntlm(3pm)
+
+</pre></body></html>

@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuConvertShortToData - convert signed short integers to the specified format.</title></head>
+<body><pre>
+
+AuConvertShortToData(3)                                  AuConvertShortToData(3)
+
+
+
+Name
+       AuConvertShortToData  -  convert  signed  short integers to the specified
+       format.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       int AuConvertShortToData(format, num_bytes, data)
+           int format;
+           int num_bytes;
+           AuPointer data;
+
+Arguments
+       format    Specifies the format to convert to.  Currently,  the  following
+                 data  formats  are  defined:  AuFormatULAW8,  AuFormatLinearUn&#8208;
+                 signed8,   AuFormatLinearSigned8,    AuFormatLinearSigned16MSB,
+                 AuFormatLinearUnsigned16MSB,   AuFormatSignedLinear16LSB,   and
+                 AuFormatLinearUnsigned16LSB.
+
+       num_bytes Specifies the number of bytes of data.
+
+       data      Specifies the data to convert.
+
+Description
+       AuConvertShortToData converts num_bytes of data from signed short integer
+       to format, returning 0 if successful, or -1 if format isn&apos;t valid.
+
+See Also
+       AuConvertDataToShort.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audioutil                             1.9.3              AuConvertShortToData(3)
+
+</pre></body></html>

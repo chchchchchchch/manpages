@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Level - Predefined log levels</title></head>
+<body><pre>
+
+Level(3pm)             User Contributed Perl Documentation            Level(3pm)
+
+
+
+NAME
+       Log::Log4perl::Level - Predefined log levels
+
+SYNOPSIS
+         use Log::Log4perl::Level;
+         print $ERROR, &quot;\n&quot;;
+
+         # -- or --
+
+         use Log::Log4perl qw(:levels);
+         print $ERROR, &quot;\n&quot;;
+
+DESCRIPTION
+       &quot;Log::Log4perl::Level&quot; simply exports a predefined set of Log4perl log
+       levels into the caller&apos;s name space. It is used internally by
+       &quot;Log::Log4perl&quot;. The following scalars are defined:
+
+           $OFF
+           $FATAL
+           $ERROR
+           $WARN
+           $INFO
+           $DEBUG
+           $TRACE
+           $ALL
+
+       &quot;Log::Log4perl&quot; also exports these constants into the caller&apos;s namespace
+       if you pull it in providing the &quot;:levels&quot; tag:
+
+           use Log::Log4perl qw(:levels);
+
+       This is the preferred way, there&apos;s usually no need to call
+       &quot;Log::Log4perl::Level&quot; explicitely.
+
+       The numerical values assigned to these constants are purely virtual, only
+       used by Log::Log4perl internally and can change at any time, so please
+       don&apos;t make any assumptions.
+
+       If the caller wants to import these constants into a different namespace,
+       it can be provided with the &quot;use&quot; command:
+
+           use Log::Log4perl::Level qw(MyNameSpace);
+
+       After this $MyNameSpace::ERROR, $MyNameSpace::INFO etc.  will be defined
+       accordingly.
+
+   Numeric levels and Strings
+       Level variables like $DEBUG or $WARN have numeric values that are
+       internal to Log4perl. Transform them to strings that can be used in a
+       Log4perl configuration file, use the c&lt;to_level()&gt; function provided by
+       Log::Log4perl::Level:
+
+           use Log::Log4perl qw(:easy);
+           use Log::Log4perl::Level;
+
+               # prints &quot;DEBUG&quot;
+           print Log::Log4perl::Level::to_level( $DEBUG ), &quot;\n&quot;;
+
+       To perform the reverse transformation, which takes a string like &quot;DEBUG&quot;
+       and converts it into a constant like $DEBUG, use the to_priority()
+       function:
+&#12;           use Log::Log4perl qw(:easy);
+           use Log::Log4perl::Level;
+
+           my $numval = Log::Log4perl::Level::to_priority( &quot;DEBUG&quot; );
+
+       after which $numval could be used where a numerical value is required:
+
+           Log::Log4perl-&gt;easy_init( $numval );
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                         Level(3pm)
+
+</pre></body></html>

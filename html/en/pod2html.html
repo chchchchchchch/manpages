@@ -1,0 +1,119 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pod2html - convert .pod files to .html files</title></head>
+<body><pre>
+
+POD2HTML(1)             Perl Programmers Reference Guide             POD2HTML(1)
+
+
+
+NAME
+       pod2html - convert .pod files to .html files
+
+SYNOPSIS
+           pod2html --help --htmlroot=&lt;name&gt; --infile=&lt;name&gt; --outfile=&lt;name&gt;
+                    --podpath=&lt;name&gt;:...:&lt;name&gt; --podroot=&lt;name&gt;
+                    --libpods=&lt;name&gt;:...:&lt;name&gt; --recurse --norecurse --verbose
+                    --index --noindex --title=&lt;name&gt;
+
+DESCRIPTION
+       Converts files from pod format (see perlpod) to HTML format.
+
+ARGUMENTS
+       pod2html takes the following arguments:
+
+       help
+             --help
+
+           Displays the usage message.
+
+       htmlroot
+             --htmlroot=name
+
+           Sets the base URL for the HTML files.  When cross-references are
+           made, the HTML root is prepended to the URL.
+
+       infile
+             --infile=name
+
+           Specify the pod file to convert.  Input is taken from STDIN if no
+           infile is specified.
+
+       outfile
+             --outfile=name
+
+           Specify the HTML file to create.  Output goes to STDOUT if no outfile
+           is specified.
+
+       podroot
+             --podroot=name
+
+           Specify the base directory for finding library pods.
+
+       podpath
+             --podpath=name:...:name
+
+           Specify which subdirectories of the podroot contain pod files whose
+           HTML converted forms can be linked-to in cross-references.
+
+       libpods
+             --libpods=name:...:name
+
+           List of page names (eg, &quot;perlfunc&quot;) which contain linkable &quot;=item&quot;s.
+
+       netscape
+             --netscape
+
+           Use Netscape HTML directives when applicable.
+
+       nonetscape
+             --nonetscape
+&#12;           Do not use Netscape HTML directives (default).
+
+       index
+             --index
+
+           Generate an index at the top of the HTML file (default behaviour).
+
+       noindex
+             --noindex
+
+           Do not generate an index at the top of the HTML file.
+
+       recurse
+             --recurse
+
+           Recurse into subdirectories specified in podpath (default behaviour).
+
+       norecurse
+             --norecurse
+
+           Do not recurse into subdirectories specified in podpath.
+
+       title
+             --title=title
+
+           Specify the title of the resulting HTML file.
+
+       verbose
+             --verbose
+
+           Display progress messages.
+
+AUTHOR
+       Tom Christiansen, &lt;tchrist@perl.com&gt;.
+
+BUGS
+       See Pod::Html for a list of known bugs in the translator.
+
+SEE ALSO
+       perlpod, Pod::Html
+
+COPYRIGHT
+       This program is distributed under the Artistic License.
+
+
+
+perl v5.14.2                       2014-09-30                        POD2HTML(1)
+
+</pre></body></html>

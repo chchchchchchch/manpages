@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>secutil - Extract X.509 certificates and strongnames from assemblies.</title></head>
+<body><pre>
+
+Mono(secutil)                                                      Mono(secutil)
+
+
+
+NAME
+       secutil - Extract X.509 certificates and strongnames from assemblies.
+
+SYNOPSIS
+       secutil [options] filename
+
+DESCRIPTION
+       Extract  X.509  certificates  and strongnames from assemblies in a format
+       that can be easily re-used in source code (C# or VB.NET syntax).
+
+OPTIONS
+       -s assembly , -strongname assembly
+              Display strongname informations about the assembly.
+
+       -x assembly , -x509certificate assembly
+              Display the X509 Authenticode certificate for the assembly.
+
+       -a , -array
+              Display data in a decimal array (default).
+
+       -v , -vbmode
+              Display data in a VisualBasic friendly format.
+
+       -c , -cmode
+              Display data in a C/C++/C# friendly format (default).
+
+       -help , -h , -?
+              Display help about this tool.
+
+AUTHOR
+       Written by Sebastien Pouliot
+
+COPYRIGHT
+       Copyright (C) 2002, 2003 Motus Technologies.  Released under BSD license.
+
+MAILING LISTS
+       Visit    http://lists.ximian.com/mailman/listinfo/mono-devel-list     for
+       details.
+
+WEB SITE
+       Visit http://www.mono-project.com for details
+
+SEE ALSO
+       sn(1),signcode(1)
+
+
+
+                                                                   Mono(secutil)
+
+</pre></body></html>

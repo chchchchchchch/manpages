@@ -1,0 +1,591 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::comment -- provide regexes for comments.</title></head>
+<body><pre>
+
+Regexp::Common::commentUser)Contributed Perl DocumenRegexp::Common::comment(3pm)
+
+
+
+NAME
+       Regexp::Common::comment -- provide regexes for comments.
+
+SYNOPSIS
+           use Regexp::Common qw /comment/;
+
+           while (&lt;&gt;) {
+               /$RE{comment}{C}/       and  print &quot;Contains a C comment\n&quot;;
+               /$RE{comment}{C++}/     and  print &quot;Contains a C++ comment\n&quot;;
+               /$RE{comment}{PHP}/     and  print &quot;Contains a PHP comment\n&quot;;
+               /$RE{comment}{Java}/    and  print &quot;Contains a Java comment\n&quot;;
+               /$RE{comment}{Perl}/    and  print &quot;Contains a Perl comment\n&quot;;
+               /$RE{comment}{awk}/     and  print &quot;Contains an awk comment\n&quot;;
+               /$RE{comment}{HTML}/    and  print &quot;Contains an HTML comment\n&quot;;
+           }
+
+           use Regexp::Common qw /comment RE_comment_HTML/;
+
+           while (&lt;&gt;) {
+               $_ =~ RE_comment_HTML() and  print &quot;Contains an HTML comment\n&quot;;
+           }
+
+DESCRIPTION
+       Please consult the manual of Regexp::Common for a general description of
+       the works of this interface.
+
+       Do not use this module directly, but load it via Regexp::Common.
+
+       This modules gives you regular expressions for comments in various
+       languages.
+
+   THE LANGUAGES
+       Below, the comments of each of the languages are described.  The patterns
+       are available as $RE{comment}{LANG}, foreach language LANG. Some
+       languages have variants; it&apos;s described at the individual languages how
+       to get the patterns for the variants.  Unless mentioned otherwise,
+       &quot;{-keep}&quot; sets $1, $2, $3 and $4 to the entire comment, the opening
+       marker, the content of the comment, and the closing marker (for many
+       languages, the latter is a newline) respectively.
+
+       ABC Comments in ABC start with a backslash (&quot;\&quot;), and last till the end
+           of the line.  See &lt;http://homepages.cwi.nl/%7Esteven/abc/&gt;.
+
+       Ada Comments in Ada start with &quot;--&quot;, and last till the end of the line.
+
+       Advisor
+           Advisor is a language used by the HP product glance. Comments for
+           this language start with either &quot;#&quot; or &quot;//&quot;, and last till the end of
+           the line.
+
+       Advsys
+           Comments for the Advsys language start with &quot;;&quot; and last till the end
+           of the line. See also &lt;http://www.wurb.com/if/devsys/12&gt;.
+
+       Alan
+           Alan comments start with &quot;--&quot;, and last till the end of the line.
+           See also
+           &lt;http://w1.132.telia.com/~u13207378/alan/manual/alanTOC.html&gt;.
+
+       Algol 60
+           Comments in the Algol 60 language start with the keyword &quot;comment&quot;,
+           and end with a &quot;;&quot;. See &lt;http://www.masswerk.at/algol60/report.htm&gt;.
+
+       Algol 68
+           In Algol 68, comments are either delimited by &quot;#&quot;, or by one of the
+           keywords &quot;co&quot; or &quot;comment&quot;. The keywords should not be part of
+           another word. See
+           http://westein.arb-phys.uni-dortmund.de/~wb/a68s.txt
+           &lt;http://westein.arb-phys.uni-dortmund.de/~wb/a68s.txt&gt;.  With
+           &quot;{-keep}&quot;, only $1 will be set, returning the entire comment.
+
+       ALPACA
+           The ALPACA language has comments starting with &quot;/*&quot; and ending with
+           &quot;*/&quot;.
+
+       awk The awk programming language uses comments that start with &quot;#&quot; and
+           end at the end of the line.
+
+       B   The B language has comments starting with &quot;/*&quot; and ending with &quot;*/&quot;.
+
+       BASIC
+           There are various forms of BASIC around. Currently, we only support
+           the variant supported by mvEnterprise, whose pattern is available as
+           $RE{comment}{BASIC}{mvEnterprise}. Comments in this language start
+           with a &quot;!&quot;, a &quot;*&quot; or the keyword &quot;REM&quot;, and end till the end of the
+           line. See
+           &lt;http://www.rainingdata.com/products/beta/docs/mve/50/ReferenceManual/Basic.pdf&gt;.
+
+       Beatnik
+           The esotoric language Beatnik only uses words consisting of letters.
+           Words are scored according to the rules of Scrabble. Words scoring
+           less than 5 points, or 18 points or more are considered comments
+           (although the compiler might mock at you if you score less than 5
+           points).  Regardless whether &quot;{-keep}&quot;, $1 will be set, and set to
+           the entire comment. This pattern requires perl 5.8.0 or newer.
+
+       beta-Juliet
+           The beta-Juliet programming language has comments that start with
+           &quot;//&quot; and that continue till the end of the line. See also
+           http://www.catseye.mb.ca/esoteric/b-juliet/index.html
+           &lt;http://www.catseye.mb.ca/esoteric/b-juliet/index.html&gt;.
+
+       Befunge-98
+           The esotoric language Befunge-98 uses comments that start and end
+           with a &quot;;&quot;. See
+           &lt;http://www.catseye.mb.ca/esoteric/befunge/98/spec98.html&gt;.
+
+       BML BML, or Better Markup Language is an HTML templating language that
+           uses comments starting with &quot;&lt;?c_&quot;, and ending with &quot;c_?&gt;&quot;.  See
+           &lt;http://www.livejournal.com/doc/server/bml.index.html&gt;.
+
+       Brainfuck
+           The minimal language Brainfuck uses only eight characters, &quot;&lt;&quot;, &quot;&gt;&quot;,
+           &quot;[&quot;, &quot;]&quot;, &quot;+&quot;, &quot;-&quot;, &quot;.&quot; and &quot;,&quot;.  Any other characters are considered
+           comments. With &quot;{-keep}&quot;, $1 is set to the entire comment.
+
+       C   The C language has comments starting with &quot;/*&quot; and ending with &quot;*/&quot;.
+
+       C-- The C-- language has comments starting with &quot;/*&quot; and ending with
+           &quot;*/&quot;.  See
+           http://cs.uas.arizona.edu/classes/453/programs/C--Spec.html
+           &lt;http://cs.uas.arizona.edu/classes/453/programs/C--Spec.html&gt;.
+
+       C++ The C++ language has two forms of comments. Comments that start with
+           &quot;//&quot; and last till the end of the line, and comments that start with
+           &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1 will be set,
+           and set to the entire comment.
+&#12;       C#  The C# language has two forms of comments. Comments that start with
+           &quot;//&quot; and last till the end of the line, and comments that start with
+           &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1 will be set,
+           and set to the entire comment.  See
+           http://msdn.microsoft.com/library/default.asp?url=/library/en-us/csspec/html/vclrfcsharpspec_C.asp
+           &lt;http://msdn.microsoft.com/library/default.asp?url=/library/en-
+           us/csspec/html/vclrfcsharpspec_C.asp&gt;.
+
+       Caml
+           Comments in Caml start with &quot;(*&quot;, end with &quot;*)&quot;, and can be nested.
+           See &lt;http://www.cs.caltech.edu/courses/cs134/cs134b/book.pdf&gt; and
+           http://pauillac.inria.fr/caml/index-eng.html
+           &lt;http://pauillac.inria.fr/caml/index-eng.html&gt;.
+
+       Cg  The Cg language has two forms of comments. Comments that start with
+           &quot;//&quot; and last till the end of the line, and comments that start with
+           &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1 will be set,
+           and set to the entire comment.  See
+           &lt;http://developer.nvidia.com/attach/3722&gt;.
+
+       CLU In &quot;CLU&quot;, a comment starts with a procent sign (&quot;%&quot;), and ends with
+           the next newline. See ftp://ftp.lcs.mit.edu:/pub/pclu/CLU-syntax.ps
+           &lt;ftp://ftp.lcs.mit.edu:/pub/pclu/CLU-syntax.ps&gt; and
+           &lt;http://www.pmg.lcs.mit.edu/CLU.html&gt;.
+
+       COBOL
+           Traditionally, comments in COBOL are indicated by an asteriks in the
+           seventh column. This is what the pattern matches. Modern compiler may
+           more lenient though. See
+           &lt;http://www.csis.ul.ie/cobol/Course/COBOLIntro.htm&gt;, and
+           &lt;http://www.csis.ul.ie/cobol/default.htm&gt;. Due to a bug in the regexp
+           engine of perl 5.6.x, this regexp is only available in version 5.8.0
+           and up.
+
+       CQL Comments in the chess query language (CQL) start with a semi colon
+           (&quot;;&quot;) and last till the end of the line. See
+           &lt;http://www.rbnn.com/cql/&gt;.
+
+       Crystal Report
+           The formula editor in Crystal Reports uses comments that start with
+           &quot;//&quot;, and end with the end of the line.
+
+       Dylan
+           There are two types of comments in Dylan. They either start with
+           &quot;//&quot;, or are nested comments, delimited with &quot;/*&quot; and &quot;*/&quot;.  Under
+           &quot;{-keep}&quot;, only $1 will be set, returning the entire comment.  This
+           pattern requires perl 5.6.0 or newer.
+
+       ECMAScript
+           The ECMAScript language has two forms of comments. Comments that
+           start with &quot;//&quot; and last till the end of the line, and comments that
+           start with &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1
+           will be set, and set to the entire comment. JavaScript is Netscapes
+           implementation of ECMAScript. See
+           http://www.ecma-international.org/publications/files/ecma-st/Ecma-262.pdf
+           &lt;http://www.ecma-international.org/publications/files/ecma-
+           st/Ecma-262.pdf&gt;, and
+           http://www.ecma-international.org/publications/standards/Ecma-262.htm
+           &lt;http://www.ecma-
+           international.org/publications/standards/Ecma-262.htm&gt;.
+
+       Eiffel
+           Eiffel comments start with &quot;--&quot;, and last till the end of the line.
+
+       False
+           In False, comments start with &quot;{&quot; and end with &quot;}&quot;.  See
+           &lt;http://wouter.fov120.com/false/false.txt&gt;
+
+       FPL The FPL language has two forms of comments. Comments that start with
+           &quot;//&quot; and last till the end of the line, and comments that start with
+           &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1 will be set,
+           and set to the entire comment.
+
+       Forth
+           Comments in Forth start with &quot;\&quot;, and end with the end of the line.
+           See also http://docs.sun.com/sb/doc/806-1377-10
+           &lt;http://docs.sun.com/sb/doc/806-1377-10&gt;.
+
+       Fortran
+           There are two forms of Fortran. There&apos;s free form Fortran, which has
+           comments that start with &quot;!&quot;, and end at the end of the line.  The
+           pattern for this is given by $RE{Fortran}. Fixed form Fortran, which
+           has been obsoleted, has comments that start with &quot;C&quot;, &quot;c&quot; or &quot;*&quot; in
+           the first column, or with &quot;!&quot; anywhere, but the sixth column.  The
+           pattern for this are given by $RE{Fortran}{fixed}.
+
+           See also
+           http://www.cray.com/craydoc/manuals/007-3692-005/html-007-3692-005/
+           &lt;http://www.cray.com/craydoc/manuals/007-3692-005/html-007-3692-005/&gt;.
+
+       Funge-98
+           The esotoric language Funge-98 uses comments that start and end with
+           a &quot;;&quot;.
+
+       fvwm2
+           Configuration files for fvwm2 have comments starting with a &quot;#&quot; and
+           lasting the rest of the line.
+
+       Haifu
+           Haifu, an esotoric language using haikus, has comments starting and
+           ending with a &quot;,&quot;.  See
+           &lt;http://www.dangermouse.net/esoteric/haifu.html&gt;.
+
+       Haskell
+           There are two types of comments in Haskell. They either start with at
+           least two dashes, or are nested comments, delimited with &quot;{-&quot; and
+           &quot;-}&quot;.  Under &quot;{-keep}&quot;, only $1 will be set, returning the entire
+           comment.  This pattern requires perl 5.6.0 or newer.
+
+       HTML
+           In HTML, comments only appear inside a comment declaration.  A
+           comment declaration starts with a &quot;&lt;!&quot;, and ends with a &quot;&gt;&quot;. Inside
+           this declaration, we have zero or more comments.  Comments starts
+           with &quot;--&quot; and end with &quot;--&quot;, and are optionally followed by
+           whitespace. The pattern $RE{comment}{HTML} recognizes those comment
+           declarations (and hence more than a comment).  Note that this is not
+           the same as something that starts with &quot;&lt;!--&quot; and ends with &quot;--&gt;&quot;,
+           because the following will be matched completely:
+
+               &lt;!--  First  Comment   --
+                 --&gt; Second Comment &lt;!--
+                 --  Third  Comment   --&gt;
+
+           Do not be fooled by what your favourite browser thinks is an HTML
+           comment.
+
+           If &quot;{-keep}&quot; is used, the following are returned:
+
+           $1  captures the entire comment declaration.
+
+           $2  captures the MDO (markup declaration open), &quot;&lt;!&quot;.
+
+           $3  captures the content between the MDO and the MDC.
+&#12;           $4  captures the (last) comment, without the surrounding dashes.
+
+           $5  captures the MDC (markup declaration close), &quot;&gt;&quot;.
+
+       Hugo
+           There are two types of comments in Hugo. They either start with &quot;!&quot;
+           (which cannot be followed by a &quot;\&quot;), or are nested comments,
+           delimited with &quot;!\&quot; and &quot;\!&quot;.  Under &quot;{-keep}&quot;, only $1 will be set,
+           returning the entire comment.  This pattern requires perl 5.6.0 or
+           newer.
+
+       Icon
+           Icon has comments that start with &quot;#&quot; and end at the next new line.
+           See &lt;http://www.toolsofcomputing.com/IconHandbook/IconHandbook.pdf&gt;,
+           &lt;http://www.cs.arizona.edu/icon/index.htm&gt;, and
+           &lt;http://burks.bton.ac.uk/burks/language/icon/index.htm&gt;.
+
+       ILLGOL
+           The esotoric language ILLGOL uses comments starting with NB and
+           lasting till the end of the line.  See
+           &lt;http://www.catseye.mb.ca/esoteric/illgol/index.html&gt;.
+
+       INTERCAL
+           Comments in INTERCAL are single line comments. They start with one of
+           the keywords &quot;NOT&quot; or &quot;N&apos;T&quot;, and can optionally be preceded by the
+           keywords &quot;DO&quot; and &quot;PLEASE&quot;. If both keywords are used, &quot;PLEASE&quot;
+           precedes &quot;DO&quot;. Keywords are separated by whitespace.
+
+       J   The language J uses comments that start with &quot;NB.&quot;, and that last
+           till the end of the line. See
+           &lt;http://www.jsoftware.com/books/help/primer/contents.htm&gt;, and
+           &lt;http://www.jsoftware.com/&gt;.
+
+       Java
+           The Java language has two forms of comments. Comments that start with
+           &quot;//&quot; and last till the end of the line, and comments that start with
+           &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1 will be set,
+           and set to the entire comment.
+
+       JavaDoc
+           The Javadoc documentation syntax is demarked with a subset of
+           ordinary Java comments to separate it from code.  Comments start with
+           &quot;/**&quot; end with &quot;*/&quot;.  If &quot;{-keep}&quot; is used, only $1 will be set, and
+           set to the entire comment. See
+           http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#format
+           &lt;http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#format&gt;.
+
+       JavaScript
+           The JavaScript language has two forms of comments. Comments that
+           start with &quot;//&quot; and last till the end of the line, and comments that
+           start with &quot;/*&quot;, and end with &quot;*/&quot;. If &quot;{-keep}&quot; is used, only $1
+           will be set, and set to the entire comment. JavaScript is Netscapes
+           implementation of ECMAScript.  See
+           http://www.mozilla.org/js/language/E262-3.pdf
+           &lt;http://www.mozilla.org/js/language/E262-3.pdf&gt;, and
+           &lt;http://www.mozilla.org/js/language/&gt;.
+
+       LaTeX
+           The documentation language LaTeX uses comments starting with &quot;%&quot; and
+           ending at the end of the line.
+
+       Lisp
+           Comments in Lisp start with a semi-colon (&quot;;&quot;) and last till the end
+           of the line.
+
+       LPC The LPC language has comments starting with &quot;/*&quot; and ending with
+           &quot;*/&quot;.
+
+       LOGO
+           Comments for the language LOGO start with &quot;;&quot;, and last till the end
+           of the line.
+
+       lua Comments for the lua language start with &quot;--&quot;, and last till the end
+           of the line. See also &lt;http://www.lua.org/manual/manual.html&gt;.
+
+       M, MUMPS
+           In &quot;M&quot; (aka &quot;MUMPS&quot;), comments start with a semi-colon, and last till
+           the end of a line. The language specification requires the semi-colon
+           to be preceded by one or more linestart characters.  Those characters
+           default to a space, but that&apos;s configurable. This requirement, of
+           preceding the comment with linestart characters is not tested for.
+           See &lt;ftp://ftp.intersys.com/pub/openm/ism/ism64docs.zip&gt;,
+           &lt;http://mtechnology.intersys.com/mproducts/openm/index.html&gt;, and
+           &lt;http://mcenter.com/mtrc/index.html&gt;.
+
+       m4  By default, the preprocessor language m4 uses single line comments,
+           that start with a &quot;#&quot; and continue to the end of the line, including
+           the newline. The pattern &quot;$RE {comment} {m4}&quot; matches such comments.
+           In m4, it is possible to change the starting token though.  See
+           &lt;http://wolfram.schneider.org/bsd/7thEdManVol2/m4/m4.pdf&gt;,
+           http://www.cs.stir.ac.uk/~kjt/research/pdf/expl-m4.pdf
+           &lt;http://www.cs.stir.ac.uk/~kjt/research/pdf/expl-m4.pdf&gt;, and
+           &lt;http://www.gnu.org/software/m4/manual/&gt;.
+
+       Modula-2
+           In &quot;Modula-2&quot;, comments start with &quot;(*&quot;, and end with &quot;*)&quot;. Comments
+           may be nested. See &lt;http://www.modula2.org/&gt;.
+
+       Modula-3
+           In &quot;Modula-3&quot;, comments start with &quot;(*&quot;, and end with &quot;*)&quot;. Comments
+           may be nested. See &lt;http://www.m3.org/&gt;.
+
+       mutt
+           Configuration files for mutt have comments starting with a &quot;#&quot; and
+           lasting the rest of the line.
+
+       Nickle
+           The Nickle language has one line comments starting with &quot;#&quot; (like
+           Perl), or multiline comments delimited by &quot;/*&quot; and &quot;*/&quot; (like C).
+           Under &quot;-keep&quot;, only $1 will be set. See also &lt;http://www.nickle.org&gt;.
+
+       Oberon
+           Comments in Oberon start with &quot;(*&quot; and end with &quot;*)&quot;.  See
+           &lt;http://www.oberon.ethz.ch/oreport.html&gt;.
+
+       Pascal
+           There are many implementations of Pascal. This modules provides
+           pattern for comments of several implementations.
+
+           $RE{comment}{Pascal}
+               This is the pattern that recognizes comments according to the
+               Pascal ISO standard. This standard says that comments start with
+               either &quot;{&quot;, or &quot;(*&quot;, and end with &quot;}&quot; or &quot;*)&quot;. This means that
+               &quot;{*)&quot; and &quot;(*}&quot; are considered to be comments. Many Pascal
+               applications don&apos;t allow this.  See
+               http://www.pascal-central.com/docs/iso10206.txt
+               &lt;http://www.pascal-central.com/docs/iso10206.txt&gt;
+
+           $RE{comment}{Pascal}{Alice}
+               The Alice Pascal compiler accepts comments that start with &quot;{&quot;
+               and end with &quot;}&quot;. Comments are not allowed to contain newlines.
+               See &lt;http://www.templetons.com/brad/alice/language/&gt;.
+
+           $RE{comment}{Pascal}{Delphi}, $RE{comment}{Pascal}{Free} and
+           $RE{comment}{Pascal}{GPC}
+               The Delphi Pascal, Free Pascal and the Gnu Pascal Compiler
+               implementations of Pascal all have comments that either start
+               with &quot;//&quot; and last till the end of the line, are delimited with
+               &quot;{&quot; and &quot;}&quot; or are delimited with &quot;(*&quot; and &quot;*)&quot;. Patterns for
+               those comments are given by $RE{comment}{Pascal}{Delphi},
+               $RE{comment}{Pascal}{Free} and $RE{comment}{Pascal}{GPC}
+               respectively. These patterns only set $1 when &quot;{-keep}&quot; is used,
+               which will then include the entire comment.
+
+               See &lt;http://info.borland.com/techpubs/delphi5/oplg/&gt;,
+               http://www.freepascal.org/docs-html/ref/ref.html
+               &lt;http://www.freepascal.org/docs-html/ref/ref.html&gt; and
+               http://www.gnu-pascal.de/gpc/ &lt;http://www.gnu-pascal.de/gpc/&gt;.
+
+           $RE{comment}{Pascal}{Workshop}
+               The Workshop Pascal compiler, from SUN Microsystems, allows
+               comments that are delimited with either &quot;{&quot; and &quot;}&quot;, delimited
+               with &quot;(*)&quot; and &quot;*&quot;), delimited with &quot;/*&quot;, and &quot;*/&quot;, or starting
+               and ending with a double quote (&quot;&quot;&quot;). When &quot;{-keep}&quot; is used,
+               only $1 is set, and returns the entire comment.
+
+               See http://docs.sun.com/db/doc/802-5762
+               &lt;http://docs.sun.com/db/doc/802-5762&gt;.
+
+       PEARL
+           Comments in PEARL start with a &quot;!&quot; and last till the end of the line,
+           or start with &quot;/*&quot; and end with &quot;*/&quot;. With &quot;{-keep}&quot;, $1 will be set
+           to the entire comment.
+
+       PHP Comments in PHP start with either &quot;#&quot; or &quot;//&quot; and last till the end
+           of the line, or are delimited by &quot;/*&quot; and &quot;*/&quot;. With &quot;{-keep}&quot;, $1
+           will be set to the entire comment.
+
+       PL/B
+           In PL/B, comments start with either &quot;.&quot; or &quot;;&quot;, and end with the next
+           newline. See http://www.mmcctech.com/pl-b/plb-0010.htm
+           &lt;http://www.mmcctech.com/pl-b/plb-0010.htm&gt;.
+
+       PL/I
+           The PL/I language has comments starting with &quot;/*&quot; and ending with
+           &quot;*/&quot;.
+
+       PL/SQL
+           In PL/SQL, comments either start with &quot;--&quot; and run till the end of
+           the line, or start with &quot;/*&quot; and end with &quot;*/&quot;.
+
+       Perl
+           Perl uses comments that start with a &quot;#&quot;, and continue till the end
+           of the line.
+
+       Portia
+           The Portia programming language has comments that start with &quot;//&quot;,
+           and last till the end of the line.
+
+       Python
+           Python uses comments that start with a &quot;#&quot;, and continue till the end
+           of the line.
+
+       Q-BAL
+           Comments in the Q-BAL language start with &quot;`&quot; (a backtick), and
+           contine till the end of the line.
+
+       QML In &quot;QML&quot;, comments start with &quot;#&quot; and last till the end of the line.
+           See &lt;http://www.questionmark.com/uk/qml/overview.doc&gt;.
+
+       R   The statistical language R uses comments that start with a &quot;#&quot; and
+           end with the following new line. See http://www.r-project.org/
+           &lt;http://www.r-project.org/&gt;.
+
+       REBOL
+           Comments for the REBOL language start with &quot;;&quot; and last till the end
+           of the line.
+
+       Ruby
+           Comments in Ruby start with &quot;#&quot; and last till the end of the time.
+
+       Scheme
+           Scheme comments start with &quot;;&quot;, and last till the end of the line.
+           See &lt;http://schemers.org/&gt;.
+
+       shell
+           Comments in various shells start with a &quot;#&quot; and end at the end of the
+           line.
+
+       Shelta
+           The esotoric language Shelta uses comments that start and end with a
+           &quot;;&quot;. See &lt;http://www.catseye.mb.ca/esoteric/shelta/index.html&gt;.
+
+       SLIDE
+           The SLIDE language has two froms of comments. First there is the line
+           comment, which starts with a &quot;#&quot; and includes the rest of the line
+           (just like Perl). Second, there is the multiline, nested comment,
+           which are delimited by &quot;(*&quot; and &quot;*)&quot;. Under C{-keep}&gt;, only $1 is
+           set, and is set to the entire comment. This pattern needs at least
+           Perl version 5.6.0. See
+           &lt;http://www.cs.berkeley.edu/~ug/slide/docs/slide/spec/spec_frame_intro.shtml&gt;.
+
+       slrn
+           Configuration files for slrn have comments starting with a &quot;%&quot; and
+           lasting the rest of the line.
+
+       Smalltalk
+           Smalltalk uses comments that start and end with a double quote, &quot;&quot;&quot;.
+
+       SMITH
+           Comments in the SMITH language start with &quot;;&quot;, and last till the end
+           of the line.
+
+       Squeak
+           In the Smalltalk variant Squeak, comments start and end with &quot;&quot;&quot;.
+           Double quotes can appear inside comments by doubling them.
+
+       SQL Standard SQL uses comments starting with two or more dashes, and
+           ending at the end of the line.
+
+           MySQL does not follow the standard. Instead, it allows comments that
+           start with a &quot;#&quot; or &quot;-- &quot; (that&apos;s two dashes and a space) ending with
+           the following newline, and comments starting with &quot;/*&quot;, and ending
+           with the next &quot;;&quot; or &quot;*/&quot; that isn&apos;t inside single or double quotes.
+           A pattern for this is returned by $RE{comment}{SQL}{MySQL}. With
+           &quot;{-keep}&quot;, only $1 will be set, and it returns the entire comment.
+
+       Tcl In Tcl, comments start with &quot;#&quot; and continue till the end of the
+           line.
+
+       TeX The documentation language TeX uses comments starting with &quot;%&quot; and
+           ending at the end of the line.
+
+       troff
+           The document formatting language troff uses comments starting with
+           &quot;\&quot;&quot;, and continuing till the end of the line.
+
+       Ubercode
+           The Windows programming language Ubercode uses comments that start
+           with &quot;//&quot; and continue to the end of the line. See
+           &lt;http://www.ubercode.com&gt;.
+
+       vi  In configuration files for the editor vi, one can use comments
+           starting with &quot;&quot;&quot;, and ending at the end of the line.
+
+       *W  In the language *W, comments start with &quot;||&quot;, and end with &quot;!!&quot;.
+
+       zonefile
+           Comments in DNS zonefiles start with &quot;;&quot;, and continue till the end
+           of the line.
+
+       ZZT-OOP
+           The in-game language ZZT-OOP uses comments that start with a &quot;&apos;&quot;
+           character, and end at the following newline. See
+           &lt;http://dave2.rocketjump.org/rad/zzthelp/lang.html&gt;.
+
+REFERENCES
+       [Go 90]
+           Charles F. Goldfarb: The SGML Handbook. Oxford: Oxford University
+           Press. 1990. ISBN 0-19-853737-9. Ch. 10.3, pp 390-391.
+
+SEE ALSO
+       Regexp::Common for a general description of how to use this interface.
+
+AUTHOR
+       Damian Conway (damian@conway.org)
+
+MAINTAINANCE
+       This package is maintained by Abigail (regexp-common@abigail.be).
+
+BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+       For a start, there are many common regexes missing.  Send them in to
+       regexp-common@abigail.be.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2011-04-18       Regexp::Common::comment(3pm)
+
+</pre></body></html>

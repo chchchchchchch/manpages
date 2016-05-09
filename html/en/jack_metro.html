@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jack_metro - JACK toolkit metronome</title></head>
+<body><pre>
+
+JACK_METRO(1)                                                      JACK_METRO(1)
+
+
+
+NAME
+       jack_metro - JACK toolkit metronome
+
+SYNOPSIS
+       jack_metro [ -n name ] [ -f hz ] [ -D msecs ] [-a % ] [ -d % ] -b bpm
+
+DESCRIPTION
+       jack_metro  is  a  simple  metronome  for  JACK. It generates a synthetic
+       &quot;tick&quot; sound for every beat. Note that is does  not  connect  its  output
+       port  by default - to hear the sound it makes you must connect them using
+       some other tool.
+
+OPTIONS
+       -n, --name
+              Specify a name for this instance of the metronome.
+
+       -f, --frequency Hz
+              Define the frequency of the &quot;tick&quot; in Hz.
+
+       -D, --duration msecs
+              Define the duration of the &quot;tick&quot; in milliseconds.
+
+       -a, --attack %-age
+              Define the duration of the attack phase of the &quot;tick&quot;  as  a  per&#8208;
+              centage of the duration.
+
+       -d, --decay %-age
+              Define the duration of the decay phase of the &quot;tick&quot; as a percent&#8208;
+              age of the duration.
+
+       --b, --bpm bpm
+              Define the number of beats per minute.
+
+AUTHOR
+       Anthony Van Groningen
+
+
+
+
+1.9.9                             November 2012                    JACK_METRO(1)
+
+</pre></body></html>

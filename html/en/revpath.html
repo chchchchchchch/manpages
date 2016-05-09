@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>revpath - generate a relative path that can be used to undo a change-directory</title></head>
+<body><pre>
+
+REVPATH(1)                                                            REVPATH(1)
+
+
+
+NAME
+       revpath  -  generate  a  relative path that can be used to undo a change-
+       directory
+
+SYNOPSIS
+       revpath path
+
+DESCRIPTION
+       The revpath program prints out a relative path that is the ``reverse&apos;&apos; or
+       ``inverse&apos;&apos; of path.  Start with two directories top and bottom, with the
+       latter below the former, and path is the location of bottom  relative  to
+       top.   The  output  of revpath is the location of top relative to bottom.
+       The resulting path contains a trailing `/&apos; character when the  result  is
+       non-trivial.   If  path  is  equivalent  to  `.&apos;, the resulting output is
+       empty.  If path is invalid in some way (e.g., doesn&apos;t represent the  path
+       to  a  subdirectory)  the  output is also empty and no error messages are
+       ever generated.
+
+DIAGNOSTICS
+       There are no diagnostics.  Error conditions are silently ignored, and the
+       exit status is always 0.
+
+BUGS
+       It  isn&apos;t possible to reverse arbitrary relative paths.  If any path ele&#8208;
+       ment between the two end points of path is a symbolic link,  the  results
+       will probably be incorrect.
+
+
+
+X Version 11                       imake 1.0.5                        REVPATH(1)
+
+</pre></body></html>

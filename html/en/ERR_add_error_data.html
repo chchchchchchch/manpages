@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ERR_put_error, ERR_add_error_data - record an error</title></head>
+<body><pre>
+
+ERR_put_error(3SSL)                  OpenSSL                 ERR_put_error(3SSL)
+
+
+
+NAME
+       ERR_put_error, ERR_add_error_data - record an error
+
+SYNOPSIS
+        #include &lt;openssl/err.h&gt;
+
+        void ERR_put_error(int lib, int func, int reason, const char *file,
+                int line);
+
+        void ERR_add_error_data(int num, ...);
+
+DESCRIPTION
+       ERR_put_error() adds an error code to the thread&apos;s error queue. It
+       signals that the error of reason code reason occurred in function func of
+       library lib, in line number line of file.  This function is usually
+       called by a macro.
+
+       ERR_add_error_data() associates the concatenation of its num string
+       arguments with the error code added last.
+
+       ERR_load_strings(3) can be used to register error strings so that the
+       application can a generate human-readable error messages for the error
+       code.
+
+RETURN VALUES
+       ERR_put_error() and ERR_add_error_data() return no values.
+
+SEE ALSO
+       err(3), ERR_load_strings(3)
+
+HISTORY
+       ERR_put_error() is available in all versions of SSLeay and OpenSSL.
+       ERR_add_error_data() was added in SSLeay 0.9.0.
+
+
+
+1.0.1e                             2013-02-11                ERR_put_error(3SSL)
+
+</pre></body></html>

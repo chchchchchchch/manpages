@@ -1,0 +1,72 @@
+<html>
+<head><meta charset=utf-8/>
+<title>strdup, strndup, strdupa, strndupa - duplicate a string</title></head>
+<body><pre>
+
+STRDUP(3)                   Linux Programmer&apos;s Manual                  STRDUP(3)
+
+
+
+NAME
+       strdup, strndup, strdupa, strndupa - duplicate a string
+
+SYNOPSIS
+       #include &lt;string.h&gt;
+
+       char *strdup(const char *s);
+
+       char *strndup(const char *s, size_t n);
+       char *strdupa(const char *s);
+       char *strndupa(const char *s, size_t n);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       strdup():
+           _SVID_SOURCE || _BSD_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
+           _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
+           || /* Since glibc 2.12: */ _POSIX_C_SOURCE &gt;= 200809L
+       strndup():
+           Since glibc 2.10:
+               POSIX_C_SOURCE &gt;= 200809L || _XOPEN_SOURCE &gt;= 700
+           Before glibc 2.10:
+               _GNU_SOURCE
+       strdupa(), strndupa(): _GNU_SOURCE
+
+DESCRIPTION
+       The strdup() function returns a pointer to a new string which is a dupli&#8208;
+       cate  of  the  string s.  Memory for the new string is obtained with mal&#8208;
+       loc(3), and can be freed with free(3).
+
+       The strndup() function is similar, but only copies at most n bytes.  If s
+       is  longer  than  n, only n bytes are copied, and a terminating null byte
+       (&apos;\0&apos;) is added.
+
+       strdupa() and strndupa() are similar, but use alloca(3) to  allocate  the
+       buffer.  They are only available when using the GNU GCC suite, and suffer
+       from the same limitations described in alloca(3).
+
+RETURN VALUE
+       The strdup() function returns a pointer to the duplicated string, or NULL
+       if insufficient memory was available.
+
+ERRORS
+       ENOMEM Insufficient memory available to allocate duplicate string.
+
+CONFORMING TO
+       strdup()  conforms  to SVr4, 4.3BSD, POSIX.1-2001.  strndup() conforms to
+       POSIX.1-2008.  strdupa() and strndupa() are GNU extensions.
+
+SEE ALSO
+       alloca(3), calloc(3), free(3),  malloc(3),  realloc(3),  string(3),  wcs&#8208;
+       dup(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2012-05-10                          STRDUP(3)
+
+</pre></body></html>

@@ -1,0 +1,283 @@
+<html>
+<head><meta charset=utf-8/>
+<title>exim4_files - Files in use by the Debian exim4 packages</title></head>
+<body><pre>
+
+EXIM4_FILES(5)                                                    EXIM4_FILES(5)
+
+
+
+NAME
+       exim4_files - Files in use by the Debian exim4 packages
+
+SYNOPSIS
+       /etc/aliases
+       /etc/email-addresses
+       /etc/exim4/local_host_blacklist
+       /etc/exim4/host_local_deny_exceptions
+       /etc/exim4/local_sender_blacklist
+       /etc/exim4/sender_local_deny_exceptions
+       /etc/exim4/local_sender_callout
+       /etc/exim4/local_rcpt_callout
+       /etc/exim4/local_domain_dnsbl_whitelist
+       /etc/exim4/hubbed_hosts
+       /etc/exim4/passwd
+       /etc/exim4/passwd.client
+       /etc/exim4/exim.crt
+       /etc/exim4/exim.key
+
+DESCRIPTION
+       This  manual page describes the files that are in use by the Debian exim4
+       packages and which are not part of an exim installation done from source.
+
+/etc/aliases
+       is a table providing a mechanism to redirect mail for  local  recipients.
+       /etc/aliases  is  a  text file which is roughly compatible with Sendmail.
+       The file should contain lins of the form
+       name: address, address, ...
+       The name is a local address without domain part. All  local  domains  are
+       handled  equally.  For  more  detailed  documentation,  please  refer  to
+       /usr/share/doc/exim4-base/spec.txt.gz,     chapter     22,     and     to
+       /usr/share/doc/exim4-base/README.Debian.gz.  Please  note  that it is not
+       possible to use delivery to arbitrary files, directories  and  to  pipes.
+       This is forbidden in Debian&apos;s exim4 default configuration.
+
+       You  should  at  least set up an alias for postmaster in the /etc/aliases
+       file.
+
+/etc/email-addresses
+       is used to rewrite the email addresses of  users.  This  is  particularly
+       useful for users who use their ISP&apos;s domain for email.
+
+       The file should contain lines of the form
+
+       user: someone@isp.com
+       otheruser: someoneelse@anotherisp.com
+
+       This  way  emails from user will appear to be from someone@isp.com to the
+       outside world. Technically, the from,  reply-to,  and  sender  addresses,
+       along with the envelope sender, are rewritten for users that appear to be
+       in the local domain.
+
+
+/etc/exim4/local_host_blacklist
+       is an optional file containing a list of IP addresses, networks and  host
+       names  whose  messages  will  be  denied  with the error message &quot;locally
+       blacklisted&quot;. This is a full exim 4 host list, and all available features
+       can  be  used.  This  includes  negative  items, and so it is possible to
+       exclude addresses from being blacklisted. For convenience,  as  an  addi&#8208;
+       tional  method  to  whitelist  addresses  from being blocked, an explicit
+       whitelist is read in from /etc/exim4/host_local_deny_exceptions.  Entries
+       in the whitelist override corresponding blacklist entries.
+
+       In the blacklist, the trick is to read a line break as &quot;or&quot; if it follows
+       a positive item, and as &quot;and&quot; if it follows a negative item.
+
+       For example, a /etc/exim4/local_host_blacklist
+
+       192.168.10.0/24
+       !172.16.10.128/26
+       172.16.10.0/24
+       10.0.0.0/8
+
+       Exim just evaluates left to right (or up-down in the  file  listing  con&#8208;
+       text),  so  you  don&apos;t get the same kind of operator binding as in a pro&#8208;
+       gramming language.
+
+
+/etc/exim4/host_local_deny_exceptions
+       contains a list of IP addresses, networks and host names  whose  messages
+       will    be   accepted   despite   the   address   is   also   listed   in
+       /etc/exim4/local_host_blacklist, overriding a blacklisting.
+
+
+/etc/exim4/local_sender_blacklist
+       is an optional files containing a list of envelope senders whose messages
+       will  be  denied with the error message &quot;locally blacklisted&quot;.  This is a
+       full exim 4 address list, and all available features can  be  used.  This
+       includes  negative items, and so it is possible to exclude addresses from
+       being blacklisted. For convenience, as an additional method to  whitelist
+       addresses  from  being  blocked,  an  explicit  whitelist is read in from
+       /etc/exim4/sender_local_deny_exceptions. Entries in the  whitelist  over&#8208;
+       ride corresponding blacklist entries.
+
+       In the blacklist, the trick is to read a line break as &quot;or&quot; if it follows
+       a positive item, and as &quot;and&quot; if it follows a negative item.
+
+       For example, a /etc/exim4/local_sender_blacklist
+
+       domain1.example
+       !local@domain2.example
+       domain2.example
+       domain3.example
+
+       Exim just evaluates left to right (or up-down in the  file  listing  con&#8208;
+       text),  so  you  don&apos;t get the same kind of operator binding as in a pro&#8208;
+       gramming language.
+
+
+/etc/exim4/sender_local_deny_exceptions
+       is an optional file containing a list of envelope senders whose  messages
+       will   be   accepted   despite   the   address   being   also  listed  in
+       /etc/exim4/local_sender_blacklist, overriding a blacklisting.
+
+
+/etc/exim4/local_sender_callout
+       is an optional file containing a list of envelope senders whose  messages
+       are  subject  to sender verification with a callout. This is a full exim4
+       address list, and all available features can be used.
+
+
+/etc/exim4/local_rcpt_callout
+       is an optional file containing a list of envelope  recipients  for  which
+       incoming  messages  are subject to recipient verification with a callout.
+       This is a full exim4 address list, and  all  available  features  can  be
+       used.
+&#12;/etc/exim4/local_domain_dnsbl_whitelist
+       is  an optional file containing a list of envelope senders whose messages
+       are exempt from blacklisting via a domain-based DNSBL.  This  is  a  full
+       exim4 address list, and all available features can be used.  This feature
+       is intended to be used in case of a domain-based DNSBL  being  too  heavy
+       handed,  for  example listing entire top-level domains for their registry
+       policies.
+
+
+/etc/exim4/hubbed_hosts
+       is an optional file containing a list of route_data records which can  be
+       used to override or augment MX information from the DNS. This is particu&#8208;
+       larly useful for mail hubs which are highest-priority MX for a domain  in
+       the DNS but are not final destination of the messages, passing them on to
+       a host which is not publicly reachable, or to temporarily fix mail  rout&#8208;
+       ing in case of broken DNS setups.
+
+       The  file should contain key-value pairs of domain pattern and route data
+       of the form
+
+       domain: host-list options
+       dict.ref.example:  mail-1.ref.example:mail-2.ref.example
+       foo.example: internal.mail.example.com
+       bar.example: 192.168.183.3
+
+       which will cause mail for foo.example to  be  sent  to  the  host  inter&#8208;
+       nal.mail.example  (IP  address  derived  from A record only), and mail to
+       bar.example to be sent to 192.168.183.3.
+
+       See spec.txt chapter 20.3 through 20.7 for a more detailed explanation of
+       host list format and available options.
+
+
+/etc/exim4/passwd
+       contains account and password data for SMTP authentication when the local
+       exim is SMTP server and clients authenticate to the local exim.
+
+       The file should contain lines of the form
+
+       username:crypted-password:clear-password
+
+       crypted-password is the crypt(3)-created hash of your password. You  can,
+       for  example, use the mkpasswd program from the whois package to create a
+       crypted password. It is recommended to use md5 hashing, with mkpasswd  -H
+       md5.
+
+       clear-password  is only necessary if you want to offer CRAM-MD5 authenti&#8208;
+       cation. If you don&apos;t plan on doing so, the third column  can  be  omitted
+       completely.
+
+       This  file  must  be  readable for the Debian-exim user and should not be
+       readable for others. Recommended file mode is root:Debian-exim 640.
+
+
+/etc/exim4/passwd.client
+       contains account and password data for SMTP authentication when  exim  is
+       authenticating as a client to some remote server.
+
+       The file should contain lines of the form
+
+       target.mail.server.example:login-user-name:password
+
+       which  will  cause  exim to use login-user-name and password when sending
+       messages   to   a   server   with   the   canonical   host   name    tar&#8208;
+       get.mail.server.example.   Please  note  that this does not configure the
+       mail server to send to (this is determined in Debconf), but only  creates
+       the correlation between host name and authentication credentials to avoid
+       exposing passwords to the wrong host.
+
+       Please note that target.mail.server.example is currently the  value  that
+       exim  can  read  from  reverse DNS: It first follows the host name of the
+       target system until it finds an IP address, and then looks up the reverse
+       DNS  for  that  IP  address  to  use the outcome of this query (or the IP
+       address   itself   should    the    query    fail)    as    index    into
+       /etc/exim4/passwd.client.
+
+       This goes inevitably wrong if the host name of the mail server is a CNAME
+       (a DNS alias), or the reverse lookup does not fit the forward one.
+
+       Currently, you need to manually lookup all reverse DNS names for  all  IP
+       addresses that your SMTP server host name points to, for example by using
+       the host command.  If the SMTP smarthost alias expands to  multiple  IPs,
+       you need to have multiple lines for all the hosts.  When your ISP changes
+       the alias, you will need to manually fix that.
+
+       You may minimize this trouble by using  a  wild  card  entry  or  regular
+       expressions,  thus  reducing  the  risk  of divulging the password to the
+       wrong SMTP server while reducing the number of necessary  lines.   For  a
+       deeper discussion, see the Debian BTS #244724.
+
+       password  is  your  SMTP password in clear text. If you do not know about
+       your SMTP password, you can try using  your  POP3  password  as  a  first
+       guess.
+
+       This  file  must  be  readable for the Debian-exim user and should not be
+       readable for others. Recommended file mode is root:Debian-exim 640.
+
+       # example for CONFDIR/passwd.client
+       # this will only match if the server&apos;s generic name matches exactly
+       mail.server.example:user:password
+       # this will deliver the password to any server
+       *:username:password
+       # this will deliver the password to servers whose generic name ends in
+       # mail.server.example
+       *.mail.server.example:user:password
+       # this will deliver the password to servers whose generic name matches
+       # the regular expression
+       ^smtp[0-9]*.mail.server.example:user:password
+
+
+/etc/exim4/exim.crt
+       contains the certificate that exim  uses  to  initiate  TLS  connections.
+       This    is    public    information    and   can   be   world   readable.
+       /usr/share/doc/exim4-base/examples/exim-gencert can be used to generate a
+       private key and self-signed certificate.
+
+
+/etc/exim4/exim.key
+       contains  the private key belonging to the certificate in exim.crt.  This
+       file&apos;s contents must be kept secret and should have mode root:Debian-exim
+       640.  /usr/share/doc/exim4-base/examples/exim-gencert can be used to gen&#8208;
+       erate a private key and self-signed certificate.
+
+
+BUGS
+       Plenty. Please report them through the Debian BTS
+
+       This manual page needs a major re-work. If somebody  knows  better  groff
+       than  us  and  has  more  experience in writing manual pages, any patches
+       would be greatly appreciated.
+&#12;
+SEE ALSO
+       exim(8),
+       update-exim4.conf(8),
+       /usr/share/doc/exim4-base/,
+       and  for  general  notes  and  details  about  interaction  with  debconf
+       /usr/share/doc/exim4-base/README.Debian.gz
+
+
+AUTHOR
+       Marc Haber &lt;mh+debian-packages@zugschlus.de&gt; with help from Ross Boylan.
+
+
+
+
+EXIM4                             Jun 21, 2006                    EXIM4_FILES(5)
+
+</pre></body></html>

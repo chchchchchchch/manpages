@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MIME::Parser::Results - results of the last entity parsed</title></head>
+<body><pre>
+
+MIME::Parser::Results(3User Contributed Perl DocumentaMIME::Parser::Results(3pm)
+
+
+
+NAME
+       MIME::Parser::Results - results of the last entity parsed
+
+SYNOPSIS
+       Before reading further, you should see MIME::Parser to make sure that you
+       understand where this module fits into the grand scheme of things.  Go
+       on, do it now.  I&apos;ll wait.
+
+       Ready?  Ok...
+
+          ### Do parse, get results:
+          my $entity = eval { $parser-&gt;parse(\*STDIN); };
+          my $results  = $parser-&gt;results;
+
+          ### Get all messages logged:
+          @msgs = $results-&gt;msgs;
+
+          ### Get messages of specific types (also tests if there were problems):
+          $had_errors   = $results-&gt;errors;
+          $had_warnings = $results-&gt;warnings;
+
+          ### Get outermost header:
+          $top_head  = $results-&gt;top_head;
+
+DESCRIPTION
+       Results from the last MIME::Parser parse.
+
+PUBLIC INTERFACE
+       new Constructor.
+
+       msgs
+           Instance method.  Return all messages that we logged, in order.
+           Every message is a string beginning with its type followed by &quot;: &quot;;
+           the current types are &quot;debug&quot;, &quot;warning&quot;, and &quot;error&quot;.
+
+       errors
+           Instance method.  Return all error messages that we logged, in order.
+           A convenience front-end onto msgs().
+
+       warnings
+           Instance method.  Return all warning messages that we logged, in
+           order.  A convenience front-end onto msgs().
+
+       top_head
+           Instance method.  Return the topmost header, if we were able to read
+           it.  This may be useful if the parse fails.
+
+SEE ALSO
+       MIME::Tools, MIME::Parser
+
+AUTHOR
+       Eryq (eryq@zeegee.com), ZeeGee Software Inc (http://www.zeegee.com).
+
+       All rights reserved.  This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2008-06-30         MIME::Parser::Results(3pm)
+
+</pre></body></html>

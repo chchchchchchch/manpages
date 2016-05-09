@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Image::Magick - objected-oriented Perl interface to ImageMagick. Use it to read, manipulate, or write an image or image sequence from within a Perl script.</title></head>
+<body><pre>
+
+Magick(3pm)            User Contributed Perl Documentation           Magick(3pm)
+
+
+
+NAME
+       Image::Magick - objected-oriented Perl interface to ImageMagick. Use it
+       to read, manipulate, or write an image or image sequence from within a
+       Perl script.
+
+SYNOPSIS
+         use Image::Magick;
+         $p = new Image::Magick;
+         $p-&gt;Read(&quot;imagefile&quot;);
+         $p-&gt;Set(attribute =&gt; value, ...)
+         ($a, ...) = $p-&gt;Get(&quot;attribute&quot;, ...)
+         $p-&gt;routine(parameter =&gt; value, ...)
+         $p-&gt;Mogrify(&quot;Routine&quot;, parameter =&gt; value, ...)
+         $p-&gt;Write(&quot;filename&quot;);
+
+DESCRIPTION
+       This Perl extension allows the reading, manipulation and writing of a
+       large number of image file formats using the ImageMagick library.  It was
+       originally developed to be used by CGI scripts for Web pages.
+
+       A web page has been set up for this extension. See:
+
+                file:///usr/share/doc/imagemagick/www/perl-magick.html
+                http://www.imagemagick.org/script/perl-magick.php
+
+       If you have problems, go to
+
+          http://www.imagemagick.org/discourse-server/viewforum.php?f=7
+
+AUTHOR
+       Kyle Shorter   magick-users@imagemagick.org
+
+BUGS
+       Has all the bugs of ImageMagick and much, much more!
+
+SEE ALSO
+       perl(1).
+
+
+
+perl v5.14.2                       2014-03-08                        Magick(3pm)
+
+</pre></body></html>

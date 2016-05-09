@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Data::Compare::Plugins - how to extend Data::Compare</title></head>
+<body><pre>
+
+Data::Compare::Plugins(User Contributed Perl DocumentData::Compare::Plugins(3pm)
+
+
+
+NAME
+       Data::Compare::Plugins - how to extend Data::Compare
+
+DESCRIPTION
+       Data::Compare natively handles several built-in data types - scalars,
+       references to scalars, references to arrays, references to hashes,
+       references to subroutines, compiled regular expressions, and globs.  For
+       objects, it tries to Do The Right Thing and compares the underlying data
+       type.  However, this is not always what you want.  This is especially
+       true if you have complex objects which overload stringification and/or
+       numification.
+
+       Hence we allow for plugins.
+
+FINDING PLUGINS
+       Data::Compare will try to load any module installed on your system under
+       the various @INC/Data/Compare/Plugins/ directories.  If there is a
+       problem loading any of them, an appropriate warning will be issued.
+
+       Because of how we find plugins, no plugins are available when running in
+       &quot;taint&quot; mode.
+
+WRITING PLUGINS
+       Internally, plugins are &quot;require&quot;d into Data::Compare.  This means that
+       they need to evaluate to true.  We make use of that true value.  Where
+       normally you just put:
+
+           1;
+
+       at the end of an included file, you should instead ensure that you return
+       a reference to an array.  This is treated as being true so satisfies
+       perl, and is a damned sight more useful.
+
+       Inside that array should be either a description of what this plugin is
+       to do, or references to several arrays containing such descriptions.  A
+       description consists of two or three items.  First a string telling us
+       what the first data-type handled by your plugin is.  Second, (and
+       optional, defaulting to the same as the first) the second data-type to
+       compare.  To handle comparisons to ordinary scalars, give the empty
+       string for the data-type, ie:
+
+           [&apos;MyType&apos;, &apos;&apos;, sub { ...}]
+
+       Third and last, we need a reference to the subroutine which does the
+       comparison.  That subroutine should expect to take two parameters, which
+       will be of the specified type.  It should return 1 if they compare the
+       same, or 0 if they compare different.
+
+       Be aware that while you might give a description like:
+
+           [&apos;Type1&apos;, &apos;Type2&apos;, sub { ... }]
+
+       this will handle both comparing Type1 to Type2, and comparing Type2 to
+       Type1.  ie, comparison is commutative.
+
+       If you want to use Data::Compare&apos;s own comparison function from within
+       your handler (to, for example, compare a data structure that you have
+       stored somewhere in your object) then you will need to call it as
+       Data::Compare::Compare.  However, you must be careful to avoid infinite
+       recursion by calling D::C::Compare which in turn calls back to your
+       handler.
+&#12;       The name of your plugins does not matter, only that it lives in one of
+       those directories.  Of course, giving it a sensible name means that the
+       usual installation mechanisms will put it in the right place, and
+       meaningful names will make it easier to debug your code.
+
+       For an example, look at the plugin that handles Scalar::Properties
+       objects, which is distributed with Data::Compare.
+
+DISTRIBUTION
+       Provided that the above rules are followed I see no reason for you to not
+       upload your plugin to the CPAN yourself.  You will need to make
+       Data::Compare a pre-requisite, so that the CPAN.pm installer does the
+       right thing.
+
+       Alternatively, if you would prefer me to roll your plugin in with the
+       Data::Compare distribution, I&apos;d be happy to do so provided that the code
+       is clear and well-commented, and that you include tests and
+       documentation.
+
+SEE ALSO
+       Data::Compare
+
+       Data::Compare::Plugins::Scalar::Properties
+
+AUTHOR
+       Copyright (c) 2004 David Cantrell &lt;david@cantrell.org.uk&gt;.  All rights
+       reserved.  This program is free software; you can redistribute it and/or
+       modify it under the same terms as Perl itself.
+
+
+
+perl v5.12.4                       2009-03-07        Data::Compare::Plugins(3pm)
+
+</pre></body></html>

@@ -1,0 +1,162 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip-tunnel - tunnel configuration</title></head>
+<body><pre>
+
+IP-TUNNEL(8)                          Linux                         IP-TUNNEL(8)
+
+
+
+NAME
+       ip-tunnel - tunnel configuration
+
+SYNOPSIS
+       ip [ OPTIONS ] tunnel  { COMMAND | help }
+
+       ip tunnel { add | change | del | show | prl } [ NAME ]
+               [ mode MODE ] [ remote ADDR ] [ local ADDR ]
+               [ [i|o]seq ] [ [i|o]key KEY ] [ [i|o]csum ] ]
+               [ encaplimit ELIM ] [ ttl TTL ]
+               [ tos TOS ] [ flowlabel FLOWLABEL ]
+               [ prl-default ADDR ] [ prl-nodefault ADDR ] [ prl-delete ADDR ]
+               [ [no]pmtudisc ] [ dev PHYS_DEV ] [ dscp inherit ]
+
+       MODE :=  { ipip | gre | sit | isatap | ip6ip6 | ipip6 | any }
+
+       ADDR := { IP_ADDRESS | any }
+
+       TOS := { NUMBER | inherit }
+
+       ELIM := { none | 0..255 }
+
+       TTL := { 1..255 | inherit }
+
+       KEY := { DOTTED_QUAD | NUMBER }
+
+       TIME := NUMBER[s|ms]
+
+
+DESCRIPTION
+       tunnel objects are tunnels, encapsulating packets in IP packets and then
+       sending them over the IP infrastructure.  The encapulating (or outer)
+       address family is specified by the -f option.  The default is IPv4.
+
+
+   ip tunnel add - add a new tunnel
+   ip tunnel change - change an existing tunnel
+   ip tunnel delete - destroy a tunnel
+       name NAME (default)
+              select the tunnel device name.
+
+
+       mode MODE
+              set the tunnel mode. Available modes depend on the encapsulating
+              address family.
+              Modes for IPv4 encapsulation available: ipip, sit, isatap and gre.
+              Modes for IPv6 encapsulation available: ip6ip6, ipip6 and any.
+
+
+       remote ADDRESS
+              set the remote endpoint of the tunnel.
+
+
+       local ADDRESS
+              set the fixed local address for tunneled packets.  It must be an
+              address on another interface of this host.
+
+
+       ttl N  set a fixed TTL N on tunneled packets.  N is a number in the range
+              1--255. 0 is a special value meaning that packets inherit the TTL
+              value.  The default value for IPv4 tunnels is: inherit.  The
+              default value for IPv6 tunnels is: 64.
+
+
+
+       tos T
+
+       dsfield T
+
+       tclass T
+              set a fixed TOS (or traffic class in IPv6) T on tunneled packets.
+              The default value is: inherit.
+
+
+       dev NAME
+              bind the tunnel to the device NAME so that tunneled packets will
+              only be routed via this device and will not be able to escape to
+              another device when the route to endpoint changes.
+
+
+       nopmtudisc
+              disable Path MTU Discovery on this tunnel.  It is enabled by
+              default.  Note that a fixed ttl is incompatible with this option:
+              tunnelling with a fixed ttl always makes pmtu discovery.
+
+
+       key K
+
+       ikey K
+
+       okey K ( only GRE tunnels ) use keyed GRE with key K. K is either a num&#8208;
+              ber or an IP address-like dotted quad.  The key parameter sets the
+              key to use in both directions.  The ikey and okey parameters set
+              different keys for input and output.
+
+
+       csum, icsum, ocsum
+              ( only GRE tunnels ) generate/require checksums for tunneled pack&#8208;
+              ets.  The ocsum flag calculates checksums for outgoing packets.
+              The icsum flag requires that all input packets have the correct
+              checksum.  The csum flag is equivalent to the combination icsum
+              ocsum.
+
+
+       seq, iseq, oseq
+              ( only GRE tunnels ) serialize packets.  The oseq flag enables
+              sequencing of outgoing packets.  The iseq flag requires that all
+              input packets are serialized.  The seq flag is equivalent to the
+              combination iseq oseq.  It isn&apos;t work. Don&apos;t use it.
+
+
+       dscp inherit
+              ( only IPv6 tunnels ) Inherit DS field between inner and outer
+              header.
+
+
+       encaplim ELIM
+              ( only IPv6 tunnels ) set a fixed encapsulation limit.  Default is
+              4.
+
+
+       flowlabel FLOWLABEL
+              ( only IPv6 tunnels ) set a fixed flowlabel.
+
+
+   ip tunnel prl - potential router list (ISATAP only)
+       dev NAME
+              mandatory device name.
+&#12;
+       prl-default ADDR
+
+       prl-nodefault ADDR
+
+       prl-delete ADDR
+              Add or delete ADDR as a potential router or default router.
+
+
+   ip tunnel show - list tunnels
+       This command has no arguments.
+
+
+SEE ALSO
+       ip(8)
+
+
+AUTHOR
+       Original Manpage by Michail Litvak &lt;mci@owl.openwall.com&gt;
+
+
+
+iproute2                           20 Dec 2011                      IP-TUNNEL(8)
+
+</pre></body></html>

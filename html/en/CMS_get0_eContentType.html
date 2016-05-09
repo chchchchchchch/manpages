@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>CMS_get0_type, CMS_set1_eContentType, CMS_get0_eContentType - get and set CMS content types</title></head>
+<body><pre>
+
+CMS_get0_type(3SSL)                  OpenSSL                 CMS_get0_type(3SSL)
+
+
+
+NAME
+        CMS_get0_type, CMS_set1_eContentType, CMS_get0_eContentType - get and set CMS content types
+
+SYNOPSIS
+        #include &lt;openssl/cms.h&gt;
+
+        const ASN1_OBJECT *CMS_get0_type(CMS_ContentInfo *cms);
+        int CMS_set1_eContentType(CMS_ContentInfo *cms, const ASN1_OBJECT *oid);
+        const ASN1_OBJECT *CMS_get0_eContentType(CMS_ContentInfo *cms);
+
+DESCRIPTION
+       CMS_get0_type() returns the content type of a CMS_ContentInfo structure
+       as and ASN1_OBJECT pointer. An application can then decide how to process
+       the CMS_ContentInfo structure based on this value.
+
+       CMS_set1_eContentType() sets the embedded content type of a
+       CMS_ContentInfo structure. It should be called with CMS functions with
+       the CMS_PARTIAL flag and before the structure is finalised, otherwise the
+       results are undefined.
+
+       ASN1_OBJECT *CMS_get0_eContentType() returns a pointer to the embedded
+       content type.
+
+NOTES
+       As the 0 implies CMS_get0_type() and CMS_get0_eContentType() return
+       internal pointers which should not be freed up. CMS_set1_eContentType()
+       copies the supplied OID and it should be freed up after use.
+
+       The ASN1_OBJECT values returned can be converted to an integer NID value
+       using OBJ_obj2nid(). For the currently supported content types the
+       following values are returned:
+
+        NID_pkcs7_data
+        NID_pkcs7_signed
+        NID_pkcs7_digest
+        NID_id_smime_ct_compressedData:
+        NID_pkcs7_encrypted
+        NID_pkcs7_enveloped
+
+RETURN VALUES
+       CMS_get0_type() and CMS_get0_eContentType() return and ASN1_OBJECT
+       structure.
+
+       CMS_set1_eContentType() returns 1 for success or 0 if an error occurred.
+       The error can be obtained from ERR_get_error(3).
+
+SEE ALSO
+       ERR_get_error(3)
+
+HISTORY
+       CMS_get0_type(), CMS_set1_eContentType() and CMS_get0_eContentType() were
+       all first added to OpenSSL 0.9.8
+
+
+
+1.0.1e                             2013-02-11                CMS_get0_type(3SSL)
+
+</pre></body></html>

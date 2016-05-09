@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>composeglyphs - generate an encoding vector or new font for postscript</title></head>
+<body><pre>
+
+composeglyphs(1)                     Debian                     composeglyphs(1)
+
+
+
+NAME
+       composeglyphs - generate an encoding vector or new font for postscript
+
+SYNOPSIS
+       composeglyphs -e encoding.afm -E encoding.ps
+
+       composeglyphs  -i  input.afm  -o output.ps -c composite.afm -n newname -e
+       base_encoding.afm -t target_encoding.afm -a output.afm
+
+DESCRIPTION
+       composeglyphs is a script to generate either an encoding vector or a  new
+       font  for  postscript.  It requires a pre-existing AFM and allows for the
+       use of composite characters that that AFM does not already provide.
+
+OPTIONS
+       -e encoding.afm
+              The base encoding AFM to use.
+
+       -E encoding.ps
+              The encoding vector to output.
+
+       -i input.afm
+              The AFM of the original font.
+
+       -o output.ps
+              The font program to generate.
+
+       -c composite.afm
+              The AFM containing supplementary composite character information.
+
+       -n newname
+              The name of the new font.
+
+       -t target_encoding.afm
+              The target encoding.
+
+       -a output.afm
+              The name of the AFM file to generate.
+
+NOTES
+       composeglyphs is a part of Ogonkify, which comes with the a2ps  distribu&#8208;
+       tion.
+
+       If  you create new AFMs or modify existing ones, the author asks that you
+       kindly send him a copy so that he may include them in the distribution.
+
+AUTHOR
+       Juliusz Chroboczek &lt;jec@dcs.ed.ac.uk&gt;
+
+SEE ALSO
+       a2ps(1), ogonkify(1)
+
+       The full documentation for Ogonkify is maintained as  a  Texinfo  manual.
+       If  the  info  and a2ps programs are properly installed at your site, the
+       command
+
+              info Ogonkify
+
+       should give you access to the complete manual.
+
+
+
+a2ps                                May 2003                    composeglyphs(1)
+
+</pre></body></html>

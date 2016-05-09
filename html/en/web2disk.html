@@ -1,0 +1,79 @@
+<html>
+<head><meta charset=utf-8/>
+<title>web2disk - part of calibre</title></head>
+<body><pre>
+
+WEB2DISK(1)                          calibre                         WEB2DISK(1)
+
+
+
+NAME
+       web2disk - part of calibre
+
+SYNOPSIS
+       web2disk  URL
+
+DESCRIPTION
+       Where URL is for example http://google.com
+
+       Whenever you pass arguments to web2disk that have spaces in them, enclose
+       the arguments in quotation marks.
+
+OPTIONS
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show this help message and exit
+
+       -d, --base-dir
+              Base directory into which URL is saved. Default is .
+
+       -t, --timeout
+              Timeout in seconds  to  wait  for  a  response  from  the  server.
+              Default: 10.0 s
+
+       -r, --max-recursions
+              Maximum number of levels to recurse i.e. depth of links to follow.
+              Default 1
+
+       -n, --max-files
+              The maximum number of files to  download.  This  only  applies  to
+              files from &lt;a href&gt; tags. Default is 2147483647
+
+       --delay
+              Minimum  interval  in seconds between consecutive fetches. Default
+              is 0 s
+
+       --encoding
+              The character encoding for the websites you are  trying  to  down&#8208;
+              load. The default is to try and guess the encoding.
+
+       --match-regexp
+              Only  links  that  match this regular expression will be followed.
+              This option can be specified multiple times, in which case as long
+              as  a link matches any one regexp, it will be followed. By default
+              all links are followed.
+
+       --filter-regexp
+              Any link that matches this regular  expression  will  be  ignored.
+              This option can be specified multiple times, in which case as long
+              as any regexp matches a link, it will be ignored. By  default,  no
+              links  are  ignored.  If  both  filter regexp and match regexp are
+              specified, then filter regexp is applied first.
+
+       --dont-download-stylesheets
+              Do not download CSS stylesheets.
+
+       --verbose
+              Show detailed output information. Useful for debugging
+
+SEE ALSO
+       The User Manual is available at http://manual.calibre-ebook.com
+&#12;       Created by Kovid Goyal &lt;kovid@kovidgoyal.net&gt;
+
+
+
+web2disk (calibre 0.8.51)         January 2013                       WEB2DISK(1)
+
+</pre></body></html>

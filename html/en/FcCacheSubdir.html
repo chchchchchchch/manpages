@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcCacheSubdir - Return the i'th subdirectory.</title></head>
+<body><pre>
+
+FcCacheSubdir(3)                                                FcCacheSubdir(3)
+
+
+
+NAME
+       FcCacheSubdir - Return the i&apos;th subdirectory.
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       const FcChar8 * FcCacheSubdir (const FcCache *cache, inti);
+
+DESCRIPTION
+       The  set  of  subdirectories  stored  in a cache file are indexed by this
+       function, i should range from 0 to n-1, where n is the return value  from
+       FcCacheNumSubdir.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                 FcCacheSubdir(3)
+
+</pre></body></html>

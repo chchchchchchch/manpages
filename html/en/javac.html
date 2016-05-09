@@ -1,0 +1,994 @@
+<html>
+<head><meta charset=utf-8/>
+<title>javac - Java programming language compiler</title></head>
+<body><pre>
+
+javac(1)                                                                javac(1)
+
+
+
+Name
+       javac - Java programming language compiler
+
+SYNOPSIS
+               javac [ options ] [ sourcefiles ] [ classes ] [ @argfiles ]
+
+
+
+       Arguments may be in any order.
+
+          options
+             Command-line options.
+
+          sourcefiles
+             One or more source files to be compiled (such as MyClass.java).
+
+          classes
+             One  or  more  classes  to  be  processed  for annotations (such as
+             MyPackage.MyClass).
+
+          @argfiles
+             One or more files that lists  options  and  source  files.  The  -J
+             options are not allowed in these files.
+
+
+DESCRIPTION
+       The javac tool reads class and interface definitions, written in the Java
+       programming language, and compiles them into bytecode class files. It can
+       also process annotations in Java source files and classes.
+
+       There are two ways to pass source code file names to javac:
+
+          o For  a  small  number of source files, simply list the file names on
+            the command line.
+
+          o For a large number of source files, list the file names in  a  file,
+            separated  by  blanks or line breaks. Then use the list file name on
+            the javac command line, preceded by an @ character.
+
+
+       Source code file names must have .java suffixes, class  file  names  must
+       have  .class  suffixes,  and  both  source and class files must have root
+       names that identify the class. For example, a class called MyClass  would
+       be written in a source file called MyClass.java and compiled into a byte&#8208;
+       code class file called MyClass.class.
+
+       Inner class definitions produce additional class files. These class files
+       have   names   combining  the  inner  and  outer  class  names,  such  as
+       MyClass$MyInnerClass.class.
+
+       You should arrange source files in a directory tree that  reflects  their
+       package  tree.  For  example,  if  you  keep  all  your  source  files in
+       /workspace, the source code for com.mysoft.mypack.MyClass  should  be  in
+       /workspace/com/mysoft/mypack/MyClass.java.
+
+       By  default,  the  compiler puts each class file in the same directory as
+       its source file. You can specify a separate destination directory with -d
+       (see Options, below).
+
+OPTIONS
+       The compiler has a set of standard options that are supported on the cur&#8208;
+       rent development environment and will be supported in future releases. An
+       additional  set  of non-standard options are specific to the current vir&#8208;
+       tual machine and compiler implementations and are subject  to  change  in
+       the future. Non-standard options begin with -X.
+
+   Standard Options
+          -Akey[=value]
+             Options to pass to annotation processors. These are not interpreted
+             by javac directly, but are made available  for  use  by  individual
+             processors. key should be one or more identifiers separated by &quot;.&quot;.
+
+          -cp path or -classpath path
+             Specify where to find user class files, and (optionally) annotation
+             processors and source files. This class  path  overrides  the  user
+             class path in the CLASSPATH environment variable. If neither CLASS&#8208;
+             PATH, -cp nor -classpath is specified, the user class path consists
+             of  the  current  directory.  See  Setting  the Class Path for more
+             details.
+             &gt;If the -sourcepath option is not specified, the user class path is
+             also searched for source files.
+             If  the  -processorpath  option is not specified, the class path is
+             also searched for annotation processors.
+
+          -Djava.ext.dirs=directories
+             Override the location of installed extensions.
+
+          -Djava.endorsed.dirs=directories
+             Override the location of endorsed standards path.
+
+          -d directory
+             Set the destination directory for class files. The  directory  must
+             already  exist;  javac  will not create it. If a class is part of a
+             package, javac puts the class file in a subdirectory reflecting the
+             package  name,  creating directories as needed. For example, if you
+             specify -d /home/myclasses and  the  class  is  called  com.mypack&#8208;
+             age.MyClass,      then     the     class     file     is     called
+             /home/myclasses/com/mypackage/MyClass.class.
+             If -d is not specified, javac puts each class  files  in  the  same
+             directory as the source file from which it was generated.
+             Note:  The  directory specified by -d is not automatically added to
+             your user class path.
+
+          -deprecation
+             Show a description of each use or override of a  deprecated  member
+             or class. Without -deprecation, javac shows a summary of the source
+             files that use or override deprecated members or classes. -depreca&#8208;
+             tion is shorthand for -Xlint:deprecation.
+
+          -encoding encoding
+             Set  the  source  file  encoding name, such as EUC-JP and UTF-8. If
+             -encoding is not specified, the platform default converter is used.
+
+          -endorseddirs directories
+             Override the location of endorsed standards path.
+
+          -extdirs directories
+             Overrides the location of the ext directory. The directories  vari&#8208;
+             able  is a colon-separated list of directories. Each JAR archive in
+             the specified directories is searched for class files. All JAR  ar&#8208;
+             chives found are automatically part of the class path.
+             If you are cross-compiling (compiling classes against bootstrap and
+             extension classes of a  different  Java  platform  implementation),
+             this  option  specifies  the directories that contain the extension
+             classes. See Cross-Compilation Options for more information.
+
+          -g Generate all debugging information, including local  variables.  By
+             default, only line number and source file information is generated.
+
+          -g:none
+             Do not generate any debugging information.
+
+          -g:{keyword list}
+             Generate  only  some kinds of debugging information, specified by a
+             comma separated list of keywords. Valid keywords are:
+
+             source
+                Source file debugging information
+
+             lines
+                Line number debugging information
+
+             vars
+                Local variable debugging information
+
+          -help
+             Print a synopsis of standard options.
+
+          -implicit:{class,none}
+             Controls the generation of class files for implicitly loaded source
+             files.  To automatically generate class files, use -implicit:class.
+             To suppress class file  generation,  use  -implicit:none.  If  this
+             option  is  not specified, the default is to automatically generate
+             class files. In this case, the compiler will issue a warning if any
+             such  class files are generated when also doing annotation process&#8208;
+             ing. The warning will not be issued if this option is  set  explic&#8208;
+             itly. See Searching For Types.
+
+          -Joption
+             Pass  option  to  the  java  launcher called by javac. For example,
+             -J-Xms48m sets the startup memory to 48 megabytes. It is  a  common
+             convention  for  -J  to pass options to the underlying VM executing
+             applications written in Java.
+             Note: CLASSPATH, -classpath, -bootclasspath, and  -extdirs  do  not
+             specify  the classes used to run javac. Fiddling with the implemen&#8208;
+             tation of the compiler in this way is usually pointless and  always
+             risky. If you do need to do this, use the -J option to pass through
+             options to the underlying java launcher.
+
+          -nowarn
+             Disable warning messages. This has the same meaning as -Xlint:none.
+
+          -proc: {none,only}
+             Controls whether annotation processing and/or compilation is  done.
+             -proc:none  means  that  compilation takes place without annotation
+             processing. -proc:only means that  only  annotation  processing  is
+             done, without any subsequent compilation.
+
+          -processor class1[,class2,class3...]
+             Names  of  the  annotation  processors  to  run.  This bypasses the
+             default discovery process.
+
+          -processorpath path
+             Specify where to find annotation processors; if this option is  not
+             used, the class path will be searched for processors.
+
+          -s dir
+             Specify  the  directory  where to place generated source files. The
+             directory must already exist; javac will not create it. If a  class
+             is part of a package, the compiler puts the source file in a subdi&#8208;
+             rectory  reflecting  the  package  name,  creating  directories  as
+             needed. For example, if you specify -s /home/mysrc and the class is
+             called com.mypackage.MyClass, then the source file will  be  placed
+             in /home/mysrc/com/mypackage/MyClass.java.
+
+          -source release
+             Specifies the version of source code accepted. The following values
+             for release are allowed:
+
+             1.3
+                The compiler does not support  assertions,  generics,  or  other
+                language features introduced after Java SE 1.3.
+
+             1.4
+                The  compiler  accepts  code  containing  assertions, which were
+                introduced in Java SE 1.4.
+
+             1.5
+                The compiler accepts code containing generics and other language
+                features introduced in Java SE 5.
+
+             5  Synonym for 1.5.
+
+             1.6
+                No  language  changes  were  introduced  in  Java SE 6. However,
+                encoding errors in source  files  are  now  reported  as  errors
+                instead of warnings as in previous releases of Java SE.
+
+             6  Synonym for 1.6.
+
+             1.7
+                This  is  the default value. The compiler accepts code with fea&#8208;
+                tures introduced in Java SE 7.
+
+             7  Synonym for 1.7.
+
+          -sourcepath sourcepath
+             Specify the source code path to search for class or interface defi&#8208;
+             nitions. As with the user class path, source path entries are sepa&#8208;
+             rated by colons (:) and can be directories, JAR  archives,  or  ZIP
+             archives.  If  packages  are  used,  the local path name within the
+             directory or archive must reflect the package name.
+             Note: Classes found through the class path may be subject to  auto&#8208;
+             matic  recompilation if their sources are also found. See Searching
+             For Types.
+
+          -verbose
+             Verbose output. This includes information about each  class  loaded
+             and each source file compiled.
+
+          -version
+             Print version information.
+
+          -Werror
+             Terminate compilation if warnings occur.
+
+          -X Display information about non-standard options and exit.
+
+
+   Cross-Compilation Options
+       By  default,  classes  are  compiled  against the bootstrap and extension
+       classes of the platform that javac shipped with. But javac also  supports
+       cross-compiling,  where  classes  are  compiled  against  a bootstrap and
+       extension classes of a different  Java  platform  implementation.  It  is
+       important  to  use  -bootclasspath and -extdirs when cross-compiling; see
+       Cross-Compilation Example below.
+
+          -target version
+             Generate class files that target a specified  version  of  the  VM.
+             Class files will run on the specified target and on later versions,
+             but not on earlier versions of the VM. Valid targets are 1.1,  1.2,
+             1.3, 1.4, 1.5 (also 5), 1.6 (also 6), and 1.7 (also 7).
+
+          The default for -target depends on the value of -source:
+
+             o If -source is not specified, the value of -target is 1.7
+
+             o If -source is 1.2, the value of -target is 1.4
+
+             o If -source is 1.3, the value of -target is 1.4
+
+             o If -source is 1.5, the value of -target is 1.7
+
+             o If -source is 1.6, the value of -target is 1.7
+
+             o For  all  other  values  of  -source, the value of -target is the
+               value of -source.
+
+          -bootclasspath bootclasspath
+             Cross-compile against the specified set of boot  classes.  As  with
+             the  user  class  path,  boot  class  path entries are separated by
+             colons (:) and can be directories, JAR archives, or ZIP archives.
+
+
+   Non-Standard Options
+          -Xbootclasspath/p:path
+             Prepend to the bootstrap class path.
+
+          -Xbootclasspath/a:path
+             Append to the bootstrap class path.
+
+          -Xbootclasspath/:path
+             Override location of bootstrap class files.
+
+          -Xlint
+             Enable all recommended warnings.  In  this  release,  enabling  all
+             available warnings is recommended.
+
+          -Xlint:all
+             Enable  all  recommended  warnings.  In  this release, enabling all
+             available warnings is recommended.
+
+          -Xlint:none
+             Disable all warnings.
+
+          -Xlint:name
+             Enable warning name. See the section Warnings That Can  Be  Enabled
+             or  Disabled  with  -Xlint  Option  for  a list of warnings you can
+             enable with this option.
+
+          -Xlint:-name
+             Disable warning name. See the section Warnings That Can Be  Enabled
+             or  Disabled with -Xlint Option for a list of warnings you can dis&#8208;
+             able with this option.
+
+          -Xmaxerrs number
+             Set the maximum number of errors to print.
+
+          -Xmaxwarns number
+             Set the maximum number of warnings to print.
+
+          -Xstdout filename
+             Send compiler messages to the named file. By default, compiler mes&#8208;
+             sages go to System.err.
+
+          -Xprefer:{newer,source}
+             Specify  which  file to read when both a source file and class file
+             are found for a type. (See Searching For Types). If  -Xprefer:newer
+             is  used, it reads the newer of the source or class file for a type
+             (default). If the -Xprefer:source option is used, it  reads  source
+             file. Use -Xprefer:source when you want to be sure that any annota&#8208;
+             tion processors can access annotations declared  with  a  retention
+             policy of SOURCE.
+
+          -Xpkginfo:{always,legacy,nonempty}
+             Specify handling of package-info files
+
+          -Xprint
+             Print  out  textual representation of specified types for debugging
+             purposes; perform neither annotation  processing  nor  compilation.
+             The format of the output may change.
+
+          -XprintProcessorInfo
+             Print  information  about which annotations a processor is asked to
+             process.
+
+          -XprintRounds
+             Print information about initial and subsequent annotation  process&#8208;
+             ing rounds.
+
+
+   Warnings That Can Be Enabled or Disabled with -Xlint Option
+       Enable warning name with the option -Xlint:name, where name is one of the
+       following warning names. Similarly, you can disable warning name with the
+       option -Xlint:-name:
+
+          cast
+             Warn about unnecessary and redundant casts. For example:
+             String s = (String)&quot;Hello!&quot;
+
+          classfile
+             Warn about issues related to classfile contents.
+
+          deprecation
+             Warn about use of deprecated items. For example:
+                 java.util.Date myDate = new java.util.Date();
+                 int currentDay = myDate.getDay();
+             The method java.util.Date.getDay has been deprecated since JDK 1.1.
+
+          dep-ann
+             Warn  about  items  that are documented with an @deprecated Javadoc
+             comment, but do not have a @Deprecated annotation. For example:
+               /**
+                * @deprecated As of Java SE 7, replaced by {@link #newMethod()}
+                */
+
+               public static void deprecatedMethood() { }
+
+               public static void newMethod() { }
+
+          divzero
+             Warn about division by constant integer 0. For example:
+                 int divideByZero = 42 / 0;
+
+          empty
+             Warn about empty statements after if statements. For example:
+             class E {
+                 void m() {
+                     if (true) ;
+                 }
+             }
+
+          fallthrough
+             Check switch blocks for fall-through cases and  provide  a  warning
+             message  for  any that are found. Fall-through cases are cases in a
+             switch block, other than the last case in  the  block,  whose  code
+             does  not  include  a  break  statement, allowing code execution to
+             &quot;fall through&quot; from that case to the next case.  For  example,  the
+             code  following  the case 1 label in this switch block does not end
+             with a break statement:
+             switch (x) {
+             case 1:
+                    System.out.println(&quot;1&quot;);
+                    //  No break statement here.
+             case 2:
+                    System.out.println(&quot;2&quot;);
+             }
+             If the -Xlint:fallthrough flag were used when compiling this  code,
+             the compiler would emit a warning about &quot;possible fall-through into
+             case,&quot; along with the line number of the case in question.
+
+          finally
+             Warn about finally clauses that cannot complete normally. For exam&#8208;
+             ple:
+               public static int m() {
+                 try {
+                   throw new NullPointerException();
+                 } catch (NullPointerException e) {
+                   System.err.println(&quot;Caught NullPointerException.&quot;);
+                   return 1;
+                 } finally {
+                   return 0;
+                 }
+               }
+             The compiler generates a warning for finally block in this example.
+             When this method is called, it returns a  value  of  0,  not  1.  A
+             finally  block  always  executes  when the try block exits. In this
+             example, if control is transferred to the catch,  then  the  method
+             exits.  However,  the finally block must be executed, so it is exe&#8208;
+             cuted, even though control has already been transferred outside the
+             method.
+
+          options
+             Warn  about issues relating to the use of command line options. See
+             Cross-Compilation Example for an example of this kind of warning.
+
+          overrides
+             Warn about issues regarding method overrides. For example, consider
+             the following two classes:
+             public class ClassWithVarargsMethod {
+               void varargsMethod(String... s) { }
+             }
+             public class ClassWithOverridingMethod extends ClassWithVarargsMethod {
+               @Override
+               void varargsMethod(String[] s) { }
+             }
+             The compiler generates a warning similar to the following:
+             warning: [override] varargsMethod(String[]) in ClassWithOverriding&#8208;
+             Method    overrides    varargsMethod(String...)    in    ClassWith&#8208;
+             VarargsMethod; overriding method is missing &apos;...&apos;
+             When  the  compiler  encounters a varargs method, it translates the
+             varargs formal parameter into an array. In  the  method  ClassWith&#8208;
+             VarargsMethod.varargsMethod,  the  compiler  translates the varargs
+             formal parameter String... s to the formal parameter String[] s, an
+             array,  which matches the formal parameter of the method ClassWith&#8208;
+             OverridingMethod.varargsMethod.  Consequently,  this  example  com&#8208;
+             piles.
+
+          path
+             Warn  about  invalid path elements and nonexistent path directories
+             on the command line (with regards to the  class  path,  the  source
+             path, and other paths). Such warnings cannot be suppressed with the
+             @SuppressWarnings annotation. For example:
+             javac -Xlint:path -classpath /nonexistentpath Example.java
+
+          processing
+             Warn about issues regarding  annotation  processing.  The  compiler
+             generates  this warning if you have a class that has an annotation,
+             and you use an annotation processor that cannot handle that type of
+             exception.  For  example, the following is a simple annotation pro&#8208;
+             cessor:
+             Source file AnnoProc.java:
+             import java.util.*;
+             import javax.annotation.processing.*;
+             import javax.lang.model.*;
+             import javax.lang.model.element.*;
+
+             @SupportedAnnotationTypes(&quot;NotAnno&quot;)
+             public class AnnoProc extends AbstractProcessor {
+                 public boolean process(Set&lt;? extends TypeElement&gt; elems, RoundEnvironment renv) {
+                     return true;
+                 }
+
+                 public SourceVersion getSupportedSourceVersion() {
+                     return SourceVersion.latest();
+                 }
+             }
+             Source file AnnosWithoutProcessors.java:
+             @interface Anno { }
+
+             @Anno
+             class AnnosWithoutProcessors { }
+             The following commands compile the annotation  processor  AnnoProc,
+             then   run  this  annotation  processor  against  the  source  file
+             AnnosWithoutProcessors.java:
+             % javac AnnoProc.java
+             % javac -cp . -Xlint:processing -processor AnnoProc -proc:only AnnosWithoutProcessors.java
+             When the compiler runs the annotation processor against the  source
+             file  AnnosWithoutProcessors.java, it generates the following warn&#8208;
+             ing:
+             warning: [processing] No processor claimed  any  of  these  annota&#8208;
+             tions: Anno
+             To  resolve  this  issue, you can rename the annotation defined and
+             used in the class AnnosWithoutProcessors from Anno to NotAnno.
+
+          rawtypes
+             Warn about unchecked operations on raw types. The following  state&#8208;
+             ment generates a rawtypes warning:
+             void countElements(List l) { ... }
+             The following does not generate a rawtypes warning:
+             void countElements(List&lt;?&gt; l) { ... }
+             List is a raw type. However, List&lt;?&gt; is a unbounded wildcard param&#8208;
+             eterized type. Because  List  is  a  parameterized  interface,  you
+             should  always specify its type argument. In this example, the List
+             formal argument is specified with a unbounded wildcard (?)  as  its
+             formal  type  parameter,  which means that the countElements method
+             can accept any instantiation of the List interface.
+
+          serial
+             Warn about missing  serialVersionUID  definitions  on  serializable
+             classes. For example:
+             public class PersistentTime implements Serializable
+             {
+               private Date time;
+
+                public PersistentTime() {
+                  time = Calendar.getInstance().getTime();
+                }
+
+                public Date getTime() {
+                  return time;
+                }
+             }
+             The compiler generates the following warning:
+             warning:  [serial] serializable class PersistentTime has no defini&#8208;
+             tion of serialVersionUID
+             If a serializable class does not explicitly declare a  field  named
+             serialVersionUID,  then  the serialization runtime will calculate a
+             default serialVersionUID value for  that  class  based  on  various
+             aspects of the class, as described in the Java Object Serialization
+             Specification. However, it is strongly recommended that all serial&#8208;
+             izable  classes  explicitly declare serialVersionUID values because
+             the default process of computing serialVersionUID vales  is  highly
+             sensitive  to  class  details  that  may vary depending on compiler
+             implementations, and can thus result in unexpected  InvalidClassEx&#8208;
+             ceptions  during deserialization. Therefore, to guarantee a consis&#8208;
+             tent serialVersionUID value across different Java  compiler  imple&#8208;
+             mentations,  a  serializable  class  must declare an explicit seri&#8208;
+             alVersionUID value.
+
+          static
+             Warn about issues relating to use of statics. For example:
+             class XLintStatic {
+                 static void m1() { }
+                 void m2() { this.m1(); }
+             }
+             The compiler generates the following warning:
+             warning: [static] static method should be qualified by type name, XLintStatic, instead of by an expression
+             To resolve this issue, you can call the static method  m1  as  fol&#8208;
+             lows:
+             XLintStatic.m1();
+             Alternatively,  you can remove the static keyword from the declara&#8208;
+             tion of the method m1.
+
+          try
+             Warn  about  issues  relating  to  use  of  try  blocks,  including
+             try-with-resources  statements. For example, a warning is generated
+             for the following statement because the resource ac declared in the
+             try statement is not used:
+             try ( AutoCloseable ac = getResource() ) {
+                 // do nothing
+             }
+
+          unchecked
+             Give  more  detail  for unchecked conversion warnings that are man&#8208;
+             dated by the Java Language Specification. For example:
+                 List l = new ArrayList&lt;Number&gt;();
+                 List&lt;String&gt; ls = l;       // unchecked warning
+             During type erasure, the types ArrayList&lt;Number&gt;  and  List&lt;String&gt;
+             become ArrayList and List, respectively.
+             The  variable  ls has the parameterized type List&lt;String&gt;. When the
+             List referenced by l is assigned to ls, the compiler  generates  an
+             unchecked  warning;  the compiler is unable to determine at compile
+             time, and moreover knows that the JVM will not be able to determine
+             at runtime, if l refers to a List&lt;String&gt; type; it does not. Conse&#8208;
+             quently, heap pollution occurs.
+             In detail, a heap pollution situation occurs when the  List  object
+             l,  whose  static type is List&lt;Number&gt;, is assigned to another List
+             object, ls, that has a different static  type,  List&lt;String&gt;.  How&#8208;
+             ever, the compiler still allows this assignment. It must allow this
+             assignment to preserve backwards  compatibility  with  versions  of
+             Java  SE  that  do  not  support generics. Because of type erasure,
+             List&lt;Number&gt; and List&lt;String&gt; both become List.  Consequently,  the
+             compiler  allows  the  assignment  of the object l, which has a raw
+             type of List, to the object ls.
+
+          varargs
+             Warn about unsafe usages of variable arguments  (varargs)  methods,
+             in  particular,  those  that  contain  non-reifiable arguments. For
+             example:
+             public class ArrayBuilder {
+               public static &lt;T&gt; void addToList (List&lt;T&gt; listArg, T... elements) {
+                 for (T x : elements) {
+                   listArg.add(x);
+                 }
+               }
+             }
+             The compiler generates the following warning for the definition  of
+             the method ArrayBuilder.addToList:
+             warning: [varargs] Possible heap pollution from parameterized vararg type T
+             When  the  compiler  encounters a varargs method, it translates the
+             varargs formal parameter into an array. However, the Java  program&#8208;
+             ming  language does not permit the creation of arrays of parameter&#8208;
+             ized types. In  the  method  ArrayBuilder.addToList,  the  compiler
+             translates the varargs formal parameter T... elements to the formal
+             parameter T[] elements, an array. However, because of type erasure,
+             the compiler converts the varargs formal parameter to Object[] ele&#8208;
+             ments. Consequently, there is a possibility of heap pollution.
+
+
+COMMAND LINE ARGUMENT FILES
+       To shorten or simplify the javac command line, you  can  specify  one  or
+       more files that themselves contain arguments to the javac command (except
+       -J options). This enables you to create javac commands of any  length  on
+       any operating system.
+
+       An  argument  file  can include javac options and source filenames in any
+       combination. The arguments within a file can be space-separated  or  new&#8208;
+       line-separated.  If  a  filename  contains embedded spaces, put the whole
+       filename in double quotes.
+
+       Filenames within an argument file are relative to the current  directory,
+       not  the  location of the argument file. Wildcards (*) are not allowed in
+       these lists (such as for specifying *.java). Use of the &apos;@&apos; character  to
+       recursively interpret files is not supported. The -J options are not sup&#8208;
+       ported because they are passed to the launcher, which  does  not  support
+       argument files.
+
+       When  executing  javac,  pass  in the path and name of each argument file
+       with the &apos;@&apos; leading character. When javac encounters an argument  begin&#8208;
+       ning  with  the  character `@&apos;, it expands the contents of that file into
+       the argument list.
+
+   Example - Single Arg File
+       You could use a single argument file named &quot;argfile&quot; to  hold  all  javac
+       arguments:
+
+       % javac @argfile
+
+
+       This  argument file could contain the contents of both files shown in the
+       next example.
+
+   Example - Two Arg Files
+       You can create two argument files -- one for the javac  options  and  the
+       other  for  the  source  filenames:  (Notice  the following lists have no
+       line-continuation characters.)
+
+       Create a file named &quot;options&quot; containing:
+
+            -d classes
+            -g
+            -sourcepath /java/pubs/ws/1.3/src/share/classes
+
+
+
+       Create a file named &quot;classes&quot; containing:
+&#12;            MyClass1.java
+            MyClass2.java
+            MyClass3.java
+
+
+
+       You would then run javac with:
+
+         % javac @options @classes
+
+
+
+   Example - Arg Files with Paths
+       The argument files can have paths, but any filenames inside the files are
+       relative to the current working directory (not path1 or path2):
+
+       % javac @path1/options @path2/classes
+
+
+ANNOTATION PROCESSING
+       javac  provides direct support for annotation processing, superseding the
+       need for the separate annotation processing tool, apt.
+
+       The API for annotation processors is defined in the javax.annotation.pro&#8208;
+       cessing and javax.lang.model packages and subpackages.
+
+   Overview of annotation processing
+       Unless  annotation processing is disabled with the -proc:none option, the
+       compiler searches for any annotation processors that are  available.  The
+       search path can be specified with the -processorpath option; if it is not
+       given, the user class path is used. Processors are located  by  means  of
+       service  provider-configuration files named META-INF/services/javax.anno&#8208;
+       tation.processing.Processor on the search path. Such files should contain
+       the  names  of any annotation processors to be used, listed one per line.
+       Alternatively, processors can be specified explicitly, using the -proces&#8208;
+       sor option.
+
+       After scanning the source files and classes on the command line to deter&#8208;
+       mine what annotations are present, the compiler queries the processors to
+       determine  what annotations they process. When a match is found, the pro&#8208;
+       cessor will be invoked. A processor may &quot;claim&quot; the annotations  it  pro&#8208;
+       cesses,  in  which case no further attempt is made to find any processors
+       for those annotations. Once all annotations have been claimed,  the  com&#8208;
+       piler does not look for additional processors.
+
+       If any processors generate any new source files, another round of annota&#8208;
+       tion processing will occur: any newly  generated  source  files  will  be
+       scanned,  and the annotations processed as before. Any processors invoked
+       on previous rounds will also be invoked on all  subsequent  rounds.  This
+       continues until no new source files are generated.
+
+       After a round occurs where no new source files are generated, the annota&#8208;
+       tion processors will be invoked one last time, to give them a  chance  to
+       complete  any  work  they  may need to do. Finally, unless the -proc:only
+       option is used, the compiler will compile the original and all the gener&#8208;
+       ated source files.
+
+   Implicitly loaded source files
+       To  compile  a  set  of source files, the compiler may need to implicitly
+       load additional source files. (See Searching For Types). Such  files  are
+       currently  not subject to annotation processing. By default, the compiler
+       will give a warning if annotation processing has occurred and any implic&#8208;
+       itly  loaded source files are compiled. See the -implicit option for ways
+       to suppress the warning.
+
+SEARCHING FOR TYPES
+       When compiling a source file, the compiler often needs information  about
+       a  type  whose definition did not appear in the source files given on the
+       command line. The compiler needs type  information  for  every  class  or
+       interface  used,  extended,  or  implemented  in  the  source  file. This
+       includes classes and interfaces not explicitly mentioned  in  the  source
+       file but which provide information through inheritance.
+
+       For  example,  when  you  subclass java.applet.Applet, you are also using
+       Applet&apos;s   ancestor    classes:    java.awt.Panel,    java.awt.Container,
+       java.awt.Component, and java.lang.Object.
+
+       When  the  compiler needs type information, it looks for a source file or
+       class file which defines the type. The compiler searches for class  files
+       first in the bootstrap and extension classes, then in the user class path
+       (which by default is the current  directory).  The  user  class  path  is
+       defined  by  setting  the  CLASSPATH environment variable or by using the
+       -classpath command line option.  (For  details,  see  Setting  the  Class
+       Path).
+
+       If  you  set  the -sourcepath option, the compiler searches the indicated
+       path for source files; otherwise the compiler  searches  the  user  class
+       path for both class files and source files.
+
+       You  can specify different bootstrap or extension classes with the -boot&#8208;
+       classpath and -extdirs options; see Cross-Compilation Options below.
+
+       A successful type search may produce a class  file,  a  source  file,  or
+       both.  If both are found, you can use the -Xprefer option to instruct the
+       compiler which to use. If newer is given, the compiler will use the newer
+       of  the  two  files. If source is given, it will use the source file. The
+       default is newer.
+
+       If a type search finds a source file  for  a  required  type,  either  by
+       itself,  or  as  a  result of the setting for -Xprefer, the compiler will
+       read the source file to get the information it  needs.  In  addition,  it
+       will  by  default  compile  the  source  file  as  well.  You can use the
+       -implicit option to specify the behavior. If  none  is  given,  no  class
+       files  will  be  generated  for the source file. If class is given, class
+       files will be generated for the source file.
+
+       The compiler may not discover the need for some  type  information  until
+       after annotation processing is complete. If the type information is found
+       in a source file and no -implicit option is given, the compiler will give
+       a  warning that the file is being compiled without being subject to anno&#8208;
+       tation processing. To disable the warning, either specify the file on the
+       command line (so that it will be subject to annotation processing) or use
+       the -implicit option to specify whether or not class files should be gen&#8208;
+       erated for such source files.
+
+PROGRAMMATIC INTERFACE
+       javac  supports  the  new  Java  Compiler  API defined by the classes and
+       interfaces in the javax.tools package.
+
+   Example
+       To perform a compilation using arguments as you would give on the command
+       line, you can use the following:
+
+       JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
+       int rc = javac.run(null, null, null, args);
+
+
+       This will write any diagnostics to the standard output stream, and return
+       the exit code that javac would give when invoked from the command line.
+
+       You can use other methods on the  javax.tools.JavaCompiler  interface  to
+       handle diagnostics, control where files are read from and written to, and
+       so on.
+
+   Old Interface
+       Note: This API is retained for backwards compatibility only; all new code
+       should use the Java Compiler API, described above.
+
+       The  com.sun.tools.javac.Main class provides two static methods to invoke
+       the compiler from a program:
+
+       public static int compile(String[] args);
+       public static int compile(String[] args, PrintWriter out);
+
+
+       The args parameter represents any of  the  command  line  arguments  that
+       would  normally  be  passed  to the javac program and are outlined in the
+       above Synopsis section.
+
+       The out parameter indicates where the  compiler&apos;s  diagnostic  output  is
+       directed.
+
+       The return value is equivalent to the exit value from javac.
+
+       Note  that  all  other  classes and methods found in a package whose name
+       starts with com.sun.tools.javac  (informally  known  as  sub-packages  of
+       com.sun.tools.javac)  are  strictly internal and subject to change at any
+       time.
+
+EXAMPLES
+   Compiling a Simple Program
+       One source file, Hello.java, defines a class called greetings.Hello.  The
+       greetings directory is the package directory both for the source file and
+       the class file and is off the current directory. This allows  us  to  use
+       the  default  user  class path. It also makes it unnecessary to specify a
+       separate destination directory with -d.
+
+       % ls
+       greetings/
+       % ls greetings
+       Hello.java
+       % cat greetings/Hello.java
+       package greetings;
+
+       public class Hello {
+           public static void main(String[] args) {
+               for (int i=0; i &lt; args.length; i++) {
+                   System.out.println(&quot;Hello &quot; + args[i]);
+               }
+           }
+       }
+       % javac greetings/Hello.java
+       % ls greetings
+       Hello.class   Hello.java
+       % java greetings.Hello World Universe Everyone
+       Hello World
+       Hello Universe
+       Hello Everyone
+
+
+   Compiling Multiple Source Files
+       This example compiles all the source files in the package greetings.
+
+       % ls
+       greetings/
+       % ls greetings
+       Aloha.java         GutenTag.java      Hello.java         Hi.java
+       % javac greetings/*.java
+       % ls greetings
+       Aloha.class         GutenTag.class      Hello.class         Hi.class
+       Aloha.java          GutenTag.java       Hello.java          Hi.java
+
+
+   Specifying a User Class Path
+       Having changed one of the source files in the previous example, we recom&#8208;
+       pile it:
+
+       % pwd
+       /examples
+       % javac greetings/Hi.java
+
+
+       Since  greetings.Hi refers to other classes in the greetings package, the
+       compiler needs to find these other  classes.  The  example  above  works,
+       because  our default user class path happens to be the directory contain&#8208;
+       ing the package directory. But suppose we want to recompile this file and
+       not  worry  about which directory we&apos;re in? Then we need to add /examples
+       to the user class path. We can do this by  setting  CLASSPATH,  but  here
+       we&apos;ll use the -classpath option.
+
+       % javac -classpath /examples /examples/greetings/Hi.java
+
+
+       If  we  change  greetings.Hi again, to use a banner utility, that utility
+       also needs to be accessible through the user class path.
+
+       % javac -classpath /examples:/lib/Banners.jar \
+                   /examples/greetings/Hi.java
+
+
+       To execute a class in greetings, we need access both to greetings and  to
+       the classes it uses.
+
+       % java -classpath /examples:/lib/Banners.jar greetings.Hi
+
+
+   Separating Source Files and Class Files
+       It  often  makes  sense  to keep source files and class files in separate
+       directories, especially on large projects. We use -d to indicate the sep&#8208;
+       arate  class file destination. Since the source files are not in the user
+       class path, we use -sourcepath to help the compiler find them.
+
+       % ls
+       classes/  lib/      src/
+       % ls src
+       farewells/
+       % ls src/farewells
+       Base.java      GoodBye.java
+       % ls lib
+       Banners.jar
+       % ls classes
+       % javac -sourcepath src -classpath classes:lib/Banners.jar \
+                   src/farewells/GoodBye.java -d classes
+       % ls classes
+       farewells/
+       % ls classes/farewells
+       Base.class      GoodBye.class
+
+
+       Note: The  compiler  compiled  src/farewells/Base.java,  even  though  we
+       didn&apos;t  specify  it on the command line. To trace automatic compiles, use
+       the -verbose option.
+
+   Cross-Compilation Example
+       The following example uses javac to compile code that will run on  a  1.6
+       VM.
+
+       % javac -source 1.6 -target 1.6 -bootclasspath jdk1.6.0/lib/rt.jar \
+                   -extdirs &quot;&quot; OldCode.java
+
+
+       The -source 1.6 option specifies that version 1.6 (or 6) of the Java pro&#8208;
+       gramming language be used to compile OldCode.java. The option -target 1.6
+       option ensures that the generated class files will be compatible with 1.6
+       VMs. Note that in most cases, the value of  the  -target  option  is  the
+       value  of  the  -source option; in this example, you can omit the -target
+       option.
+
+       You must specify the -bootclasspath option to specify the correct version
+       of  the bootstrap classes (the rt.jar library). If not, the compiler gen&#8208;
+       erates a warning:
+
+       % javac -source 1.6 OldCode.java
+       warning: [options] bootstrap class path not set in conjunction with -source 1.6
+
+
+       If you do not specify the correct version of bootstrap classes, the  com&#8208;
+       piler  will use the old language rules (in this example, it will use ver&#8208;
+       sion 1.6 of the Java programming language) combined with  the  new  boot&#8208;
+       strap  classes,  which  can result in class files that do not work on the
+       older platform (in this case, Java SE 6) because reference  to  non-exis&#8208;
+       tent methods can get included.
+
+SEE ALSO
+          o The javac Guide @
+            http://docs.oracle.com/javase/7/docs/tech&#8208;
+            notes/guides/javac/index.html
+
+          o java(1) - the Java Application Launcher
+
+          o jdb(1) - Java Application Debugger
+
+          o javah(1) - C Header and Stub File Generator
+
+          o javap(1) - Class File Disassembler
+
+          o javadoc(1) - API Documentation Generator
+
+          o jar(1) - JAR Archive Tool
+
+          o The Java Extensions Framework @
+            http://docs.oracle.com/javase/7/docs/technotes/guides/exten&#8208;
+            sions/index.html
+
+
+                                   16 Mar 2012                          javac(1)
+
+</pre></body></html>

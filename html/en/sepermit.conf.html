@@ -1,0 +1,62 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sepermit.conf - configuration file for the pam_sepermit module</title></head>
+<body><pre>
+
+SEPERMIT.CONF(5)                Linux-PAM Manual                SEPERMIT.CONF(5)
+
+
+
+NAME
+       sepermit.conf - configuration file for the pam_sepermit module
+
+DESCRIPTION
+       The lines of the configuration file have the following syntax:
+
+       &lt;user&gt;[:&lt;option&gt;:&lt;option&gt;...]
+
+       The user can be specified in the following manner:
+
+       &#183;   a username
+
+       &#183;   a groupname, with @group syntax. This should not be confused with
+           netgroups.
+
+       &#183;   a SELinux user name with %seuser syntax.
+
+       The recognized options are:
+
+       exclusive
+           Only single login session will be allowed for the user and the user&apos;s
+           processes will be killed on logout.
+
+       ignore
+           The module will never return PAM_SUCCESS status for the user. It will
+           return PAM_IGNORE if SELinux is in the enforcing mode, and
+           PAM_AUTH_ERR otherwise. It is useful if you want to support
+           passwordless guest users and other confined users with passwords
+           simultaneously.
+
+       The lines which start with # character are comments and are ignored.
+
+EXAMPLES
+       These are some example lines which might be specified in
+       /etc/security/sepermit.conf.
+
+           %guest_u:exclusive
+           %staff_u:ignore
+           %user_u:ignore
+
+
+SEE ALSO
+       pam_sepermit(8), pam.d(5), pam(8), selinux(8),
+
+AUTHOR
+       pam_sepermit and this manual page were written by Tomas Mraz
+       &lt;tmraz@redhat.com&gt;
+
+
+
+Linux-PAM Manual                   06/04/2011                   SEPERMIT.CONF(5)
+
+</pre></body></html>

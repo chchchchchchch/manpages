@@ -1,0 +1,129 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gii_cmddata_getvalinfo, gii_phystype, gii_valrange - GII valuators description</title></head>
+<body><pre>
+
+gii_cmddata_getvalinfo(3)              GGI             gii_cmddata_getvalinfo(3)
+
+
+
+NAME
+       gii_cmddata_getvalinfo,   gii_phystype,   gii_valrange  -  GII  valuators
+       description
+
+SYNOPSIS
+       #include &lt;ggi/events.h&gt;
+
+       typedef struct gii_valrange {
+           int32_t           min, center, max;
+       } gii_valrange;
+
+       typedef struct {
+           uint32_t          number;
+           char              longname[75];
+           char              shortname[5];
+           gii_valrange      range;
+           gii_phystype      phystype;
+           int32_t           SI_add,SI_mul,SI_div,SI_shift;
+       } gii_cmddata_getvalinfo;
+
+
+DESCRIPTION
+       This structure is used to describe the values reported by a specific val&#8208;
+       uator.
+
+STRUCTURE MEMBERS
+       gii_cmddata_getvalinfo fields are defined as follow:
+
+       number Number of the queried valuator.
+
+
+       longname
+              A human-redable NULL terminated string identifying the valuator.
+
+
+       shortname
+              A NULL terminated abbreviated name for this valuator.
+
+
+       range  Contains the minimum, center and maximum values for this valuator.
+              Note that this range may change on some devices  due  to  calibra&#8208;
+              tion,  but  it  is usually not expected that a device recalibrates
+              while in use. You should react gracefully to values received  from
+              the valuator that are outside the specified range, though.
+
+
+       phystype
+              Gives  the  physical  quantity the device measures. The idea is to
+              report the thing the user actually controls. I.e. a Joystick actu&#8208;
+              ally  measures  resistance,  but  should  report  GII_PT_ANGLE  or
+              GII_PT_FORCE, as that is what the user does to the stick and  what
+              results in the changed resistance.
+
+
+       SI_add, SI_mul, SI_div, SI_shift
+              Using these values, it is possible to give calibration data to the
+              application or to compute the actual floating point value (in  the
+              unit expressed in phystype) reported by the valuator with the fol&#8208;
+              lowing formula:
+
+              (float)(SI_add + value) * (float)SI_mul / (float)SI_div * pow(2.0, SI_shift);
+&#12;
+
+PHYSICAL UNITS
+       The following physical units are defined for gii_phystype:
+
+       &#183;   GII_PT_UNKNOWN         : unknown
+
+       &#183;   GII_PT_TIME            : base unit s (second)
+
+       &#183;   GII_PT_FREQUENCY       : base unit 1/s (Hz)
+
+       &#183;   GII_PT_LENGTH          : base unit m (meter)
+
+       &#183;   GII_PT_VELOCITY        : base unit m/s
+
+       &#183;   GII_PT_ACCELERATION    : base unit m/s^2
+
+       &#183;   GII_PT_ANGLE           : base unit radian
+
+       &#183;   GII_PT_ANGVELOCITY     : base unit radian/s
+
+       &#183;   GII_PT_ANGACCELERATION : base unit radian/s^2
+
+       &#183;   GII_PT_AREA            : base unit m^2
+
+       &#183;   GII_PT_VOLUME          : base unit m^3
+
+       &#183;   GII_PT_MASS            : base unit kg
+
+       &#183;   GII_PT_FORCE           : base unit N (kg*m/s^2)
+
+       &#183;   GII_PT_PRESSURE        : base unit N/m^2 (Pa)
+
+       &#183;   GII_PT_TORQUE          : base unit Nm
+
+       &#183;   GII_PT_ENERGY          : base unit Nm, VAs, J
+
+       &#183;   GII_PT_POWER           : base unit Nm/s, VA, W
+
+       &#183;   GII_PT_TEMPERATURE     : base unit K
+
+       &#183;   GII_PT_CURRENT         : base unit A
+
+       &#183;   GII_PT_VOLTAGE         : base unit V (kg*m^2/(As^3))
+
+       &#183;   GII_PT_RESISTANCE      : base unit V/A (Ohm)
+
+       &#183;   GII_PT_CAPACITY        : base unit As/V (Farad)
+
+       &#183;   GII_PT_INDUCTIVITY     : base unit Vs/A (Henry)
+
+SEE ALSO
+       giiQueryValInfo(3)
+
+
+
+libgii-1.0.x                       2006-12-30          gii_cmddata_getvalinfo(3)
+
+</pre></body></html>

@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_getpalette - get a color in the color lookup table</title></head>
+<body><pre>
+
+vga_getpalette(3)              Svgalib User Manual             vga_getpalette(3)
+
+
+
+NAME
+       vga_getpalette - get a color in the color lookup table
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       void vga_getpalette(int index, int *r, int *g, int *b);
+
+
+DESCRIPTION
+       Get  the  color  with index index and store its RGB values at *r, *g, and
+       *b, each in the range 0 - 63. This function is only sensible in 16 or 256
+       color  modes. It returns which color all vga_setcolor(index) drawn pixels
+       actually refer to.
+
+       If the VGA_CLUT8 feature is set for the current mode with  vga_ext_set(3)
+       the *r, *g, and *b values are in the range 0 - 255.
+
+
+SEE ALSO
+       svgalib(7),   vgagl(7),   libvga.config(5),  vgatest(6),  vga_ext_set(3),
+       vga_setpalvec(3),   vga_setpalette(3),   vga_getpalvec(3),    vga_setrgb&#8208;
+       color(3), vga_setcolor(3), vga_setegacolor(3)
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced function as well as of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997                 vga_getpalette(3)
+
+</pre></body></html>

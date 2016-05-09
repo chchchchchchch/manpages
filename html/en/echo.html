@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>echo - display a line of text</title></head>
+<body><pre>
+
+ECHO(1)                           User Commands                          ECHO(1)
+
+
+
+NAME
+       echo - display a line of text
+
+SYNOPSIS
+       echo [SHORT-OPTION]... [STRING]...
+       echo LONG-OPTION
+
+DESCRIPTION
+       Echo the STRING(s) to standard output.
+
+       -n     do not output the trailing newline
+
+       -e     enable interpretation of backslash escapes
+
+       -E     disable interpretation of backslash escapes (default)
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       If -e is in effect, the following sequences are recognized:
+
+       \\     backslash
+
+       \a     alert (BEL)
+
+       \b     backspace
+
+       \c     produce no further output
+
+       \e     escape
+
+       \f     form feed
+
+       \n     new line
+
+       \r     carriage return
+
+       \t     horizontal tab
+
+       \v     vertical tab
+
+       \0NNN  byte with octal value NNN (1 to 3 digits)
+
+       \xHH   byte with hexadecimal value HH (1 to 2 digits)
+
+       NOTE:  your  shell may have its own version of echo, which usually super&#8208;
+       sedes the version described here.  Please refer to your shell&apos;s  documen&#8208;
+       tation for details about the options it supports.
+
+AUTHOR
+       Written by Brian Fox and Chet Ramey.
+
+REPORTING BUGS
+       Report echo bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report echo translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The  full  documentation  for echo is maintained as a Texinfo manual.  If
+       the info and echo programs are properly installed at your site, the  com&#8208;
+       mand
+
+              info coreutils &apos;echo invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                          ECHO(1)
+
+</pre></body></html>

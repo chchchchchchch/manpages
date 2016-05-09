@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbNoteNameChanges - Note the changed names in a changes structure</title></head>
+<body><pre>
+
+XkbNoteNameChanges(3)             XKB FUNCTIONS            XkbNoteNameChanges(3)
+
+
+
+NAME
+       XkbNoteNameChanges - Note the changed names in a changes structure
+
+SYNOPSIS
+       void XkbNoteNameChanges (XkbNameChangesPtr old, XkbNamesNotifyEvent *new,
+              unsigned int wanted);
+
+ARGUMENTS
+       - old  XkbNameChanges structure to be updated
+
+       - new  event from which changes are to be copied
+
+       - wanted
+              types of names for which changes are to be noted
+
+DESCRIPTION
+       When your application receives a XkbNamesNotify event, you can  note  the
+       changed names in a changes structure using XkbNoteNameChanges.
+
+       The  wanted parameter is the bitwise inclusive OR of the valid names mask
+       bits shown in Table 1.  XkbNoteNameChanges copies any  changes  that  are
+       reported in new and specified in wanted into the changes record specified
+       by old.
+
+
+       c s s s l l l l.  Table 1 Symbolic Names Masks _ Mask Bit  Value     Key&#8208;
+       board  Field                      Component           _           XkbKey&#8208;
+       codesNameMask (1&lt;&lt;0)    Xkb-&gt;names     keycodes              XkbGeometry&#8208;
+       NameMask (1&lt;&lt;1)    Xkb-&gt;names     geometry                     XkbSymbol&#8208;
+       sNameMask  (1&lt;&lt;2)    Xkb-&gt;names     symbols                XkbPhysSymbol&#8208;
+       sNameMask   (1&lt;&lt;3)    Xkb-&gt;names     phys_symbols               XkbTypes&#8208;
+       NameMask    (1&lt;&lt;4)    Xkb-&gt;names     type                      XkbCompat&#8208;
+       NameMask   (1&lt;&lt;5)    Xkb-&gt;names     compat               XkbKeyTypeNames&#8208;
+       Mask (1&lt;&lt;6)    Xkb-&gt;map  type[*].name                    XkbKTLevelNames&#8208;
+       Mask (1&lt;&lt;7)    Xkb-&gt;map  type[*].lvl_names[*]          XkbIndicatorNames&#8208;
+       Mask    (1&lt;&lt;8)    Xkb-&gt;names     indicators[*]               XkbKeyNames&#8208;
+       Mask     (1&lt;&lt;9)    Xkb-&gt;names     keys[*],     num_keys    XkbKeyAliases&#8208;
+       Mask   (1&lt;&lt;10)   Xkb-&gt;names     key_aliases[*],  num_key_aliases  XkbVir&#8208;
+       tualModNamesMask   (1&lt;&lt;11)   Xkb-&gt;names     vmods[*]       XkbGroupNames&#8208;
+       Mask   (1&lt;&lt;12)   Xkb-&gt;names     groups[*]                     XkbRGNames&#8208;
+       Mask (1&lt;&lt;13)   Xkb-&gt;names     radio_groups[*],  num_rg XkbComponentNames&#8208;
+       Mask    (0x3f)    Xkb-&gt;names     keycodes,                      geometry,
+                      symbols,                         physical         symbols,
+                      types, and                compatibility  map  XkbAllNames&#8208;
+       Mask     (0x3fff)  Xkb-&gt;names     all name components
+
+
+
+
+X Version 11                      libX11 1.5.0             XkbNoteNameChanges(3)
+
+</pre></body></html>

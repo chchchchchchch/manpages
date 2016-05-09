@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hsmarkdown - convert markdown-formatted text to HTML</title></head>
+<body><pre>
+
+HSMARKDOWN(1)                                                      HSMARKDOWN(1)
+
+
+
+NAME
+       hsmarkdown - convert markdown-formatted text to HTML
+
+SYNOPSIS
+       hsmarkdown [input-file]...
+
+DESCRIPTION
+       hsmarkdown  converts  markdown-formatted text to HTML.  It is designed to
+       be usable as a drop-in replacement for John Gruber&apos;s Markdown.pl.
+
+       If no input-file is specified, input is read from stdin.  Otherwise,  the
+       input-files are concatenated (with a blank line between each) and used as
+       input.  Output goes to stdout by default.  For  output  to  a  file,  use
+       shell redirection:
+
+
+             hsmarkdown input.txt &gt; output.html
+
+       hsmarkdown is implemented as a symlink to the pandoc(1) executable.  When
+       called under the name hsmarkdown, pandoc behaves as if it had been called
+       with  the  options  --from markdown --to html --strict  and  disables all
+       other options.  (Command-line options will be interpreted  as  filenames,
+       as they are by Markdown.pl.)
+
+SEE ALSO
+       pandoc(1).   The  README file distributed with Pandoc contains full docu&#8208;
+       mentation.
+
+       The Pandoc source code and  all  documentation  may  be  downloaded  from
+       &lt;http://johnmacfarlane.net/pandoc/&gt;.
+
+AUTHORS
+       John MacFarlane.
+
+
+
+
+Pandoc User Manuals              March 23, 2010                    HSMARKDOWN(1)
+
+</pre></body></html>

@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoyBallEvent - Joystick trackball motion event structure</title></head>
+<body><pre>
+
+SDL_JoyBallEvent(3)             SDL API Reference            SDL_JoyBallEvent(3)
+
+
+
+NAME
+       SDL_JoyBallEvent - Joystick trackball motion event structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 type;
+         Uint8 which;
+         Uint8 ball;
+         Sint16 xrel, yrel;
+       } SDL_JoyBallEvent;
+
+STRUCTURE DATA
+       type                SDL_JOYBALLMOTION
+
+       which               Joystick device index
+
+       ball                Joystick trackball index
+
+       xrel, yrel          The relative motion in the X/Y direction
+
+DESCRIPTION
+       SDL_JoyBallEvent  is  a member of the SDL_Event union and is used when an
+       event of type SDL_JOYBALLMOTION is reported.
+
+       A SDL_JOYBALLMOTION event occurs when a user moves  a  trackball  on  the
+       joystick.  The field which is the index of the joystick that reported the
+       event and ball is the  index  of  the  trackball  (for  a  more  detailed
+       explaination  see  the Joystick section). Trackballs only return relative
+       motion, this is the change in position on the  ball  since  it  was  last
+       polled (last cycle of the event loop) and it is stored in xrel and yrel.
+
+SEE ALSO
+       SDL_Event,  Joystick  Functions, SDL_JoystickEventState, SDL_JoystickGet&#8208;
+       Ball
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59          SDL_JoyBallEvent(3)
+
+</pre></body></html>

@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>clit - program to manipulate Microsoft Reader .LIT files</title></head>
+<body><pre>
+
+CLIT(1)                                                                  CLIT(1)
+
+
+
+NAME
+       clit - program to manipulate Microsoft Reader .LIT files
+
+SYNOPSIS
+       1.  clit [options] litfile.lit subdir/
+       2.  clit [options] oldfile.lit newfile.lit
+       3.  clit [options] oldfile.lit newfile.lit inscription
+
+DESCRIPTION
+       This manual page documents briefly the clit command.
+
+       ConvLIT is a program to convert Microsoft Reader format eBooks [LIT] into
+       an open format.  clit supports three modes of operation:
+
+       1.     Explosion: expanding a LIT file into an OEBPS  compliant  package,
+              that is the original XML / HTML source.
+
+       2.     Downconverting: converts to DRM1 format, also known as sealing the
+              LIT file.
+
+       3.     Inscribing: similar to #2, this adds a label, or  inscription,  to
+              the ebook to mark that it belongs to you.
+
+OPTIONS
+       A  summary of options is included below.  For a complete description, run
+       the program without any arguments.
+
+       -d     Disable creating multiple subdirectories.
+
+       -h     Show summary of options.
+
+       -k   /path/to/keys.txt
+              The DRM5 key file is assumed to be called keys.txt and located  in
+              the  current  directory.  If not, use this option to instruct Con&#8208;
+              vLIT where to find the key file.
+
+AUTHOR
+       ConvLIT was written by Dan A. Jackson &lt;drs@convertlit.com&gt;.
+
+       This manual page was written by Joe Nahmias &lt;jello@debian.org&gt;,  for  the
+       Debian project (but may be used by others).
+
+
+
+                                 March 23, 2008                          CLIT(1)
+
+</pre></body></html>

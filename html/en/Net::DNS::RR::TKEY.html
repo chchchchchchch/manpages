@@ -1,0 +1,88 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::TKEY - DNS TKEY resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::TKEY(3pm)User Contributed Perl DocumentatioNet::DNS::RR::TKEY(3pm)
+
+
+
+NAME
+       Net::DNS::RR::TKEY - DNS TKEY resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for DNS TKEY resource records.
+
+METHODS
+   algorithm
+           $rr-&gt;algorithm($algorithm_name);
+           print &quot;algorithm = &quot;, $rr-&gt;algorithm, &quot;\n&quot;;
+
+       Gets or sets the domain name that specifies the name of the algorithm.
+       The default algorithm is gss.microsoft.com
+
+   inception
+           $rr-&gt;inception(time);
+           print &quot;inception = &quot;, $rr-&gt;inception, &quot;\n&quot;;
+
+       Gets or sets the inception time as the number of seconds since 1 Jan 1970
+       00:00:00 UTC.
+
+       The default inception time is the current time.
+
+   expiration
+           $rr-&gt;expiration(time);
+           print &quot;expiration = &quot;, $rr-&gt;expiration, &quot;\n&quot;;
+
+       Gets or sets the expiration time as the number of seconds since 1 Jan
+       1970 00:00:00 UTC.
+
+       The default expiration time is the current time plus 1 day.
+
+   mode
+           $rr-&gt;mode(3);
+           print &quot;mode = &quot;, $rr-&gt;mode, &quot;\n&quot;;
+
+       Sets the key mode (see rfc2930). The default is 3 which corresponds to
+       GSSAPI
+
+   error
+           print &quot;error = &quot;, $rr-&gt;error, &quot;\n&quot;;
+
+       Returns the RCODE covering TKEY processing.  See RFC 2930 for details.
+
+   other_len
+           print &quot;other len = &quot;, $rr-&gt;other_len, &quot;\n&quot;;
+
+       Returns the length of the Other Data.  Should be zero.
+
+   other_data
+           print &quot;other data = &quot;, $rr-&gt;other_data, &quot;\n&quot;;
+
+       Returns the Other Data.  This field should be empty.
+
+BUGS
+       This code has not been extensively tested.  Use with caution on
+       production systems. See http://samba.org/ftp/samba/tsig-gss/ for an
+       example usage.
+&#12;COPYRIGHT
+       Copyright (c) 2000 Andrew Tridgell.  All rights reserved.  This program
+       is free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+ACKNOWLEDGMENT
+       The Net::DNS::RR::TKEY module is based on the TSIG module by Michael Fuhr
+       and Chris Turbeville.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 2845
+
+
+
+perl v5.14.2                       2009-12-30            Net::DNS::RR::TKEY(3pm)
+
+</pre></body></html>

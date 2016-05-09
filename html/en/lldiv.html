@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>div, ldiv, lldiv, imaxdiv - compute quotient and remainder of an integer division</title></head>
+<body><pre>
+
+DIV(3)                      Linux Programmer&apos;s Manual                     DIV(3)
+
+
+
+NAME
+       div,  ldiv, lldiv, imaxdiv - compute quotient and remainder of an integer
+       division
+
+SYNOPSIS
+       #include &lt;stdlib.h&gt;
+
+       div_t div(int numerator, int denominator);
+       ldiv_t ldiv(long numerator, long denominator);
+       lldiv_t lldiv(long long numerator, long long denominator);
+
+       #include &lt;inttypes.h&gt;
+
+       imaxdiv_t imaxdiv(intmax_t numerator, intmax_t denominator);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       lldiv():
+           _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
+
+DESCRIPTION
+       The div() function computes the value numerator/denominator  and  returns
+       the  quotient  and remainder in a structure named div_t that contains two
+       integer members (in unspecified order) named quot and rem.  The  quotient
+       is  rounded  toward  zero.   The  result satisfies quot*denominator+rem =
+       numerator.
+
+       The ldiv(), lldiv(), and imaxdiv() functions do the same,  dividing  num&#8208;
+       bers of the indicated type and returning the result in a structure of the
+       indicated name, in all cases with fields quot and rem of the same type as
+       the function arguments.
+
+RETURN VALUE
+       The div_t (etc.) structure.
+
+CONFORMING TO
+       SVr4,  4.3BSD,  C89. C99.  The functions lldiv() and imaxdiv() were added
+       in C99.
+
+EXAMPLE
+       After
+
+               div_t q = div(-5, 3);
+
+       the values q.quot and q.rem are -1 and -2, respectively.
+
+SEE ALSO
+       abs(3), remainder(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2012-04-17                             DIV(3)
+
+</pre></body></html>

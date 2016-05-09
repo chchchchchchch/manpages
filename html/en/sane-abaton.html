@@ -1,0 +1,132 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-abaton - SANE backend for Abaton flatbed scanners</title></head>
+<body><pre>
+
+sane-abaton(5)            SANE Scanner Access Now Easy            sane-abaton(5)
+
+
+
+NAME
+       sane-abaton - SANE backend for Abaton flatbed scanners
+
+DESCRIPTION
+       The sane-abaton library implements a SANE (Scanner Access Now Easy) back&#8208;
+       end that provides access to Abaton flatbed scanners. At present, only the
+       Scan  300/GS  (8bit,  256  levels of gray) is fully supported, due to the
+       absence of programming information.  The Scan 300/S (black and white)  is
+       recognized, but support for it is untested.
+
+       If  you  own a Abaton scanner other than the ones listed above that works
+       with this backend, or if you own an Abaton scanner  that  does  not  work
+       with this backend, please contact sane-devel@lists.alioth.debian.org with
+       the model number, so that arrangements can be made to include support for
+       it.  Have  a  look at http://www.sane-project.org/mailing-lists.html con&#8208;
+       cerning subscription to sane-devel.
+
+       Abaton is out of business, and these scanners are not supported by Everex
+       (the  parent company of Abaton), nor is there any programming information
+       to be found.  This driver is therefore based on information  obtained  by
+       running  Abaton&apos;s  scanning  desk accessory under MacsBug and tracing the
+       MacOS SCSI Manager calls it made during image acquisition.
+
+       However, the protocol is very similar to, though not compatible with, the
+       one  used  by  the  Apple  scanners,  therefore,  if this backend is ever
+       extended to support the other Abaton  models  (they  also  made  a  color
+       flatbed  scanner),  it  may  be possible to fill in some &quot;missing pieces&quot;
+       from the (quite detailed) Apple scanner documentation.
+
+
+DEVICE NAMES
+       This backend expects device names of the form:
+
+              special
+
+       Where special is the path-name for the special device that corresponds to
+       a  SCSI  scanner.  For  SCSI  scanners, the special device name must be a
+       generic SCSI device or a symlink to such a device.  Under Linux,  such  a
+       device  name  takes  a  format such as /dev/sga or /dev/sg0, for example.
+       See sane-scsi(5) for details.
+
+CONFIGURATION
+       The contents of the abaton.conf file is a list of device names that  cor&#8208;
+       respond  to  Abaton scanners.  Empty lines and lines starting with a hash
+       mark (#) are ignored.  See sane-scsi(5) on details of what constitutes  a
+       valid device name.
+
+
+FILES
+       /etc/sane.d/abaton.conf
+              The  backend configuration file (see also description of SANE_CON&#8208;
+              FIG_DIR below).
+
+       /usr/lib/arch_triplet/sane/libsane-abaton.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-abaton.so
+              The shared library implementing this backend (present  on  systems
+              that support dynamic loading).
+
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This  environment  variable specifies the list of directories that
+              may contain the configuration file.  Under UNIX,  the  directories
+              are  separated by a colon (`:&apos;), under OS/2, they are separated by
+              a semi-colon (`;&apos;).  If this variable is not set,  the  configura&#8208;
+              tion  file is searched in two default directories: first, the cur&#8208;
+              rent working directory (&quot;.&quot;) and  then  in  /etc/sane.d.   If  the
+              value  of the environment variable ends with the directory separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly  specified directories.  For example, setting SANE_CON&#8208;
+              FIG_DIR to &quot;/tmp/config:&quot; would result  in  directories  &quot;tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_ABATON
+              If the library was compiled with debug support enabled, this envi&#8208;
+              ronment variable controls the debug level for this backend.  E.g.,
+              a  value  of 255 requests all debug output to be printed.  Smaller
+              levels reduce verbosity.
+
+
+BUGS
+       There are a few known ones, and definitely some unknown ones.
+
+       Scan area miscalculations
+              For the sake of programmer efficiency, this  backend  handles  all
+              measurements  in millimetres, and floors (rather than rounds) val&#8208;
+              ues to avoid possible damage to the scanner mechanism.  Therefore,
+              it  may  not  be  possible  to scan to the extreme right or bottom
+              edges of the page.
+
+       Cancelling the scan
+              This might not work correctly, or it  might  abort  the  frontend.
+              The former is more likely than the latter.
+
+       If  you  have  found something that you think is a bug, please attempt to
+       recreate it with the SANE_DEBUG_ABATON environment variable set  to  255,
+       and  send  a  report  detailing  the  conditions  surrounding  the bug to
+       sane-devel@lists.alioth.debian.org.
+
+
+TODO
+       Implement non-blocking support
+
+       Finish reverse-engineering the MacOS driver
+              This will allow me to add support for other models with reasonable
+              confidence  that  it  will  work,  as well as to fully exploit the
+              information returned by the INQUIRY command.
+
+
+SEE ALSO
+       sane(7), sane-scsi(5), scanimage(1)
+
+
+AUTHOR
+       The sane-abaton backend was partially written  by  David  Huggins-Daines,
+       based on the sane-apple backend by Milon Firikis.
+
+
+
+                                   11 Jul 2008                    sane-abaton(5)
+
+</pre></body></html>

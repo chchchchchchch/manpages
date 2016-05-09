@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SSL_get_psk_identity, SSL_get_psk_identity_hint - get PSK client identity and hint</title></head>
+<body><pre>
+
+SSL_get_psk_identity(3SSL)           OpenSSL          SSL_get_psk_identity(3SSL)
+
+
+
+NAME
+       SSL_get_psk_identity, SSL_get_psk_identity_hint - get PSK client identity
+       and hint
+
+SYNOPSIS
+        #include &lt;openssl/ssl.h&gt;
+
+        const char *SSL_get_psk_identity_hint(const SSL *ssl);
+        const char *SSL_get_psk_identity(const SSL *ssl);
+
+DESCRIPTION
+       SSL_get_psk_identity_hint() is used to retrieve the PSK identity hint
+       used during the connection setup related to SSL object ssl. Similarly,
+       SSL_get_psk_identity() is used to retrieve the PSK identity used during
+       the connection setup.
+
+RETURN VALUES
+       If non-NULL, SSL_get_psk_identity_hint() returns the PSK identity hint
+       and SSL_get_psk_identity() returns the PSK identity. Both are
+       NULL-terminated. SSL_get_psk_identity_hint() may return NULL if no PSK
+       identity hint was used during the connection setup.
+
+       Note that the return value is valid only during the lifetime of the SSL
+       object ssl.
+
+
+
+1.0.1e                             2013-02-11         SSL_get_psk_identity(3SSL)
+
+</pre></body></html>

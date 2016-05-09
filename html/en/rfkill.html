@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rfkill - tool for enabling and disabling wireless devices</title></head>
+<body><pre>
+
+RFKILL(8)                                                              RFKILL(8)
+
+
+
+NAME
+       rfkill - tool for enabling and disabling wireless devices
+
+SYNOPSIS
+       rfkill [options] command
+
+OPTIONS
+       --version
+              Show the version of rfkill.
+
+COMMANDS
+       help   Show rfkill&apos;s built-in help text.
+
+       event  Listen for rfkill events and display them on stdout.
+
+       list [type]
+              List  the  current state of all available rfkill-using devices, or
+              just all of the given type.
+
+       block index|type
+              Disable the device corresponding to the given index.  type is  one
+              of  &quot;all&quot;,  &quot;wifi&quot;,  &quot;wlan&quot;,  &quot;bluetooth&quot;, &quot;uwb&quot;, &quot;ultrawideband&quot;,
+              &quot;wimax&quot;, &quot;wwan&quot;, &quot;gps&quot; or &quot;fm&quot;.
+
+       unblock index|type
+              Enable the device corresponding to the given index. If the  device
+              is  hard-blocked,  e.g.  via  a  hardware  switch,  it will remain
+              unavailable though it is now soft-unblocked.
+
+AUTHORS
+       rfkill  was  originally  written  by  Johannes  Berg   &lt;johannes@sipsolu&#8208;
+       tions.net&gt; and Marcel Holtmann &lt;marcel@holtmann.org&gt;.
+
+       This   manual  page  was  written  by  Darren  Salt  &lt;linux@youmustbejok&#8208;
+       ing.demon.co.uk&gt;, for the Debian project (and may be used by others).
+
+
+
+                                  July 10, 2009                        RFKILL(8)
+
+</pre></body></html>

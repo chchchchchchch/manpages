@@ -1,0 +1,170 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-language, update-fmtutil, update-fmtlang - update various TeX-related configuration files</title></head>
+<body><pre>
+
+update-fontlang(8)            Debian User&apos;s Manual            update-fontlang(8)
+
+
+
+NAME
+       update-language,  update-fmtutil,  update-fmtlang  -  update various TeX-
+       related configuration files
+
+
+SYNOPSIS
+       update-language [options]
+       update-fmtutil [options]
+
+
+DESCRIPTION
+       This manual page explains briefly the usage of the three  TeX  configura&#8208;
+       tion update programs update-language and update-fmtutil.
+
+       The  update-fontlang  script  should not be called directly, but only via
+       the two described links.  For a more in-depth description, please see the
+       document  TeX on Debian in /usr/share/doc/tex-common/TeX-on-Debian.txt.gz
+       (also available as HTML and PDF).
+
+       The programs update-language and update-fmtutil create or update the con&#8208;
+       figuration files language.dat and fmtutil.cnf, respectively.  These files
+       define the hyphenation patterns to be loaded into LaTeX-related TeX  for&#8208;
+       mats (language.dat), and the list of formats to be created (fmtutil.cnf).
+
+       These  programs can be used either in system-wide mode if called by root,
+       or in a user-specific mode if called by a user without super-user  privi&#8208;
+       leges.
+
+OPTIONS
+       -c DIR, --conf-dir=DIR
+              directory  where  the user-specific configuration files are looked
+              for in  user-specific  mode  (default  TEXMFCONFIG/language.d  for
+              update-language  and  TEXMFCONFIG/fmt.d  for update-fmtutil, where
+              TEXMFCONFIG is usually $HOME/.texmf-config).
+
+       -o FILE, --output-file=FILE
+              file to write the output to. Per  default,  in  system-wide  mode,
+              update-language  writes  to /var/lib/texmf/tex/generic/config/lan&#8208;
+              guage.dat and update-fmtutil writes to  /var/lib/texmf/web2c/fmtu&#8208;
+              til.cnf.
+
+       --checks
+              perform sanity checks on the generated config file. Don&apos;t use this
+              in maintainer scripts.
+
+       --quiet
+              don&apos;t write anything to the standard output during  normal  opera&#8208;
+              tion
+
+       --help print a summary of the command-line usage and exit
+
+       --version
+              output version information and exit
+
+
+USAGE
+       In  system-wide  mode,  both  programs  merge those files (&quot;configuration
+       snippets&quot;) with a specific  extension  in  the  respective  configuration
+       directories  to  produce  the final file. These configuration directories
+       and extensions are language.d and .cnf for update-language, and fmt.d and
+       .cnf  for  update-fmtutil.   In  system-wide  mode, these directories are
+       those under /etc/texmf/. Both TeX add-on packages and  local  administra&#8208;
+       tors can add files to these directories.
+
+       If  a  package  that  provides  such  snippets is removed but not purged,
+       including the snippet will likely  break  the  system.   To  prevent  the
+       inclusion  in these cases, snippets installed by packages have to contain
+       a magic header:
+
+       # -_- DebPkgProvidedMaps -_-
+
+       which local administrators should not remove.   From  the  files  with  a
+       magic  header, only those files which are also listed in one of the files
+       in    /var/lib/tex-common/language-cnf/    for    update-language,    and
+       /var/lib/tex-common/fmtutil-cnf/   for   update-fmtutil,   are   actually
+       included into the final output file. This way, local changes to the  con&#8208;
+       figuration  can be preserved while the package is in state &apos;rc&apos; (that is,
+       the package is removed, but its configuration files are  still  present).
+       For  details about this mechanism, package maintainers should consult the
+       Debian TeX Policy.  As a special case, the files for JadeTeX  and  xmlTeX
+       are  only  included  if there is already a file for the LaTeX format (see
+       TeX on Debian for details).
+
+       The user-specific mode provides a way for a non-admin  user  to  override
+       system-wide  settings.   In  this  mode, update-language writes to TEXMF&#8208;
+       VAR/tex/generic/config/language.dat, and update-fmtutil writes to  TEXMF&#8208;
+       VAR/web2c/fmtutil.cnf,  where TEXMFVAR is usually $HOME/.texmf-var.  Fur&#8208;
+       thermore, files present within the user-specific  configuration  directo&#8208;
+       ries  are  included  in  addition to the files present in the system-wide
+       configuration directories.  In case the same filename exists in the  sys&#8208;
+       tem-wide  configuration  directory  and  the  user-specific configuration
+       directory, the user-specific file is used instead of the system-wide one.
+       The  user-specific  configuration  directories are TEXMFCONFIG/language.d
+       for update-language and TEXMFCONFIG/fmt.d for update-fmtutil, where TEXM&#8208;
+       FCONFIG  is  usually  $HOME/.texmf-config.  The system-wide configuration
+       directories have the same names, but are located in  /etc/texmf/  instead
+       of TEXMFCONFIG.
+
+       Note that changes introduced by updates of packages are not propagated to
+       the user&apos;s configuration files. This has to be done by hand.
+
+
+FILES
+       /var/lib/texmf/tex/generic/config/language.dat
+              This file is generated or updated by  update-language  in  system-
+              wide  mode  and contains a list of the hyphenation patterns loaded
+              into LaTeX-based formats by fmtutil-sys.
+
+       /var/lib/texmf/web2c/fmtutil.cnf
+              This file is generated or updated by update-fmtutil in system-wide
+              mode  and  contains  a list of formats to be generated by fmtutil-
+              sys.
+
+       /etc/texmf/language.d/name.cnf
+              Input files for update-language
+
+       /etc/texmf/fmt.d/name.cnf
+              Input files for update-fmtutil
+
+       /var/lib/tex-common/language-cnf/package.list
+              Lists the file(s) installed by package in /etc/texmf/language.d/.
+
+       /var/lib/tex-common/fmtutil-cnf/package.list
+              Lists the file(s) installed by package in /etc/texmf/fmt.d/.
+
+
+SEE ALSO
+       fmtutil(1), fmtutil-sys(1)
+              The programs actually  using  the  generated  configuration  files
+              (language.dat and fmtutil.cnf).
+
+       TeX on Debian Documentation
+              to   be  found  in  /usr/share/doc/tex-common/TeX-on-Debian.txt.gz
+              (also available as HTML and PDF), describing in more detail how to
+              setup  and  maintain  a  TeX  system  in  Debian. It also includes
+              details on user-specific configuration.
+
+       Debian TeX Policy
+              to be found in  /usr/share/doc/tex-common/Debian-TeX-Policy.txt.gz
+              (also available as HTML and PDF), describing the internals and the
+              TeX Policy established on the Debian TeX mailing-list (debian-tex-
+              maint@lists.debian.org).  Intended  audience  is mainly developers
+              packaging TeX-related resources for Debian.
+
+       dh_installtex(1)
+              a debhelper-like script for managing  the  installation  of  files
+              into  the system-wide configuration directories; this script helps
+              to write Debian packages  containing  TeX-related  resources  that
+              conform to the Debian TeX Policy.
+
+
+AUTHOR
+       This  manual  page  was written by Norbert Preining &lt;preining@debian.org&gt;
+       for the Debian distribution (and may be used by  others).  It  was  later
+       updated by Florent Rougon &lt;f.rougon@free.fr&gt;.
+
+
+
+Debian                             2006-12-11                 update-fontlang(8)
+
+</pre></body></html>

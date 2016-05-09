@@ -1,0 +1,106 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cowsay/cowthink - configurable speaking/thinking cow (and a bit more)</title></head>
+<body><pre>
+
+cowsay(6)                                                              cowsay(6)
+
+
+
+NAME
+       cowsay/cowthink - configurable speaking/thinking cow (and a bit more)
+
+SYNOPSIS
+       cowsay [-e eye_string] [-f cowfile] [-h] [-l] [-n] [-T tongue_string] [-W
+       column] [-bdgpstwy]
+
+DESCRIPTION
+       Cowsay generates an ASCII picture of a cow saying something  provided  by
+       the  user.   If  run  with no arguments, it accepts standard input, word-
+       wraps the message given at about 40 columns, and prints  the  cow  saying
+       the given message on standard output.
+
+       To  aid  in  the use of arbitrary messages with arbitrary whitespace, use
+       the -n option.  If it is specified, the given message will not  be  word-
+       wrapped.   This  is  possibly useful if you want to make the cow think or
+       speak in figlet(6).  If -n is specified, there must not be  any  command-
+       line arguments left after all the switches have been processed.
+
+       The  -W  specifies  roughly  where  the  message  should be wrapped.  The
+       default is equivalent to -W 40 i.e. wrap words at or before the 40th col&#8208;
+       umn.
+
+       If  any command-line arguments are left over after all switches have been
+       processed, they become the cow&apos;s message.  The program  will  not  accept
+       standard input for a message in this case.
+
+       There  are  several provided modes which change the appearance of the cow
+       depending on its particular emotional/physical state.  The -b option ini&#8208;
+       tiates  Borg  mode;  -d  causes the cow to appear dead; -g invokes greedy
+       mode; -p causes a state of paranoia to come over the cow;  -s  makes  the
+       cow  appear  thoroughly stoned; -t yields a tired cow; -w is somewhat the
+       opposite of -t, and initiates wired mode; -y brings on the cow&apos;s youthful
+       appearance.
+
+       The  user may specify the -e option to select the appearance of the cow&apos;s
+       eyes, in which case the first  two  characters  of  the  argument  string
+       eye_string will be used.  The default eyes are &apos;oo&apos;.  The tongue is simi&#8208;
+       larly configurable through -T and tongue_string; it must be  two  charac&#8208;
+       ters  and  does  not  appear  by default.  However, it does appear in the
+       &apos;dead&apos; and &apos;stoned&apos; modes.  Any configuration done by -e and -T  will  be
+       lost if one of the provided modes is used.
+
+       The  -f  option  specifies a particular cow picture file (``cowfile&apos;&apos;) to
+       use.  If the cowfile spec contains &apos;/&apos; then it will be interpreted  as  a
+       path  relative  to  the current directory.  Otherwise, cowsay will search
+       the path specified in the COWPATH environment variable.  To list all cow&#8208;
+       files on the current COWPATH, invoke cowsay with the -l switch.
+
+       If the program is invoked as cowthink then the cow will think its message
+       instead of saying it.
+
+COWFILE FORMAT
+       A cowfile is made up of a simple block of perl(1) code, which  assigns  a
+       picture  of a cow to the variable $the_cow.  Should you wish to customize
+       the eyes or the tongue of the cow, then the variables $eyes  and  $tongue
+       may  be  used.  The trail leading up to the cow&apos;s message balloon is com&#8208;
+       posed of the character(s) in the  $thoughts  variable.   Any  backslashes
+       must  be  reduplicated  to  prevent interpolation.  The name of a cowfile
+       should end with .cow, otherwise it is assumed not to be a cowfile.  Also,
+       at-signs (``@&apos;&apos;) must be backslashed because that is what Perl 5 expects.
+&#12;COMPATIBILITY WITH OLDER VERSIONS
+       What older versions? :-)
+
+       Version  3.x  is  fully backward-compatible with 2.x versions.  If you&apos;re
+       still using a 1.x version, consider upgrading.  And tell me where you got
+       the  older  versions,  since  I didn&apos;t exactly put them up for world-wide
+       access.
+
+       Oh, just so you know, this manual page documents version 3.03 of cowsay.
+
+ENVIRONMENT
+       The COWPATH environment variable, if present, will be used to search  for
+       cowfiles.   It  contains a colon-separated list of directories, much like
+       PATH or MANPATH.  It should  always  contain  the  /usr/share/cowsay/cows
+       directory, or at least a directory with a file called default.cow in it.
+
+FILES
+       /usr/share/cowsay/cows  holds  a sample set of cowfiles.  If your COWPATH
+       is not explicitly set, it automatically contains this directory.
+
+BUGS
+       If there are any, please notify the author at the address below.
+
+AUTHOR
+       Tony  Monroe  (tony@nog.net),  with  suggestions   from   Shannon   Appel
+       (appel@CSUA.Berkeley.EDU)   and   contributions   from   Anthony   Polito
+       (aspolito@CSUA.Berkeley.EDU).
+
+SEE ALSO
+       perl(1), wall(1), nwrite(1), figlet(6)
+
+
+
+                          $Date: 1999/11/04 19:50:40 $                 cowsay(6)
+
+</pre></body></html>

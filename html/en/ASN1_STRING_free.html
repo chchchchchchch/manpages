@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ASN1_STRING_new, ASN1_STRING_type_new, ASN1_STRING_free - ASN1_STRING allocation functions</title></head>
+<body><pre>
+
+ASN1_STRING_new(3SSL)                OpenSSL               ASN1_STRING_new(3SSL)
+
+
+
+NAME
+       ASN1_STRING_new, ASN1_STRING_type_new, ASN1_STRING_free - ASN1_STRING
+       allocation functions
+
+SYNOPSIS
+        #include &lt;openssl/asn1.h&gt;
+
+        ASN1_STRING * ASN1_STRING_new(void);
+        ASN1_STRING * ASN1_STRING_type_new(int type);
+        void ASN1_STRING_free(ASN1_STRING *a);
+
+DESCRIPTION
+       ASN1_STRING_new() returns an allocated ASN1_STRING structure. Its type is
+       undefined.
+
+       ASN1_STRING_type_new() returns an allocated ASN1_STRING structure of type
+       type.
+
+       ASN1_STRING_free() frees up a.
+
+NOTES
+       Other string types call the ASN1_STRING functions. For example
+       ASN1_OCTET_STRING_new() calls ASN1_STRING_type(V_ASN1_OCTET_STRING).
+
+RETURN VALUES
+       ASN1_STRING_new() and ASN1_STRING_type_new() return a valid ASN1_STRING
+       structure or NULL if an error occurred.
+
+       ASN1_STRING_free() does not return a value.
+
+SEE ALSO
+       ERR_get_error(3)
+
+HISTORY
+       TBA
+
+
+
+1.0.1e                             2013-02-11              ASN1_STRING_new(3SSL)
+
+</pre></body></html>

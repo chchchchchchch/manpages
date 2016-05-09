@@ -1,0 +1,236 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Filter - Log4perl Custom Filter Base Class</title></head>
+<body><pre>
+
+Filter(3pm)            User Contributed Perl Documentation           Filter(3pm)
+
+
+
+NAME
+       Log::Log4perl::Filter - Log4perl Custom Filter Base Class
+
+SYNOPSIS
+         use Log::Log4perl;
+
+         Log::Log4perl-&gt;init(\ &lt;&lt;&apos;EOT&apos;);
+           log4perl.logger = INFO, Screen
+           log4perl.filter.MyFilter        = sub { /let this through/ }
+           log4perl.appender.Screen        = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.Filter = MyFilter
+           log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
+         EOT
+
+             # Define a logger
+         my $logger = Log::Log4perl-&gt;get_logger(&quot;Some&quot;);
+
+             # Let this through
+         $logger-&gt;info(&quot;Here&apos;s the info, let this through!&quot;);
+
+             # Suppress this
+         $logger-&gt;info(&quot;Here&apos;s the info, suppress this!&quot;);
+
+         #################################################################
+         # StringMatch Filter:
+         #################################################################
+         log4perl.filter.M1               = Log::Log4perl::Filter::StringMatch
+         log4perl.filter.M1.StringToMatch = let this through
+         log4perl.filter.M1.AcceptOnMatch = true
+
+         #################################################################
+         # LevelMatch Filter:
+         #################################################################
+         log4perl.filter.M1               = Log::Log4perl::Filter::LevelMatch
+         log4perl.filter.M1.LevelToMatch  = INFO
+         log4perl.filter.M1.AcceptOnMatch = true
+
+DESCRIPTION
+       Log4perl allows the use of customized filters in its appenders to control
+       the output of messages. These filters might grep for certain text chunks
+       in a message, verify that its priority matches or exceeds a certain level
+       or that this is the 10th time the same message has been submitted -- and
+       come to a log/no log decision based upon these circumstantial facts.
+
+       Filters have names and can be specified in two different ways in the
+       Log4perl configuration file: As subroutines or as filter classes. Here&apos;s
+       a simple filter named &quot;MyFilter&quot; which just verifies that the oncoming
+       message matches the regular expression &quot;/let this through/i&quot;:
+
+           log4perl.filter.MyFilter        = sub { /let this through/i }
+
+       It exploits the fact that when the subroutine defined above is called on
+       a message, Perl&apos;s special $_ variable will be set to the message text
+       (prerendered, i.e. concatenated but not layouted) to be logged.  The
+       subroutine is expected to return a true value if it wants the message to
+       be logged or a false value if doesn&apos;t.
+
+       Also, Log::Log4perl will pass a hash to the subroutine, containing all
+       key/value pairs that it would pass to the corresponding appender, as
+       specified in Log::Log4perl::Appender. Here&apos;s an example of a filter
+       checking the priority of the oncoming message:
+&#12;         log4perl.filter.MyFilter        = sub {    \
+              my %p = @_;                           \
+              if($p{log4p_level} eq &quot;WARN&quot; or       \
+                 $p{log4p_level} eq &quot;INFO&quot;) {       \
+                  return 1;                         \
+              }                                     \
+              return 0;                             \
+         }
+
+       If the message priority equals &quot;WARN&quot; or &quot;INFO&quot;, it returns a true value,
+       causing the message to be logged.
+
+   Predefined Filters
+       For common tasks like verifying that the message priority matches a
+       certain priority, there&apos;s already a set of predefined filters available.
+       To perform an exact level match, it&apos;s much cleaner to use Log4perl&apos;s
+       &quot;LevelMatch&quot; filter instead:
+
+         log4perl.filter.M1               = Log::Log4perl::Filter::LevelMatch
+         log4perl.filter.M1.LevelToMatch  = INFO
+         log4perl.filter.M1.AcceptOnMatch = true
+
+       This will let the message through if its priority is INFO and suppress it
+       otherwise. The statement can be negated by saying
+
+         log4perl.filter.M1.AcceptOnMatch = false
+
+       instead. This way, the message will be logged if its priority is anything
+       but INFO.
+
+       On a similar note, Log4perl&apos;s &quot;StringMatch&quot; filter will check the
+       oncoming message for strings or regular expressions:
+
+         log4perl.filter.M1               = Log::Log4perl::Filter::StringMatch
+         log4perl.filter.M1.StringToMatch = bl.. bl..
+         log4perl.filter.M1.AcceptOnMatch = true
+
+       This will open the gate for messages like &quot;blah blah&quot; because the regular
+       expression in the &quot;StringToMatch&quot; matches them. Again, the setting of
+       &quot;AcceptOnMatch&quot; determines if the filter is defined in a positive or
+       negative way.
+
+       All class filter entries in the configuration file have to adhere to the
+       following rule: Only after a filter has been defined by name and
+       class/subroutine, its attribute values can be assigned, just like the
+       &quot;true&quot; value above gets assigned to the &quot;AcceptOnMatch&quot; attribute after
+       the filter &quot;M1&quot; has been defined.
+
+   Attaching a filter to an appender
+       Attaching a filter to an appender is as easy as assigning its name to the
+       appender&apos;s &quot;Filter&quot; attribute:
+
+           log4perl.appender.MyAppender.Filter = MyFilter
+
+       This will cause &quot;Log::Log4perl&quot; to call the filter subroutine/method
+       every time a message is supposed to be passed to the appender. Depending
+       on the filter&apos;s return value, &quot;Log::Log4perl&quot; will either continue as
+       planned or withdraw immediately.
+
+   Combining filters with Log::Log4perl::Filter::Boolean
+       Sometimes, it&apos;s useful to combine the output of various filters to arrive
+       at a log/no log decision. While Log4j, Log4perl&apos;s mother ship, has chosen
+       to implement this feature as a filter chain, similar to Linux&apos; IP chains,
+       Log4perl tries a different approach.
+
+       Typically, filter results will not need to be bumped along chains but
+       combined in a programmatic manner using boolean logic. &quot;Log if this
+       filter says &apos;yes&apos; and that filter says &apos;no&apos;&quot; is a fairly common
+       requirement, but hard to implement as a chain.
+
+       &quot;Log::Log4perl::Filter::Boolean&quot; is a specially predefined custom filter
+       for Log4perl. It combines the results of other custom filters in
+       arbitrary ways, using boolean expressions:
+
+           log4perl.logger = WARN, AppWarn, AppError
+
+           log4perl.filter.Match1       = sub { /let this through/ }
+           log4perl.filter.Match2       = sub { /and that, too/ }
+           log4perl.filter.MyBoolean       = Log::Log4perl::Filter::Boolean
+           log4perl.filter.MyBoolean.logic = Match1 || Match2
+
+           log4perl.appender.Screen        = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.Filter = MyBoolean
+           log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
+
+       &quot;Log::Log4perl::Filter::Boolean&quot;&apos;s boolean expressions allow for
+       combining different appenders by name using AND (&amp;&amp; or &amp;), OR (|| or |)
+       and NOT (!) as logical expressions. Also, parentheses can be used for
+       defining precedences.  Operator precedence follows standard Perl
+       conventions. Here&apos;s a bunch of examples:
+
+           Match1 &amp;&amp; !Match2            # Match1 and not Match2
+           !(Match1 || Match2)          # Neither Match1 nor Match2
+           (Match1 &amp;&amp; Match2) || Match3 # Both Match1 and Match2 or Match3
+
+   Writing your own filter classes
+       If none of Log::Log4perl&apos;s predefined filter classes fits your needs, you
+       can easily roll your own: Just define a new class, derive it from the
+       baseclass &quot;Log::Log4perl::Filter&quot;, and define its &quot;new&quot; and &quot;ok&quot; methods
+       like this:
+
+           package Log::Log4perl::Filter::MyFilter;
+
+           use base Log::Log4perl::Filter;
+
+           sub new {
+               my ($class, %options) = @_;
+
+               my $self = { %options,
+                          };
+
+               bless $self, $class;
+
+               return $self;
+           }
+
+           sub ok {
+                my ($self, %p) = @_;
+
+                # ... decide and return 1 or 0
+           }
+
+           1;
+
+       Log4perl will call the ok() method to determine if the filter should let
+       the message pass or not. A true return value indicates the message will
+       be logged by the appender, a false value blocks it.
+
+       Values you&apos;ve defined for its attributes in Log4perl&apos;s configuration
+       file, will be received through its &quot;new&quot; method:
+
+           log4perl.filter.MyFilter       = Log::Log4perl::Filter::MyFilter
+           log4perl.filter.MyFilter.color = red
+&#12;       will cause &quot;Log::Log4perl::Filter::MyFilter&quot;&apos;s constructor to be called
+       like this:
+
+           Log::Log4perl::Filter::MyFilter-&gt;new( name  =&gt; &quot;MyFilter&quot;,
+                                                 color =&gt; &quot;red&quot; );
+
+       The custom filter class should use this to set the object&apos;s attributes,
+       to have them available later to base log/nolog decisions on it.
+
+       &quot;ok()&quot; is the filter&apos;s method to tell if it agrees or disagrees with
+       logging the message. It will be called by Log::Log4perl whenever it needs
+       the filter to decide. A false value returned by &quot;ok()&quot; will block
+       messages, a true value will let them through.
+
+   A Practical Example: Level Matching
+       See Log::Log4perl::FAQ for this.
+
+SEE ALSO
+       Log::Log4perl::Filter::LevelMatch, Log::Log4perl::Filter::LevelRange,
+       Log::Log4perl::Filter::StringRange, Log::Log4perl::Filter::Boolean
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                        Filter(3pm)
+
+</pre></body></html>

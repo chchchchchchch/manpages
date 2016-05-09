@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gworldclock - Displays time and date in specified time zones.</title></head>
+<body><pre>
+
+GWORLDCLOCK(1)                                                    GWORLDCLOCK(1)
+
+
+
+NAME
+       gworldclock - Displays time and date in specified time zones.
+
+SYNOPSIS
+       gworldclock [ -f FILE ]
+
+
+DESCRIPTION
+       gworldclock  displays  the  time and date of specified time zones using a
+       GTK+ interface. It also allows the zones to be  &quot;rendezvoused&quot;  or  &quot;syn&#8208;
+       chronised&quot; to a time other than the current time.
+
+       The  time  zones may be chosen from the list given in the GUI user inter&#8208;
+       face.   The  zones   available   are   generated   from   the   data   in
+       /usr/share/zoneinfo/zone.tab.   The  chosen  set  of  zones  is stored in
+       ${HOME}/.tzlist by default, but an alternate file may be specified at the
+       command line via -f. Alternatively this file may be created by hand in TZ
+       format. The zone list is kept in  a  format  consistent  with  the  shell
+       script  tzwatch,  currently found in twclock.  The format consists of one
+       TZ string per  line,  optionally  followed  by  a  human-friendly  string
+       enclosed in inverted commas (&quot;), providing a name for the zone.
+
+OPTIONS
+       -f FILE
+              Read zone list from FILE instead of ${HOME}/.tzlist.
+
+SEE ALSO
+       tzwatch (1)
+
+AUTHOR
+       gworldclock was written by Drew Parsons &lt;dparsons@debian.org&gt;.
+
+
+
+                                28 September 2003                 GWORLDCLOCK(1)
+
+</pre></body></html>

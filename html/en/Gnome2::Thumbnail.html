@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::Thumbnail</title></head>
+<body><pre>
+
+Gnome2::Thumbnail(3pm) User Contributed Perl DocumentationGnome2::Thumbnail(3pm)
+
+
+
+NAME
+       Gnome2::Thumbnail
+
+METHODS
+   boolean = $pixbuf-&gt;has_uri ($uri)
+       &#183;   $uri (string)
+
+   boolean = $pixbuf-&gt;is_valid ($uri, $mtime)
+       &#183;   $uri (string)
+
+       &#183;   $mtime (a timestamp)
+
+   string = Gtk2::Gdk::Pixbuf-&gt;md5 ($uri)
+       &#183;   $uri (string)
+
+   string = Gtk2::Gdk::Pixbuf-&gt;path_for_uri ($uri, $size)
+       &#183;   $uri (string)
+
+       &#183;   $size (Gnome2::ThumbnailSize)
+
+   pixbuf = $pixbuf-&gt;scale_down_pixbuf ($dest_width, $dest_height)
+       &#183;   $dest_width (integer)
+
+       &#183;   $dest_height (integer)
+
+ENUMS AND FLAGS
+   enum Gnome2::ThumbnailSize
+       &#183;   &apos;normal&apos; / &apos;GNOME_THUMBNAIL_SIZE_NORMAL&apos;
+
+       &#183;   &apos;large&apos; / &apos;GNOME_THUMBNAIL_SIZE_LARGE&apos;
+
+SEE ALSO
+       Gnome2
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16             Gnome2::Thumbnail(3pm)
+
+</pre></body></html>

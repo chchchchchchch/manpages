@@ -1,0 +1,132 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wsgen - Java(TM) API for XML Web Services (JAX-WS) 2.0</title></head>
+<body><pre>
+
+wsgen(1)                                                                wsgen(1)
+
+
+
+Name
+       wsgen - Java(TM) API for XML Web Services (JAX-WS) 2.0
+
+       Specification Version: 2.1
+       Implementation Version: 2.1.1
+
+       The  wsgen  tool  generates  JAX-WS portable artifacts used in JAX-WS web
+       services. The tool reads a  web  service  endpoint  implementation  class
+       (SEI)  and  generates  all the required artifacts for web service deploy&#8208;
+       ment, and invocation
+
+Overview
+       The wsgen tool generates JAX-WS portable artifacts  used  in  JAX-WS  web
+       services.  The  tool reads a web service endpoint class and generates all
+       the required artifacts for web service deployment, and invocation.  JAXWS
+       2.1.1 RI also provides a wsgen ant task, see Wsgen ant task @
+       https://jax-ws.dev.java.net/nonav/2.1.1/docs/wsgenant.html for details.
+
+Launching wsgen
+          o Solaris/Linux
+
+             * export JAXWS_HOME=/pathto/jaxws-ri
+
+             * $JAXWS_HOME/bin/wsgen.sh -help
+
+          o Windows
+
+             * set JAXWS_HOME=c:\pathto\jaxws-ri
+
+             * %JAXWS_HOME%\bin\wsgen.bat -help
+
+
+Syntax
+       wsgen [options] &lt;SEI&gt;
+
+       The following table lists the wsgen options.
+
+       Option                Description
+       -classpath &lt;path&gt;     Specify where to find input
+                             class files
+       -cp &lt;path&gt;            Same as -classpath &lt;path&gt;
+       -d &lt;directory&gt;        Specify where to place gen&#8208;
+                             erated output files
+       -extension            allow vendor extensions
+                             (functionality not speci&#8208;
+                             fied by the specification).
+                             Use of extensions may
+                             result in applications that
+                             are not portable or may not
+                             interoperate with other
+                             implementations
+       -help                 Display help
+       -keep                 Keep generated files
+       -r &lt;directory&gt;        Used only in conjunction
+                             with the -wsdl option.
+                             Specify where to place gen&#8208;
+                             erated resource files such
+                             as WSDLs
+       -s &lt;directory&gt;        Specify where to place gen&#8208;
+                             erated source files
+       -verbose              Output messages about what
+                             the compiler is doing
+       -version              Print version information.
+                             Use of this option will
+                             ONLY print version informa&#8208;
+                             tion. Normal processing
+                             will not occur.
+       -wsdl[:protocol]      By default wsgen does not
+                             generate a WSDL file. This
+                             flag is optional and will
+                             cause wsgen to generate a
+                             WSDL file and is usually
+                             only used so that the
+                             developer can look at the
+                             WSDL before the endpoint is
+                             deploy. The protocol is
+                             optional and is used to
+                             specify what protocol
+                             should be used in the
+                             wsdl:binding. Valid proto&#8208;
+                             cols include: soap1.1 and
+                             Xsoap1.2. The default is
+                             soap1.1. Xsoap1.2 is not
+                             standard and can only be
+                             used in conjunction with
+                             the -extension option.
+       -servicename &lt;name&gt;   Used only in conjunction
+                             with the -wsdl option. Used
+                             to specify a particular
+                             wsdl:service name to be
+                             generated in the WSDL.
+                             Example, -servicename
+                             &quot;{http://mynames&#8208;
+                             pace/}MyService&quot;
+       -portname &lt;name&gt;      Used only in conjunction
+                             with the -wsdl option. Used
+                             to specify a particular
+                             wsdl:port name to be gener&#8208;
+                             ated in the WSDL. Example,
+                             -portname &quot;{http://mynames&#8208;
+                             pace/}MyPort&quot;
+&#12;Example
+       wsgen -d stock -cp myclasspath stock.StockService
+
+       This will generate the wrapper classes needed for StockService annotated
+       with @WebService annotation inside stockdirectory.
+       wsgen -wsdl -d stock -cp myclasspath stock.StockService
+
+       This will generate a SOAP 1.1 WSDL and schema for your Java class
+       stock.StockService annotated with @WebService annotation.
+       wsgen -wsdl:Xsoap1.2 -d stock -cp myclasspath stock.StockService
+
+       Will generate a SOAP 1.2 WSDL.
+
+       Note that you do not have to generate WSDL at the development time as
+       JAXWS runtime will automatically generate a WSDL for you when you deploy
+       your service.
+
+
+
+                                   16 Mar 2012                          wsgen(1)
+
+</pre></body></html>

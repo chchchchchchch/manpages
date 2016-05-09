@@ -1,0 +1,105 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Exporter::Lite - Lightweight exporting of variables</title></head>
+<body><pre>
+
+Exporter::Lite(3pm)    User Contributed Perl Documentation   Exporter::Lite(3pm)
+
+
+
+NAME
+       Exporter::Lite - Lightweight exporting of variables
+
+SYNOPSIS
+         package Foo;
+         use Exporter::Lite;
+
+         # Just like Exporter.
+         @EXPORT       = qw($This That);
+         @EXPORT_OK    = qw(@Left %Right);
+
+
+         # Meanwhile, in another piece of code!
+         package Bar;
+         use Foo;  # exports $This and &amp;That.
+
+DESCRIPTION
+       This is an alternative to Exporter intended to provide a lightweight
+       subset of its functionality.  It supports &quot;import()&quot;, @EXPORT and
+       @EXPORT_OK and not a whole lot else.
+
+       Unlike Exporter, it is not necessary to inherit from Exporter::Lite (ie.
+       no &quot;@ISA = qw(Exporter::Lite)&quot; mantra).  Exporter::Lite simply exports
+       its import() function.  This might be called a &quot;mix-in&quot;.
+
+       Setting up a module to export its variables and functions is simple:
+
+           package My::Module;
+           use Exporter::Lite;
+
+           @EXPORT = qw($Foo bar);
+
+       now when you &quot;use My::Module&quot;, $Foo and &quot;bar()&quot; will show up.
+
+       In order to make exporting optional, use @EXPORT_OK.
+
+           package My::Module;
+           use Exporter::Lite;
+
+           @EXPORT_OK = qw($Foo bar);
+
+       when My::Module is used, $Foo and &quot;bar()&quot; will not show up.  You have to
+       ask for them.  &quot;use My::Module qw($Foo bar)&quot;.
+
+Methods
+       Export::Lite has one public method, import(), which is called automaticly
+       when your modules is use()&apos;d.
+
+       In normal usage you don&apos;t have to worry about this at all.
+
+       import
+             Some::Module-&gt;import;
+             Some::Module-&gt;import(@symbols);
+
+           Works just like &quot;Exporter::import()&quot; excepting it only honors
+           @Some::Module::EXPORT and @Some::Module::EXPORT_OK.
+
+           The given @symbols are exported to the current package provided they
+           are in @Some::Module::EXPORT or @Some::Module::EXPORT_OK.  Otherwise
+           an exception is thrown (ie. the program dies).
+
+           If @symbols is not given, everything in @Some::Module::EXPORT is
+           exported.
+
+DIAGNOSTICS
+       &apos;&quot;%s&quot; is not exported by the %s module&apos;
+           Attempted to import a symbol which is not in @EXPORT or @EXPORT_OK.
+
+       &apos;Can\&apos;t export symbol: %s&apos;
+           Attempted to import a symbol of an unknown type (ie. the leading $@%
+           salad wasn&apos;t recognized).
+
+BUGS and CAVEATS
+       Its not yet clear if this is actually any lighter or faster than
+       Exporter.  I know its at least on par.
+
+       OTOH, the docs are much clearer and not having to say &quot;@ISA =
+       qw(Exporter)&quot; is kinda nice.
+
+AUTHORS
+       Michael G Schwern &lt;schwern@pobox.com&gt;
+
+LICENSE
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+       See http://www.perl.com/perl/misc/Artistic.html
+
+SEE ALSO
+       Exporter, Exporter::Simple, UNIVERSAL::exports
+
+
+
+perl v5.10.0                       2006-11-11                Exporter::Lite(3pm)
+
+</pre></body></html>

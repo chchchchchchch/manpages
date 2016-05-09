@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rnano - Restricted mode for Nano's ANOther editor, an enhanced free Pico clone</title></head>
+<body><pre>
+
+RNANO(1)                                                                RNANO(1)
+
+
+
+NAME
+       rnano  - Restricted mode for Nano&apos;s ANOther editor, an enhanced free Pico
+       clone
+
+
+SYNOPSIS
+       rnano [OPTIONS] [[+LINE,COLUMN] FILE]...
+
+
+DESCRIPTION
+       This manual page briefly documents the rnano command.
+
+       nano is a small, free and friendly editor which aims to replace Pico, the
+       default  editor  included  in the non-free Pine package. Rather than just
+       copying Pico&apos;s look and feel, nano also implements some missing (or  dis&#8208;
+       abled  by default) features in Pico, such as &quot;search and replace&quot; and &quot;go
+       to line and column number&quot;.
+
+       rnano is a restricted version of nano, which only  edits  specific  files
+       and doesn&apos;t allow the user access to the filesystem or a command shell.
+
+       In restricted mode, nano will not:
+
+       &#183; read or write to any file not specified on the command line;
+
+       &#183; read any nanorc files;
+
+       &#183; allow suspending;
+
+       &#183; allow  a file to be appended to, prepended to, or saved under a differ&#8208;
+         ent name;
+
+       &#183; use backup files or spell checking.
+
+
+OPTIONS
+       +LINE,COLUMN
+              Places cursor at line number LINE and  column  number  COLUMN  (at
+              least  one  of which must be specified) on startup, instead of the
+              default of line 1, column 1.
+
+       -?     Same as -h (--help).
+
+       -h (--help)
+              Show a summary of command line options and exit.
+
+       -V (--version)
+              Show the current version number and exit.
+
+       See the nano(1) manpage for the complete documentation of nano.
+
+
+BUGS
+       Please send any comments or bug reports to nano@nano-editor.org.
+
+       The nano mailing list is available from nano-devel@gnu.org.
+
+       To subscribe, email to nano-devel-request@gnu.org with a subject of &quot;sub&#8208;
+       scribe&quot;.
+
+
+HOMEPAGE
+       http://www.nano-editor.org/
+&#12;
+AUTHOR
+       Chris  Allegretta  &lt;chrisa@asty.org&gt;,  et  al  (see AUTHORS for details).
+       This  manual   page   was   originally   written   by   Thijs   Kinkhorst
+       &lt;thijs@kinkhorst.com&gt;, for the Debian system (but may be used by others).
+
+
+
+August 23, 2007                   version 2.0.0                         RNANO(1)
+
+</pre></body></html>

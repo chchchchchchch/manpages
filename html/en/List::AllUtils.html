@@ -1,0 +1,444 @@
+<html>
+<head><meta charset=utf-8/>
+<title>List::AllUtils - Combines List::Util and List::MoreUtils in one bite-sized package</title></head>
+<body><pre>
+
+List::AllUtils(3pm)    User Contributed Perl Documentation   List::AllUtils(3pm)
+
+
+
+NAME
+       List::AllUtils - Combines List::Util and List::MoreUtils in one
+       bite-sized package
+
+VERSION
+       version 0.03
+
+SYNOPSIS
+           use List::AllUtils qw( first any );
+
+           # _Everything_ from List::Util and List::MoreUtils
+           use List::AllUtils qw( :all );
+
+           # or don&apos;t import anything
+           return List::AllUtils::first { $_ &gt; 5 } @numbers;
+
+DESCRIPTION
+       Are you sick of trying to remember whether a particular helper is defined
+       in &quot;List::Util&quot; or &quot;List::MoreUtils&quot;? I sure am. Now you don&apos;t have to
+       remember. This module will export all of the functions that either of
+       those two modules defines.
+
+FUNCTIONS
+       (Shamelessly copied from List::Util and List::MoreUtils ...)
+
+   first BLOCK LIST
+       Similar to &quot;grep&quot; in that it evaluates BLOCK setting $_ to each element
+       of LIST in turn. &quot;first&quot; returns the first element where the result from
+       BLOCK is a true value. If BLOCK never returns true or LIST was empty then
+       &quot;undef&quot; is returned.
+
+           $foo = first { defined($_) } @list    # first defined value in @list
+           $foo = first { $_ &gt; $value } @list    # first value in @list which
+                                                 # is greater than $value
+
+       This function could be implemented using &quot;reduce&quot; like this
+
+           $foo = reduce { wanted($a) ? $a : wanted($b) ? $b : undef } undef, @list
+
+       for example wanted() could be defined() which would return the first
+       defined value in @list
+
+   max LIST
+       Returns the entry in the list with the highest numerical value. If the
+       list is empty then &quot;undef&quot; is returned.
+
+           $foo = max 1..10                # 10
+           $foo = max 3,9,12               # 12
+           $foo = max @bar, @baz           # whatever
+
+       This function could be implemented using &quot;reduce&quot; like this
+
+           $foo = reduce { $a &gt; $b ? $a : $b } 1..10
+
+   maxstr LIST
+       Similar to &quot;max&quot;, but treats all the entries in the list as strings and
+       returns the highest string as defined by the &quot;gt&quot; operator.  If the list
+       is empty then &quot;undef&quot; is returned.
+
+           $foo = maxstr &apos;A&apos;..&apos;Z&apos;          # &apos;Z&apos;
+           $foo = maxstr &quot;hello&quot;,&quot;world&quot;   # &quot;world&quot;
+           $foo = maxstr @bar, @baz        # whatever
+&#12;       This function could be implemented using &quot;reduce&quot; like this
+
+           $foo = reduce { $a gt $b ? $a : $b } &apos;A&apos;..&apos;Z&apos;
+
+   min LIST
+       Similar to &quot;max&quot; but returns the entry in the list with the lowest
+       numerical value. If the list is empty then &quot;undef&quot; is returned.
+
+           $foo = min 1..10                # 1
+           $foo = min 3,9,12               # 3
+           $foo = min @bar, @baz           # whatever
+
+       This function could be implemented using &quot;reduce&quot; like this
+
+           $foo = reduce { $a &lt; $b ? $a : $b } 1..10
+
+   minstr LIST
+       Similar to &quot;min&quot;, but treats all the entries in the list as strings and
+       returns the lowest string as defined by the &quot;lt&quot; operator.  If the list
+       is empty then &quot;undef&quot; is returned.
+
+           $foo = minstr &apos;A&apos;..&apos;Z&apos;          # &apos;A&apos;
+           $foo = minstr &quot;hello&quot;,&quot;world&quot;   # &quot;hello&quot;
+           $foo = minstr @bar, @baz        # whatever
+
+       This function could be implemented using &quot;reduce&quot; like this
+
+           $foo = reduce { $a lt $b ? $a : $b } &apos;A&apos;..&apos;Z&apos;
+
+   reduce BLOCK LIST
+       Reduces LIST by calling BLOCK, in a scalar context, multiple times,
+       setting $a and $b each time. The first call will be with $a and $b set to
+       the first two elements of the list, subsequent calls will be done by
+       setting $a to the result of the previous call and $b to the next element
+       in the list.
+
+       Returns the result of the last call to BLOCK. If LIST is empty then
+       &quot;undef&quot; is returned. If LIST only contains one element then that element
+       is returned and BLOCK is not executed.
+
+           $foo = reduce { $a &lt; $b ? $a : $b } 1..10       # min
+           $foo = reduce { $a lt $b ? $a : $b } &apos;aa&apos;..&apos;zz&apos; # minstr
+           $foo = reduce { $a + $b } 1 .. 10               # sum
+           $foo = reduce { $a . $b } @bar                  # concat
+
+   shuffle LIST
+       Returns the elements of LIST in a random order
+
+           @cards = shuffle 0..51      # 0..51 in a random order
+
+   sum LIST
+       Returns the sum of all the elements in LIST. If LIST is empty then
+       &quot;undef&quot; is returned.
+
+           $foo = sum 1..10                # 55
+           $foo = sum 3,9,12               # 24
+           $foo = sum @bar, @baz           # whatever
+
+       This function could be implemented using &quot;reduce&quot; like this
+
+           $foo = reduce { $a + $b } 1..10
+
+   any BLOCK LIST
+       Returns a true value if any item in LIST meets the criterion given
+       through BLOCK. Sets $_ for each item in LIST in turn:
+
+           print &quot;At least one value undefined&quot;
+               if any { ! defined($_) } @list;
+&#12;       Returns false otherwise, or if LIST is empty.
+
+   all BLOCK LIST
+       Returns a true value if all items in LIST meet the criterion given
+       through BLOCK, or if LIST is empty. Sets $_ for each item in LIST in
+       turn:
+
+           print &quot;All items defined&quot;
+               if all { defined($_) } @list;
+
+       Returns false otherwise.
+
+   none BLOCK LIST
+       Logically the negation of &quot;any&quot;. Returns a true value if no item in LIST
+       meets the criterion given through BLOCK, or if LIST is empty. Sets $_ for
+       each item in LIST in turn:
+
+           print &quot;No value defined&quot;
+               if none { defined($_) } @list;
+
+       Returns false otherwise.
+
+   notall BLOCK LIST
+       Logically the negation of &quot;all&quot;. Returns a true value if not all items in
+       LIST meet the criterion given through BLOCK. Sets $_ for each item in
+       LIST in turn:
+
+           print &quot;Not all values defined&quot;
+               if notall { defined($_) } @list;
+
+       Returns false otherwise, or if LIST is empty.
+
+   true BLOCK LIST
+       Counts the number of elements in LIST for which the criterion in BLOCK is
+       true.  Sets $_ for  each item in LIST in turn:
+
+           printf &quot;%i item(s) are defined&quot;, true { defined($_) } @list;
+
+   false BLOCK LIST
+       Counts the number of elements in LIST for which the criterion in BLOCK is
+       false.  Sets $_ for each item in LIST in turn:
+
+           printf &quot;%i item(s) are not defined&quot;, false { defined($_) } @list;
+
+   firstidx BLOCK LIST
+   first_index BLOCK LIST
+       Returns the index of the first element in LIST for which the criterion in
+       BLOCK is true. Sets $_ for each item in LIST in turn:
+
+           my @list = (1, 4, 3, 2, 4, 6);
+           printf &quot;item with index %i in list is 4&quot;, firstidx { $_ == 4 } @list;
+           __END__
+           item with index 1 in list is 4
+
+       Returns &quot;-1&quot; if no such item could be found.
+
+       &quot;first_index&quot; is an alias for &quot;firstidx&quot;.
+
+   lastidx BLOCK LIST
+   last_index BLOCK LIST
+       Returns the index of the last element in LIST for which the criterion in
+       BLOCK is true. Sets $_ for each item in LIST in turn:
+
+           my @list = (1, 4, 3, 2, 4, 6);
+           printf &quot;item with index %i in list is 4&quot;, lastidx { $_ == 4 } @list;
+           __END__
+           item with index 4 in list is 4
+
+       Returns &quot;-1&quot; if no such item could be found.
+
+       &quot;last_index&quot; is an alias for &quot;lastidx&quot;.
+
+   insert_after BLOCK VALUE LIST
+       Inserts VALUE after the first item in LIST for which the criterion in
+       BLOCK is true. Sets $_ for each item in LIST in turn.
+
+           my @list = qw/This is a list/;
+           insert_after { $_ eq &quot;a&quot; } &quot;longer&quot; =&gt; @list;
+           print &quot;@list&quot;;
+           __END__
+           This is a longer list
+
+   insert_after_string STRING VALUE LIST
+       Inserts VALUE after the first item in LIST which is equal to STRING.
+
+           my @list = qw/This is a list/;
+           insert_after_string &quot;a&quot;, &quot;longer&quot; =&gt; @list;
+           print &quot;@list&quot;;
+           __END__
+           This is a longer list
+
+   apply BLOCK LIST
+       Applies BLOCK to each item in LIST and returns a list of the values after
+       BLOCK has been applied. In scalar context, the last element is returned.
+       This function is similar to &quot;map&quot; but will not modify the elements of the
+       input list:
+
+           my @list = (1 .. 4);
+           my @mult = apply { $_ *= 2 } @list;
+           print &quot;\@list = @list\n&quot;;
+           print &quot;\@mult = @mult\n&quot;;
+           __END__
+           @list = 1 2 3 4
+           @mult = 2 4 6 8
+
+       Think of it as syntactic sugar for
+
+           for (my @mult = @list) { $_ *= 2 }
+
+   before BLOCK LIST
+       Returns a list of values of LIST upto (and not including) the point where
+       BLOCK returns a true value. Sets $_ for each element in LIST in turn.
+
+   before_incl BLOCK LIST
+       Same as &quot;before&quot; but also includes the element for which BLOCK is true.
+
+   after BLOCK LIST
+       Returns a list of the values of LIST after (and not including) the point
+       where BLOCK returns a true value. Sets $_ for each element in LIST in
+       turn.
+
+           @x = after { $_ % 5 == 0 } (1..9);    # returns 6, 7, 8, 9
+
+   after_incl BLOCK LIST
+       Same as &quot;after&quot; but also inclues the element for which BLOCK is true.
+
+   indexes BLOCK LIST
+       Evaluates BLOCK for each element in LIST (assigned to $_) and returns a
+       list of the indices of those elements for which BLOCK returned a true
+       value. This is just like &quot;grep&quot; only that it returns indices instead of
+       values:
+
+           @x = indexes { $_ % 2 == 0 } (1..10);   # returns 1, 3, 5, 7, 9
+
+   firstval BLOCK LIST
+   first_value BLOCK LIST
+       Returns the first element in LIST for which BLOCK evaluates to true. Each
+       element of LIST is set to $_ in turn. Returns &quot;undef&quot; if no such element
+       has been found.
+
+       &quot;first_val&quot; is an alias for &quot;firstval&quot;.
+
+   lastval BLOCK LIST
+   last_value BLOCK LIST
+       Returns the last value in LIST for which BLOCK evaluates to true. Each
+       element of LIST is set to $_ in turn. Returns &quot;undef&quot; if no such element
+       has been found.
+
+       &quot;last_val&quot; is an alias for &quot;lastval&quot;.
+
+   pairwise BLOCK ARRAY1 ARRAY2
+       Evaluates BLOCK for each pair of elements in ARRAY1 and ARRAY2 and
+       returns a new list consisting of BLOCK&apos;s return values. The two elements
+       are set to $a and $b.  Note that those two are aliases to the original
+       value so changing them will modify the input arrays.
+
+           @a = (1 .. 5);
+           @b = (11 .. 15);
+           @x = pairwise { $a + $b } @a, @b;   # returns 12, 14, 16, 18, 20
+
+           # mesh with pairwise
+           @a = qw/a b c/;
+           @b = qw/1 2 3/;
+           @x = pairwise { ($a, $b) } @a, @b;  # returns a, 1, b, 2, c, 3
+
+   each_array ARRAY1 ARRAY2 ...
+       Creates an array iterator to return the elements of the list of arrays
+       ARRAY1, ARRAY2 throughout ARRAYn in turn.  That is, the first time it is
+       called, it returns the first element of each array.  The next time, it
+       returns the second elements.  And so on, until all elements are
+       exhausted.
+
+       This is useful for looping over more than one array at once:
+
+           my $ea = each_array(@a, @b, @c);
+           while ( my ($a, $b, $c) = $ea-&gt;() )   { .... }
+
+       The iterator returns the empty list when it reached the end of all
+       arrays.
+
+       If the iterator is passed an argument of &apos;&quot;index&quot;&apos;, then it retuns the
+       index of the last fetched set of values, as a scalar.
+
+   each_arrayref LIST
+       Like each_array, but the arguments are references to arrays, not the
+       plain arrays.
+
+   natatime EXPR, LIST
+       Creates an array iterator, for looping over an array in chunks of $n
+       items at a time.  (n at a time, get it?).  An example is probably a
+       better explanation than I could give in words.
+
+       Example:
+
+           my @x = (&apos;a&apos; .. &apos;g&apos;);
+           my $it = natatime 3, @x;
+           while (my @vals = $it-&gt;())
+           {
+               print &quot;@vals\n&quot;;
+           }
+
+       This prints
+
+           a b c
+           d e f
+           g
+&#12;   mesh ARRAY1 ARRAY2 [ ARRAY3 ... ]
+   zip ARRAY1 ARRAY2 [ ARRAY3 ... ]
+       Returns a list consisting of the first elements of each array, then the
+       second, then the third, etc, until all arrays are exhausted.
+
+       Examples:
+
+           @x = qw/a b c d/;
+           @y = qw/1 2 3 4/;
+           @z = mesh @x, @y;       # returns a, 1, b, 2, c, 3, d, 4
+
+           @a = (&apos;x&apos;);
+           @b = (&apos;1&apos;, &apos;2&apos;);
+           @c = qw/zip zap zot/;
+           @d = mesh @a, @b, @c;   # x, 1, zip, undef, 2, zap, undef, undef, zot
+
+       &quot;zip&quot; is an alias for &quot;mesh&quot;.
+
+   uniq LIST
+   distinct LIST
+       Returns a new list by stripping duplicate values in LIST. The order of
+       elements in the returned list is the same as in LIST. In scalar context,
+       returns the number of unique elements in LIST.
+
+           my @x = uniq 1, 1, 2, 2, 3, 5, 3, 4; # returns 1 2 3 5 4
+           my $x = uniq 1, 1, 2, 2, 3, 5, 3, 4; # returns 5
+
+   minmax LIST
+       Calculates the minimum and maximum of LIST and returns a two element list
+       with the first element being the minimum and the second the maximum.
+       Returns the empty list if LIST was empty.
+
+       The &quot;minmax&quot; algorithm differs from a naive iteration over the list where
+       each element is compared to two values being the so far calculated min
+       and max value in that it only requires 3n/2 - 2 comparisons. Thus it is
+       the most efficient possible algorithm.
+
+       However, the Perl implementation of it has some overhead simply due to
+       the fact that there are more lines of Perl code involved. Therefore, LIST
+       needs to be fairly big in order for &quot;minmax&quot; to win over a naive
+       implementation. This limitation does not apply to the XS version.
+
+   part BLOCK LIST
+       Partitions LIST based on the return value of BLOCK which denotes into
+       which partition the current value is put.
+
+       Returns a list of the partitions thusly created. Each partition created
+       is a reference to an array.
+
+           my $i = 0;
+           my @part = part { $i++ % 2 } 1 .. 8;   # returns [1, 3, 5, 7], [2, 4, 6, 8]
+
+       You can have a sparse list of partitions as well where non-set partitions
+       will be undef:
+
+           my @part = part { 2 } 1 .. 10;          # returns undef, undef, [ 1 .. 10 ]
+
+       Be careful with negative values, though:
+
+           my @part = part { -1 } 1 .. 10;
+           __END__
+           Modification of non-creatable array value attempted, subscript -1 ...
+
+       Negative values are only ok when they refer to a partition previously
+       created:
+
+           my @idx  = ( 0, 1, -1 );
+           my $i    = 0;
+           my @part = part { $idx[$++ % 3] } 1 .. 8; # [1, 4, 7], [2, 3, 5, 6, 8]
+&#12;EXPORTS
+       This module exports nothing by default. You can import functions by name,
+       or get everything with the &quot;:all&quot; tag.
+
+SEE ALSO
+       &quot;List::Util&quot; and &quot;List::MoreUtils&quot;, obviously.
+
+       Also see &quot;Util::Any&quot;, which unifies many more util modules, and also lets
+       you rename functions as part of the import.
+
+BUGS
+       Please report any bugs or feature requests to
+       &quot;bug-list-allutils@rt.cpan.org&quot;, or through the web interface at
+       &lt;http://rt.cpan.org&gt;.  I will be notified, and then you&apos;ll automatically
+       be notified of progress on your bug as I make changes.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2012 by Dave Rolsky.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.14.2                       2012-02-21                List::AllUtils(3pm)
+
+</pre></body></html>

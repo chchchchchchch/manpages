@@ -1,0 +1,82 @@
+<html>
+<head><meta charset=utf-8/>
+<title>runcon - run command with specified security context</title></head>
+<body><pre>
+
+RUNCON(1)                         User Commands                        RUNCON(1)
+
+
+
+NAME
+       runcon - run command with specified security context
+
+SYNOPSIS
+       runcon CONTEXT COMMAND [args]
+       runcon [ -c ] [-u USER] [-r ROLE] [-t TYPE] [-l RANGE] COMMAND [args]
+
+DESCRIPTION
+       Run COMMAND with completely-specified CONTEXT, or with current or transi&#8208;
+       tioned security context modified by one or more of LEVEL, ROLE, TYPE, and
+       USER.
+
+       If  none  of  -c,  -t, -u, -r, or -l, is specified, the first argument is
+       used as the complete context.  Any additional arguments after COMMAND are
+       interpreted as arguments to the command.
+
+       Note that only carefully-chosen contexts are likely to successfully run.
+
+       Run  a program in a different security context.  With neither CONTEXT nor
+       COMMAND, print the current security context.
+
+       CONTEXT
+              Complete security context
+
+       -c, --compute
+              compute process transition context before modifying
+
+       -t, --type=TYPE
+              type (for same role as parent)
+
+       -u, --user=USER
+              user identity
+
+       -r, --role=ROLE
+              role
+
+       -l, --range=RANGE
+              levelrange
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+AUTHOR
+       Written by Russell Coker.
+
+REPORTING BUGS
+       Report runcon bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report runcon translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The full documentation for runcon is maintained as a Texinfo manual.   If
+       the  info  and  runcon  programs are properly installed at your site, the
+       command
+
+              info coreutils &apos;runcon invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                        RUNCON(1)
+
+</pre></body></html>

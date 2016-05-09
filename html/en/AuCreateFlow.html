@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuCreateFlow - create a flow</title></head>
+<body><pre>
+
+AuCreateFlow(3)                                                  AuCreateFlow(3)
+
+
+
+Name
+       AuCreateFlow - create a flow
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuFlowID AuCreateFlow(server, status)
+           AuServer *server;
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuCreateFlow creates a flow and returns the flow ID, or AuNone  if  there
+       was an error.
+
+Errors
+       AuBadAlloc.
+
+See Also
+       AuDestroyFlow, AuGetFlowAttributes.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - flow existence             1.9.3                      AuCreateFlow(3)
+
+</pre></body></html>

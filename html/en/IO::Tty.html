@@ -1,0 +1,175 @@
+<html>
+<head><meta charset=utf-8/>
+<title>IO::Tty - Low-level allocate a pseudo-Tty, import constants.</title></head>
+<body><pre>
+
+Tty(3pm)               User Contributed Perl Documentation              Tty(3pm)
+
+
+
+NAME
+       IO::Tty - Low-level allocate a pseudo-Tty, import constants.
+
+VERSION
+       1.08
+
+SYNOPSIS
+           use IO::Tty qw(TIOCNOTTY);
+           ...
+           # use only to import constants, see IO::Pty to create ptys.
+
+DESCRIPTION
+       &quot;IO::Tty&quot; is used internally by &quot;IO::Pty&quot; to create a pseudo-tty.  You
+       wouldn&apos;t want to use it directly except to import constants, use
+       &quot;IO::Pty&quot;.  For a list of importable constants, see IO::Tty::Constant.
+
+       Windows is now supported, but ONLY under the Cygwin environment, see
+       &lt;http://sources.redhat.com/cygwin/&gt;.
+
+       Please note that pty creation is very system-dependend.  From my
+       experience, any modern POSIX system should be fine.  Find below a list of
+       systems that &quot;IO::Tty&quot; should work on.  A more detailed table (which is
+       slowly getting out-of-date) is available from the project pages document
+       manager at SourceForge &lt;http://sourceforge.net/projects/expectperl/&gt;.
+
+       If you have problems on your system and your system is listed in the
+       &quot;verified&quot; list, you probably have some non-standard setup, e.g. you
+       compiled your Linux-kernel yourself and disabled ptys (bummer!).  Please
+       ask your friendly sysadmin for help.
+
+       If your system is not listed, unpack the latest version of &quot;IO::Tty&quot;, do
+       a &apos;perl Makefile.PL; make; make test; uname -a&apos; and send me
+       (RGiersig@cpan.org) the results and I&apos;ll see what I can deduce from that.
+       There are chances that it will work right out-of-the-box...
+
+       If it&apos;s working on your system, please send me a short note with details
+       (version number, distribution, etc. &apos;uname -a&apos; and &apos;perl -V&apos; is a good
+       start; also, the output from &quot;perl Makefile.PL&quot; contains a lot of
+       interesting info, so please include that as well) so I can get an
+       overview.  Thanks!
+
+VERIFIED SYSTEMS, KNOWN ISSUES
+       This is a list of systems that &quot;IO::Tty&quot; seems to work on (&apos;make test&apos;
+       passes) with comments about &quot;features&quot;:
+
+       &#183;   AIX 4.3
+
+           Returns EIO instead of EOF when the slave is closed.  Benign.
+
+       &#183;   AIX 5.x
+
+       &#183;   FreeBSD 4.4
+
+           EOF on the slave tty is not reported back to the master.
+
+       &#183;   OpenBSD 2.8
+
+           The ioctl TIOCSCTTY sometimes fails.  This is also known in
+           Tcl/Expect, see http://expect.nist.gov/FAQ.html
+
+           EOF on the slave tty is not reported back to the master.
+&#12;       &#183;   Darwin 7.9.0
+
+       &#183;   HPUX 10.20 &amp; 11.00
+
+           EOF on the slave tty is not reported back to the master.
+
+       &#183;   IRIX 6.5
+
+       &#183;   Linux 2.2.x &amp; 2.4.x
+
+           Returns EIO instead of EOF when the slave is closed.  Benign.
+
+       &#183;   OSF 4.0
+
+           EOF on the slave tty is not reported back to the master.
+
+       &#183;   Solaris 8, 2.7, 2.6
+
+           Has the &quot;feature&quot; of returning EOF just once?!
+
+           EOF on the slave tty is not reported back to the master.
+
+       &#183;   Windows NT/2k/XP (under Cygwin)
+
+           When you send (print) a too long line (&gt;160 chars) to a non-raw pty,
+           the call just hangs forever and even alarm() cannot get you out.
+           Don&apos;t complain to me...
+
+           EOF on the slave tty is not reported back to the master.
+
+       &#183;   z/OS
+
+       The following systems have not been verified yet for this version, but a
+       previous version worked on them:
+
+       &#183;   SCO Unix
+
+       &#183;   NetBSD
+
+           probably the same as the other *BSDs...
+
+       If you have additions to these lists, please mail them to
+       &lt;RGiersig@cpan.org&gt;.
+
+SEE ALSO
+       IO::Pty, IO::Tty::Constant
+
+MAILING LISTS
+       As this module is mainly used by Expect, support for it is available via
+       the two Expect mailing lists, expectperl-announce and expectperl-discuss,
+       at
+
+         http://lists.sourceforge.net/lists/listinfo/expectperl-announce
+
+       and
+
+         http://lists.sourceforge.net/lists/listinfo/expectperl-discuss
+
+AUTHORS
+       Originally by Graham Barr &lt;gbarr@pobox.com&gt;, based on the Ptty module by
+       Nick Ing-Simmons &lt;nik@tiuk.ti.com&gt;.
+
+       Now maintained and heavily rewritten by Roland Giersig
+       &lt;RGiersig@cpan.org&gt;.
+
+       Contains copyrighted stuff from openssh v3.0p1, authored by Tatu Ylonen
+       &lt;ylo@cs.hut.fi&gt;, Markus Friedl and Todd C. Miller
+       &lt;Todd.Miller@courtesan.com&gt;.  I also got a lot of inspiry from the pty
+       code in Xemacs.
+
+COPYRIGHT
+       Now all code is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+       Nevertheless the above AUTHORS retain their copyrights to the various
+       parts and want to receive credit if their source code is used.  See the
+       source for details.
+
+DISCLAIMER
+       THIS SOFTWARE IS PROVIDED ``AS IS&apos;&apos; AND ANY EXPRESS OR IMPLIED
+       WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+       MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+       NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+       INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+       NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+       DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+       THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+       (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+       THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+       In other words: Use at your own risk.  Provided as is.  Your mileage may
+       vary.  Read the source, Luke!
+
+       And finally, just to be sure:
+
+       Any Use of This Product, in Any Manner Whatsoever, Will Increase the
+       Amount of Disorder in the Universe. Although No Liability Is Implied
+       Herein, the Consumer Is Warned That This Process Will Ultimately Lead to
+       the Heat Death of the Universe.
+
+
+
+perl v5.14.2                       2009-02-05                           Tty(3pm)
+
+</pre></body></html>

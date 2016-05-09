@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::LibXML::RelaxNG - RelaxNG Schema Validation</title></head>
+<body><pre>
+
+XML::LibXML::RelaxNG(3pUser Contributed Perl DocumentatXML::LibXML::RelaxNG(3pm)
+
+
+
+NAME
+       XML::LibXML::RelaxNG - RelaxNG Schema Validation
+
+SYNOPSIS
+         use XML::LibXML;
+         $doc = XML::LibXML-&gt;new-&gt;parse_file($url);
+
+         $rngschema = XML::LibXML::RelaxNG-&gt;new( location =&gt; $filename_or_url );
+         $rngschema = XML::LibXML::RelaxNG-&gt;new( string =&gt; $xmlschemastring );
+         $rngschema = XML::LibXML::RelaxNG-&gt;new( DOM =&gt; $doc );
+         eval { $rngschema-&gt;validate( $doc ); };
+
+DESCRIPTION
+       The XML::LibXML::RelaxNG class is a tiny frontend to libxml2&apos;s RelaxNG
+       implementation. Currently it supports only schema parsing and document
+       validation.
+
+METHODS
+       new
+             $rngschema = XML::LibXML::RelaxNG-&gt;new( location =&gt; $filename_or_url );
+             $rngschema = XML::LibXML::RelaxNG-&gt;new( string =&gt; $xmlschemastring );
+             $rngschema = XML::LibXML::RelaxNG-&gt;new( DOM =&gt; $doc );
+
+           The constructor of XML::LibXML::RelaxNG may get called with either
+           one of three parameters. The parameter tells the class from which
+           source it should generate a validation schema. It is important, that
+           each schema only have a single source.
+
+           The location parameter allows one to parse a schema from the
+           filesystem or a URL.
+
+           The string parameter will parse the schema from the given XML string.
+
+           The DOM parameter allows one to parse the schema from a pre-parsed
+           XML::LibXML::Document.
+
+           Note that the constructor will die() if the schema does not meed the
+           constraints of the RelaxNG specification.
+
+       validate
+             eval { $rngschema-&gt;validate( $doc ); };
+
+           This function allows one to validate a (parsed) document against the
+           given RelaxNG schema. The argument of this function should be an
+           XML::LibXML::Document object. If this function succeeds, it will
+           return 0, otherwise it will die() and report the errors found.
+           Because of this validate() should be always evaluated.
+
+AUTHORS
+       Matt Sergeant, Christian Glahn, Petr Pajas
+
+VERSION
+       2.0001
+
+COPYRIGHT
+       2001-2007, AxKit.com Ltd.
+
+       2002-2006, Christian Glahn.
+
+       2006-2009, Petr Pajas.
+
+
+
+perl v5.14.2                       2015-05-01          XML::LibXML::RelaxNG(3pm)
+
+</pre></body></html>

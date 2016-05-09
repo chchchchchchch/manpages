@@ -1,0 +1,168 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hp-scan - Scan Utility</title></head>
+<body><pre>
+
+hp-scan(1)                        User Manuals                        hp-scan(1)
+
+
+
+NAME
+       hp-scan - Scan Utility
+
+DESCRIPTION
+       SANE-based scan utility for HPLIP supported all-in-one/mfp devices.
+
+SYNOPSIS
+       hp-scan [DEVICE_URI|PRINTER_NAME] [MODE] [OPTIONS]
+
+PRINTER|DEVICE-URI
+       To specify a device-URI:
+              -d&lt;device-uri&gt; or --device=&lt;device-uri&gt;
+
+       To specify a CUPS printer:
+              -p&lt;printer&gt; or --printer=&lt;printer&gt;
+
+MODE
+       Run in interactive mode:
+              -i or --interactive
+
+OPTIONS
+       Set the logging level:
+              -l&lt;level&gt;  or --logging=&lt;level&gt; &lt;level&gt;: none, info*, error, warn,
+              debug (*default)
+
+       Run in debug mode:
+              -g (same as option: -ldebug)
+
+       This help information:
+              -h or --help
+
+OPTIONS (GENERAL)
+       Scan destinations:
+              -s&lt;dest_list&gt; or --dest=&lt;dest_list&gt; where &lt;dest_list&gt; is  a  comma
+              separated list containing one or more of: &apos;file&apos;*,
+
+       Scan mode:
+              -m&lt;mode&gt;  or  --mode=&lt;mode&gt;.  Where  &lt;mode&gt; is &apos;gray&apos;*, &apos;color&apos; or
+              &apos;lineart&apos;.
+
+       Scanning resolution:
+              -r&lt;resolution_in_dpi&gt; or  --res=&lt;resolution_in_dpi&gt;  or  --resolu&#8208;
+              tion=&lt;resolution_in_dpi&gt; where 300 is default.
+
+       Image resize:
+              --resize=&lt;scale_in_%&gt; (min=1%, max=400%, default=100%)
+
+       Image contrast:
+              --contrast=&lt;contrast&gt;
+
+       ADF mode:
+              --adf (Note, only PDF output is supported when using the ADF)
+
+OPTIONS (SCAN AREA)
+       Specify the units for area/box measurements:
+              -t&lt;units&gt;  or  --units=&lt;units&gt; where &lt;units&gt; is &apos;mm&apos;*, &apos;cm&apos;, &apos;in&apos;,
+              &apos;px&apos;, or &apos;pt&apos; (&apos;mm&apos; is default).
+
+       Scan area:
+              -a&lt;tlx&gt;,&lt;tly&gt;,&lt;brx&gt;,&lt;bry&gt; or --area=&lt;tlx&gt;,&lt;tly&gt;,&lt;brx&gt;,&lt;bry&gt;  Coor&#8208;
+              dinates  are  relative  to the upper left corner of the scan area.
+              Units for tlx, tly, brx,  and  bry  are  specified  by  -t/--units
+              (default is &apos;mm&apos;).  Use only commas between values, no spaces.
+
+       Scan box:
+              --box=&lt;tlx&gt;,&lt;tly&gt;,&lt;width&gt;,&lt;height&gt;  tlx  and  tly  coordinates are
+              relative to the upper left corner of the  scan  area.   Units  for
+              tlx,  tly,  width, and height are specified by -t/--units (default
+              is &apos;mm&apos;).  Use only commas between values, no spaces.
+
+       Top left x of the scan area:
+              --tlx=&lt;tlx&gt; Coordinates are relative to the upper left  corner  of
+              the  scan  area.   Units  are  specified by -t/--units (default is
+              &apos;mm&apos;).
+
+       Top left y of the scan area:
+              --tly=&lt;tly&gt; Coordinates are relative to the upper left  corner  of
+              the  scan  area.   Units  are  specified by -t/--units (default is
+              &apos;mm&apos;).
+
+       Bottom right x of the scan area:
+              --brx=&lt;brx&gt; Coordinates are relative to the upper left  corner  of
+              the  scan  area.   Units  are  specified by -t/--units (default is
+              &apos;mm&apos;).
+
+       Bottom right y   of the scan area:
+              --bry=&lt;bry&gt; Coordinates are relative to the upper left  corner  of
+              the  scan  area.   Units  are  specified by -t/--units (default is
+              &apos;mm&apos;).
+
+       Specify the scan area based on a paper size:
+              --size=&lt;paper size name&gt; where &lt;paper size name&gt; is one  of:  5x7,
+              photo,  a2_env,  b4,  b5,  3x5,  4x6, higaki, flsa, c6_env, legal,
+              no_10_env, exec, a3, a5, a4, letter, a6,  super_b,  oufufu-hagaki,
+              dl_env, japan_env_4, japan_env_3
+
+OPTIONS (&apos;FILE&apos; DEST)
+       Filename for &apos;file&apos; destination:
+              -o&lt;file&gt; or -f&lt;file&gt; or --file=&lt;file&gt; or --output=&lt;file&gt;
+
+OPTIONS (&apos;PDF&apos; DEST)
+       PDF viewer application:
+              --pdf=&lt;pdf_viewer&gt;
+
+OPTIONS (&apos;VIEWER&apos; DEST)
+       Image viewer application:
+              -v&lt;viewer&gt; or --viewer=&lt;viewer&gt;
+
+OPTIONS (&apos;EDITOR&apos; DEST)
+       Image editor application:
+              -e&lt;editor&gt; or --editor=&lt;editor&gt;
+
+OPTIONS (&apos;EMAIL&apos; DEST)
+       From: address for &apos;email&apos; dest:
+              --email-from=&lt;email_from_address&gt; (required for &apos;email&apos; dest.)
+
+       To: address for &apos;email&apos; dest:
+              --email-to=&lt;email__to_address&gt; (required for &apos;email&apos; dest.)
+
+       Email subject for &apos;email&apos; dest:
+              --email-subject=&quot;&lt;subject&gt;&quot;  or  --subject=&quot;&lt;subject&gt;&quot;  Use double
+              quotes (&quot;) around the subject if it contains space characters.
+
+       Note or message for the &apos;email&apos; dest:
+              --email-msg=&quot;&lt;msg&gt;&quot; or --email-note=&quot;&lt;note&gt;&quot; Use double quotes (&quot;)
+              around the note/message if it contains space characters.
+
+OPTIONS (&apos;PRINTER&apos; DEST)
+       Printer queue/printer:
+              --printer=&lt;printer_name&gt;
+&#12;OPTIONS (ADVANCED)
+       Set the scanner compression mode:
+              -x&lt;mode&gt;  or  --compression=&lt;mode&gt;, &lt;mode&gt;=&apos;raw&apos;, &apos;none&apos; or &apos;jpeg&apos;
+              (&apos;jpeg&apos; is default) (&apos;raw&apos; and &apos;none&apos; are equivalent)
+
+SEE ALSO
+AUTHOR
+       HPLIP (Hewlett-Packard Linux Imaging and Printing)  is  an  HP  developed
+       solution  for  printing,  scanning,  and  faxing with HP inkjet and laser
+       based printers in Linux.
+
+REPORTING BUGS
+       The HPLIP Launchpad.net site https://launchpad.net/hplip is available  to
+       get  help,  report  bugs,  make suggestions, discuss the HPLIP project or
+       otherwise contact the HPLIP Team.
+
+COPYRIGHT
+       Copyright (c) 2001-14 Hewlett-Packard Development Company, L.P.
+
+       This software comes with ABSOLUTELY NO WARRANTY.  This is free  software,
+       and  you are welcome to distribute it under certain conditions. See COPY&#8208;
+       ING file for more details.
+
+
+
+
+Linux                                  2.2                            hp-scan(1)
+
+</pre></body></html>

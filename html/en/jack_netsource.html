@@ -1,0 +1,107 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jack_netsource - Netjack Master client for one slave</title></head>
+<body><pre>
+
+JACK_NETSOURCE(1)                                              JACK_NETSOURCE(1)
+
+
+
+NAME
+       jack_netsource - Netjack Master client for one slave
+
+SYNOPSIS
+       jack_netsource [ -H hostname ] [ options ]
+
+
+DESCRIPTION
+       jack_netsource  The  Master  side of a netjack connection. Represents the
+       slave jackd -dnet in the master jack graph.  Most  connection  parameters
+       are  configured  via  the  netsource,  and  the  slave will set itself up
+       according to the commandline option given to jack_netsource.
+       Netjack allows low latency audio connections over  general  IP  networks.
+       When  using  celt  for  compression,  it  is  even  possible to establish
+       transatlantic links, with latencies not much over the actual ping time.
+       But the main usecase is of course a LAN, where it can  achieve  one  jack
+       period of latency.
+
+
+OPTIONS
+       -h this help text
+
+       -H slave host
+              Host name of the slave JACK
+
+       -o num channels
+              Number of audio playback channels
+
+       -i num channels
+              Number of audio capture channels
+
+       -O num channels
+              Number of midi playback channels
+
+       -I num channels
+              Number of midi capture channels
+
+       -n periods
+              Network latency in JACK periods
+
+       -p port
+              UDP port that the slave is listening on
+
+       -r reply port
+              UDP port that we are listening on
+
+       -B bind port
+              reply port, for use in NAT environments
+
+       -b bitdepth
+              Set transport to use 16bit or 8bit
+
+       -c bytes
+              Use CELT encoding with &lt;bytes&gt; per period and channel
+
+       -m mtu
+              Assume this mtu for the link
+
+       -R N
+              Redundancy: send out packets N times.
+
+       -e
+              skip host-to-network endianness conversion
+
+       -N jack name
+              Reports a different client name to jack
+
+
+       -s, --server servername
+              Connect to the jack server named servername
+
+       -h, --help
+              Display help/usage message
+
+       -v, --version
+              Output version information and exit
+
+
+
+EXAMPLES
+       run  a  4  audio  channel  bidirectional  link  with one period of
+       latency and no midi channels. Audio data is  flowing  uncompressed
+       over the wire:
+       On hostA:
+
+              jackd -d alsa
+              jack_netsource -H hostB -n1 -i4 -o4 -I0 -O0
+
+       On hostB:
+
+              jackd -d net
+
+
+
+
+1.9.9                             November 2012                JACK_NETSOURCE(1)
+
+</pre></body></html>

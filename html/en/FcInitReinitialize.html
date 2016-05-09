@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcInitReinitialize - re-initialize library</title></head>
+<body><pre>
+
+FcInitReinitialize(3)                                      FcInitReinitialize(3)
+
+
+
+NAME
+       FcInitReinitialize - re-initialize library
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcInitReinitialize (void);
+
+DESCRIPTION
+       Forces  the  default  configuration  file  to  be reloaded and resets the
+       default configuration. Returns FcFalse if  the  configuration  cannot  be
+       reloaded  (due to configuration file errors, allocation failures or other
+       issues)  and  leaves  the  existing  configuration  unchanged.  Otherwise
+       returns FcTrue.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012            FcInitReinitialize(3)
+
+</pre></body></html>

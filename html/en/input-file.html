@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>input-file - File input</title></head>
+<body><pre>
+
+input-file(7)                          GGI                         input-file(7)
+
+
+
+NAME
+       input-file - File input
+
+SYNOPSIS
+       input-file: [&lt;file&gt;]
+
+       input-file: |[cmd]
+
+
+DESCRIPTION
+       Reads  and  generates  events  from a file such as one created by filter-
+       save(7).
+
+OPTIONS
+       file   The file events are read from.  The  standard  input  is  used  by
+              default.
+
+
+       cmd    If  the  file name starts with a |, it is interpreted as a command
+              which is run. The process stdout is used as input file for  input-
+              file.
+
+
+SEE ALSO
+       filter-save(7)
+
+
+
+libgii-1.0.x                       2004-05-21                      input-file(7)
+
+</pre></body></html>

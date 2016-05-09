@@ -1,0 +1,44 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_DisplayFormatAlpha - Convert a surface to the display format</title></head>
+<body><pre>
+
+SDL_DisplayFormatAlpha(3)       SDL API Reference      SDL_DisplayFormatAlpha(3)
+
+
+
+NAME
+       SDL_DisplayFormatAlpha - Convert a surface to the display format
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDL_Surface *SDL_DisplayFormatAlpha(SDL_Surface *surface);
+
+DESCRIPTION
+       This function takes a surface and copies it to a new surface of the pixel
+       format and colors of the video framebuffer plus an alpha  channel,  suit&#8208;
+       able for fast blitting onto the display surface. It calls SDL_ConvertSur&#8208;
+       face
+
+       If you want to take advantage of hardware colorkey or alpha blit acceler&#8208;
+       ation,  you  should  set the colorkey and alpha value before calling this
+       function.
+
+       This function can be used to convert a colourkey to an alpha channel,  if
+       the  SDL_SRCCOLORKEY  flag  is  set on the surface. The generated surface
+       will then be transparent (alpha=0) where the pixels match the  colourkey,
+       and opaque (alpha=255) elsewhere.
+
+RETURN VALUE
+       If the conversion fails or runs out of memory, it returns NULL
+
+SEE ALSO
+       SDL_ConvertSurface,   SDL_SetAlpha,  SDL_SetColorKey,  SDL_DisplayFormat,
+       SDL_Surface
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01    SDL_DisplayFormatAlpha(3)
+
+</pre></body></html>

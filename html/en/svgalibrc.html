@@ -1,0 +1,961 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libvga.config, svgalibrc - the svgalib configuration file</title></head>
+<body><pre>
+
+libvga.config(5)               Svgalib User Manual              libvga.config(5)
+
+
+
+NAME
+       libvga.config, svgalibrc - the svgalib configuration file
+
+DESCRIPTION
+       The  svgalib  configuration  is usually located in /etc/vga/libvga.config
+       though one can reconfigure this location when recompiling svgalib.
+
+       In the configuration file, everything between a # and the end of the line
+       is  ignored.  Empty lines are also ignored. Since the driver you will use
+       may not know all config  options  here,  unknown  commands  are  silently
+       ignored. Please think of that when something does not work as you expect.
+       I know this is a nuisance because malformed configuration  statements  do
+       not cause errors. Multiple commands are allowed in one line, and commands
+       can exceed lines.
+
+       Actually, svgalib simply reads a list of whitespace separated tokens from
+       the  file  until  it finds one it knows and it then assumes the following
+       tokens to be arguments of that command until one is encountered which may
+       not be an argument.
+
+       New  style  options are in general case insensitive whereas the old style
+       options are case sensitive. The old style options are included  to  allow
+       for  old  config  files still being used. For completeness they are docu&#8208;
+       mented in the OBSOLETE COMMANDS section. You should not use them anymore.
+
+       In addition, svgalib(7) parses the files ~/.svgalibrc and the file  given
+       in the environment variable SVGALIB_CONFIG_FILE.
+
+       Finally,  the  contents  of  the  environment variable SVGALIB_CONFIG are
+       parsed like the files before.
+
+       Configuration commands which control hardware settings that  might  cause
+       harm  to  your hardware are called privileged.  By default the privileged
+       commands can only be used in the main  configuration  file  /etc/vga/lib&#8208;
+       vga.config  for  safety  (s.t.  a non root user can not cause any harm to
+       your hardware by misconfiguring svgalib(7)).
+
+       Enable them in the other locations as well with the  command  overrideen&#8208;
+       able  in the main config file.  BEWARE!  This allows every user to change
+       the monitor and clocks (and other configs) and thus  damaging  the  hard&#8208;
+       ware.  I  strongly discourage the use of overrideenable except for debug&#8208;
+       ging/testing purposes.
+
+
+REQUIRED CONFIGURATION
+       Please do not allow the vastness of options  to  confuse  you.  Generally
+       svgalib  uses  well chosen defaults and is able to autodetect everything.
+       Thus generally you don&apos;t need to specify much. When installing svgalib it
+       provides  a sample /etc/vga/libvga.config file which contains most of the
+       required configuration. Just edit it to your needs.
+
+       Generally you only need to use:
+
+       mouse  To specify if you use anything else then  a  Microsoft  compatible
+              mouse.
+
+       mdev   If  the  mouse  device  file  is  not /dev/input/mice which is the
+              actual mouse device file. You will usually need to use  this  com&#8208;
+              mand  if  you  want to use the SpaceTec Spaceball device (which is
+              not your usual mouse).
+&#12;       setRTS, clearRTS, leaveRTS, setDTR, clearDTR, and leaveDTR
+              if your mouse needs it to enter your desired mouse protocol.
+
+       monitor, or (better) HorizSync and VertRefresh
+              to specify the capabilities of your monitor.
+
+
+   If you use the EGA chipset driver
+       monotext or colortext
+              to specify if your EGA card is in monochrome or  color  configura&#8208;
+              tion.
+
+   If you use the Mach32 chipset driver
+       You should consider reading svgalib.mach32(7).
+
+       Clocks clock1 clock2 clock3 ...
+              to  specify  the Mach32 clocks. This is mandatory. However, if you
+              omit  it.  svgalib  will  autodetect  clocks   and   modify   your
+              /etc/vga/libvga.config  file  and abort. After this, every svgalib
+              application started will find the proper Clocks command.
+
+       mach32eeprom /etc/vga/mach32.eeprom
+              is recommended to avoid slowish reads of the Mach32  EEPROM  which
+              will also cause annoying screen flickering.
+
+   If you use the Mach64 chipset driver
+       Chipset Mach64
+              if you want to use the experimental pre-alpha driver
+
+   If you use the S3 chipset driver
+       I don&apos;t have much knowledge on the S3, but it seems to me that you need:
+
+
+       Clocks clock1 clock2 ...
+              to specify the clocks (take them from your Xfree86 configuration).
+
+       or
+
+       ClockChip icd2061a number
+              if you have an Icd2061a clockchip.
+
+       Ramdac chipname
+              if your Ramdac is not detected properly.
+
+       Dacspeed speed
+              if the default chosen is not right (probably too restrictive).
+
+       The  remaining  options  are  really  only to be used in case of problems
+       which you&apos;ll not generally encounter.
+
+   If you use the VESA chipset driver
+       VesaText
+              forces the driver to set 80x25 text mode, before any standard  vga
+              mode  setting.  Fixes text mode restoring with many cards, as well
+              as standard VGA modes.
+
+       VesaSave
+              selects the bitmap to save and restore, using VESA functions.  see
+              VESA  documentation  for bits&apos; meanings. The default is 1110 (=14)
+              which is good for most cards, but some give  better  results  with
+              other numbers.
+
+
+GENERAL OPTIONS (HANDLED BY THE MAIN MODULE)
+   Mouse configuration
+       mouse mousetype
+              where mousetype is one of: Microsoft, MouseSystems, MMSeries, Log&#8208;
+              itech, Busmouse,  PS2,  MouseMan,  gpm,  Spaceball,  none,  Intel&#8208;
+              liMouse, or IMPS2.  mousetype can also be a number (0 - 9) for the
+              keywords Microsoft - none.
+
+              gpm allows for (hopefully) peaceful interaction with  gpm,  Space&#8208;
+              ball  enables  support  for  the  6-axes  Spacetec Spaceball mouse
+              (well, probably more like a  trackball),  IntelliMouse  and  IMPS2
+              refer  to  the Microsoft IntelliMouse or Logitech MouseMan+, where
+              IntelliMouse is for serial port and IMPS2 for such a mouse on  the
+              PS/2 port.
+
+              Note that it is not possible to specify the Microsoft IntelliMouse
+              or Logitech MouseMan+ by a number. This is due to  historical  and
+              compatibility reasons.
+
+
+       mouse_override
+              This  command is only available if ALLOW_MOUSE_OVERRIDE was set in
+              Makefile.cfg when svgalib was compiled (which is the default).
+
+              If given, svgalib ignores any mouse type the program specifies but
+              uses the type configured with the mouse command.
+
+              For  example,  DOOM  does  not recognize MouseMan as a valid mouse
+              type and defaults the mouse type to  MouseSystems.   This  command
+              allows  to  make  svgalib  ignore  whatever DOOM specifies and use
+              MouseMan anyway.
+
+
+       mdev mousedevice
+              Usually /dev/input/mice (the default) will be  the  mouse  device.
+              However,  esp. with the Spacetec Spaceball you may want to specify
+              a different device for svgalib(7) to use:
+
+              mdev /dev/ttyS0 # mouse is at /dev/ttyS0
+
+
+       Some multiprotocol mice use the state of RTS and DTR to  find  out  which
+       protocol to enable:
+
+
+       setRTS set the RTS wire.
+
+       clearRTS
+              clear the RTS wire.
+
+       leaveRTS
+              leave the RTS wire alone (default) (Wire is usually set)
+
+       setDTR set the DTR wire.
+
+       clearDTR
+              clear the DTR wire.
+
+       leaveDTR
+              leave the DTR wire alone (default) (Wire is usually set)
+
+
+       For  example my mouse can emulate Microsoft and MouseSystems.  It needs a
+       low RTS to go into MouseSystems mode. Thus I use:
+
+       mouse MouseSystems clearRTS
+
+       Still I could just use mouse Microsoft and use the mouse with that proto&#8208;
+       col.. But then only 2 buttons instead of 3 are supported (not that I know
+       many svgalib programs that uses more than 2 buttons.)
+
+       Other mice might need clearDTR as well or one set and  clear.  Try  your&#8208;
+       self.
+
+       Note:  Having  crtscts  handshake  enabled on the mouse tty may interfere
+       with this option. Do not do that.
+
+       Finally, a special goodie for wheel mice:
+
+
+       mouse_fake_kbd_event upscancode downscancode
+              sends a fake keyboard event to the program when the wheel on a Mi&#8208;
+              crosoft  IntelliMouse,  Logitech MouseMan+, or similar wheel mouse
+              is turned.
+
+              The up and down scancodes are the scancodes of the keys  to  simu&#8208;
+              late when the wheel is turned up and down, respectively.
+
+              The  following  can be specified for the scancodes: letters (A-Z),
+              numbers (0-9), function keys (F1-F12), or any of the  following  -
+              ESCAPE, MINUS, EQUAL, BACKSPACE, TAB, BRACKET_LEFT, BRACKET_RIGHT,
+              ENTER, LEFTCONTROL, SEMICOLON, APOSTROPHE, GRAVE, LEFTSHIFT, BACK&#8208;
+              SLASH,  COMMA, PERIOD, SLASH, RIGHTSHIFT, KEYPADMULTIPLY, LEFTALT,
+              SPACE, CAPSLOCK, NUMLOCK, SCROLLLOCK, KEYPAD7, CURSORUPLEFT,  KEY&#8208;
+              PAD8, CURSORUP, KEYPAD9, CURSORUPRIGHT, KEYPADMINUS, KEYPAD4, CUR&#8208;
+              SORLEFT, KEYPAD5, KEYPAD6, CURSORRIGHT, KEYPADPLUS, KEYPAD1,  CUR&#8208;
+              SORDOWNLEFT,  KEYPAD2,  CURSORDOWN, KEYPAD3, CURSORDOWNRIGHT, KEY&#8208;
+              PAD0, KEYPADPERIOD, KEYPADCENTER, RIGHTCONTROL, CONTROL, KEYPADDI&#8208;
+              VIDE,  PRINTSCREEN, RIGHTALT, BREAK, BREAK_ALTERNATIVE, HOME, CUR&#8208;
+              SORBLOCKUP, PAGEUP, CURSORBLOCKLEFT, CURSORBLOCKRIGHT,  END,  CUR&#8208;
+              SORBLOCKDOWN, PAGEDOWN, INSERT.
+
+              Note  that  this  option  has no effect unless the IntelliMouse or
+              IMPS2 mouse type is used (see above). Also note that the simulated
+              keypresses are instantaneous, so they cannot be used for functions
+              that require a key to be held down for a certain length of time.
+
+              This example simulates a press of the left bracket  ([)  when  the
+              wheel  is  turned up and a press of the right bracket (]) when the
+              wheel is turned down (good for selecting items in Quake II):
+
+              mouse_fake_kbd_event BRACKET_LEFT BRACKET_RIGHT
+
+
+   Mouse acceleration
+       Svgalib versions 1.3.0 and later use the following  commands  to  control
+       the logarithmic mouse acceleration:
+
+              mouse_force
+                     If  given,  force use of input parameters even if they seem
+                     strange.
+
+              mouse_maxdelta &lt;integer&gt;
+                     Set max delta BEFORE acceleration.
+
+              mouse_accel_maxdelta &lt;integer&gt;
+                     Set max delta AFTER acceleration.
+
+              mouse_accel_thresh &lt;integer&gt;
+                     Set acceleration threshold.
+
+              mouse_accel_power &lt;float&gt;
+                     Set input variable for power mode.
+
+              mouse_accel_mult &lt;float&gt;
+                     Set acceleration factor.
+
+              mouse_accel_type {0|off|normal|power|linear}
+                     Set the type of acceleration.  The  following  strings  are
+                     valid values:
+&#12;                     0 or off
+                            No acceleration.
+
+                     normal No   acceleration   while   delta   is   less   than
+                            mouse_accel_thresh      but      multiplied       by
+                            mouse_accel_mult if more.
+                            Originally done by Mike Chapman &lt;mike@paranoia.com&gt;.
+
+                     power  The acceleration factor is a power function of delta
+                            until it reaches mouse_accel_mult After that it&apos;s  a
+                            simple  multiplication. Basically it&apos;s like the nor&#8208;
+                            mal mode but the acceleration factor  grows  as  you
+                            move your mouse faster and faster, not just turns in
+                            and  out.  If  the   acceleration   factor   reaches
+                            mouse_accel_mult  it  turns into a plain multiplica&#8208;
+                            tion.
+
+                            Threshold has the same meaning as  in  normal  mode.
+                            The one I use for *uaking... :)
+
+                            It is calculated like this:
+
+                            if (abs(dx) &gt; 1) /* to prevent losing resolution */
+                              dx = (abs(dx) &gt;=
+                                     mouse_accel_thresh ) ?
+                                   (float)dx *
+                                    mouse_accel_mult :
+                                   (float)dx *
+                                    m_accel_powertable[abs(dx)];
+
+                     linear The  acceleration factor grows linear with the delta
+                            until it reaches mouse_accel_thresh.  After that  it
+                            is  a simple multiplication.  (I know that it can be
+                            done with setting mouse_accel_power to 1, but it was
+                            one  minute  to  implement...  and uses no memory...
+                            and...)
+
+                            It is calculated like this:
+
+                            if (abs(dx) &gt; 1)
+                              dx = (abs(dx) &gt;=
+                                     mouse_accel_thresh ) ?
+                                   (float)dx *
+                                    mouse_accel_mult :
+                                   (float)dx * abs(dx) *
+                                    mouse_accel_mult /
+                                    mouse_accel_thresh ;
+
+              The  enhanced  acceleration  was  done  by  101  (Attila  Lendvai)
+              &lt;101@kempelen.inf.bme.hu&gt;
+
+
+   Joystick configuration
+       As  of  now,  svgalib supports up to four joystick devices. You must have
+       joystick support in your kernel to support this.
+
+
+       joystick0 device
+              sets the device name to use for  joystick  0.  The  commands  joy&#8208;
+              stick1,  joystick2 and joystick3 configure the other joysticks. By
+              default the names /dev/js0, /dev/js1, /dev/js2  and  /dev/js3  are
+              used.
+
+
+   Keyboard configuration
+       kbd_fake_mouse_event scancode [flag(s)] command [argument]
+              ,  as  it says, sends a fake mouse event to the program.  Scancode
+              is a raw scancode  as  you  can  find  them  in  &lt;keyboard/vgakey&#8208;
+              board.h&gt;.
+
+
+              Supported flag(s) are:
+
+              down   trigger event when the key is pressed (default).
+
+              up     the opposite.
+
+              both   trigger in both case, if pressed or released.
+
+              repeat repeat events if the key is kept pressed (off by default).
+
+
+              Supported commands are:
+
+              delta[xyz]
+                     send a fake delta event as if you have moved your mouse. If
+                     the parameter is off or on it will turn off/on the  respec&#8208;
+                     tive mouse axis (requires a parameter, of course)
+
+              button[123]
+                     send  a  fake  event  that  the  mouse button is pressed or
+                     released as given by the parameter (pressed or released)
+
+
+              Here are some examples:
+
+              This is one I use in *uake: it turns around, looks down a bit  and
+              when  the key is released it does the opposite, so it gets back to
+              the starting state.  With this one and the help of  a  rocket  you
+              can fly though the whole map :) (Scancode 28 is &lt;Enter&gt;):
+
+                  kbd_fake_mouse_event 28 both deltax 8182
+                                          down deltay -1500
+                                          up deltay 1500
+
+              This  one  will  switch  off the y axis of the mouse while the key
+              &lt;Right Ctrl&gt; is kept pressed.
+
+                  kbd_fake_mouse_event 97 down deltay off
+                                          up deltay on
+
+              This one is the same as if you were pressing the left  mouse  but&#8208;
+              ton.  (But if you move your mouse then the button state will reset
+              even if you keep &lt;Right Ctrl&gt; down...)
+
+                  kbd_fake_mouse_event 97 down button1 pressed
+                                          up button1 released
+
+              NOTE: This does only work when the keyboard  is  in  raw  keyboard
+              mode!
+
+              Yet  another  feature  brought  to  you  by  101  (Attila Lendvai)
+              &lt;101@kempelen.inf.bme.hu&gt;
+
+
+       nosigint
+              This command disables generation of a SIGINT signal when  &lt;Ctrl-C&gt;
+              is pressed.
+
+              This works regardless of ordinary or raw keyboard mode (albeit the
+              hot key might be different from &lt;Ctrl-C&gt; in the first case).
+
+              Note that this is a very dangerous option. Disabling  SIGINT  will
+              lock you in programs which can only by quit by &lt;Ctrl-C&gt;!  However,
+              there were request for it for Quake playing.
+&#12;       sigint (default)
+              Enables generation of SIGINT.
+
+
+   Monitor configuration
+       HorizSync min_kHz max_kHz
+       VertRefresh min_Hz max_Hz
+              specifies the range of frequencies  acceptable  to  your  monitor.
+              They  obsolete  the  monitor settings below, and this shouldn&apos;t be
+              used if HorizSync and VertRefresh are defined. Examples:
+
+              HorizSync 31.5 35.5
+              VertRefresh 50 70
+
+
+       monitor monitor_class
+              where monitor_class is a digit 0 - 6  or  the  maximal  horizontal
+              frequency in kHz. Examples:
+
+              monitor 0 # Max horizontal sync is 31.5 kHz
+              monitor 1 # Max horizontal sync is 35.1 kHz
+              monitor 2 # Max horizontal sync is 35.5 kHz
+              monitor 3 # Max horizontal sync is 37.9 kHz
+              monitor 4 # Max horizontal sync is 48.3 kHz
+              monitor 5 # Max horizontal sync is 56.0 kHz
+              monitor 6 # No restrictions.
+
+              For  your  convenience  you  may  specify  the max horizontal sync
+              explicitly. The correct class will the  be  chosen.  You  may  use
+              floats consisting of digits and a decimal point for this too:
+
+              monitor 40.0 # equivalent to monitor 3
+
+              This command is privileged.
+
+
+   Mode timings
+       It  is now possible to define modetimings for some cards (see the info on
+       your card in svgalib(7)).  The syntax is:
+
+
+       modeline label pxcl HDsp HSS HSE HTot VDsp VSS VSE VTot flags
+
+              label  string
+                     (ignored by svgalib) mainly there  to  be  compatible  with
+                     XF86Config.    I   use   the   format  &quot;Width  x  Height  @
+                     Vert.Refresh&quot;, but that&apos;s just personal taste...
+
+              pxcl   float
+                     the pixel clock in MHz
+
+              HDsp
+              VDsp   integer
+                     size of the visible area (horizontal/vertical)
+
+              HSS
+              VSS    integer
+                     Sync start (horizontal/vertical)
+
+              HSE
+              VSE    integer
+                     Sync end (horizontal/vertical)
+
+              HTot
+              VTot   integer
+                     Total width/height (end of back porch)
+&#12;              flags  +hsync -hsync +vsync -vsync interlace interlaced
+                     doublescan Sync polarity, interlace mode
+
+       Everything should be on one line.  The values for the horizontal  timings
+       must be multiples of eight.
+
+       These  are preferred over the default timings (if monitor and chipset can
+       handle them).  The format is identical to the one used  by  XFree86,  but
+       the label following the modeline keyword is ignored by vgalib.
+
+       Here some examples:
+
+       modeline 640x480@100 43 640 664 824 848 480 483 490 504
+       modeline 800x600@73 50 800 856 976 1024 600 637 643 666
+       modeline 1024x768@75 85 1024 1048 1376 1400 768 771 780 806
+
+       IMPORTANT!   Not  all  drivers,  that is SVGA cards, use the values. Only
+       drivers using timing.c. As of this writing, drivers  using  this  feature
+       are: Ark, Cirrus, Chips &amp; Technologies, Et6000, S3.
+
+       The  Mach32 driver provides a similar feature separately, you have to use
+       the define command described below.
+
+       ET4000 (and to some extent EGA) allow one to use a binary file created by
+       some  utility.  All  other chipset driver use predefined timings that are
+       hardcoded in register dumps within the drivers. See svgalib.et4000(7) for
+       more information.
+
+
+   Chipset detection
+       Usually  svgalib does a good job autodetecting your hardware. However, if
+       auto detection fails (or you want to fall back to a simpler  driver,  say
+       VGA, as a bug work around), you may force detection of your chipset with
+
+
+       chipset type
+              where  type is (currently) one of: VGA, ET4000, Cirrus, TVGA, Oak,
+              EGA, S3, ET3000, Mach32, GVGA6400, ARK,  ATI,  ALI,  Mach64,  C&amp;T,
+              APM, NV3, ET6000, VESA, MX, PARADISE, and RAGE.
+
+              You  can  also  specify  a number in range 1  -  22 to specify the
+              type-th chipset type or 0 to enforce autodetection.
+
+              Warning, incorrect settings may damage your hardware.   This  com&#8208;
+              mand is privileged.
+
+
+       chipset type param1 param2
+              use this form if the size of memory or an additional configuration
+              option is misdetected. For example:
+
+              chipset Mach32 0 2048
+
+              Note that always  two  integers  have  to  be  specified.  Usually
+              (Mach32)  the  second  parameter is the memory amount. Look at the
+              *_init function of the specific device driver sources or  informa&#8208;
+              tion on that type of cards in svgalib(7).
+
+              Note  that  there  is  a  more  convenient command setuplinear for
+              enforcing specific memory-aperture configurations for Mach32
+
+              This command is privileged.
+
+
+   Specific options required for the EGA-driver.
+       monotext
+              Card is in monochrome emulation mode
+&#12;       colortext
+              Card is in color emulation mode
+
+              This command is privileged.
+
+
+   RAMDAC configuration
+       Some chipsets (e.g. S3 and ARK) allow specifying a RAMDAC type.  If  your
+       RAMDAC is not autodetected, you can try specifying it:
+
+       Ramdac Sierra32K
+       Ramdac SC15025
+       Ramdac SDAC
+              S3 SDAC
+       Ramdac GenDAC
+              S3 GenDAC
+       Ramdac ATT20C490
+              AT&amp;T 20C490, 491, 492 (and compatibles)
+       Ramdac ATT20C498
+              AT&amp;T 20C498
+       Ramdac IBMRGB52x
+              IBM RGB524, 526, 528 (and compatibles)
+
+       BEWARE!   The Mach32 driver features an own ramdac command (which is usu&#8208;
+       ally not required). If you have a Mach32, see svgalib.mach32(7).
+
+
+       Dacspeed speed
+              speed is a floating point number in MHz  (like  in  Dacspeed40.0&quot;)
+              specifying the maximal allowable pixel clock of the Ramdac in use.
+              Currently this option is only supported  by  the  S3  driver.  The
+              Mach32 driver supports maxclock8, maxclock16, maxclock24, and max&#8208;
+              clock32 commands which have a similar  effect.  Nevertheless,  the
+              Mach32  has  a very good idea on the capabilities of the Ramdac in
+              use. The settings are more intended  to  specify  the  VGA  memory
+              bandwidth.
+
+
+   Pixel clocks
+       Clocks list of clock values as floats or ints
+
+              Some  chipsets  need  a  list of dot clocks for optimum operation.
+              Some includes or supports a programmable clock chip.  You&apos;ll  need
+              to specify them here.
+
+              Fixed  clocks  example: (The following is just an example, get the
+              values for your card from you X setup)
+
+              Clocks 25.175 28.3 40 70 50 75 36 44.9 0 118 77  31.5  110  65  72
+              93.5
+
+              BEWARE!   The  Clocks command for the Mach32 features only integer
+              clocks. Please round your clocks to the  next  integer  data.  The
+              Mach32 only uses these values to check monitor requirements and to
+              compare the quality of modes. The rounding errors are of no impor&#8208;
+              tance  there as the difference in the resulting monitor timings is
+              barely measurable. See the Mach32 section below.
+
+       Clockchip ICD2061A
+              Configure for a programmable clockchip.  ICD2061A is the only  one
+              supported right now.
+
+
+   Miscellaneous options
+       security revoke-all-privs
+              Make sure it is impossible to regain root access after vga_init(3)
+              was called. (default)
+&#12;       security compat
+              For compatibility to pre 1.2.11, do  not  close  a  security  hole
+              using saved uids.
+
+       verbose
+              Mach32: show messages while processing all info to build up a mode
+              table.
+
+       quiet  Turn verbose messages off (default).
+
+       nolinear
+              Inhibit use of a linear mmaped frame buffer.
+
+       linear Allow (not enforce!) use of a linear mmaped frame buffer.
+
+       overrideenable
+              Allow privileged commands outside the main configuration file.
+
+
+   Common options currently used by Mach32 only
+       Options that may be useful for all drivers, but currently are  only  sup&#8208;
+       ported by Mach32 (Please read svgalib.mach32(7) if you use one):
+
+
+       maxclock16 maxclk
+              The  maximum  pixel  clock to use for 16bpp modes. This is used by
+              Mach32 to find out which settings may be  used  for  16bpp  modes.
+              the  Mach32  default  for  this  is  2000,  thus it is effectively
+              switched off.  maxclk must be an integer.
+
+
+       maxclock24 maxclk
+              The maximum clock to use for 24bpp modes. (see  above)  Experience
+              showed that the Mach32 default 49 is good for my 2MB VRAM card.
+
+
+       maxclock32 maxclk
+              The same for 32bpp modes (24bpp with one fill byte for faster mem&#8208;
+              ory access (not fully implemented (esp. for Mach32) yet).   Mach32
+              default (good for my VRAM card) is 39.
+
+
+       maxclock8 maxclk
+              Just  for  completeness  the  same  for 8bpp modes (I doubt anyone
+              needs it), default is 2000 to disable this feature.
+
+
+       The maxclock commands are privileged.
+
+
+       clocks list of clocks
+              Sets the frequencies of the clocks the chips can generate. Exactly
+              16  values  have  to  be specified for mach32.  Use 0 to disable a
+              specific clock.
+
+              Note that the mach32 can divide clocks by 2. Thus there are  actu&#8208;
+              ally 32 clocks And you can also use the divided clocks in a define
+              command.  On contrary to Xfree96 or the clocks command above  only
+              integers  are allowed for Mach32. Simply round them to the nearest
+              integer.
+
+              This line is mandatory for Mach32. If it is not there it  will  be
+              auto  detected  and added at the beginning of the config file. The
+              program will then exit and when  you  start  it  next,  everything
+              should be ok.
+
+              Common clock values for Mach32:
+&#12;              Clock chip 18811-0:
+                     clocks 43 49 92 36 50 56 0 45
+                            30 32 110 80 40 45 75 65
+
+
+              Clock chip 18811-1:
+                     due  to  Xfree86  info  valid for: Ultra pro ISA, Ultra pro
+                     EISA, Ultra pro VLB(68800-3)
+
+                     clocks 100 126 92 36 50 56 0 45
+                            135 32 110 80 40 45 75 65
+
+
+              Clock chip 1881 (ICS2494):
+                     due to Xfree86 info valid for: Ultra pro VLB (6880006)
+
+                     clocks 18 22 25 28 36 44 50 56
+                            30 32 37 39 40 0 75 65
+
+              In my own correspondence with ATI they say every Mach32 would have
+              a 18811-1, so it should be possible just to take the 18811-1 line.
+              However I have now reports of third party cards  and  motherboards
+              with on board Mach32 chips, so be careful.
+
+              Please read svgalib.mach32(7) for additional info on clocks.
+
+              The clocks command is privileged.
+
+
+       variablelinelength
+              Sometimes  a mode cannot be realized with the logical linelength =
+              pixels in a row * bytes per pixel.  (definitely  true  for  Mach32
+              800x600).  The default behavior of Mach32 is to adjust xbytes (see
+              vga_getmodeinfo(3)) in the info table appropriately.
+
+              This command enforces this default operation  and  adjusts  xbytes
+              appropriately, thus overriding the standard svgalib mode. This may
+              yield to problems with ..umm.. not well designed applications.
+
+
+       duplicatelinelength
+              Don&apos;t touch the standard mode but create an exact copy, a  dynamic
+              mode, with the adjusted xbytes value.  Expect noise at some pixels
+              in 800x600 for more than 256 colors on Mach32 when not  using  the
+              dynamic mode.
+
+
+       strictlinelength
+              Same  as  above but delete the standard mode thus creating the non
+              conforming xbytes modes only as dynamic modes.
+
+
+       To enforce the standard linelength for non-conforming modes use  setline&#8208;
+       length below.
+
+       The linelength commands are not privileged.
+
+       In  the  following  commands  a  mode is specified with horzXvertXcolors.
+       Valid settings for colors in the mach32 driver are: 256, 32K,  64K,  16M,
+       16M4.  16M4 is for the 16M colors with 32bpp modes. These are expected to
+       support slightly faster drawing.
+
+       Examples: 640x480x256, 1024x768x64K, etc...
+
+
+       inhibit mode1 [mode2 mode3...]
+              Switch the specified SVGA-Modes off. For example:
+&#12;              inhibit 800x600x32K 800x600x64K 800x600x16M
+
+              disallows the maybe toasted mach32 800x600 modes.
+
+              The inhibit command is not privileged.
+
+
+       setlinelength length mode1 [mode2 mode3...]
+              Force the logical line length  (xbytes)  in  the  given  modes  to
+              length  pixels  (not bytes!). See also variablelinelength, strict&#8208;
+              linelength, and duplicatelinelength above. For example:
+
+              setlinelength 800 800x600x32K 800x600x64K 800x600x16M
+
+              sets the linelength, and thus xbytes, for the 800x600 modes to the
+              equivalent of 800 pixels. For Mach32 this will give badly designed
+              applications an 800x600 with which they  can  cope.  However,  the
+              Mach32 will generate a noisy video signal in some configurations.
+
+              The setlinelength command is not privileged.
+
+
+       define mode1 [mode2 mode3...] clock horz_timing vert_timing flags
+              where  clock  is a clock in MHz (as an integer! Has to be known by
+              the driver.  (one of the set clocks, or the exact half  of  one)).
+              Only  clocks  in  a clocks command issued before the define can be
+              used.
+
+              You may use :n to specify the n-thclock (n = 0 .. 31 for mach32).
+
+              horz_timing  is  four  integers:  hdisp   h_sync_strt   h_sync_wid
+              h_total.
+
+              vert_timing has the same format but for vertical.
+
+              You  may  specify  one  or  more  flags out of: Interlace, +vsync,
+              -vsync, +hsync, or -hsync to select interlace mode and polarity of
+              sync  signals. This format is almost the same Xfree uses, s.t. you
+              may use their mode table and the modegen spreadsheet  package  for
+              mode  creation.  You  simple  need  to round the clock to the next
+              integer, add the resolution instead of the timing name  for  Xfree
+              and   replace  the  modeline  keyword  with  define.   Here  is  a
+              1024x768x256 mode as example:
+
+              define 1024x768x256 80 1024 1024 1184 1312
+                     768 768 772 791 +vsync -hsync
+
+              or
+
+              define 1024x768x256 1024x768x32K 1024x768x64K
+                     :11 1024 1024 1184 1312 768 768 772 791
+
+              (yes any whitespace in a command is allowed, even a newline !)
+
+              Both commands define the same timings (if the 11-th clock  is  80)
+              but  the  first  explicitly specifies the polarity of sync signals
+              whereas the second declares that these timings are also to be used
+              for a 32K and 64K mode.
+
+              The define command is privileged.
+
+
+       There  is  one really dangerous option (except faking clocks). Please use
+       it only if you are sure what you are doing. Wrong setup will lead to mul&#8208;
+       tiple components accessing your bus at once and thus to probable hardware
+       damage:
+&#12;       setuplinear address size
+              Sets up a linear frame buffer at address of size  size  (both  are
+              given  in MB). If the values make sense (for example address &lt;16MB
+              for  ISA  cards)  the  linear  aperture  is   setup.   Since   the
+              Mach32-driver  auto  detects configured address itself, I strongly
+              discourage use of this command. However I was asked for it as some
+              PCI mach32-cards didn&apos;t setup the linear aperture correctly.
+
+              Please  ensure  that  the  address range from address to address +
+              size (exclusively) is not used in your system. Obey  that  due  to
+              memory  remapping for example 16MB Ram may exceed the 16MB address
+              limit.
+
+              Valid Mach32 values for size are 1 and 4 (only 4 in PCI configura&#8208;
+              tions), address + size have to be below 16MB for ISA, 4GB for mul&#8208;
+              tiplexed PCI, and 128MB else. Example: (my setup)
+
+              setuplinear 64 4
+
+              for a 4MB linear frame buffer at address 0x4000000.
+
+              It is also valid to specify setuplinear 0 0.  This  will  actually
+              disable/de-configure  any  linear  frame buffer. Useful to disable
+              mach32 aperture even if it is enabled in the EEPROM.
+
+              The setuplinear command is privileged.
+
+
+       blit subcommand1 subcommand2 ...
+              This is a command to  control  the  Mach32  support  for  oldstyle
+              accelerator functions.
+
+              Valid  subcommands  are  bit,  fill,  image,  and hlinelist.  They
+              enable support for the corresponding blit functions. Precede  them
+              with no to turn them off (no space after no allowed). Use memimage
+              to emulate the image blit using a linearframebuffer, which is usu&#8208;
+              ally  much  faster  for  Mach32.  Use nomemimage to never use this
+              emulation. On the Mach32 this emulation can be used in more  reso&#8208;
+              lutions  than  the  actual  imageblit accelerator function.  Again
+              order is vital! (esp. for the *image commands).
+
+              As the Mach32 now has also new style  vga_accel(3)  support  there
+              are  now  also the subcommands: settrans, setrop, fillbox, screen&#8208;
+              copy, drawline, putimage,  drawhlinelist,  putbitmap,  screencopy&#8208;
+              mono,  setmode,  polyline, polyhline, and polyfillmode.  Which are
+              also supported with a leading no.  They allow to  control  support
+              for  the subfunctions of vga_accel(3).  In addition, memimage emu&#8208;
+              lation applies to putimage as well.
+
+              Some examples:
+
+
+              blit image nomemimage
+                     Use IO-style imageblt where possible. Don&apos;t emulate  it  in
+                     any resolution.
+
+              blit image memimage
+                     Use emulated imageblt where possible.
+
+              blit memimage image
+                     Use  IO-style  imageblt  where  possible, and the emulation
+                     where possible in the remaining modes.
+
+              blit noimage
+                     Disable support for imageblt.
+
+              Mach32 default is:
+&#12;              blit bit fill image hlinelist settrans setrop
+                   fillbox screencopy drawline putimage
+                   drawhlinelist putbitmap screencopymono
+                   setmode polyline polyhline polyfillmode
+                   memimage
+
+              The blit command is not privileged.
+
+
+       The Mach32 has also a few intermediate debug options for low level timing
+       adjust.  They are:
+
+       vfifo8 number
+       vfifo16 number
+       vfifo24 number
+       vfifo32 number
+       blank number
+       latch number
+
+       There  also  options  which  are useful to support broken Mach32 cards or
+       third party hardware based on Mach32 which does not follow the ATI speci&#8208;
+       fications completely. For example:
+
+       vendor ati
+       misc_ctl keep-off
+       svgaclocks 9
+       ramdac auto
+
+       For  details  about these options see svgalib.mach32(7).  All of them are
+       privileged.
+
+
+OBSOLETE COMMANDS
+       Very old svgalib versions used a different style configuration file.  For
+       compatibility,  svgalib  can still parse these old options. Generally the
+       options consist of one character (case sensitive) followed by  a  number.
+       Whitespace characters (space, tab, newline) can be used after the charac&#8208;
+       ters m and M and the number.
+
+       The old svgalib versions actually allowed a new option character to  fol&#8208;
+       low  a number immediately.  The current parser requires white space after
+       the numbers.
+
+       Of course, you should not use these cryptic forms anymore.  The  obsolete
+       commands are:
+
+
+       mnumber
+              Specify the mouse type like mouse number does.
+
+       Mclass Specify the monitor class like monitor class does.
+
+       Cnumber
+              Force  usage of the number-th chipset driver from the list of sup&#8208;
+              ported drivers  VGA(1),  ET4000(2),  Cirrus(3),  TVGA(4),  Oak(5),
+              EGA(6),   S3(7),   ET3000(8),  Mach32(9),  GVGA6400(10),  ARK(11),
+              ATI(12),   ALI(13),   Mach64(14),   C&amp;T(15),   APM(16),   NV3(17),
+              ET6000(18), VESA(19), MX(20), PARADISE(21), and RAGE(22).
+
+              C0 reenables auto detection of the chipset (default).
+
+
+       cflag  When  using the EGA chipset driver, the card is in monochrome emu&#8208;
+              lation mode for flag = 0 and in color emulation mode for flag = 1.
+
+FILES
+       /etc/vga/libvga.config
+       /etc/vga/libvga.et4000
+
+
+SEE ALSO
+       svgalib(7), svgalib.et4000(7), svgalib.chips(7), svgalib.mach32(7),
+
+
+AUTHOR
+       The newstyle configuration file was first implemented and  documented  by
+       Michael  Weller  &lt;eowmob@exp-math.uni-essen.de&gt;.  However,  other  people
+       added new features.
+
+       Finally this page was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.
+
+
+
+Svgalib 1.3.1                   19 December 1998                libvga.config(5)
+
+</pre></body></html>

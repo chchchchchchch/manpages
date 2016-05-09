@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gvpack - merge and pack disjoint graphs</title></head>
+<body><pre>
+
+GVPACK(1)                                                              GVPACK(1)
+
+
+
+NAME
+       gvpack - merge and pack disjoint graphs
+
+SYNOPSIS
+       gvpack [ -nguv?  ] [ -mmargin ] [ -ooutfile ] [ -Gname=value ] [ files ]
+
+DESCRIPTION
+       gvpack  reads  in  a  stream of graphs, combines the graphs into a single
+       layout, and produces a single graph serving as the  union  of  the  input
+       graphs.  The input graphs must be in dot format, and must have all neces&#8208;
+       sary layout information. Acceptable  input  is  produced  by  applying  a
+       Graphviz layout program, such as dot or neato, with no -T flag.
+
+       By  default, the packing is done at the cluster level. Thus, parts of one
+       graph will not intrude into any top&#8208;level clusters or overlap  any  nodes
+       or edges of another.
+
+       The  output  of gvpack can be used to produce concrete output by applying
+       neato -s -n2 with the desired -T flag.
+
+OPTIONS
+       The following options are supported:
+
+       -g     Combines the graphs at the graph level. This uses more space,  but
+              prevents  parts  of  one  graph  from  occurring  between parts of
+              another.
+
+       -Gname=value
+              Specifies attributes to be added to the resulting union graph. For
+              example, this can be used to specify a graph label.
+
+       -mmargin
+              Packs  the  graphs  allowing  a margin of output points around the
+              parts.
+
+       -n     Combines the graphs at the node level. Clusters are ignored in the
+              packing.
+
+       -ooutput
+              Prints  output  to the file output. If not given, gvpack uses std&#8208;
+              out.
+
+       -u     Don&apos;t pack the graphs. Just combine them into a single graph.
+
+       -v     Verbose mode.
+
+       -?     Prints usage information and exit.
+
+OPERANDS
+       The following operand is supported:
+
+       files   Names of files containing 1 or more graphs in dot format.  If  no
+               files operand is specified, the standard input will be used.
+
+RETURN CODES
+       gvpack returns 0 if there were no problems, and non&#8208;zero otherwise.
+
+EXAMPLES
+       ccomps -x abc.dot | dot | gvpack | neato -s -n2 -Tps
+       This  pipeline  decomposes the graph in abc.dot into its connected compo&#8208;
+       nents, lays out each using dot, packs them all together again,  and  pro&#8208;
+       duces  the  final  drawing  in PostScript. Of course, there is nothing to
+       prevent one from using different layouts for each component.
+
+BUGS
+       All the input graphs must be directed or undirected.
+
+       An input graph should not have a label, since this will be  used  in  its
+       layout. Since gvpack ignores root graph labels, resulting layout may con&#8208;
+       tain some extra space.
+
+       gvpack unsets the bounding box attribute of all non&#8208;cluster subgraphs.
+
+AUTHORS
+       Emden R. Gansner &lt;erg@research.att.com&gt;
+
+SEE ALSO
+       gvpr(1), dot(1), neato(1), twopi(1), ccomps(1), libpack(3)
+
+
+
+                                  8 April 2003                         GVPACK(1)
+
+</pre></body></html>

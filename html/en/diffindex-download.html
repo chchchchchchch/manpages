@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>diffindex-download - Download utility for Debian Contents files</title></head>
+<body><pre>
+
+DIFFINDEX-DOWNLOAD(1)                                      DIFFINDEX-DOWNLOAD(1)
+
+
+
+NAME
+       diffindex-download - Download utility for Debian Contents files
+
+SYNOPSIS
+       diffindex-download [ options ] URL filename
+
+
+DESCRIPTION
+       diffindex-download is a command line tool for downloading Contents files.
+       It uses APT&apos;s diff/Index format patches when available to avoid download&#8208;
+       ing the full file.  diffindex-download is used by apt-file.
+
+OPTIONS
+          -n number
+              If more than number patches would be necessary, download the whole
+              file. Specifying 0 to always download the whole file is possible.
+
+          -k  Don&apos;t verify the peer certificate when using https.
+
+          -c cacert
+              If cacert is a directory: Use cacert as CA certificate path.  Oth&#8208;
+              erwise  use  cacert as CA certificate bundle. See the --capath and
+              --cacert options in the curl(1) man page.
+
+          -i  Don&apos;t exit with errror if the URL does not exist. This  is  useful
+              as some archives don&apos;t provide Contents files.
+
+          -q  Be  quiet  (opposite of -v). The default if stdout is not a termi&#8208;
+              nal.
+
+          -v  Be verbose (opposite of -q). The default if stdout is a terminal.
+
+          -d  Print additional debug info.
+
+          -h  Display a short help screen.
+
+SEE ALSO
+       apt-file(1), diffindex-rred(1), curl(1)
+
+AUTHOR
+       diffindex-download was written by Stefan Fritsch &lt;sf@debian.org&gt;.
+
+
+
+                                  January 2009             DIFFINDEX-DOWNLOAD(1)
+
+</pre></body></html>

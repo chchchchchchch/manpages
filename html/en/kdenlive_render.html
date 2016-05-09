@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>kdenlive_render - Render program for Kdenlive.</title></head>
+<body><pre>
+
+KDENLIVE_RENDER(1)        Render program for Kdenlive.        KDENLIVE_RENDER(1)
+
+
+
+NAME
+       kdenlive_render - Render program for Kdenlive.
+
+SYNOPSIS
+       kdenlive_render  [-erase]  [in=pos] [out=pos] [render] [profile] [render&#8208;
+       module] [player] [src] [dest] [[arg1] [arg2] ...]
+
+DESCRIPTION
+       Render program for Kdenlive. Renders kdenlive project detached from Kden&#8208;
+       live,  while  providing  feedback  through kuiserver. This program is not
+       meant to be called directly by users, but is called from Kdenlive, when a
+       rendering process is started.
+
+OPTIONS
+   Options:
+       -erase If present, src file will be erased after rendering
+
+       in=pos Start rendering at frame pos
+
+       out=pos
+              End rendering at frame pos
+
+       render Path to MLT melt render program
+
+       profile
+              The MLT video profile
+
+       rendermodule
+              The MLT consumer used for rendering, usually it is avformat
+
+       player Path  to  video  player to play when rendering is over, use &apos;-&apos; to
+              disable playing
+
+       src    Source file - usually MLT playlist
+
+       dest   Destination file
+
+       args   Space separated libavformat arguments
+
+
+
+ENVIRONMENT
+       KDENLIVE_RENDER_LOG
+              If  $KDENLIVE_RENDER_LOG  is  set,  a  log  will  be  written   to
+              /tmp/kdenlive_render.log.XXXXXXXX, that contains information about
+              the result of calling melt, ffmpeg, etc.  This  can  be  used  for
+              debugging.
+
+
+SEE ALSO
+       Please see the homepage at http://www.kdenlive.org/
+
+AUTHORS
+       Jean-Baptiste Mardelle &lt;jb@kdenlive.org&gt;
+       Marco Gittler &lt;g.marco@freenet.de&gt;
+
+
+
+
+K Desktop Environment               Dec 2008                  KDENLIVE_RENDER(1)
+
+</pre></body></html>

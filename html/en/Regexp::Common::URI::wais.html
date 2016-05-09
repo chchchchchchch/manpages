@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::URI::wais -- Returns a pattern for WAIS URIs.</title></head>
+<body><pre>
+
+Regexp::Common::URI::waUserpContributed Perl DocumRegexp::Common::URI::wais(3pm)
+
+
+
+NAME
+       Regexp::Common::URI::wais -- Returns a pattern for WAIS URIs.
+
+SYNOPSIS
+           use Regexp::Common qw /URI/;
+
+           while (&lt;&gt;) {
+               /$RE{URI}{WAIS}/       and  print &quot;Contains a WAIS URI.\n&quot;;
+           }
+
+DESCRIPTION
+   $RE{URI}{WAIS}
+       Returns a pattern that matches WAIS URIs, as defined by RFC 1738.  WAIS
+       URIs have the form:
+
+           &quot;wais:&quot; &quot;//&quot; host [ &quot;:&quot; port ] &quot;/&quot; database
+                             [ ( &quot;?&quot; search ) | ( &quot;/&quot; wtype &quot;/&quot; wpath ) ]
+
+       Under &quot;{-keep}&quot;, the following are returned:
+
+       $1  The complete URI.
+
+       $2  The scheme.
+
+       $3  The hostname.
+
+       $4  The port, if given.
+
+       $5  The database, followed by search or wtype/wpath, if given.
+
+       $6  The database.
+
+       $7  The part following the database if given, including the question mark
+           or slash.
+
+       $8  The search part, if given.
+
+       $9  The wtype, if given.
+
+       $10 The wpath, if given.
+
+REFERENCES
+       [RFC 1738]
+           Berners-Lee, Tim, Masinter, L., McCahill, M.: Uniform Resource
+           Locators (URL). December 1994.
+
+SEE ALSO
+       Regexp::Common::URI for other supported URIs.
+
+AUTHOR
+       Damian Conway (damian@conway.org)
+
+MAINTAINANCE
+       This package is maintained by Abigail (regexp-common@abigail.be).
+
+BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2010-02-23     Regexp::Common::URI::wais(3pm)
+
+</pre></body></html>

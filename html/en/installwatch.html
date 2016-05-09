@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>installwatch — Track installation of software</title></head>
+<body><pre>
+
+installwatch(1)                                                  installwatch(1)
+
+
+
+NAME
+       installwatch &#8212; Track installation of software
+
+SYNOPSIS
+       installwatch [options]  [command]
+
+DESCRIPTION
+       installwatch is a program that is used in order to track the changes made
+       while installing local software (i.e.  &quot;make install&quot;). It  monitors  the
+       requested  command,  and  produces  a log which indicates all created and
+       modified files. By default it outputs to syslog(3) using  a  priority  of
+       &quot;LOG_USER  | LOG_INFO&quot;. This may be overridden by the use of the -o flag.
+       The log format is as follows:
+
+
+       &lt;return-value&gt; &lt;syscall-name&gt; &lt;argument&gt; #&lt;comment&gt;
+
+       Each field is delimited by a &quot;^I&quot; character if logging to  syslog(3),  or
+       by a tab when logging to a file.
+
+
+ENVIRONMENT
+       INSTALLWATCH_BACKUP_PATH
+                 Set this variable to the location that you want installwatch to
+                 copy the original version of  files  which  get  modified.  The
+                 directory  will  be created if it does not exist, assuming that
+                 the parent is writable.
+
+OPTIONS
+       These program follow the usual GNU command line syntax, with long options
+       starting with two dashes (`-&apos;).  A summary of options is included below.
+
+                 -o        --logfile
+                 Directs  that  output from the logged command be written to the
+                 filename specified. If the specified file  already  exists,  it
+                 will be truncated.
+
+       -r           --root
+                 Sets  the  directory under which meta-info and translated files
+                 will be stored.
+
+       -t           --trans
+                 Toggle translation capabilities.
+
+       -e           --exclude
+                 Sets a comma separated neutral directory list,  that  won&apos;t  be
+                 concerned by translation or backups.
+
+       -d           --dbgfile
+                 Specify a debug file.
+
+       -v       --dbglvl
+                 Sets the debug level to be used.
+
+       -h         --help
+                 Show help information.
+
+BUGS
+       installwatch does not work with programs which are statically linked with
+       libc. Due to LD_PRELOAD limitations, it does not work with suid  programs
+       (this would probably introduce security problems, anyway).
+&#12;
+       mknod(2) is not monitored.
+
+
+AUTHOR
+       This  manual  page was written by Felipe Sateler &lt;fsateler@gmail.com&gt; for
+       the Debian system (but may be used by others). Original text by Greg Nor&#8208;
+       ris  &lt;adric@debian.org&gt;. Permission is granted to copy, distribute and/or
+       modify this document under the terms of the GNU General  Public  License,
+       Version 2.
+
+
+       On  Debian  systems,  the complete text of the GNU General Public License
+       can be found in /usr/share/common-licenses/GPL.
+
+
+
+
+                                                                 installwatch(1)
+
+</pre></body></html>

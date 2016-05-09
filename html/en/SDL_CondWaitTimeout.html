@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CondWaitTimeout - Wait on a condition variable, with timeout</title></head>
+<body><pre>
+
+SDL_CondWaitTimeout(3)          SDL API Reference         SDL_CondWaitTimeout(3)
+
+
+
+NAME
+       SDL_CondWaitTimeout - Wait on a condition variable, with timeout
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_CondWaitTimeout(SDL_cond *cond, SDL_mutex *mutex, Uint32 ms);
+
+DESCRIPTION
+       Wait on the condition variable cond for, at most, ms milliseconds. mut is
+       unlocked so it must be  locked  when  the  function  is  called.  Returns
+       SDL_MUTEX_TIMEDOUT  if  the  condition  is  not signalled in the allotted
+       time, 0 if it was signalled or -1 on an error.
+
+SEE ALSO
+       SDL_CondWait
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00       SDL_CondWaitTimeout(3)
+
+</pre></body></html>

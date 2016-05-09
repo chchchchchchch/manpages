@@ -1,0 +1,128 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Biber::Entry - Biber::Entry objects</title></head>
+<body><pre>
+
+Biber::Entry(3pm)      User Contributed Perl Documentation     Biber::Entry(3pm)
+
+
+
+NAME
+       Biber::Entry - Biber::Entry objects
+
+   new
+           Initialize a Biber::Entry object
+
+   TO_JSON
+          Serialiser for JSON::XS::encode
+
+   clone
+           Clone a Biber::Entry object and return a copy
+           Accepts optionally a key for the copy
+
+   notnull
+           Test for an empty object
+
+   set_orig_field
+           Set a field which came from the datasource which is then split/transformed
+           into other fields. Here we save the original in case we need to look at it again
+           but it is not treated as a real field any more. Such fields are of only historical
+           interest in the processing in case we lose information during processing but need
+           to refer back.
+
+   get_orig_field
+           Get an original field which has been subsequently split/transformed.
+
+   set_field
+         Set/append to a derived field for a Biber::Entry object, that is, a field
+         which was not an actual bibliography field
+
+   get_field
+           Get a field for a Biber::Entry object
+
+   set_datafield
+           Set/append to a field which is in the bib data file
+           Only set to null if the field is a nullable one
+           otherwise if value is null, remove the field
+
+   get_datafield
+           Get a field that was in the original data file
+
+   del_field
+           Delete a field in a Biber::Entry object
+
+   del_datafield
+           Delete an original data source data field in a Biber::Entry object
+
+   field_exists
+           Check whether a field exists (even if null)
+
+   datafields
+           Returns a sorted array of the fields which came from the data source
+
+   count_datafields
+           Returns the number of datafields
+
+   fields
+           Returns a sorted array of all field names, including ones
+           added during processing which are not necessarily fields
+           which came from the data file
+
+   count_fields
+           Returns the number of fields
+&#12;   has_keyword
+           Check if a Biber::Entry object has a particular keyword in
+           in the KEYWORDS field.
+
+   add_warning
+           Append a warning to a Biber::Entry object
+
+   set_inherit_from
+           Inherit fields from parent entry
+
+           $entry-&gt;set_inherit_from($parententry);
+
+           Takes a second Biber::Entry object as argument
+           Tailored for set inheritance which is a straight 1:1 inheritance,
+           excluding certain fields for backwards compatibility
+
+   resolve_xdata
+           Recursively resolve XDATA fields in an entry
+
+           $entry-&gt;resolve_xdata($xdata_entry);
+
+   inherit_from
+           Inherit fields from parent entry (as indicated by the crossref field)
+
+           $entry-&gt;inherit_from($parententry);
+
+           Takes a second Biber::Entry object as argument
+           Uses the crossref inheritance specifications from the .bcf
+
+   dump
+           Dump Biber::Entry object
+
+AUTHORS
+       Francois Charette, &quot;&lt;firmicus at ankabut.net&gt;&quot; Philip Kime &quot;&lt;philip at
+       kime.org.uk&gt;&quot;
+
+BUGS
+       Please report any bugs or feature requests on our sourceforge tracker at
+       &lt;https://sourceforge.net/tracker2/?func=browse&amp;group_id=228270&gt;.
+
+COPYRIGHT &amp; LICENSE
+       Copyright 2009-2012 Francois Charette and Philip Kime, all rights
+       reserved.
+
+       This module is free software.  You can redistribute it and/or modify it
+       under the terms of the Artistic License 2.0.
+
+       This program is distributed in the hope that it will be useful, but
+       without any warranty; without even the implied warranty of
+       merchantability or fitness for a particular purpose.
+
+
+
+perl v5.14.2                       2012-06-17                  Biber::Entry(3pm)
+
+</pre></body></html>

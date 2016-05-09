@@ -1,0 +1,111 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rcS - variables that affect the behavior of boot scripts</title></head>
+<body><pre>
+
+rcS(5)                    Debian Administrator&apos;s Manual                   rcS(5)
+
+
+
+NAME
+       rcS - variables that affect the behavior of boot scripts
+
+DESCRIPTION
+       The /etc/default/rcS file contains variable settings in POSIX format:
+
+            VAR=VAL
+
+       Only  one  assignment  is allowed per line.  Comments (starting with &apos;#&apos;)
+       are also allowed.
+
+
+OPTIONS
+       The following variables can be set.
+
+
+       TMPTIME
+              On boot the files in /tmp will be deleted  if  their  modification
+              time,  file  status  time and access time are all at least TMPTIME
+              days ago.  A value of 0 means that files are removed regardless of
+              age.   If you don&apos;t want the system to clean /tmp then set TMPTIME
+              to a negative value (e.g., -1) or to the word infinite.
+
+
+       SULOGIN
+              Setting this to yes causes init to spawn a sulogin on the  console
+              early  in  the  boot process.  If the administrator does not login
+              then the sulogin session will time out after 30  seconds  and  the
+              boot process will continue.
+
+
+       DELAYLOGIN
+              Normally  the  system will not let non-root users log in until the
+              boot process is complete and the system has finished switching  to
+              the  default runlevel (usually level 2).  However, in theory it is
+              safe to log in a  bit  earlier,  namely,  as  soon  as  inetd  has
+              started.  Setting the variable to no allows earlier login; setting
+              the variable to yes prevents it.
+
+              Some details: The DELAYLOGIN variable controls whether or not  the
+              file  /var/lib/initscripts/nologin  is  created  during  the  boot
+              process and deleted at the end of it.  /etc/nologin is normally  a
+              symbolic  link  to  the  latter location, and the login(1) program
+              refuses to allow non-root  logins  so  long  as  (the  target  of)
+              /etc/nologin  exists.   If  you  set the variable to no then it is
+              advisable to ensure  that  /var/lib/initscripts/nologin  does  not
+              exist.
+
+
+       VERBOSE
+              Setting  this  option  to  no  (in  lower case) will make the boot
+              process a bit less verbose.  Setting this option to yes will  make
+              the boot process a bit more verbose.
+
+
+       FSCKFIX
+              When  the  root  and  all  other file systems are checked, fsck is
+              invoked with the -a option which means &quot;autorepair&quot;.  If there are
+              major  inconsistencies  then  the fsck process will bail out.  The
+              system will print a message asking the administrator to repair the
+              file  system  manually and will present a root shell prompt (actu&#8208;
+              ally a sulogin prompt) on the console.  Setting this option to yes
+              causes  the  fsck commands to be run with the -y option instead of
+              the -a option.  This will tell fsck always to repair the file sys&#8208;
+              tems without asking for permission.
+
+
+       ASYNCMOUNTNFS
+              Set  this  to  &apos;no&apos;  to  disable  asynchronous mounting of network
+              drives when the network interfaces are mounted, and instead do  it
+              only  once  when  the machine boots.  The default is &apos;yes&apos;.  It is
+              useful to disable this on machines where the root file  system  is
+              NFS, until ifup from ifupdown works properly in such setup.
+
+
+NOTE
+       The  EDITMOTD, RAMRUN and UTC variables are no longer used.  The RAMLOCK,
+       RAMSHM and RAMTMP variables have been moved to /etc/default/tmpfs; RAMSHM
+       and  RAMTMP settings in rcS are used (if set) for backward compatibility,
+       but will be overridden by settings enabled  in  /etc/default/tmpfs.   See
+       tmpfs(5)  for  further  details.   The  settings  are  not  automatically
+       migrated to /etc/default/tmpfs.  Please update /etc/default/tmpfs  appro&#8208;
+       priately.   The  UTC  setting  is replaced by the UTC or LOCAL setting in
+       /etc/adjtime,  and  should  have  been   migrated   automatically.    See
+       hwclock(5)  and  hwclock(8) for further details on configuring the system
+       clock.
+
+
+AUTHOR
+       Miquel    van    Smoorenburg     &lt;miquels@cistron.nl&gt;     Roger     Leigh
+       &lt;rleigh@debian.org&gt;
+
+
+SEE ALSO
+       hwclock(5),   hwclock(8),   inetd(8),   init(8),   inittab(5),  login(1),
+       tmpfs(5).
+
+
+
+                                   21 May 2012                            rcS(5)
+
+</pre></body></html>

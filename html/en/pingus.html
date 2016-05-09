@@ -1,0 +1,327 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pingus - A puzzle game where you have to save penguins</title></head>
+<body><pre>
+
+pingus (6)                        User Commands                       pingus (6)
+
+
+
+NAME
+       pingus - A puzzle game where you have to save penguins
+
+SYNOPSIS
+       pingus [OPTION]... [FILE]
+
+DESCRIPTION
+       Pingus  is  a  side-scrolling puzzle game where the player has to guide a
+       group of penguins from the entrance of a level to the  exit,  in  between
+       the path is blocked by numerous obstacles and dangers that the player has
+       to overcome by assigning actions to the penguins.
+
+OPTIONS
+   GENERAL OPTIONS
+       -h, --help
+              Displays this help
+
+       -V, --version
+              Print version number and exit
+
+       -v, --verbose
+              Enable info level log output
+
+       -D, --debug
+              Enable debug level log output
+
+       -Q, --quiet
+              Disable all log output
+
+   DISPLAY OPTIONS
+       -w, --window
+              Start in Window Mode
+
+       -f, --fullscreen
+              Start in Fullscreen
+
+       -r, --renderer=RENDERER
+              Use the given renderer, defaults to sdl. Available renderers are:
+
+              sdl    A simple software renderer based on SDL, this  is  the  de&#8208;
+                     fault and the safest options.
+
+              opengl The  OpenGL renderer will use hardware acceleration to ren&#8208;
+                     der the graphics, it is much faster then the  SDL  renderer
+                     and recommended when the hardware supports OpenGL.
+
+              delta  The  delta  renderer uses SDL for rendering and doesn&apos;t use
+                     hardware acceleration, it will however try to increase ren&#8208;
+                     dering  performance  by  only  re rendering screen elements
+                     that have changed. Using the delta  renderer  will  disable
+                     some  effects such as scrolling background to allow maximum
+                     benefits.
+
+       -g, --geometry=WIDTHxHEIGHT
+              Set the window resolution for pingus (default: 800x600). Note that
+              --geometry   only  applies  to  the  window  resolution,  for  the
+              fullscreen resolution use --fullscreen-resolution
+
+       -R, --fullscreen-resolution=WIDTHxHEIGHT
+              Set the resolution used in fullscreen mode (default: 800x600)
+
+       --software-cursor
+              Enable software cursor
+&#12;   GAME OPTIONS
+       --no-auto-scrolling
+              Disable automatic scrolling. Automatic scrolling  will  cause  the
+              screen  to  scroll  whenever  the  mouse reaches the border of the
+              screen. Automatic scrolling will only be active in fullscreen mode
+              or when mouse-grab is enabled.
+
+       --drag-drop-scrolling
+              Enable drag&apos;n drop scrolling. By default Pingus will use a rubber-
+              band scrolling where the scroll speed depends on how far away  the
+              cursor  is  from  the  position  when  the  mouse  button has been
+              clicked. In drag&amp;drop mode scrolling will behave more like in tra&#8208;
+              ditional  GUI applications such as Gimp, where clicking the scroll
+              button will &apos;pick up&apos; the playfield and allow to  move  it  around
+              till it is released again.
+
+   SOUND OPTIONS
+       -s, --disable-sound
+              Disable sound
+
+       -m, --disable-music
+              Disable music
+
+   LANGUAGE OPTIONS
+       -l, --language=LANG
+              Select language to use with Pingus
+
+       --list-languages
+              List all available languages
+
+   EDITOR OPTIONS
+       -e, --editor
+              Loads the level editor
+
+   DIRECTORY OPTIONS
+       -d, --datadir=DIR
+              Load game datafiles from DIR
+
+       -u, --userdir=DIR
+              Load config files and store savegames in DIR
+
+       -a, --addon=DIR
+              Load  game  modifications  from DIR. Files in DIR will be used in&#8208;
+              stead of the files in found in the main datadir  of  Pingus,  thus
+              allowing to modifications, such as sprites replacements, addition&#8208;
+              al levels, etc. to the game, without changing the main data files.
+
+       --no-cfg-file
+              Don&apos;t read ~/.pingus/config
+
+       -c, --config=FILE
+              Read config from FILE
+
+       --controller=FILE
+              Uses the controller given in FILE
+
+   DEBUG OPTIONS
+       --developer-mode
+              Enables some special features for developers
+
+       -t, --speed=SPEED
+              Set the game speed (0=fastest, &gt;0=slower)
+
+       -k, --fps=FPS
+              Set the desired game framerate (frames per second)
+
+       --tile-size=INT
+              Set the size of the map tiles (default: 32)
+&#12;KEYBOARD SHORTCUTS
+   GAMEPLAY
+       All gameplay related keyboard shortcuts are configurable via a controller
+       config file, see --controller and controller/default.scm.
+
+       W, A, S, D
+              Scroll in the level
+
+       Space  Hold to ast-forward
+
+       P, R   Pause the game.
+
+       S, F   Advance the game by a single frame.
+
+       Backspace
+              Activate armageddon.
+
+       Escape Leave the current screen/level.
+
+   ENGINE
+       F10    Show/hide the FPS counter.
+
+       AltReturn, F11
+              Switch to fullscreen/window mode.
+
+       Ctrlg  Toggle  mouse  grab, when active, the mouse can not leave the win&#8208;
+              dow.
+
+       Ctrlo, F5
+              Show the option menu.
+
+       F12    Make a screenshot. Screenshots  are  stored  in  ~/.pingus/screen&#8208;
+              shots/.
+
+       Ctrlm  Toggle the developer mode, see --developer-mode
+
+       c (only in developer-mode)
+              Show the collision map overlayed over the regular groundmap.
+
+       k (only in developer-mode)
+              Clear the screen for delta mode debugging.
+
+ACTIONS
+       Basher The  Basher  will to a horizontal dig, leaving behind it a tunnel.
+              It is not able to dig through metal.
+
+       Blocker
+              The Blocker will stop and stay in position, directing  other  pen&#8208;
+              guins to turn around when they reach him.
+
+       Bomber The  Bomber will blow up on the spot and take a bit of surrounding
+              ground with it.
+
+       Bridger
+              The Bridger will build a small bridge, useful for  crossing  small
+              chasm.
+
+       Climber
+              The  Climber  actions  allows a Pingu to travel upwards a vertical
+              wall. Unlike other actions the climber action is a permanent addi&#8208;
+              tion to the Pingus ability.
+
+       Digger The  Digger  will dig a hole into the ground. It can&apos;t dig through
+              metal.
+
+       Floater
+              The Floater action will give a penguin a small propeller that lets
+              him  gently  glide down from great heights that would otherwise be
+              deadly.
+
+       Jumper The Jumper will let the Pingu do a big leap forward, allowing  him
+              to cross chasm and small vertical obstacles.
+
+       Miner  The Miner will dig a diagonal hole into the ground.
+
+       Slider The Slider will make a tiny leap forward, gliding on its belly for
+              a short while, allowing the Pingu to make it through  narrow  tun&#8208;
+              nels.
+
+LEVEL EDITOR
+       Pingus comes with a build in level editor. The level editor can currently
+       be used to edit level files (*.pingus) as well as  prefabricated  objects
+       (*.prefabs).  Worldmaps (*.worldmap) can currently not be edited with the
+       editor.
+
+       All Pingus data files, except the sound and images, are  raw  text  files
+       and can be edited in a text editor if the editor isn&apos;t sufficient.
+
+       If  you  want to submit a level to be included in the next release follow
+       the following naming convention:
+
+       {theme}{number}-{nickname}.pingus
+
+       Do not use space or uppercase in the levelname  and  keep  the  levelname
+       simple    (i.e.    snow1-grumbel.pingus   not   pingus-go-on-a-long-jour&#8208;
+       ney-in-snowland-grumbel.pingus).  The filename should not reflect the ac&#8208;
+       tual  level title, it simply should be unique and not conflict with other
+       peoples levels. If you plan on building a whole levelset, name the levels
+       after the levelset.
+
+       To submit a level send it to &lt;pingus-devel@nongnu.org&gt;.
+
+   PREFABS
+       A prefab, short for prefabricated object, is a group of objects that have
+       been combined into a new single object. A classic case of a prefab  would
+       for  example  be  a snowman, it is build out of multiple smaller snowball
+       objects and then saved as prefab to allow easy reuse in multiple  levels.
+       Unlike  simple object groups, prefab are saved as reference in the level,
+       thus if the prefab is updated, all levels will see the change.  Like  ob&#8208;
+       ject groups prefabs can be ungrouped to break them back down to individu&#8208;
+       al objects if individual editing is needed, they are seizing to  be  pre&#8208;
+       fabs  at that point and changes to the .prefab file will no longer be re&#8208;
+       flected in the level.
+
+       Prefabs behave pretty much like regular levels, to create a prefab simply
+       start  a new level and insert the objects as usual, unlike regular levels
+       the level size is ignored and thus you have to place your  object  around
+       the  center of the levels, marked by a cross, to have the prefab function
+       properly. To save a prefab as prefab instead of level you have to  append
+       .prefab suffix to the filename.
+
+       Thumbnail  generation  for  prefabs  is  currently  done offline with the
+       script ./tools/generate-prefab-images.sh available from the Pingus source
+       tree.
+
+   UI QUIRCKS
+       The Pingus level editor is best used with a combination of mouse and key&#8208;
+       board, all essential functions have keyboard shortcuts.
+
+       Unlike more traditional GUIs, the Pingus editor lacks scrollbars,  so  to
+       move around the level or the object list on the right simply use the mid&#8208;
+       dle or right mouse button and drag&amp;drop the list around.
+
+       Objects from the object list can be inserted into the level by drag&amp;drop&#8208;
+       ping them over to the level.
+
+   KEYBOARD SHORTCUTS
+       Delete, Backspace
+              Delete all currently selected objects
+&#12;       A      Select or unselect all objects
+
+       D      Duplicate the currently selected objects
+
+       I, K, J, L
+              Move the current selection by one pixel, if Shift is held, move it
+              by 32 pixel.
+
+       PageUp, PageDown
+              Raise or lower an object
+
+       ShiftPageUp, ShiftPageDown
+              Raise or lower an object to the top or bottom
+
+       R, ShiftR
+              Rotate an objects 90 degrees, if Shift is held rotate it the other
+              way around
+
+       F, ShiftV
+              Flip an object horizontally
+
+       V, ShiftF
+              Flip an object vertically
+
+       B, ShiftB
+              Toggle  the  background color to make it easier to see small pixel
+              errors. If shift is hold the color will be toggled in the opposite
+              direction.
+
+       +, =, -
+              Increase/decrease  the repeat value of selected objects, this will
+              only have an effect on objects having  an  repeat  value  (switch&#8208;
+              doors, liquids, ...).
+
+COPYRIGHT
+       Copyright  (C) 1998-2011 Ingo Ruhnke &lt;grumbel@gmail.com&gt; See the file AU&#8208;
+       THORS for a complete list of contributors.  Pingus comes with  ABSOLUTELY
+       NO  WARRANTY.  This is free software, and you are welcome to redistribute
+       it under certain conditions; see the file COPYING for details.
+
+SEE ALSO
+       http://pingus.seul.org
+
+
+
+0.7.5                            21 October 2011                      pingus (6)
+
+</pre></body></html>

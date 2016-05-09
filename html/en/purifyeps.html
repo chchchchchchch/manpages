@@ -1,0 +1,199 @@
+<html>
+<head><meta charset=utf-8/>
+<title>purifyeps - make an Encapsulated PostScript file work with both dvips and pdflatex</title></head>
+<body><pre>
+
+PURIFYEPS(1)                                                        PURIFYEPS(1)
+
+
+
+NAME
+       purifyeps - make an Encapsulated PostScript file work with both dvips and
+       pdflatex
+
+SYNOPSIS
+       purifyeps --help
+
+       purifyeps --version
+
+       purifyeps [--fontmap=.fmp file] [.eps input file [.eps output file]]
+
+       purifyeps --make-man[=filename] [--section=section]
+
+       purifyeps --make-ps-man[=filename] [--section=section]
+
+DESCRIPTION
+       While pdflatex has a number of nice features, its primary shortcoming
+       relative to standard latex+dvips is that it is unable to read ordinary
+       Encapsulated PostScript (EPS) files, the most common graphics format in
+       the LaTeX world.  pdflatex can read only the following types of graphics
+       files:
+
+       PDF Most people who use pdflatex convert their documents to PDF using a
+           utility such as epstopdf.  This works well and preserves the vector
+           nature of the original EPS.  Unfortunately, dvips does not read PDF,
+           so two versions of the graphic must be maintained if the document is
+           to be processed with both latex+dvips and pdflatex.
+
+       PNG PNG is a bitmap format and therefore scales poorly.  Also, dvips does
+           not read PNG, so two versions of the graphic must be maintained if
+           the document is to be processed with both latex+dvips and pdflatex.
+
+       JPEG
+           JPEG is a bitmap format and therefore scales poorly.  Also, dvips
+           does not read JPEG, so two versions of the graphic must be maintained
+           if the document is to be processed with both latex+dvips and
+           pdflatex.
+
+       MPS This is probably the least-used pdflatex-compatible graphics format.
+           MPS is actually a stylized version of EPS that MetaPost outputs.
+           Like PDF, MPS is a vector format and remains as such when imported
+           into a pdflatex document.  Also like PDF, dvips does not read MPS, so
+           two versions of the graphic must be maintained if the document is to
+           be processed with both latex+dvips and pdflatex.
+
+       The insight behind purifyeps is that there are only a few, small
+       differences between MPS and EPS and that a file can be converted into a
+       format that matches both the MPS and EPS specifications simultaneously.
+       purifyeps inputs an EPS file, uses pstoedit&apos;s &quot;mpost&quot; filter to convert
+       the file to MetaPost (.mp), runs mpost on the file to convert it to MPS,
+       and finally performs some touchups on the result to convert the file back
+       to EPS, while preserving its ability to be parsed by pdflatex.
+
+OPTIONS
+       --help
+           Display &quot;Usage&quot; and &quot;Options&quot; from the purifyeps documentation.
+
+       -V, --version
+           Display the purifyeps version number, copyright, and license.
+
+       --fontmap=.fmp file
+           Specify the name of a file that tells purifyeps how to map from TeX
+           font names to PostScript font names.  [Default: mpost.fmp]
+
+       --make-man [=filename]] [--section=section]
+           Automatically create a Unix man page for purifyeps.  section
+           specifies the section [default: 1 (User Commands)].  filename
+           defaults to purifyeps.1 or an analogous filename if section is
+           specified.
+
+       --make-ps-man [=filename]] [--section=section]
+           Automatically create a PostScript version of the purifyeps
+           documentation.  The documentation is formatted like a Unix man page.
+           section specifies the section [default: 1 (User Commands)].  filename
+           defaults to purifyeps.ps.
+
+       In normal operation (i.e., when not run with &quot;--help&quot;, &quot;--make-man&quot;, or
+       &quot;--make-ps-man&quot;), purifyeps takes the name of an input file and output
+       file.  The same filename can safely be used for both files.  If the
+       output filename is omitted, output will go to the standard output device.
+       If the input filename is omitted, purifyeps will read from the standard
+       input device.
+
+EXAMPLES
+       Create a PostScript version of the purifyeps documentation, but call it
+       happydoc.ps instead of the default, purifyeps.ps:
+
+           purifyeps --make-ps-man=happydoc.ps
+
+       Create a Unix man page for purifyeps (in the usual roff format), but
+       indicate that it belongs in section &quot;LOCAL&quot; instead of the default of
+       section 1:
+
+           purifyeps --make-man --section=LOCAL
+
+       Purify sample.eps (mpost.fmp is in the current directory):
+
+           purifyeps sample.eps sample.eps
+
+       Purify sample.eps (mpost.fmp is in a different location):
+
+           purifyeps --fontmap=/usr/share/pstoedit/mpost.fmp sample.eps sample.eps
+
+       Rename the purified version while purifying:
+
+           purifyeps sample.eps sample-pure.eps
+
+       Do the same, but in a Unix pipeline:
+
+           cat sample.eps | purifyeps &gt; sample-pure.eps
+
+       When you run purifyeps, you should see the output from both pstoedit and
+       mpost, followed by a success message from purifyeps:
+
+           % cat sample.eps | purifyeps &gt; sample-pure.eps
+           pstoedit: version 3.30 / DLL interface 107 (build Mar 14 2002) :
+           Copyright (C) 1993 - 2001 Wolfgang Glunz
+           Interpreter finished. Return status 0
+           This is MetaPost, Version 0.641 (Web2C 7.3.1)
+           (/tmp/purifyeps-jdeGPkh9.mp [1] )
+           1 output file written: purifyeps-jdeGPkh9.1
+           Transcript written on purifyeps-jdeGPkh9.log.
+
+           File seems to have been purified successfully.
+
+FILES
+       mpost.fmp
+           File containing mappings between TeX and PostScript font names.  See
+           &quot;NOTES&quot; for a description of this file&apos;s contents.
+&#12;BUGS
+       Error reporting could definitely stand to be improved.  Error messages
+       produced by pstoedit and mpost are sometimes silently ignored.  Also,
+       errors sometimes cause purifyeps to leave temporary files
+       (purifyeps-#####) lying around.
+
+       purifyeps is subject to all of the limitations that affect pstoedit and
+       especially the &quot;mpost&quot; backend to pstoedit.  As a result, purifyeps
+       ignores certain PostScript constructs, such as nonuniformly scaled text.
+
+NOTES
+       purifyeps needs a file that tells it how to map from TeX font names to
+       PostScript font names.  This file must contain two, space-separated
+       columns.  The first lists a PostScript font name, and the second lists
+       the TeX equivalent.  Blank lines and lines that start with &quot;%&quot; are
+       ignored.  The following is a sample .fmp file:
+
+           % This is a sample font map for purifyeps.
+           Times-Bold                           ptmb
+           Times-Italic                         ptmri
+           Times-Roman                          ptmr
+           Helvetica                            phvr
+           Helvetica-Bold                       phvb
+           Helvetica-Oblique                    phvro
+           Courier                              pcrr
+           Courier-Bold                         pcrb
+           Courier-Oblique                      pcrro
+
+       Note that this is exactly the same format that pstoedit uses.  By
+       default, purifyeps looks in the current directory for a font map called
+       mpost.fmp.  The &quot;--fontmap&quot; command-line option tells purifyeps to use a
+       different font map, which will typically be the mpost.fmp file that comes
+       with pstoedit.
+
+       Once you create purified EPS files with purifyeps, you need to instruct
+       pdflatex to use them.  The pdfLaTeX configuration of the &quot;graphics&quot; and
+       &quot;graphicx&quot; packages (pdftex.def) normally ignores .eps files.  Putting
+       the following LaTeX code in your document&apos;s preamble tells pdflatex that
+       all .eps files are in MPS format:
+
+           % Tell pdfLaTeX that all .eps files were produced by MetaPost.
+           \usepackage{graphicx} % or graphics
+           \usepackage{ifpdf}
+           \ifpdf
+             \DeclareGraphicsRule{.eps}{mps}{*}{}
+             \makeatletter
+               \g@addto@macro\Gin@extensions{,.eps}
+             \makeatother
+           \fi
+
+SEE ALSO
+       dvips(1), epstopdf(1), latex(1), mpost(1), pdflatex(1), pstoedit(1)
+
+AUTHOR
+       Scott Pakin, scott+peps@pakin.org
+
+
+
+v1.1                               2010-11-28                       PURIFYEPS(1)
+
+</pre></body></html>

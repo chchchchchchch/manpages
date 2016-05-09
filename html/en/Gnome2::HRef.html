@@ -1,0 +1,66 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::HRef - wrapper for GnomeHRef</title></head>
+<body><pre>
+
+Gnome2::HRef(3pm)      User Contributed Perl Documentation     Gnome2::HRef(3pm)
+
+
+
+NAME
+       Gnome2::HRef - wrapper for GnomeHRef
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Bin
+                                  +----Gtk2::Button
+                                       +----Gnome2::HRef
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+         Glib::Object::_Unregistered::GtkActivatable
+
+METHODS
+   widget = Gnome2::HRef-&gt;new ($url, $text)
+       &#183;   $url (string)
+
+       &#183;   $text (string)
+
+   string = $href-&gt;get_label
+   $href-&gt;set_label ($label)
+       &#183;   $label (string)
+
+   string = $href-&gt;get_text
+   $href-&gt;set_text ($text)
+       &#183;   $text (string)
+
+   string = $href-&gt;get_url
+   $href-&gt;set_url ($url)
+       &#183;   $url (string)
+
+PROPERTIES
+       &apos;text&apos; (string : default &quot;End World Hunger&quot; : readable / writable)
+           The text on the button
+
+       &apos;url&apos; (string : default &quot;http://www.wfp.org&quot; : readable / writable)
+           The URL that GnomeHRef activates
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Bin, Gtk2::Button
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16                  Gnome2::HRef(3pm)
+
+</pre></body></html>

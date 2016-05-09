@@ -1,0 +1,66 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip-addrlabel - protocol address label management</title></head>
+<body><pre>
+
+IP-ADDRLABEL(8)                       Linux                      IP-ADDRLABEL(8)
+
+
+
+NAME
+       ip-addrlabel - protocol address label management
+
+SYNOPSIS
+       ip [ OPTIONS ] addrlabel  { COMMAND | help }
+
+
+       OPTIONS := { -V[ersion] | -s[tatistics] | -r[esolve] | -f[amily] { inet |
+               inet6 | ipx | dnet | link } | -o[neline] }
+
+       ip addrlabel { add | del } prefix PREFIX [ dev DEV ] [ label NUMBER ]
+
+       ip addrlabel { list | flush }
+
+
+DESCRIPTION
+       IPv6 address label is used for address selection described in RFC 3484.
+       Precedence is managed by userspace, and only label is stored in kernel.
+
+
+   ip addrlabel add - add an address label
+       the command adds an address label entry to the kernel.
+
+       prefix PREFIX
+
+       dev DEV
+              the outgoing interface.
+
+       label NUMBER
+              the label for the prefix.  0xffffffff is reserved.
+
+   ip addrlabel del - delete an address label
+       the command deletes an address label entry in the kernel.  Arguments:
+       coincide with the arguments of ip addrlabel add but label is not
+       required.
+
+   ip addrlabel list - list address labels
+       the command show contents of address labels.
+
+   ip addrlabel flush - flush address labels
+       the command flushes the contents of address labels and it does not
+       restore default settings.
+
+
+SEE ALSO
+       ip(8)
+
+
+AUTHOR
+       Manpage by Yoshifuji Hideaki / &#229;&#232;&#164;&#232;&#177;&#230;
+
+
+
+
+iproute2                           20 Dec 2011                   IP-ADDRLABEL(8)
+
+</pre></body></html>

@@ -1,0 +1,219 @@
+<html>
+<head><meta charset=utf-8/>
+<title>"biber" - A bibtex replacement for users of biblatex</title></head>
+<body><pre>
+
+BIBER(1p)              User Contributed Perl Documentation             BIBER(1p)
+
+
+
+NAME
+       &quot;biber&quot; - A bibtex replacement for users of biblatex
+
+SYNOPSIS
+       biber [options] file[.bcf]
+
+         Creates &quot;file.bbl&quot; using control file &quot;file.bcf&quot; (&quot;.bcf&quot; extension is
+         optional). Normaly use with biblatex requires no options as they are
+         all set in biblatex and passed via the &quot;.bcf&quot; file
+
+         Please run &quot;biber --help&quot; for option details
+
+DESCRIPTION
+       &quot;biber&quot; provides a replacement of the bibtex processor for users of
+       biblatex.
+
+OPTIONS
+       --bblencoding|-E [encoding]
+           Specify the encoding of the output &quot;.bbl&quot; file. Default is &quot;UTF-8&quot;.
+           Normally it&apos;s not necessary to set this as it&apos;s passed via biblatex
+           from the inputenc package setting.  See &quot;perldoc Encode::Supported&quot;
+           for a list of supported encodings.
+
+       --bblsafechars
+           Try to convert UTF-8 chars into LaTeX macros when writing the .bbl
+           This can prevent unknown char errors when using PDFLaTeX and inputenc
+           as this doesn&apos;t understand all of UTF-8. Note, it is better to switch
+           to XeTeX or LuaTeX to avoid this situation. By default uses the
+           --bblsafecharsset &quot;base&quot; set of characters.
+
+       --bblsafecharsset=base|full
+           The set of characters included in the conversion routine for
+           --bblsafechars. Set to &quot;full&quot; to try harder with a much larger set or
+           &quot;base&quot; to use a basic set. Default is &quot;base&quot; which is fine for most
+           use cases. You may need to load more macro packages to deal with the
+           results of &quot;full&quot; (Dings, Greek characters, special symbols etc.).
+
+       --bibencoding|-e [encoding]
+           Specify the encoding of the data source file(s). Default is &quot;UTF-8&quot;
+           Normally it&apos;s not necessary to set this as it&apos;s passed via the .bcf
+           file from biblatex&apos;s setting of the same name.  See &quot;perldoc
+           Encode::Supported&quot; for a list of supported encodings.
+
+       --collate|-C
+           Sort with &quot;Unicode::Collate&quot; instead of the built-in sort function.
+           This is the default.
+
+       --collate_options|-c [options]
+           Options to pass to the &quot;Unicode::Collate&quot; object used for sorting
+           (default is &apos;level =&gt; &quot;2&quot;, table =&gt; &quot;latinkeys.txt&quot;&apos;).  See &quot;perldoc
+           Unicode::Collate&quot; for details.
+
+       --configfile|-g [file]
+           Use file as configuration file for &quot;biber&quot;.  The default is the first
+           file found among biber.conf in the current directory,
+           &quot;$HOME/.biber.conf&quot;, or else the output of &quot;kpsewhich biber.conf&quot;.
+
+       --convert_control
+           Converts the .bcf control file into html using an XSLT transform. Can
+           be useful for debugging. File is named by appending &quot;.html&quot; to .bcf
+           file.
+&#12;       --decodecharsset=base|full
+           The set of characters included in the conversion routine when
+           decoding LaTeX macros into UTF-8 (which happens when --bblencoding|-E
+           is set to UTF-8). Set to &quot;full&quot; to try harder with a much larger set
+           or &quot;base&quot; to use a smaller basic set. Default is &quot;base&quot;. You may want
+           to try &quot;full&quot; if you have less common UTF-8 characters in your data
+           source.
+
+       --debug|-D
+           Turn on debugging for &quot;biber&quot;.
+
+       --dot_include=section,field,xdata,crossref,xref,related
+           Specifies the element to include in GraphViz DOT output format if the
+           output format is &apos;dot&apos;.  You can also choose to display crossref,
+           xref, xdata and/or related entry connections.  The default if not
+           specified is &quot;--dot_include=section,xdata,crossref,xref&quot;.
+
+       --fastsort|-f
+           Use Perl&apos;s sort instead of &quot;Unicode::Collate&quot; for sorting. Also uses
+           OS locale definitions (which may be broken for some languages ...).
+
+       --help|-h
+           Show this help message.
+
+       --logfile [file]
+           Use file.blg as the name of the logfile.
+
+       --mincrossrefs|-m [number]
+           Set threshold for crossrefs.
+
+       --noconf
+           Don&apos;t look for a configfile.
+
+       --nodieonerror
+           Don&apos;t exit on errors, just log and continue as far as possible.  This
+           can be useful if the error is something from, for example, the
+           underlying BibTeX parsing C library which can complain about parsing
+           errors which can be ignored.
+
+       --nolog
+           Do not write any logfile.
+
+       --nostdmacros
+           Don&apos;t automatically define any standard macros like month
+           abbreviations.  If you also define these yourself, this option can be
+           used to suppress macro redefinition warnings.
+
+       --onlylog
+           Do not write any message to screen.
+
+       --outfile|-O [file]
+           Output to file instead of basename.bbl file is relative to
+           --output_directory, if set (absolute paths in this case are stripped
+           to filename only). file can be absolute if --output_directory is not
+           set.
+
+       --outformat=bbl|dot|bltxml
+           Biber output format. Default if not specified is of course, bbl. Use
+           dot to output a GraphViz DOT file instead of .bbl. This is a directed
+           graph of the bibliography data showing entries and, as requested,
+           sections and fields.  You must process this file with &quot;dot&quot;, e.g.
+           &quot;dot -Tsvg test.dot -o test.svg&quot; to render the graph. See the
+           --dot_include option to select what is included in the DOT output.
+           Use bltxml to output a BibLaTeXML file of the internal data model
+           instead of a .bbl. This helps in moving to BibLaTeXML by translating
+           other datasource formats.
+
+       --output_directory [directory]
+           Files (.bbl and .log) are output to directory directory instead of
+           the current directory. Input files are also looked for in directory
+           before current directory.
+
+       --quiet|-q
+           Log only errors. If this option is used more than once, don&apos;t even
+           log errors.
+
+       --sortcase=true|false
+           Case-sensitive sorting (default is true).
+
+       --sortfirstinits=true|false
+           When sorting names, use only the first name initials, not full first
+           name. Some people expect the biblatex firstinits option to do this
+           but it needs to be a separate option in case users, for example, need
+           to show only initials but sort with full first names (default is
+           false).
+
+       --sortlocale|-l [locale]
+           Set the locale to be used for sorting.  With default sorting
+           (--collate|-C), the locale is used to add CLDR tailoring to the sort
+           (if available for the locale). With --fastsort|-f this sets the OS
+           locale for sorting.
+
+       --sortupper=true|false
+           Whether to sort uppercase before lowercase when using default sorting
+           (--collate|-C). When using --fastsort|-f, your OS collation locale
+           determines this and this option is ignored (default is true).
+
+       --ssl-noverify-host
+           Turn off host verification when using HTTPS to fetch remote data
+           sources.  You may need this if the SSL certificate is self-signed for
+           example.
+
+       -u  Alias for --bibencoding=UTF-8
+
+       -U  Alias for --bblencoding=UTF-8
+
+       --validate_config
+           Schema validate the biber config file.
+
+       --validate_control
+           Schema validate the .bcf biblatex control file.
+
+       --validate_structure|-V
+           Validate the data against a data model.
+
+       --version|-v
+           Display version number.
+
+       --wraplines|-w
+           Wrap lines in the .bbl file.
+
+AUTHOR
+       Francois Charette, &quot;firmicus at ankabut.net&quot;
+
+       Philip Kime, &quot;Philip at kime.org.uk&quot;
+
+BUGS &amp; DOCUMENTATION
+       To see the full documentation, run texdoc biber or get the biber.pdf
+       manual from SourceForge.
+
+       Please report any bugs or feature requests on our sourceforge tracker at
+       &lt;https://sourceforge.net/tracker2/?func=browse&amp;group_id=228270&gt;.
+
+COPYRIGHT &amp; LICENSE
+       Copyright 2009-2012 Francois Charette and Philip Kime, all rights
+       reserved.
+
+       This module is free software.  You can redistribute it and/or modify it
+       under the terms of the Artistic License 2.0.
+
+       This program is distributed in the hope that it will be useful, but
+       without any warranty; without even the implied warranty of
+       merchantability or fitness for a particular purpose.
+
+
+
+perl v5.14.2                       2012-06-17                          BIBER(1p)
+
+</pre></body></html>

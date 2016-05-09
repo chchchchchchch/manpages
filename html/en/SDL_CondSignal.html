@@ -1,0 +1,29 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CondSignal - Restart a thread wait on a condition variable</title></head>
+<body><pre>
+
+SDL_CondSignal(3)               SDL API Reference              SDL_CondSignal(3)
+
+
+
+NAME
+       SDL_CondSignal - Restart a thread wait on a condition variable
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_CondSignal(SDL_cond *cond);
+
+DESCRIPTION
+       Restart  one  of  the threads that are waiting on the condition variable,
+       cond. Returns 0 on success of -1 on an error.
+
+SEE ALSO
+       SDL_CondWait, SDL_CondBroadcast
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00            SDL_CondSignal(3)
+
+</pre></body></html>

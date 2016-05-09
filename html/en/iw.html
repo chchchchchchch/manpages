@@ -1,0 +1,63 @@
+<html>
+<head><meta charset=utf-8/>
+<title>iw - show / manipulate wireless devices and their configuration</title></head>
+<body><pre>
+
+IW(8)                                 Linux                                IW(8)
+
+
+
+NAME
+       iw - show / manipulate wireless devices and their configuration
+
+SYNOPSIS
+       iw [ OPTIONS ] { help | OBJECT COMMAND }
+
+
+       OBJECT := { dev | phy | reg }
+
+
+       OPTIONS := { --version | --debug }
+
+
+OPTIONS
+        --version
+              print version information and exit.
+
+
+        --debug
+              enable netlink message debugging.
+
+
+IW - COMMAND SYNTAX
+   OBJECT
+       dev &lt;interface name&gt;
+              - network interface.
+
+
+       phy &lt;phy name&gt;
+              - wireless hardware device (by name).
+
+       phy#&lt;phy index&gt;
+              - wireless hardware device (by index).
+
+
+       reg    - regulatory agent.
+
+
+   COMMAND
+       Specifies the action to perform on the object.  The set of possible
+       actions depends on the object type.  iw help will print all supported
+       commands.
+
+
+SEE ALSO
+       ip(8), crda(8), regdbdump(8), regulatory.bin(5)
+
+       http://wireless.kernel.org/en/users/Documentation/iw
+
+
+
+iw                              16 September 2008                          IW(8)
+
+</pre></body></html>

@@ -1,0 +1,132 @@
+<html>
+<head><meta charset=utf-8/>
+<title>kino - non-linear editing of Digital Video data</title></head>
+<body><pre>
+
+KINO(1)                                                                  KINO(1)
+
+
+
+NAME
+       kino - non-linear editing of Digital Video data
+
+SYNOPSIS
+       kino [ ( file | playlist ) ... ]
+
+DESCRIPTION
+       kino  allows  you  to import movies from DV camcorders, to edit, and play
+       them.  file may be a DV encoded file that  will  be  loaded  at  startup.
+       Alternatively,  you can specify a SMIL playlist of DV files that was pre&#8208;
+       viously created with kino.
+
+       DV is a special kind of video encoding, commonly  used  in  digital  cam&#8208;
+       corders.   Differently  coded movies, like DivX or mjpeg, need to be con&#8208;
+       verted to DV before they can be fed into kino.
+
+       A video file either holds the raw DV-coded data, or wraps it in a certain
+       container  format. Kino currently supports AVI, and QuickTime containers,
+       and distinguishes  between  the  different  formats  by  file  extension.
+       Therefore,  file names need to end in .dv or .dif for raw files, .avi for
+       AVI, and .mov for QuickTime files, respectively. Anything else is treated
+       as a SMIL playlist.
+
+KEYSTROKES
+       Unlike  other  editors, kino uses many keyboard commands for fast naviga&#8208;
+       tion and editing inside the movie.  It acts on  frames  that  are  single
+       images  from a movie, scenes that are defined as groupings of one or more
+       frames with recording times differing by no more  than  one  second,  and
+       movies  that  are  groups of one or more scenes. The following keystrokes
+       can be used for moving and editing. Some of them are  also  available  as
+       buttons  in  a graphical menu bar. (Also note the deliberate similarities
+       between kino commands and the text editor vi.) The following is  a  brief
+       list  of  the  commands.  A more complete list is available in the online
+       help.
+
+       MOVING AROUND
+
+       space  Toggle between play and pause.
+
+       l, right-arrow
+              Move one frame forward.
+
+       h, left-arrow
+              Move one frame backward.
+
+       gg     Move to the start of the movie.
+
+       G      Move to the end of the movie.
+
+       0, ^   Move to the start of the current scene.
+
+       $      Move to the end of the current scene.
+
+       j, return, +, down-arrow
+              Move to the start of the next scene.
+
+       k, -, up-arrow
+              Move to the start of the previous scene.
+
+       ctrl-f Move forward five scenes.
+
+       ctrl-b Move backwards five scenes.
+&#12;       w      Move forward one second.
+
+       b      Move backwards one second.
+
+       DELETE OPERATIONS
+
+       x, dl, d space, del
+              cut the current frame.
+
+       dd     cut the current scene.
+
+       d$     cut from current frame to end of scene.
+
+       d^, d0 cut from start of scene to before current frame.
+
+       dG     cut to end of movie.
+
+       dgg    cut from beginning of movie.
+
+       CLONE OPERATIONS
+
+       yl, y space
+              copy the current frame.
+
+       yy, Y  copy the current scene.
+
+       y$     copy from current frame to end of scene.
+
+       y^, y0 copy from start of scene to current frame.
+
+       INSERT OPERATIONS
+
+       p      paste after current frame.
+
+       P      paste before current frame.
+
+       GENERAL COMMANDS
+
+       :r     inserts a SMIL playlist or DV AVI before frame. (Pops  up  a  file
+              dialog.)
+
+       :w     saves the movie as a SMIL playlist. (Pops up a file dialog.)
+
+       :q     quits the program.
+
+SEE ALSO
+       the kino online help, kino2raw(1), dvgrab(1)
+
+AUTHORS
+       kino  was  written by Arne Schirmacher &lt;arne@schirmacher.de&gt;, Dan Dennedy
+       &lt;dan@dennedy.org&gt;, and Charles Yates &lt;charles.yates@pandora.be&gt;.
+
+       This   manual   page   was   originally   written   by   Daniel    Kobras
+       &lt;kobras@debian.org&gt;  for  the Debian GNU/Linux system (but may be used by
+       others).
+
+
+
+                                  January 2004                           KINO(1)
+
+</pre></body></html>

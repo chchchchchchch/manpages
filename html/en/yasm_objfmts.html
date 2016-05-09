@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>yasm_objfmts - Yasm Supported Object Formats</title></head>
+<body><pre>
+
+YASM_OBJFMTS(7)           Yasm Supported Object Formats          YASM_OBJFMTS(7)
+
+
+
+NAME
+       yasm_objfmts - Yasm Supported Object Formats
+
+SYNOPSIS
+       yasm -f objfmt ...
+
+DESCRIPTION
+       The standard Yasm distribution includes a number of modules for different
+       object formats (Yasm&#180;s primary output).
+
+       The object format is selected on the yasm(1) command line by use of the
+       -f objfmt command line option.
+
+BIN
+       The &#8220;bin&#8221; object format produces a flat-format, non-relocatable binary
+       file. It is appropriate for producing DOS .COM executables or things like
+       boot blocks. It supports only 3 sections and those sections are written
+       in a predefined order to the output file.
+
+COFF
+       The COFF object format is an older relocatable object format used on
+       older Unix and compatible systems, and also (more recently) on the DJGPP
+       development system for DOS.
+
+DBG
+       The &#8220;dbg&#8221; object format is not a &#8220;real&#8221; object format; the output file it
+       creates simply describes the sequence of calls made to it by Yasm and the
+       final object and symbol table information in a human-readable text format
+       (that in a normal object format would get processed into that object
+       format&#180;s particular binary representation). This object format is not
+       intended for real use, but rather for debugging Yasm&#180;s internals.
+
+ELF
+       The ELF object format really comes in two flavors: &#8220;elf32&#8221; (for 32-bit
+       targets) and &#8220;elf64&#8221; (for 64-bit targets). ELF is a standard object
+       format in common use on modern Unix and compatible systems (e.g. Linux,
+       FreeBSD). ELF has complex support for relocatable and shared objects.
+
+MACHO
+       The Mach-O object format really comes in two flavors: &#8220;macho32&#8221; (for
+       32-bit targets) and &#8220;macho64&#8221; (for 64-bit targets). Mach-O is used as the
+       object format on MacOS X. As Yasm currently only supports x86 and AMD64
+       instruction sets, it can only generate Mach-O objects for Intel-based
+       Macs.
+
+RDF
+       The RDOFF2 object format is a simple multi-section format originally
+       designed for NASM. It supports segment references but not WRT references.
+       It was designed primarily for simplicity and has minimalistic headers for
+       ease of loading and linking. A complete toolchain (linker, librarian, and
+       loader) is distributed with NASM.
+
+WIN32
+       The Win32 object format produces object files compatible with Microsoft
+       compilers (such as Visual C++) that target the 32-bit x86 Windows
+       platform. The object format itself is an extended version of COFF.
+
+WIN64
+       The Win64 object format produces object files compatible with Microsoft
+       compilers that target the 64-bit &#8220;x64&#8221; Windows platform. This format is
+       very similar to the win32 object format, but produces 64-bit objects.
+&#12;XDF
+       The XDF object format is essentially a simplified version of COFF. It&#180;s a
+       multi-section relocatable format that supports 64-bit physical and
+       virtual addresses.
+
+SEE ALSO
+       yasm(1), yasm_arch(7)
+
+AUTHOR
+       Peter Johnson &lt;peter@tortall.net&gt;
+           Author.
+
+COPYRIGHT
+       Copyright &#169; 2006 Peter Johnson
+
+
+
+Yasm                              February 2007                  YASM_OBJFMTS(7)
+
+</pre></body></html>

@@ -1,0 +1,79 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lockward - Rotating spinning color-cycling things</title></head>
+<body><pre>
+
+lockward(6x)                   XScreenSaver manual                  lockward(6x)
+
+
+
+NAME
+       lockward - Rotating spinning color-cycling things
+
+SYNOPSIS
+       lockward [-display displayspec] [-root] [-window] [-visual arg] [-window-
+       id arg] [-delay usec] [-pair] [-fps] [-blink |  -no-blink]  [-rotateidle-
+       min  msec]  [-rotateidle-max  msec] [-blinkidle-min msec] [-blinkidle-max
+       msec] [-blinkdwell-min msec] [-blinkdwell-max msec]
+
+DESCRIPTION
+       lockward draws a spinning, rotating set of notched wheels  overlaid  with
+       some  flashing  effects,  using OpenGL.  It&apos;s a sort of cross between the
+       wards in a combination lock and those old information displays that  ani&#8208;
+       mated via polarized light.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the ID number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window (default).
+
+       -root   Draw on the root window.
+
+       -delay microseconds
+               Per-frame   delay,   in   microseconds.    Default:   20000   (50
+               frames/sec).
+
+       -blink | -no-blink
+               Enables/disables the blinking effects.  Default: Enabled.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+       -rotateidle-min milliseconds
+
+       -rotateidle-max milliseconds
+               The minimum and maximum time each spinner will sit idle, in  mil&#8208;
+               liseconds.  Defaults: Min 1000, max 6000.
+
+       -blinkidle-min milliseconds
+
+       -blinkidle-max milliseconds
+               The  minimum  and  maximum time between blinking effects, in mil&#8208;
+               liseconds.  Defaults: Min 1000, max 9000.
+
+       -blinkdwell-min milliseconds
+
+       -blinkdwell-max milliseconds
+               The minimum and maximum dwell time for the blinking  effects,  in
+               milliseconds.   This affects how quickly the blinks actually hap&#8208;
+               pen.  Defaults: Min 100, max 600.
+
+ENVIRONMENT
+       DISPLAY Default host and display number.
+
+       XENVIRONMENT
+               Name of a resource  file  that  overrides  the  global  resources
+               stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+&#12;AUTHORS
+       Leo L. Schwab &lt;ewhac@best.com&gt;
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                   lockward(6x)
+
+</pre></body></html>

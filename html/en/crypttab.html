@@ -1,0 +1,282 @@
+<html>
+<head><meta charset=utf-8/>
+<title>crypttab - static information about encrypted filesystems</title></head>
+<body><pre>
+
+CRYPTTAB(5)                     cryptsetup manual                    CRYPTTAB(5)
+
+
+
+NAME
+       crypttab - static information about encrypted filesystems
+
+DESCRIPTION
+       The file /etc/crypttab contains descriptive information about encrypted
+       filesystems. crypttab is only read by programs (e.g. cryptdisks_start and
+       cryptdisks_stop), and not written; it is the duty of the system
+       administrator to properly create and maintain this file. Each filesystem
+       is described on a separate line; fields on each line are separated by
+       tabs or spaces. Lines starting with &#8220;#&#8221; are comments, empty lines are
+       ignored. The order of records in crypttab is important because the init
+       scripts sequentially iterate through crypttab doing their thing.
+
+       The first field, target, describes the mapped device name. It must be a
+       plain filename without any directory components. A mapped device which
+       encrypts/decrypts data to/from the source device will be created at
+       /dev/mapper/target by cryptsetup.
+
+       The second field, source device, describes either the block special
+       device or file that contains the encrypted data. Instead of giving the
+       source device explicitly, the UUID is supported as well, using
+       UUID=&lt;luks_uuid&gt;.
+
+       The third field, key file, describes the file to use as a key for
+       decrypting the data of the source device. Note that the entire key file
+       will be used as the passphrase; the passphrase must not be followed by a
+       newline character.
+
+       It can also be a device name (e.g. /dev/urandom), note however that LUKS
+       requires a persistent key and therefore does not support random data
+       keys.
+
+       If the key file is the string &#8220;none&#8221;, a passphrase will be read
+       interactively from the console. In this case, the options precheck,
+       check, checkargs and tries may be useful.
+
+       The fourth field, options, describes the cryptsetup options associated
+       with the encryption process. At minimum, the field should contain either
+       the string luks or the cipher, hash and size options.
+
+       Options are in the format: key=value [,key=value ...]. The supported
+       options are described below.
+
+       Note that all four fields are mandatory and that a missing field will
+       lead to unspecified behaviour.
+
+OPTIONS
+       cipher=&lt;cipher&gt;
+           Encryption algorithm (ignored for LUKS devices). See cryptsetup -c.
+
+       size=&lt;size&gt;
+           Encryption key size (ignored for LUKS devices). See cryptsetup -s.
+
+       hash=&lt;hash&gt;
+           Hash algorithm (ignored for LUKS devices). See cryptsetup -h.
+
+       offset=&lt;offset&gt;
+           Start offset (ignored for LUKS devices). Uses cryptsetup -o.
+
+       skip=&lt;skip&gt;
+           Skip sectors at the beginning (ignored for LUKS devices). Uses
+           cryptsetup -p.
+
+       verify
+           Verify password. Uses cryptsetup -y.
+
+       readonly
+           The backing device is read-only (eg: a dvd).
+
+       discard
+           Allow using of discards (TRIM) requests for device.
+
+           WARNING: Assess the specific security risks carefully before enabling
+           this option. For example, allowing discards on encrypted devices may
+           lead to the leak of information about the ciphertext device
+           (filesystem type, used space etc.) if the discarded blocks can be
+           located easily on the device later.
+
+           Kernel version 3.1 or more recent is required. For older versions is
+           the option ignored.
+
+       luks
+           Use device with LUKS extensions.
+
+       swap
+           Run mkswap on the created device.
+
+       tmp=&lt;tmpfs&gt;
+           Run mkfs with filesystem type &lt;tmpfs&gt; on the created device. Default
+           is ext4.
+
+       precheck=&lt;precheck&gt;
+           Check the content of the source device by a suitable program; if the
+           check fails, the device is not created. If a program is provided as
+           an argument, it is run, giving the source device as argument.
+           Cryptdisks/cryptroot searches for the given progam in
+           /lib/cryptsetup/checks/ first, but full path to program is supported
+           as well.
+
+           Prechecks aren&apos;t invoked for LUKS devices, as these are checked with
+           isLuks anyway. Default for plain dm-crypt devices is set in
+           /etc/default/cryptdisks, or un_blkid otherwise. Set to /bin/true in
+           order to disable precheck for plain dm-crypt device.
+
+       check=&lt;check&gt;
+           Check the content of the target device by a suitable program; if the
+           check fails, the device is removed. If a program is provided as an
+           argument, it is run, giving the decrypted volume (target device) as
+           first argument, and the value of the checkargs option as second
+           argument. Cryptdisks/cryptroot searches for the given program in
+           /lib/cryptsetup/checks/ first, but full path to program is supported
+           as well.
+
+           Default is set in /etc/default/cryptdisks (blkid).
+
+       checkargs=&lt;arguments&gt;
+           Give &lt;arguments&gt; as the second argument to the check script. See the
+           CHECKSCRIPTS section for more information.
+
+       tries=&lt;num&gt;
+           The input of the passphrase is tried &lt;num&gt; times in case of failure.
+           If you want to disable retries, pass &#8220;tries=1&#8221;. Default is 3. Setting
+           &#8220;tries=0&#8221; will ask for the passphrase until a correct one has been
+           submitted (infinitive retries).
+
+       noearly
+           The cryptsetup init scripts are invoked twice during the boot process
+           - once before lvm, evms, raid, etc. are started and once again after
+           that. Sometimes you need to start your encrypted disks in a special
+           order. With this option the device is ignored during the first
+           invokation of the cryptsetup init scripts.
+
+       noauto
+           Entirely ignore the device at the boot process. It&apos;s still possible
+           to map the device manually using cryptdisks_start.
+
+       loud
+           Be loud. Print warnings if a device does not exist. This option
+           overwrites the option quiet.
+
+       quiet
+           Be quiet. Don&apos;t print warnings if a device does not exist. This
+           option overwrites the option loud.
+
+       keyscript=&lt;path&gt;
+           The executable at the indicated path is executed with the key file
+           from the third field of the crypttab as its only argument and the
+           output is used as the key. This also works with encrypted root
+           filesystems via initramfs if the executable is self-contained (i.e.
+           an executable which does not rely on any external program which is
+           not present in the initramfs environment).
+
+           LIMITATIONS: All binaries and files on which the keyscript depends
+           must be available at the time of execution. Special care needs to be
+           taken for encrypted filesystems like /usr or /var. As an example,
+           unlocking encrypted /usr must not depend on binaries from
+           /usr/(s)bin.
+
+           All fields of the appropriate crypttab entry are available to the
+           keyscript as exported environment variables:
+
+           CRYPTTAB_NAME
+               The target name
+
+           CRYPTTAB_SOURCE
+               The source device
+
+           CRYPTTAB_KEY
+               The key file
+
+           CRYPTTAB_OPTIONS
+               A list of exported crypttab options
+
+           CRYPTTAB_OPTION_&lt;option&gt;
+               The value of the appropriate crypttab option, with value set to
+               &apos;yes&apos; in case the option is merely a flag.
+
+
+CHECKSCRIPTS
+       blkid
+           Checks for any known filesystem. Supports a filesystem type as
+           argument via &lt;checkargs&gt;:
+
+           &#183;   no checkargs - succeeds if any valid filesystem is found on the
+               device.
+
+           &#183;   &quot;none&quot; - succeeds if no valid filesystem is found on the device.
+
+           &#183;   &quot;ext4&quot; [or another filesystem type like xfs, swap, crypto_LUKS,
+               ...] - succeeds if ext4 filesystem is found on the device.
+
+       un_blkid
+           Checks for no known filesystem. Supports a filesystem type as
+           argument via &lt;checkargs&gt;:
+
+           &#183;   no checkargs - succeeds if no valid filesystem is found on the
+               device.
+
+           &#183;   &quot;ext4&quot; [or another filesystem type like xfs, swap, crypto_LUKS,
+               ...] - succeeds if no ext4 filesystem is found on the device.
+
+EXAMPLES
+           # Encrypted swap device
+           cswap /dev/sda6 /dev/urandom cipher=aes-cbc-essiv:sha256,hash=ripemd160,size=256,swap
+
+           # Encrypted LUKS disk with interactive password, identified by UUID
+           cdisk0 UUID=12345678-9abc-def012345-6789abcdef01 none luks
+
+           # Encrypted ext4 disk with interactive password
+           # - retry 5 times if the check fails
+           cdisk1 /dev/sda2 none cipher=aes-cbc-essiv:sha256,hash=ripemd160,size=256,checkargs=ext4,tries=5
+
+           # Encrypted disk with interactive password
+           # - use a nondefault check script
+           # - no retries
+           cdisk2 /dev/hdc1 none cipher=aes-cbc-essiv:sha256,hash=ripemd160,size=256,check=customscript,tries=1
+
+           # Encrypted disk with interactive password
+           # - twofish as the cipher
+           cdisk3 /dev/sda3 none cipher=twofish,hash=ripemd160,size=256
+
+
+
+ENVIRONMENT
+       CRYPTDISKS_ENABLE
+           Set to yes to run cryptdisks initscripts at startup. Set to no to
+           disable cryptdisks initscripts. Default is yes.
+
+       CRYPTDISKS_MOUNT
+           Specifies the mountpoints that are mounted before cryptdisks is
+           invoked. Takes mountpoints configured in /etc/fstab as arguments.
+           Separate mountpoints by space. This is useful for keys on removable
+           devices, such as cdrom, usbstick, flashcard, etc. Default is unset.
+
+       CRYPTDISKS_CHECK
+           Specifies the default checkscript to be run against the target
+           device, after cryptdisks has been invoked. The target device is
+           passed as the first and only argument to the checkscript. Takes
+           effect if the check option is given in crypttab with no value. See
+           documentation for check option above for more information.
+
+       CRYPTDISKS_PRECHECK
+           Specifies the default checkscript to be run against the source
+           dm-crypt device, before cryptdisks has been invoked. The source
+           device is given as the first and only argument to the checkscript.
+           Takes effect if the precheck option is given in crypttab with no
+           value. See documentation for precheck option above for more
+           information.
+
+KNOWN UPGRADE ISSUES
+       The upstream defaults for encryption cipher, hash and keysize have
+       changed several times in the past, and they&apos;re expected to change again
+       in future, for example if security issues arise. On LUKS devices, the
+       used settings are stored in the LUKS header, and thus don&apos;t need to be
+       configured in /etc/crypttab. For plain dm-crypt devices, no information
+       about used cipher, hash and keysize are available at all. Therefore we
+       strongly suggest to configure the cipher, hash and keysize in
+       /etc/crypttab for plain dm-crypt devices, even if they match the current
+       default.
+&#12;SEE ALSO
+       cryptsetup(8), cryptdisks_start(8), cryptdisks_stop(8)
+
+AUTHOR
+       This manual page was originally written by Bastian Kleineidam
+       calvin@debian.org for the Debian distribution of cryptsetup. It has been
+       further improved by Michael Gebetsroither michael.geb@gmx.at, Jonas
+       Meurer jonas@freesources.org and David H&#195;&#164;rdeman david@hardeman.nu.
+
+
+
+cryptsetup 2:1.4.3-4               2012-11-07                        CRYPTTAB(5)
+
+</pre></body></html>

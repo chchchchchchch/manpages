@@ -1,0 +1,145 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::Renderer - a base class for pango rendering</title></head>
+<body><pre>
+
+Pango::Renderer(3pm)   User Contributed Perl Documentation  Pango::Renderer(3pm)
+
+
+
+NAME
+       Pango::Renderer - a base class for pango rendering
+
+HIERARCHY
+         Glib::Object
+         +----Pango::Renderer
+
+METHODS
+   $renderer-&gt;activate
+       Since: pango 1.8
+
+   color or undef = $renderer-&gt;get_color ($part)
+       &#183;   $part (Pango::RenderPart)
+
+       Since: pango 1.8
+
+   $renderer-&gt;set_color ($part, $color)
+       &#183;   $part (Pango::RenderPart)
+
+       &#183;   $color (Pango::Color or undef)
+
+       Since: pango 1.8
+
+   $renderer-&gt;deactivate
+       Since: pango 1.8
+
+   $renderer-&gt;draw_error_underline ($x, $y, $width, $height)
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+       &#183;   $width (integer)
+
+       &#183;   $height (integer)
+
+       Since: pango 1.8
+
+   $renderer-&gt;draw_glyph ($font, $glyph, $x, $y)
+       &#183;   $font (Pango::Font)
+
+       &#183;   $glyph (integer)
+
+       &#183;   $x (double)
+
+       &#183;   $y (double)
+
+       Since: pango 1.8
+
+   $renderer-&gt;draw_layout ($layout, $x, $y)
+       &#183;   $layout (Pango::Layout)
+
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+       Since: pango 1.8
+
+   $renderer-&gt;draw_layout_line ($line, $x, $y)
+       &#183;   $line (Pango::LayoutLine)
+
+       &#183;   $x (integer)
+&#12;       &#183;   $y (integer)
+
+       Since: pango 1.8
+
+   $renderer-&gt;draw_rectangle ($part, $x, $y, $width, $height)
+       &#183;   $part (Pango::RenderPart)
+
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+       &#183;   $width (integer)
+
+       &#183;   $height (integer)
+
+       Since: pango 1.8
+
+   $renderer-&gt;draw_trapezoid ($part, $y1_, $x11, $x21, $y2, $x12, $x22)
+       &#183;   $part (Pango::RenderPart)
+
+       &#183;   $y1_ (double)
+
+       &#183;   $x11 (double)
+
+       &#183;   $x21 (double)
+
+       &#183;   $y2 (double)
+
+       &#183;   $x12 (double)
+
+       &#183;   $x22 (double)
+
+       Since: pango 1.8
+
+   layout = $renderer-&gt;get_layout
+       Since: pango 1.20
+
+   layoutline = $renderer-&gt;get_layout_line
+       Since: pango 1.20
+
+   matrix or undef = $renderer-&gt;get_matrix
+       Since: pango 1.8
+
+   $renderer-&gt;set_matrix ($matrix)
+       &#183;   $matrix (Pango::Matrix or undef)
+
+       Since: pango 1.8
+
+   $renderer-&gt;part_changed ($part)
+       &#183;   $part (Pango::RenderPart)
+
+       Since: pango 1.8
+
+ENUMS AND FLAGS
+   enum Pango::RenderPart
+       &#183;   &apos;foreground&apos; / &apos;PANGO_RENDER_PART_FOREGROUND&apos;
+
+       &#183;   &apos;background&apos; / &apos;PANGO_RENDER_PART_BACKGROUND&apos;
+
+       &#183;   &apos;underline&apos; / &apos;PANGO_RENDER_PART_UNDERLINE&apos;
+
+       &#183;   &apos;strikethrough&apos; / &apos;PANGO_RENDER_PART_STRIKETHROUGH&apos;
+
+SEE ALSO
+       Pango, Glib::Object
+&#12;COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15               Pango::Renderer(3pm)
+
+</pre></body></html>

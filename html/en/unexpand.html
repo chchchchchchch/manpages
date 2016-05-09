@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>unexpand - convert spaces to tabs</title></head>
+<body><pre>
+
+UNEXPAND(1)                       User Commands                      UNEXPAND(1)
+
+
+
+NAME
+       unexpand - convert spaces to tabs
+
+SYNOPSIS
+       unexpand [OPTION]... [FILE]...
+
+DESCRIPTION
+       Convert blanks in each FILE to tabs, writing to standard output.  With no
+       FILE, or when FILE is -, read standard input.
+
+       Mandatory arguments to long options are mandatory for short options too.
+
+       -a, --all
+              convert all blanks, instead of just initial blanks
+
+       --first-only
+              convert only leading sequences of blanks (overrides -a)
+
+       -t, --tabs=N
+              have tabs N characters apart instead of 8 (enables -a)
+
+       -t, --tabs=LIST
+              use comma separated LIST of tab positions (enables -a)
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+AUTHOR
+       Written by David MacKenzie.
+
+REPORTING BUGS
+       Report unexpand bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report unexpand translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       expand(1)
+
+       The full documentation for unexpand is maintained as  a  Texinfo  manual.
+       If  the  info  and unexpand programs are properly installed at your site,
+       the command
+
+              info coreutils &apos;unexpand invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                      UNEXPAND(1)
+
+</pre></body></html>

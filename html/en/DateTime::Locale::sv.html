@@ -1,0 +1,569 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::sv - DateTime locale package for "sv"</title></head>
+<body><pre>
+
+DateTime::Locale::sv(3pUser Contributed Perl DocumentatDateTime::Locale::sv(3pm)
+
+
+
+NAME
+       DateTime::Locale::sv - DateTime locale package for &quot;sv&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;sv&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Swedish.
+
+DATA
+       This locale inherits from the DateTime::Locale::root locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         maandag
+         tisdag
+         onsdag
+         torsdag
+         fredag
+         loerdag
+         soendag
+
+       Abbreviated (format)
+
+         maan
+         tis
+         ons
+         tors
+         fre
+         loer
+         soen
+
+       Narrow (format)
+
+         M
+         T
+         O
+         T
+         F
+         L
+         S
+
+       Wide (stand-alone)
+
+         maandag
+         tisdag
+         onsdag
+         torsdag
+         fredag
+         loerdag
+         soendag
+
+       Abbreviated (stand-alone)
+
+         maan
+         tis
+         ons
+         tors
+         fre
+         loer
+         soen
+&#12;       Narrow (stand-alone)
+
+         M
+         T
+         O
+         T
+         F
+         L
+         S
+
+   Months
+       Wide (format)
+
+         januari
+         februari
+         mars
+         april
+         maj
+         juni
+         juli
+         augusti
+         september
+         oktober
+         november
+         december
+
+       Abbreviated (format)
+
+         jan
+         feb
+         mar
+         apr
+         maj
+         jun
+         jul
+         aug
+         sep
+         okt
+         nov
+         dec
+
+       Narrow (format)
+
+         J
+         F
+         M
+         A
+         M
+         J
+         J
+         A
+         S
+         O
+         N
+         D
+
+       Wide (stand-alone)
+
+         januari
+         februari
+         mars
+         april
+         maj
+         juni
+         juli
+         augusti
+         september
+         oktober
+         november
+         december
+
+       Abbreviated (stand-alone)
+
+         jan
+         feb
+         mar
+         apr
+         maj
+         jun
+         jul
+         aug
+         sep
+         okt
+         nov
+         dec
+
+       Narrow (stand-alone)
+
+         J
+         F
+         M
+         A
+         M
+         J
+         J
+         A
+         S
+         O
+         N
+         D
+
+   Quarters
+       Wide (format)
+
+         1:a kvartalet
+         2:a kvartalet
+         3:e kvartalet
+         4:e kvartalet
+
+       Abbreviated (format)
+
+         K1
+         K2
+         K3
+         K4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         1:a kvartalet
+         2:a kvartalet
+         3:e kvartalet
+         4:e kvartalet
+
+       Abbreviated (stand-alone)
+
+         K1
+         K2
+         K3
+         K4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         foere Kristus
+         efter Kristus
+
+       Abbreviated
+
+         f.Kr.
+         e.Kr.
+
+       Narrow
+
+         f.Kr.
+         e.Kr.
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = tisdag 5 februari 2008
+          1995-12-22T09:05:02 = fredag 22 december 1995
+         -0010-09-15T04:44:23 = loerdag 15 september -10
+
+       Long
+
+          2008-02-05T18:30:30 = 5 februari 2008
+          1995-12-22T09:05:02 = 22 december 1995
+         -0010-09-15T04:44:23 = 15 september -10
+
+       Medium
+
+          2008-02-05T18:30:30 = 5 feb 2008
+          1995-12-22T09:05:02 = 22 dec 1995
+         -0010-09-15T04:44:23 = 15 sep -10
+
+       Short
+
+          2008-02-05T18:30:30 = 2008-02-05
+          1995-12-22T09:05:02 = 1995-12-22
+         -0010-09-15T04:44:23 = -010-09-15
+
+       Default
+
+          2008-02-05T18:30:30 = 5 feb 2008
+          1995-12-22T09:05:02 = 22 dec 1995
+         -0010-09-15T04:44:23 = 15 sep -10
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = kl. 18.30.30 UTC
+          1995-12-22T09:05:02 = kl. 09.05.02 UTC
+         -0010-09-15T04:44:23 = kl. 04.44.23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18.30.30 UTC
+          1995-12-22T09:05:02 = 09.05.02 UTC
+         -0010-09-15T04:44:23 = 04.44.23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18.30.30
+          1995-12-22T09:05:02 = 09.05.02
+         -0010-09-15T04:44:23 = 04.44.23
+
+       Short
+
+          2008-02-05T18:30:30 = 18.30
+          1995-12-22T09:05:02 = 09.05
+         -0010-09-15T04:44:23 = 04.44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18.30.30
+          1995-12-22T09:05:02 = 09.05.02
+         -0010-09-15T04:44:23 = 04.44.23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = tisdag 5 februari 2008 kl. 18.30.30 UTC
+          1995-12-22T09:05:02 = fredag 22 december 1995 kl. 09.05.02 UTC
+         -0010-09-15T04:44:23 = loerdag 15 september -10 kl. 04.44.23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 5 februari 2008 18.30.30 UTC
+          1995-12-22T09:05:02 = 22 december 1995 09.05.02 UTC
+         -0010-09-15T04:44:23 = 15 september -10 04.44.23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 5 feb 2008 18.30.30
+          1995-12-22T09:05:02 = 22 dec 1995 09.05.02
+         -0010-09-15T04:44:23 = 15 sep -10 04.44.23
+
+       Short
+
+          2008-02-05T18:30:30 = 2008-02-05 18.30
+          1995-12-22T09:05:02 = 1995-12-22 09.05
+         -0010-09-15T04:44:23 = -010-09-15 04.44
+
+       Default
+
+          2008-02-05T18:30:30 = 5 feb 2008 18.30.30
+          1995-12-22T09:05:02 = 22 dec 1995 09.05.02
+         -0010-09-15T04:44:23 = 15 sep -10 04.44.23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (d EEE)
+
+          2008-02-05T18:30:30 = 5 tis
+          1995-12-22T09:05:02 = 22 fre
+         -0010-09-15T04:44:23 = 15 loer
+
+       HHmm (HH.mm)
+
+          2008-02-05T18:30:30 = 18.30
+          1995-12-22T09:05:02 = 09.05
+         -0010-09-15T04:44:23 = 04.44
+
+       hhmm (hh.mm a)
+
+          2008-02-05T18:30:30 = 06.30 em
+          1995-12-22T09:05:02 = 09.05 fm
+         -0010-09-15T04:44:23 = 04.44 fm
+
+       HHmmss (HH.mm.ss)
+
+          2008-02-05T18:30:30 = 18.30.30
+          1995-12-22T09:05:02 = 09.05.02
+         -0010-09-15T04:44:23 = 04.44.23
+
+       hhmmss (h.mm.ss a)
+
+          2008-02-05T18:30:30 = 6.30.30 em
+          1995-12-22T09:05:02 = 9.05.02 fm
+         -0010-09-15T04:44:23 = 4.44.23 fm
+&#12;       Hm (H.mm)
+
+          2008-02-05T18:30:30 = 18.30
+          1995-12-22T09:05:02 = 9.05
+         -0010-09-15T04:44:23 = 4.44
+
+       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 em
+          1995-12-22T09:05:02 = 9:05 fm
+         -0010-09-15T04:44:23 = 4:44 fm
+
+       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 em
+          1995-12-22T09:05:02 = 9:05:02 fm
+         -0010-09-15T04:44:23 = 4:44:23 fm
+
+       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (d/M)
+
+          2008-02-05T18:30:30 = 5/2
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/9
+
+       MEd (E d/M)
+
+          2008-02-05T18:30:30 = tis 5/2
+          1995-12-22T09:05:02 = fre 22/12
+         -0010-09-15T04:44:23 = loer 15/9
+
+       MMd (d/M)
+
+          2008-02-05T18:30:30 = 5/2
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/9
+
+       MMdd (dd/MM)
+
+          2008-02-05T18:30:30 = 05/02
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/09
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = feb
+          1995-12-22T09:05:02 = dec
+         -0010-09-15T04:44:23 = sep
+
+       MMMd (d MMM)
+
+          2008-02-05T18:30:30 = 5 feb
+          1995-12-22T09:05:02 = 22 dec
+         -0010-09-15T04:44:23 = 15 sep
+
+       MMMEd (E d MMM)
+
+          2008-02-05T18:30:30 = tis 5 feb
+          1995-12-22T09:05:02 = fre 22 dec
+         -0010-09-15T04:44:23 = loer 15 sep
+
+       MMMMd (d MMMM)
+&#12;          2008-02-05T18:30:30 = 5 februari
+          1995-12-22T09:05:02 = 22 december
+         -0010-09-15T04:44:23 = 15 september
+
+       MMMMEd (E d MMMM)
+
+          2008-02-05T18:30:30 = tis 5 februari
+          1995-12-22T09:05:02 = fre 22 december
+         -0010-09-15T04:44:23 = loer 15 september
+
+       MMMMEEEd (EEE d MMMM)
+
+          2008-02-05T18:30:30 = tis 5 februari
+          1995-12-22T09:05:02 = fre 22 december
+         -0010-09-15T04:44:23 = loer 15 september
+
+       ms (mm.ss)
+
+          2008-02-05T18:30:30 = 30.30
+          1995-12-22T09:05:02 = 05.02
+         -0010-09-15T04:44:23 = 44.23
+
+       y (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (yyyy-MM)
+
+          2008-02-05T18:30:30 = 2008-02
+          1995-12-22T09:05:02 = 1995-12
+         -0010-09-15T04:44:23 = -010-09
+
+       yMEd (EEE, yyyy-MM-dd)
+
+          2008-02-05T18:30:30 = tis, 2008-02-05
+          1995-12-22T09:05:02 = fre, 1995-12-22
+         -0010-09-15T04:44:23 = loer, -010-09-15
+
+       yMMM (y MMM)
+
+          2008-02-05T18:30:30 = 2008 feb
+          1995-12-22T09:05:02 = 1995 dec
+         -0010-09-15T04:44:23 = -10 sep
+
+       yMMMEd (EEE d MMM y)
+
+          2008-02-05T18:30:30 = tis 5 feb 2008
+          1995-12-22T09:05:02 = fre 22 dec 1995
+         -0010-09-15T04:44:23 = loer 15 sep -10
+
+       yMMMM (y MMMM)
+
+          2008-02-05T18:30:30 = 2008 februari
+          1995-12-22T09:05:02 = 1995 december
+         -0010-09-15T04:44:23 = -10 september
+
+       yQ (yyyy Q)
+
+          2008-02-05T18:30:30 = 2008 1
+          1995-12-22T09:05:02 = 1995 4
+         -0010-09-15T04:44:23 = -010 3
+
+       yQQQ (y QQQ)
+
+          2008-02-05T18:30:30 = 2008 K1
+          1995-12-22T09:05:02 = 1995 K4
+         -0010-09-15T04:44:23 = -10 K3
+
+       yyMM (yy-MM)
+
+          2008-02-05T18:30:30 = 08-02
+          1995-12-22T09:05:02 = 95-12
+         -0010-09-15T04:44:23 = -10-09
+&#12;       yyMMM (MMM -yy)
+
+          2008-02-05T18:30:30 = feb -08
+          1995-12-22T09:05:02 = dec -95
+         -0010-09-15T04:44:23 = sep --10
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+       yyyyMM (yyyy-MM)
+
+          2008-02-05T18:30:30 = 2008-02
+          1995-12-22T09:05:02 = 1995-12
+         -0010-09-15T04:44:23 = -010-09
+
+       yyyyMMM (MMM y)
+
+          2008-02-05T18:30:30 = feb 2008
+          1995-12-22T09:05:02 = dec 1995
+         -0010-09-15T04:44:23 = sep -10
+
+       yyyyQQQQ (QQQQ y)
+
+          2008-02-05T18:30:30 = 1:a kvartalet 2008
+          1995-12-22T09:05:02 = 4:e kvartalet 1995
+         -0010-09-15T04:44:23 = 3:e kvartalet -10
+
+   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       maandag
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19          DateTime::Locale::sv(3pm)
+
+</pre></body></html>

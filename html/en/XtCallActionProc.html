@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtCallActionProc - invoke an action procedure directly</title></head>
+<body><pre>
+
+XtCallActionProc(3)               XT FUNCTIONS               XtCallActionProc(3)
+
+
+
+NAME
+       XtCallActionProc - invoke an action procedure directly
+
+SYNTAX
+       void XtCallActionProc(Widget widget, String action, XEvent* event,
+              String* params, Cardinal num_params);
+
+ARGUMENTS
+       widget    Specifies the widget in which the action is to be invoked. Must
+                 be of class core of any subclass thereof.
+
+       action    Specifies the name of the action routine.
+
+       event     Specifies the contents of the event passed to the action rou&#8208;
+                 tine.
+
+       params    Specifies the contents of the params passed to the action rou&#8208;
+                 tine.
+
+       num_params
+                 Specifies the num of entries in params.
+
+DESCRIPTION
+       XtCallActionProc searches for the named action routine in the same manner
+       and order as translation tables are bound. If found, the action routine
+       is invoked with the specified widget, event pointer, and parameters. It
+       is the responsibility of the caller to ensure that the contents of event,
+       params, and num_params arguments are appropriate for the specified rou&#8208;
+       tine, and if necessary, that the specified widget is realized or sensi&#8208;
+       tive. If the named action routine cannot be found, XtCallActionProc gen&#8208;
+       erates a warning message and returns.
+
+SEE ALSO
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3               XtCallActionProc(3)
+
+</pre></body></html>

@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cryptdisks_stop - wrapper around cryptsetup that parses /etc/crypttab.</title></head>
+<body><pre>
+
+CRYPTDISK_STOP(8)               cryptsetup manual              CRYPTDISK_STOP(8)
+
+
+
+NAME
+       cryptdisks_stop - wrapper around cryptsetup that parses /etc/crypttab.
+
+SYNOPSIS
+       cryptdisks_stop &lt;name&gt;
+
+DESCRIPTION
+       cryptdisks_stop is a wrapper around cryptsetup that parses /etc/crypttab
+       just like the initscript /etc/init.d/cryptdisks does and stops the
+       dm-crypt mapping that corresponds to &lt;name&gt;.
+
+SEE ALSO
+       cryptdisks_start(8), cryptsetup(8), crypttab(5)
+
+AUTHOR
+       This manual page was written by Jonas Meurer &lt;mejo@debian.org&gt; in January
+       2008.
+
+
+
+cryptsetup 2:1.4.3-4               2012-11-07                  CRYPTDISK_STOP(8)
+
+</pre></body></html>

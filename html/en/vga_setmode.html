@@ -1,0 +1,148 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_setmode - sets a video mode</title></head>
+<body><pre>
+
+vga_setmode(3)                 Svgalib User Manual                vga_setmode(3)
+
+
+
+NAME
+       vga_setmode - sets a video mode
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_setmode(int mode);
+
+
+DESCRIPTION
+       vga_setmode(int  mode) selects the video mode given and clears the screen
+       (if it was a graphics mode).  Basically this should be the  first  action
+       of  your application after calling vga_init(3) and finding out which mode
+       to use.  Prior to exiting your application should call vga_setmode(TEXT).
+
+       vga_setmode() returns 0 on success and -1 if this mode is not available.
+
+       From svgalib-1.4.1, if mode is -1 then vga_setmode() returns the  current
+       svgalib version, in BCD format, so svgalib 1.4.1 returns 0x1410.
+
+       mode  should  be  one of the following, predefined values, or generally a
+       value in range 1 &lt;= mode &lt;=  vga_lastmodenumber()  where  vga_modeinfo(3)
+       returned  details  about  this  mode.  Instead of trying to set the mode,
+       vga_hasmode(3) determines if the mode would actually be supported. It  is
+       also  possible  to use the numeric values given below though this is dis&#8208;
+       couraged. They are commonly used as values for  the  SVGALIB_DEFAULT_MODE
+       environment variable to set the vga_getdefaultmode(3).
+
+       Here are the predefined values for mode.
+
+   Text mode
+       TEXT(0)  restores  textmode  and falls back to ordinary text console han&#8208;
+       dling. All other calls switch to a graphics mode.  You  should  set  this
+       mode prior to exiting an svgalib application.
+
+   VGA compatible graphics modes
+       In  general, for all modes following, the first number is the amount of x
+       pixels, the second the amount of y pixels, the third the number  of  col&#8208;
+       ors,  with  shortcuts  32K, 64K, 16M, 16M4 for 32768, 65536, and 1677721.
+       Those with 2 or more than 256 colors use  fixed  color  mappings  (either
+       black  and  white  or  some RGB true/high color) the others make use of a
+       color lookup table.
+
+       Memory layout for the VGA modes is weird. Too weird to be explained here,
+       but  you can check the usual VGA literature.  vga_setmodeX(3) has a short
+       explanation which is valid for all 256 color modes.
+
+       G320x200x16(1),    G640x200x16(2),    G640x350x16(3),     G640x480x16(4),
+       G320x200x256(5),  G320x240x256(6),  G320x400x256(7), G360x480x256(8), and
+       G640x480x2(9)
+
+
+   Basic SVGA modes
+       These use linear 256 color memory layouts similar to G320x200x256.
+
+       G640x480x256(10),      G800x600x256(11),      G1024x768x256(12),      and
+       G1280x1024x256(13)
+
+
+   High color SVGA modes
+       These  also use linear memory layouts, but for 32K &amp; 64K each pixel occu&#8208;
+       pies two bytes and three for 16M. For 32K, each 16 bit  word  is  divided
+       into  555  bit portions refering to 5 bit red, green, blue part. The most
+       significant bit is ignored by the card.  For  64K  the  division  is  565
+       allowing  to  specify  green  in a little bit more detail (Human eyes are
+       more sensitive to green. People joke this is because our ancestors  lived
+       in trees where light was filtered through green leaves).
+
+       For  the  16M modes, from low to high addresses the 3 bytes are named BGR
+       and specify the blue, green, red parts of the pixel value.
+
+       G320x200x32K(14), G320x200x64K(15),  G320x200x16M(16),  G640x480x32K(17),
+       G640x480x64K(18),  G640x480x16M(19),  G800x600x32K(20), G800x600x64K(21),
+       G800x600x16M(22),          G1024x768x32K(23),          G1024x768x64K(24),
+       G1024x768x16M(25),     G1280x1024x32K(26),     G1280x1024x64K(27),    and
+       G1280x1024x16M(28)
+
+
+   High resolutions with less color numbers.
+       Memory layout is probably one nibble per pixel, two pixels per byte in  a
+       linear fashion where the most significant nibble is the left most pixel.
+
+       G800x600x16(29), G1024x768x16(30), and G1280x1024x16(31)
+
+
+   Hercules emulation mode
+       Again check out the ordinary VGA literature for the memory layout.
+
+       G720x348x2(32)
+
+
+   32-bit per pixel modes
+       These  are similar to 16M but each pixel uses four bytes. The first three
+       are similar to 16M but the fourth is left empty and ignored  by  the  VGA
+       card (you can store own status there).
+
+       This  eases  pixel  address calculations on the screen and drawing opera&#8208;
+       tions. However, 1/3 more data has to be moved to the screen.  Experiments
+       show  that usually the higher memory bandwidth used outweighs the effects
+       of the simplified algorithms by far.
+
+       G320x200x16M32(33),        G640x480x16M32(34),        G800x600x16M32(35),
+       G1024x768x16M32(36), and G1280x1024x16M32(37)
+
+
+   Some more resolutions
+       It should by now be clear how the modes will look.
+
+       G1152x864x16(38),          G1152x864x256(39),          G1152x864x32K(40),
+       G1152x864x64K(41),        G1152x864x16M(42),         G1152x864x16M32(43),
+       G1600x1200x16(44),         G1600x1200x256(45),        G1600x1200x32K(46),
+       G1600x1200x64K(47), G1600x1200x16M(48), and G1600x1200x16M32(49)
+
+
+       The vgatest(6) produces a list of  supported  modes  for  your  hardware,
+       prints some info on the modes and allows you to try each of them.
+
+SEE ALSO
+       svgalib(7),   vgagl(7),   libvga.config(5),  vgatest(6),  vga_hasmode(3),
+       vga_init(3),  vga_modeinfo(3),   vga_getcurrentmode(3),   vga_getdefault&#8208;
+       mode(3), vga_lastmodenumber(3), vga_getmodename(3), vga_getmodenumber(3)
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced function as well as of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib 1.4.1                      28 Jul 1999                    vga_setmode(3)
+
+</pre></body></html>

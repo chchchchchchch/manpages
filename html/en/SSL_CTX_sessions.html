@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SSL_CTX_sessions - access internal session cache</title></head>
+<body><pre>
+
+SSL_CTX_sessions(3SSL)               OpenSSL              SSL_CTX_sessions(3SSL)
+
+
+
+NAME
+       SSL_CTX_sessions - access internal session cache
+
+SYNOPSIS
+        #include &lt;openssl/ssl.h&gt;
+
+        struct lhash_st *SSL_CTX_sessions(SSL_CTX *ctx);
+
+DESCRIPTION
+       SSL_CTX_sessions() returns a pointer to the lhash databases containing
+       the internal session cache for ctx.
+
+NOTES
+       The sessions in the internal session cache are kept in an lhash(3) type
+       database. It is possible to directly access this database e.g. for
+       searching. In parallel, the sessions form a linked list which is
+       maintained separately from the lhash(3) operations, so that the database
+       must not be modified directly but by using the SSL_CTX_add_session(3)
+       family of functions.
+
+SEE ALSO
+       ssl(3), lhash(3), SSL_CTX_add_session(3),
+       SSL_CTX_set_session_cache_mode(3)
+
+
+
+1.0.1e                             2013-02-11             SSL_CTX_sessions(3SSL)
+
+</pre></body></html>

@@ -1,0 +1,197 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AptPkg - interface to libapt-pkg</title></head>
+<body><pre>
+
+AptPkg(3pm)            User Contributed Perl Documentation           AptPkg(3pm)
+
+
+
+NAME
+       AptPkg - interface to libapt-pkg
+
+SYNOPSIS
+       use AptPkg;
+
+DESCRIPTION
+       The AptPkg module provides a low-level XS interface to libapt-pkg.
+
+       Note that this interface is intended to be internal, and may change, see
+       the AptPkg::Config, AptPkg::System, AptPkg::Version, AptPkg::Cache,
+       Apt::Policy and AptPkg::Source classes for a higher level interface.
+
+   AptPkg
+       The AptPkg package provides the following functions:
+
+       _init_config(CONF)
+           Initialise a Configuration object (pkgInitConfig).  See the init
+           method in AptPkg::Config.
+
+       _init_system(CONF)
+           Return a pointer to the system object (pkgInitSystem).  See the
+           system method in AptPkg::Config.
+
+       _parse_cmdline(CONF, ARG_DEFS, ...)
+           Constructs a CommandLine instance, invokes the Parse method and
+           returns the remaining arguments.  See the parse_cmdline method in
+           AptPkg::Config.
+
+   AptPkg::_config
+       The AptPkg::_config package wraps a Perl class around the Configuration
+       class.  It provides an instance of the global _config object, and exposes
+       the following methods:
+
+           Find, FindFile, FindDir, FindB, FindAny, Set, Exists,
+           ExistsAny, Tree and Dump.
+
+       The functions ReadConfigFile and ReadConfigDir are also provided within
+       the package and may be used as methods.
+
+   AptPkg::_config::item
+       The AptPkg::_config::item package wraps a Perl class around the
+       Configuration::Item class.  The AptPkg::_config Tree method returns an
+       instance of this class.
+
+       Methods:
+
+           Value, Tag, FullTag, Parent, Child and Next.
+
+   AptPkg::System
+       The AptPkg::System package wraps a Perl class around the pkgSystem class.
+       It provides an instance of the global _system object, and exposes the
+       following methods:
+
+           Label, VS, Lock and UnLock.
+
+   AptPkg::Version
+       The AptPkg::Version package wraps a Perl class around the
+       pkgVersioningSystem class.  It exposes the following methods:
+
+           Label, CmpVersion, CmpReleaseVer, CheckDep and UpstreamVersion.
+&#12;   AptPkg::_cache
+       The AptPkg::_cache package wraps a Perl class around the pkgCacheFile
+       class.  It exposes the following methods:
+
+           Open, Close, FindPkg, PkgBegin, FileList, Packages and Policy.
+
+   AptPkg::Cache::_package
+       The AptPkg::Cache::_package package wraps a Perl class around the
+       pkgCache::PkgIterator class.  It exposes the following methods:
+
+           Next, Name, Section, VersionList, CurrentVer, RevDependsList,
+           ProvidesList, Index, SelectedState, InstState, CurrentState and
+           Flags.
+
+   AptPkg::Cache::_version
+       The AptPkg::Cache::_version package wraps a Perl class around the
+       pkgCache::VerIterator class.  It exposes the following methods:
+
+           VerStr, Section, Arch, ParentPkg, DependsList, ProvidesList,
+           FileList, Index and Priority.
+
+   AptPkg::Cache::_depends
+       The AptPkg::Cache::_depends package wraps a Perl class around the
+       pkgCache::DepIterator class.  It exposes the following methods:
+
+           TargetVer, TargetPkg, ParentVer, ParentPkg, Index, CompType and
+           DepType.
+
+   AptPkg::Cache::_provides
+       The AptPkg::Cache::_provides package wraps a Perl class around the
+       pkgCache::PrvIterator class.  It exposes the following methods:
+
+           Name, ProvideVersion, OwnerVer, OwnerPkg and Index.
+
+   AptPkg::Cache::_pkg_file
+       The AptPkg::Cache::_pkg_file package wraps a Perl class around the
+       pkgCache::PkgFileIterator class.  It exposes the following methods:
+
+           FileName, Archive, Component, Version, Origin, Label, Site,
+           IndexType and Index.
+
+   AptPkg::Cache::_ver_file
+       The AptPkg::Cache::_ver_file package wraps a Perl class around the
+       pkgCache::VerFileIterator class.  It exposes the following methods:
+
+           File, Index, Offset and Size.
+
+   AptPkg::Cache::_pkg_records
+       The AptPkg::Cache::_pkg_records package wraps a Perl class around the
+       pkgRecords class.  It exposes the following methods:
+
+           Lookup.
+
+   AptPkg::_policy
+       The AptPkg::_policy package wraps a Perl class around the pkgPolicy
+       class.  It exposes the following methods:
+
+           GetPriority, GetMatch and GetCandidateVer.
+
+   AptPkg::_source_list
+       The AptPkg::_source_list package wraps a Perl class around the
+       pkgSourceList class.  Required as an argument to the AptPkg::_src_records
+       constructor.
+
+   AptPkg::_src_records
+       The AptPkg::_src_records package wraps a Perl class around the
+       pkgSrcRecords class.  It exposes the following methods:
+
+           Restart, Find.
+
+   Constants
+       The following APT enumerations are included, used by attributes of
+       AptPkg::Cache.
+
+       pkgCache::Dep::DepType
+
+       &quot;AptPkg::Dep::Depends&quot;, &quot;AptPkg::Dep::PreDepends&quot;,
+       &quot;AptPkg::Dep::Suggests&quot;, &quot;AptPkg::Dep::Recommends&quot;,
+       &quot;AptPkg::Dep::Conflicts&quot;, &quot;AptPkg::Dep::Replaces&quot; and
+       &quot;AptPkg::Dep::Obsoletes&quot;.
+
+       pkgCache::Dep::DepCompareOp
+
+       &quot;AptPkg::Dep::Or&quot;, &quot;AptPkg::Dep::NoOp&quot;, &quot;AptPkg::Dep::LessEq&quot;,
+       &quot;AptPkg::Dep::GreaterEq&quot;, &quot;AptPkg::Dep::Less&quot;, &quot;AptPkg::Dep::Greater&quot;,
+       &quot;AptPkg::Dep::Equals&quot; and &quot;AptPkg::Dep::NotEquals&quot;.
+
+       pkgCache::State::VerPriority
+
+       &quot;AptPkg::State::Important&quot;, &quot;AptPkg::State::Required&quot;,
+       &quot;AptPkg::State::Standard&quot;, &quot;AptPkg::State::Optional&quot; and
+       &quot;AptPkg::State::Extra&quot;.
+
+       pkgCache::State::PkgSelectedState
+
+       &quot;AptPkg::State::Unknown&quot;, &quot;AptPkg::State::Install&quot;,
+       &quot;AptPkg::State::Hold&quot;, &quot;AptPkg::State::DeInstall&quot; and
+       &quot;AptPkg::State::Purge&quot;.
+
+       pkgCache::State::PkgInstState
+
+       &quot;AptPkg::State::Ok&quot;, &quot;AptPkg::State::ReInstReq&quot;,
+       &quot;AptPkg::State::HoldInst&quot; and &quot;AptPkg::State::HoldReInstReq&quot;.
+
+       pkgCache::State::PkgCurrentState
+
+       &quot;AptPkg::State::NotInstalled&quot;, &quot;AptPkg::State::UnPacked&quot;,
+       &quot;AptPkg::State::HalfConfigured&quot;, &quot;AptPkg::State::HalfInstalled&quot;,
+       &quot;AptPkg::State::ConfigFiles&quot; and &quot;AptPkg::State::Installed&quot;.
+
+       pkgCache::Flag::PkgFlags
+
+       &quot;AptPkg::Flag::Auto&quot;, &quot;AptPkg::Flag::Essential&quot; and
+       &quot;AptPkg::Flag::Important&quot;.
+
+SEE ALSO
+       AptPkg::Config(3pm), AptPkg::System(3pm), AptPkg::Version(3pm),
+       AptPkg::Cache(3pm), AptPkg::Source(3pm).
+
+AUTHOR
+       Brendan O&apos;Dea &lt;bod@debian.org&gt;
+
+
+
+perl v5.14.2                       2012-03-27                        AptPkg(3pm)
+
+</pre></body></html>

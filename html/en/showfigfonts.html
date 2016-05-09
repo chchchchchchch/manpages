@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>showfigfonts - prints a list of available figlet fonts</title></head>
+<body><pre>
+
+SHOWFIGFONTS(6)                                                  SHOWFIGFONTS(6)
+
+
+
+NAME
+       showfigfonts - prints a list of available figlet fonts
+
+
+SYNOPSIS
+       showfigfonts [ -d directory ] [ word ]
+
+
+DESCRIPTION
+       Prints  a  list  of  available  figlet fonts, along with a sample of each
+       font.  If directory is given, lists fonts in  that  directory;  otherwise
+       uses  the  default font directory.  If word is given, prints that word in
+       each font; otherwise prints the font name.
+
+
+EXAMPLES
+       To use showfigfonts with its default settings, simply type
+
+              example% showfigfonts
+
+
+       To print all the fonts in /usr/share/fonts/figlet
+
+              example% showfigfonts -d /usr/share/fonts/figlet
+
+
+       To print the word foo using all available fonts
+
+              example% showfigfonts foo
+
+
+
+AUTHORS
+       showfigfonts was written by Glenn Chappell &lt;ggc@uiuc.edu&gt;
+
+       This manual page was written by Jonathon Abbott for the Debian Project.
+
+
+SEE ALSO
+       figlet(6), chkfont(6), figlist(6)
+
+
+
+v2.2.5                             31 May 2012                   SHOWFIGFONTS(6)
+
+</pre></body></html>

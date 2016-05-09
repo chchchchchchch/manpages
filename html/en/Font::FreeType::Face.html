@@ -1,0 +1,246 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Font::FreeType::Face - font typefaces loaded from Font::FreeType</title></head>
+<body><pre>
+
+Font::FreeType::Face(3pUser Contributed Perl DocumentatFont::FreeType::Face(3pm)
+
+
+
+NAME
+       Font::FreeType::Face - font typefaces loaded from Font::FreeType
+
+SYNOPSIS
+           use Font::FreeType;
+
+           my $freetype = Font::FreeType-&gt;new;
+           my $face = $freetype-&gt;face(&apos;Vera.ttf&apos;);
+
+DESCRIPTION
+       This class represents a font face (or typeface) loaded from a font file.
+       Usually a face represents all the information in the font file (such as a
+       TTF file), although it is possible to have multiple faces in a single
+       file.
+
+       Never &apos;use&apos; this module directly; the class is loaded automatically from
+       Font::FreeType.  Use the &quot;Font::FreeType-&gt;face()&quot; method to create a new
+       Font::FreeType::Face object from a filename.
+
+METHODS
+       Unless otherwise stated, all methods will die if there is an error.
+
+       ascender()
+           The height above the baseline of the &apos;top&apos; of the font&apos;s glyphs,
+           scaled to the current size of the face.
+
+       attach_file(filename)
+           Informs FreeType of an ancillary file needed for reading the font.
+           Hasn&apos;t been tested yet.
+
+       current_face_index()
+           The index number of the current font face.  Usually this will be
+           zero, which is the default.  See &quot;Font::FreeType-&gt;face()&quot; for how to
+           load other faces from the same file.
+
+       descender()
+           The depth below the baseline of the &apos;bottom&apos; of the font&apos;s glyphs,
+           scaled to the current size of the face.  Actually represents the
+           distance moving up from the baseline, so usually negative.
+
+       family_name()
+           A string containing the name of the family this font claims to be
+           from.
+
+       fixed_sizes()
+           In scalar context returns the number of fixed sizes (of embedded
+           bitmaps) available in the font.  In list context returns a list of
+           hashes which detail those sizes.  Each hash can contain the following
+           keys, but they will be absent if the information isn&apos;t available:
+
+           size
+               Size of the glyphs in points.  Only available with Freetype 2.1.5
+               or newer.
+
+           height
+               Height of the bitmaps in pixels.
+
+           width
+               Width of the bitmaps in pixels.
+
+           x_res_dpi, y_res_dpi
+               Resolution the bitmaps were designed for, in dots per inch.  Only
+               available with Freetype 2.1.5 or newer.
+
+           x_res_ppem, y_res_ppem
+               Resolution the bitmaps were designed for, in pixels per em.  Only
+               available with Freetype 2.1.5 or newer.
+
+       foreach_char(code-ref)
+           Iterates through all the characters in the font, and calls code-ref
+           for each of them in turn.  Glyphs which don&apos;t correspond to Unicode
+           characters are ignored.  There is currently no facility for iterating
+           over all glyphs.
+
+           Each time your callback code is called, $_ will be set to a
+           Font::FreeType::Glyph object for the current glyph.  For an example
+           see the program list-characters.pl provided in the distribution.
+
+       glyph_from_char(character)
+           Returns a Font::FreeType::Glyph object for the glyph corresponding to
+           the first character in the string provided.  Note that currently non-
+           ASCII characters are not likely to work with this, so you might be
+           better using the &quot;glyph_from_char_code()&quot; method below and the Perl
+           &quot;ord&quot; function.
+
+           Returns undef if the glyph is not available in the font.
+
+       glyph_from_char_code(char-code)
+           Returns a Font::FreeType::Glyph object for the glyph corresponding to
+           Unicode character char-code.  FreeType supports using other character
+           sets, but this module doesn&apos;t yet.
+
+           Returns undef if the glyph is not available in the font.
+
+       has_glyph_names()
+           True if individual glyphs have names.  If so, the names can be
+           retrieved with the &quot;name()&quot; method on Font::FreeType::Glyph objects.
+
+           See also &quot;has_reliable_glyph_names()&quot; below.
+
+       has_horizontal_metrics()
+       has_vertical_metrics()
+           These return true if the font contains metrics for the corresponding
+           directional layout.  Most fonts will contain horizontal metrics,
+           describing (for example) how the characters should be spaced out
+           across a page when being written horizontally like English.  Some
+           fonts, such as Chinese ones, may contain vertical metrics as well,
+           allowing typesetting down the page.
+
+       has_kerning()
+           True if the font provides kerning information.  See the &quot;kerning()&quot;
+           method below.
+
+       has_reliable_glyph_names()
+           True if the font contains reliable PostScript glyph names.  Some Some
+           fonts contain bad glyph names.  This method always returns false when
+           used with Freetype versions earlier than 2.1.1.
+
+           See also &quot;has_glyph_names()&quot; above.
+
+       height()
+           The height of the text.  Not entirely sure what that corresponds to
+           (is it the line height or what?).
+
+       is_bold()
+           True if the font claims to be in a bold style.
+
+       is_fixed_width()
+           True if all the characters in the font are the same width.  Will be
+           true for monospaced fonts like Courier.
+
+       is_italic()
+           Returns true if the font claims to be in an italic style.
+
+       is_scalable()
+           True if the font has a scalable outline, meaning it can be rendered
+           nicely at virtually any size.  Returns false for bitmap fonts.
+
+       is_sfnt()
+           True if the font file is in the &apos;sfnt&apos; format, meaning it is either
+           TrueType or OpenType.  This isn&apos;t much use yet, but future versions
+           of this library might provide access to extra information about sfnt
+           fonts.
+
+       kerning(left-glyph-index, right-glyph-index, [mode])
+           Returns the suggested kerning adjustment between two glyphs.  When
+           called in scalar context returns a single value, which should be
+           added to the position of the second glyph on the x axis for
+           horizontal layouts, or the y axis for vertical layouts.
+
+           Note: currently always returns the x axis kerning, but this will be
+           fixed when vertical layouts are handled properly.
+
+           For example, assuming $left and $right are two Font::FreeType::Glyph
+           objects:
+
+               my $kern_distance = $face-&gt;kerning($left-&gt;index, $right-&gt;index);
+
+           In list context this returns two values corresponding to the x and y
+           axes, which should be treated in the same way.
+
+           The &quot;mode&quot; argument controls how the kerning is calculated, with the
+           following options available:
+
+           FT_KERNING_DEFAULT
+               Grid-fitting (hinting) and scaling are done.  Use this when
+               rendering glyphs to bitmaps to make the kerning take the
+               resolution of the output in to account.
+
+           FT_KERNING_UNFITTED
+               Scaling is done, but not hinting.  Use this when extracting the
+               outlines of glyphs.  If you used the &quot;FT_LOAD_NO_HINTING&quot; option
+               when creating the face then use this when calculating the
+               kerning.
+
+           FT_KERNING_UNSCALED
+               Leave the measurements in font units, without scaling, and
+               without hinting.
+
+       number_of_faces()
+           The number of faces contained in the file from which this one was
+           created.  Usually there is only one.  See &quot;Font::FreeType-&gt;face()&quot;
+           for how to load the others if there are more.
+
+       number_of_glyphs()
+           The number of glyphs in the font face.
+
+       postscript_name()
+           A string containing the PostScript name of the font, or undef if it
+           doesn&apos;t have one.
+
+       set_char_size(width, height, x_res, y_res)
+           Set the size at which glyphs should be rendered.  Metrics are also
+           scaled to match.  The width and height will usually be the same, and
+           are in points.  The resolution is in dots-per-inch.
+
+           When generating PostScript outlines a resolution of 72 will scale to
+           PostScript points.
+
+       set_pixel_size(width, height)
+           Set the size at which bitmapped fonts will be loaded.  Bitmap fonts
+           are automatically set to the first available standard size, so this
+           usually isn&apos;t needed.
+
+       style_name()
+           A string describing the style of the font, such as &apos;Roman&apos; or &apos;Demi
+           Bold&apos;.  Most TrueType fonts are just &apos;Regular&apos;.
+
+       underline_position()
+       underline_thickness()
+           The suggested position and thickness of underlining for the font, or
+           undef if the information isn&apos;t provided.  Currently in font units,
+           but this is likely to be changed in a future version.
+
+       units_per_em()
+           The size of the em square used by the font designer.  This can be
+           used to scale font-specific measurements to the right size, although
+           that&apos;s usually done for you by FreeType.  Usually this is 2048 for
+           TrueType fonts.
+
+SEE ALSO
+       Font::FreeType, Font::FreeType::Glyph
+
+AUTHOR
+       Geoff Richards &lt;qef@laxan.com&gt;
+
+COPYRIGHT
+       Copyright 2004, Geoff Richards.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2004-09-11          Font::FreeType::Face(3pm)
+
+</pre></body></html>

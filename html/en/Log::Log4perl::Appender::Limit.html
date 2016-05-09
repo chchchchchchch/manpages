@@ -1,0 +1,95 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Appender::Limit - Limit message delivery via block period</title></head>
+<body><pre>
+
+Appender::Limit(3pm)   User Contributed Perl Documentation  Appender::Limit(3pm)
+
+
+
+NAME
+           Log::Log4perl::Appender::Limit - Limit message delivery via block period
+
+SYNOPSIS
+           use Log::Log4perl qw(:easy);
+
+           my $conf = qq(
+             log4perl.category = WARN, Limiter
+
+                 # Email appender
+             log4perl.appender.Mailer          = Log::Dispatch::Email::MailSend
+             log4perl.appender.Mailer.to       = drone\@pageme.com
+             log4perl.appender.Mailer.subject  = Something&apos;s broken!
+             log4perl.appender.Mailer.buffered = 0
+             log4perl.appender.Mailer.layout   = PatternLayout
+             log4perl.appender.Mailer.layout.ConversionPattern=%d %m %n
+
+                 # Limiting appender, using the email appender above
+             log4perl.appender.Limiter              = Log::Log4perl::Appender::Limit
+             log4perl.appender.Limiter.appender     = Mailer
+             log4perl.appender.Limiter.block_period = 3600
+           );
+
+           Log::Log4perl-&gt;init(\$conf);
+           WARN(&quot;This message will be sent immediately&quot;);
+           WARN(&quot;This message will be delayed by one hour.&quot;);
+           sleep(3601);
+           WARN(&quot;This message plus the last one will be sent now&quot;);
+
+DESCRIPTION
+       &quot;appender&quot;
+           Specifies the name of the appender used by the limiter. The appender
+           specified must be defined somewhere in the configuration file, not
+           necessarily before the definition of
+           &quot;Log::Log4perl::Appender::Limit&quot;.
+
+       &quot;block_period&quot;
+           Period in seconds between delivery of messages. If messages arrive in
+           between, they will be either saved (if &quot;accumulate&quot; is set to a true
+           value) or discarded (if &quot;accumulate&quot; isn&apos;t set).
+
+       &quot;persistent&quot;
+           File name in which &quot;Log::Log4perl::Appender::Limit&quot; persistently
+           stores delivery times. If omitted, the appender will have no
+           recollection of what happened when the program restarts.
+
+       &quot;max_until_flushed&quot;
+           Maximum number of accumulated messages. If exceeded, the appender
+           flushes all messages, regardless if the interval set in
+           &quot;block_period&quot; has passed or not. Don&apos;t mix with
+           &quot;max_until_discarded&quot;.
+
+       &quot;max_until_discarded&quot;
+           Maximum number of accumulated messages. If exceeded, the appender
+           will simply discard additional messages, waiting for &quot;block_period&quot;
+           to expire to flush all accumulated messages. Don&apos;t mix with
+           &quot;max_until_flushed&quot;.
+
+       If the appender attached to &quot;Limit&quot; uses &quot;PatternLayout&quot; with a timestamp
+       specifier, you will notice that the message timestamps are reflecting the
+       original log event, not the time of the message rendering in the attached
+       appender. Major trickery has been applied to accomplish this (Cough!).
+
+DEVELOPMENT NOTES
+       &quot;Log::Log4perl::Appender::Limit&quot; is a composite appender.  Unlike other
+       appenders, it doesn&apos;t log any messages, it just passes them on to its
+       attached sub-appender.  For this reason, it doesn&apos;t need a layout
+       (contrary to regular appenders).  If it defines none, messages are passed
+       on unaltered.
+
+       Custom filters are also applied to the composite appender only.  They are
+       not applied to the sub-appender. Same applies to appender thresholds.
+       This behaviour might change in the future.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21               Appender::Limit(3pm)
+
+</pre></body></html>

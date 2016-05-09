@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htsearch - create document index and word database for the ht://Dig search engine</title></head>
+<body><pre>
+
+htsearch(1)                                                          htsearch(1)
+
+
+
+NAME
+       htsearch  -  create  document  index  and  word database for the ht://Dig
+       search engine
+
+SYNOPSIS
+       htsearch [options] [query_string]
+
+DESCRIPTION
+       Htsearch is used to sift through the  databases created by htdig for con&#8208;
+       tent.  It is the actual search engine of the htdig search system. It is a
+       CGI program that is expected to be invoked  by  an  HTML  form.  It  will
+       accept both the GET and POST methods of passing data to the CGI program.
+
+OPTIONS
+       query_string
+              A CGI-style query string can be given as a single argument, and is
+              only used if the REQUEST_METHOD environment variable is  not  set.
+              If  no  query_string  is  given,  and  REQUEST_METHOD  is not set,
+              htsearch will prompt for the query.
+
+       -c configfile
+              Use the specified configfile instead of the default (for  security
+              reasons this option is only available when htsearch is used on the
+              command line).
+
+       -v -d  Run in verbose mode.  This increases the verbosity of the program.
+              Using  more than 2 is probably only useful for debugging purposes.
+              The default verbose mode gives a progress on what it is doing  and
+              where it is.
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+       /etc/htdig/header.html
+              The default search results header file
+
+       /etc/htdig/footer.html
+              The default search results footer file
+
+       /etc/htdig/wrapper.html
+              The  default search results wrapper file, that contains the header
+              and footer together in one file
+
+       /etc/htdig/nomatch.html
+              The default &apos;no matches found&apos; HTML file
+
+       /etc/htdig/syntax.html
+              The default file that explains boolean expression syntax errors
+
+SEE ALSO
+       Please  refer  to   the   HTML   pages   (in   the   htdig-doc   package)
+       /usr/share/doc/htdig-doc/html/index.html  and  the  manual pages htdig(1)
+       and htmerge(1) for a detailed description of ht://Dig and its commands.
+
+AUTHOR
+       This manual page was written by Stijn de Bekker  and  updated  by  Robert
+       Ribnitz. It is based on the HTML documentation of ht://Dig.
+
+
+
+                                 6 October 2001                      htsearch(1)
+
+</pre></body></html>

@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>giiQueryDeviceInfo, giiQueryDeviceInfoByNumber - Get information about input sources</title></head>
+<body><pre>
+
+giiQueryDeviceInfo(3)                  GGI                 giiQueryDeviceInfo(3)
+
+
+
+NAME
+       giiQueryDeviceInfo,  giiQueryDeviceInfoByNumber  -  Get information about
+       input sources
+
+SYNOPSIS
+       #include &lt;ggi/gii.h&gt;`
+
+       int giiQueryDeviceInfo (gii_input_t inp, uint32_t origin,
+                               gii_cmddata_getdevinfo *info);
+
+       int giiQueryDeviceInfoByNumber(gii_input_t inp, uint32_t number,
+                                      uint32_t *origin, gii_cmddata_getdevinfo *info);
+
+
+DESCRIPTION
+       Though when using GII inputs the exact type of device is fully  transpar&#8208;
+       ent  to  the  program,  information  about  the  device  that is actually
+       attached to a given gii input and origin id can be queried, e.g. for con&#8208;
+       figuration interfaces.
+
+       For  giiQueryDeviceInfo the parameters inp and origin select the input to
+       query. This version is usually used, if you want  to  identify  a  device
+       after getting an event from it.
+
+       For  giiQueryDeviceInfoByNumber  the parameters inp and number select the
+       input to query - origin gets set to the origin ID the queried device has.
+       This version is used, when you want to query all known devices.
+
+       The queried data is put into info.  See gii_cmddata_getdevinfo(3) for the
+       description of the structure.
+
+RETURN VALUE
+       Returns 0 on success (info is valid, then) or -1 otherwise.
+
+SEE ALSO
+       giiQueryValInfo(3)
+
+
+
+libgii-1.0.x                       2006-12-30              giiQueryDeviceInfo(3)
+
+</pre></body></html>

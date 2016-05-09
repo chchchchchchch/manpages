@@ -1,0 +1,141 @@
+<html>
+<head><meta charset=utf-8/>
+<title>RPC::XML::ParserFactory - A factory class for RPC::XML::Parser objects</title></head>
+<body><pre>
+
+RPC::XML::ParserFactoryUser)Contributed Perl DocumenRPC::XML::ParserFactory(3pm)
+
+
+
+NAME
+       RPC::XML::ParserFactory - A factory class for RPC::XML::Parser objects
+
+SYNOPSIS
+           use RPC::XML::ParserFactory;
+           ...
+           $P = RPC::XML::ParserFactory-&gt;new();
+           $P-&gt;parse($message);
+
+DESCRIPTION
+       The RPC::XML::ParserFactory class encapsulates the process of creating
+       parser objects that adhere to the interface described in
+       RPC::XML::Parser.  Under the hood, the parser object created and returned
+       could be from any of a number of implementation classes.
+
+IMPORT-TIME ARGUMENTS
+       You can specify a particular underlying parser class to use, if you do
+       not want RPC::XML::ParserFactory to use the default class. This is done
+       with the &quot;class&quot; keyword:
+
+           use RPC::XML::ParserFactory (class =&gt; &apos;XML::Parser&apos;);
+
+       The value may be the name for any of the built-in classes, or it may be
+       the name of a class that inherits from RPC::XML::Parser (and can thus be
+       &quot;manufactured&quot; by the factory). The value is saved and becomes the
+       default class for any calls to new that do not explicitly name a class to
+       use.
+
+       Note that if the specified class is not valid, this is not tested until
+       the first call to new, at which point an invalid class will cause an
+       exception (error) to occur. The constructor will return &quot;undef&quot; and the
+       $RPC::XML::ERROR variable will contain the error message.
+
+   Names of Built-In Parsers
+       The following names are valid when specified as the value of the &quot;class&quot;
+       argument described above:
+
+       XML::Parser
+       xml::parser
+       xmlparser
+           All of these specify the parser implementation based on the
+           XML::Parser module. This is the default parser if the user does not
+           specify any alternative.
+
+       XML::LibXML
+       xml::libxml
+       xmllibxml
+           These specify a parser implementation based on the XML::LibXML
+           module.  This is a new parser and not as well-vetted as the previous
+           one, hence it must be explicitly requested.
+
+SUBROUTINES/METHODS
+       The methods are:
+
+       new([ARGS])
+           Create a new instance of the class. Any extra data passed to the
+           constructor is taken as key/value pairs (not a hash reference) and
+           attached to the object.
+
+           This method passes all arguments on to the new() method of the chosen
+           implementation class, except for the following:
+&#12;           class NAME
+               If the user chooses, they may specify an explicit class to use
+               for parsers when calling new(). If passed, this overrides any
+               value that was given at use-time (processed by import()).
+
+DIAGNOSTICS
+       The constructor returns &quot;undef&quot; upon failure, with the error message
+       available in the global variable $RPC::XML::ERROR.
+
+BUGS
+       Please report any bugs or feature requests to &quot;bug-rpc-xml at
+       rt.cpan.org&quot;, or through the web interface at
+       http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RPC-XML
+       &lt;http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RPC-XML&gt;. I will be
+       notified, and then you&apos;ll automatically be notified of progress on your
+       bug as I make changes.
+
+SUPPORT
+       &#183;   RT: CPAN&apos;s request tracker
+
+           http://rt.cpan.org/NoAuth/Bugs.html?Dist=RPC-XML
+           &lt;http://rt.cpan.org/NoAuth/Bugs.html?Dist=RPC-XML&gt;
+
+       &#183;   AnnoCPAN: Annotated CPAN documentation
+
+           http://annocpan.org/dist/RPC-XML &lt;http://annocpan.org/dist/RPC-XML&gt;
+
+       &#183;   CPAN Ratings
+
+           http://cpanratings.perl.org/d/RPC-XML
+           &lt;http://cpanratings.perl.org/d/RPC-XML&gt;
+
+       &#183;   Search CPAN
+
+           http://search.cpan.org/dist/RPC-XML &lt;http://search.cpan.org/dist/RPC-
+           XML&gt;
+
+       &#183;   MetaCPAN
+
+           https://metacpan.org/release/RPC-XML
+           &lt;https://metacpan.org/release/RPC-XML&gt;
+
+       &#183;   Source code on GitHub
+
+           http://github.com/rjray/rpc-xml &lt;http://github.com/rjray/rpc-xml&gt;
+
+LICENSE AND COPYRIGHT
+       This file and the code within are copyright (c) 2011 by Randy J. Ray.
+
+       Copying and distribution are permitted under the terms of the Artistic
+       License 2.0 (http://www.opensource.org/licenses/artistic-license-2.0.php
+       &lt;http://www.opensource.org/licenses/artistic-license-2.0.php&gt;) or the GNU
+       LGPL 2.1 (http://www.opensource.org/licenses/lgpl-2.1.php
+       &lt;http://www.opensource.org/licenses/lgpl-2.1.php&gt;).
+
+CREDITS
+       The XML-RPC standard is Copyright (c) 1998-2001, UserLand Software, Inc.
+       See &lt;http://www.xmlrpc.com&gt; for more information about the XML-RPC
+       specification.
+
+SEE ALSO
+       RPC::XML, RPC::XML::Client, RPC::XML::Server, XML::Parser
+
+AUTHOR
+       Randy J. Ray &quot;&lt;rjray@blackperl.com&gt;&quot;
+
+
+
+perl v5.14.2                       2011-07-23       RPC::XML::ParserFactory(3pm)
+
+</pre></body></html>

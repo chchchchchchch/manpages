@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SysWMEvent - Platform-dependent window manager event.</title></head>
+<body><pre>
+
+SDL_SysWMEvent(3)               SDL API Reference              SDL_SysWMEvent(3)
+
+
+
+NAME
+       SDL_SysWMEvent - Platform-dependent window manager event.
+
+DESCRIPTION
+       The  system  window  manager  event contains a pointer to system-specific
+       information about unknown window manager events. If you enable this event
+       using  SDL_EventState(),  it  will be generated whenever unhandled events
+       are received from the window manager. This can be used, for  example,  to
+       implement cut-and-paste in your application.
+
+       typedef struct {
+                Uint8 type;   /* Always SDL_SysWM */
+        } SDL_SysWMEvent;
+
+        If  you want to obtain system-specific information about the window man&#8208;
+       ager, you can fill  the  version  member  of  a  SDL_SysWMinfo  structure
+       (details  can  be found in SDL_syswm.h, which must be included) using the
+       SDL_VERSION() macro found in SDL_version.h, and pass it to the function:
+
+       int SDL_GetWMInfo(SDL_SysWMinfo *info);
+
+SEE ALSO
+       SDL_EventState
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00            SDL_SysWMEvent(3)
+
+</pre></body></html>

@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>grub-mkrescue - make a GRUB rescue image</title></head>
+<body><pre>
+
+GRUB-MKRESCUE(1)                  User Commands                 GRUB-MKRESCUE(1)
+
+
+
+NAME
+       grub-mkrescue - make a GRUB rescue image
+
+SYNOPSIS
+       grub-mkrescue [OPTION] SOURCE...
+
+DESCRIPTION
+       Make GRUB rescue image.
+
+       -h, --help
+              print this message and exit
+
+       -v, --version
+              print the version information and exit
+
+       -o, --output=FILE
+              save output in FILE [required]
+
+       --modules=MODULES
+              pre-load specified modules MODULES
+
+       --rom-directory=DIR
+              save rom images in DIR [optional]
+
+       --xorriso=FILE
+              use FILE as xorriso [optional]
+
+       --grub-mkimage=FILE
+              use FILE as grub-mkimage
+
+       --diet apply size reducing measures [optional]
+
+       grub-mkrescue  generates  a  bootable  rescue image with specified source
+       files, source directories, or mkisofs  options  listed  by:  xorriso  -as
+       mkisofs -help
+
+       Option -- switches to native xorriso command mode.
+
+REPORTING BUGS
+       Report bugs to &lt;bug-grub@gnu.org&gt;.
+       Mail xorriso support requests to &lt;bug-xorriso@gnu.org&gt;.
+
+SEE ALSO
+       grub-mkimage(1)
+
+       The  full documentation for grub-mkrescue is maintained as a Texinfo man&#8208;
+       ual.  If the info and grub-mkrescue programs are  properly  installed  at
+       your site, the command
+
+              info grub-mkrescue
+
+       should give you access to the complete manual.
+
+
+
+grub-mkrescue (GRUB) 1.99-27.1crunchMayg2013                    GRUB-MKRESCUE(1)
+
+</pre></body></html>

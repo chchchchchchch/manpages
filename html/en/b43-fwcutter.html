@@ -1,0 +1,57 @@
+<html>
+<head><meta charset=utf-8/>
+<title>b43-fwcutter - Utility for extracting Broadcom 43xx firmware</title></head>
+<body><pre>
+
+B43-FWCUTTER(1)                   User Commands                  B43-FWCUTTER(1)
+
+
+
+NAME
+       b43-fwcutter - Utility for extracting Broadcom 43xx firmware
+
+SYNOPSIS
+       b43-fwcutter [OPTION] [DRIVER]
+
+DESCRIPTION
+       b43-fwcutter  can  extract  the  firmware for your Broadcom 43xx hardware
+       from different closed source drivers. The  b43  driver  depends  on  this
+       firmware files and can&apos;t work without them.
+
+       Currently   b43-fwcutter   supports  Apple  MacOS  X,  Microsoft  Windows
+       98/ME/2000/XP and Linux drivers,  but  keep  in  mind  that  b43-fwcutter
+       doesn&apos;t support all driver versions.
+
+       Example:
+
+              b43-fwcutter bcmwl5.sys
+
+       to cut the firmware out of bcmwl5.sys
+
+OPTIONS
+       -l|--list
+              List supported driver versions
+
+       -i|--identify
+              Only identify the driver file (don&apos;t extract)
+
+       -w|--target-dir DIR
+              Extract and write firmware to DIR
+
+       -a|--alt-iv
+              Extract alternative initvals (only 3.10.x.x)
+
+       -v|--version
+              Print b43-fwcutter version
+
+       -h|--help
+              Print help information
+
+AUTHORS
+       b43 development team, http://bcm43xx.berlios.de
+
+
+
+b43-fwcutter                          2007                       B43-FWCUTTER(1)
+
+</pre></body></html>

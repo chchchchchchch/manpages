@@ -1,0 +1,331 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::enums - enumeration and flag values for Gnome2</title></head>
+<body><pre>
+
+Gnome2::enums(3pm)     User Contributed Perl Documentation    Gnome2::enums(3pm)
+
+
+
+NAME
+       Gnome2::enums - enumeration and flag values for Gnome2
+
+DESCRIPTION
+       Just a listing of all enum and flags types defined for Gnome2, in one
+       place for convenience.  For more information, see the description of
+       flags and enums in Glib.
+
+LISTING
+   flags Gnome2::Bonobo::DockItemBehavior
+       &#183;   &apos;normal&apos; / &apos;BONOBO_DOCK_ITEM_BEH_NORMAL&apos;
+
+       &#183;   &apos;exclusive&apos; / &apos;BONOBO_DOCK_ITEM_BEH_EXCLUSIVE&apos;
+
+       &#183;   &apos;never-floating&apos; / &apos;BONOBO_DOCK_ITEM_BEH_NEVER_FLOATING&apos;
+
+       &#183;   &apos;never-vertical&apos; / &apos;BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL&apos;
+
+       &#183;   &apos;never-horizontal&apos; / &apos;BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL&apos;
+
+       &#183;   &apos;locked&apos; / &apos;BONOBO_DOCK_ITEM_BEH_LOCKED&apos;
+
+   enum Gnome2::Bonobo::DockPlacement
+       &#183;   &apos;top&apos; / &apos;BONOBO_DOCK_TOP&apos;
+
+       &#183;   &apos;right&apos; / &apos;BONOBO_DOCK_RIGHT&apos;
+
+       &#183;   &apos;bottom&apos; / &apos;BONOBO_DOCK_BOTTOM&apos;
+
+       &#183;   &apos;left&apos; / &apos;BONOBO_DOCK_LEFT&apos;
+
+       &#183;   &apos;floating&apos; / &apos;BONOBO_DOCK_FLOATING&apos;
+
+   flags Gnome2::ClientFlags
+       &#183;   &apos;is-connected&apos; / &apos;GNOME_CLIENT_IS_CONNECTED&apos;
+
+       &#183;   &apos;restarted&apos; / &apos;GNOME_CLIENT_RESTARTED&apos;
+
+       &#183;   &apos;restored&apos; / &apos;GNOME_CLIENT_RESTORED&apos;
+
+   enum Gnome2::ClientState
+       &#183;   &apos;idle&apos; / &apos;GNOME_CLIENT_IDLE&apos;
+
+       &#183;   &apos;saving-phase-1&apos; / &apos;GNOME_CLIENT_SAVING_PHASE_1&apos;
+
+       &#183;   &apos;waiting-for-phase-2&apos; / &apos;GNOME_CLIENT_WAITING_FOR_PHASE_2&apos;
+
+       &#183;   &apos;saving-phase-2&apos; / &apos;GNOME_CLIENT_SAVING_PHASE_2&apos;
+
+       &#183;   &apos;frozen&apos; / &apos;GNOME_CLIENT_FROZEN&apos;
+
+       &#183;   &apos;disconnected&apos; / &apos;GNOME_CLIENT_DISCONNECTED&apos;
+
+       &#183;   &apos;registering&apos; / &apos;GNOME_CLIENT_REGISTERING&apos;
+
+   flags Gnome2::DateEditFlags
+       &#183;   &apos;show-time&apos; / &apos;GNOME_DATE_EDIT_SHOW_TIME&apos;
+
+       &#183;   &apos;24-hr&apos; / &apos;GNOME_DATE_EDIT_24_HR&apos;
+
+       &#183;   &apos;week-starts-on-monday&apos; / &apos;GNOME_DATE_EDIT_WEEK_STARTS_ON_MONDAY&apos;
+&#12;       &#183;   &apos;display-seconds&apos; / &apos;GNOME_DATE_EDIT_DISPLAY_SECONDS&apos;
+
+   enum Gnome2::DialogType
+       &#183;   &apos;error&apos; / &apos;GNOME_DIALOG_ERROR&apos;
+
+       &#183;   &apos;normal&apos; / &apos;GNOME_DIALOG_NORMAL&apos;
+
+   enum Gnome2::EdgePosition
+       &#183;   &apos;start&apos; / &apos;GNOME_EDGE_START&apos;
+
+       &#183;   &apos;finish&apos; / &apos;GNOME_EDGE_FINISH&apos;
+
+       &#183;   &apos;other&apos; / &apos;GNOME_EDGE_OTHER&apos;
+
+       &#183;   &apos;last&apos; / &apos;GNOME_EDGE_LAST&apos;
+
+   enum Gnome2::FileDomain
+       &#183;   &apos;unknown&apos; / &apos;GNOME_FILE_DOMAIN_UNKNOWN&apos;
+
+       &#183;   &apos;libdir&apos; / &apos;GNOME_FILE_DOMAIN_LIBDIR&apos;
+
+       &#183;   &apos;datadir&apos; / &apos;GNOME_FILE_DOMAIN_DATADIR&apos;
+
+       &#183;   &apos;sound&apos; / &apos;GNOME_FILE_DOMAIN_SOUND&apos;
+
+       &#183;   &apos;pixmap&apos; / &apos;GNOME_FILE_DOMAIN_PIXMAP&apos;
+
+       &#183;   &apos;config&apos; / &apos;GNOME_FILE_DOMAIN_CONFIG&apos;
+
+       &#183;   &apos;help&apos; / &apos;GNOME_FILE_DOMAIN_HELP&apos;
+
+       &#183;   &apos;app-libdir&apos; / &apos;GNOME_FILE_DOMAIN_APP_LIBDIR&apos;
+
+       &#183;   &apos;app-datadir&apos; / &apos;GNOME_FILE_DOMAIN_APP_DATADIR&apos;
+
+       &#183;   &apos;app-sound&apos; / &apos;GNOME_FILE_DOMAIN_APP_SOUND&apos;
+
+       &#183;   &apos;app-pixmap&apos; / &apos;GNOME_FILE_DOMAIN_APP_PIXMAP&apos;
+
+       &#183;   &apos;app-config&apos; / &apos;GNOME_FILE_DOMAIN_APP_CONFIG&apos;
+
+       &#183;   &apos;app-help&apos; / &apos;GNOME_FILE_DOMAIN_APP_HELP&apos;
+
+   enum Gnome2::FontPickerMode
+       &#183;   &apos;pixmap&apos; / &apos;GNOME_FONT_PICKER_MODE_PIXMAP&apos;
+
+       &#183;   &apos;font-info&apos; / &apos;GNOME_FONT_PICKER_MODE_FONT_INFO&apos;
+
+       &#183;   &apos;user-widget&apos; / &apos;GNOME_FONT_PICKER_MODE_USER_WIDGET&apos;
+
+       &#183;   &apos;unknown&apos; / &apos;GNOME_FONT_PICKER_MODE_UNKNOWN&apos;
+
+   enum Gnome2::HelpError
+       &#183;   &apos;internal&apos; / &apos;GNOME_HELP_ERROR_INTERNAL&apos;
+
+       &#183;   &apos;not-found&apos; / &apos;GNOME_HELP_ERROR_NOT_FOUND&apos;
+
+   enum Gnome2::IconListMode
+       &#183;   &apos;icons&apos; / &apos;GNOME_ICON_LIST_ICONS&apos;
+
+       &#183;   &apos;text-below&apos; / &apos;GNOME_ICON_LIST_TEXT_BELOW&apos;
+
+       &#183;   &apos;text-right&apos; / &apos;GNOME_ICON_LIST_TEXT_RIGHT&apos;
+
+   flags Gnome2::IconLookupFlags
+       &#183;   &apos;none&apos; / &apos;GNOME_ICON_LOOKUP_FLAGS_NONE&apos;
+&#12;       &#183;   &apos;embedding-text&apos; / &apos;GNOME_ICON_LOOKUP_FLAGS_EMBEDDING_TEXT&apos;
+
+       &#183;   &apos;show-small-images-as-themselves&apos; /
+           &apos;GNOME_ICON_LOOKUP_FLAGS_SHOW_SMALL_IMAGES_AS_THEMSELVES&apos;
+
+       &#183;   &apos;allow-svg-as-themselves&apos; /
+           &apos;GNOME_ICON_LOOKUP_FLAGS_ALLOW_SVG_AS_THEMSELVES&apos;
+
+   flags Gnome2::IconLookupResultFlags
+       &#183;   &apos;none&apos; / &apos;GNOME_ICON_LOOKUP_RESULT_FLAGS_NONE&apos;
+
+       &#183;   &apos;thumbnail&apos; / &apos;GNOME_ICON_LOOKUP_RESULT_FLAGS_THUMBNAIL&apos;
+
+   enum Gnome2::InteractStyle
+       &#183;   &apos;none&apos; / &apos;GNOME_INTERACT_NONE&apos;
+
+       &#183;   &apos;errors&apos; / &apos;GNOME_INTERACT_ERRORS&apos;
+
+       &#183;   &apos;any&apos; / &apos;GNOME_INTERACT_ANY&apos;
+
+   enum Gnome2::MDIMode
+       &#183;   &apos;notebook&apos; / &apos;GNOME_MDI_NOTEBOOK&apos;
+
+       &#183;   &apos;toplevel&apos; / &apos;GNOME_MDI_TOPLEVEL&apos;
+
+       &#183;   &apos;modal&apos; / &apos;GNOME_MDI_MODAL&apos;
+
+       &#183;   &apos;default-mode&apos; / &apos;GNOME_MDI_DEFAULT_MODE&apos;
+
+   enum Gnome2::PasswordDialogRemember
+       &#183;   &apos;nothing&apos; / &apos;GNOME_PASSWORD_DIALOG_REMEMBER_NOTHING&apos;
+
+       &#183;   &apos;session&apos; / &apos;GNOME_PASSWORD_DIALOG_REMEMBER_SESSION&apos;
+
+       &#183;   &apos;forever&apos; / &apos;GNOME_PASSWORD_DIALOG_REMEMBER_FOREVER&apos;
+
+   enum Gnome2::PreferencesType
+       &#183;   &apos;never&apos; / &apos;GNOME_PREFERENCES_NEVER&apos;
+
+       &#183;   &apos;user&apos; / &apos;GNOME_PREFERENCES_USER&apos;
+
+       &#183;   &apos;always&apos; / &apos;GNOME_PREFERENCES_ALWAYS&apos;
+
+   enum Gnome2::RestartStyle
+       &#183;   &apos;if-running&apos; / &apos;GNOME_RESTART_IF_RUNNING&apos;
+
+       &#183;   &apos;anyway&apos; / &apos;GNOME_RESTART_ANYWAY&apos;
+
+       &#183;   &apos;immediately&apos; / &apos;GNOME_RESTART_IMMEDIATELY&apos;
+
+       &#183;   &apos;never&apos; / &apos;GNOME_RESTART_NEVER&apos;
+
+   enum Gnome2::SaveStyle
+       &#183;   &apos;global&apos; / &apos;GNOME_SAVE_GLOBAL&apos;
+
+       &#183;   &apos;local&apos; / &apos;GNOME_SAVE_LOCAL&apos;
+
+       &#183;   &apos;both&apos; / &apos;GNOME_SAVE_BOTH&apos;
+
+   enum Gnome2::ThumbnailSize
+       &#183;   &apos;normal&apos; / &apos;GNOME_THUMBNAIL_SIZE_NORMAL&apos;
+
+       &#183;   &apos;large&apos; / &apos;GNOME_THUMBNAIL_SIZE_LARGE&apos;
+
+   enum Gnome2::TriggerType
+       &#183;   &apos;none&apos; / &apos;GTRIG_NONE&apos;
+&#12;       &#183;   &apos;function&apos; / &apos;GTRIG_FUNCTION&apos;
+
+       &#183;   &apos;command&apos; / &apos;GTRIG_COMMAND&apos;
+
+       &#183;   &apos;mediaplay&apos; / &apos;GTRIG_MEDIAPLAY&apos;
+
+   enum Gnome2::UIInfoConfigurableTypes
+       &#183;   &apos;new&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_NEW&apos;
+
+       &#183;   &apos;open&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_OPEN&apos;
+
+       &#183;   &apos;save&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_SAVE&apos;
+
+       &#183;   &apos;save-as&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS&apos;
+
+       &#183;   &apos;revert&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_REVERT&apos;
+
+       &#183;   &apos;print&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_PRINT&apos;
+
+       &#183;   &apos;print-setup&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP&apos;
+
+       &#183;   &apos;close&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_CLOSE&apos;
+
+       &#183;   &apos;quit&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_QUIT&apos;
+
+       &#183;   &apos;cut&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_CUT&apos;
+
+       &#183;   &apos;copy&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_COPY&apos;
+
+       &#183;   &apos;paste&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_PASTE&apos;
+
+       &#183;   &apos;clear&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_CLEAR&apos;
+
+       &#183;   &apos;undo&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_UNDO&apos;
+
+       &#183;   &apos;redo&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_REDO&apos;
+
+       &#183;   &apos;find&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_FIND&apos;
+
+       &#183;   &apos;find-again&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN&apos;
+
+       &#183;   &apos;replace&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_REPLACE&apos;
+
+       &#183;   &apos;properties&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES&apos;
+
+       &#183;   &apos;preferences&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES&apos;
+
+       &#183;   &apos;about&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_ABOUT&apos;
+
+       &#183;   &apos;select-all&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL&apos;
+
+       &#183;   &apos;new-window&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW&apos;
+
+       &#183;   &apos;close-window&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW&apos;
+
+       &#183;   &apos;new-game&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME&apos;
+
+       &#183;   &apos;pause-game&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME&apos;
+
+       &#183;   &apos;restart-game&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME&apos;
+
+       &#183;   &apos;undo-move&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE&apos;
+
+       &#183;   &apos;redo-move&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE&apos;
+
+       &#183;   &apos;hint&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_HINT&apos;
+&#12;       &#183;   &apos;scores&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_SCORES&apos;
+
+       &#183;   &apos;end-game&apos; / &apos;GNOME_APP_CONFIGURABLE_ITEM_END_GAME&apos;
+
+   enum Gnome2::UIInfoType
+       &#183;   &apos;endofinfo&apos; / &apos;GNOME_APP_UI_ENDOFINFO&apos;
+
+       &#183;   &apos;item&apos; / &apos;GNOME_APP_UI_ITEM&apos;
+
+       &#183;   &apos;toggleitem&apos; / &apos;GNOME_APP_UI_TOGGLEITEM&apos;
+
+       &#183;   &apos;radioitems&apos; / &apos;GNOME_APP_UI_RADIOITEMS&apos;
+
+       &#183;   &apos;subtree&apos; / &apos;GNOME_APP_UI_SUBTREE&apos;
+
+       &#183;   &apos;separator&apos; / &apos;GNOME_APP_UI_SEPARATOR&apos;
+
+       &#183;   &apos;help&apos; / &apos;GNOME_APP_UI_HELP&apos;
+
+       &#183;   &apos;builder-data&apos; / &apos;GNOME_APP_UI_BUILDER_DATA&apos;
+
+       &#183;   &apos;item-configurable&apos; / &apos;GNOME_APP_UI_ITEM_CONFIGURABLE&apos;
+
+       &#183;   &apos;subtree-stock&apos; / &apos;GNOME_APP_UI_SUBTREE_STOCK&apos;
+
+       &#183;   &apos;include&apos; / &apos;GNOME_APP_UI_INCLUDE&apos;
+
+   enum Gnome2::UIPixmapType
+       &#183;   &apos;none&apos; / &apos;GNOME_APP_PIXMAP_NONE&apos;
+
+       &#183;   &apos;stock&apos; / &apos;GNOME_APP_PIXMAP_STOCK&apos;
+
+       &#183;   &apos;data&apos; / &apos;GNOME_APP_PIXMAP_DATA&apos;
+
+       &#183;   &apos;filename&apos; / &apos;GNOME_APP_PIXMAP_FILENAME&apos;
+
+   enum Gnome2::URLError
+       &#183;   &apos;parse&apos; / &apos;GNOME_URL_ERROR_PARSE&apos;
+
+       &#183;   &apos;launch&apos; / &apos;GNOME_URL_ERROR_LAUNCH&apos;
+
+       &#183;   &apos;url&apos; / &apos;GNOME_URL_ERROR_URL&apos;
+
+       &#183;   &apos;no-default&apos; / &apos;GNOME_URL_ERROR_NO_DEFAULT&apos;
+
+       &#183;   &apos;not-supported&apos; / &apos;GNOME_URL_ERROR_NOT_SUPPORTED&apos;
+
+       &#183;   &apos;vfs&apos; / &apos;GNOME_URL_ERROR_VFS&apos;
+
+       &#183;   &apos;cancelled&apos; / &apos;GNOME_URL_ERROR_CANCELLED&apos;
+
+SEE ALSO
+       Glib, Glib::Flags, Gtk2::enums
+
+AUTHOR
+       Generated Wed Nov 16 01:55:10 2011 by podifyenums.pl, using Gnome2-Perl
+       version 1.042.
+
+
+
+perl v5.14.2                       2011-11-16                 Gnome2::enums(3pm)
+
+</pre></body></html>

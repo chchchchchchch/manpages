@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigGetCacheDirs - return the list of directories searched for cache files</title></head>
+<body><pre>
+
+FcConfigGetCacheDirs(3)                                  FcConfigGetCacheDirs(3)
+
+
+
+NAME
+       FcConfigGetCacheDirs  - return the list of directories searched for cache
+       files
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcStrList * FcConfigGetCacheDirs (FcConfig *config);
+
+DESCRIPTION
+       FcConfigGetCacheDirs returns a string list containing all of the directo&#8208;
+       ries that fontconfig will search when attempting to load a cache file for
+       a font directory.  If config is NULL, the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012          FcConfigGetCacheDirs(3)
+
+</pre></body></html>

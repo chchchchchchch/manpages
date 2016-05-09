@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Unicode::Collate::CJK::GB2312 - weighting CJK Unified Ideographs for Unicode::Collate</title></head>
+<body><pre>
+
+Collate::CJK::GB2312(3pUser Contributed Perl DocumentatCollate::CJK::GB2312(3pm)
+
+
+
+NAME
+       Unicode::Collate::CJK::GB2312 - weighting CJK Unified Ideographs for
+       Unicode::Collate
+
+SYNOPSIS
+           use Unicode::Collate;
+           use Unicode::Collate::CJK::GB2312;
+
+           my $collator = Unicode::Collate-&gt;new(
+               overrideCJK =&gt; \&amp;Unicode::Collate::CJK::GB2312::weightGB2312
+           );
+
+DESCRIPTION
+       &quot;Unicode::Collate::CJK::GB2312&quot; provides &quot;weightGB2312()&quot;, that is
+       adequate for &quot;overrideCJK&quot; of &quot;Unicode::Collate&quot; and makes tailoring of
+       CJK Unified Ideographs in the order of CLDR&apos;s gb2312han ordering.
+
+CAVEAT
+       The gb2312han ordering includes 5 code points in private use area
+       (E2D8..E2DC), that can&apos;t utilize &quot;weightGB2312()&quot; for collation.  For
+       them, use &quot;entry&quot; instead.
+
+SEE ALSO
+       CLDR - Unicode Common Locale Data Repository
+           &lt;http://cldr.unicode.org/&gt;
+
+       Unicode Locale Data Markup Language (LDML) - UTS #35
+           &lt;http://www.unicode.org/reports/tr35/&gt;
+
+       Unicode::Collate
+       Unicode::Collate::Locale
+
+
+
+perl v5.14.2                       2012-03-10          Collate::CJK::GB2312(3pm)
+
+</pre></body></html>

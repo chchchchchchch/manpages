@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>filter-save - Event saver</title></head>
+<body><pre>
+
+filter-save(7)                         GGI                        filter-save(7)
+
+
+
+NAME
+       filter-save - Event saver
+
+SYNOPSIS
+       filter-save: [&lt;file&gt;]
+
+       filter-save: |[cmd]
+
+
+DESCRIPTION
+       filter-save writes all events to a file. This can be useful to repeat the
+       same event flow later.
+
+OPTIONS
+       file   Name of the destination file; the default is the standard output.
+
+
+       cmd    If the specified name starts with a |,  the  following  string  is
+              executed  as a command and the filter output is piped into the new
+              process&apos; stdin.
+
+
+SEE ALSO
+       input-file(7)
+
+
+
+libgii-1.0.x                       2003-08-11                     filter-save(7)
+
+</pre></body></html>

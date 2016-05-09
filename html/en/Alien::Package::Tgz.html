@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Alien::Package::Tgz - an object that represents a tgz package</title></head>
+<body><pre>
+
+Alien::Package::Tgz(3pmUser Contributed Perl DocumentatiAlien::Package::Tgz(3pm)
+
+
+
+NAME
+       Alien::Package::Tgz - an object that represents a tgz package
+
+DESCRIPTION
+       This is an object class that represents a tgz package, as used in
+       Slackware.  It also allows conversion of raw tar files.  It is derived
+       from Alien::Package.
+
+CLASS DATA
+       scripttrans
+           Translation table between canoical script names and the names used in
+           tgz&apos;s.
+
+METHODS
+       checkfile
+           Detect tgz files by their extention.
+
+       install
+           Install a tgz with installpkg. Pass in the filename of the tgz to
+           install.
+
+           installpkg (a slackware program) is used because I&apos;m not sanguine
+           about just untarring a tgz file. It might trash a system.
+
+       scan
+           Scan a tgz file for fields. Has to scan the filename for most of the
+           information, since there is little useful metadata in the file
+           itself.
+
+       unpack
+           Unpack tgz.
+
+       prep
+           Adds a populated install directory to the build tree.
+
+       build
+           Build a tgz.
+
+AUTHOR
+       Joey Hess &lt;joey@kitenet.net&gt;
+
+
+
+perl v5.14.2                       2011-07-07           Alien::Package::Tgz(3pm)
+
+</pre></body></html>

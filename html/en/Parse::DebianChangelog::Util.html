@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Parse::DebianChangelog::Util - utility functions for parsing Debian changelogs</title></head>
+<body><pre>
+
+Parse::DebianChangelog:UserlContributed Perl DoParse::DebianChangelog::Util(3pm)
+
+
+
+NAME
+       Parse::DebianChangelog::Util - utility functions for parsing Debian
+       changelogs
+
+DESCRIPTION
+       This is currently only used internally by Parse::DebianChangelog.  There
+       may be still API changes until this module is finalized.
+
+   Functions
+       find_closes
+
+       Takes one string as argument and finds &quot;Closes: #123456, #654321&quot;
+       statements as supported by the Debian Archive software in it. Returns all
+       closed bug numbers in an array reference.
+
+       data2rfc822
+
+       Takes two hash references as arguments. The first should contain the data
+       to output in RFC822 format. The second can contain a sorting order for
+       the fields. The higher the numerical value of the hash value, the earlier
+       the field is printed if it exists.
+
+       Return the data in RFC822 format as string.
+
+       data2rfc822_mult
+
+       The first argument should be an array ref to an array of hash references.
+       The second argument is a hash reference and has the same meaning as the
+       second argument of data2rfc822.
+
+       Calls data2rfc822 for each element of the array given as first argument
+       and returns the concatenated results.
+
+       get_dpkg_changes
+
+       Takes a Parse::DebianChangelog::Entry object as first argument.
+
+       Returns a string that is suitable for using it in a &quot;Changes&quot; field in
+       the output format of &quot;dpkg-parsechangelog&quot;.
+
+SEE ALSO
+       Parse::DebianChangelog, Parse::DebianChangelog::Entry
+
+AUTHOR
+       Frank Lichtenheld, &lt;frank@lichtenheld.de&gt;
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2005 by Frank Lichtenheld
+
+       This program is free software; you can redistribute it and/or modify it
+       under the terms of the GNU General Public License as published by the
+       Free Software Foundation; either version 2 of the License, or (at your
+       option) any later version.
+
+       This program is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+       Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with this program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+
+
+perl v5.10.1                       2011-04-04  Parse::DebianChangelog::Util(3pm)
+
+</pre></body></html>

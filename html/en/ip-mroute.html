@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip-mroute - multicast routing cache management</title></head>
+<body><pre>
+
+IP-MROUTE(8)                          Linux                         IP-MROUTE(8)
+
+
+
+NAME
+       ip-mroute - multicast routing cache management
+
+SYNOPSIS
+       ip mroute show [ PREFIX ] [ from PREFIX ] [ iif DEVICE ]
+
+
+DESCRIPTION
+       mroute objects are multicast routing cache entries created by a user
+       level mrouting daemon (f.e.  pimd or mrouted ).
+
+       Due to the limitations of the current interface to the multicast routing
+       engine, it is impossible to change mroute objects administratively, so we
+       may only display them.  This limitation will be removed in the future.
+
+
+   ip mroute show - list mroute cache entries
+       to PREFIX (default)
+              the prefix selecting the destination multicast addresses to list.
+
+
+       iif NAME
+              the interface on which multicast packets are received.
+
+
+       from PREFIX
+              the prefix selecting the IP source addresses of the multicast
+              route.
+
+
+SEE ALSO
+       ip(8)
+
+
+AUTHOR
+       Original Manpage by Michail Litvak &lt;mci@owl.openwall.com&gt;
+
+
+
+iproute2                           20 Dec 2011                      IP-MROUTE(8)
+
+</pre></body></html>

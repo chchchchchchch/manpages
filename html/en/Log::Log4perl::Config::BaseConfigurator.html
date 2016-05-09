@@ -1,0 +1,125 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Config::BaseConfigurator - Configurator Base Class</title></head>
+<body><pre>
+
+Config::BaseConfiguratoUsermContributed Perl DocumeConfig::BaseConfigurator(3pm)
+
+
+
+NAME
+       Log::Log4perl::Config::BaseConfigurator - Configurator Base Class
+
+SYNOPSIS
+       This is a virtual base class, all configurators should be derived from
+       it.
+
+DESCRIPTION
+   METHODS
+       &quot;new&quot;
+           Constructor, typically called like
+
+               my $config_parser = SomeConfigParser-&gt;new(
+                   file =&gt; $file,
+               );
+
+               my $data = $config_parser-&gt;parse();
+
+           Instead of &quot;file&quot;, the derived class &quot;SomeConfigParser&quot; may define
+           any type of configuration input medium (e.g. &quot;url =&gt;
+           &apos;http://foobar&apos;&quot;).  It just has to make sure its &quot;parse()&quot; method
+           will later pull the input data from the medium specified.
+
+           The base class accepts a filename or a reference to an array of text
+           lines:
+
+           &quot;file&quot;
+               Specifies a file which the &quot;parse()&quot; method later parses.
+
+           &quot;text&quot;
+               Specifies a reference to an array of scalars, representing
+               configuration records (typically lines of a file). Also accepts a
+               simple scalar, which it splits at its newlines and transforms it
+               into an array:
+
+                   my $config_parser = MyYAMLParser-&gt;new(
+                       text =&gt; [&apos;foo: bar&apos;,
+                                &apos;baz: bam&apos;,
+                               ],
+                   );
+
+                   my $data = $config_parser-&gt;parse();
+
+           If either &quot;file&quot; or &quot;text&quot; parameters have been specified in the
+           constructor call, a later call to the configurator&apos;s &quot;text()&quot; method
+           will return a reference to an array of configuration text lines.
+           This will typically be used by the &quot;parse()&quot; method to process the
+           input.
+
+       &quot;parse&quot;
+           Virtual method, needs to be defined by the derived class.
+
+   Parser requirements
+       &#183;   If the parser provides variable substitution functionality, it has to
+           implement it.
+
+       &#183;   The parser&apos;s &quot;parse()&quot; method returns a reference to a hash of hashes
+           (HoH).  The top-most hash contains the top-level keywords
+           (&quot;category&quot;, &quot;appender&quot;) as keys, associated with values which are
+           references to more deeply nested hashes.
+
+       &#183;   The &quot;log4perl.&quot; prefix (e.g. as used in the PropertyConfigurator
+           class) is stripped, it&apos;s not part in the HoH structure.
+
+       &#183;   Each Log4perl config value is indicated by the &quot;value&quot; key, as in
+
+               $data-&gt;{category}-&gt;{Bar}-&gt;{Twix}-&gt;{value} = &quot;WARN, Logfile&quot;
+
+   EXAMPLES
+       The following Log::Log4perl configuration:
+
+           log4perl.category.Bar.Twix        = WARN, Screen
+           log4perl.appender.Screen          = Log::Log4perl::Appender::File
+           log4perl.appender.Screen.filename = test.log
+           log4perl.appender.Screen.layout   = Log::Log4perl::Layout::SimpleLayout
+
+       needs to be transformed by the parser&apos;s &quot;parse()&quot; method into this data
+       structure:
+
+           { appender =&gt; {
+               Screen  =&gt; {
+                 layout =&gt; {
+                   value  =&gt; &quot;Log::Log4perl::Layout::SimpleLayout&quot; },
+                   value  =&gt; &quot;Log::Log4perl::Appender::Screen&quot;,
+               },
+             },
+             category =&gt; {
+               Bar =&gt; {
+                 Twix =&gt; {
+                   value =&gt; &quot;WARN, Screen&quot; }
+               } }
+           }
+
+       For a full-fledged example, check out the sample YAML parser
+       implementation in &quot;eg/yamlparser&quot;. It uses a simple YAML syntax to
+       specify the Log4perl configuration to illustrate the concept.
+
+SEE ALSO
+       Log::Log4perl::Config::PropertyConfigurator
+
+       Log::Log4perl::Config::DOMConfigurator
+
+       Log::Log4perl::Config::LDAPConfigurator (tbd!)
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21      Config::BaseConfigurator(3pm)
+
+</pre></body></html>

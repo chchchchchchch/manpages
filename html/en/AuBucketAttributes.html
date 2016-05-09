@@ -1,0 +1,96 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuBucketAttributes - bucket attributes structure</title></head>
+<body><pre>
+
+AuBucketAttributes(3)                                      AuBucketAttributes(3)
+
+
+
+Name
+       AuBucketAttributes - bucket attributes structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef struct _AuBucketAttributes
+       {
+           . . .
+       }AuBucketAttributes;
+
+Members
+       Do  not  dereference  the  members  of  the  AuBucketAttributes structure
+       directly.  Instead use the access macros.
+
+       ba is a pointer to a AuBucketAttributes structure.
+
+       AuBucketValueMask(ba)
+                 Accesses the  AuMask  value  indicating  which  attributes  are
+                 present.   This  is  a bitwise inclusive OR of these constants:
+                 AuCompCommonIDMask, AuCompCommonKindMask,  AuCompCommonUseMask,
+                 AuCompCommonFormatMask,  AuCompCommonNumTracksMask,  AuCompCom&#8208;
+                 monAccessMask,  AuCompCommonDescriptionMask,   AuCompBucketSam&#8208;
+                 pleRateMask, and AuCompBucketNumSamplesMask.
+
+       AuBucketChangableMask(ba)
+                 Accesses  the  AuMask  value indicating which of the attributes
+                 can be changed.  This is a bitwise inclusive OR of  these  con&#8208;
+                 stants:  AuCompCommonIDMask,  AuCompCommonKindMask,  AuCompCom&#8208;
+                 monUseMask, AuCompCommonFormatMask,  AuCompCommonNumTracksMask,
+                 AuCompCommonAccessMask,   AuCompCommonDescriptionMask,  AuComp&#8208;
+                 BucketSampleRateMask, and AuCompBucketNumSamplesMask.
+
+       AuBucketIdentifier(ba)
+                 Accesses the AuBucketID ID of the bucket.
+
+       AuBucketKind(ba)
+                 Accesses the int value indicating the kind of component.  Buck&#8208;
+                 ets will always be AuComponentKindBucket.
+
+       AuBucketUse(ba)
+                 Accesses  the  AuMask  value indicating what uses of the bucket
+                 are permitted.  This is a bitwise inclusive OR  of  these  con&#8208;
+                 stants: AuComponentUseImportMask and AuComponentUseExportMask.
+
+       AuBucketFormat(ba)
+                 Accesses  the  int  value  indicating the audio data format the
+                 bucket uses.  Currently, the  following  formats  are  defined:
+                 AuFormatULAW8,  AuFormatLinearUnsigned8, AuFormatLinearSigned8,
+                 AuFormatLinearSigned16MSB, AuFormatLinearUnsigned16MSB,  AuFor&#8208;
+                 matLinearSigned16LSB, and AuFormatLinearUnsigned16LSB.
+
+       AuBucketNumTracks(ba)
+                 Accesses  the  int  value  indicating  the number of tracks the
+                 bucket supports.
+
+       AuBucketAccess(ba)
+                 Accesses the AuMask value indicating what kinds of  access  the
+                 bucket  allows.   This  is a bitwise inclusive OR of these con&#8208;
+                 stants:  AuAccessImportMask,  AuAccessExportMask,   AuAccessDe&#8208;
+                 stroyMask, and AuAccessListMask.
+&#12;       AuBucketDescription(ba)
+                 Accesses  the  AuString structure containing a textual descrip&#8208;
+                 tion of the bucket.
+
+       AuBucketSampleRate(ba)
+                 Accesses the unsigned int value indicating the sample  rate  of
+                 the bucket.
+
+       AuBucketNumSamples(ba)
+                 Accesses  the  AuUint32  value indicating the number of samples
+                 the bucket contains.
+
+Description
+       The AuBucketAttributes structure describes the  server-local  storage  of
+       audio data.
+
+See Also
+       AuGetBucketAttributes, AuListBuckets.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - bucket attributes          1.9.3                AuBucketAttributes(3)
+
+</pre></body></html>

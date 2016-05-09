@@ -1,0 +1,337 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::Canvas -  A structured graphics canvas</title></head>
+<body><pre>
+
+Gnome2::Canvas(3pm)    User Contributed Perl Documentation   Gnome2::Canvas(3pm)
+
+
+
+NAME
+       Gnome2::Canvas -  A structured graphics canvas
+
+SYNOPSIS
+         use strict;
+         use Gtk2 -init;
+         use Gnome2::Canvas;
+         my $window = Gtk2::Window-&gt;new;
+         my $scroller = Gtk2::ScrolledWindow-&gt;new;
+         my $canvas = Gnome2::Canvas-&gt;new;
+         $scroller-&gt;add ($canvas);
+         $window-&gt;add ($scroller);
+         $window-&gt;set_default_size (150, 150);
+         $canvas-&gt;set_scroll_region (0, 0, 200, 200);
+         $window-&gt;show_all;
+
+         my $root = $canvas-&gt;root;
+         Gnome2::Canvas::Item-&gt;new ($root, &apos;Gnome2::Canvas::Text&apos;,
+                                    x =&gt; 20,
+                                    y =&gt; 15,
+                                    fill_color =&gt; &apos;black&apos;,
+                                    font =&gt; &apos;Sans 14&apos;,
+                                    anchor =&gt; &apos;GTK_ANCHOR_NW&apos;,
+                                    text =&gt; &apos;Hello, World!&apos;);
+         my $box = Gnome2::Canvas::Item-&gt;new ($root, &apos;Gnome2::Canvas::Rect&apos;,
+                                              x1 =&gt; 10, y1 =&gt; 5,
+                                              x2 =&gt; 150, y2 =&gt; 135,
+                                              fill_color =&gt; &apos;red&apos;,
+                                              outline_color =&gt; &apos;black&apos;);
+         $box-&gt;lower_to_bottom;
+         $box-&gt;signal_connect (event =&gt; sub {
+                 my ($item, $event) = @_;
+                 warn &quot;event &quot;.$event-&gt;type.&quot;\n&quot;;
+         });
+
+         Gtk2-&gt;main;
+
+DESCRIPTION
+       The Gnome Canvas is an engine for structured graphics that offers a rich
+       imaging model, high-performance rendering, and a powerful, high level
+       API.  It offers a choice of two rendering back-ends, one based on GDK for
+       extremely fast display, and another based on Libart, a sophisticated,
+       antialiased, alpha-compositing engine.  This widget can be used for
+       flexible display of graphics and for creating interactive user interface
+       elements.
+
+       To create a new Gnome2::Canvas widget call &quot;Gnome2::Canvas-&gt;new&quot; or
+       &quot;Gnome2::Canvas-&gt;new_aa&quot; for an anti-aliased mode canvas.
+
+       A Gnome2::Canvas contains one or more Gnome2::CanvasItem objects. Items
+       consist of graphing elements like lines, ellipses, polygons, images,
+       text, and curves.  These items are organized using Gnome2::CanvasGroup
+       objects, which are themselves derived from Gnome2::CanvasItem.  Since a
+       group is an item it can be contained within other groups, forming a tree
+       of canvas items.  Certain operations, like translating and scaling, can
+       be performed on all items in a group.
+
+       There is a special root group created by a Gnome2::Canvas.  This is the
+       top level group under which all items in a canvas are contained.  The
+       root group is available as &quot;$canvas-&gt;root&quot;.
+
+       There are several different coordinate systems used by Gnome2::Canvas
+       widgets.  The primary system is a logical, abstract coordinate space
+       called world coordinates.  World coordinates are expressed as unbounded
+       double floating point numbers.  When it comes to rendering to a screen
+       the canvas pixel coordinate system (also referred to as just canvas
+       coordinates) is used.  This system uses integers to specify screen pixel
+       positions.  A user defined scaling factor and offset are used to convert
+       between world coordinates and canvas coordinates.  Each item in a canvas
+       has its own coordinate system called item coordinates.  This system is
+       specified in world coordinates but they are relative to an item (0.0, 0.0
+       would be the top left corner of the item).  The final coordinate system
+       of interest is window coordinates.  These are like canvas coordinates but
+       are offsets from within a window a canvas is displayed in.  This last
+       system is rarely used, but is useful when manually handling GDK events
+       (such as drag and drop) which are specified in window coordinates (the
+       events processed by the canvas are already converted for you).
+
+       Along with different coordinate systems come methods to convert between
+       them.  &quot;$canvas-&gt;w2c&quot; converts world to canvas pixel coordinates and
+       &quot;canvas-&gt;c2w&quot; converts from canvas to world.  To get the affine transform
+       matrix for converting from world coordinates to canvas coordinates call
+       &quot;$canvas-&gt;w2c_affine&quot;.  &quot;$canvas-&gt;window_to_world&quot; converts from window
+       to world coordinates and &quot;$canvas-&gt;world_to_window&quot; converts in the other
+       direction.  There are no methods for converting between canvas and window
+       coordinates, since this is just a matter of subtracting the canvas
+       scrolling offset.  To convert to/from item coordinates use the methods
+       defined for Gnome2::CanvasItem objects.
+
+       To set the canvas zoom factor (canvas pixels per world unit, the scaling
+       factor) call &quot;$canvas-&gt;set_pixels_per_unit&quot;; setting this to 1.0 will
+       cause the two coordinate systems to correspond (e.g., [5, 6] in pixel
+       units would be [5.0, 6.0] in world units).
+
+       Defining the scrollable area of a canvas widget is done by calling
+       &quot;$canvas-&gt;set_scroll_region&quot; and to get the current region
+       &quot;$canvas-&gt;get_scroll_region&quot; can be used.  If the window is larger than
+       the canvas scrolling region it can optionally be centered in the window.
+       Use &quot;$canvas-&gt;set_center_scroll_region&quot; to enable or disable this
+       behavior.  To scroll to a particular canvas pixel coordinate use
+       &quot;$canvas-&gt;scroll_to&quot; (typically not used since scrollbars are usually set
+       up to handle the scrolling), and to get the current canvas pixel scroll
+       offset call &quot;$canvas-&gt;get_scroll_offsets&quot;.
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Layout
+                                  +----Gnome2::Canvas
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+
+METHODS
+   widget = Gnome2::Canvas-&gt;new
+       Create a new empty canvas in non-antialiased mode.
+
+   widget = Gnome2::Canvas-&gt;new_aa
+       Create a new empty canvas in antialiased mode.
+
+   boolean = $canvas-&gt;aa
+       Returns true if $canvas was created in anti-aliased mode.
+
+   ($bx1, $by1, $bx2, $by2) = Gnome2::Canvas-&gt;get_butt_points ($x1, $y1, $x2,
+       $y2, $width, $project)
+       &#183;   $x1 (double)
+&#12;       &#183;   $y1 (double)
+
+       &#183;   $x2 (double)
+
+       &#183;   $y2 (double)
+
+       &#183;   $width (double)
+
+       &#183;   $project (integer)
+
+   (wx, wy) = $canvas-&gt;c2w ($cx, $cy)
+       &#183;   $cx (integer)
+
+       &#183;   $cy (integer)
+
+   boolean = $canvas-&gt;get_center_scroll_region
+   $canvas-&gt;set_center_scroll_region ($center_scroll_region)
+       &#183;   $center_scroll_region (boolean)
+
+   list = $canvas-&gt;get_color ($spec)
+       &#183;   $spec (string)
+
+       Returns an integer indicating the success of the color allocation and a
+       GdkColor.
+
+   unsigned = $canvas-&gt;get_color_pixel ($rgba)
+       &#183;   $rgba (integer)
+
+   rgbdither = $canvas-&gt;get_dither
+   $canvas-&gt;set_dither ($dither)
+       &#183;   $dither (Gtk2::Gdk::RgbDither)
+
+   item = $canvas-&gt;get_item_at ($x, $y)
+       &#183;   $x (double)
+
+       &#183;   $y (double)
+
+   ($mx1, $my1, $mx2, $my2) = Gnome2::Canvas-&gt;get_miter_points ($x1, $y1, $x2,
+       $y2, $x3, $y3, $width)
+       &#183;   $x1 (double)
+
+       &#183;   $y1 (double)
+
+       &#183;   $x2 (double)
+
+       &#183;   $y2 (double)
+
+       &#183;   $x3 (double)
+
+       &#183;   $y3 (double)
+
+       &#183;   $width (double)
+
+   double = $canvas-&gt;get_pixels_per_unit
+       Fetch $canvas&apos; scale factor.
+
+   $canvas-&gt;set_pixels_per_unit ($n)
+       &#183;   $n (double)
+
+       Set the zooming factor of $canvas by specifying the number of screen
+       pixels that correspond to one canvas unit.
+
+   double = Gnome2::Canvas-&gt;polygon_to_point ($poly_ref, $x, $y)
+       &#183;   $poly_ref (arrayref) coordinate pairs that make up the polygon
+
+       &#183;   $x (double)
+
+       &#183;   $y (double)
+&#12;       Return the distance from the point $x,$y to the polygon described by the
+       vertices in $poly_ref, or zero if the point is inside the polygon.
+
+   $canvas-&gt;request_redraw ($x1, $y1, $x2, $y2)
+       &#183;   $x1 (integer)
+
+       &#183;   $y1 (integer)
+
+       &#183;   $x2 (integer)
+
+       &#183;   $y2 (integer)
+
+   group = $canvas-&gt;root
+   (cx, cy) = $canvas-&gt;get_scroll_offsets
+   (x1, y1, x2, y2) = $canvas-&gt;get_scroll_region
+   $canvas-&gt;set_scroll_region ($x1, $y1, $x2, $y2)
+       &#183;   $x1 (double)
+
+       &#183;   $y1 (double)
+
+       &#183;   $x2 (double)
+
+       &#183;   $y2 (double)
+
+   $canvas-&gt;scroll_to ($cx, $cy)
+       &#183;   $cx (integer)
+
+       &#183;   $cy (integer)
+
+   $canvas-&gt;set_stipple_origin ($gc)
+       &#183;   $gc (Gtk2::Gdk::GC)
+
+   $canvas-&gt;update_now
+   (cx, cy) = $canvas-&gt;w2c ($wx, $wy)
+       &#183;   $wx (double)
+
+       &#183;   $wy (double)
+
+   $affine = $canvas-&gt;w2c_affine
+       Fetch the affine transform that converts from world coordinates to canvas
+       pixel coordinates.
+
+       Note: This method was completely broken for all $Gnome2::Canvas::VERSION
+       &lt; 1.002.
+
+   (cx, cy) = $canvas-&gt;w2c_d ($wx, $wy)
+       &#183;   $wx (double)
+
+       &#183;   $wy (double)
+
+   (worldx, worldy) = $canvas-&gt;window_to_world ($winx, $winy)
+       &#183;   $winx (double)
+
+       &#183;   $winy (double)
+
+   (winx, winy) = $canvas-&gt;world_to_window ($worldx, $worldy)
+       &#183;   $worldx (double)
+
+       &#183;   $worldy (double)
+
+PROPERTIES
+       &apos;aa&apos; (boolean : default false : readable / writable / construct-only)
+           The antialiasing mode of the canvas.
+
+       &apos;focused-item&apos; (Gnome2::Canvas::Item : default undef : readable /
+       writable)
+
+SIGNALS
+       draw-background (Gnome2::Canvas, Gtk2::Gdk::Drawable, integer, integer,
+       integer, integer)
+       render-background (Gnome2::Canvas, gpointer)
+
+ENUMS AND FLAGS
+   enum Gtk2::Gdk::RgbDither
+       &#183;   &apos;none&apos; / &apos;GDK_RGB_DITHER_NONE&apos;
+&#12;       &#183;   &apos;normal&apos; / &apos;GDK_RGB_DITHER_NORMAL&apos;
+
+       &#183;   &apos;max&apos; / &apos;GDK_RGB_DITHER_MAX&apos;
+
+SEE ALSO
+       Gnome2::Canvas::index(3pm) lists the generated Perl API reference PODs.
+
+       Frederico Mena Quintero&apos;s whitepaper on the GNOME Canvas:
+       http://developer.gnome.org/doc/whitepapers/canvas/canvas.html
+
+       The real GnomeCanvas is implemented in a C library; the Gnome2::Canvas
+       module allows a Perl developer to use the canvas like a normal gtk2-perl
+       object.  Like the Gtk2 module on which it depends, Gnome2::Canvas follows
+       the C API of libgnomecanvas-2.0 as closely as possible while still being
+       perlish.  Thus, the C API reference remains the canonical documentation;
+       the Perl reference documentation lists call signatures and argument
+       types, and is meant to be used in conjunction with the C API reference.
+
+       GNOME Canvas Library Reference Manual
+       http://developer.gnome.org/doc/API/2.0/libgnomecanvas/index.html
+
+       perl(1), Glib(3pm), Gtk2(3pm).
+
+       To discuss gtk2-perl, ask questions and flame/praise the authors, join
+       gtk-perl-list@gnome.org at lists.gnome.org.
+
+AUTHOR
+       muppet &lt;scott at asofyet dot org&gt;, with patches from Torsten Schoenfeld
+       &lt;kaffetisch at web dot de&gt;.
+
+       The DESCRIPTION section of this page is adapted from the documentation of
+       libgnomecanvas.
+
+COPYRIGHT AND LICENSE
+       Copyright 2003-2004 by the gtk2-perl team.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the terms of the GNU Library General Public License as published by
+       the Free Software Foundation; either version 2 of the License, or (at
+       your option) any later version.
+
+       This library is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library
+       General Public License for more details.
+
+       You should have received a copy of the GNU Library General Public License
+       along with this library; if not, write to the Free Software Foundation,
+       Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307  USA.
+
+
+
+perl v5.14.2                       2011-11-15                Gnome2::Canvas(3pm)
+
+</pre></body></html>

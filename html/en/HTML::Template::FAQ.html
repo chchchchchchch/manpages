@@ -1,0 +1,137 @@
+<html>
+<head><meta charset=utf-8/>
+<title>HTML::Template::FAQ - Frequently Asked Questions about HTML::Template</title></head>
+<body><pre>
+
+HTML::Template::FAQ(3pmUser Contributed Perl DocumentatiHTML::Template::FAQ(3pm)
+
+
+
+NAME
+       HTML::Template::FAQ - Frequently Asked Questions about HTML::Template
+
+SYNOPSIS
+       In the interest of greater understanding I&apos;ve started a FAQ section of
+       the perldocs. Please look in here before you send me email.
+
+FREQUENTLY ASKED QUESTIONS
+   Is there a place to go to discuss HTML::Template and/or get help?
+       There&apos;s a mailing-list for discussing HTML::Template at
+       html-template-users@lists.sourceforge.net. Join at:
+
+          http://lists.sourceforge.net/lists/listinfo/html-template-users
+
+       If you just want to get email when new releases are available you can
+       join the announcements mailing-list here:
+
+           http://lists.sourceforge.net/lists/listinfo/html-template-announce
+
+   Is there a searchable archive for the mailing-list?
+       Yes, you can find an archive of the SourceForge list here:
+
+           http://dir.gmane.org/gmane.comp.lang.perl.modules.html-template
+
+   I want support for &lt;TMPL_XXX&gt;! How about it?
+       Maybe. I definitely encourage people to discuss their ideas for
+       HTML::Template on the mailing list. Please be ready to explain to me how
+       the new tag fits in with HTML::Template&apos;s mission to provide a fast,
+       lightweight system for using HTML templates.
+
+       NOTE: Offering to program said addition and provide it in the form of a
+       patch to the most recent version of HTML::Template will definitely have a
+       softening effect on potential opponents!
+
+   I found a bug, can you fix it?
+       That depends. Did you send me the VERSION of HTML::Template, a test
+       script and a test template? If so, then almost certainly.
+
+       If you&apos;re feeling really adventurous, HTML::Template is publicly
+       available on GitHub (https://github.com/mpeters/html-template). Please
+       feel free to fork it and send me a pull request with any changes you
+       have.
+
+   &lt;TMPL_VAR&gt;s from the main template aren&apos;t working inside a &lt;TMPL_LOOP&gt;! Why?
+       This is the intended behavior. &quot;&lt;TMPL_LOOP&gt;&quot; introduces a separate scope
+       for &quot;&lt;TMPL_VAR&gt;s&quot; much like a subroutine call in Perl introduces a
+       separate scope for &quot;my&quot; variables.
+
+       If you want your &quot;&lt;TMPL_VAR&gt;&quot;s to be global you can set the &quot;global_vars&quot;
+       option when you call &quot;new()&quot;. See above for documentation of the
+       &quot;global_vars&quot; &quot;new()&quot; option.
+
+   How can I pre-load my templates using cache-mode and mod_perl?
+       Add something like this to your startup.pl:
+
+           use HTML::Template;
+           use File::Find;
+
+           print STDERR &quot;Pre-loading HTML Templates...\n&quot;;
+           find(
+               sub {
+                   return unless /\.tmpl$/;
+                   HTML::Template-&gt;new(
+                       filename =&gt; &quot;$File::Find::dir/$_&quot;,
+                       cache    =&gt; 1,
+                   );
+               },
+               &apos;/path/to/templates&apos;,
+               &apos;/another/path/to/templates/&apos;
+           );
+
+       Note that you&apos;ll need to modify the &quot;return unless&quot; line to specify the
+       extension you use for your template files - I use .tmpl, as you can see.
+       You&apos;ll also need to specify the path to your template files.
+
+       One potential problem: the /path/to/templates/ must be EXACTLY the same
+       path you use when you call &quot;HTML::Template-&gt;new()&quot;. Otherwise the cache
+       won&apos;t know they&apos;re the same file and will load a new copy - instead
+       getting a speed increase, you&apos;ll double your memory usage.  To find out
+       if this is happening set &quot;cache_debug =&quot; 1&gt; in your application code and
+       look for &quot;CACHE MISS&quot; messages in the logs.
+
+   What characters are allowed in TMPL_* names?
+       Numbers, letters, &apos;.&apos;, &apos;/&apos;, &apos;+&apos;, &apos;-&apos; and &apos;_&apos;.
+
+   How can I execute a program from inside my template?
+       Short answer: you can&apos;t. Longer answer: you shouldn&apos;t since this violates
+       the fundamental concept behind HTML::Template - that design and code
+       should be separate.
+
+       But, inevitably some people still want to do it. If that describes you
+       then you should take a look at HTML::Template::Expr. Using
+       HTML::Template::Expr it should be easy to write a &quot;run_program()&quot;
+       function. Then you can do awful stuff like:
+
+           &lt;tmpl_var expr=&quot;run_program(&apos;foo.pl&apos;)&quot;&gt;
+
+       Just, please, don&apos;t tell me about it. I&apos;m feeling guilty enough just for
+       writing HTML::Template::Expr in the first place.
+
+   What&apos;s the best way to create a &lt;select&gt; form element using HTML::Template?
+       There is much disagreement on this issue. My personal preference is to
+       use CGI.pm&apos;s excellent &quot;popup_menu()&quot; and &quot;scrolling_list()&quot; functions to
+       fill in a single &quot;&lt;tmpl_var select_foo&gt;&quot; variable.
+
+       To some people this smacks of mixing HTML and code in a way that they
+       hoped HTML::Template would help them avoid. To them I&apos;d say that HTML is
+       a violation of the principle of separating design from programming.
+       There&apos;s no clear separation between the programmatic elements of the
+       &quot;&lt;form&gt;&quot; tags and the layout of the &quot;&lt;form&gt;&quot; tags.  You&apos;ll have to draw
+       the line somewhere - clearly the designer can&apos;t be entirely in charge of
+       form creation.
+
+       It&apos;s a balancing act and you have to weigh the pros and cons on each
+       side. It is certainly possible to produce a &quot;&lt;select&gt;&quot; element entirely
+       inside the template. What you end up with is a rat&apos;s nest of loops and
+       conditionals. Alternately you can give up a certain amount of flexibility
+       in return for vastly simplifying your templates. I generally choose the
+       latter.
+
+       Another option is to investigate HTML::FillInForm which some have
+       reported success using to solve this problem.
+
+
+
+perl v5.14.2                       2012-03-30           HTML::Template::FAQ(3pm)
+
+</pre></body></html>

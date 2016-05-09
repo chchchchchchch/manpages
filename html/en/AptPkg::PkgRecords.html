@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AptPkg::PkgRecords - APT package description class</title></head>
+<body><pre>
+
+AptPkg::PkgRecords(3pm)User Contributed Perl DocumentatioAptPkg::PkgRecords(3pm)
+
+
+
+NAME
+       AptPkg::PkgRecords - APT package description class
+
+SYNOPSIS
+       use AptPkg::PkgRecords;
+
+DESCRIPTION
+       The AptPkg::PkgRecords module provides an interface to the parsed
+       contents of package files.
+
+   AptPkg::PkgRecords
+       The AptPkg::PkgRecords package Implements the APT pkgRecords class.
+
+       An instance of the AptPkg::PkgRecords class may be fetched using the
+       &quot;packages&quot; method from an AptPkg::Cache object.
+
+       Methods
+
+       lookup(PACK)
+           Return a hash (or hash reference, depending on context) for the given
+           package.
+
+           PACK may either be an AptPkg::Cache::VerFile object, or a package
+           name.
+
+           The hash contains the following keys:
+
+               &quot;FileName&quot;, &quot;MD5Hash&quot;, &quot;SourcePkg&quot;, &quot;Maintainer&quot;, &quot;ShortDesc&quot;,
+               &quot;LongDesc&quot; and &quot;Name&quot;.
+
+           with values taken from the packages file.  If PACK is a package name,
+           these additional values are set:
+
+               &quot;Section&quot; and &quot;VerStr&quot;.
+
+SEE ALSO
+       AptPkg::Cache(3pm), AptPkg(3pm).
+
+AUTHOR
+       Brendan O&apos;Dea &lt;bod@debian.org&gt;
+
+
+
+perl v5.14.2                       2012-03-16            AptPkg::PkgRecords(3pm)
+
+</pre></body></html>

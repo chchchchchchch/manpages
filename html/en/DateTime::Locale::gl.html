@@ -1,0 +1,522 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::gl - DateTime locale package for "gl"</title></head>
+<body><pre>
+
+DateTime::Locale::gl(3pUser Contributed Perl DocumentatDateTime::Locale::gl(3pm)
+
+
+
+NAME
+       DateTime::Locale::gl - DateTime locale package for &quot;gl&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;gl&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Galician.
+
+DATA
+       This locale inherits from the DateTime::Locale::root locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         Luns
+         Martes
+         Mercores
+         Xoves
+         Venres
+         Sabado
+         Domingo
+
+       Abbreviated (format)
+
+         Lun
+         Mar
+         Mer
+         Xov
+         Ven
+         Sab
+         Dom
+
+       Narrow (format)
+
+         L
+         M
+         M
+         X
+         V
+         S
+         D
+
+       Wide (stand-alone)
+
+         Luns
+         Martes
+         Mercores
+         Xoves
+         Venres
+         Sabado
+         Domingo
+
+       Abbreviated (stand-alone)
+
+         Lun
+         Mar
+         Mer
+         Xov
+         Ven
+         Sab
+         Dom
+&#12;       Narrow (stand-alone)
+
+         L
+         M
+         M
+         X
+         V
+         S
+         D
+
+   Months
+       Wide (format)
+
+         Xaneiro
+         Febreiro
+         Marzo
+         Abril
+         Maio
+         Xun~o
+         Xullo
+         Agosto
+         Setembro
+         Outubro
+         Novembro
+         Decembro
+
+       Abbreviated (format)
+
+         Xan
+         Feb
+         Mar
+         Abr
+         Mai
+         Xun~
+         Xul
+         Ago
+         Set
+         Out
+         Nov
+         Dec
+
+       Narrow (format)
+
+         X
+         F
+         M
+         A
+         M
+         X
+         X
+         A
+         S
+         O
+         N
+         D
+
+       Wide (stand-alone)
+
+         Xaneiro
+         Febreiro
+         Marzo
+         Abril
+         Maio
+         Xun~o
+         Xullo
+         Agosto
+         Setembro
+         Outubro
+         Novembro
+         Decembro
+
+       Abbreviated (stand-alone)
+
+         Xan
+         Feb
+         Mar
+         Abr
+         Mai
+         Xun~
+         Xul
+         Ago
+         Set
+         Out
+         Nov
+         Dec
+
+       Narrow (stand-alone)
+
+         X
+         F
+         M
+         A
+         M
+         X
+         X
+         A
+         S
+         O
+         N
+         D
+
+   Quarters
+       Wide (format)
+
+         1o trimestre
+         2o trimestre
+         3o trimestre
+         4o trimestre
+
+       Abbreviated (format)
+
+         T1
+         T2
+         T3
+         T4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         1o trimestre
+         2o trimestre
+         3o trimestre
+         4o trimestre
+
+       Abbreviated (stand-alone)
+
+         T1
+         T2
+         T3
+         T4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         antes de Cristo
+         despois de Cristo
+
+       Abbreviated
+
+         a.C.
+         d.C.
+
+       Narrow
+
+         a.C.
+         d.C.
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = Martes 05 Febreiro 2008
+          1995-12-22T09:05:02 = Venres 22 Decembro 1995
+         -0010-09-15T04:44:23 = Sabado 15 Setembro -10
+
+       Long
+
+          2008-02-05T18:30:30 = 05 Febreiro 2008
+          1995-12-22T09:05:02 = 22 Decembro 1995
+         -0010-09-15T04:44:23 = 15 Setembro -10
+
+       Medium
+
+          2008-02-05T18:30:30 = 5 Feb, 2008
+          1995-12-22T09:05:02 = 22 Dec, 1995
+         -0010-09-15T04:44:23 = 15 Set, -10
+
+       Short
+
+          2008-02-05T18:30:30 = 05/02/08
+          1995-12-22T09:05:02 = 22/12/95
+         -0010-09-15T04:44:23 = 15/09/-10
+
+       Default
+
+          2008-02-05T18:30:30 = 5 Feb, 2008
+          1995-12-22T09:05:02 = 22 Dec, 1995
+         -0010-09-15T04:44:23 = 15 Set, -10
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = Martes 05 Febreiro 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = Venres 22 Decembro 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = Sabado 15 Setembro -10 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 05 Febreiro 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = 22 Decembro 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = 15 Setembro -10 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 5 Feb, 2008 18:30:30
+          1995-12-22T09:05:02 = 22 Dec, 1995 09:05:02
+         -0010-09-15T04:44:23 = 15 Set, -10 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 05/02/08 18:30
+          1995-12-22T09:05:02 = 22/12/95 09:05
+         -0010-09-15T04:44:23 = 15/09/-10 04:44
+
+       Default
+
+          2008-02-05T18:30:30 = 5 Feb, 2008 18:30:30
+          1995-12-22T09:05:02 = 22 Dec, 1995 09:05:02
+         -0010-09-15T04:44:23 = 15 Set, -10 04:44:23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (d EEE)
+
+          2008-02-05T18:30:30 = 5 Mar
+          1995-12-22T09:05:02 = 22 Ven
+         -0010-09-15T04:44:23 = 15 Sab
+
+       Hm (HH:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+
+       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 PM
+          1995-12-22T09:05:02 = 9:05 AM
+         -0010-09-15T04:44:23 = 4:44 AM
+
+       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 PM
+          1995-12-22T09:05:02 = 9:05:02 AM
+         -0010-09-15T04:44:23 = 4:44:23 AM
+&#12;       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (d-M)
+
+          2008-02-05T18:30:30 = 5-2
+          1995-12-22T09:05:02 = 22-12
+         -0010-09-15T04:44:23 = 15-9
+
+       MEd (E, d-M)
+
+          2008-02-05T18:30:30 = Mar, 5-2
+          1995-12-22T09:05:02 = Ven, 22-12
+         -0010-09-15T04:44:23 = Sab, 15-9
+
+       MMdd (dd/MM)
+
+          2008-02-05T18:30:30 = 05/02
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/09
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = Feb
+          1995-12-22T09:05:02 = Dec
+         -0010-09-15T04:44:23 = Set
+
+       MMMd (d MMM)
+
+          2008-02-05T18:30:30 = 5 Feb
+          1995-12-22T09:05:02 = 22 Dec
+         -0010-09-15T04:44:23 = 15 Set
+
+       MMMEd (E d MMM)
+
+          2008-02-05T18:30:30 = Mar 5 Feb
+          1995-12-22T09:05:02 = Ven 22 Dec
+         -0010-09-15T04:44:23 = Sab 15 Set
+
+       MMMMd (d MMMM)
+
+          2008-02-05T18:30:30 = 5 Febreiro
+          1995-12-22T09:05:02 = 22 Decembro
+         -0010-09-15T04:44:23 = 15 Setembro
+
+       MMMMdd (dd MMMM)
+
+          2008-02-05T18:30:30 = 05 Febreiro
+          1995-12-22T09:05:02 = 22 Decembro
+         -0010-09-15T04:44:23 = 15 Setembro
+
+       MMMMEd (E d MMMM)
+
+          2008-02-05T18:30:30 = Mar 5 Febreiro
+          1995-12-22T09:05:02 = Ven 22 Decembro
+         -0010-09-15T04:44:23 = Sab 15 Setembro
+
+       ms (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       y (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (M-yyyy)
+&#12;          2008-02-05T18:30:30 = 2-2008
+          1995-12-22T09:05:02 = 12-1995
+         -0010-09-15T04:44:23 = 9--010
+
+       yMEd (EEE, d-M-yyyy)
+
+          2008-02-05T18:30:30 = Mar, 5-2-2008
+          1995-12-22T09:05:02 = Ven, 22-12-1995
+         -0010-09-15T04:44:23 = Sab, 15-9--010
+
+       yMMM (MMM y)
+
+          2008-02-05T18:30:30 = Feb 2008
+          1995-12-22T09:05:02 = Dec 1995
+         -0010-09-15T04:44:23 = Set -10
+
+       yMMMEd (EEE, d MMM y)
+
+          2008-02-05T18:30:30 = Mar, 5 Feb 2008
+          1995-12-22T09:05:02 = Ven, 22 Dec 1995
+         -0010-09-15T04:44:23 = Sab, 15 Set -10
+
+       yMMMM (MMMM y)
+
+          2008-02-05T18:30:30 = Febreiro 2008
+          1995-12-22T09:05:02 = Decembro 1995
+         -0010-09-15T04:44:23 = Setembro -10
+
+       yQ (Q yyyy)
+
+          2008-02-05T18:30:30 = 1 2008
+          1995-12-22T09:05:02 = 4 1995
+         -0010-09-15T04:44:23 = 3 -010
+
+       yQQQ (QQQ y)
+
+          2008-02-05T18:30:30 = T1 2008
+          1995-12-22T09:05:02 = T4 1995
+         -0010-09-15T04:44:23 = T3 -10
+
+       yyMM (MM/yy)
+
+          2008-02-05T18:30:30 = 02/08
+          1995-12-22T09:05:02 = 12/95
+         -0010-09-15T04:44:23 = 09/-10
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+       yyyyMMMM (MMMM y)
+
+          2008-02-05T18:30:30 = Febreiro 2008
+          1995-12-22T09:05:02 = Decembro 1995
+         -0010-09-15T04:44:23 = Setembro -10
+
+   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       Luns
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19          DateTime::Locale::gl(3pm)
+
+</pre></body></html>

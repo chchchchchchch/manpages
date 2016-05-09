@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>neomagic - Neomagic video driver</title></head>
+<body><pre>
+
+NEOMAGIC(4)                                                          NEOMAGIC(4)
+
+
+
+NAME
+       neomagic - Neomagic video driver
+
+SYNOPSIS
+       Section &quot;Device&quot;
+         Identifier &quot;devname&quot;
+         Driver &quot;neomagic&quot;
+         ...
+       EndSection
+
+DESCRIPTION
+       neomagic  is  an  Xorg driver for the Neomagic graphics chipsets found in
+       many laptop computers.
+
+SUPPORTED HARDWARE
+       neomagic supports the following chipsets:
+
+       MagicGraph 128    (NM2070)
+
+       MagicGraph 128V   (NM2090)
+
+       MagicGraph 128ZV  (NM2093)
+
+       MagicGraph 128ZV+ (NM2097)
+
+       MagicGraph 128XD  (NM2160)
+
+       MagicGraph 256AV  (NM2200)
+
+       MagicGraph 256AV+ (NM2230)
+
+       MagicGraph 256ZX  (NM2360)
+
+       MagicGraph 256XL+ (NM2380)
+
+       The driver supports depths 8, 15, 16 and 24 for all chipsets  except  the
+       NM2070  which  does  not  support  depth  24.  All depths are accelerated
+       except for depth 24 which is only accelerated on NM2200 and newer models.
+       All  visuals are supported in depth 8.  TrueColor and DirectColor visuals
+       are supported in the other depths.
+
+
+CONFIGURATION DETAILS
+       Please refer to xorg.conf(5) for  general  configuration  details.   This
+       section only covers configuration details specific to this driver.
+
+       The following driver Options are supported
+
+       Option &quot;NoAccel&quot; &quot;boolean&quot;
+              Disable or enable acceleration.  Default: acceleration is enabled.
+
+       Option &quot;SWCursor&quot; &quot;boolean&quot;
+              Disable  or  enable  software cursor.  Default: software cursor is
+              disable and a hardware cursor is used.
+
+       Option &quot;PCIBurst&quot; &quot;boolean&quot;
+              Disable or enable PCI burst modes.  Default: enabled.
+
+       Option &quot;Rotate&quot; &quot;CW&quot;
+
+       Option &quot;Rotate&quot; &quot;CCW&quot;
+              Rotate the display clockwise or counterclockwise.   This  mode  is
+              unaccelerated.  Default: no rotation.
+
+       Option &quot;ShadowFB&quot; &quot;boolean&quot;
+              Enable  or  disable use of the shadow framebuffer layer.  Default:
+              off.
+
+       Option &quot;OverlayMem&quot; &quot;integer&quot;
+              Reserve the given amount of memory (in bytes) for the XVideo over&#8208;
+              lay.   On boards with limited memory, display of large XVideo buf&#8208;
+              fers might fail due to insufficient available memory.  Using  this
+              option  solves  the  problem at the expense of reducing the memory
+              available for other operations.  For full-resolution DVDs,  829440
+              bytes (720x576x2) are necessary.
+
+       Note
+       On  some  laptops using the 2160 chipset (MagicGraph 128XD) the following
+       options are needed to avoid a lock-up of the graphic engine:
+           Option &quot;XaaNoScanlineImageWriteRect&quot;
+           Option &quot;XaaNoScanlineCPUToScreenColorExpandFill&quot;
+
+
+SEE ALSO
+       Xorg(1), xorg.conf(5), Xserver(1), X(7)
+
+AUTHORS
+       Authors include: Jens Owen, Kevin E. Martin, and also Egbert  Eich,  Mark
+       Vojkovich, Alan Hourihane.
+
+
+
+X Version 11                xf86-video-neomagic 1.2.6                NEOMAGIC(4)
+
+</pre></body></html>

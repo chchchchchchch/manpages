@@ -1,0 +1,189 @@
+<html>
+<head><meta charset=utf-8/>
+<title>insque, remque - insert/remove an item from a queue</title></head>
+<body><pre>
+
+INSQUE(3)                   Linux Programmer&apos;s Manual                  INSQUE(3)
+
+
+
+NAME
+       insque, remque - insert/remove an item from a queue
+
+SYNOPSIS
+       #include &lt;search.h&gt;
+
+       void insque(void *elem, void *prev);
+
+       void remque(void *elem);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       insque(), remque():
+           _SVID_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
+           _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
+
+DESCRIPTION
+       The insque() and remque() functions manipulate doubly-linked lists.  Each
+       element  in the list is a structure of which the first two elements are a
+       forward and a backward pointer.  The linked list  may  be  linear  (i.e.,
+       NULL  forward pointer at the end of the list and NULL backward pointer at
+       the start of the list) or circular.
+
+       The insque() function inserts the element pointed to by elem  immediately
+       after the element pointed to by prev.
+
+       If  the  list  is linear, then the call insque(elem, NULL) can be used to
+       insert the initial list element, and the call sets the forward and  back&#8208;
+       ward pointers of elem to NULL.
+
+       If  the  list  is circular, the caller should ensure that the forward and
+       backward pointers of the first element are initialized to point  to  that
+       element,  and the prev argument of the insque() call should also point to
+       the element.
+
+       The remque() function removes the element pointed to  by  elem  from  the
+       doubly-linked list.
+
+CONFORMING TO
+       POSIX.1-2001.
+
+NOTES
+       Traditionally  (e.g.,  SunOS,  Linux libc 4 and libc 5), the arguments of
+       these functions were of type struct qelem *, defined as:
+
+           struct qelem {
+               struct qelem *q_forw;
+               struct qelem *q_back;
+               char          q_data[1];
+           };
+
+       This is still what you will get if _GNU_SOURCE is defined before  includ&#8208;
+       ing &lt;search.h&gt;.
+
+       The  location of the prototypes for these functions differs among several
+       versions of UNIX.  The above is the POSIX version.   Some  systems  place
+       them in &lt;string.h&gt;.  Linux libc4 and libc 5 placed them in &lt;stdlib.h&gt;.
+
+BUGS
+       In  glibc  2.4  and earlier, it was not possible to specify prev as NULL.
+       Consequently, to build a linear list, the caller  had  to  build  a  list
+       using  an initial call that contained the first two elements of the list,
+       with the forward and backward pointers in each element suitably  initial&#8208;
+       ized.
+
+EXAMPLE
+       The  program  below demonstrates the use of insque().  Here is an example
+       run of the program:
+
+           $ ./a.out -c a b c
+           Traversing completed list:
+               a
+               b
+               c
+           That was a circular list
+
+   Program source
+
+       #include &lt;stdio.h&gt;
+       #include &lt;stdlib.h&gt;
+       #include &lt;unistd.h&gt;
+       #include &lt;search.h&gt;
+
+       struct element {
+           struct element *forward;
+           struct element *backward;
+           char *name;
+       };
+
+       static struct element *
+       new_element(void)
+       {
+           struct element *e;
+
+           e = malloc(sizeof(struct element));
+           if (e == NULL) {
+               fprintf(stderr, &quot;malloc() failed\n&quot;);
+               exit(EXIT_FAILURE);
+           }
+
+           return e;
+       }
+
+       int
+       main(int argc, char *argv[])
+       {
+           struct element *first, *elem, *prev;
+           int circular, opt, errfnd;
+
+           /* The &quot;-c&quot; command-line option can be used to specify that the
+              list is circular */
+
+           errfnd = 0;
+           circular = 0;
+           while ((opt = getopt(argc, argv, &quot;c&quot;)) != -1) {
+               switch (opt) {
+               case &apos;c&apos;:
+                   circular = 1;
+                   break;
+               default:
+                   errfnd = 1;
+                   break;
+               }
+           }
+
+           if (errfnd || optind &gt;= argc) {
+               fprintf(stderr,  &quot;Usage: %s [-c] string...\n&quot;, argv[0]);
+               exit(EXIT_FAILURE);
+           }
+
+           /* Create first element and place it in the linked list */
+
+           elem = new_element();
+           first = elem;
+
+           elem-&gt;name = argv[optind];
+
+           if (circular) {
+               elem-&gt;forward = elem;
+               elem-&gt;backward = elem;
+               insque(elem, elem);
+           } else {
+               insque(elem, NULL);
+           }
+
+           /* Add remaining command-line arguments as list elements */
+
+           while (++optind &lt; argc) {
+               prev = elem;
+
+               elem = new_element();
+               elem-&gt;name = argv[optind];
+               insque(elem, prev);
+           }
+
+           /* Traverse the list from the start, printing element names */
+
+           printf(&quot;Traversing completed list:\n&quot;);
+           elem = first;
+           do {
+               printf(&quot;    %s\n&quot;, elem-&gt;name);
+               elem = elem-&gt;forward;
+           } while (elem != NULL &amp;&amp; elem != first);
+
+           if (elem == first)
+               printf(&quot;That was a circular list\n&quot;);
+
+           exit(EXIT_SUCCESS);
+       }
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2010-09-09                          INSQUE(3)
+
+</pre></body></html>

@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoystickName - Get joystick name.</title></head>
+<body><pre>
+
+SDL_JoystickName(3)             SDL API Reference            SDL_JoystickName(3)
+
+
+
+NAME
+       SDL_JoystickName - Get joystick name.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       const char *SDL_JoystickName(int index);
+
+DESCRIPTION
+       Get  the  implementation  dependent name of joystick. The index parameter
+       refers to the N&apos;th joystick on the system.
+
+RETURN VALUE
+       Returns a char pointer to the joystick name.
+
+EXAMPLES
+       /* Print the names of all attached joysticks */
+       int num_joy, i;
+       num_joy=SDL_NumJoysticks();
+       printf(&quot;%d joysticks found
+       &quot;, num_joy);
+       for(i=0;i&lt;num_joy;i++)
+         printf(&quot;%s
+       &quot;, SDL_JoystickName(i));
+
+SEE ALSO
+       SDL_JoystickOpen
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00          SDL_JoystickName(3)
+
+</pre></body></html>

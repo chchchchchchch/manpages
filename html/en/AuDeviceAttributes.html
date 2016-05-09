@@ -1,0 +1,128 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuDeviceAttributes - device attributes structure</title></head>
+<body><pre>
+
+AuDeviceAttributes(3)                                      AuDeviceAttributes(3)
+
+
+
+Name
+       AuDeviceAttributes - device attributes structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef struct _AuDeviceAttributes
+       {
+           . . .
+       }AuDeviceAttributes;
+
+Members
+       Do  not  dereference  the  members  of  the  AuDeviceAttributes structure
+       directly.  Instead use the access macros.
+
+       da is a pointer to a AuDeviceAttributes structure.
+
+       AuDeviceValueMask(da)
+                 Accesses  the  AuMask  value  indicating  what  attributes  are
+                 present.   This  is  a bitwise inclusive OR of these constants:
+                 AuCompCommonIDMask, AuCompCommonKindMask,  AuCompCommonUseMask,
+                 AuCompCommonFormatMask,  AuCompCommonNumTracksMask,  AuCompCom&#8208;
+                 monAccessMask, AuCompCommonDescriptionMask, AuCompDeviceMinSam&#8208;
+                 pleRateMask,  AuCompDeviceMaxSampleRateMask,  AuCompDeviceLoca&#8208;
+                 tionMask, AuCompDeviceGainMask,  AuCompDeviceLineModeMask,  and
+                 AuCompDeviceChildrenMask.
+
+       AuDeviceChangableMask(da)
+                 Accesses  the  AuMask  value indicating which attributes can be
+                 changed.  This is a bitwise inclusive OR  of  these  constants:
+                 AuCompCommonIDMask,  AuCompCommonKindMask, AuCompCommonUseMask,
+                 AuCompCommonFormatMask,  AuCompCommonNumTracksMask,  AuCompCom&#8208;
+                 monAccessMask, AuCompCommonDescriptionMask, AuCompDeviceMinSam&#8208;
+                 pleRateMask,  AuCompDeviceMaxSampleRateMask,  AuCompDeviceLoca&#8208;
+                 tionMask,  AuCompDeviceGainMask,  AuCompDeviceLineModeMask, and
+                 AuCompDeviceChildrenMask.
+
+       AuDeviceIdentifier(da)
+                 Accesses the AuFlowID ID of the device.
+
+       AuDeviceKind(da)
+                 Accesses the  int  value  indicating  the  kind  of  component.
+                 Devices  are either AuComponentKindPhysicalInput or AuComponen&#8208;
+                 tKindPhysicalOutput.
+
+       AuDeviceUse(da)
+                 Accesses the AuMask value indicating what uses  of  the  device
+                 are  permitted.   This  is a bitwise inclusive OR of these con&#8208;
+                 stants: AuComponentUseImportMask and AuComponentUseExportMask.
+
+       AuDeviceFormat(da)
+                 Accesses the int value indicating the  audio  data  format  the
+                 device  uses.   Currently,  the  following formats are defined:
+                 AuFormatULAW8, AuFormatLinearUnsigned8,  AuFormatLinearSigned8,
+                 AuFormatLinearSigned16MSB,  AuFormatLinearUnsigned16MSB, AuFor&#8208;
+                 matLinearSigned16LSB, and AuFormatLinearUnsigned16LSB.
+
+       AuDeviceNumTracks(da)
+                 Accesses the int value indicating  the  number  of  tracks  the
+                 device supports.
+
+       AuDeviceAccess(da)
+                 Accesses  the  AuMask value indicating what kinds of access are
+                 allowed.  This is a bitwise inclusive OR  of  these  constants:
+                 AuAccessImportMask,   AuAccessExportMask,  AuAccessDestroyMask,
+                 and AuAccessListMask.
+
+       AuDeviceDescription(da)
+                 Accesses the AuString structure containing a  textual  descrip&#8208;
+                 tion of the device.
+
+       AuDeviceMinSampleRate(da)
+                 Accesses  the  unsigned int value indicating the minimum sample
+                 rate supported by the device.
+
+       AuDeviceMaxSampleRate(da)
+                 Accesses the unsigned int value indicating the  maximum  sample
+                 rate supported by the device.
+
+       AuDeviceLocation(da)
+                 Accesses  the  AuMask  value  indicating  the  location  of the
+                 device.  This is a bitwise inclusive  OR  of  these  constants:
+                 AuDeviceLocationLeftMask, AuDeviceLocationCenterMask, AuDevice&#8208;
+                 LocationRightMask,  AuDeviceLocationTopMask,  AuDeviceLocation&#8208;
+                 MiddleMask,  AuDeviceLocationBottomMask,  AuDeviceLocationBack&#8208;
+                 Mask, AuDeviceLocationFrontMask,  AuDeviceLocationInternalMask,
+                 and AuDeviceLocationExternalMask
+
+       AuDeviceGain(da)
+                 Accesses  the  AuFixedPoint  value  with  the  current hardware
+                 amplification level.
+
+       AuDeviceLineMode(da)
+                 Accesses the AuInt32 value indicating  the  current  line  mode
+                 (input device only).
+
+       AuDeviceNumChildren(da)
+                 Accesses  the  int value indicating the number of subcomponents
+                 of the device.
+
+       AuDeviceChildren(da)
+                 Accesses the list of AuDeviceID&apos;s of the subcomponents  of  the
+                 device.
+
+Description
+       The  AuDeviceAttributes  structure describes the physical hardware inter&#8208;
+       face.
+
+See Also
+       AuGetDeviceAttributes, AuListDevices.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+
+audiolib - device attributes structure1.9.3                AuDeviceAttributes(3)
+
+</pre></body></html>

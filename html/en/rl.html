@@ -1,0 +1,121 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rl - Randomize Lines.</title></head>
+<body><pre>
+
+rl(1)                             User Commands                            rl(1)
+
+
+
+NAME
+       rl - Randomize Lines.
+
+SYNOPSIS
+       rl [OPTION]...  [FILE]...
+
+
+DESCRIPTION
+       rl  reads  lines  from  a  input  file or stdin, randomizes the lines and
+       outputs a specified number of lines.  It does this  with  only  a  single
+       pass over the input while trying to use as little memory as possible.
+
+
+       -c, --count=N
+              Select  the number of lines to be returned in the output.  If this
+              argument is omitted all the lines in the file will be returned  in
+              random order.  If the input contains less lines than specified and
+              the --reselect option below is not specified a warning is  printed
+              and all lines are returned in random order.
+
+
+       -r, --reselect
+              When  using  this  option  a  single line may be selected multiple
+              times.  The default behaviour is that any input line will only  be
+              selected once.  This option makes it possible to specify a --count
+              option with more lines than the file actually holds.
+
+
+       -o, --output=FILE
+              Send randomized lines to FILE instead of stdout.
+
+
+       -d, --delimiter=DELIM
+              Use specified character as  a  &quot;line&quot;  delimiter  instead  of  the
+              newline character.
+
+
+       -0, --null
+              Input  lines  are  terminated by a null character.  This option is
+              useful to process the output of the GNU find -print0 option.
+
+
+       -n, --line-number
+              Output lines are numbered with the  line  number  from  the  input
+              file.
+
+
+       -q, --quiet, --silent
+              Be quiet about any errors or warnings.
+
+
+       -h, --help
+              Show short summary of options.
+
+
+       -v, --version
+              Show version of program.
+
+
+EXAMPLES
+       Some simple demonstrations of how rl can help you do everyday tasks.
+&#12;       Play a random sound after 4 minutes (perfect for toast):
+           sleep 240 ; play `find /sounds -name &#180;*.au&#180; -print | rl --count=1`
+
+       Play the 15 most recent .mp3 files in random order.
+           ls -c *.mp3 | head -n 15 | rl  | xargs --delimiter=&#180;\n&#180; play
+
+       Roll a dice:
+           seq 6 | rl --count 2
+
+       Roll a dice 1000 times and see which number comes up more often:
+           seq 6 | rl --reselect --count 1000 | sort | uniq -c | sort -n
+
+       Shuffle the words of a sentence:
+           echo -n &quot;The rain in Spain stays mainly in the plain.&quot; \
+             | rl --delimiter=&#180; &#180;;echo
+
+       Find all movies and play them in random order.
+           find . -name &#180;*.avi&#180; -print0 | rl -0 | xargs -n 1 -0 mplayer
+       Because -0 is used filenames with spaces (even newlines and other unusual
+       characters) in them work.
+
+
+BUGS
+       The program currently does not have very smart memory management.  If you
+       feed  it  huge  files  and expect it to fully randomize all lines it will
+       completely read the file in memory. If you specify the --count option  it
+       will  only  use  the  memory required for storing the specified number of
+       lines.  Improvements on this area are on the TODO list.
+
+       The program uses  the  rand()  system  random  function.   This  function
+       returns  a  number between 0 and RAND_MAX, which may not be very large on
+       some  systems.   This  will  result  in  non-random  results  for   files
+       containing more lines than RAND_MAX.
+
+       Note  that  if  you  specify multiple input files they are randomized per
+       file.  This is a different result from when you cat  all  the  files  and
+       pipe the result into rl.
+
+
+COPYRIGHT
+       Copyright  &#169;  2001,  2002,  2003,  2004, 2005, 2006, 2007, 2008 Arthur de
+       Jong.
+       This is free software; see the license for copying conditions.  There  is
+       NO  warranty;  not  even  for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+
+
+Version 0.2.7                       Jul 2008                               rl(1)
+
+</pre></body></html>

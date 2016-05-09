@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>calibre-server - part of calibre</title></head>
+<body><pre>
+
+CALIBRE-SERVER(1)                    calibre                   CALIBRE-SERVER(1)
+
+
+
+NAME
+       calibre-server - part of calibre
+
+SYNOPSIS
+       calibre-server  [options]
+
+DESCRIPTION
+       Start the calibre content server. The calibre content server exposes your
+       calibre library over the internet. The default interface  allows  you  to
+       browse  you  calibre library by categories. You can also access an inter&#8208;
+       face optimized for mobile browsers at /mobile and an OPDS based interface
+       for use with reading applications at /opds.
+
+       The OPDS interface is advertised via BonJour automatically.
+
+       Whenever  you  pass arguments to calibre-server that have spaces in them,
+       enclose the arguments in quotation marks.
+
+OPTIONS
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show this help message and exit
+
+       -p, --port
+              The port on which to listen. Default is 8080
+
+       -t, --timeout
+              The server timeout in seconds. Default is 120
+
+       --thread-pool
+              The max number of worker threads to use. Default is 30
+
+       --password
+              Set a password to restrict access.  By  default  access  is  unre&#8208;
+              stricted.
+
+       --username
+              Username for access. By default, it is: &apos;calibre&apos;
+
+       --develop
+              Development  mode.  Server  automatically restarts on file changes
+              and serves code files (html, css, js) from the file system instead
+              of calibre&apos;s resource system.
+
+       --max-cover
+              The maximum size for displayed covers. Default is &apos;600x800&apos;.
+
+       --max-opds-items
+              The  maximum  number  of  matches  to  return per OPDS query. This
+              affects Stanza, WordPlayer, etc. integration.
+
+       --max-opds-ungrouped-items
+              Group items in categories such as author/tags by first letter when
+              there  are  more than this number of items. Default: 100. Set to a
+              large number to disable grouping.
+
+       --url-prefix
+              Prefix to prepend to all URLs. Useful for reverseproxying to  this
+              server from Apache/nginx/etc.
+&#12;       --with-library
+              Path to the library folder to serve with the content server
+
+       --pidfile
+              Write process PID to the specified file
+
+       --daemonize
+              Run process in background as a daemon. No effect on windows.
+
+       --restriction
+              Specifies  a  restriction  to  be  used  for this invocation. This
+              option overrides any per-library settings specified in the GUI
+
+       --auto-reload
+              Auto reload server when source code changes. May not work  in  all
+              environments.
+
+SEE ALSO
+       The User Manual is available at http://manual.calibre-ebook.com
+
+       Created by Kovid Goyal &lt;kovid@kovidgoyal.net&gt;
+
+
+
+calibre-server (calibre 0.8.51)   January 2013                 CALIBRE-SERVER(1)
+
+</pre></body></html>

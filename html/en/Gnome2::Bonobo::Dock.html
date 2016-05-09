@@ -1,0 +1,99 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::Bonobo::Dock - wrapper for BonoboDock</title></head>
+<body><pre>
+
+Gnome2::Bonobo::Dock(3pUser Contributed Perl DocumentatGnome2::Bonobo::Dock(3pm)
+
+
+
+NAME
+       Gnome2::Bonobo::Dock - wrapper for BonoboDock
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gnome2::Bonobo::Dock
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+
+METHODS
+   widget = Gnome2::Bonobo::Dock-&gt;new
+   $dock-&gt;add_floating_item ($widget, $x, $y, $orientation)
+       &#183;   $widget (Gnome2::Bonobo::DockItem)
+
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+       &#183;   $orientation (Gtk2::Orientation)
+
+   boolean = $dock-&gt;add_from_layout ($layout)
+       &#183;   $layout (Gnome2::Bonobo::DockLayout)
+
+   $dock-&gt;add_item ($item, $placement, $band_num, $position, $offset,
+       $in_new_band)
+       &#183;   $item (Gnome2::Bonobo::DockItem)
+
+       &#183;   $placement (Gnome2::Bonobo::DockPlacement)
+
+       &#183;   $band_num (integer)
+
+       &#183;   $position (integer)
+
+       &#183;   $offset (integer)
+
+       &#183;   $in_new_band (boolean)
+
+   $dock-&gt;allow_floating_items ($enable)
+       &#183;   $enable (boolean)
+
+   widget = $dock-&gt;get_client_area
+   $dock-&gt;set_client_area ($widget)
+       &#183;   $widget (Gtk2::Widget)
+
+   list = $dock-&gt;get_item_by_name ($name)
+       &#183;   $name (string)
+
+       Returns a BonoboDockItem, a BonoboDockPlacement and three unsigned
+       integers correspoding to num_band, band_position and offset.
+
+   docklayout = $dock-&gt;get_layout
+SIGNALS
+       layout-changed (Gnome2::Bonobo::Dock)
+
+ENUMS AND FLAGS
+   enum Gnome2::Bonobo::DockPlacement
+       &#183;   &apos;top&apos; / &apos;BONOBO_DOCK_TOP&apos;
+&#12;       &#183;   &apos;right&apos; / &apos;BONOBO_DOCK_RIGHT&apos;
+
+       &#183;   &apos;bottom&apos; / &apos;BONOBO_DOCK_BOTTOM&apos;
+
+       &#183;   &apos;left&apos; / &apos;BONOBO_DOCK_LEFT&apos;
+
+       &#183;   &apos;floating&apos; / &apos;BONOBO_DOCK_FLOATING&apos;
+
+   enum Gtk2::Orientation
+       &#183;   &apos;horizontal&apos; / &apos;GTK_ORIENTATION_HORIZONTAL&apos;
+
+       &#183;   &apos;vertical&apos; / &apos;GTK_ORIENTATION_VERTICAL&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16          Gnome2::Bonobo::Dock(3pm)
+
+</pre></body></html>

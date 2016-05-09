@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cpufreq-info - Utility to retrieve cpufreq kernel information</title></head>
+<body><pre>
+
+cpufreq-info(1)                                                  cpufreq-info(1)
+
+
+
+NAME
+       cpufreq-info - Utility to retrieve cpufreq kernel information
+
+SYNTAX
+       cpufreq-info [options]
+
+DESCRIPTION
+       A  small  tool which prints out cpufreq information helpful to developers
+       and interested users.
+
+OPTIONS
+       -c --cpu &lt;CPU&gt;
+               &lt;CPU&gt; number which information shall be determined about.
+
+       -e --debug
+              Prints out debug information.
+
+       -f --freq
+              Get frequency the CPU currently runs at, according to the  cpufreq
+              core.
+
+       -w --hwfreq
+              Get  frequency the CPU currently runs at, by reading it from hard&#8208;
+              ware (only available to root).
+
+       -l --hwlimits
+              Determine the minimum and maximum CPU frequency allowed.
+
+       -d --driver
+              Determines the used cpufreq kernel driver.
+
+       -p --policy
+              Gets the currently used cpufreq policy.
+
+       -g --governors
+              Determines available cpufreq governors.
+
+       -a --related-cpus
+              Determines which CPUs run at the same hardware frequency.
+
+       -a --affected-cpus
+              Determines which CPUs need to have their frequency coordinated  by
+              software.
+
+       -s --stats
+              Shows cpufreq statistics if available.
+
+       -y --latency
+              Determines the maximum latency on CPU frequency changes.
+
+       -o --proc
+              Prints  out  information like provided by the /proc/cpufreq inter&#8208;
+              face in 2.4. and early 2.6. kernels.
+
+       -m --human
+              human-readable output for the -f, -w, -s and -y parameters.
+
+       -h --help
+              Prints out the help screen.
+
+REMARKS
+       You can&apos;t specify more than one of the output specific options -o  -e  -a
+       -g -p -d -l -w -f -y.
+
+       You also can&apos;t specify the -o option combined with the -c option.
+
+FILES
+       /sys/devices/system/cpu/cpu*/cpufreq/
+       /proc/cpufreq (deprecated)
+       /proc/sys/cpu/ (deprecated)
+
+AUTHORS
+       Dominik Brodowski &lt;linux@brodo.de&gt; - author
+       Mattia Dongili&lt;malattia@gmail.com&gt; - first autolibtoolization
+
+SEE ALSO
+       cpufreq-set(1), cpufreq-aperf(1)
+
+
+
+Mattia Dongili                         0.1                       cpufreq-info(1)
+
+</pre></body></html>

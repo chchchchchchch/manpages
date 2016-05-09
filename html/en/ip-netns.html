@@ -1,0 +1,62 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip-netns - process network namespace management</title></head>
+<body><pre>
+
+IP-NETNS(8)                           Linux                          IP-NETNS(8)
+
+
+
+NAME
+       ip-netns - process network namespace management
+
+SYNOPSIS
+       ip [ OPTIONS ] netns  { COMMAND | help }
+
+       ip netns { list }
+
+       ip netns { add | delete } NETNSNAME
+
+       ip netns exec NETNSNAME command ...
+
+
+DESCRIPTION
+       A network namespace is logically another copy of the network stack, with
+       it&apos;s own routes, firewall rules, and network devices.
+
+       By convention a named network namespace is an object at
+       /var/run/netns/NAME that can be opened.  The file descriptor resulting
+       from opening /var/run/netns/NAME refers to the specified network names&#8208;
+       pace.  Holding that file descriptor open keeps the network namespace
+       alive.  The file descriptor can be used with the setns(2) system call to
+       change the network namespace associated with a task.
+
+       The convention for network namespace aware applications is to look for
+       global network configuration files first in /etc/netns/NAME/ then in
+       /etc/.  For example, if you want a different version of /etc/resolv.conf
+       for a network namespace used to isolate your vpn you would name it
+       /etc/netns/myvpn/resolv.conf.
+
+       ip netns exec automates handling of this configuration, file convention
+       for network namespace unaware applications, by creating a mount namespace
+       and bind mounting all of the per network namespace configure files into
+       their traditional location in /etc.
+
+
+   ip netns list - show all of the named network namespaces
+   ip netns add NAME - create a new named network namespace
+   ip netns delete NAME - delete the name of a network namespace
+   ip netns exec NAME cmd ... - Run cmd in the named network namespace
+EXAMPLES
+SEE ALSO
+       ip(8)
+
+
+AUTHOR
+       Original Manpage by Eric W. Biederman
+
+
+
+iproute2                           20 Dec 2011                       IP-NETNS(8)
+
+</pre></body></html>

@@ -1,0 +1,304 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca primitives drawing -</title></head>
+<body><pre>
+
+libcaca primitives drawing(3caca)    libcaca   libcaca primitives drawing(3caca)
+
+
+
+NAME
+       libcaca primitives drawing -
+
+   Functions
+       __extern int caca_draw_line (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Draw a line on the canvas using the given character.
+       __extern int caca_draw_polyline (caca_canvas_t *, int const x[], int
+           const y[], int, uint32_t)
+           Draw a polyline.
+       __extern int caca_draw_thin_line (caca_canvas_t *, int, int, int, int)
+           Draw a thin line on the canvas, using ASCII art.
+       __extern int caca_draw_thin_polyline (caca_canvas_t *, int const x[], int
+           const y[], int)
+           Draw an ASCII art thin polyline.
+       __extern int caca_draw_circle (caca_canvas_t *, int, int, int, uint32_t)
+           Draw a circle on the canvas using the given character.
+       __extern int caca_draw_ellipse (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Draw an ellipse on the canvas using the given character.
+       __extern int caca_draw_thin_ellipse (caca_canvas_t *, int, int, int, int)
+           Draw a thin ellipse on the canvas.
+       __extern int caca_fill_ellipse (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Fill an ellipse on the canvas using the given character.
+       __extern int caca_draw_box (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Draw a box on the canvas using the given character.
+       __extern int caca_draw_thin_box (caca_canvas_t *, int, int, int, int)
+           Draw a thin box on the canvas.
+       __extern int caca_draw_cp437_box (caca_canvas_t *, int, int, int, int)
+           Draw a box on the canvas using CP437 characters.
+       __extern int caca_fill_box (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Fill a box on the canvas using the given character.
+       __extern int caca_draw_triangle (caca_canvas_t *, int, int, int, int,
+           int, int, uint32_t)
+           Draw a triangle on the canvas using the given character.
+       __extern int caca_draw_thin_triangle (caca_canvas_t *, int, int, int,
+           int, int, int)
+           Draw a thin triangle on the canvas.
+       __extern int caca_fill_triangle (caca_canvas_t *, int, int, int, int,
+           int, int, uint32_t)
+           Fill a triangle on the canvas using the given character.
+       __extern int caca_fill_triangle_textured (caca_canvas_t *cv, int
+           coords[6], caca_canvas_t *tex, float uv[6])
+           Fill a triangle on the canvas using an arbitrary-sized texture.
+
+Detailed Description
+       These functions provide routines for primitive drawing, such as lines,
+       boxes, triangles and ellipses.
+
+Function Documentation
+   __extern int caca_draw_line (caca_canvas_t *cv, intx1, inty1, intx2, inty2,
+       uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x1 X coordinate of the first point.
+           y1 Y coordinate of the first point.
+           x2 X coordinate of the second point.
+           y2 Y coordinate of the second point.
+           ch UTF-32 character to be used to draw the line.
+
+       Returns:
+           This function always returns 0.
+
+       Referenced by caca_draw_box(), caca_draw_triangle(), and
+       caca_fill_ellipse().
+
+   __extern int caca_draw_polyline (caca_canvas_t *cv, int constx[], int
+       consty[], intn, uint32_tch) Draw a polyline on the canvas using the given
+       character and coordinate arrays. The first and last points are not
+       connected, hence in order to draw a polygon you need to specify the
+       starting point at the end of the list as well.
+       This function never fails.
+
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x Array of X coordinates. Must have n + 1 elements.
+           y Array of Y coordinates. Must have n + 1 elements.
+           n Number of lines to draw.
+           ch UTF-32 character to be used to draw the lines.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_draw_thin_line (caca_canvas_t *cv, intx1, inty1, intx2,
+       inty2) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x1 X coordinate of the first point.
+           y1 Y coordinate of the first point.
+           x2 X coordinate of the second point.
+           y2 Y coordinate of the second point.
+
+       Returns:
+           This function always returns 0.
+
+       Referenced by caca_draw_thin_triangle().
+
+   __extern int caca_draw_thin_polyline (caca_canvas_t *cv, int constx[], int
+       consty[], intn) Draw a thin polyline on the canvas using the given
+       coordinate arrays and with ASCII art. The first and last points are not
+       connected, so in order to draw a polygon you need to specify the starting
+       point at the end of the list as well.
+       This function never fails.
+
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x Array of X coordinates. Must have n + 1 elements.
+           y Array of Y coordinates. Must have n + 1 elements.
+           n Number of lines to draw.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_draw_circle (caca_canvas_t *cv, intx, inty, intr,
+       uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x Center X coordinate.
+           y Center Y coordinate.
+           r Circle radius.
+           ch UTF-32 character to be used to draw the circle outline.
+
+       Returns:
+           This function always returns 0.
+&#12;   __extern int caca_draw_ellipse (caca_canvas_t *cv, intxo, intyo, inta, intb,
+       uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           xo Center X coordinate.
+           yo Center Y coordinate.
+           a Ellipse X radius.
+           b Ellipse Y radius.
+           ch UTF-32 character to be used to draw the ellipse outline.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_draw_thin_ellipse (caca_canvas_t *cv, intxo, intyo, inta,
+       intb) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           xo Center X coordinate.
+           yo Center Y coordinate.
+           a Ellipse X radius.
+           b Ellipse Y radius.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_fill_ellipse (caca_canvas_t *cv, intxo, intyo, inta, intb,
+       uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           xo Center X coordinate.
+           yo Center Y coordinate.
+           a Ellipse X radius.
+           b Ellipse Y radius.
+           ch UTF-32 character to be used to fill the ellipse.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_draw_line().
+
+   __extern int caca_draw_box (caca_canvas_t *cv, intx, inty, intw, inth,
+       uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x X coordinate of the upper-left corner of the box.
+           y Y coordinate of the upper-left corner of the box.
+           w Width of the box.
+           h Height of the box.
+           ch UTF-32 character to be used to draw the box.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_draw_line().
+
+   __extern int caca_draw_thin_box (caca_canvas_t *cv, intx, inty, intw, inth)
+       This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x X coordinate of the upper-left corner of the box.
+           y Y coordinate of the upper-left corner of the box.
+           w Width of the box.
+           h Height of the box.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_draw_cp437_box (caca_canvas_t *cv, intx, inty, intw, inth)
+       This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x X coordinate of the upper-left corner of the box.
+           y Y coordinate of the upper-left corner of the box.
+           w Width of the box.
+           h Height of the box.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_fill_box (caca_canvas_t *cv, intx, inty, intw, inth,
+       uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x X coordinate of the upper-left corner of the box.
+           y Y coordinate of the upper-left corner of the box.
+           w Width of the box.
+           h Height of the box.
+           ch UTF-32 character to be used to draw the box.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_add_dirty_rect(), and caca_put_char().
+
+       Referenced by caca_conio_clreol().
+
+   __extern int caca_draw_triangle (caca_canvas_t *cv, intx1, inty1, intx2,
+       inty2, intx3, inty3, uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x1 X coordinate of the first point.
+           y1 Y coordinate of the first point.
+           x2 X coordinate of the second point.
+           y2 Y coordinate of the second point.
+           x3 X coordinate of the third point.
+           y3 Y coordinate of the third point.
+           ch UTF-32 character to be used to draw the triangle outline.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_draw_line().
+
+   __extern int caca_draw_thin_triangle (caca_canvas_t *cv, intx1, inty1, intx2,
+       inty2, intx3, inty3) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x1 X coordinate of the first point.
+           y1 Y coordinate of the first point.
+           x2 X coordinate of the second point.
+           y2 Y coordinate of the second point.
+           x3 X coordinate of the third point.
+           y3 Y coordinate of the third point.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_draw_thin_line().
+
+   __extern int caca_fill_triangle (caca_canvas_t *cv, intx1, inty1, intx2,
+       inty2, intx3, inty3, uint32_tch) This function never fails.
+       Parameters:
+           cv The handle to the libcaca canvas.
+           x1 X coordinate of the first point.
+           y1 Y coordinate of the first point.
+           x2 X coordinate of the second point.
+           y2 Y coordinate of the second point.
+           x3 X coordinate of the third point.
+           y3 Y coordinate of the third point.
+           ch UTF-32 character to be used to fill the triangle.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_fill_triangle(), and caca_put_char().
+
+       Referenced by caca_fill_triangle().
+
+   __extern int caca_fill_triangle_textured (caca_canvas_t *cv, intcoords[6],
+       caca_canvas_t *tex, floatuv[6]) This function fails if one or both the
+       canvas are missing
+       Parameters:
+           cv The handle to the libcaca canvas.
+           coords The coordinates of the triangle (3{x,y})
+           tex The handle of the canvas texture.
+           uv The coordinates of the texture (3{u,v})
+
+       Returns:
+           This function return 0 if ok, -1 if canvas or texture are missing.
+
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2012libcaca primitives drawing(3caca)
+
+</pre></body></html>

@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdfjam-slides6up - put presentation slides onto 6-up pages</title></head>
+<body><pre>
+
+pdfjam-slides6up(1)                                          pdfjam-slides6up(1)
+
+
+
+NAME
+       pdfjam-slides6up - put presentation slides onto 6-up pages
+
+SYNOPSIS
+       pdfjam-slides6up  [--pagenumbering  SWITCH]  [OPTION  [OPTION]  ...] [SRC
+       [PAGESPEC] [SRC [PAGESPEC]] ...]
+
+DESCRIPTION
+       pdfjam-slides6up converts PDF files whose pages are  presentation  slides
+       (with  4:3 aspect ratio) into 6-up versions suitable for making a handout
+       (for example).  By default, the 6-up pages do not  themselves  have  page
+       numbers.
+
+       To  put  page  numbers  on  the output pages, use either &apos;--pagenumbering
+       true&apos; or, for example, &apos;--pagenumbering 3.0cm&apos; to place the page  numbers
+       a bit lower on the page than the default position.  The value of &apos;SWITCH&apos;
+       must be either &apos;true&apos;, &apos;false&apos; or a dimension that can be used by  LateX.
+       (To  be  precise, it&apos;s the value of the &apos;footskip&apos; dimension in LaTeX; by
+       default, pdfjam-slides6up sets that as 2.7cm, which works pretty well  in
+       conjunction with both &apos;--paper a4paper&apos; and &apos;--paper letterpaper&apos;.)
+
+       If  no source PDF file (&apos;SRC&apos;) is specified, input is from /dev/stdin. If
+       &apos;PAGESPEC&apos; is omitted, all pages are processed.
+
+       Source files are processed sequentially into a single output  unless  the
+       &apos;--batch&apos; option is used, in which case they are processed separately.
+
+       pdfjam-slides6up  is  a simple wrapper for pdfjam, which provides a front
+       end to many of the capabilities of the pdfpages package for pdflatex.   A
+       working installation of pdflatex, with the pdfpages package, is required.
+
+       pdfjam-slides6up  operates on one or more PDF files, and (either with the
+       &apos;--batch&apos; option or with &apos;--outfile DIR&apos; where &apos;DIR&apos; is a directory)  the
+       resulting files have the suffix &apos;-6up&apos; applied to their names by default.
+       To change the suffix, use the &apos;--suffix&apos; option, for example
+
+              pdfjam-slides6up  --suffix  &apos;2x3&apos;   --batch   myslides1.pdf   mys&#8208;
+              lides2.pdf
+
+       will result in files named &apos;myslides1-2x3.pdf&apos; and &apos;myslides2-2x3.pdf&apos;.
+
+       By  default  a narrow line frame is printed around every slide.  This can
+       be turned off if required by using the option &apos;--frame false&apos;.
+
+       pdfjam-slides6up is part of the &quot;PDFjam&quot; package of tools, whose homepage
+       is at http://www.warwick.ac.uk/go/pdfjam .
+
+SETUP
+       See http://go.warwick.ac.uk/pdfjam .
+
+USAGE
+       For the other available options and site/user defaults, see the output of
+
+              pdfjam --help
+
+       For   further   information   and   some   examples   see  http://go.war&#8208;
+       wick.ac.uk/pdfjam .
+
+LIMITATIONS AND BUGS
+       pdfjam-slides6up does not work with encrypted PDF  files,  and  does  not
+       preserve hyperlinks.
+&#12;       Please report bugs! See the website at http://www.warwick.ac.uk/go/pdfjam
+       .
+
+LICENSE
+       PDFjam is distributed under the GNU public license.
+
+SEE ALSO
+       pdfjam(1) pdfjam-slides3up(1) .
+
+AUTHOR
+       pdfjam-slides6up is written and maintained by David Firth as part of  the
+       PDFjam package.
+
+
+
+
+                                  10 March 2010              pdfjam-slides6up(1)
+
+</pre></body></html>

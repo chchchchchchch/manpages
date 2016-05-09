@@ -1,0 +1,62 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htpurge -  remove unused documents from the database (general maintenance script)</title></head>
+<body><pre>
+
+htdig(1)                                                                htdig(1)
+
+
+
+NAME
+       htpurge -  remove unused documents from the database (general maintenance
+       script)
+
+SYNOPSIS
+       htpurge [-][-a][-c configfile][-u][-v]
+
+DESCRIPTION
+       Htpurge functions to remove specified URLs from the databases as well  as
+       bad  URLs,  unretrieved  URLs, obsolete documents, etc. It is recommended
+       that htpurge be run after htdig to clean out any documents of this sort.
+
+
+       OPTIONS
+
+       -      Take URL list from standard input (rather than specified with -u).
+              Format  of  input file is one URL per line.  -a Use alternate work
+              files. Tells htpurge to append .work to database files, causing  a
+              second  copy of the database to be built. This allows the original
+              files to be used by htsearch during the run.
+
+       -c configfile
+              Use the specified configfile instead of the default.
+
+       -u URL Add this URL to the list of documents to remove. Must be specified
+              multiple  times if more than one URL are to be removed. Should nor
+              be used together with -.
+
+       -v     Verbose mode. This increases the verbosity of the program.   Using
+              more  than  2  is probably only useful for debugging purposes. The
+              default verbose mode (using only one -v)  gives  a  nice  progress
+              report while digging.
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+SEE ALSO
+       Please   refer   to   the   HTML   pages   (in   the  htdig-doc  package)
+       /usr/share/doc/htdig-doc/html/index.html and the manual  pages  htdigcon&#8208;
+       fig(8)  ,  htdig(1) and htmerge(1) for a detailed description of ht://Dig
+       and its commands.
+
+
+AUTHOR
+       This manual page was written by Robert Ribnitz, based on the  HTML  docu&#8208;
+       mentation of ht://Dig.
+
+
+
+                                  January 2004                          htdig(1)
+
+</pre></body></html>

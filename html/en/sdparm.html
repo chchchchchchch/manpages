@@ -1,0 +1,741 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sdparm - access SCSI modes pages; read VPD pages; send simple SCSI commands.</title></head>
+<body><pre>
+
+SDPARM(8)                            SDPARM                            SDPARM(8)
+
+
+
+NAME
+       sdparm  -  access SCSI modes pages; read VPD pages; send simple SCSI com&#8208;
+       mands.
+
+SYNOPSIS
+       sdparm  [--all]  [--clear=STR]   [--command=CMD]   [--dbd]   [--defaults]
+       [--dummy]  [--flexible] [--get=STR] [--help] [--hex] [--inquiry] [--long]
+       [--num-desc]   [--page=PG[,SPG]]    [--quiet]    [--readonly]    [--save]
+       [--set=STR]  [--six]  [--transport=TN]  [--vendor=VN] [--verbose] [--ver&#8208;
+       sion] DEVICE [DEVICE...]
+
+       sdparm  --enumerate  [--all]   [--inquiry]   [--long]   [--page=PG[,SPG]]
+       [--transport=TN] [--vendor=VN]
+
+       sdparm --wscan [--verbose]
+
+DESCRIPTION
+       This  utility  fetches  and  potentially changes SCSI device (e.g.  disk)
+       mode pages. Inquiry data including Vital Product  Data  (VPD)  pages  can
+       also  be  displayed.  Commands  associated with starting and stopping the
+       medium; loading and unloading the medium; and other housekeeping function
+       may also be issued by this utility.
+
+       Of  the  three  invocations  shown in the synopsis, the first is the most
+       general. The second variant that uses --enumerate is for dumping informa&#8208;
+       tion  held  in  sdparm&apos;s internal tables. The last variant is for Windows
+       only and lists the available device names;  see  the  OPTIONS  entry  for
+       --wscan.
+
+       If  no  options  (other than DEVICE) are given then a selection of common
+       mode page fields for that device are listed. If the --long option is also
+       given  then  a  description  of the fields is placed on the right of each
+       line. If the --all option is given then all known mode  page  fields  for
+       that  device  are  listed.  Individual  fields  can be displayed with the
+       --get=STR option (e.g. &apos;--get=WCE&apos; to fetch the state  of  the  Writeback
+       Cache Enable field).
+
+       This  utility  completes  with  an  exit status of 0 when successful. For
+       other values see the EXIT STATUS section below.
+
+       One or more DEVICE arguments can be given. The utility  will  essentially
+       apply  the  given  options  to  each  DEVICE in the list.  If an error is
+       detected, it is noted and the utility continues.   Error  value  5  (file
+       open or close problem) is treated as lower priority when other errors are
+       detected. The exit status is  the  most  recently  detected  error  value
+       (excluding  error  value  5  if  other errors have been detected). If all
+       actions succeed the exit status is zero.
+
+       By default this utility shows mode pages that are common to all transport
+       protocols.  These  are  termed  as  &quot;generic&quot; mode pages.  If there is no
+       match on a generic mode page name or field then those pages  specific  to
+       the  SAS  transport  are checked.  Transport protocol specific mode pages
+       are selected with the --transport=TN option. See  the  TRANSPORT  section
+       below.   Vendor  specific  mode  pages  are selected with the --vendor=VN
+       option.  See the VENDORS section below.
+
+       Although originally for SCSI disks (or storage devices that appear to the
+       OS as SCSI disks) many of the mode pages are for other SCSI device types.
+       These include CD/DVD players that use the ATAPI (or any other) transport,
+       SCSI tapes drives and SCSI enclosures.
+
+       When  the --inquiry option is given without a page number then the Device
+       Identification VPD page (page number 0x83) is requested and if  found  it
+       is decoded and output. If no page number is given and the --all option is
+       given then a list of VPD page names (but not their contents) supported by
+       the  DEVICE  is output. When both the --inquiry and --page=PG options are
+       given then the VPD page can be specified as an  abbreviation  (e.g.  &quot;sp&quot;
+       for  the SCSI ports VPD page) or numerically (e.g. &quot;0x88&quot;). If a VPD page
+       is returned by the DEVICE but sdparm cannot decode it or the --hex option
+       is given then it is output in hex.
+
+OPTIONS
+       Mandatory  arguments  to  long options are mandatory for short options as
+       well.  If an option takes  a  numeric  argument  then  that  argument  is
+       assumed  to  be  decimal  unless otherwise indicated (e.g. with a leading
+       &quot;0x&quot; or a trailing &quot;h&quot;). The options are in alphabetical order, based  on
+       the long option name.
+
+       -a, --all
+              output  all  recognized  fields for the device type (e.g. disk) of
+              the DEVICE. Without this option (or  the  --page=PG[,SPG]  option)
+              the  default action is to output a relatively small number of com&#8208;
+              monly used fields from different pages.  When  a  specific  (mode)
+              page  number is given with the --page=PG[,SPG] option then all the
+              fields of that page are output (irrespective  of  the  setting  of
+              this  option).  For this option&apos;s action when used with the --enu&#8208;
+              merate option see the ENUMERATE section below.
+
+       -c, --clear=STR
+              In its simplest form STR contains a field acronym_name or a  field
+              numerical descriptor. In the absence of an explicit value argument
+              (e.g. &apos;--clear=WCE=1&apos;), the field has its value cleared  to  zero.
+              See the PARAMETERS section below.
+
+       -C, --command=CMD
+              Perform  given  CMD.  See  section below on COMMANDS. To enumerate
+              supported commands use &apos;-e -C x&apos; (using any  CMD  name,  valid  or
+              otherwise).
+
+       -B, --dbd
+              disable  block  descriptors. This is a bit in MODE SENSE cdbs that
+              rarely needs to be set. One known case is a MODE SENSE 6 issued to
+              a  Reduced Block Commands (RBC) device where the RBC standard says
+              it shall be set.
+
+       -D, --defaults
+              sets the given mode page  to  its  default  values.  Requires  the
+              --page=PG[,SPG]  option  to  be given to specify the mode page. To
+              make the default mode page values also the saved mode page values,
+              use the --save option as well.
+
+       -d, --dummy
+              when  set inhibits changes being placed in the DEVICE&apos;s mode page.
+              Instead the mode data that would have been sent to a  MODE  SELECT
+              command,  is  output  in  ASCII hex to the console. This option is
+              mainly for testing.
+
+       -e, --enumerate
+              lists out descriptive information about the pages and fields known
+              to  this  utility.  Ignores  the DEVICE argument and other options
+              apart from the --all, --inquiry, --long, --page=PG[,SPG], --trans&#8208;
+              port=TN  and  --vendor=VN.  If  --enumerate is given without other
+              options then the known (generic) mode pages are listed.   See  the
+              ENUMERATE section below.
+
+       -f, --flexible
+              Some devices, bridges and/or drivers attempt crude transformations
+              between mode sense  6  and  10  byte  commands  without  correctly
+              rebuilding  the  response.   This  will  cause  the response to be
+              mis-interpreted (usually with an error saying the response is mal&#8208;
+              formed).  With this option, the length of the response is checked,
+              and if it looks wrong, various  corrections  are  attempted.  This
+              option will also allow mode pages that don&apos;t belong to the current
+              device&apos;s peripheral type to be listed.
+
+       -g, --get=STR
+              In its simplest form STR contains a field acronym_name or a  field
+              numerical descriptor. The field is fetched from mode page. See the
+              PARAMETERS section below. The --long and --hex options effect  the
+              output   format.   Also   if   a  value  of  &quot;1&quot;  is  given  (e.g.
+              &apos;--get=WCE=1&apos;) only the current value  is  output  (i.e.  not  the
+              change mask, the default value and the saved value).
+
+       -h, --help
+              output the usage message then exit.
+
+       -H, --hex
+              rather  than  trying to decode mode (or VPD) pages, print them out
+              in hex. When used with the --get=STR option the corresponding cur&#8208;
+              rent, changeable, default and saved values are output in hex, pre&#8208;
+              fixed by &quot;0x&quot; and space separated. If a value of &quot;1&quot; is given with
+              the  --get=STR  option  (e.g. &apos;--get=WCE=1&apos;) then only the current
+              value is output in hex, prefixed by &quot;0x&quot;. If a  value  of  &quot;2&quot;  is
+              given  with  the  --get=STR  option then only the current value is
+              output as a (signed) integer. This option  can  be  used  multiple
+              times (e.g. &apos;-HH&apos;). Useful with the ATA Information VPD page which
+              usually outputs its IDENTIFY (PACKET) DEVICE response  in  16  bit
+              hex  words;  with  &apos;-HH&apos;  outputs that response in hex bytes; with
+              &apos;-HHH&apos; outputs the same response in a format suitable for  &apos;hdparm
+              --Istdin&apos; to decode.
+
+       -i, --inquiry
+              output  INQUIRY  VPD  pages.  In  the  absence  of this option the
+              default action is to output mode pages. If the --inquiry option is
+              given without the --page=PG[,SPG] option then the device identifi&#8208;
+              cation VPD page (0x83) is decoded and output. If this  option  and
+              the --all option are given then the supported VPD pages page (0x0)
+              is decoded and output.
+
+       -l, --long
+              output extra information. In  the  case  of  mode  page  fields  a
+              description  (with units if applicable) is output to the right. If
+              used twice, then for some fields more information about its values
+              is  given  on  one or more following lines, each prefixed by a tab
+              character. For usage with --enumerate see  the  ENUMERATE  section
+              below.
+
+       -n, --num-desc
+              for  a mode page that can have descriptors, the number of descrip&#8208;
+              tors for the given page on the DEVICE is output.  Otherwise  0  is
+              output.
+
+       -p, --page=PG[,SPG]
+              supply  the  page  number  (PG) and optionally the sub page number
+              (SPG) of the mode (or VPD) page to fetch. These numbers are inter&#8208;
+              preted  as  decimal  unless  prefixed with &quot;0x&quot; or a trailing. Sub
+              page numbers are only valid for mode pages (not VPD pages). Alter&#8208;
+              natively an abbreviation for a page can be given (see next entry).
+
+       -p, --page=STR
+              a  two or three letter abbreviation for a page can be given. Known
+              mode page abbreviations are checked first followed  by  known  VPD
+              page  abbreviations.   For example &apos;--page=ca&apos; matches the caching
+              mode page. If no match is found then an error is issued and a list
+              of possibilities in the current context is given (so &apos;-p x&apos; can be
+              quite useful). If the STR matches a known  VPD  page  abbreviation
+              then  the  --inquiry option is assumed. For usage with --enumerate
+              see the ENUMERATE section below.
+
+       -q, --quiet
+              suppress output of device name followed by the vendor, product and
+              revision  strings  fetched  from an INQUIRY response. Without this
+              option such a line is typically the first line output  by  sdparm.
+              Reduces  output from the device identification VPD page, typically
+              to one line (or none) for each of di_lu,  di_port,  di_target  and
+              di_asis.
+
+       -r, --readonly
+              override other logic to open DEVICE in read-only mode. This option
+              may be useful if a command is being sent to an ATA disk via a SCSI
+              command  set.  For  example  in  Linux  &apos;-C stop&apos; may require this
+              option to stop an ATA disk being restarted immediately.
+
+       -S, --save
+              when a mode page is  being  modified  (by  using  the  --clear=STR
+              and/or  --set=STR  options)  then  the default action is to modify
+              only the current values mode page. When this option is given  then
+              the  corresponding  value(s) in the saved values mode page is also
+              changed. The next time the device is power cycled (or  reset)  the
+              saved  values  mode  page  becomes (i.e. is copied to) the current
+              values mode page. See NOTES section below.
+
+       -s, --set=STR
+              in its simplest form STR contains a field acronym_name or a  field
+              numerical  descriptor.  In  the absence of an explicit value, each
+              acronym_name has its value set to (all) ones. This means a 16  bit
+              field  will  be  set to 0xffff which is 65535 in decimal. Alterna&#8208;
+              tively each acronym_name or numerical descriptor may  be  followed
+              by  &quot;=&lt;n&gt;&quot;  where  &lt;n&gt;  is the value to set that field to. See the
+              PARAMETERS section below.
+
+       -6, --six
+              The default action of this utility is to issue MODE SENSE and MODE
+              SELECT  SCSI commands with 10 byte cdbs. When this option is given
+              the 6 byte cdb variants are used. RBC and  old  SCSI  devices  may
+              need  this  option.  This utility outputs a suggestion to use this
+              option if the SCSI status indicates that the 10 byte  cdb  variant
+              is not supported.
+
+       -t, --transport=TN
+              Specifies  the  transport  protocol where TN is either a number in
+              the range 0 to 15 (inclusive) or an abbreviation (e.g.  &quot;fcp&quot;  for
+              the  Fibre  Channel Protocol). One way to list available transport
+              protocols numbers and their associated abbreviations is to give an
+              invalid  transport  protocol number such as &apos;-t x&apos;; another way is
+              &apos;-e -l&apos;.
+
+       -M, --vendor=VN
+              Specifies the vendor (i.e. manufacturer) where VN is either a num&#8208;
+              ber  (0  or  more) or an abbreviation (e.g. &quot;sea&quot; for Seagate disk
+              vendor specific).  One way to list available  vendor  numbers  and
+              their associated abbreviations is to give an invalid vendor number
+              such as &apos;-M x&apos;; another way is &apos;-e -l&apos;.
+
+       -v, --verbose
+              increase the level of verbosity,  (i.e.  debug  output).  In  some
+              cases more decoding is done (e.g. fields within a standard INQUIRY
+              response).
+
+       -V, --version
+              print the version string and then exit.
+&#12;       -w, --wscan
+              this option is available in Windows only. It lists storage  device
+              names  and  the  corresponding volumes, if any. When used twice it
+              adds the &quot;bus type&quot; of the closest transport (e.g. a SATA disk  in
+              a USB connected enclosure has bus type Usb). When used three times
+              a SCSI adapter scan is added. When used four  times  only  a  SCSI
+              adapter  scan  is  shown.  See examples below and the &quot;Win32 port&quot;
+              section in the README file.
+
+NOTES
+       A mode page for which no abbreviation is known (e.g.  a  vendor  specific
+       mode  page)  can be listed in hexadecimal by using the option combination
+       &apos;--page=PG --hex&apos;.
+
+       Numbers input to sdparm (e.g. in the command line arguments) are  assumed
+       to  be  in decimal unless there is a hexadecimal indicator. A hexadecimal
+       indicator is either a leading &apos;0x&apos; or &apos;0X&apos; (i.e. the C  language  conven&#8208;
+       tion)  or  a trailing &apos;h&apos; or &apos;H&apos; (i.e. the convention used at www.t10.org
+       ). In the case of --page= either a string or number is expected,  so  hex
+       numbers like &apos;ch&apos; (12) should be prefixed by a zero (e.g. &apos;0ch&apos;).
+
+       The  SPC-4  draft (rev 2) says that devices that implement no distinction
+       between current and saved pages can return  an  error  (ILLEGAL  REQUEST,
+       invalid  field  in  cdb)  if  the SP bit (which corresponds to the --save
+       option) is _not_ set. In such cases the --save option needs to be given.
+
+       If the --save option is given but the existing mode page  indicates  (via
+       its  PS bit) that the page is not savable, then this utility generates an
+       error message. That message suggests to  try  again  without  the  --save
+       option.
+
+       Since  the device identification VPD page (acronym_name &quot;di&quot;) potentially
+       contains a lot of diverse designators, several  associated  acronyms  are
+       available. They are &quot;di_lu&quot; for designators associated with the addressed
+       logical unit, &quot;di_port&quot; for designators associated with the  target  port
+       (which  the  command arrived via) and &quot;di_target&quot; for designators associ&#8208;
+       ated with the target device. When &quot;di&quot; is used designators are grouped by
+       lu,  then port and then target device.  To see all designators decoded in
+       the order that they appear in the VPD page use &quot;di_asis&quot;.
+
+       Only those VPD pages defined by t10.org  are  decoded  by  this  utility.
+       SPC-4 sets aside VPD pages codes from 0xc0 to 0xff (inclusive) for vendor
+       specific pages some of which are decoded in the sg_vpd utility.
+
+       In the linux kernel 2.6 series any device node that  understands  a  SCSI
+       command  set  (e.g.  SCSI disks and CD/DVD drives) may be specified. More
+       precisely the driver that &quot;owns&quot; the device node must support  the  SG_IO
+       ioctl.  In  the lk 2.4 series only SCSI generic (sg) device nodes support
+       the SG_IO ioctl. However in the lk 2.4 series other SCSI device nodes are
+       mapped  within this utility to their corresponding sg device nodes. So if
+       there is a SCSI disk at /dev/sda then &apos;sdparm /dev/sda&apos; will work in both
+       the  lk  2.6 and lk 2.4 series. However if there is an ATAPI cd/dvd drive
+       at /dev/hdc then &apos;sdparm /dev/hdc&apos; will only work in the lk 2.6 series.
+
+       In the Linux 2.6 series, especially with ATA disks, using sdparm to  stop
+       (spin  down) a disk may not be sufficient and other mechanisms will start
+       the disk again some time later. The user might additionally mark the disk
+       as  &quot;offline&quot; with &apos;echo offline &gt; /sys/block/sda/device/state&apos; where sda
+       is the block name of the disk. To  restart  the  disk  &quot;offline&quot;  can  be
+       replaced with &quot;running&quot;.
+
+PARAMETERS
+       In  their simplest form the --clear=, --get= and --set= options (or their
+       short forms)  take  an  acronym_name  such  as  &quot;WCE&quot;.  In  the  case  of
+       &apos;--get=WCE&apos;  the  value  of  &quot;Writeback Cache Enable&quot; in the caching mode
+       page will be fetched. In the case of &apos;--set=WCE&apos; that bit will be set (to
+       one).  In  the  case of &apos;--clear=WCE&apos; that bit will be cleared (to zero).
+       When an acronym_name is given then the mode page  is  imputed  from  that
+       acronym_name (e.g. WCE is in the caching mode page).
+
+       Instead  of  an  acronym_name a field within a mode page can be described
+       numerically with a &lt;start_byte&gt;:&lt;start_bit&gt;:&lt;num_bits&gt; tuple.  These  are
+       the  &lt;start_byte&gt;  (origin 0) within the mode page, a &lt;start_bit&gt; (0 to 7
+       inclusive) and &lt;num_bits&gt; (1 to 64 inclusive). For example, the low level
+       representation of the RCD bit (the &quot;Read Cache Disable bit in the caching
+       mode page) is &quot;2:0:1&quot;. The &lt;start_byte&gt; can optionally be  given  in  hex
+       (e.g.  &apos;--set=0x2:0:1&apos;  or  &apos;--set=2h:0:1&apos;).  With  this form the --page=
+       option is required to establish which mode page is to be used.
+
+       Either form can optionally be followed by &quot;=&lt;val&gt;&quot;. By default  &lt;val&gt;  is
+       decimal  but  can  be  given  in hex in the normal fashion. Here are some
+       examples: &apos;--set=2h:0:1=1h&apos; and &apos;-s MRIE=0x3&apos;. When the  acronym_name  or
+       numeric  form  following  --clear= is not given an explicit &apos;=&lt;val&gt;&apos; then
+       the value defaults to zero. When the acronym_name or numeric form follow&#8208;
+       ing  --set=  is not given an explicit &apos;=&lt;val&gt;&apos; then the value defaults to
+       &quot;all  ones&quot;  (i.e.  as  many  as   &lt;num_bits&gt;   permits).   For   example
+       &apos;--clear=WCE&apos;  and &apos;--clear=WCE=0&apos; have the same meaning: clear Writeback
+       Cache Enable or, put more simply: turn off the writeback cache.
+
+       Multiple fields within the same mode page can  be  changed  by  giving  a
+       comma  separated  list  of  acronym_names  and/or the numerical form. For
+       example: &apos;--set=TEST,MRIE=6&apos;.
+
+       Some mode page have multiple descriptors. They  typically  have  a  fixed
+       header  section  at the start of the mode page that includes a field con&#8208;
+       taining the number of descriptors that follow. Following the header is  a
+       variable  number  of  descriptors.  An example is the SAS Phy Control and
+       Discover mode page. An acronym_name may include a trailing &apos;.&lt;num&gt;&apos; where
+       &quot;&lt;num&gt;&quot; is a descriptor number (origin 0). For example &apos;-t sas -g PHID.0&apos;
+       and &apos;-t sas -g PHID&apos; will yield the phy identifier of the first  descrip&#8208;
+       tor of the above mode page; &apos;-t sas -g PHID.1&apos; will yield the phy identi&#8208;
+       fier of the second descriptor.
+
+ENUMERATE
+       The --enumerate option essentially dumps out static information  held  by
+       this  utility.  A list of --enumerate variants and their actions follows.
+       For brevity subsequent examples of options are  shown  in  their  shorter
+       form.
+
+           --enumerate          list generic mode page information
+           -e --all             list generic mode page contents
+                                (i.e. parameters)
+           -e --page=rw         list contents of read write error
+                                recovery mode page
+           -e --inquiry         list VPD pages this utility can decode
+           -e --long            list generic mode pages, transport
+                                protocols, mode pages for each
+                                supported transport protocol and
+                                supported commands
+           -e -l --all          additionally list the contents of
+                                each mode page
+           -e --transport=fcp   list mode pages for the fcp
+                                transport protocol
+           -e -t fcp --all      additionally list the contents of
+                                each mode page
+           -e --vendor=sea      list vendor specific mode pages for
+                                &quot;sea&quot; (Seagate)
+           -e -M sea --all      additionally list the contents of vendor
+                                specific mode pages for &quot;sea&quot; (Seagate)
+           -e -p pcd -l         list contents of SAS phy control and
+                                discovery mode page plus (due to &quot;-l&quot;)
+                                some descfriptor format information
+
+       When  known mode pages are listed (via the --enumerate  option) each line
+       starts with a two or three letter abbreviation. This is followed  by  the
+       page  number (in hex prefixed by &quot;0x&quot;) optionally followed by a comma and
+       the subpage number. Finally the descriptive name of the mode  page  (e.g.
+       as found in SPC-4) is output.
+
+       When  known  parameters  (fields)  of  a  mode page are listed, each line
+       starts with an acronym (indented a few spaces). This will match (or be an
+       acronym  for)  the  description for that field found in the (draft) stan&#8208;
+       dards. Next are three numbers, separated by colons, surrounded by  brack&#8208;
+       ets. These are the start byte (in hex, prefixed by &quot;0x&quot;) of the beginning
+       of the field within the mode page; the starting bit (0 through  7  inclu&#8208;
+       sive)  and then the number of bits. The descriptive name of the parameter
+       (field) is then given. If appropriate the descriptive name includes units
+       (e.g.  &quot;(ms)&quot;  means the units are milliseconds). Adding the &apos;-ll&apos; option
+       will list information about possible field values for selected mode  page
+       parameters.
+
+       Mode parameters for which the num_bits is greater than 1 can be viewed as
+       unsigned integers. Often 16 and 32 bit  fields  are  set  to  0xffff  and
+       0xffffffff  respectively  (all  ones) which usually has a special meaning
+       (see drafts). This utility outputs such values  as  &quot;-1&quot;  to  save  space
+       (rather  than their unsigned integer equivalents). &quot;-1&quot; can also be given
+       as the value to a mode page field acronym (e.g. &apos;--set=INTT=-1&apos; sets  the
+       interval timer field in the Informational Exceptions control mode page to
+       0xffffffff).
+
+TRANSPORTS
+       SCSI transport protocols are a relatively specialized area  that  can  be
+       safely ignored by the majority of users.
+
+       Some  transport  protocols  have  protocol specific mode pages. These are
+       usually the disconnect-reconnect (0x2),  the  protocol  specific  logical
+       unit  (0x18)  and  the  protocol specific port (0x19) mode pages. In some
+       cases the latter mode page has several subpages. The most  common  trans&#8208;
+       port protocol abbreviations likely to be used are &quot;fcp&quot;, &quot;spi&quot; and &quot;sas&quot;.
+
+       Many  of  the  field  names are re-used in the same position so the acro&#8208;
+       nym_name namespaces have been divided between generic  mode  pages  (i.e.
+       when  the  --transport=  option  is _not_ given) and a namespace for each
+       transport protocol. A LUPID field from the protocol specific logical unit
+       (0x18)  mode  page  and the PPID field from protocol specific port (0x19)
+       mode page are included in the generic modes pages; this is so the respec&#8208;
+       tive (transport) protocol identifiers can be seen. In most cases the user
+       will know what the &quot;port&quot; transport is (i.e. the same  transport  as  the
+       HBA in the computer) but the logical unit&apos;s transport could be different.
+
+VENDORS
+       SCSI leaves a lot of space for vendor specific information. Often this is
+       described in product manuals. The --vendor=VN (or  -M=VN)  option  allows
+       known  vendor specific mode pages to be examined and/or modified by acro&#8208;
+       nym.
+
+       In this utility the syntax and semantics of vendor specific mode pages is
+       very  similar  to  those  of transport protocol specific mode pages. Both
+       cannot be specified together. Vendor specific modes pages  can  still  be
+       accessed numerically (as shown at the end of the EXAMPLES section).
+
+COMMANDS
+       The  command  option  sends  a SCSI command to the DEVICE. If the command
+       fails then this is reflected in the non-zero exit status.  To obtain more
+       information about the error use the -v option.
+
+       capacity
+              sends  a READ CAPACITY command (valid for disks and cd/dvd media).
+              If  successful  yields  &quot;blocks:  &quot;  [the   number   of   blocks],
+              &quot;block_length: &quot; [typically either 512 or 2048] and &quot;capacity_mib:
+              &quot; [capacity in MibiBytes (1048576 byte units)].
+
+       eject  stops the medium and ejects it from the device.  Note  that  ejec&#8208;
+              tion  (by  command  or  button) may be prevented in which case the
+              &apos;unlock&apos; command may be useful in extreme cases.   Typically  only
+              appropriate  for  cd/dvd  drives  and  disk  drives with removable
+              media. Objects if sent to  another  peripheral  device  type  (but
+              objection can be overridden with &apos;-f&apos; option).
+
+       load   loads  the  medium  and  and  starts  it  (i.e. spins it up).  See
+              &apos;eject&apos; command for supported device types.
+
+       profile
+              lists the various formats that a CD/DVD/HD-DVD/BD drive  supports.
+              These  are called &quot;profiles&quot; in the MMC standard. The profiles are
+              listed one per line.  If media is in the drive  then  the  profile
+              that  matches  the  media  (if any) has an &quot;*&quot; to the right of the
+              line.
+
+       ready  sends the &quot;Test Unit Ready&quot; SCSI command to the DEVICE.  No  error
+              is  reported  if  the  device  will respond to data requests (e.g.
+              READ) in a reasonable timescale. For example, if a disk is stopped
+              then  it  will  report  &quot;not ready&quot;. All devices should respond to
+              this command.
+
+       sense  sends a REQUEST SENSE command. It  reports  a  hardware  threshold
+              exceeded, warning or low power condition if flagged. If a progress
+              indication is present (e.g. during a format) then it will be  out&#8208;
+              put  as  a percentage. Yields a process status of 0 if the command
+              succeeds and the sense key is 0; else yields 1. The --quiet option
+              can  be  used  to lessen output, and --hex to output sense data in
+              hex.
+
+       speed=SPEED
+              permits the speed of a CD, DVD, HD_DVD or BD disc in a drive to be
+              set   (or  at  least  influenced).  It  has  this  format:  --com&#8208;
+              mand=speed=SPEED where SPEED is in kilobytes per second.  In  this
+              case  a  kilobyte is 1000 bytes. The &quot;times one&quot; speed for a CD is
+              176.4 kB/s, for a DVD is 1350 kB/s and for both HD-DVD and  BD  it
+              is  4500 kB/s. If SPEED is zero then the drive is set to the speed
+              that it considers gives optimal performance.  This command sends a
+              SET  STREAMING  multi-media command (MMC) to the drive.  The EXACT
+              bit is clear so the drive will round the given SPEED as necessary.
+              The command is designed to control read speed; setting write speed
+              should be left to &quot;burning&quot; programs.
+
+       start  starts the medium (i.e. spins  it  up).  Harmless  if  medium  has
+              already  been  started.  See  &apos;eject&apos; command for supported device
+              types. If the DEVICE is an ATA  disk  in  Linux  the  &apos;--readonly&apos;
+              option may be required.
+
+       stop   stops  the  medium  (i.e.  spins  it down). Harmless if medium has
+              already been stopped. See &apos;eject&apos;  command  for  supported  device
+              types.  If  the  DEVICE  is  an ATA disk in Linux the &apos;--readonly&apos;
+              option may be required. See the NOTES section above.
+
+       sync   sends a SYNCHRONIZE CACHE command. The  device  should  flush  any
+              data held in its (volatile) buffers to the media.
+
+       unlock tells  a device to allow medium removal. It uses the SCSI &quot;prevent
+              allow medium removal&quot; command. This is desperation stuff, possibly
+              overriding  a  prevention applied by the OS on a mounted file sys&#8208;
+              tem. The &quot;eject&quot; utility (from the &quot;eject&quot; package) is more grace&#8208;
+              ful  and  should  be tried first. This command is only appropriate
+              for devices with removable media.
+
+       For loading and ejecting tapes the mt utility should be  used  (i.e.  not
+       these commands). The &apos;ready&apos; command is valid for tape devices.
+
+EXAMPLES
+       To list the common (generic) mode parameters of a disk:
+&#12;          sdparm /dev/sda
+
+       To  list  the  designators within the device identification VPD page of a
+       disk:
+
+          sdparm --inquiry /dev/sda
+
+       To see all parameters for the caching mode page:
+
+          sdparm --page=ca /dev/sda
+
+       To see all parameters for the caching mode page with  parameter  descrip&#8208;
+       tions to the right:
+
+          sdparm --page=ca --long /dev/sda
+
+       To get the WCE values (current changeable default and saved) in hex:
+
+          sdparm -g WCE -H /dev/sda
+       0x01 0x00 0x01 0x01
+
+       To get the WCE current value in hex:
+
+          sdparm -g WCE=1 -H /dev/sda
+       0x01
+
+       To set the &quot;Writeback Cache Enable&quot; bit in the current values page:
+
+          sdparm --set=WCE /dev/sda
+
+       To  set  the &quot;Writeback Cache Enable&quot; bit in the current and saved values
+       page:
+
+          sdparm --set=WCE --save /dev/sda
+
+       To set the &quot;Writeback Cache Enable&quot; and clear &quot;Read Cache Disable&quot;:
+
+          sdparm --set=WCE --clear=RCD --save /dev/sda
+
+       The previous example can also by written as:
+
+          sdparm -s WCE=1,RCD=0 -S /dev/sda
+
+       To re-establish the manufacturer&apos;s defaults in the current and saved val&#8208;
+       ues of the caching mode page:
+
+          sdparm --page=ca --defaults --save /dev/sda
+
+       If an ATAPI cd/dvd drive is at /dev/hdc then its common (mode) parameters
+       could be listed in the lk 2.6 series with:
+
+          sdparm /dev/hdc
+
+       If there is a DVD in the drive at /dev/hdc then it could  be  ejected  in
+       the lk 2.6 series with:
+
+          sdparm --command=eject /dev/hdc
+
+       If  the ejection is being prevented by software then that can be overrid&#8208;
+       den with:
+
+          sdparm --command=unlock /dev/hdc
+
+       One disk vendor has a &quot;Performance Mode&quot; bit (PM) in the vendor  specific
+       unit  attention  mode  page  [0x0,0x0]. PM=0 is server mode (the default)
+       while PM=1 is desktop mode. Desktop mode can be  set  (both  current  and
+       saved values) with:
+&#12;          sdparm --page=0 --set=2:7:1=1 --save /dev/sda
+
+       The  resultant change can be viewed in hex with the --hex option as there
+       are no acronyms for vendor extensions yet. The PM bit is now  covered  by
+       vendor specific mode pages and the above can also be accomplished with:
+
+          sdparm --vendor=sea --set=PM --save /dev/sda
+
+       What  follows  are some examples from Windows using the &apos;--wscan&apos; option.
+       The idea is to list the storage device names on the system that might  be
+       invoked by other uses of sdparm.
+
+         # sdparm --wscan
+       PD0     [C]     FUJITSU   MHY2160BH         0000
+       PD1     [DF]    WD        2500BEV External  1.05  WD-WXE90
+       CDROM0  [E]     MATSHITA DVD/CDRW UJDA775  CB03
+
+       So  &apos;sdparm  -a  CDROM0&apos; and &apos;sdparm -a E&apos; will show all the (known) mode
+       page fields for the Matshita DVD/CD drive. By using the &apos;--wsacan&apos; option
+       twice, the bus type (as seen by the OS) is added to the output:
+
+         # sdparm -ww
+       PD0     [C]     &lt;Ata  &gt;  FUJITSU   MHY2160BH         0000
+       PD1     [DF]    &lt;Usb  &gt;  WD        2500BEV External  1.05  WD-WXE90
+       CDROM0  [E]     &lt;Atapi&gt;  MATSHITA DVD/CDRW UJDA775  CB03
+
+       And  the pattern continues to add a SCSI adapter scan. This may be useful
+       if there are specialized storage related devices (e.g. a SES device in an
+       enclosure) but does add much extra information in this case.
+
+         # sdparm -www
+       PD0     [C]     &lt;Ata  &gt;  FUJITSU   MHY2160BH         0000
+       PD1     [DF]    &lt;Usb  &gt;  WD        2500BEV External  1.05  WD-WXE90
+       CDROM0  [E]     &lt;Atapi&gt;  MATSHITA DVD/CDRW UJDA775  CB03
+
+       SCSI0:0,0,0   claimed=1 pdt=0h  FUJITSU   MHY2160BH         0000
+       SCSI1:0,0,0   claimed=1 pdt=5h  MATSHITA  DVD/CDRW UJDA775  CB03
+
+EXIT STATUS
+       To  aid scripts that call sdparm, the exit status is set to indicate suc&#8208;
+       cess (0) or failure (1 or more). Note that some of the lower values  cor&#8208;
+       respond to the SCSI sense key values. The exit status values are:
+
+       0      success
+
+       1      syntax  error.  Either  illegal command line options, options with
+              bad arguments or a combination of options that is not permitted.
+
+       2      the DEVICE  reports  that  it  is  not  ready  for  the  operation
+              requested.  The  device  may  be  in the process of becoming ready
+              (e.g.  spinning up but not at speed) so the utility may work after
+              a wait.
+
+       3      the  DEVICE reports a medium or hardware error (or a blank check).
+              For example an attempt to read a corrupted block on  a  disk  will
+              yield this value.
+
+       5      the  DEVICE  reports an &quot;illegal request&quot; with an additional sense
+              code other than &quot;invalid operation code&quot;. This  is  often  a  sup&#8208;
+              ported command with a field set requesting an unsupported capabil&#8208;
+              ity. For commands that require a &quot;service action&quot; field this value
+              can indicate that the command is not supported.
+
+       6      the  DEVICE  reports  a  &quot;unit  attention&quot; condition. This usually
+              indicates that something unrelated to the  requested  command  has
+              occurred (e.g. a device reset) potentially before the current SCSI
+              command was sent. The requested command has not been  executed  by
+              the  device.  Note that unit attention conditions are usually only
+              reported once by a device.
+
+       9      the DEVICE reports an illegal request  with  an  additional  sense
+              code  of &quot;invalid operation code&quot; which means that it doesn&apos;t sup&#8208;
+              port the requested command.
+
+       11     the DEVICE reports an aborted command. In some cases aborted  com&#8208;
+              mands  can  be  retried immediately (e.g. if the transport aborted
+              the command due to congestion).
+
+       15     the utility is unable to open, close or use the given DEVICE.  The
+              given  file  name  could  be  incorrect or there may be permission
+              problems. Adding the -v option may give more information.
+
+       20     the DEVICE reports it has a check condition but &quot;no sense&quot;.   Some
+              polling  commands  (e.g. REQUEST SENSE) can react this way.  It is
+              unlikely that this value will occur as an exit status.
+
+       21     the DEVICE reports a &quot;recovered error&quot;. The requested command  was
+              successful. Most likely a utility will report a recovered error to
+              stderr and continue, probably leaving the  utility  with  an  exit
+              status of 0 .
+
+       33     the  command  sent  to  DEVICE has timed out. This occurs in Linux
+              only; in other ports a command timeout will appear as a  transport
+              (or OS) error.
+
+       97     the response to a SCSI command failed sanity checks.
+
+       98     the  DEVICE reports it has a check condition but the error doesn&apos;t
+              fit into any of the above categories.
+
+       99     any errors that can&apos;t be categorized into values 1 to 98 may yield
+              this  value.  This  includes transport and operating system errors
+              after the command has been sent to the device.
+
+       Most of the error conditions reported above will be repeatable (an  exam&#8208;
+       ple  of  one  that  is not is &quot;unit attention&quot;) so the utility can be run
+       again with the -v option (or several) to obtain more information.
+
+AUTHORS
+       Written by Douglas Gilbert.
+
+REPORTING BUGS
+       Report bugs to &lt;dgilbert at interlog dot com&gt;.
+
+COPYRIGHT
+       Copyright &#169; 2005-2012 Douglas Gilbert
+       This software is distributed under a FreeBSD license. There  is  NO  war&#8208;
+       ranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+WEB SITE
+       There     is     a     web    page    discussing    this    package    at
+       http://sg.danny.cz/sg/sdparm.html .
+
+SEE ALSO
+       hdparm(hdparm), sg_modes, sg_wr_mode, sginfo, sg_inq, sg_vpd, sg_scan(all
+       in    sg3_utils),    smartmontools(smartmontools.sourceforge.net),    mt,
+       eject(eject),
+
+
+
+sdparm-1.07                       January 2012                         SDPARM(8)
+
+</pre></body></html>

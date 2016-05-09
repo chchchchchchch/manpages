@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>setenv - change or add an environment variable</title></head>
+<body><pre>
+
+SETENV(3)                   Linux Programmer&apos;s Manual                  SETENV(3)
+
+
+
+NAME
+       setenv - change or add an environment variable
+
+SYNOPSIS
+       #include &lt;stdlib.h&gt;
+
+       int setenv(const char *name, const char *value, int overwrite);
+
+       int unsetenv(const char *name);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       setenv(), unsetenv():
+           _BSD_SOURCE || _POSIX_C_SOURCE &gt;= 200112L || _XOPEN_SOURCE &gt;= 600
+
+DESCRIPTION
+       The  setenv() function adds the variable name to the environment with the
+       value value, if name does not already exist.  If name does exist  in  the
+       environment,  then its value is changed to value if overwrite is nonzero;
+       if overwrite is zero, then the value of name is not changed.  This  func&#8208;
+       tion  makes  copies  of the strings pointed to by name and value (by con&#8208;
+       trast with putenv(3)).
+
+       The unsetenv() function deletes the variable name from  the  environment.
+       If  name  does  not exist in the environment, then the function succeeds,
+       and the environment is unchanged.
+
+RETURN VALUE
+       The setenv() function returns zero on success, or -1 on error, with errno
+       set to indicate the cause of the error.
+
+       The  unsetenv()  function  returns  zero on success, or -1 on error, with
+       errno set to indicate the cause of the error.
+
+ERRORS
+       EINVAL name is NULL, points to a string of length 0, or contains  an  &apos;=&apos;
+              character.
+
+       ENOMEM Insufficient memory to add a new variable to the environment.
+
+CONFORMING TO
+       4.3BSD, POSIX.1-2001.
+
+NOTES
+       POSIX.1-2001 does not require setenv() or unsetenv() to be reentrant.
+
+       Prior  to  glibc 2.2.2, unsetenv() was prototyped as returning void; more
+       recent glibc versions follow the POSIX.1-2001-compliant  prototype  shown
+       in the SYNOPSIS.
+
+BUGS
+       POSIX.1-2001  specifies  that  if  name  contains  an &apos;=&apos; character, then
+       setenv() should fail with the error EINVAL; however,  versions  of  glibc
+       before 2.3.4 allowed an &apos;=&apos; sign in name.
+
+SEE ALSO
+       clearenv(3), getenv(3), putenv(3), environ(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2009-09-20                          SETENV(3)
+
+</pre></body></html>

@@ -1,0 +1,698 @@
+<html>
+<head><meta charset=utf-8/>
+<title>debhelper - the debhelper tool suite</title></head>
+<body><pre>
+
+debhelper(7)                        Debhelper                       debhelper(7)
+
+
+
+NAME
+       debhelper - the debhelper tool suite
+
+SYNOPSIS
+       dh_* [-v] [-a] [-i] [-s] [--no-act] [-ppackage] [-Npackage] [-Ptmpdir]
+
+DESCRIPTION
+       Debhelper is used to help you build a Debian package. The philosophy
+       behind debhelper is to provide a collection of small, simple, and easily
+       understood tools that are used in debian/rules to automate various common
+       aspects of building a package. This means less work for you, the
+       packager.  It also, to some degree means that these tools can be changed
+       if Debian policy changes, and packages that use them will require only a
+       rebuild to comply with the new policy.
+
+       A typical debian/rules file that uses debhelper will call several
+       debhelper commands in sequence, or use dh(1) to automate this process.
+       Examples of rules files that use debhelper are in
+       /usr/share/doc/debhelper/examples/
+
+       To create a new Debian package using debhelper, you can just copy one of
+       the sample rules files and edit it by hand. Or you can try the dh-make
+       package, which contains a dh_make command that partially automates the
+       process. For a more gentle introduction, the maint-guide Debian package
+       contains a tutorial about making your first package using debhelper.
+
+DEBHELPER COMMANDS
+       Here is the list of debhelper commands you can use. See their man pages
+       for additional documentation.
+
+       dh_auto_build(1)
+           automatically builds a package
+
+       dh_auto_clean(1)
+           automatically cleans up after a build
+
+       dh_auto_configure(1)
+           automatically configure a package prior to building
+
+       dh_auto_install(1)
+           automatically runs make install or similar
+
+       dh_auto_test(1)
+           automatically runs a package&apos;s test suites
+
+       dh_bugfiles(1)
+           install bug reporting customization files into package build
+           directories
+
+       dh_builddeb(1)
+           build Debian binary packages
+
+       dh_clean(1)
+           clean up package build directories
+
+       dh_compress(1)
+           compress files and fix symlinks in package build directories
+
+       dh_fixperms(1)
+           fix permissions of files in package build directories
+
+       dh_gconf(1)
+           install GConf defaults files and register schemas
+&#12;       dh_gencontrol(1)
+           generate and install control file
+
+       dh_icons(1)
+           Update Freedesktop icon caches
+
+       dh_install(1)
+           install files into package build directories
+
+       dh_installcatalogs(1)
+           install and register SGML Catalogs
+
+       dh_installchangelogs(1)
+           install changelogs into package build directories
+
+       dh_installcron(1)
+           install cron scripts into etc/cron.*
+
+       dh_installdeb(1)
+           install files into the DEBIAN directory
+
+       dh_installdebconf(1)
+           install files used by debconf in package build directories
+
+       dh_installdirs(1)
+           create subdirectories in package build directories
+
+       dh_installdocs(1)
+           install documentation into package build directories
+
+       dh_installemacsen(1)
+           register an Emacs add on package
+
+       dh_installexamples(1)
+           install example files into package build directories
+
+       dh_installgsettings(1)
+           install GSettings overrides and set dependencies
+
+       dh_installifupdown(1)
+           install if-up and if-down hooks
+
+       dh_installinfo(1)
+           install info files
+
+       dh_installinit(1)
+           install init scripts and/or upstart jobs into package build
+           directories
+
+       dh_installlogcheck(1)
+           install logcheck rulefiles into etc/logcheck/
+
+       dh_installlogrotate(1)
+           install logrotate config files
+
+       dh_installman(1)
+           install man pages into package build directories
+
+       dh_installmenu(1)
+           install Debian menu files into package build directories
+
+       dh_installmime(1)
+           install mime files into package build directories
+
+       dh_installmodules(1)
+           register modules with modutils
+
+       dh_installpam(1)
+           install pam support files
+&#12;       dh_installppp(1)
+           install ppp ip-up and ip-down files
+
+       dh_installudev(1)
+           install udev rules files
+
+       dh_installwm(1)
+           register a window manager
+
+       dh_installxfonts(1)
+           register X fonts
+
+       dh_link(1)
+           create symlinks in package build directories
+
+       dh_lintian(1)
+           install lintian override files into package build directories
+
+       dh_listpackages(1)
+           list binary packages debhelper will act on
+
+       dh_makeshlibs(1)
+           automatically create shlibs file and call dpkg-gensymbols
+
+       dh_md5sums(1)
+           generate DEBIAN/md5sums file
+
+       dh_movefiles(1)
+           move files out of debian/tmp into subpackages
+
+       dh_perl(1)
+           calculates Perl dependencies and cleans up after MakeMaker
+
+       dh_prep(1)
+           perform cleanups in preparation for building a binary package
+
+       dh_shlibdeps(1)
+           calculate shared library dependencies
+
+       dh_strip(1)
+           strip executables, shared libraries, and some static libraries
+
+       dh_testdir(1)
+           test directory before building Debian package
+
+       dh_testroot(1)
+           ensure that a package is built as root
+
+       dh_ucf(1)
+           register configuration files with ucf
+
+       dh_usrlocal(1)
+           migrate usr/local directories to maintainer scripts
+
+   Deprecated Commands
+       A few debhelper commands are deprecated and should not be used.
+
+       dh_desktop(1)
+           deprecated no-op
+
+       dh_installmanpages(1)
+           old-style man page installer (deprecated)
+
+       dh_python(1)
+           calculates Python dependencies and adds postinst and prerm Python
+           scripts (deprecated)
+
+       dh_scrollkeeper(1)
+           deprecated no-op
+&#12;       dh_suidregister(1)
+           suid registration program (deprecated)
+
+       dh_undocumented(1)
+           undocumented.7 symlink program (deprecated no-op)
+
+   Other Commands
+       If a program&apos;s name starts with dh_, and the program is not on the above
+       lists, then it is not part of the debhelper package, but it should still
+       work like the other programs described on this page.
+
+DEBHELPER CONFIG FILES
+       Many debhelper commands make use of files in debian/ to control what they
+       do. Besides the common debian/changelog and debian/control, which are in
+       all packages, not just those using debhelper, some additional files can
+       be used to configure the behavior of specific debhelper commands. These
+       files are typically named debian/package.foo (where package of course, is
+       replaced with the package that is being acted on).
+
+       For example, dh_installdocs uses files named debian/package.docs to list
+       the documentation files it will install. See the man pages of individual
+       commands for details about the names and formats of the files they use.
+       Generally, these files will list files to act on, one file per line. Some
+       programs in debhelper use pairs of files and destinations or slightly
+       more complicated formats.
+
+       Note for the first (or only) binary package listed in debian/control,
+       debhelper will use debian/foo when there&apos;s no debian/package.foo file.
+
+       In some rare cases, you may want to have different versions of these
+       files for different architectures or OSes. If files named
+       debian/package.foo.ARCH or debian/package.foo.OS exist, where ARCH and OS
+       are the same as the output of &quot;dpkg-architecture -qDEB_HOST_ARCH&quot; /
+       &quot;dpkg-architecture -qDEB_HOST_ARCH_OS&quot;, then they will be used in
+       preference to other, more general files.
+
+       Mostly, these config files are used to specify lists of various types of
+       files. Documentation or example files to install, files to move, and so
+       on.  When appropriate, in cases like these, you can use standard shell
+       wildcard characters (? and * and [..] character classes) in the files.
+       You can also put comments in these files; lines beginning with # are
+       ignored.
+
+       The syntax of these files is intentionally kept very simple to make them
+       easy to read, understand, and modify. If you prefer power and complexity,
+       you can make the file executable, and write a program that outputs
+       whatever content is appropriate for a given situation. When you do so,
+       the output is not further processed to expand wildcards or strip
+       comments.
+
+SHARED DEBHELPER OPTIONS
+       The following command line options are supported by all debhelper
+       programs.
+
+       -v, --verbose
+           Verbose mode: show all commands that modify the package build
+           directory.
+
+       --no-act
+           Do not really do anything. If used with -v, the result is that the
+           command will output what it would have done.
+
+       -a, --arch
+           Act on architecture dependent packages that should be built for the
+           build architecture.
+
+       -i, --indep
+           Act on all architecture independent packages.
+
+       -ppackage, --package=package
+           Act on the package named package. This option may be specified
+           multiple times to make debhelper operate on a given set of packages.
+
+       -s, --same-arch
+           This used to be a smarter version of the -a flag, but the -a flag is
+           now equally smart.
+
+       -Npackage, --no-package=package
+           Do not act on the specified package even if an -a, -i, or -p option
+           lists the package as one that should be acted on.
+
+       --remaining-packages
+           Do not act on the packages which have already been acted on by this
+           debhelper command earlier (i.e. if the command is present in the
+           package debhelper log).  For example, if you need to call the command
+           with special options only for a couple of binary packages, pass this
+           option to the last call of the command to process the rest of
+           packages with default settings.
+
+       --ignore=file
+           Ignore the specified file. This can be used if debian/ contains a
+           debhelper config file that a debhelper command should not act on.
+           Note that debian/compat, debian/control, and debian/changelog can&apos;t
+           be ignored, but then, there should never be a reason to ignore those
+           files.
+
+           For example, if upstream ships a debian/init that you don&apos;t want
+           dh_installinit to install, use --ignore=debian/init
+
+       -Ptmpdir, --tmpdir=tmpdir
+           Use tmpdir for package build directory. The default is debian/package
+
+       --mainpackage=package
+           This little-used option changes the package which debhelper considers
+           the &quot;main package&quot;, that is, the first one listed in debian/control,
+           and the one for which debian/foo files can be used instead of the
+           usual debian/package.foo files.
+
+       -O=option|bundle
+           This is used by dh(1) when passing user-specified options to all the
+           commands it runs. If the command supports the specified option or
+           option bundle, it will take effect. If the command does not support
+           the option (or any part of an option bundle), it will be ignored.
+
+COMMON DEBHELPER OPTIONS
+       The following command line options are supported by some debhelper
+       programs.  See the man page of each program for a complete explanation of
+       what each option does.
+
+       -n  Do not modify postinst, postrm, etc. scripts.
+
+       -Xitem, --exclude=item
+           Exclude an item from processing. This option may be used multiple
+           times, to exclude more than one thing.
+
+       -A, --all
+           Makes files or other items that are specified on the command line
+           take effect in ALL packages acted on, not just the first.
+
+BUILD SYSTEM OPTIONS
+       The following command line options are supported by all of the dh_auto_*
+       debhelper programs. These programs support a variety of build systems,
+       and normally heuristically determine which to use, and how to use them.
+       You can use these command line options to override the default behavior.
+       Typically these are passed to dh(1), which then passes them to all the
+       dh_auto_* programs.
+
+       -Sbuildsystem, --buildsystem=buildsystem
+           Force use of the specified buildsystem, instead of trying to auto-
+           select one which might be applicable for the package.
+
+       -Ddirectory, --sourcedirectory=directory
+           Assume that the original package source tree is at the specified
+           directory rather than the top level directory of the Debian source
+           package tree.
+
+       -B[directory], --builddirectory=[directory]
+           Enable out of source building and use the specified directory as the
+           build directory. If directory parameter is omitted, a default build
+           directory will chosen.
+
+           If this option is not specified, building will be done in source by
+           default unless the build system requires or prefers out of source
+           tree building.  In such a case, the default build directory will be
+           used even if --builddirectory is not specified.
+
+           If the build system prefers out of source tree building but still
+           allows in source building, the latter can be re-enabled by passing a
+           build directory path that is the same as the source directory path.
+
+       --parallel
+           Enable parallel builds if underlying build system supports them.  The
+           number of parallel jobs is controlled by the DEB_BUILD_OPTIONS
+           environment variable (&quot;Debian Policy, section 4.9.1&quot;) at build time.
+           It might also be subject to a build system specific limit.
+
+           If this option is not specified, debhelper currently defaults to not
+           allowing parallel package builds.
+
+       --max-parallel=maximum
+           This option implies --parallel and allows further limiting the number
+           of jobs that can be used in a parallel build. If the package build is
+           known to only work with certain levels of concurrency, you can set
+           this to the maximum level that is known to work, or that you wish to
+           support.
+
+       --list, -l
+           List all build systems supported by debhelper on this system. The
+           list includes both default and third party build systems (marked as
+           such). Also shows which build system would be automatically selected,
+           or which one is manually specified with the --buildsystem option.
+
+COMPATIBILITY LEVELS
+       From time to time, major non-backwards-compatible changes need to be made
+       to debhelper, to keep it clean and well-designed as needs change and its
+       author gains more experience. To prevent such major changes from breaking
+       existing packages, the concept of debhelper compatibility levels was
+       introduced. You tell debhelper which compatibility level it should use,
+       and it modifies its behavior in various ways.
+
+       Tell debhelper what compatibility level to use by writing a number to
+       debian/compat. For example, to turn on v9 mode:
+
+         % echo 9 &gt; debian/compat
+
+       Your package will also need a versioned build dependency on a version of
+       debhelper equal to (or greater than) the compatibility level your package
+       uses. So for compatibility level 9, ensure debian/control has:
+
+         Build-Depends: debhelper (&gt;= 9)
+
+       Unless otherwise indicated, all debhelper documentation assumes that you
+       are using the most recent compatibility level, and in most cases does not
+       indicate if the behavior is different in an earlier compatibility level,
+       so if you are not using the most recent compatibility level, you&apos;re
+       advised to read below for notes about what is different in earlier
+       compatibility levels.
+
+       These are the available compatibility levels:
+
+       v1  This is the original debhelper compatibility level, and so it is the
+           default one. In this mode, debhelper will use debian/tmp as the
+           package tree directory for the first binary package listed in the
+           control file, while using debian/package for all other packages
+           listed in the control file.
+&#12;           This mode is deprecated.
+
+       v2  In this mode, debhelper will consistently use debian/package as the
+           package tree directory for every package that is built.
+
+           This mode is deprecated.
+
+       v3  This mode works like v2, with the following additions:
+
+           -       Debhelper config files support globbing via * and ?, when
+                   appropriate. To turn this off and use those characters raw,
+                   just prefix with a backslash.
+
+           -       dh_makeshlibs makes the postinst and postrm scripts call
+                   ldconfig.
+
+           -       Every file in etc/ is automatically flagged as a conffile by
+                   dh_installdeb.
+
+           This mode is deprecated.
+
+       v4  Changes from v3 are:
+
+           -       dh_makeshlibs -V will not include the Debian part of the
+                   version number in the generated dependency line in the shlibs
+                   file.
+
+           -       You are encouraged to put the new ${misc:Depends} into
+                   debian/control to supplement the ${shlibs:Depends} field.
+
+           -       dh_fixperms will make all files in bin/ directories and in
+                   etc/init.d executable.
+
+           -       dh_link will correct existing links to conform with policy.
+
+           This mode is deprecated.
+
+       v5  Changes from v4 are:
+
+           -       Comments are ignored in debhelper config files.
+
+           -       dh_strip --dbg-package now specifies the name of a package to
+                   put debugging symbols in, not the packages to take the
+                   symbols from.
+
+           -       dh_installdocs skips installing empty files.
+
+           -       dh_install errors out if wildcards expand to nothing.
+
+       v6  Changes from v5 are:
+
+           -       Commands that generate maintainer script fragments will order
+                   the fragments in reverse order for the prerm and postrm
+                   scripts.
+
+           -       dh_installwm will install a slave manpage link for
+                   x-window-manager.1.gz, if it sees the man page in
+                   usr/share/man/man1 in the package build directory.
+
+           -       dh_builddeb did not previously delete everything matching
+                   DH_ALWAYS_EXCLUDE, if it was set to a list of things to
+                   exclude, such as CVS:.svn:.git. Now it does.
+
+           -       dh_installman allows overwriting existing man pages in the
+                   package build directory. In previous compatibility levels it
+                   silently refuses to do this.
+
+       v7  Changes from v6 are:
+
+           -       dh_install, will fall back to looking for files in debian/tmp
+                   if it doesn&apos;t find them in the current directory (or wherever
+                   you tell it look using --sourcedir). This allows dh_install
+                   to interoperate with dh_auto_install, which installs to
+                   debian/tmp, without needing any special parameters.
+
+           -       dh_clean will read debian/clean and delete files listed
+                   there.
+
+           -       dh_clean will delete toplevel *-stamp files.
+
+           -       dh_installchangelogs will guess at what file is the upstream
+                   changelog if none is specified.
+
+       v8  Changes from v7 are:
+
+           -       Commands will fail rather than warning when they are passed
+                   unknown options.
+
+           -       dh_makeshlibs will run dpkg-gensymbols on all shared
+                   libraries that it generates shlibs files for. So -X can be
+                   used to exclude libraries.  Also, libraries in unusual
+                   locations that dpkg-gensymbols would not have processed
+                   before will be passed to it, a behavior change that can cause
+                   some packages to fail to build.
+
+           -       dh requires the sequence to run be specified as the first
+                   parameter, and any switches come after it. Ie, use &quot;dh $@
+                   --foo&quot;, not &quot;dh --foo $@&quot;.
+
+           -       dh_auto_* prefer to use Perl&apos;s Module::Build in preference to
+                   Makefile.PL.
+
+       v9  This is the recommended mode of operation.
+
+           Changes from v8 are:
+
+           -       Multiarch support. In particular, dh_auto_configure passes
+                   multiarch directories to autoconf in --libdir and
+                   --libexecdir.
+
+           -       dh is aware of the usual dependencies between targets in
+                   debian/rules.  So, &quot;dh binary&quot; will run any build, build-
+                   arch, build-indep, install, etc targets that exist in the
+                   rules file. There&apos;s no need to define an explicit binary
+                   target with explicit dependencies on the other targets.
+
+           -       dh_strip compresses debugging symbol files to reduce the
+                   installed size of -dbg packages.
+
+           -       dh_auto_configure does not include the source package name in
+                   --libexecdir when using autoconf.
+
+           -       dh does not default to enabling --with=python-support
+
+           -       All of the dh_auto_* debhelper programs and dh set
+                   environment variables listed by dpkg-buildflags, unless they
+                   are already set.
+
+           -       dh_auto_configure passes dpkg-buildflags CFLAGS, CPPFLAGS,
+                   and LDFLAGS to perl Makefile.PL and Build.PL
+
+           -       dh_strip puts separated debug symbols in a location based on
+                   their build-id.
+
+           -       Executable debhelper config files are run and their output
+                   used as the configuration.
+
+       v10 This compatibility level is still open for development; use with
+           caution.
+
+           Changes from v9 are:
+
+           -       None yet..
+&#12;NOTES
+   Multiple binary package support
+       If your source package generates more than one binary package, debhelper
+       programs will default to acting on all binary packages when run. If your
+       source package happens to generate one architecture dependent package,
+       and another architecture independent package, this is not the correct
+       behavior, because you need to generate the architecture dependent
+       packages in the binary-arch debian/rules target, and the architecture
+       independent packages in the binary-indep debian/rules target.
+
+       To facilitate this, as well as give you more control over which packages
+       are acted on by debhelper programs, all debhelper programs accept the -a,
+       -i, -p, and -s parameters. These parameters are cumulative.  If none are
+       given, debhelper programs default to acting on all packages listed in the
+       control file.
+
+   Automatic generation of Debian install scripts
+       Some debhelper commands will automatically generate parts of Debian
+       maintainer scripts. If you want these automatically generated things
+       included in your existing Debian maintainer scripts, then you need to add
+       #DEBHELPER# to your scripts, in the place the code should be added.
+       #DEBHELPER# will be replaced by any auto-generated code when you run
+       dh_installdeb.
+
+       If a script does not exist at all and debhelper needs to add something to
+       it, then debhelper will create the complete script.
+
+       All debhelper commands that automatically generate code in this way let
+       it be disabled by the -n parameter (see above).
+
+       Note that the inserted code will be shell code, so you cannot directly
+       use it in a Perl script. If you would like to embed it into a Perl
+       script, here is one way to do that (note that I made sure that $1, $2,
+       etc are set with the set command):
+
+         my $temp=&quot;set -e\nset -- @ARGV\n&quot; . &lt;&lt; &apos;EOF&apos;;
+         #DEBHELPER#
+         EOF
+         system ($temp) / 256 == 0
+               or die &quot;Problem with debhelper scripts: $!&quot;;
+
+   Automatic generation of miscellaneous dependencies.
+       Some debhelper commands may make the generated package need to depend on
+       some other packages. For example, if you use dh_installdebconf(1), your
+       package will generally need to depend on debconf. Or if you use
+       dh_installxfonts(1), your package will generally need to depend on a
+       particular version of xutils. Keeping track of these miscellaneous
+       dependencies can be annoying since they are dependent on how debhelper
+       does things, so debhelper offers a way to automate it.
+
+       All commands of this type, besides documenting what dependencies may be
+       needed on their man pages, will automatically generate a substvar called
+       ${misc:Depends}. If you put that token into your debian/control file, it
+       will be expanded to the dependencies debhelper figures you need.
+
+       This is entirely independent of the standard ${shlibs:Depends} generated
+       by dh_makeshlibs(1), and the ${perl:Depends} generated by dh_perl(1).
+       You can choose not to use any of these, if debhelper&apos;s guesses don&apos;t
+       match reality.
+
+   Package build directories
+       By default, all debhelper programs assume that the temporary directory
+       used for assembling the tree of files in a package is debian/package.
+
+       Sometimes, you might want to use some other temporary directory. This is
+       supported by the -P flag. For example, &quot;dh_installdocs -Pdebian/tmp&quot;,
+       will use debian/tmp as the temporary directory. Note that if you use -P,
+       the debhelper programs can only be acting on a single package at a time.
+       So if you have a package that builds many binary packages, you will need
+       to also use the -p flag to specify which binary package the debhelper
+       program will act on.
+&#12;   udebs
+       Debhelper includes support for udebs. To create a udeb with debhelper,
+       add &quot;Package-Type: udeb&quot; to the package&apos;s stanza in debian/control.
+       Debhelper will try to create udebs that comply with debian-installer
+       policy, by making the generated package files end in .udeb, not
+       installing any documentation into a udeb, skipping over preinst, postrm,
+       prerm, and config scripts, etc.
+
+ENVIRONMENT
+       DH_VERBOSE
+           Set to 1 to enable verbose mode. Debhelper will output every command
+           it runs that modifies files on the build system.
+
+       DH_COMPAT
+           Temporarily specifies what compatibility level debhelper should run
+           at, overriding any value in debian/compat.
+
+       DH_NO_ACT
+           Set to 1 to enable no-act mode.
+
+       DH_OPTIONS
+           Anything in this variable will be prepended to the command line
+           arguments of all debhelper commands.
+
+           When using dh(1), it can be passed options that will be passed on to
+           each debhelper command, which is generally better than using
+           DH_OPTIONS.
+
+       DH_ALWAYS_EXCLUDE
+           If set, this adds the value the variable is set to to the -X options
+           of all commands that support the -X option. Moreover, dh_builddeb
+           will rm -rf anything that matches the value in your package build
+           tree.
+
+           This can be useful if you are doing a build from a CVS source tree,
+           in which case setting DH_ALWAYS_EXCLUDE=CVS will prevent any CVS
+           directories from sneaking into the package you build. Or, if a
+           package has a source tarball that (unwisely) includes CVS
+           directories, you might want to export DH_ALWAYS_EXCLUDE=CVS in
+           debian/rules, to make it take effect wherever your package is built.
+
+           Multiple things to exclude can be separated with colons, as in
+           DH_ALWAYS_EXCLUDE=CVS:.svn
+
+SEE ALSO
+       /usr/share/doc/debhelper/examples/
+           A set of example debian/rules files that use debhelper.
+
+       &lt;http://kitenet.net/~joey/code/debhelper/&gt;
+           Debhelper web site.
+
+AUTHOR
+       Joey Hess &lt;joeyh@debian.org&gt;
+
+
+
+9.20120909                         2012-09-10                       debhelper(7)
+
+</pre></body></html>

@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::SAX::PurePerl - Pure Perl XML Parser with SAX2 interface</title></head>
+<body><pre>
+
+SAX::PurePerl(3pm)     User Contributed Perl Documentation    SAX::PurePerl(3pm)
+
+
+
+NAME
+       XML::SAX::PurePerl - Pure Perl XML Parser with SAX2 interface
+
+SYNOPSIS
+         use XML::Handler::Foo;
+         use XML::SAX::PurePerl;
+         my $handler = XML::Handler::Foo-&gt;new();
+         my $parser = XML::SAX::PurePerl-&gt;new(Handler =&gt; $handler);
+         $parser-&gt;parse_uri(&quot;myfile.xml&quot;);
+
+DESCRIPTION
+       This module implements an XML parser in pure perl. It is written around
+       the upcoming perl 5.8&apos;s unicode support and support for multiple document
+       encodings (using the PerlIO layer), however it has been ported to work
+       with ASCII/UTF8 documents under lower perl versions.
+
+       The SAX2 API is described in detail at
+       http://sourceforge.net/projects/perl-xml/, in the CVS archive, under
+       libxml-perl/docs. Hopefully those documents will be in a better location
+       soon.
+
+       Please refer to the SAX2 documentation for how to use this module - it is
+       merely a front end to SAX2, and implements nothing that is not in that
+       spec (or at least tries not to - please email me if you find errors in
+       this implementation).
+
+BUGS
+       XML::SAX::PurePerl is slow. Very slow. I suggest you use something else
+       in fact. However it is great as a fallback parser for XML::SAX, where the
+       user might not be able to install an XS based parser or C library.
+
+       Currently lots, probably. At the moment the weakest area is parsing
+       DOCTYPE declarations, though the code is in place to start doing this.
+       Also parsing parameter entity references is causing me much confusion,
+       since it&apos;s not exactly what I would call trivial, or well documented in
+       the XML grammar. XML documents with internal subsets are likely to fail.
+
+       I am however trying to work towards full conformance using the Oasis test
+       suite.
+
+AUTHOR
+       Matt Sergeant, matt@sergeant.org. Copyright 2001.
+
+       Please report all bugs to the Perl-XML mailing list at
+       perl-xml@listserv.activestate.com.
+
+LICENSE
+       This is free software. You may use it or redistribute it under the same
+       terms as Perl 5.7.2 itself.
+
+
+
+perl v5.14.2                       2012-06-01                 SAX::PurePerl(3pm)
+
+</pre></body></html>

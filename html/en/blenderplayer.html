@@ -1,0 +1,130 @@
+<html>
+<head><meta charset=utf-8/>
+<title>blenderplayer - the blender game engine runner</title></head>
+<body><pre>
+
+BLENDERPLAYER(1)                                                BLENDERPLAYER(1)
+
+
+
+NAME
+       blenderplayer - the blender game engine runner
+
+SYNOPSIS
+       usage:   blenderplayer [-w [w h l t]] [-f [fw fh fb ff]] [-g gamengineop&#8208;
+       tions] [-s stereomode] [-m aasamples] filename.blend
+
+DESCRIPTION
+       blenderplayer is the 3D and physics game engine
+
+OPTIONS
+       -h : Prints this command summary
+
+       -w : display in a window
+         optional parameters
+           w = window width
+           h = window height
+           l = window left coordinate
+           t = window top coordinate
+           Note: If w or h is defined, both must be defined.
+           Also, if l or t is defined, all options must be used.
+
+       -f : start game in full screen mode
+         optional parameters
+           fw = full screen mode pixel width
+           fh = full screen mode pixel height
+           fb = full screen mode bits per pixel
+           ff = full screen mode frequency
+           Note: If fw or fh is defined, both must be defined.
+           Also, if fb is used, fw and fh must be used. ff requires all options.
+
+       -s : start player in stereo
+
+           depending on the type of stereo you want:
+
+           stereomode: hwpageflip
+               (Quad buffered shutter glasses)
+
+           syncdoubling
+               (Above Below)
+
+           sidebyside
+               (Left Right)
+
+           anaglyph
+               (Red-Blue glasses)
+
+           vinterlace
+               (Vertical interlace for autostereo display)
+
+       -D : start player in dome mode
+
+           Optional parameters:
+
+               angle = field of view in degrees
+
+               tilt  = tilt angle in degrees
+
+               warpdata = a file to use for warping the image (absolute path)
+
+               mode = fisheye (Fisheye), truncatedfront (Front-Truncated),
+                      truncatedrear (Rear-Truncated), cubemap(Cube Map),
+                      sphericalpanoramic (Spherical Panoramic)
+
+                      depending on the type of dome you are using
+
+       -m : maximum anti-aliasing (eg. 2,4,8,16)
+
+       -i : parent windows ID
+
+       -d : turn debugging on
+
+       -g : game engine options
+
+           Name                         Default      Description
+
+           ---------------------------  ------------------------------------
+
+           fixedtime                    0         &quot;Enable all frames&quot;
+
+           nomipmap                     0         Disable mipmaps
+
+           show_framerate               0         Show the frame rate
+
+           show_properties              0         Show debug properties
+
+           show_profile                 0         Show profiling information
+
+           blender_material             0         Enable material settings
+
+           ignore_deprecation_warnings  1         Ignore deprecation warnings
+
+       - : all arguments after this are ignored, allowing python to access  them
+       from sys.argv
+
+EXAMPLES
+       blenderplayer -w 320 200 10 10 -g noaudio //home//user//filename.blend
+              Launch blenderplayer in window mode with size 320x200 at 10 pixels
+              from left and 10 pixels from top of the screen without audio.
+
+       blenderplayer -g show_framerate = 0 //home//user//filename.blend
+              Disable framerate reports.
+
+       blenderplayer -i 232421 -m 16 //home//user//filename.blend
+              Launch blenderplayer  embedded  in  an  existing  window  and  set
+              antialiasing to 16.
+
+
+SEE ALSO
+       blender(1)
+
+
+AUTHORS
+       This  manpage  was  written  for  a  Debian  GNU/Linux by Kevin Roy &lt;kin&#8208;
+       iou@gmail.com&gt;.
+
+
+
+Blender 2.60 (sub 0)            October 17, 2011                BLENDERPLAYER(1)
+
+</pre></body></html>

@@ -1,0 +1,281 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jdb - The Java Debugger</title></head>
+<body><pre>
+
+jdb(1)                                                                    jdb(1)
+
+
+
+Name
+       jdb - The Java Debugger
+
+       jdb helps you find and fix bugs in Java language programs.
+
+SYNOPSIS
+       jdb [ options ] [ class ] [ arguments ]
+
+
+          options
+             Command-line options, as specified below.
+
+          class
+             Name of the class to begin debugging.
+
+          arguments
+             Arguments passed to the main() method of class.
+
+
+DESCRIPTION
+       The  Java  Debugger,  jdb,  is  a  simple  command-line debugger for Java
+       classes. It is a demonstration of the Java Platform Debugger Architecture
+       @
+       http://docs.oracle.com/javase/7/docs/technotes/guides/jpda/index.html
+       that provides inspection and debugging of a local or remote Java Virtual
+       Machine.
+
+   Starting a jdb Session
+       There are many ways to start a jdb session. The most frequently used way
+       is to have jdb launch a new Java Virtual Machine (VM) with the main class
+       of the application to be debugged. This is done by substituting the com&#8208;
+       mand jdb for java in the command line. For example, if your application&apos;s
+       main class is MyClass, you use the following command to debug it under
+       JDB:
+
+        % jdb MyClass
+
+
+       When started this way, jdb invokes a second Java VM with any specified
+       parameters, loads the specified class, and stops the VM before executing
+       that class&apos;s first instruction.
+
+       Another way to use jdb is by attaching it to a Java VM that is already
+       running. Syntax for Starting a VM to which jdb will attach when the VM is
+       running is as follows. This loads in-process debugging libraries and
+       specifies the kind of connection to be made.
+
+       -agentlib:jdwp=transport=dt_socket,server=y,suspend=n
+
+
+       For example, the following command will run the MyClass application, and
+       allow jdb to connect to it at a later time.
+
+        % java -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n MyClass
+
+
+       You can then attach jdb to the VM with the following commmand:
+
+        % jdb -attach 8000
+
+
+       Note that &quot;MyClass&quot; is not specified in the jdb command line in this case
+       because jdb is connecting to an existing VM instead of launching a new
+       one.
+
+       There are many other ways to connect the debugger to a VM, and all of
+       them are supported by jdb. The Java Platform Debugger Architecture has
+       additional documentation @
+       http://docs.oracle.com/javase/7/docs/technotes/guides/jpda/conninv.html
+       on these connection options. For information on starting a J2SE 1.4.2 or
+       early VM for use with jdb see the 1.4.2 documentation @
+       http://java.sun.com/j2se/1.4.2/docs/guide/jpda/conninv.html
+
+   Basic jdb Commands
+       The following is a list of the basic jdb commands. The Java debugger sup&#8208;
+       ports other commands which you can list using jdb&apos;s help command.
+
+          help, or ?
+             The most important jdb command, help displays the list of recog&#8208;
+             nized commands with a brief description.
+
+          run
+             After starting jdb, and setting any necessary breakpoints, you can
+             use this command to start the execution the debugged application.
+             This command is available only when jdb launches the debugged
+             application (as opposed to attaching to an existing VM).
+
+          cont
+             Continues execution of the debugged application after a breakpoint,
+             exception, or step.
+
+          print
+             Displays Java objects and primitive values. For variables or fields
+             of primitive types, the actual value is printed. For objects, a
+             short description is printed. See the dump command below for get&#8208;
+             ting more information about an object.
+             NOTE: To display local variables, the containing class must have
+             been compiled with the javac(1) -g option.
+             print supports many simple Java expressions including those with
+             method invocations, for example:
+
+             o print MyClass.myStaticField
+
+             o print myObj.myInstanceField
+
+             o print i + j + k (i, j, k are primities and either fields or local
+               variables)
+
+             o print myObj.myMethod() (if myMethod returns a non-null)
+
+             o print new java.lang.String(&quot;Hello&quot;).length()
+
+          dump
+             For primitive values, this command is identical to print. For
+             objects, it prints the current value of each field defined in the
+             object. Static and instance fields are included.
+             The dump command supports the same set of expressions as the print
+             command.
+
+          threads
+             List the threads that are currently running. For each thread, its
+             name and current status are printed, as well as an index that can
+             be used for other commands, for example:
+             4. (java.lang.Thread)0x1 main      running
+             In this example, the thread index is 4, the thread is an instance
+             of java.lang.Thread, the thread name is &quot;main&quot;, and it is currently
+             running,
+&#12;          thread
+             Select a thread to be the current thread. Many jdb commands are
+             based on the setting of the current thread. The thread is specified
+             with the thread index described in the threads command above.
+
+          where
+             where with no arguments dumps the stack of the current thread.
+             where all dumps the stack of all threads in the current thread
+             group. where threadindex dumps the stack of the specified thread.
+             If the current thread is suspended (either through an event such as
+             a breakpoint or through the suspend command), local variables and
+             fields can be displayed with the print and dump commands. The up
+             and down commands select which stack frame is current.
+
+
+   Breakpoints
+       Breakpoints can be set in jdb at line numbers or at the first instruction
+       of a method, for example:
+
+          o stop at MyClass:22 (sets a breakpoint at the first instruction for
+            line 22 of the source file containing MyClass)
+
+          o stop in java.lang.String.length (sets a breakpoint at the beginnig
+            of the method java.lang.String.length)
+
+          o stop in MyClass.&lt;init&gt; (&lt;init&gt; identifies the MyClass constructor)
+
+          o stop in MyClass.&lt;clinit&gt; (&lt;clinit&gt; identifies the static initializa&#8208;
+            tion code for MyClass)
+
+
+       If a method is overloaded, you must also specify its argument types so
+       that the proper method can be selected for a breakpoint. For example,
+       &quot;MyClass.myMethod(int,java.lang.String)&quot;, or &quot;MyClass.myMethod()&quot;.
+
+       The clear command removes breakpoints using a syntax as in
+       &quot;clear MyClass:45&quot;. Using the clear or command with no argument displays
+       a list of all breakpoints currently set. The cont command continues exe&#8208;
+       cution.
+
+   Stepping
+       The step commands advances execution to the next line whether it is in
+       the current stack frame or a called method. The next command advances
+       execution to the next line in the current stack frame.
+
+   Exceptions
+       When an exception occurs for which there isn&apos;t a catch statement anywhere
+       in the throwing thread&apos;s call stack, the VM normally prints an exception
+       trace and exits. When running under jdb, however, control returns to jdb
+       at the offending throw. You can then use jdb to diagnose the cause of the
+       exception.
+
+       Use the catch command to cause the debugged application to stop at other
+       thrown exceptions, for example: &quot;catch java.io.FileNotFoundException&quot; or
+       &quot;catch mypackage.BigTroubleException. Any exception which is an instance
+       of the specifield class (or of a subclass) will stop the application at
+       the point where it is thrown.
+
+       The ignore command negates the effect of a previous catch command.
+
+       NOTE: The ignore command does not cause the debugged VM to ignore spe&#8208;
+       cific exceptions, only the debugger.
+
+Command Line Options
+       When you use jdb in place of the Java application launcher on the command
+       line, jdb accepts many of the same options as the java command, including
+       -D, -classpath, and -X&lt;option&gt;.
+
+       The following additional options are accepted by jdb:
+
+          -help
+             Displays a help message.
+
+          -sourcepath &lt;dir1:dir2:...&gt;
+             Uses the given path in searching for source files in the specified
+             path. If this option is not specified, the default path of &quot;.&quot; is
+             used.
+
+          -attach &lt;address&gt;
+             Attaches the debugger to previously running VM using the default
+             connection mechanism.
+
+          -listen &lt;address&gt;
+             Waits for a running VM to connect at the specified address using
+             standard connector.
+
+          -listenany
+             Waits for a running VM to connect at any available address using
+             standard connector.
+
+          -launch
+             Launches the debugged application immediately upon startup of jdb.
+             This option removes the need for using the run command. The debuged
+             application is launched and then stopped just before the initial
+             application class is loaded. At that point you can set any neces&#8208;
+             sary breakpoints and use the cont to continue execution.
+
+          -listconnectors
+             List the connectors available in this VM
+
+          -connect &lt;connector-name&gt;:&lt;name1&gt;=&lt;value1&gt;,...
+             Connects to target VM using named connector with listed argument
+             values.
+
+          -dbgtrace [flags]
+             Prints info for debugging jdb.
+
+          -tclient
+             Runs the application in the Java HotSpot(tm) VM (Client).
+
+          -tserver
+             Runs the application in the Java HotSpot(tm) VM (Server).
+
+          -Joption
+             Pass option to the Java virtual machine used to run jdb. (Options
+             for the application Java virtual machine are passed to the run com&#8208;
+             mand.) For example, -J-Xms48m sets the startup memory to 48
+             megabytes.
+
+
+       Other options are supported for alternate mechanisms for connecting the
+       debugger and the VM it is to debug. The Java Platform Debugger Architec&#8208;
+       ture has additional documentation @
+       http://docs.oracle.com/javase/7/docs/technotes/guides/jpda/conninv.html
+       on these connection alternatives.
+
+   Options Forwarded to Debuggee Process
+          -v -verbose[:class|gc|jni]
+             Turns on verbose mode.
+
+          -D&lt;name&gt;=&lt;value&gt;
+             Sets a system property.
+&#12;          -classpath &lt;directories separated by &quot;:&quot;&gt;
+             Lists directories in which to look for classes.
+
+          -X&lt;option&gt;
+             Non-standard target VM option
+
+
+SEE ALSO
+       javac(1), java(1), javah(1), javap(1), javadoc(1).
+
+                                   16 Mar 2012                            jdb(1)
+
+</pre></body></html>

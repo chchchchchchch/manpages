@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rpl — replace strings in files</title></head>
+<body><pre>
+
+RPL(1)                    BSD General Commands Manual                   RPL(1)
+
+NAME
+     rpl &#8212; replace strings in files
+
+SYNOPSIS
+     rpl [-LhiwbqvsRepfdt] [-xSUFFIX] &#10216;old_string&#10217; &#10216;new_string&#10217;
+         &#10216;target_file ...&#10217;
+
+DESCRIPTION
+     Basic usage is to specify two strings and one or more filenames or directo&#8208;
+     ries on the command line.  The first string is the string to replace, and
+     the second string is the replacement string.
+
+     -h, --help
+             A short help text.
+
+     -L, --license
+             Show the license and exit.
+
+     -xSUFFIX
+             Search only files ending with SUFFIX, e.g.  &#8220;.txt&#8221;.  May be speci&#8208;
+             fied multiple times.
+
+     -i, --ignore-case
+             Ignore the case of old_string.
+
+     -w, --whole-words
+             Make old_string match only on word boundaries.
+
+     -b, --backup
+             Move the original files to filename~ before replacing them.
+
+     -q, --quiet
+             Quiet mode.
+
+     -v, --verbose
+             Verbose mode.
+
+     -s, --dry-run
+             Simulation mode, no files are changed.
+
+     -R, --recursive
+             Recurse into subdirectories.
+
+     -e, --escape
+             Expand escape sequences in old_string and new_string.  Examples of
+             escape sequences are &#8216;\n&#8217; (new-line), &#8216;\t&#8217; (tab), &#8216;\x42&#8217; (hexadeci&#8208;
+             mal number 42), &#8216;\033&#8217; (octal number 033).
+
+     -p, --prompt
+             Prompt for confirmation before replacing each file.
+
+     -f, --force
+             Ignore errors when trying to restore permissions and file owner&#8208;
+             ship.
+
+     -d, --keep-times
+             Keep modification times when replacing files.
+
+     -t, --use-tmpdir
+             Use a temporary directory for storing temporary files, usually the
+             value of the environment variable TMPDIR.  The default is to put
+             temporary files in the same directory as the file being modified.
+
+     -a, --all
+             Do not ignore files and directories starting with .
+
+IMPLEMENTATION NOTES
+     An effort has been made to make the program behave as much as the original
+     rpl as necessary.  Where it has been possible to make improvements,
+     improvements have been made.  This implementation lacks many of the bugs in
+     the original.
+
+EXAMPLES
+     Replace all occurences of &#8220;F&#8221; (on word boundaries) with &#8220;A&#8221; in all text
+     files under the grades/ directory:
+           $ rpl -Rwd -x&apos;.txt&apos; &apos;F&apos; &apos;A&apos; grades/
+
+SEE ALSO
+     find(1), sed(1).
+
+HISTORY
+     This program was written for Debian as a free replacement for the non-free
+     rpl program by Joe Laffey.
+
+AUTHORS
+     G&#246;ran Weinholt &#10216;weinholt@debian.org&#10217;.
+
+Debian                           July 31, 2005                          Debian
+
+</pre></body></html>

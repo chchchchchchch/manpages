@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>asn1_length_der - API function</title></head>
+<body><pre>
+
+asn1_length_der(3)                  libtasn1                  asn1_length_der(3)
+
+
+
+NAME
+       asn1_length_der - API function
+
+SYNOPSIS
+       #include &lt;libtasn1.h&gt;
+
+       void  asn1_length_der(unsigned  long  int len, unsigned char * ans, int *
+       ans_len);
+
+ARGUMENTS
+       unsigned long int len
+                   value to convert.
+
+       unsigned char * ans
+                   string returned.
+
+       int * ans_len
+                   number of meaningful bytes of ANS (ans[0]..ans[ans_len-1]).
+
+DESCRIPTION
+       Creates the DER coding for the LEN parameter (only the length).  The  ans
+       buffer is pre-allocated and must have room for the output.
+
+COPYRIGHT
+       Copyright &#169; 2006-2011 Free Software Foundation, Inc..
+       Copying  and distribution of this file, with or without modification, are
+       permitted in any medium without royalty provided the copyright notice and
+       this notice are preserved.
+
+SEE ALSO
+       The  full  documentation  for libtasn1 is maintained as a Texinfo manual.
+       If the info and libtasn1 programs are properly installed  at  your  site,
+       the command
+
+              info libtasn1
+
+       should give you access to the complete manual.
+
+
+
+libtasn1                              2.13                    asn1_length_der(3)
+
+</pre></body></html>

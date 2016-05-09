@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dmenu - dynamic menu</title></head>
+<body><pre>
+
+DMENU(1)                                                                DMENU(1)
+
+
+
+NAME
+       dmenu - dynamic menu
+
+SYNOPSIS
+       dmenu  [-b]  [-i]  [-l  lines]  [-m  monitor] [-p prompt] [-fn font] [-nb
+       color] [-nf color] [-sb color] [-sf color] [-v]
+
+       dmenu_run ...
+
+       dmenu_path
+
+DESCRIPTION
+       dmenu is a dynamic menu for X, originally designed for dwm(1).   It  man&#8208;
+       ages huge numbers of user-defined menu items efficiently.
+
+       dmenu  reads  a  list  of newline-separated items from standard input and
+       creates a menu.  When the user selects an item or  enters  any  text  and
+       presses Return, their choice is printed to standard output and dmenu ter&#8208;
+       minates.
+
+       dmenu_run is a dmenu script used by  dwm  which  lists  programs  in  the
+       user&apos;s PATH and executes the selected item.
+
+       dmenu_path  is  a  program  used by dmenu_run to find and cache a list of
+       executables.
+
+OPTIONS
+       -b     dmenu appears at the bottom of the screen.
+
+       -i     dmenu matches menu items case insensitively.
+
+       -l lines
+              dmenu lists items vertically, with the given number of lines.
+
+       -m monitor
+              dmenu appears on the given Xinerama screen.
+
+       -p prompt
+              defines the prompt to be displayed to the left of the input field.
+
+       -fn font
+              defines the font or font set used.
+
+       -nb color
+              defines the normal background color.   #RGB,  #RRGGBB,  and  color
+              names are supported.
+
+       -nf color
+              defines the normal foreground color.
+
+       -sb color
+              defines the selected background color.
+
+       -sf color
+              defines the selected foreground color.
+
+       -v     prints version information to standard output, then exits.
+
+USAGE
+       dmenu  is  completely  controlled by the keyboard.  Besides standard Unix
+       line editing and  item  selection  (Up/Down/Left/Right,  PageUp/PageDown,
+       Home/End), the following keys are recognized:
+
+       Tab (Control-i)
+              Copy the selected item to the input field.
+
+       Return (Control-j)
+              Confirm  selection.   Prints  the selected item to standard output
+              and exits, returning success.
+
+       Shift-Return (Control-Shift-j)
+              Confirm input.  Prints the  input  text  to  standard  output  and
+              exits, returning success.
+
+       Escape (Control-c)
+              Exit without selecting an item, returning failure.
+
+       Control-y
+              Paste the current X selection into the input field.
+
+SEE ALSO
+       dwm(1)
+
+
+
+                                   dmenu-4.2.1                          DMENU(1)
+
+</pre></body></html>

@@ -1,0 +1,63 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtAppCreateShell, XtVaAppCreateShell - create top-level widget instance</title></head>
+<body><pre>
+
+XtAppCreateShell(3)               XT FUNCTIONS               XtAppCreateShell(3)
+
+
+
+NAME
+       XtAppCreateShell, XtVaAppCreateShell - create top-level widget instance
+
+SYNTAX
+       Widget XtAppCreateShell(String application_name, String applica&#8208;
+              tion_class, WidgetClass widget_class, Display *display, ArgList
+              args, Cardinal num_args);
+
+       Widget XtVaAppCreateShell(String application_name, String applica&#8208;
+              tion_class, WidgetClass widget_class, Display *display, ...);
+
+ARGUMENTS
+       application_name
+                 Specifies the name of the application instance.
+
+       application_class
+                 Specifies the class name of this application.
+
+       widget_class
+                 Specifies the widget class that the application top-level wid&#8208;
+                 get should be.
+
+       display   Specifies the display from which to get the resources.
+
+       args      Specifies the argument list from which to get the resources.
+
+       num_args  Specifies the number of arguments in the argument list.
+
+       ...       Specifies the variable argument list from which to get the
+                 resources.
+
+DESCRIPTION
+       The XtAppCreateShell function saves the specified application name and
+       application class for qualifying all widget resource specifiers.  The
+       application name and application class are used as the left-most compo&#8208;
+       nents in all widget resource names for this application.  XtAppCreate&#8208;
+       Shell should be used to create a new logical application within a program
+       or to create a shell on another display.  In the first case, it allows
+       the specification of a new root in the resource hierarchy.  In the second
+       case, it uses the resource database associated with the other display.
+
+       Note that the widget returned by XtAppCreateShell has the WM_COMMAND
+       property set for session managers (see Chapter 4).
+
+SEE ALSO
+       XtCreateWidget(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3               XtAppCreateShell(3)
+
+</pre></body></html>

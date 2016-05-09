@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mouse_seteventhandler, mouse_setdefaulteventhandler - set a mouse event handler</title></head>
+<body><pre>
+
+mouse_seteventhandler(3)       Svgalib User Manual      mouse_seteventhandler(3)
+
+
+
+NAME
+       mouse_seteventhandler,  mouse_setdefaulteventhandler  - set a mouse event
+       handler
+
+SYNOPSIS
+       #include &lt;vgamouse.h&gt;
+
+       typedef void (*__mouse_handler) (int button, int dx, int dy, int dz , int
+       drx,  int  dry, int drz); /* is already in #include &lt;vgamouse.h&gt; included
+       */
+
+       void mouse_seteventhandler(__mouse_handler handler);
+       void mouse_setdefaulteventhandler(void);
+
+
+DESCRIPTION
+       mouse_update(3) and mouse_waitforupdate(3) will call  this  function  for
+       each change of mouse state and you can do your own book keeping and maybe
+       even draw a mouse cursor.
+
+       mouse_setdefaulteventhandler() activates the default handler.
+
+SEE ALSO
+       svgalib(7),  vgagl(7),  libvga.config(5),  eventtest(6),  mouse_close(3),
+       mouse_init(3),       mouse_getposition_6d(3),       mouse_setposition(3),
+       mouse_setscale(3), mouse_setwrap(3),  mouse_setxrange(3),  mouse_getx(3),
+       mouse_update(3),      mouse_waitforupdate(3),     vga_setmousesupport(3),
+       vga_waitevent(3)
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997          mouse_seteventhandler(3)
+
+</pre></body></html>

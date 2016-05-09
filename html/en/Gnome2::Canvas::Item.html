@@ -1,0 +1,188 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::Canvas::Item - Base class for all canvas items</title></head>
+<body><pre>
+
+Gnome2::Canvas::Item(3pUser Contributed Perl DocumentatGnome2::Canvas::Item(3pm)
+
+
+
+NAME
+       Gnome2::Canvas::Item - Base class for all canvas items
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gnome2::Canvas::Item
+
+METHODS
+   item = Gnome2::Canvas::Item-&gt;new ($parent, $object_class, ...)
+       &#183;   $parent (Gnome2::Canvas::Group)
+
+       &#183;   $object_class (string)
+
+       &#183;   ... (list) property name =&gt; value pairs
+
+       Factory constructor for Gnome2::Canvas::Item subclasses.
+
+   $item-&gt;affine_absolute ($affine)
+       &#183;   $affine (arrayref) affine transformation matrix
+
+       Replaces $item&apos;s transformation matrix.
+
+   $item-&gt;affine_relative ($affine)
+       &#183;   $affine (arrayref) affine transformation matrix
+
+       Combines $affine with $item&apos;s current transformation.
+
+   (x1, y1, x2, y2) = $item-&gt;get_bounds
+   $canvas = $item-&gt;canvas
+       Fetch the Gnome2::Canvas to which $item is attached.
+
+   grabstatus = $item-&gt;grab ($event_mask, $cursor, $etime=GDK_CURRENT_TIME)
+       &#183;   $event_mask (Gtk2::Gdk::EventMask)
+
+       &#183;   $cursor (Gtk2::Gdk::Cursor)
+
+       &#183;   $etime (unsigned)
+
+   $item-&gt;grab_focus
+   $item-&gt;hide
+   $affine = $item-&gt;i2c_affine
+       Fetch the affine transform that converts from item-relative coordinates
+       to canvas pixel coordinates.
+
+       Note: This method was completely broken for all $Gnome2::Canvas::VERSION
+       &lt; 1.002.
+
+   (x, y) = $item-&gt;i2w ($x, $y)
+       &#183;   $x (double)
+
+       &#183;   $y (double)
+
+   $affine = $item-&gt;i2w_affine
+       Fetch the affine transform that converts from item&apos;s coordinate system to
+       world coordinates.
+
+       Note: This method was completely broken for all $Gnome2::Canvas::VERSION
+       &lt; 1.002.
+
+   $item-&gt;lower ($positions)
+       &#183;   $positions (integer)
+&#12;   $item-&gt;lower_to_bottom
+   $item-&gt;move ($dx, $dy)
+       &#183;   $dx (double)
+
+       &#183;   $dy (double)
+
+   $canvasgroup = $item-&gt;parent
+       Fetch $item&apos;s parent group item.
+
+   $item-&gt;raise ($positions)
+       &#183;   $positions (integer)
+
+   $item-&gt;raise_to_top
+   $item-&gt;reparent ($new_group)
+       &#183;   $new_group (Gnome2::Canvas::Group)
+
+   $item-&gt;request_update
+   $item-&gt;reset_bounds
+       Reset the bounding box of $item to an empty rectangle.
+
+   $item-&gt;show
+   $item-&gt;ungrab ($etime=GDK_CURRENT_TIME)
+       &#183;   $etime (unsigned)
+
+   $item-&gt;update_bbox ($x1, $y1, $x2, $y2)
+       &#183;   $x1 (integer)
+
+       &#183;   $y1 (integer)
+
+       &#183;   $x2 (integer)
+
+       &#183;   $y2 (integer)
+
+       Set $item&apos;s bounding box to a new rectangle, and request a full repaint.
+
+   (x, y) = $item-&gt;w2i ($x, $y)
+       &#183;   $x (double)
+
+       &#183;   $y (double)
+
+PROPERTIES
+       &apos;parent&apos; (Gnome2::Canvas::Item : default undef : readable / writable)
+
+SIGNALS
+       boolean = event (Gnome2::Canvas::Item, Gtk2::Gdk::Event)
+
+ENUMS AND FLAGS
+   flags Gtk2::Gdk::EventMask
+       &#183;   &apos;exposure-mask&apos; / &apos;GDK_EXPOSURE_MASK&apos;
+
+       &#183;   &apos;pointer-motion-mask&apos; / &apos;GDK_POINTER_MOTION_MASK&apos;
+
+       &#183;   &apos;pointer-motion-hint-mask&apos; / &apos;GDK_POINTER_MOTION_HINT_MASK&apos;
+
+       &#183;   &apos;button-motion-mask&apos; / &apos;GDK_BUTTON_MOTION_MASK&apos;
+
+       &#183;   &apos;button1-motion-mask&apos; / &apos;GDK_BUTTON1_MOTION_MASK&apos;
+
+       &#183;   &apos;button2-motion-mask&apos; / &apos;GDK_BUTTON2_MOTION_MASK&apos;
+
+       &#183;   &apos;button3-motion-mask&apos; / &apos;GDK_BUTTON3_MOTION_MASK&apos;
+
+       &#183;   &apos;button-press-mask&apos; / &apos;GDK_BUTTON_PRESS_MASK&apos;
+
+       &#183;   &apos;button-release-mask&apos; / &apos;GDK_BUTTON_RELEASE_MASK&apos;
+
+       &#183;   &apos;key-press-mask&apos; / &apos;GDK_KEY_PRESS_MASK&apos;
+&#12;       &#183;   &apos;key-release-mask&apos; / &apos;GDK_KEY_RELEASE_MASK&apos;
+
+       &#183;   &apos;enter-notify-mask&apos; / &apos;GDK_ENTER_NOTIFY_MASK&apos;
+
+       &#183;   &apos;leave-notify-mask&apos; / &apos;GDK_LEAVE_NOTIFY_MASK&apos;
+
+       &#183;   &apos;focus-change-mask&apos; / &apos;GDK_FOCUS_CHANGE_MASK&apos;
+
+       &#183;   &apos;structure-mask&apos; / &apos;GDK_STRUCTURE_MASK&apos;
+
+       &#183;   &apos;property-change-mask&apos; / &apos;GDK_PROPERTY_CHANGE_MASK&apos;
+
+       &#183;   &apos;visibility-notify-mask&apos; / &apos;GDK_VISIBILITY_NOTIFY_MASK&apos;
+
+       &#183;   &apos;proximity-in-mask&apos; / &apos;GDK_PROXIMITY_IN_MASK&apos;
+
+       &#183;   &apos;proximity-out-mask&apos; / &apos;GDK_PROXIMITY_OUT_MASK&apos;
+
+       &#183;   &apos;substructure-mask&apos; / &apos;GDK_SUBSTRUCTURE_MASK&apos;
+
+       &#183;   &apos;scroll-mask&apos; / &apos;GDK_SCROLL_MASK&apos;
+
+       &#183;   &apos;all-events-mask&apos; / &apos;GDK_ALL_EVENTS_MASK&apos;
+
+   enum Gtk2::Gdk::GrabStatus
+       &#183;   &apos;success&apos; / &apos;GDK_GRAB_SUCCESS&apos;
+
+       &#183;   &apos;already-grabbed&apos; / &apos;GDK_GRAB_ALREADY_GRABBED&apos;
+
+       &#183;   &apos;invalid-time&apos; / &apos;GDK_GRAB_INVALID_TIME&apos;
+
+       &#183;   &apos;not-viewable&apos; / &apos;GDK_GRAB_NOT_VIEWABLE&apos;
+
+       &#183;   &apos;frozen&apos; / &apos;GDK_GRAB_FROZEN&apos;
+
+SEE ALSO
+       Gnome2::Canvas, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the Gtk2-Perl Team.
+
+       This software is licensed under the LGPL; see Gnome2::Canvas for a full
+       notice.
+
+
+
+perl v5.14.2                       2011-11-15          Gnome2::Canvas::Item(3pm)
+
+</pre></body></html>

@@ -1,0 +1,124 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::LibXML::Attr - XML::LibXML Attribute Class</title></head>
+<body><pre>
+
+XML::LibXML::Attr(3pm) User Contributed Perl DocumentationXML::LibXML::Attr(3pm)
+
+
+
+NAME
+       XML::LibXML::Attr - XML::LibXML Attribute Class
+
+SYNOPSIS
+         use XML::LibXML;
+         # Only methods specific to Attribute nodes are listed here,
+         # see XML::LibXML::Node manpage for other methods
+
+         $attr = XML::LibXML::Attr-&gt;new($name [,$value]);
+         $string = $attr-&gt;getValue();
+         $string = $attr-&gt;value;
+         $attr-&gt;setValue( $string );
+         $node = $attr-&gt;getOwnerElement();
+         $attr-&gt;setNamespace($nsURI, $prefix);
+         $bool = $attr-&gt;isId;
+         $string = $attr-&gt;serializeContent;
+
+DESCRIPTION
+       This is the interface to handle Attributes like ordinary nodes. The
+       naming of the class relies on the W3C DOM documentation.
+
+METHODS
+       The class inherits from XML::LibXML::Node. The documentation for
+       Inherited methods is not listed here.
+
+       Many functions listed here are extensively documented in the DOM Level 3
+       specification (http://www.w3.org/TR/DOM-Level-3-Core/
+       &lt;http://www.w3.org/TR/DOM-Level-3-Core/&gt;). Please refer to the
+       specification for extensive documentation.
+
+       new
+             $attr = XML::LibXML::Attr-&gt;new($name [,$value]);
+
+           Class constructor. If you need to work with ISO encoded strings, you
+           should always use the &quot;createAttribute&quot; of XML::LibXML::Document.
+
+       getValue
+             $string = $attr-&gt;getValue();
+
+           Returns the value stored for the attribute. If undef is returned, the
+           attribute has no value, which is different of being &quot;not specified&quot;.
+
+       value
+             $string = $attr-&gt;value;
+
+           Alias for getValue()
+
+       setValue
+             $attr-&gt;setValue( $string );
+
+           This is needed to set a new attribute value. If ISO encoded strings
+           are passed as parameter, the node has to be bound to a document,
+           otherwise the encoding might be done incorrectly.
+
+       getOwnerElement
+             $node = $attr-&gt;getOwnerElement();
+
+           returns the node the attribute belongs to. If the attribute is not
+           bound to a node, undef will be returned. Overwriting the underlying
+           implementation, the parentNode function will return undef, instead of
+           the owner element.
+&#12;       setNamespace
+             $attr-&gt;setNamespace($nsURI, $prefix);
+
+           This function tries to bound the attribute to a given namespace. If
+           $nsURI is undefined or empty, the function discards any previous
+           association of the attribute with a namespace. If the namespace was
+           not previously declared in the context of the attribute, this
+           function will fail. In this case you may wish to call setNamespace()
+           on the ownerElement. If the namespace URI is non-empty and declared
+           in the context of the attribute, but only with a different (non-
+           empty) prefix, then the attribute is still bound to the namespace but
+           gets a different prefix than $prefix. The function also fails if the
+           prefix is empty but the namespace URI is not (because unprefixed
+           attributes should by definition belong to no namespace).  This
+           function returns 1 on success, 0 otherwise.
+
+       isId
+             $bool = $attr-&gt;isId;
+
+           Determine whether an attribute is of type ID. For documents with a
+           DTD, this information is only available if DTD loading/validation has
+           been requested. For HTML documents parsed with the HTML parser ID
+           detection is done automatically.  In XML documents, all &quot;xml:id&quot;
+           attributes are considered to be of type ID.
+
+       serializeContent($docencoding)
+             $string = $attr-&gt;serializeContent;
+
+           This function is not part of DOM API. It returns attribute content in
+           the form in which it serializes into XML, that is with all meta-
+           characters properly quoted and with raw entity references (except for
+           entities expanded during parse time). Setting the optional
+           $docencoding flag to 1 enforces document encoding for the output
+           string (which is then passed to Perl as a byte string).  Otherwise
+           the string is passed to Perl as (UTF-8 encoded) characters.
+
+AUTHORS
+       Matt Sergeant, Christian Glahn, Petr Pajas
+
+VERSION
+       2.0001
+
+COPYRIGHT
+       2001-2007, AxKit.com Ltd.
+
+       2002-2006, Christian Glahn.
+
+       2006-2009, Petr Pajas.
+
+
+
+perl v5.14.2                       2012-06-20             XML::LibXML::Attr(3pm)
+
+</pre></body></html>

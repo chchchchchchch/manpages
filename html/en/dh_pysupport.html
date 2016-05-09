@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_pysupport - use the python-support framework to handle Python modules</title></head>
+<body><pre>
+
+DH_PYSUPPORT(1)                  python-support                  DH_PYSUPPORT(1)
+
+
+
+NAME
+       dh_pysupport - use the python-support framework to handle Python modules
+
+SYNOPSIS
+       dh_pysupport [debhelper options] [-V X.Y] [-X item [...]] [-n] [module
+       dirs ...]
+
+DESCRIPTION
+       dh_pysupport is a debhelper program that will scan your package, detect
+       public modules in /usr/lib/pythonX.Y/site-packages, and move them to the
+       shared Python modules location. It will generate appropriate
+       postinst/prerm scripts to byte-compile modules installed there for all
+       available python versions.
+
+       It will also look for private Python modules and will byte-compile them
+       with the current Python version. You may have to list the directories
+       containing private Python modules.
+
+       If a file named debian/pyversions exists, it is used to determine the
+       python versions with which the package can work.
+
+       Appropriate dependencies on python-support, python and pythonX.Y are put
+       in ${python:Depends}.  The ${python:Versions} and ${python:Provides}
+       optional substitution variables are made available as well.
+
+OPTIONS
+       module dirs
+           If your package installs private python modules in non-standard
+           directories, you can make dh_pysupport check those directories by
+           passing their names on the command line. By default, it will check
+           /usr/lib/$PACKAGE, /usr/share/$PACKAGE, /usr/lib/games/$PACKAGE and
+           /usr/share/games/$PACKAGE
+
+       -n, --noscripts
+           Do not modify postinst/postrm scripts.
+
+       -d  This option is deprecated.
+
+       -V X.Y
+           Force private modules to be bytecompiled with the specific X.Y python
+           version, regardless of the default python version on the system.
+
+       -X item, --exclude=item
+           Exclude files that contain &quot;item&quot; anywhere in their filename from
+           being taken into account to generate the python dependency. It also
+           excludes them from byte-compilation. You may use this option multiple
+           times to build up a list of things to exclude.
+
+CONFORMS TO
+       Python policy as of 2006-08-10
+
+SEE ALSO
+       debhelper(7)
+
+       This program is a part of python-support but is made to work with
+       debhelper.
+
+AUTHORS
+       Josselin Mouette &lt;joss@debian.org&gt;, Raphael Hertzog &lt;hertzog@debian.org&gt;
+
+
+
+1.0.15                             2012-06-30                    DH_PYSUPPORT(1)
+
+</pre></body></html>

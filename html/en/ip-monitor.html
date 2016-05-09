@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip-monitor, rtmon - state monitoring</title></head>
+<body><pre>
+
+IP-MONITOR(8)                         Linux                        IP-MONITOR(8)
+
+
+
+NAME
+       ip-monitor, rtmon - state monitoring
+
+SYNOPSIS
+       ip monitor [ all | LISTofOBJECTS ]
+
+
+
+DESCRIPTION
+       The ip utility can monitor the state of devices, addresses and routes
+       continuously.  This option has a slightly different format.  Namely, the
+       monitor command is the first in the command line and then the object list
+       follows:
+
+       ip monitor [ all | LISTofOBJECTS ]
+
+       OBJECT-LIST is the list of object types that we want to monitor.  It may
+       contain link, address and route.  If no file argument is given, ip opens
+       RTNETLINK, listens on it and dumps state changes in the format described
+       in previous sections.
+
+
+       If a file name is given, it does not listen on RTNETLINK, but opens the
+       file containing RTNETLINK messages saved in binary format and dumps them.
+       Such a history file can be generated with the rtmon utility.  This util&#8208;
+       ity has a command line syntax similar to ip monitor.  Ideally, rtmon
+       should be started before the first network configuration command is
+       issued. F.e. if you insert:
+
+               rtmon file /var/log/rtmon.log
+
+       in a startup script, you will be able to view the full history later.
+
+
+       Certainly, it is possible to start rtmon at any time.  It prepends the
+       history with the state snapshot dumped at the moment of starting.
+
+
+SEE ALSO
+       ip(8)
+
+
+AUTHOR
+       Original Manpage by Michail Litvak &lt;mci@owl.openwall.com&gt;
+
+
+
+iproute2                           20 Dec 2011                     IP-MONITOR(8)
+
+</pre></body></html>

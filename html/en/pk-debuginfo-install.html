@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pk-debuginfo-install - Debugging Packages Installer</title></head>
+<body><pre>
+
+PK-DEBUGINFO-INSTA(1)            [FIXME: manual]           PK-DEBUGINFO-INSTA(1)
+
+
+
+NAME
+       pk-debuginfo-install - Debugging Packages Installer
+
+SYNOPSIS
+       pk-debuginfo-install [--help] [--verbose] [--simulate] [--no-depends]
+
+DESCRIPTION
+       This manual page documents briefly the pk-debuginfo-install command.
+
+       pk-debuginfo-install is the command line client for installing debuginfo
+       packages.
+
+WHY DO I NEED DEBUGINFO PACKAGES?
+       When a program crashes, it&apos;s often useful to send the developer a
+       backtrace which contains symbol names and variable contents, rather than
+       memory addresses. To make this possible, extra packages called debug
+       packages can be installed.
+
+OPTIONS
+       This program follows the usual GNU command line syntax, with long options
+       starting with two dashes (`-&apos;). A summary of options is included below.
+
+       --help
+           Show summary of options.
+
+       --noninteractive
+           Do not be interactive and skip the confirmation before the packages
+           are installed.
+
+       --verbose
+           Show extra debugging information.
+
+       --simulate
+           Don&apos;t actually install any packages, only simulate what would be
+           installed.
+
+       --no-depends
+           Do not scan for, or install dependencies of the core packages.
+
+       --quiet
+           Do not display information or progress to the terminal.
+
+RETURN VALUES
+       0
+           Success, at least one package was installed
+
+       1
+           Failed with miscellaneous internal error.
+
+       3
+           Failed to get software sources list.
+
+       4
+           Failed to enable software sources.
+
+       5
+           Failed as nothing to do.
+
+       6
+           Failed to find dependent packages.
+
+       7
+           Failed to install.
+
+       8
+           Failed to disable software sources.
+
+SEE ALSO
+       pkmon (1).  pkcon(1).
+
+AUTHOR
+       This manual page was written by Richard Hughes richard@hughsie.com.
+
+COPYRIGHT
+       Copyright &#169; 2009 Richard Hughes
+
+
+
+[FIXME: source]                   29 July,2009             PK-DEBUGINFO-INSTA(1)
+
+</pre></body></html>

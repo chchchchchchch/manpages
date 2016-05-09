@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htstat -  returns statistics on the document and word databases, much like the -s option to htdig or htmerge.</title></head>
+<body><pre>
+
+htdig(1)                                                                htdig(1)
+
+
+
+NAME
+       htstat  -   returns  statistics  on the document and word databases, much
+       like the -s option to htdig or htmerge.
+
+SYNOPSIS
+       htstat [-v][-a][-c configfile][-u]
+
+DESCRIPTION
+       Htdig retrieves HTML documents using the HTTP protocol and gathers infor&#8208;
+       mation from these documents which can later be used to search these docu&#8208;
+       ments. This program can be referred to as the search robot.
+
+OPTIONS
+       -a     Use alternate work files. Tells htstat to append .work to database
+              files,  causing  a  second  copy of the database to be built. This
+              allows the original files to be used by htsearch during the run.
+
+       -c configfile
+              Use the specified configfile instead of the default.
+
+       -u     Give a list of URLs in the document database.
+
+       -v     Verbose mode. This increases the verbosity of the program.   Using
+              more  than  2  is probably only useful for debugging purposes. The
+              default verbose mode (using only one -v)  gives  a  nice  progress
+              report while digging.
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+SEE ALSO
+       Please   refer   to   the   HTML   pages   (in   the  htdig-doc  package)
+       /usr/share/doc/htdig-doc/html/index.html and the manual  pages  htdigcon&#8208;
+       fig(8)  ,  htdig(1) and htmerge(1) for a detailed description of ht://Dig
+       and its commands.
+
+
+AUTHOR
+       This manual page was written by Robert Ribnitz, based on the  HTML  docu&#8208;
+       mentation of ht://Dig.
+
+
+
+                                  January 2004                          htdig(1)
+
+</pre></body></html>

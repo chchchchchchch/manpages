@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbFreeKeyboard -  Destroys either an entire XkbDescRec or just some of its members</title></head>
+<body><pre>
+
+XkbFreeKeyboard(3)                XKB FUNCTIONS               XkbFreeKeyboard(3)
+
+
+
+NAME
+       XkbFreeKeyboard  -   Destroys either an entire XkbDescRec or just some of
+       its members
+
+SYNOPSIS
+       void XkbFreeKeyboard (XkbDescPtr xkb, unsigned int which, Bool free_all);
+
+ARGUMENTS
+       xkb    keyboard description with components to free
+
+       which  mask selecting components to free
+
+       free_all
+              True =&gt; free all components and xkb
+
+DESCRIPTION
+       XkbFreeKeyboard frees the components of xkb specified by which  and  sets
+       the  corresponding  values  to NULL. If free_all is True, XkbFreeKeyboard
+       frees every non-NULL component of xkb and then frees  the  xkb  structure
+       itself.
+
+
+
+
+X Version 11                      libX11 1.5.0                XkbFreeKeyboard(3)
+
+</pre></body></html>

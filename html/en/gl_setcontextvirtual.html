@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_setcontextvirtual - define a virtual context</title></head>
+<body><pre>
+
+gl_setcontextvirtual(3)        Svgalib User Manual       gl_setcontextvirtual(3)
+
+
+
+NAME
+       gl_setcontextvirtual - define a virtual context
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       void gl_setcontextvirtual(int w, int h, int bpp, int bitspp, void *vbuf);
+
+
+DESCRIPTION
+       Define  the  current graphics context to have a width of w pixels, height
+       h, bpp bytes per pixel, bitspp significant color bits per pixel  (8,  15,
+       16  or  24),  with the framebuffer at vbuf.  A 4 bytes per pixel context,
+       with 24 significant color bits is also valid.
+
+
+SEE ALSO
+       svgalib(7), vgagl(7), svgalib.conf(5), threedkit(7), testgl(1),  current&#8208;
+       context(3),  gl_allocatecontext(3), gl_copyboxfromcontext(3), gl_copybox&#8208;
+       tocontext(3),  gl_copyscreen(3),   gl_freecontext(3),   gl_getcontext(3),
+       gl_setcontext(3), gl_setcontextheight(3), gl_setcontextvga(3), gl_setcon&#8208;
+       textvgavirtual(3), gl_setcontextwidth(3).
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The  exact  source  of  the referenced demo as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                2 Aug 1997            gl_setcontextvirtual(3)
+
+</pre></body></html>

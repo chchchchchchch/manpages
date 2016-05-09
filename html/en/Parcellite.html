@@ -1,0 +1,132 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Parcellite - Lightweight GTK+ Clipboard Manager</title></head>
+<body><pre>
+
+PARCELLITE(1)                                                      PARCELLITE(1)
+
+
+
+NAME
+       Parcellite - Lightweight GTK+ Clipboard Manager
+
+SYNOPSIS
+       parcellite [OPTION]
+
+DESCRIPTION
+       Parcellite  is  a  lightweight GTK+ clipboard manager. This is a stripped
+       down, basic-features-only clipboard manager with a small memory footprint
+       for those who like simplicity.
+
+       Parcellite  features  a  clipboard CLI. Unrecognized options and the con&#8208;
+       tents of your standard input get copied to your clipboard. See CLI  EXAM&#8208;
+       PLES.
+
+       Look  at  the tool tips by hovering over each item in the prefrences dia&#8208;
+       log.
+
+OPTIONS
+       -?, --help
+              Show help options
+
+       -d, --daemon
+              Run as daemon. Use this mode if you just want Parcellite  to  keep
+              your clipboard and primary contents safe
+
+       -n, --no-icon
+              Do not use status icon
+
+       -c, --clipboard
+              Print clipboard contents -p, --primary Print primary contents
+
+ACTIONS
+       Parcellite&apos;s  actions  perform  commands using the contents of your clip&#8208;
+       board. &quot;%s&quot; in the command is replaced with the clipboard contents.
+
+CLI EXAMPLES
+        echo &quot;copied to clipboard&quot; | parcellite
+        parcellite &quot;copied to clipboard&quot;
+        echo &quot;copied to clipboard&quot; | parcellite -c
+
+Hotkeys
+        The available hotkey modifiers are  &lt;Ctrl&gt;,  &lt;Alt&gt;  &lt;Shift&gt;,  &lt;Release&gt;,
+       &lt;Meta&gt;, &lt;Super&gt;, &lt;Hyper&gt;, &lt;Mod[1-5]&gt;
+
+Preferences
+       Right-click  on  the parcellite icon in the systray to access the prefer&#8208;
+       ences.
+
+
+Behavior Tab
+       Clipboards
+              generally checking all these boxes is appropriate.
+
+       History
+               Check &apos;Save history&apos; to save history on close.
+               &apos;Position history&apos; - Set the location where history  appears.  If
+              unchecked, appears where the mouse is.
+               &apos;X&apos; - X location in pixels. 0 is top of screen.
+               &apos;Y&apos; - Y location in pixels. 0 is left of screen.
+
+               &apos;Max  Data  Size  (MB)&apos;  - Set Maximum amount of data to copy for
+              each entry in MBytes. 0 is no limit.
+
+       Miscellaneous
+               &apos;Search As You Type&apos; - If  checked,  does  a  search-as-you-type.
+              Turns red if not found. Goes to top (Alt-E) line when no chars are
+              entered for search
+
+               &apos;Case Sensitive Search&apos; - If checked, does case sensitive search.
+
+               &apos;Ignore Whitespace Only&apos; - If checked, will ignore any  clipboard
+              additions that contain only whitespace.
+
+               &apos;Trim  Whitespace&apos; - If checked, will trim whitespace from begin&#8208;
+              ning and end of entry.
+
+               &apos;Trim Newlines&apos; - If checked, will replace newlines with spaces.
+
+
+Display Tab
+        &apos;Show in Single line&apos; does nothing
+
+        &apos;Show in reverse order&apos; reverses the history so the first entry is  last
+       and the last is first.
+
+        &apos;Omit  items&apos;  referrs to omitting characters that don&apos;t fit in the his&#8208;
+       tory window width. This is for display only.
+
+
+History Dialog Behavior
+       use the Ctrl or Shift key in conjunction with right-click.
+
+        If you hold Ctrl, then it toggles the delete on a single item.
+
+        If you hold Shift while holding down right-click (this is like a  right-
+       drag), then it toggles each item as it enters the item.
+
+        To complete the delete, hit enter.
+
+SEE ALSO
+       Website: http://parcellite.sourceforge.net
+
+AUTHOR
+       Written by Gilberto &quot;Xyhthyx&quot; Miralla &lt;xyhthyx@gmail.com&gt;. Gilberto is no
+       longer maintaining the project. &apos;Rickyrockrat&apos; is his replacement.
+
+BUGS
+       Please include your ~/.config/parcellite/parcelliterc file when filing  a
+       bug.  This will give me your preferences.
+        Please report any bugs to the bug tracker via this web page:
+        http://sourceforge.net/projects/parcellite/support
+        Use  the  &apos;Bugs&apos;  under project trackers to file a bug if you are regis&#8208;
+       tered with Source Forge. If  not,  email  rickyrockrat  (rickyrockrat  at
+       users.sourceforge.net),  or  click  the &apos;project administers&apos; in the link
+       above.
+
+
+
+
+                                  August 7 2011                    PARCELLITE(1)
+
+</pre></body></html>

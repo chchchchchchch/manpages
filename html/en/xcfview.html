@@ -1,0 +1,159 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xcfview - display GIMP xcf files</title></head>
+<body><pre>
+
+xcf2pnm(1)                                                            xcf2pnm(1)
+
+
+
+NAME
+       xcfview - display GIMP xcf files
+
+SYNOPSIS
+       xcfview [ options ] filename [ layer names ]
+
+DESCRIPTION
+       xcfview  is a wrapper script that uses xcf2png(1) or xcf2pnm(1) (q.v.) to
+       flatten an XCF image and then displays the flattened image using a PNG or
+       PPM viewer found using xdg-open(1) from the xdg-utils package.
+
+OPTIONS
+       Every  command-line  parameter  to  xcfview will be passed through to the
+       underlying xcf2png or xcf2pnm command.  Because it is not  certain  which
+       converter  will be used, the options given should be ones that make sense
+       for both of these.
+
+       --mask  Enable the layer mask.
+
+       --mode mode
+               Set the layer mode (e.g., Normal or Multiply).
+
+       --nomask
+               Disable the layer mask.
+
+       --opacity n
+               Set the opacity on a scale from 0 to 255 (as used internally)
+
+       --percent n
+               Set the opacity on a scale from 0 to 100 (as  in  the  Gimp  user
+               interface).
+
+       -A, --force-alpha
+               Invent  a  trivial  alpha  channel even if the flattened image is
+               completely opaque.
+
+       -b color, --background color
+               Use this color for transparent pixels in the  image.   The  color
+               can  be given as #rrggbb or #rgb hexadecimal values, or as an X11
+               color name (which will only work if a color name database can  be
+               found in one of a number of standard locations).
+
+       -c, --color, --colour
+               Force the output to use RGB color space even if it there are more
+               compact alternatives.
+
+       -C, --autocrop
+               Set the converted part of the image such that it just include the
+               boundaries of the visible (or selected) layers.  This may make it
+               either smaller or larger than the canvas, depending on the  posi&#8208;
+               tion  and size of the visible layers.  (Note that the contents of
+               the layers is not taken into account when autocropping).
+
+               In the absence of options that specify otherwise,  the  converted
+               image will cover the entire XCF canvas.
+
+       -D, --dissolve
+               Do  a  &quot;dissolve&quot;  step  to  eliminate partial transparency after
+               flattening.  If -b is also given, this happens before  the  back&#8208;
+               ground color is applied.
+
+       -f, --full-image
+               First  flatten the entire image to a memory buffer before writing
+               output. Then analyse the image to decide on the  details  of  the
+               output  format  (e.g., whether a grayscale output is sufficient).
+               Without this option, the program flattens only  a  singe  row  of
+               &quot;tiles&quot; (height 64) at a time.
+
+       -g, --gray, --grey
+               Force  the output to be a grayscale image even if it may be mono&#8208;
+               chrome.  If any colored pixels are encountered, exit with  status
+               103.   This  will  be selected automatically if the output file&apos;s
+               name ends with .pgm.
+
+       -G, --for-gif
+               Assert that the flattened image will have no partial transparency
+               (allowing  a  more  compact  representation of the alpha output).
+               Exit with status 102 if  the  flattened  image  has  any  partial
+               transparency.   If  -b  is  also  given, this tests whether there
+               there is partial  transparency  before  applying  the  background
+               color.
+
+       -h, --help
+               Print an option summery to standard output and exit with a return
+               code of 0.
+
+       -j, --bzip
+               Equivalent to -Z bzcat.  Default if the filename ends with bz2.
+
+       -o filename, --output filename
+               Write the converted picture to filename instead  of  to  standard
+               output.
+
+       -O x,y, --offset x,y
+               Offset  the  converted part of the image from the top-left corner
+               of the XCF canvas. Usually used with -S.
+
+       -S wxh, --size wxh
+               Crop the converted image to width w and height h.
+
+       -T, --truecolor
+               Use standard  RGB  compositing  for  flattening  indexed  layers.
+               Without this option, xcfview will mimic the Gimp&apos;s current strat&#8208;
+               egy of rounding each alpha value to either full  transparency  or
+               full opacity, and interpret all layer modes as Normal.
+
+       -u, --utf8
+               Use the raw UTF-8 representation from the XCF file to compare and
+               display layer names.  Ordinarily, layer names will  be  converted
+               to the character set of the current locale.
+
+       -v, --verbose
+               Print progress messages about the conversion to standard error.
+
+       -V, --version
+               Print  the  version numer of xcftools to standard output and exit
+               with a return code of 0.
+
+       -z, --gzip
+               Equivalent to -Z zcat.  Default if the filename ends with gz.
+
+       -Z command, --unpack command
+               Specify a command that the input file is filtered through  before
+               being  interpreted as an XCF file. The command is invoked as com&#8208;
+               mand filename and must produce output  to  its  standard  output.
+               Note that it is not possible to specify arguments as part of com&#8208;
+               mand.  An uncompressor is selected automatically if the  filename
+               ends  with  gz  or  bz2;  to  suppress this, use -Z cat (which is
+               implemented without actually starting a cat(1) process).
+
+EXIT STATUS
+       The exit status is 0 in case of success. A nonzero exit status may either
+       be that of the xcf2foo converter or that of the image viewer.
+
+AUTHOR
+       xcfview was written by Henning Makholm &lt;henning@makholm.net&gt;.
+
+       Parts  of  the  script  originate from the run-mailcap(1) script by Brian
+       White &lt;bcwhite@pobox.com&gt; but  are  superseded  by  the  Debian  specific
+       changes  of  Jan  Hauke  Rahm  &lt;info@jhr-online.de&gt;  (to make use of xdg-
+       utils).
+
+SEE ALSO
+       xcf2pnm(1), xcf2png(1), xdg-open(1)
+
+
+
+Xcftools                           2009-07-12                         xcf2pnm(1)
+
+</pre></body></html>

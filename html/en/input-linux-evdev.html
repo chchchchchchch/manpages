@@ -1,0 +1,33 @@
+<html>
+<head><meta charset=utf-8/>
+<title>input-linux-evdev - Linux event interface input</title></head>
+<body><pre>
+
+input-linux-evdev(7)                   GGI                  input-linux-evdev(7)
+
+
+
+NAME
+       input-linux-evdev - Linux event interface input
+
+SYNOPSIS
+       input-linux-evdev: [&lt;device&gt;]
+
+
+DESCRIPTION
+       Reads  events from the Linux event interface (/dev/input/eventX) and con&#8208;
+       verts them to LibGII events.
+
+OPTIONS
+       device Specifies the device to use, the default is /dev/input/event0.
+
+
+BUGS/TODO
+       &#183;   Key repeat messages are not sent, which can annoy users who  want  to
+           use the cursor keys.
+
+       &#183;   Handles setting of keyclick and bell, which can also annoy users.
+
+libgii-1.0.x                       2003-08-11               input-linux-evdev(7)
+
+</pre></body></html>

@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuElementParameters - element parameters structure</title></head>
+<body><pre>
+
+AuElementParameters(3)                                    AuElementParameters(3)
+
+
+
+Name
+       AuElementParameters - element parameters structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef struct _AuElementParameters
+       {
+           AuFlowID flow;
+           unsigned char element_num;
+           unsigned char num_parameters;
+           unsigned short pad;
+           AuInt32 parameters[AU_MAX_PARMS];
+       }AuElementParameters;
+
+Members
+       flow      Specifies the ID of the flow.
+
+       element_num
+                 Specifies the index of the element.
+
+       num_parameters
+                 Specifies the number of parameters.
+
+       parameters
+                 Specifies an array containing the element parameters.
+
+Description
+       The AuElementParameters structure is used to access those element parame&#8208;
+       ters that can be changed dynamically.
+
+See Also
+       AuGetElementParameters, AuSetElementParameters.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib -                            1.9.3               AuElementParameters(3)
+
+</pre></body></html>

@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CreateCond - Create a condition variable</title></head>
+<body><pre>
+
+SDL_CreateCond(3)               SDL API Reference              SDL_CreateCond(3)
+
+
+
+NAME
+       SDL_CreateCond - Create a condition variable
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       SDL_cond *SDL_CreateCond(void);
+
+DESCRIPTION
+       Creates a condition variable.
+
+EXAMPLES
+       SDL_cond *cond;
+
+       cond=SDL_CreateCond();
+       .
+       .
+       /* Do stuff */
+
+       .
+       .
+       SDL_DestroyCond(cond);
+
+SEE ALSO
+       SDL_DestroyCond, SDL_CondWait, SDL_CondSignal
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00            SDL_CreateCond(3)
+
+</pre></body></html>

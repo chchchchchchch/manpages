@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>URI::Split - Parse and compose URI strings</title></head>
+<body><pre>
+
+URI::Split(3pm)        User Contributed Perl Documentation       URI::Split(3pm)
+
+
+
+NAME
+       URI::Split - Parse and compose URI strings
+
+SYNOPSIS
+        use URI::Split qw(uri_split uri_join);
+        ($scheme, $auth, $path, $query, $frag) = uri_split($uri);
+        $uri = uri_join($scheme, $auth, $path, $query, $frag);
+
+DESCRIPTION
+       Provides functions to parse and compose URI strings.  The following
+       functions are provided:
+
+       ($scheme, $auth, $path, $query, $frag) = uri_split($uri)
+           Breaks up a URI string into its component parts.  An &quot;undef&quot; value is
+           returned for those parts that are not present.  The $path part is
+           always present (but can be the empty string) and is thus never
+           returned as &quot;undef&quot;.
+
+           No sensible value is returned if this function is called in a scalar
+           context.
+
+       $uri = uri_join($scheme, $auth, $path, $query, $frag)
+           Puts together a URI string from its parts.  Missing parts are
+           signaled by passing &quot;undef&quot; for the corresponding argument.
+
+           Minimal escaping is applied to parts that contain reserved chars that
+           would confuse a parser.  For instance, any occurrence of &apos;?&apos; or &apos;#&apos;
+           in $path is always escaped, as it would otherwise be parsed back as a
+           query or fragment.
+
+SEE ALSO
+       URI, URI::Escape
+
+COPYRIGHT
+       Copyright 2003, Gisle Aas
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-02-11                    URI::Split(3pm)
+
+</pre></body></html>

@@ -1,0 +1,176 @@
+<html>
+<head><meta charset=utf-8/>
+<title>backend - cups backend transmission interfaces</title></head>
+<body><pre>
+
+backend(7)                         Apple Inc.                         backend(7)
+
+
+
+NAME
+       backend - cups backend transmission interfaces
+
+
+SYNOPSIS
+       backend
+       backend job user title num-copies options [ filename ]
+
+
+DESCRIPTION
+       Backends are a special type of filter(7) which is used to send print data
+       to and discover different devices on the system.
+
+
+       Like filters, backends must be capable of reading from a filename on  the
+       command-line  or from the standard input, copying the standard input to a
+       temporary file as required by the physical interface.
+
+
+       The command name (argv[0]) is set to the device URI  of  the  destination
+       printer.   Starting  with  CUPS 1.1.22, any authentication information in
+       argv[0] is removed, so backend developers are urged to use the DEVICE_URI
+       environment variable whenever authentication information is required. The
+       CUPS API includes a cupsBackendDeviceURI function for retrieving the cor&#8208;
+       rect device URI.
+
+
+       Back-channel data from the device should be relayed to the job filters by
+       writing to file descriptor 3. The CUPS API includes the  cupsBackChannel&#8208;
+       Write function for this purpose.
+
+
+DEVICE DISCOVERY
+       When  run  with  no  arguments,  the  backend should list the devices and
+       schemes it supports or is advertising to stdout. The output  consists  of
+       zero or more lines consisting of any of the following forms:
+
+           device-class scheme &quot;Unknown&quot; &quot;device-info&quot;
+           device-class device-uri &quot;device-make-and-model&quot; &quot;device-info&quot;
+           device-class device-uri &quot;device-make-and-model&quot; &quot;device-info&quot; &quot;device-id&quot;
+           device-class device-uri &quot;device-make-and-model&quot; &quot;device-info&quot; &quot;device-id&quot; &quot;device-location&quot;
+
+
+       The device-class field is one of the following values:
+
+
+       direct
+            The  device-uri  refers  to  a specific direct-access device with no
+            options, such as a parallel, USB, or SCSI device.
+
+
+       file
+            The device-uri refers to a file on disk.
+
+
+       network
+            The device-uri refers to a networked device and conforms to the gen&#8208;
+            eral form for network URIs.
+
+
+       serial
+            The device-uri refers to a serial device with configurable baud rate
+            and other options. If the device-uri contains a baud value, it  rep&#8208;
+            resents the maximum baud rate supported by the device.
+
+
+       The  scheme  field provides the URI scheme that is supported by the back&#8208;
+       end. Backends should use this form only when the backend supports any URI
+       using  that  scheme.  The  device-uri field specifies the full URI to use
+       when communicating with the device.
+
+
+       The device-make-and-model field specifies  the  make  and  model  of  the
+       device,  e.g. &quot;Acme Foojet 2000&quot;. If the make and model is not known, you
+       must report &quot;Unknown&quot;.
+
+
+       The device-info field specifies additional information about the  device.
+       Typically  this includes the make and model along with the port number or
+       network address, e.g. &quot;Acme Foojet 2000 USB #1&quot;.
+
+
+       The optional device-id field specifies the IEEE-1284 device ID string for
+       the device, which is used to select a matching driver.
+
+
+       The optional device-location field specifies the physical location of the
+       device,  which  is  often  used  to  pre-populate  the   printer-location
+       attribute when adding a printer.
+
+
+PERMISSIONS
+       Backends without world execute permissions are run as the root user. Oth&#8208;
+       erwise, the backend is run using the unprivileged user account, typically
+       &quot;lp&quot;.
+
+
+EXIT CODES
+       The  following  exit  codes  are  defined  for  backends; C API constants
+       defined in the &lt;cups/backend.h&gt; header file are defined in parenthesis:
+
+
+       0 (CUPS_BACKEND_OK)
+            The print file was successfully transmitted to the device or  remote
+            server.
+
+
+       1 (CUPS_BACKEND_FAILED)
+            The  print  file  was  not successfully transmitted to the device or
+            remote server. The scheduler will respond to this by  canceling  the
+            job,  retrying the job, or stopping the queue depending on the state
+            of the error-policy attribute.
+
+
+       2 (CUPS_BACKEND_AUTH_REQUIRED)
+            The print  file  was  not  successfully  transmitted  because  valid
+            authentication  information  is required. The scheduler will respond
+            to this by holding the job and  adding  the  authentication-required
+            job-reasons keyword.
+
+
+       3 (CUPS_BACKEND_HOLD)
+            The print file was not successfully transmitted because it cannot be
+            printed at this time. The scheduler will respond to this by  holding
+            the job.
+
+
+       4 (CUPS_BACKEND_STOP)
+            The print file was not successfully transmitted because it cannot be
+            printed at this time. The scheduler will respond to this by stopping
+            the queue.
+
+
+       5 (CUPS_BACKEND_CANCEL)
+            The  print file was not successfully transmitted because one or more
+            attributes are not supported. The scheduler will respond to this  by
+            canceling the job.
+
+
+       6 (CUPS_BACKEND_RETRY)
+            The  print file was not successfully transmitted because of a tempo&#8208;
+            rary issue.  The scheduler will retry the job at  a  future  time  -
+            other jobs may print before this one.
+
+
+       7 (CUPS_BACKEND_RETRY_CURRENT)
+            The  print file was not successfully transmitted because of a tempo&#8208;
+            rary issue.  The scheduler will retry the  job  immediately  without
+            allowing intervening jobs.
+
+
+       All other exit code values are reserved.
+
+
+SEE ALSO
+       cupsd(8), cupsd.conf(5), filter(7),
+       http://localhost:631/help
+
+
+COPYRIGHT
+       Copyright 2007-2011 by Apple Inc.
+
+
+
+15 April 2011                         CUPS                            backend(7)
+
+</pre></body></html>

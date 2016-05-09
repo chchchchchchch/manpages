@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>foomatic-kitload - installs a data kit into the foomatic database.</title></head>
+<body><pre>
+
+FOOMATIC-KITLOAD(8)                                          FOOMATIC-KITLOAD(8)
+
+
+
+NAME
+       foomatic-kitload - installs a data kit into the foomatic database.
+
+SYNOPSIS
+       foomatic-kitload [ -k kit-dir] [ -d dest-dir]...
+
+DESCRIPTION
+       foomatic-kitload  installs  a  foomatic  data  kit  into  the  local data
+       library.  It takes a -k dirname option, where  dirname  is  the  toplevel
+       directory  of  a  foomatic  driver  &quot;kit&quot;.  A &quot;kit&quot; is a selection of XML
+       source files arranged exactly as in  the  source/section  of  the  master
+       database (ie, opt/driver/printer/ subdirs).
+
+       Gimp-Print&apos;s foomatic-generator produces exactly such a kit.
+
+       Foomatic-kitload  is moderately paranoid about kits: the kit must contain
+       at least one of printer, driver or opt; the kit must contain  only  files
+       ending  in .xml, the kit cannot be the local library itself, etc.  But it
+       does not inspect the contents of the kit files in any way.
+
+
+
+   Options
+       -k dirname
+                 dirname is the toplevel directory of a foomatic driver &quot;kit&quot;.
+
+       -d destdir
+                 destdir is a prefix to prepend to the install path.  This  will
+                 not  normally  be  required, but is useful if installing into a
+                 temporary `staging area&apos; prior to installing in the final  des&#8208;
+                 tination.
+
+
+
+EXIT STATUS
+       foomatic-kitload  returns  0  on  success,  255 or something else when an
+       error occurs.
+
+
+AUTHOR
+       Manfred Wassmann &lt;manolo@NCC-1701.B.Shuttle.de&gt; for the foomatic  project
+       using output from the associated binary.
+
+
+BUGS
+       Please post bug reports on
+
+       http://lists.freestandards.org/mailman/listinfo/printing-foomatic
+
+
+
+
+Foomatic Project                   2001-05-07                FOOMATIC-KITLOAD(8)
+
+</pre></body></html>

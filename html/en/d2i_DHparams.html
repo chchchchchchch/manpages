@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>d2i_DHparams, i2d_DHparams - PKCS#3 DH parameter functions.</title></head>
+<body><pre>
+
+d2i_DHparams(3SSL)                   OpenSSL                  d2i_DHparams(3SSL)
+
+
+
+NAME
+       d2i_DHparams, i2d_DHparams - PKCS#3 DH parameter functions.
+
+SYNOPSIS
+        #include &lt;openssl/dh.h&gt;
+
+        DH *d2i_DHparams(DH **a, unsigned char **pp, long length);
+        int i2d_DHparams(DH *a, unsigned char **pp);
+
+DESCRIPTION
+       These functions decode and encode PKCS#3 DH parameters using the
+       DHparameter structure described in PKCS#3.
+
+       Othewise these behave in a similar way to d2i_X509() and i2d_X509()
+       described in the d2i_X509(3) manual page.
+
+SEE ALSO
+       d2i_X509(3)
+
+HISTORY
+       TBA
+
+
+
+1.0.1e                             2013-02-11                 d2i_DHparams(3SSL)
+
+</pre></body></html>

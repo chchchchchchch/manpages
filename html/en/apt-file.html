@@ -1,0 +1,192 @@
+<html>
+<head><meta charset=utf-8/>
+<title>apt-file - APT package searching utility -- command-line interface</title></head>
+<body><pre>
+
+APT-FILE(1)                                                          APT-FILE(1)
+
+
+
+NAME
+       apt-file - APT package searching utility -- command-line interface
+
+SYNOPSIS
+       apt-file [ options ] [ action ] [ pattern ]
+
+
+       apt-file -f [ options ] search [ file ... ]
+
+
+       apt-file -D [ options ] search [ binary-packet.deb ... ]
+
+
+DESCRIPTION
+       apt-file  is  a command line tool for searching files in packages for the
+       APT package management system.
+
+       Some actions are required to run the search:
+
+       find   Alias for search.
+
+       list   List the contents of a package matching the pattern pattern.  This
+              action  is  very  close  to the dpkg -L command except the package
+              does not need to be installed or fetched.
+
+       purge  remove all Contents-* files from the cache directory.
+
+       search Search in which package a file is included. A list of all packages
+              containing the pattern pattern is returned.
+
+              apt-file  will  only  search  for  filenames, not directory names.
+              This is due to the format of the Contents files it searches.
+
+       show   Alias for list.
+
+       update Resynchronize the package contents from their sources.  The  lists
+              of the contents of packages are fetched from the location(s) spec&#8208;
+              ified in /etc/apt/sources.list. This command attempts to fetch the
+              Contents-&lt;ARCH&gt;.gz  files  from  remote  sources.  For downloading
+              these uses either the curl or wget commands as specified  in  apt-
+              file.conf.
+
+OPTIONS
+          -a, --architecture architecture
+              Sets  architecture  to  architecture. This option is useful if you
+              search a  package  for  a  different  architecture  from  the  one
+              installed on your system.  It determines how the $ARCH variable in
+              sources.list is expanded (but it does not influence the search  in
+              any other way).
+
+          -c, --cache cache-directory
+              Sets  the  cache  directory  to  cache-directory  instead  of  its
+              default.  If  executed  as   non-root   user,   the   default   is
+              $HOME/.cache/apt-file  with  fall-back to /var/cache/apt/apt-file.
+              The latter is also the default if apt-file is called as root.
+
+          -d, --cdrom-mount cdrom-mount-point
+              Use cdrom-mount-point instead of apt&apos;s.
+
+          -D, --from-deb
+              Use contents of the given .deb archives(s)  as  patterns.   Useful
+              for searching for file conflicts with other packages.  Implies -F.
+
+          -f, --from-file
+              Read  patterns from the given file(s), one per line.  Use -f - for
+              stdin.  This is much faster than invoking apt-file many times.
+
+          -F, --fixed-string
+              Do not expand search pattern with generic characters at  pattern&apos;s
+              start and end.
+
+          -i, --ignore-case
+              Ignore case when searching for pattern.
+
+          -l, --package-only
+              Only display package name; do not display file names.
+
+          -N, --non-interactive
+              Skip  schemes  that  are  listed  in  the interactive line in apt-
+              file.conf.  This is useful if you want to call  &apos;apt-file  update&apos;
+              in cron jobs and skip all schemes that may require user input.
+
+          -s, --sources-list sources.list
+              Sets  the  sources.list file to a different value from its default
+              /etc/apt/sources.list.
+
+          -v, --verbose
+              Run apt-file in verbose mode.
+
+          -x, --regexp
+              Treat pattern as a (perl) regular expression. See perlreref(1) for
+              details.  Without  this  option,  pattern  is treated as a literal
+              string to search for.
+
+          -y, --dummy
+              Run in dummy mode (no action).
+
+          -h, --help
+              Display a short help screen.
+
+CONFIGURATION FILE
+       The apt-file configuration file can be found in /etc/apt/apt-file.conf.
+
+       A string expansion is done on several values. See  the  string  expansion
+       section.
+
+       destination
+              This variable describes how cached files will be named.
+
+       http | ftp | ssh | rsh | file | cdrom
+              Defines the commands used to fetch files.
+
+   STRING EXPANSION
+       A sources.list entry is defined as:
+
+              deb uri dist component1 component2 ...
+
+       A uri is defined as:
+
+              proto:/[/][user[:password]@]host[:port][/path]
+
+
+       &lt;host&gt; replace with the hostname
+
+       &lt;port&gt; replace with the port number
+
+       &lt;uri&gt;  replace with full uri
+&#12;       &lt;path&gt; replace with full path (relative to / on the host)
+
+       &lt;dist&gt; replace with distribution name
+
+       &lt;comp&gt; replace with component name
+
+       &lt;cache&gt;
+              replace with cache directory
+
+       &lt;dest&gt; replace with destination expanded value.
+
+       &lt;cdrom&gt;
+              replace with cdrom-mount-point.
+
+BUGS
+       The cdrom backend has not been tested.
+
+       Non-release lines in sources.list are not handled by apt-file.
+
+       There is only one Contents file per distribution that contains all compo&#8208;
+       nents (i.e. main, contrib, and non-free). Threrefore, apt-file will  dis&#8208;
+       play  search  results from all components, even if not all components are
+       included in the sources.list file.
+
+       When a new line has been added to the sources.list  and  apt-file  update
+       has not been run, apt-file does not print a warning message.
+
+       Complex  regular  expressions  that  match the leading slash may not work
+       correctly. As a workaround, try to pull the leading slash to  the  begin&#8208;
+       ning     of     the     regular     expression.    For    example,    use
+       &quot;/(usr/bin/vim|sbin/lvm)&quot; instead of &quot;/usr/bin/vim|/sbin/lvm&quot;.
+
+FILES
+       /etc/apt/sources.list
+              Locations to fetch package contents from.
+
+       /etc/apt/sources.list.d/
+              Directory with additional sources.list snippets
+
+       /etc/apt/apt-file.conf
+              Configuration file for apt-file.
+
+SEE ALSO
+       auto-apt(1),    apt-cache(8),    apt-cdrom(8),    dpkg(8),    dselect(8),
+       sources.list(5), apt.conf(5), apt_preferences(5).
+
+       The APT users guide in /usr/share/doc/apt/
+
+AUTHOR
+       apt-file was written by Sebastien J. Gross &lt;sjg@debian.org&gt;.
+
+
+
+                                    May 2003                         APT-FILE(1)
+
+</pre></body></html>

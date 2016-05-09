@@ -1,0 +1,252 @@
+<html>
+<head><meta charset=utf-8/>
+<title>enc2xs -- Perl Encode Module Generator</title></head>
+<body><pre>
+
+ENC2XS(1)               Perl Programmers Reference Guide               ENC2XS(1)
+
+
+
+NAME
+       enc2xs -- Perl Encode Module Generator
+
+SYNOPSIS
+         enc2xs -[options]
+         enc2xs -M ModName mapfiles...
+         enc2xs -C
+
+DESCRIPTION
+       enc2xs builds a Perl extension for use by Encode from either Unicode
+       Character Mapping files (.ucm) or Tcl Encoding Files (.enc).  Besides
+       being used internally during the build process of the Encode module, you
+       can use enc2xs to add your own encoding to perl.  No knowledge of XS is
+       necessary.
+
+Quick Guide
+       If you want to know as little about Perl as possible but need to add a
+       new encoding, just read this chapter and forget the rest.
+
+       0.  Have a .ucm file ready.  You can get it from somewhere or you can
+           write your own from scratch or you can grab one from the Encode
+           distribution and customize it.  For the UCM format, see the next
+           Chapter.  In the example below, I&apos;ll call my theoretical encoding
+           myascii, defined in my.ucm.  &quot;$&quot; is a shell prompt.
+
+             $ ls -F
+             my.ucm
+
+       1.  Issue a command as follows;
+
+             $ enc2xs -M My my.ucm
+             generating Makefile.PL
+             generating My.pm
+             generating README
+             generating Changes
+
+           Now take a look at your current directory.  It should look like this.
+
+             $ ls -F
+             Makefile.PL   My.pm         my.ucm        t/
+
+           The following files were created.
+
+             Makefile.PL - MakeMaker script
+             My.pm       - Encode submodule
+             t/My.t      - test file
+
+           1.1.
+               If you want *.ucm installed together with the modules, do as
+               follows;
+
+                 $ mkdir Encode
+                 $ mv *.ucm Encode
+                 $ enc2xs -M My Encode/*ucm
+
+       2.  Edit the files generated.  You don&apos;t have to if you have no time AND
+           no intention to give it to someone else.  But it is a good idea to
+           edit the pod and to add more tests.
+
+       3.  Now issue a command all Perl Mongers love:
+
+             $ perl Makefile.PL
+             Writing Makefile for Encode::My
+&#12;       4.  Now all you have to do is make.
+
+             $ make
+             cp My.pm blib/lib/Encode/My.pm
+             /usr/local/bin/perl /usr/local/bin/enc2xs -Q -O \
+               -o encode_t.c -f encode_t.fnm
+             Reading myascii (myascii)
+             Writing compiled form
+             128 bytes in string tables
+             384 bytes (75%) saved spotting duplicates
+             1 bytes (0.775%) saved using substrings
+             ....
+             chmod 644 blib/arch/auto/Encode/My/My.bs
+             $
+
+           The time it takes varies depending on how fast your machine is and
+           how large your encoding is.  Unless you are working on something big
+           like euc-tw, it won&apos;t take too long.
+
+       5.  You can &quot;make install&quot; already but you should test first.
+
+             $ make test
+             PERL_DL_NONLAZY=1 /usr/local/bin/perl -Iblib/arch -Iblib/lib \
+               -e &apos;use Test::Harness  qw(&amp;runtests $verbose); \
+               $verbose=0; runtests @ARGV;&apos; t/*.t
+             t/My....ok
+             All tests successful.
+             Files=1, Tests=2,  0 wallclock secs
+              ( 0.09 cusr + 0.01 csys = 0.09 CPU)
+
+       6.  If you are content with the test result, just &quot;make install&quot;
+
+       7.  If you want to add your encoding to Encode&apos;s demand-loading list (so
+           you don&apos;t have to &quot;use Encode::YourEncoding&quot;), run
+
+             enc2xs -C
+
+           to update Encode::ConfigLocal, a module that controls local settings.
+           After that, &quot;use Encode;&quot; is enough to load your encodings on demand.
+
+The Unicode Character Map
+       Encode uses the Unicode Character Map (UCM) format for source character
+       mappings.  This format is used by IBM&apos;s ICU package and was adopted by
+       Nick Ing-Simmons for use with the Encode module.  Since UCM is more
+       flexible than Tcl&apos;s Encoding Map and far more user-friendly, this is the
+       recommended format for Encode now.
+
+       A UCM file looks like this.
+
+         #
+         # Comments
+         #
+         &lt;code_set_name&gt; &quot;US-ascii&quot; # Required
+         &lt;code_set_alias&gt; &quot;ascii&quot;   # Optional
+         &lt;mb_cur_min&gt; 1             # Required; usually 1
+         &lt;mb_cur_max&gt; 1             # Max. # of bytes/char
+         &lt;subchar&gt; \x3F             # Substitution char
+         #
+         CHARMAP
+         &lt;U0000&gt; \x00 |0 # &lt;control&gt;
+         &lt;U0001&gt; \x01 |0 # &lt;control&gt;
+         &lt;U0002&gt; \x02 |0 # &lt;control&gt;
+         ....
+         &lt;U007C&gt; \x7C |0 # VERTICAL LINE
+         &lt;U007D&gt; \x7D |0 # RIGHT CURLY BRACKET
+         &lt;U007E&gt; \x7E |0 # TILDE
+         &lt;U007F&gt; \x7F |0 # &lt;control&gt;
+         END CHARMAP
+
+       &#183;   Anything that follows &quot;#&quot; is treated as a comment.
+
+       &#183;   The header section continues until a line containing the word
+           CHARMAP. This section has a form of &lt;keyword&gt; value, one pair per
+           line.  Strings used as values must be quoted. Barewords are treated
+           as numbers.  \xXX represents a byte.
+
+           Most of the keywords are self-explanatory. subchar means substitution
+           character, not subcharacter.  When you decode a Unicode sequence to
+           this encoding but no matching character is found, the byte sequence
+           defined here will be used.  For most cases, the value here is \x3F;
+           in ASCII, this is a question mark.
+
+       &#183;   CHARMAP starts the character map section.  Each line has a form as
+           follows:
+
+             &lt;UXXXX&gt; \xXX.. |0 # comment
+               ^     ^      ^
+               |     |      +- Fallback flag
+               |     +-------- Encoded byte sequence
+               +-------------- Unicode Character ID in hex
+
+           The format is roughly the same as a header section except for the
+           fallback flag: | followed by 0..3.   The meaning of the possible
+           values is as follows:
+
+           |0  Round trip safe.  A character decoded to Unicode encodes back to
+               the same byte sequence.  Most characters have this flag.
+
+           |1  Fallback for unicode -&gt; encoding.  When seen, enc2xs adds this
+               character for the encode map only.
+
+           |2  Skip sub-char mapping should there be no code point.
+
+           |3  Fallback for encoding -&gt; unicode.  When seen, enc2xs adds this
+               character for the decode map only.
+
+       &#183;   And finally, END OF CHARMAP ends the section.
+
+       When you are manually creating a UCM file, you should copy ascii.ucm or
+       an existing encoding which is close to yours, rather than write your own
+       from scratch.
+
+       When you do so, make sure you leave at least U0000 to U0020 as is, unless
+       your environment is EBCDIC.
+
+       CAVEAT: not all features in UCM are implemented.  For example, icu:state
+       is not used.  Because of that, you need to write a perl module if you
+       want to support algorithmical encodings, notably the ISO-2022 series.
+       Such modules include Encode::JP::2022_JP, Encode::KR::2022_KR, and
+       Encode::TW::HZ.
+
+   Coping with duplicate mappings
+       When you create a map, you SHOULD make your mappings round-trip safe.
+       That is, &quot;encode(&apos;your-encoding&apos;, decode(&apos;your-encoding&apos;, $data)) eq
+       $data&quot; stands for all characters that are marked as &quot;|0&quot;.  Here is how to
+       make sure:
+
+       &#183;   Sort your map in Unicode order.
+
+       &#183;   When you have a duplicate entry, mark either one with &apos;|1&apos; or &apos;|3&apos;.
+
+       &#183;   And make sure the &apos;|1&apos; or &apos;|3&apos; entry FOLLOWS the &apos;|0&apos; entry.
+
+       Here is an example from big5-eten.
+
+         &lt;U2550&gt; \xF9\xF9 |0
+         &lt;U2550&gt; \xA2\xA4 |3
+&#12;       Internally Encoding -&gt; Unicode and Unicode -&gt; Encoding Map looks like
+       this;
+
+         E to U               U to E
+         --------------------------------------
+         \xF9\xF9 =&gt; U2550    U2550 =&gt; \xF9\xF9
+         \xA2\xA4 =&gt; U2550
+
+       So it is round-trip safe for \xF9\xF9.  But if the line above is upside
+       down, here is what happens.
+
+         E to U               U to E
+         --------------------------------------
+         \xA2\xA4 =&gt; U2550    U2550 =&gt; \xF9\xF9
+         (\xF9\xF9 =&gt; U2550 is now overwritten!)
+
+       The Encode package comes with ucmlint, a crude but sufficient utility to
+       check the integrity of a UCM file.  Check under the Encode/bin directory
+       for this.
+
+       When in doubt, you can use ucmsort, yet another utility under Encode/bin
+       directory.
+
+Bookmarks
+       &#183;   ICU Home Page http://www.icu-project.org/ &lt;http://www.icu-
+           project.org/&gt;
+
+       &#183;   ICU Character Mapping Tables
+           http://site.icu-project.org/charts/charset &lt;http://site.icu-
+           project.org/charts/charset&gt;
+
+       &#183;   ICU:Conversion Data
+           http://www.icu-project.org/userguide/conversion-data.html
+           &lt;http://www.icu-project.org/userguide/conversion-data.html&gt;
+
+SEE ALSO
+       Encode, perlmod, perlpod
+
+
+
+perl v5.14.2                       2014-09-30                          ENC2XS(1)
+
+</pre></body></html>

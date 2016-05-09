@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>engine - draws a 3D four-stroke engine.</title></head>
+<body><pre>
+
+engine(6x)                     XScreenSaver manual                    engine(6x)
+
+
+
+NAME
+       engine - draws a 3D four-stroke engine.
+
+SYNOPSIS
+       engine  [-display host:display.screen] [-visual visual] [-window] [-root]
+       [-engine name] [-delay number] [-no-move] [-no-spin] [-no-title] [-fps]
+
+DESCRIPTION
+       Draws a simple four-stroke engine that floats around the screen.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -engine name
+               What kind of engine to draw.  Default: random.  Known models are:
+               &quot;Honda  Insight&quot;  (3),  &quot;BMW M3&quot; (4), &quot;VW Beetle&quot; (flat 4), &quot;Audi
+               Quattro&quot; (5), &quot;BMW M5&quot; (6), &quot;Subaru XT&quot; (V6), &quot;Porsche 911&quot; (flat
+               6),  &quot;Corvette  Z06&quot;  (V8), &quot;Dodge Viper&quot; (V10), and &quot;Jaguar XKE&quot;
+               (V12).
+
+       -delay number
+               Per-frame delay, in  microseconds.   Default:  10000  (0.01  sec&#8208;
+               onds.).
+
+       -move | -no-move
+               Whether the object should wander around the screen.
+
+       -spin | -no-spin
+               Whether the object should spin.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+       -title | -no-title
+               Whether to display the name of the engine being rendered.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to  get  the  name  of  a resource file that overrides the global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 2002 by Ben Buxton.  Permission to use,  copy,  modify,  dis&#8208;
+       tribute,  and sell this software and its documentation for any purpose is
+       hereby granted without fee, provided  that  the  above  copyright  notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion notice appear in supporting documentation.  No  representations  are
+       made  about the suitability of this software for any purpose.  It is pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Ben Buxton.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                     engine(6x)
+
+</pre></body></html>

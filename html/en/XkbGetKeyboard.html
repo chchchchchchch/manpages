@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetKeyboard -   Retrieves one or more components of a keyboard device description</title></head>
+<body><pre>
+
+XkbGetKeyboard(3)                 XKB FUNCTIONS                XkbGetKeyboard(3)
+
+
+
+NAME
+       XkbGetKeyboard  -   Retrieves one or more components of a keyboard device
+       description
+
+SYNOPSIS
+       XkbDescPtr XkbGetKeyboard (Display *display, unsigned int which, unsigned
+              int device_spec);
+
+ARGUMENTS
+       display
+              connection to the X server
+
+       device_spec
+              device ID, or XkbUseCoreKbd
+
+       bits_to_change
+              determines events to be selected / deselected
+
+       values_for_bits
+              1=&gt;select, 0-&gt;deselect; for events in bits_to_change
+
+DESCRIPTION
+       XkbGetKeyboard allocates and returns a pointer to a keyboard description.
+       It queries the server for those components specified in the which parame&#8208;
+       ter  for  device  device_spec and copies the results to the XkbDescRec it
+       allocated. The remaining fields in the keyboard description  are  set  to
+       NULL. The valid masks for which are those listed in Table 1.
+
+
+       c  s  s l l l l l l.  Table 1 Mask Bits for XkbDescRec _ Mask Bit  XkbDe&#8208;
+       scRec Field Value _  XkbControlsMask     ctrls     (1L&lt;&lt;0)  XkbServerMap&#8208;
+       Mask    server    (1L&lt;&lt;1)   XkbIClientMapMask   map  (1L&lt;&lt;2)   XkbIndica&#8208;
+       torMapMask indicators     (1L&lt;&lt;3)  XkbNamesMask   names     (1L&lt;&lt;4)  Xkb&#8208;
+       CompatMapMask    compat    (1L&lt;&lt;5)       XkbGeometryMask     geom (1L&lt;&lt;6)
+       XkbAllComponentsMask     All Fields     (1L&lt;&lt;7)
+
+       XkbGetKeyboard is used to read the current description for  one  or  more
+       components  of  a  keyboard device. It calls XkbGetKeyboardByName as fol&#8208;
+       lows:
+
+       XkbGetKeyboardByName(dpy, device_spec, NULL, which, which, False).
+
+DIAGNOSTICS
+       BadAlloc       Unable to allocate storage
+
+
+
+
+X Version 11                      libX11 1.5.0                 XkbGetKeyboard(3)
+
+</pre></body></html>

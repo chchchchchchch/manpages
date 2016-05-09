@@ -1,0 +1,197 @@
+<html>
+<head><meta charset=utf-8/>
+<title>nsswitch.conf - Name Service Switch configuration file</title></head>
+<body><pre>
+
+NSSWITCH.CONF(5)            Linux Programmer&apos;s Manual           NSSWITCH.CONF(5)
+
+
+
+NAME
+       nsswitch.conf - Name Service Switch configuration file
+
+DESCRIPTION
+       The  Name Service Switch (NSS) configuration file, /etc/nsswitch.conf, is
+       used by the GNU C Library to determine the sources from which  to  obtain
+       name-service  information  in  a  range of categories, and in what order.
+       Each category of information is identified by a database name.
+
+       The file is plain ASCII text, with columns separated  by  spaces  or  tab
+       characters.  The first column specifies the database name.  The remaining
+       columns describe the order of sources to  query  and  a  limited  set  of
+       actions that can be performed by lookup result.
+
+       The following databases are understood by the GNU C Library:
+
+       aliases     Mail aliases, used by getaliasent(3) and related functions.
+
+       ethers      Ethernet numbers.
+
+       group       Groups of users, used by getgrent(3) and related functions.
+
+       hosts       Host  names and numbers, used by gethostbyname(3) and related
+                   functions.
+
+       netgroup    Network-wide list of hosts and users, used for access  rules.
+                   C  libraries  before  glibc 2.1 supported netgroups only over
+                   NIS.
+
+       networks    Network names and numbers, used by getnetent(3)  and  related
+                   functions.
+
+       passwd      User passwords, used by getpwent(3) and related functions.
+
+       protocols   Network  protocols,  used by getprotoent(3) and related func&#8208;
+                   tions.
+
+       publickey   Public and secret keys for Secure_RPC used by NFS and NIS+.
+
+       rpc         Remote procedure call names and numbers,  used  by  getrpcby&#8208;
+                   name(3) and related functions.
+
+       services    Network  services,  used  by  getservent(3) and related func&#8208;
+                   tions.
+
+       shadow      Shadow user passwords, used by getspnam(3) and related  func&#8208;
+                   tions.
+
+       Here is an example /etc/nsswitch.conf file:
+
+           passwd:         compat
+           group:          compat
+           shadow:         compat
+
+           hosts:          dns [!UNAVAIL=return] files
+           networks:       nis [NOTFOUND=return] files
+           ethers:         nis [NOTFOUND=return] files
+           protocols:      nis [NOTFOUND=return] files
+           rpc:            nis [NOTFOUND=return] files
+           services:       nis [NOTFOUND=return] files
+
+       The first column is the database name.  The remaining columns specify:
+
+       *  One or more service specifications e.g., &quot;files&quot;, &quot;db&quot;, or &quot;nis&quot;.  The
+          order of the services on the line determines the order in which  those
+          services will be queried, in turn, until a result is found.
+
+       *  Optional  actions  to  perform if a particular result is obtained from
+          the preceding service, e.g., &quot;[NOTFOUND=return]&quot;.
+
+       The service specifications supported on your system depend on  the  pres&#8208;
+       ence of shared libraries, and are therefore extensible.  Libraries called
+       /lib/libnss_SERVICE.so.X will provide the named SERVICE.  On  a  standard
+       installation,  you  can use &quot;files&quot;, &quot;db&quot;, &quot;nis&quot;, and &quot;nisplus&quot;.  For the
+       hosts database, you can additionally  specify  &quot;dns&quot;.   For  the  passwd,
+       group,  and  shadow databases, you can additionally specify &quot;compat&quot; (see
+       Compatibility mode below).  The version number X may be 1 for glibc  2.0,
+       or  2  for  glibc  2.1  and  later.  On systems with additional libraries
+       installed, you may have access to  further  services  such  as  &quot;hesiod&quot;,
+       &quot;ldap&quot;, &quot;winbind&quot; and &quot;wins&quot;.
+
+       An  action  may also be specified following a service specification.  The
+       action modifies the behavior following a result obtained from the preced&#8208;
+       ing data source.  Action items take the general form:
+
+           [STATUS=ACTION]
+           [!STATUS=ACTION]
+
+       where
+
+           STATUS =&gt; success | notfound | unavail | tryagain
+           ACTION =&gt; return | continue
+
+       The  !  negates  the  test,  matching all possible results except the one
+       specified.  The case of the keywords is not significant.
+
+       The STATUS value is matched against the result  of  the  lookup  function
+       called by the preceding service specification, and can be one of:
+
+           success     No  error  occurred  and the requested entry is returned.
+                       The default action for this condition is &quot;return&quot;.
+
+           notfound    The lookup succeeded, but the  requested  entry  was  not
+                       found.   The  default  action for this condition is &quot;con&#8208;
+                       tinue&quot;.
+
+           unavail     The service is permanently unavailable.   This  can  mean
+                       either  that  the  required  file cannot be read, or, for
+                       network services, that the server  is  not  available  or
+                       does not allow queries.  The default action for this con&#8208;
+                       dition is &quot;continue&quot;.
+
+           tryagain    The service is temporarily unavailable.  This could  mean
+                       a file is locked or a server currently cannot accept more
+                       connections.  The default action for  this  condition  is
+                       &quot;continue&quot;.
+
+       The ACTION value can be one of:
+
+           return      Return  a  result  now.   Do  not call any further lookup
+                       functions.
+
+           continue    Call the next lookup function.
+
+   Compatibility mode (compat)
+       The NSS &quot;compat&quot; service is similar to &quot;files&quot; except that  it  addition&#8208;
+       ally permits special entries in /etc/passwd for granting users or members
+       of netgroups access to the system.  The following entries  are  valid  in
+       this mode:
+
+           +user       Include the specified user from the NIS passwd map.
+
+           +user:::::: Include  the  specified user from the NIS passwd map, but
+                       override with non-empty passwd fields.
+
+           +@netgroup  Include all users in the given netgroup.
+
+           -user       Exclude the specified user from the NIS passwd map.
+
+           -@netgroup  Exclude all users in the given netgroup.
+
+           +           Include every user, except previously excluded ones, from
+                       the NIS passwd map.
+
+       By  default the source is &quot;nis&quot;, but this may be overridden by specifying
+       &quot;nisplus&quot;  as  the  source  for   the   pseudo-databases   passwd_compat,
+       group_compat, and shadow_compat.
+
+FILES
+       A  service  named SERVICE is implemented by a shared object library named
+       libnss_SERVICE.so.X that resides in /lib.
+
+           /etc/nsswitch.conf       NSS configuration file.
+           /lib/libnss_compat.so.X  implements &quot;compat&quot; source.
+           /lib/libnss_db.so.X      implements &quot;db&quot; source.
+           /lib/libnss_dns.so.X     implements &quot;dns&quot; source.
+           /lib/libnss_files.so.X   implements &quot;files&quot; source.
+           /lib/libnss_hesiod.so.X  implements &quot;hesiod&quot; source.
+           /lib/libnss_nis.so.X     implements &quot;nis&quot; source.
+           /lib/libnss_nisplus.so.X implements &quot;nisplus&quot; source.
+
+NOTES
+       Within each process that uses nsswitch.conf, the entire file is read only
+       once.   If the file is later changed, the process will continue using the
+       old configuration.
+
+       Traditionally, there was only a single source  for  service  information,
+       often  in  the  form  of a single configuration file (e.g., /etc/passwd).
+       However, as other name services, such as the Network Information  Service
+       (NIS)  and  the  Domain  Name Service (DNS), became popular, a method was
+       needed that would be more flexible than fixed search  orders  coded  into
+       the C library.  The Name Service Switch mechanism, which was based on the
+       mechanism used by Sun Microsystems in the Solaris 2 C library, introduced
+       a cleaner solution to the problem.
+
+SEE ALSO
+       getent(1), nss(5)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-04-14                   NSSWITCH.CONF(5)
+
+</pre></body></html>

@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>queens - n queens screensaver</title></head>
+<body><pre>
+
+queens(6x)                     XScreenSaver manual                    queens(6x)
+
+
+
+NAME
+       queens - n queens screensaver
+
+SYNOPSIS
+       queens [-display host:display.screen] [-window] [-root] [-install] [-vis&#8208;
+       ual visual] [-delay microseconds] [-wireframe] [-fps]
+
+DESCRIPTION
+       The queens program solves the n-queens problem (where, in this program, N
+       is  between  5  and 10 queens) using a straightforward backtracking algo&#8208;
+       rithm.  The problem is: how may one place N queens on an  NxN  chessboard
+       such that no queen can attack a sister?
+
+OPTIONS
+       queens accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the id number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -wireframe
+               Render  in  wireframe instead of solid.  -fps Display the current
+               frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+BUGS
+       It&apos;s  not  unknown for this and other OpenGL hacks to fail under hardware
+       accelaration (UtahGLX) and take the X server with them.   Texture  images
+       must be 16x16 or 32x32 or 64x64 etc.
+
+SEE ALSO
+       X(1), xscreensaver(1) xscreensaver-demo(1), xscreensaver-getimage(1)
+
+COPYRIGHT
+       Copyright  &#169;  2002  by  Blair Tennessy.  Permission to use, copy, modify,
+       distribute, and sell this software and its documentation for any  purpose
+       is  hereby  granted without fee, provided that the above copyright notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion  notice  appear in supporting documentation.  No representations are
+       made about the suitability of this software for any purpose.  It is  pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Blair Tennessy &lt;tennessb@unbc.ca&gt;, 20-April-2002.
+
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                     queens(6x)
+
+</pre></body></html>

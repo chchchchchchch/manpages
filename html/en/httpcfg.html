@@ -1,0 +1,84 @@
+<html>
+<head><meta charset=utf-8/>
+<title>httpcfg - Mono Certificate Management for HttpListener</title></head>
+<body><pre>
+
+Mono(httpcfg)                                                      Mono(httpcfg)
+
+
+
+NAME
+       httpcfg - Mono Certificate Management for HttpListener
+
+SYNOPSIS
+       httpcfg [options] certificate
+
+DESCRIPTION
+       This  tool  is  used  to manage the certificates used by the HttpListener
+       embeddable server class when the HttpListener is configured as  an  HTTPS
+       server instead of an HTTP server.
+
+       You must select one of the possible actions: add, delete or list.
+
+       When adding a certificate (-add), you must provide the following informa&#8208;
+       tion: a certificate (with the -cert flag) a Private Key  file  (with  the
+       -pvk  argument,  the filename is typically &quot;key&quot;) and a port number (with
+       the -port flag).
+
+       When deleting a certificate (-del or -delete) you  need  to  provide  the
+       port number.
+
+PARAMETERS
+       -add   Adds a new certificate/private key combination for being used at a
+              given port by the HttpListener API.
+
+       -del, -delete
+              Deletes the certificates associated for the port  specified  (must
+              be specified separatedly).
+
+       -list  List all known certificates.
+
+       -port PORT
+              Specifies  the port to add certificates to, or remove certificates
+              from.
+
+       -pvk FILE
+              Specifies the Private Key file.
+
+       -cert CERT
+              Specifies the certificate file to use.
+
+EXAMPLES
+       httpcfg -add -port 8081 -pvk myfile.pvk -cert MyCert
+
+       For more details on creating the certificate file and  the  private  key,
+       see the following web page:
+
+       http://www.mono-project.com/UsingClientCertificatesWithXSP
+
+FILES
+       The certificates are stored in the ~/.mono/httplistener directory
+
+AUTHOR
+       httpcfg was written by Gonzalo Paniagua.
+
+COPYRIGHT
+       Copyright (C) 2006 Novell.
+
+MAILING LISTS
+       Visit     http://lists.ximian.com/mailman/listinfo/mono-devel-list    for
+       details.
+&#12;WEB SITE
+       Visit http://www.mono-project.com for details
+
+SEE ALSO
+       makecert(1), signcode(1), cert2spc(1)
+
+       The private key format:
+       http://www.drh-consultancy.demon.co.uk/pvk.html
+
+
+
+                                                                   Mono(httpcfg)
+
+</pre></body></html>

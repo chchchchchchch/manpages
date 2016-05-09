@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_KeyboardEvent - Keyboard event structure</title></head>
+<body><pre>
+
+SDL_KeyboardEvent(3)            SDL API Reference           SDL_KeyboardEvent(3)
+
+
+
+NAME
+       SDL_KeyboardEvent - Keyboard event structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 type;
+         Uint8 state;
+         SDL_keysym keysym;
+       } SDL_KeyboardEvent;
+
+STRUCTURE DATA
+       type                SDL_KEYDOWN or SDL_KEYUP
+
+       state               SDL_PRESSED or SDL_RELEASED
+
+       keysym              Contains key press information
+
+DESCRIPTION
+       SDL_KeyboardEvent  is a member of the SDL_Event union and is used when an
+       event of type SDL_KEYDOWN or SDL_KEYUP is reported.
+
+       The type and state actually report the same information,  they  just  use
+       different values to do it! A keyboard event occurs when a key is released
+       (type=SDK_KEYUP  or  state=SDL_RELEASED)  and  when  a  key  is   pressed
+       (type=SDL_KEYDOWN  or state=SDL_PRESSED). The information on what key was
+       pressed or released is in the keysym structure.
+
+              Note:
+
+              Repeating SDL_KEYDOWN events will occur if key repeat  is  enabled
+              (see SDL_EnableKeyRepeat).
+
+SEE ALSO
+       SDL_Event, SDL_keysym, SDL_EnableKeyRepeat, SDL_EnableUNICODE
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59         SDL_KeyboardEvent(3)
+
+</pre></body></html>

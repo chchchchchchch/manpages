@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hal-is-caller-locked-out - determine if a caller is locked out</title></head>
+<body><pre>
+
+HAL-IS-CALLER-LOCKED-OUT(1)                          HAL-IS-CALLER-LOCKED-OUT(1)
+
+
+
+NAME
+       hal-is-caller-locked-out - determine if a caller is locked out
+
+SYNOPSIS
+       hal-is-caller-locked-out [options]
+
+
+DESCRIPTION
+       hal-is-caller-locked-out determines if a specific caller is locked out of
+       a specific D-Bus interface on a specific  device.  For  more  information
+       about  both the big picture and specific HAL properties, refer to the HAL
+       spec which  can  be  found  in  /usr/share/doc/hal-doc/spec/hal-spec.html
+       depending on the distribution.
+
+
+OPTIONS
+       The following options are supported:
+
+       --udi  The UDI (Unique Device Identifier) of the device object.
+
+       --interface
+              The name of the interface to check for.
+
+       --caller
+              The unique D-Bus name on the system bus of the caller.
+
+       --help Print out usage.
+
+       --version
+              Print the version.
+
+
+RETURN VALUE
+       If the given process is locked out or an error occurs, this program exits
+       with exit code 1. Otherwise it exits with exit code 0. Note that only the
+       super user (root) or other privileged users can use this tool.
+
+
+BUGS
+       Please  send  bug  reports  to either the distribution or the HAL mailing
+       list, see  http://lists.freedesktop.org/mailman/listinfo/hal  on  how  to
+       subscribe.
+
+
+SEE ALSO
+       hald(8), lshal(1), hal-get-property(1), hal-set-property(1), hal-find-by-
+       property(1), hal-find-by-capability(1)
+
+
+AUTHOR
+       Written by David Zeuthen &lt;david@fubar.dk&gt; with a lot of  help  from  many
+       others.
+
+
+
+
+                                                     HAL-IS-CALLER-LOCKED-OUT(1)
+
+</pre></body></html>

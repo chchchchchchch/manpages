@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtErrorMsg, XtSetErrorMsgHandler, XtWarningMsg, XtSetWarningMsgHandler - high-level error handlers</title></head>
+<body><pre>
+
+XtErrorMsg(3)              XT COMPATIBILITY FUNCTIONS              XtErrorMsg(3)
+
+
+
+NAME
+       XtErrorMsg, XtSetErrorMsgHandler, XtWarningMsg, XtSetWarningMsgHandler -
+       high-level error handlers
+
+SYNTAX
+       void XtErrorMsg(String name, String type, String class, String default,
+              String *params, Cardinal *num_params);
+
+       void XtSetErrorMsgHandler(XtErrorMsgHandler msg_handler);
+
+       void XtSetWarningMsgHandler(XtErrorMsgHandler msg_handler);
+
+       void XtWarningMsg(String name, String type, String class, String default,
+              String *params, Cardinal *num_params);
+
+ARGUMENTS
+       class     Specifies the resource class.
+
+       default   Specifies the default message to use.
+
+       name      Specifies the general kind of error.
+
+       type      Specifies the detailed name of the error.
+
+       msg_handler
+                 Specifies the new fatal error procedure, which should not
+                 return or the nonfatal error procedure, which usually returns.
+
+       num_params
+                 Specifies the number of values in the parameter list.
+
+       params    Specifies a pointer to a list of values to be stored in the
+                 message.
+
+DESCRIPTION
+       The XtErrorMsg function has been superceded by XtAppErrorMsg.
+
+       The XtSetErrorMsgHandler function has been superceded by XtAppSetErrorMs&#8208;
+       gHandler.
+
+       The XtSetWarningMsgHandler function has been superceded by XtAppSetWarn&#8208;
+       ingMsgHandler.
+
+       The XtWarningMsg function has been superceded by XtAppWarningMsg
+
+SEE ALSO
+       XtAppErrorMsg(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                     XtErrorMsg(3)
+
+</pre></body></html>

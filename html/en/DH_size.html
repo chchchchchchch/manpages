@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DH_size - get Diffie-Hellman prime size</title></head>
+<body><pre>
+
+DH_size(3SSL)                        OpenSSL                       DH_size(3SSL)
+
+
+
+NAME
+       DH_size - get Diffie-Hellman prime size
+
+SYNOPSIS
+        #include &lt;openssl/dh.h&gt;
+
+        int DH_size(DH *dh);
+
+DESCRIPTION
+       This function returns the Diffie-Hellman size in bytes. It can be used to
+       determine how much memory must be allocated for the shared secret
+       computed by DH_compute_key().
+
+       dh-&gt;p must not be NULL.
+
+RETURN VALUE
+       The size in bytes.
+
+SEE ALSO
+       dh(3), DH_generate_key(3)
+
+HISTORY
+       DH_size() is available in all versions of SSLeay and OpenSSL.
+
+
+
+1.0.1e                             2013-02-11                      DH_size(3SSL)
+
+</pre></body></html>

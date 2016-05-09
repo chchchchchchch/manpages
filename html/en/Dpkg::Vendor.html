@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Dpkg::Vendor - get access to some vendor specific information</title></head>
+<body><pre>
+
+Dpkg::Vendor(3)                   libdpkg-perl                   Dpkg::Vendor(3)
+
+
+
+NAME
+       Dpkg::Vendor - get access to some vendor specific information
+
+DESCRIPTION
+       The files in /etc/dpkg/origins/ can provide information about various
+       vendors who are providing Debian packages. Currently those files look
+       like this:
+
+         Vendor: Debian
+         Vendor-URL: http://www.debian.org/
+         Bugs: debbugs://bugs.debian.org
+
+       If the vendor derives from another vendor, the file should document the
+       relationship by listing the base distribution in the Parent field:
+
+         Parent: Debian
+
+       The file should be named according to the vendor name.
+
+FUNCTIONS
+       $fields = Dpkg::Vendor::get_vendor_info($name)
+           Returns a Dpkg::Control object with the information parsed from the
+           corresponding vendor file in /etc/dpkg/origins/. If $name is omitted,
+           it will use /etc/dpkg/origins/default which is supposed to be a
+           symlink to the vendor of the currently installed operating system.
+           Returns undef if there&apos;s no file for the given vendor.
+
+       $name = Dpkg::Vendor::get_vendor_file($name)
+           Check if there&apos;s a file for the given vendor and returns its name.
+
+       $name = Dpkg::Vendor::get_current_vendor()
+           Returns the name of the current vendor. If DEB_VENDOR is set, it uses
+           that first, otherwise it falls back to parsing
+           /etc/dpkg/origins/default.  If that file doesn&apos;t exist, it returns
+           undef.
+
+       $object = Dpkg::Vendor::get_vendor_object($name)
+           Return the Dpkg::Vendor::* object of the corresponding vendor.  If
+           $name is omitted, return the object of the current vendor.  If no
+           vendor can be identified, then return the Dpkg::Vendor::Default
+           object.
+
+       Dpkg::Vendor::run_vendor_hook($hookid, @params)
+           Run a hook implemented by the current vendor object.
+
+
+
+1.16.16                            2015-04-09                    Dpkg::Vendor(3)
+
+</pre></body></html>

@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>obm-moz - a pipe-menu for openbox</title></head>
+<body><pre>
+
+obm-moz(1)                      Openbox Pipe Menu                     obm-moz(1)
+
+
+
+NAME
+       obm-moz - a pipe-menu for openbox
+
+SYNTAX
+       obm-moz [options]
+
+DESCRIPTION
+       Obm-moz is a pipe menu for openbox.  It translates any mozilla-compatible
+       bookmarks into an openbox menu.  If no arguments are given, it&apos;ll try  to
+       find  your  bookmarks.   A bookmarks folder can be passed as an argument,
+       it&apos;ll try to find it and build the menu out of that folder.
+
+       More    information    about    pipe-menus    can     be     found     on
+       http://icculus.org/openbox/index.php/Openbox:Pipemenus
+
+OPTIONS
+       -h, --help
+                 Show this help message and exit
+
+       -f, --firefox
+                 Look for Firefox bookmarks
+
+       -b FILENAME, --bookmarks=FILENAME
+                 Specify the path to the bookmarks.html file
+
+       -r ROOT, --root=ROOT
+                 Root folder of the bookmarks
+
+       -n BROWSER, --navigator=BROWSER
+                 Command to run the web browser.
+
+EXAMPLES
+       obm-moz -b &quot;/path/to/bookmarks.html&quot; -r &quot;Bookmarks Toolbar Folder&quot;
+
+AUTHORS
+       obm-dir   was   written by Manuel Colmenero &lt;mkolme@gmail.com&gt; as part of
+       obmenu. This manual page was originally written for the Debian  GNU/Linux
+       system by Davide Truffa &lt;davide@catoblepa.org&gt;.
+
+SEE ALSO
+       obmenu(1), obm-dir(1), obm-nav(1), obm-xdg(1), openbox(1)
+
+
+
+Davide Truffa                          1.0                            obm-moz(1)
+
+</pre></body></html>

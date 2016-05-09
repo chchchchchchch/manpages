@@ -1,0 +1,34 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ntp-keygen - generate public and private keys</title></head>
+<body><pre>
+
+NTP-KEYGEN(8)                                                      NTP-KEYGEN(8)
+
+
+
+NAME
+       ntp-keygen - generate public and private keys
+
+SYNOPSIS
+       ntp-keygen [ -deGgHIMnPT ] [ -c [RSA-MD2 | RSA-MD5 | RSA-SHA | RSA-SHA1 |
+       RSA-MDC2 | RSA-RIPEMD160 | DSA-SHA | DSA-SHA1 ] ] [ -i name ] [ -p  pass&#8208;
+       word ] [ -S [ RSA | DSA ] ] [ -s name ] [ -v nkeys ]
+
+DESCRIPTION
+       This program generates cryptographic data files used by the NTPv4 authen&#8208;
+       tication and identification schemes. It generates MD5 key files  used  in
+       symmetric  key cryptography. In addition, if the OpenSSL software library
+       has been installed, it generates keys,  certificate  and  identity  files
+       used  in public key cryptography. These files are used for cookie encryp&#8208;
+       tion, digital signature and challenge/response identification  algorithms
+       compatible with the Internet standard security infrastructure.
+
+SEE ALSO
+       /usr/share/doc/ntp-doc/html/keygen.html for the full documentation.
+
+
+
+Network Time Protocol            October 7, 2006                   NTP-KEYGEN(8)
+
+</pre></body></html>

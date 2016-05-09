@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::SEN -- provide regexes for Social-Economical Numbers.</title></head>
+<body><pre>
+
+Regexp::Common::SEN(3pmUser Contributed Perl DocumentatiRegexp::Common::SEN(3pm)
+
+
+
+NAME
+       Regexp::Common::SEN -- provide regexes for Social-Economical Numbers.
+
+SYNOPSIS
+        use Regexp::Common qw /SEN/;
+
+        while (&lt;&gt;) {
+            /^$RE{SEN}{USA}{SSN}$/    and  print &quot;Social Security Number\n&quot;;
+        }
+
+DESCRIPTION
+       Please consult the manual of Regexp::Common for a general description of
+       the works of this interface.
+
+       Do not use this module directly, but load it via Regexp::Common.
+
+   $RE{SEN}{USA}{SSN}{-sep}
+       Returns a pattern that matches an American Social Security Number (SSN).
+       SSNs consist of three groups of numbers, separated by a hypen (&quot;-&quot;).
+       This pattern only checks for a valid structure, that is, it validates
+       whether a number is valid SSN, was a valid SSN, or maybe a valid SSN in
+       the future. There are almost a billion possible SSNs, and about 400
+       million are in use, or have been in use.
+
+       If &quot;-sep=P&quot; is specified, the pattern P is used as the separator between
+       the groups of numbers.
+
+       Under &quot;-keep&quot; (see Regexp::Common):
+
+       $1  captures the entire SSN.
+
+       $2  captures the first group of digits (the area number).
+
+       $3  captures the second group of digits (the group number).
+
+       $4  captures the third group of digits (the serial number).
+
+SEE ALSO
+       Regexp::Common for a general description of how to use this interface.
+
+AUTHORS
+       Damian Conway and Abigail.
+
+MAINTAINANCE
+       This package is maintained by Abigail (regexp-common@abigail.be).
+
+BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+       For a start, there are many common regexes missing.  Send them in to
+       regexp-common@abigail.be.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2010-02-23           Regexp::Common::SEN(3pm)
+
+</pre></body></html>

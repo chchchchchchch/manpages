@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_WM_GrabInput - Grabs mouse and keyboard input.</title></head>
+<body><pre>
+
+SDL_WM_GrabInput(3)             SDL API Reference            SDL_WM_GrabInput(3)
+
+
+
+NAME
+       SDL_WM_GrabInput - Grabs mouse and keyboard input.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDL_GrabMode SDL_WM_GrabInput(SDL_GrabMode mode);
+
+DESCRIPTION
+       Grabbing  means that the mouse is confined to the application window, and
+       nearly all keyboard input is passed directly to the application, and  not
+       interpreted by a window manager, if any.
+
+       When mode is SDL_GRAB_QUERY the grab mode is not changed, but the current
+       grab mode is returned.
+
+       typedef enum {
+         SDL_GRAB_QUERY,
+         SDL_GRAB_OFF,
+         SDL_GRAB_ON
+       } SDL_GrabMode;
+
+RETURN VALUE
+       The current/new SDL_GrabMode.
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01          SDL_WM_GrabInput(3)
+
+</pre></body></html>

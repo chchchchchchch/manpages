@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>beef - flexible Brainfuck interpreter</title></head>
+<body><pre>
+
+BEEF(1)                           User Commands                          BEEF(1)
+
+
+
+NAME
+       beef - flexible Brainfuck interpreter
+
+
+SYNOPSIS
+       beef [OPTIONS] FILE
+
+
+DESCRIPTION
+       beef  is  a Brainfuck interpreter written in C. It is written with flexi&#8208;
+       bility and portability in mind: it is not the smallest  nor  the  fastest
+       Brainfuck  interpreter  on  Earth, but it has some options to control his
+       behavior and doesn&apos;t suffer most of the  limitations  which  are  usually
+       present in Brainfuck interpreters.
+
+       One  of  the  best  features of beef is that it has no limitations on the
+       length of the tape, which is created dinamically, and allows you to  move
+       in any direction, even to move an unlimited amount of cells left when you
+       are on the starting cell.
+
+       beef also allows you to control his behavior in case  it  reads  and  EOF
+       from the input stream: see below for a list of available options.
+
+
+OPTIONS
+       -d     Enable  debugging.  The  debugging  command  #  is not part of the
+              Brainfuck language, but it&apos;s an useful feature for the programmer,
+              so most interpreters implement it. Debugging is off by default.
+
+       -e     When  read  an  EOF  from input, store an EOF in the current cell.
+              This is for compatibility with programs written for  other  inter&#8208;
+              preters;  the default behavior is to store a 0 in the current cell
+              when an EOF is read.
+
+       -n     When read an EOF from input,  do  nothing.  This  is  the  default
+              behavior in some other interpreters, so it&apos;s supported in beef for
+              compatibility reasons.  The default behavior is to store  a  0  on
+              the current cell instead.
+
+       --version
+              Show the version number and exit successfully.
+
+       --help Show a short help message and exit with success.
+
+
+EXIT STATUS
+       beef returns an exit staus of zero on success, or an exit status of -1 if
+       it was unable to perform the requested operation.
+
+       Please note that no checks are performed on the code: if the code you are
+       trying to run is buggy, beef will run it anyway and the result will prob&#8208;
+       ably differ from what you expected.
+
+
+AUTHOR
+       This manual page was written by KiyuKo &lt;eof AT kiyuko DOT org&gt;
+
+
+
+0.0.6                           February 01, 2007                        BEEF(1)
+
+</pre></body></html>

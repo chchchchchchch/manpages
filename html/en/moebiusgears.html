@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>moebiusgears - draw a moebius strip of interlocking gears.</title></head>
+<body><pre>
+
+moebiusgears(6x)               XScreenSaver manual              moebiusgears(6x)
+
+
+
+NAME
+       moebiusgears - draw a moebius strip of interlocking gears.
+
+SYNOPSIS
+       moebiusgears  [-display host:display.screen] [-window] [-root] [-install]
+       [-visual visual] [-delay usecs] [-speed  float]  [-no-spin]  [-no-wander]
+       [-no-roll] [-count integer] [-teeth integer] [-wireframe] [-fps]
+
+DESCRIPTION
+       The  moebiusgears  program  draws a closed, interlinked chain of rotating
+       gears. The layout of the gears follows the path of a moebius strip.
+
+OPTIONS
+       moebiusgears accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -delay usecs
+               The delay between  frames  of  the  animation,  in  microseconds.
+               Default: 30000 (0.03 seconds.)
+
+       -speed float
+               Larger numbers mean run faster.  Default: 1.0.
+
+       -no-spin
+               Don&apos;t rotate the object.
+
+       -no-wander
+               Don&apos;t wander the object around the screen.
+
+       -no-roll
+               Don&apos;t slowly roll the moebius strip inside out.
+
+       -count integer
+               How many gears to draw.  Default: 17.  Minimum 11, must be odd.
+
+       -teeth integer
+               How  many  teeth  to draw on each draw.  Default: 15.  Minimum 7,
+               must be odd.
+
+       -wireframe
+               Render in wireframe instead of solid.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+&#12;SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright  &#169;  2007  by  Jamie Zawinski.  Permission to use, copy, modify,
+       distribute, and sell this software and its documentation for any  purpose
+       is  hereby  granted without fee, provided that the above copyright notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion  notice  appear in supporting documentation.  No representations are
+       made about the suitability of this software for any purpose.  It is  pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Jamie Zawinski.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)               moebiusgears(6x)
+
+</pre></body></html>

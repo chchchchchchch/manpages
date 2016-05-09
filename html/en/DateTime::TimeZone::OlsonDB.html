@@ -1,0 +1,57 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::TimeZone::OlsonDB - An object to represent an Olson time zone database</title></head>
+<body><pre>
+
+DateTime::TimeZone::OlsUser(Contributed Perl DocDateTime::TimeZone::OlsonDB(3pm)
+
+
+
+NAME
+       DateTime::TimeZone::OlsonDB - An object to represent an Olson time zone
+       database
+
+VERSION
+       version 1.58
+
+SYNOPSIS
+         none yet
+
+DESCRIPTION
+       This module parses the Olson database time zone definition files and
+       creates various objects representing time zone data.
+
+       Each time zone is broken down into several parts.  The first piece is an
+       observance, which is an offset from UTC and an abbreviation.  A single
+       zone may contain many observances, reflecting historical changes in that
+       time zone over time.  An observance may also refer to a set of rules.
+
+       Rules are named, and may apply to many different zones.  For example, the
+       &quot;US&quot; rules apply to most of the time zones in the US, unsurprisingly.
+       Rules are made of an offset from standard time and a definition of when
+       that offset changes.  Changes can be a one time thing, or they can recur
+       at regular times through a span of years.
+
+       Each rule may have an associated letter, which is used to generate an
+       abbreviated name for the time zone, along with the offset&apos;s abbreviation.
+       For example, if the offset&apos;s abbreviation is &quot;C%sT&quot;, and the a rule
+       specifies the letter &quot;S&quot;, then the abbreviation when that rule is in
+       effect is &quot;CST&quot;.
+
+USAGE
+       Not yet documented.  This stuff is a mess.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2013 by Dave Rolsky.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.14.2                       2013-03-11   DateTime::TimeZone::OlsonDB(3pm)
+
+</pre></body></html>

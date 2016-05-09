@@ -1,0 +1,344 @@
+<html>
+<head><meta charset=utf-8/>
+<title>inotifywait - wait for changes to files using inotify</title></head>
+<body><pre>
+
+inotifywait(1)                                                    inotifywait(1)
+
+
+
+NAME
+       inotifywait - wait for changes to files using inotify
+
+
+SYNOPSIS
+       inotifywait  [-hcmrq]  [-e  &lt;event&gt;  ]  [-t &lt;seconds&gt; ] [--format &lt;fmt&gt; ]
+       [--timefmt &lt;fmt&gt; ] &lt;file&gt; [ ... ]
+
+
+DESCRIPTION
+       inotifywait efficiently waits for changes to  files  using  Linux&apos;s  ino&#8208;
+       tify(7)  interface.  It is suitable for waiting for changes to files from
+       shell scripts.  It can either exit once an event occurs,  or  continually
+       execute and output events as they occur.
+
+
+OUTPUT
+       inotifywait  will  output  diagnostic  information  on standard error and
+       event information on standard output.  The event output  can  be  config&#8208;
+       ured, but by default it consists of lines of the following form:
+
+       watched_filename EVENT_NAMES event_filename
+
+
+       watched_filename
+              is  the name of the file on which the event occurred.  If the file
+              is a directory, a trailing slash is output.
+
+       EVENT_NAMES
+              are the names of the inotify events which occurred,  separated  by
+              commas.
+
+       event_filename
+              is output only when the event occurred on a directory, and in this
+              case the name of the file within the directory which  caused  this
+              event is output.
+
+              By default, any special characters in filenames are not escaped in
+              any way.  This can make the output  of  inotifywait  difficult  to
+              parse  in  awk scripts or similar.  The --csv and --format options
+              will be helpful in this case.
+
+
+OPTIONS
+       -h, --help
+              Output some helpful usage information.
+
+       @&lt;file&gt;
+              When watching a directory tree recursively, exclude the  specified
+              file  from being watched.  The file must be specified with a rela&#8208;
+              tive or absolute path according to whether a relative or  absolute
+              path  is  given  for  watched  directories.  If a specific path is
+              explicitly both included and excluded, it will always be watched.
+
+              Note: If you need to watch a directory or file whose  name  starts
+              with @, give the absolute path.
+
+       --fromfile &lt;file&gt;
+              Read  filenames  to watch or exclude from a file, one filename per
+              line.  If filenames begin with @ they are  excluded  as  described
+              above.   If &lt;file&gt; is `-&apos;, filenames are read from standard input.
+              Use this option if you need to watch too many files to pass in  as
+              command line arguments.
+
+       -m, --monitor
+              Instead of exiting after receiving a single event, execute indefi&#8208;
+              nitely.  The default behaviour is to exit after  the  first  event
+              occurs.
+
+       -d, --daemon
+              Same  as --monitor, except run in the background logging events to
+              a file that must be specified by --outfile. Implies --syslog.
+
+       -o, --outfile &lt;file&gt;
+              Output events to &lt;file&gt; rather than stdout.
+
+       -s, --syslog
+              Output errors to syslog(3) system log module rather than stderr.
+
+       -r, --recursive
+              Watch all subdirectories of any directories passed  as  arguments.
+              Watches  will  be  set up recursively to an unlimited depth.  Sym&#8208;
+              bolic links are not traversed.  Newly created subdirectories  will
+              also be watched.
+
+              Warning:  If you use this option while watching the root directory
+              of a large tree, it may take  quite  a  while  until  all  inotify
+              watches  are  established, and events will not be received in this
+              time.  Also, since one inotify watch will be established per  sub&#8208;
+              directory,  it  is  possible  that  the  maximum amount of inotify
+              watches per user will be reached.  The default maximum is 8192; it
+              can    be    increased    by    writing    to    /proc/sys/fs/ino&#8208;
+              tify/max_user_watches.
+
+
+       -q, --quiet
+              If specified once, the program will  be  less  verbose.   Specifi&#8208;
+              cally,  it  will  not state when it has completed establishing all
+              inotify watches.
+
+              If specified twice, the program will output nothing at all, except
+              in the case of fatal errors.
+
+
+       --exclude &lt;pattern&gt;
+              Do  not  process  any  events whose filename matches the specified
+              POSIX extended regular expression, case sensitive.
+
+
+       --excludei &lt;pattern&gt;
+              Do not process any events whose  filename  matches  the  specified
+              POSIX extended regular expression, case insensitive.
+
+
+       -t &lt;seconds&gt;, --timeout &lt;seconds&gt;
+              Exit  if  an  appropriate  event has not occurred within &lt;seconds&gt;
+              seconds. If &lt;seconds&gt; is zero (the default), wait indefinitely for
+              an event.
+
+
+       -e &lt;event&gt;, --event &lt;event&gt;
+              Listen  for  specific event(s) only.  The events which can be lis&#8208;
+              tened for are listed in the EVENTS section.  This  option  can  be
+              specified  more  than  once.   If omitted, all events are listened
+              for.
+
+
+       -c, --csv
+              Output in CSV (comma-separated values)  format.   This  is  useful
+              when  filenames  may  contain spaces, since in this case it is not
+              safe to simply split the output at each space character.
+
+
+       --timefmt &lt;fmt&gt;
+              Set a time format string as accepted by strftime(3) for  use  with
+              the `%T&apos; conversion in the --format option.
+
+
+       --format &lt;fmt&gt;
+              Output  in a user-specified format, using printf-like syntax.  The
+              event strings output are limited to  around  4000  characters  and
+              will  be  truncated to this length.  The following conversions are
+              supported:
+
+
+       %w     This will be replaced with the name of the Watched file  on  which
+              an event occurred.
+
+
+       %f     When  an  event  occurs  within a directory, this will be replaced
+              with the name of the File which caused the event to occur.  Other&#8208;
+              wise, this will be replaced with an empty string.
+
+
+       %e     Replaced with the Event(s) which occurred, comma-separated.
+
+
+       %Xe    Replaced  with the Event(s) which occurred, separated by whichever
+              character is in the place of `X&apos;.
+
+
+       %T     Replaced with the current Time in  the  format  specified  by  the
+              --timefmt  option,  which  should  be a format string suitable for
+              passing to strftime(3).
+
+
+
+
+EXIT STATUS
+       0      The program executed successfully, and an event occurred which was
+              being listened for.
+
+       1      An  error  occurred  in  execution  of  the  program,  or an event
+              occurred which was not being listened for.  The  latter  generally
+              occurs  if  something  happens  which forcibly removes the inotify
+              watch, such as a watched file being deleted or the filesystem con&#8208;
+              taining a watched file being unmounted.
+
+       2      The -t option was used and an event did not occur in the specified
+              interval of time.
+
+
+EVENTS
+       The following events are valid for use with the -e option:
+
+
+       access A watched file or a file within a watched directory was read from.
+
+
+       modify A watched file or a file within a watched  directory  was  written
+              to.
+
+
+       attrib The  metadata  of a watched file or a file within a watched direc&#8208;
+              tory was modified.  This includes  timestamps,  file  permissions,
+              extended attributes etc.
+&#12;       close_write
+              A  watched  file  or a file within a watched directory was closed,
+              after being opened in writeable mode.  This does  not  necessarily
+              imply the file was written to.
+
+
+       close_nowrite
+              A  watched  file  or a file within a watched directory was closed,
+              after being opened in read-only mode.
+
+
+       close  A watched file or a file within a watched  directory  was  closed,
+              regardless  of  how  it  was  opened.   Note that this is actually
+              implemented  simply  by  listening  for   both   close_write   and
+              close_nowrite,  hence  all close events received will be output as
+              one of these, not CLOSE.
+
+
+       open   A watched file or a file within a watched directory was opened.
+
+
+       moved_to
+              A file or directory was moved  into  a  watched  directory.   This
+              event occurs even if the file is simply moved from and to the same
+              directory.
+
+
+       moved_from
+              A file or directory was moved  from  a  watched  directory.   This
+              event occurs even if the file is simply moved from and to the same
+              directory.
+
+
+       move   A file or directory was moved from  or  to  a  watched  directory.
+              Note  that  this  is  actually implemented simply by listening for
+              both moved_to and moved_from, hence all close events received will
+              be output as one or both of these, not MOVE.
+
+
+       move_self
+              A  watched file or directory was moved. After this event, the file
+              or directory is no longer being watched.
+
+
+       create A file or directory was created within a watched directory.
+
+
+       delete A file or directory within a watched directory was deleted.
+
+
+       delete_self
+              A watched file or directory was deleted.   After  this  event  the
+              file  or  directory  is  no  longer being watched.  Note that this
+              event can occur even if it is not explicitly being listened for.
+
+
+       unmount
+              The filesystem on which a watched file or  directory  resides  was
+              unmounted.   After  this  event the file or directory is no longer
+              being watched.  Note that this event can occur even if it  is  not
+              explicitly being listened to.
+
+
+
+EXAMPLES
+   Example 1
+       Running  inotifywait  at  the  command-line  to  wait for any file in the
+       `test&apos;  directory  to  be  accessed.   After  running  inotifywait,  `cat
+       test/foo&apos; is run in a separate console.
+
+       % inotifywait test
+       Setting up watches.
+       Watches established.
+       test/ ACCESS foo
+
+
+   Example 2
+       A  short  shell script to efficiently wait for httpd-related log messages
+       and do something appropriate.
+
+       #!/bin/sh
+       while inotifywait -e modify /var/log/messages; do
+         if tail -n1 /var/log/messages | grep httpd; then
+           kdialog --msgbox &quot;Apache needs love!&quot;
+         fi
+       done
+
+
+   Example 3
+       A custom output format is used to  watch  `~/test&apos;.   Meanwhile,  someone
+       runs  `touch ~/test/badfile; touch ~/test/goodfile; rm ~/test/badfile&apos; in
+       another console.
+
+       % inotifywait -m -r --format &apos;%:e %f&apos; ~/test
+       Setting up watches.  Beware: since -r was given, this may take a while!
+       Watches established.
+       CREATE badfile
+       OPEN badfile
+       ATTRIB badfile
+       CLOSE_WRITE:CLOSE badfile
+       CREATE goodfile
+       OPEN goodfile
+       ATTRIB goodfile
+       CLOSE_WRITE:CLOSE goodfile
+       DELETE badfile
+
+
+CAVEATS
+       When using inotifywait, the filename that is outputted is not  guaranteed
+       to be up to date after a move because it is the inode that is being moni&#8208;
+       tored. Additionally, none of the observed operations  are  guaranteed  to
+       have been performed on the filename inotifywait was instructed to monitor
+       in cases when the file is known by several names in the filesystem.
+
+
+BUGS
+       There are race conditions in the recursive directory watching code  which
+       can  cause  events  to be missed if they occur in a directory immediately
+       after that directory is created.  This is probably not fixable.
+
+       It is assumed the inotify event queue will never overflow.
+
+
+AUTHORS
+       inotifywait is written and maintained  by  Rohan  McGovern  &lt;rohan@mcgov&#8208;
+       ern.id.au&gt;.
+
+       inotifywait  is  part  of  inotify-tools.   The  inotify-tools website is
+       located at: http://inotify-tools.sourceforge.net/
+
+
+SEE ALSO
+       inotifywatch(1), strftime(3), inotify(7)
+
+
+
+inotifywait 3.14                 March 14, 2010                   inotifywait(1)
+
+</pre></body></html>

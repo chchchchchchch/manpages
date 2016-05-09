@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigGetRescanInterval - Get config rescan interval</title></head>
+<body><pre>
+
+FcConfigGetRescanInterval(3)                        FcConfigGetRescanInterval(3)
+
+
+
+NAME
+       FcConfigGetRescanInterval - Get config rescan interval
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       int FcConfigGetRescanInterval (FcConfig *config);
+
+DESCRIPTION
+       Returns  the  interval  between automatic checks of the configuration (in
+       seconds) specified in config.  The configuration is checked during a call
+       to  FcFontList  when  this  interval has passed since the last check.  An
+       interval setting of zero disables automatic checks.  If config  is  NULL,
+       the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012     FcConfigGetRescanInterval(3)
+
+</pre></body></html>

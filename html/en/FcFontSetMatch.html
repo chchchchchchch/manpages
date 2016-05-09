@@ -1,0 +1,34 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcFontSetMatch - Return the best font from a set of font sets</title></head>
+<body><pre>
+
+FcFontSetMatch(3)                                              FcFontSetMatch(3)
+
+
+
+NAME
+       FcFontSetMatch - Return the best font from a set of font sets
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcPattern * FcFontSetMatch (FcConfig *config, FcFontSet **sets, intnsets,
+       FcPattern *pattern, FcResult *result);
+
+DESCRIPTION
+       Finds the font in sets most closely  matching  pattern  and  returns  the
+       result  of  FcFontRenderPrepare  for  that font and the provided pattern.
+       This function should be called only after  FcConfigSubstitute  and  FcDe&#8208;
+       faultSubstitute  have been called for pattern; otherwise the results will
+       not be correct.  If config is NULL, the current  configuration  is  used.
+       Returns NULL if an error occurs during this process.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                FcFontSetMatch(3)
+
+</pre></body></html>

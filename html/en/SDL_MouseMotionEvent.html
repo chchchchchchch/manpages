@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_MouseMotionEvent - Mouse motion event structure</title></head>
+<body><pre>
+
+SDL_MouseMotionEvent(3)         SDL API Reference        SDL_MouseMotionEvent(3)
+
+
+
+NAME
+       SDL_MouseMotionEvent - Mouse motion event structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 type;
+         Uint8 state;
+         Uint16 x, y;
+         Sint16 xrel, yrel;
+       } SDL_MouseMotionEvent;
+
+STRUCTURE DATA
+       type                SDL_MOUSEMOTION
+
+       state               The current button state
+
+       x, y                The X/Y coordinates of the mouse
+
+       xrel, yrel          Relative motion in the X/Y direction
+
+DESCRIPTION
+       SDL_MouseMotionEvent  is a member of the SDL_Event union and is used when
+       an event of type SDL_MOUSEMOTION is reported.
+
+       Simply put, a SDL_MOUSEMOTION type event occurs when  a  user  moves  the
+       mouse within the application window or when SDL_WarpMouse is called. Both
+       the absolute (x and y) and  relative  (xrel  and  yrel)  coordinates  are
+       reported  along  with the current button states (state). The button state
+       can be interpreted using the SDL_BUTTON macro (see SDL_GetMouseState).
+
+       If the cursor is hidden (SDL_ShowCursor(0))  and  the  input  is  grabbed
+       (SDL_WM_GrabInput(SDL_GRAB_ON)), then the mouse will give relative motion
+       events even when the cursor reaches the edge fo the screen. This is  cur&#8208;
+       rently only implemented on Windows and Linux/Unix-a-likes.
+
+SEE ALSO
+       SDL_Event, SDL_MouseButtonEvent
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59      SDL_MouseMotionEvent(3)
+
+</pre></body></html>

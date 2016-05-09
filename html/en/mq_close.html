@@ -1,0 +1,54 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mq_close - close a message queue descriptor</title></head>
+<body><pre>
+
+MQ_CLOSE(3)                 Linux Programmer&apos;s Manual                MQ_CLOSE(3)
+
+
+
+NAME
+       mq_close - close a message queue descriptor
+
+SYNOPSIS
+       #include &lt;mqueue.h&gt;
+
+       int mq_close(mqd_t mqdes);
+
+       Link with -lrt.
+
+DESCRIPTION
+       mq_close() closes the message queue descriptor mqdes.
+
+       If  the  calling process has attached a notification request to this mes&#8208;
+       sage queue via mqdes, then this request is removed, and  another  process
+       can now attach a notification request.
+
+RETURN VALUE
+       On success mq_close() returns 0; on error, -1 is returned, with errno set
+       to indicate the error.
+
+ERRORS
+       EBADF  The descriptor specified in mqdes is invalid.
+
+CONFORMING TO
+       POSIX.1-2001.
+
+NOTES
+       All open message queues are automatically closed on process  termination,
+       or upon execve(2).
+
+SEE ALSO
+       mq_getattr(3),   mq_notify(3),   mq_open(3),  mq_receive(3),  mq_send(3),
+       mq_unlink(3), mq_overview(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-08-29                        MQ_CLOSE(3)
+
+</pre></body></html>

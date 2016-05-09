@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SoundTellFile - return the position of an audio file.</title></head>
+<body><pre>
+
+SoundTellFile(3)                                                SoundTellFile(3)
+
+
+
+Name
+       SoundTellFile - return the position of an audio file.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       int SoundTellFile(sound)
+           Sound sound;
+
+Arguments
+       sound     Specifies the audio file description.
+
+Description
+       SoundTellFile  returns the offset (in bytes) of the next byte to be read,
+       relative to the beginning of the audio. It can only be used on files open
+       for reading.
+
+See Also
+       SoundSeekFile.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+                                      1.9.3                     SoundTellFile(3)
+
+</pre></body></html>

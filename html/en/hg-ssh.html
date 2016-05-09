@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hg-ssh - restricted ssh login shell for Mercurial</title></head>
+<body><pre>
+
+HG-SSH(8)                                                              HG-SSH(8)
+
+
+
+NAME
+       hg-ssh - restricted ssh login shell for Mercurial
+
+SYNOPSIS
+       hg-ssh repositories...
+
+DESCRIPTION
+       hg-ssh can be used as a restricted shell where access to Mercurial repos&#8208;
+       itories is given over ssh(1).  It should be specified, together with  the
+       paths  to  the repositories the user should be given access to, as a com&#8208;
+       mand option in an authorized_keys(5) file.
+
+       An example authorized_keys line using hg-ssh:
+              command=&quot;hg-ssh path/to/repo1 /path/to/repo2 ~/repo3  ~user/repo4&quot;
+              ssh-rsa AA...==
+
+       The  user with the specified key would then be permitted to push and pull
+       to the repositories using the URLs:
+              ssh://example.com/path/to/repo1
+              ssh://example.com//path/to/repo2
+              ssh://example.com/~/repo3
+              ssh://example.com/~user/repo4
+
+SEE ALSO
+       sshd(8), ssh(1), hg(1).
+
+
+
+                                   2008-01-03                          HG-SSH(8)
+
+</pre></body></html>

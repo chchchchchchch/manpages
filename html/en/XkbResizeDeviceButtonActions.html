@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbResizeDeviceButtonActions - Allocate additional space for button actions in an XkbDeviceInfoRec structure</title></head>
+<body><pre>
+
+XkbResizeDeviceButtonActions(3)   XKB FUNCTIONS  XkbResizeDeviceButtonActions(3)
+
+
+
+NAME
+       XkbResizeDeviceButtonActions  -  Allocate  additional  space  for  button
+       actions in an XkbDeviceInfoRec structure
+
+SYNOPSIS
+       Status   XkbResizeDeviceButtonActions   (XkbDeviceInfoPtr    device_info,
+              unsigned int new_total);
+
+ARGUMENTS
+       - device_info
+              structure in which to allocate button actions
+
+       - new_total
+              new total number of button actions needed
+
+DESCRIPTION
+       XkbResizeDeviceButtonActions  reallocates  space,  if  necessary, to make
+       sure there is room for  a  total  of  new_total  button  actions  in  the
+       device_info  structure. Any new entries allocated are zeroed. If success&#8208;
+       ful, XkbResizeDeviceButtonActions returns Success. If new_total is  zero,
+       all button actions are deleted, device_info-&gt;num_btns is set to zero, and
+       device_info-&gt;btn_acts is set  to  NULL.  If  device_info  is  invalid  or
+       new_total  is greater than 255, BadValue is returned. If a memory alloca&#8208;
+       tion failure occurs, a BadAlloc is returned.
+
+       To free an XkbDeviceInfoRec structure, use XkbFreeDeviceInfo.
+
+STRUCTURES
+       Information about X Input Extension  devices  is  transferred  between  a
+       client program and the Xkb extension in an XkbDeviceInfoRec structure:
+
+           typedef struct {
+               char *               name;          /&#8727; name for device */
+               Atom                 type;          /&#8727; name for class of devices */
+               unsigned short       device_spec;   /&#8727; device of interest */
+               Bool                 has_own_state; /&#8727; True=&gt;this device has its own state */
+               unsigned short       supported;     /&#8727; bits indicating supported capabilities */
+               unsigned short       unsupported;   /&#8727; bits indicating unsupported capabilities */
+               unsigned short       num_btns;      /&#8727; number of entries in btn_acts */
+               XkbAction *          btn_acts;      /&#8727; button actions */
+               unsigned short       sz_leds;       /&#8727; total number of entries in LEDs vector */
+               unsigned short       num_leds;      /&#8727; number of valid entries in LEDs vector */
+               unsigned short       dflt_kbd_fb;   /&#8727; input extension ID of default (core kbd) indicator */
+               unsigned short       dflt_led_fb;   /&#8727; input extension ID of default indicator feedback */
+               XkbDeviceLedInfoPtr  leds;          /&#8727; LED descriptions */
+           } XkbDeviceInfoRec, *XkbDeviceInfoPtr;
+
+DIAGNOSTICS
+       BadAlloc       Unable to allocate storage
+
+       BadValue       An argument is out of range
+
+SEE ALSO
+       XkbFreeDeviceInfo(3)
+
+
+
+X Version 11                      libX11 1.5.0   XkbResizeDeviceButtonActions(3)
+
+</pre></body></html>

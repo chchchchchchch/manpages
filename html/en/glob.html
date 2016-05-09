@@ -1,0 +1,159 @@
+<html>
+<head><meta charset=utf-8/>
+<title>glob - globbing pathnames</title></head>
+<body><pre>
+
+GLOB(7)                     Linux Programmer&apos;s Manual                    GLOB(7)
+
+
+
+NAME
+       glob - globbing pathnames
+
+DESCRIPTION
+       Long  ago,  in  UNIX  V6, there was a program /etc/glob that would expand
+       wildcard patterns.  Soon afterward this became a shell built-in.
+
+       These days there is also a library routine glob(3) that will perform this
+       function for a user program.
+
+       The rules are as follows (POSIX.2, 3.13).
+
+   Wildcard Matching
+       A  string is a wildcard pattern if it contains one of the characters &apos;?&apos;,
+       &apos;*&apos; or &apos;[&apos;.  Globbing is the operation that expands  a  wildcard  pattern
+       into the list of pathnames matching the pattern.  Matching is defined by:
+
+       A &apos;?&apos; (not between brackets) matches any single character.
+
+       A  &apos;*&apos;  (not  between  brackets)  matches any string, including the empty
+       string.
+
+       Character classes
+
+       An expression &quot;[...]&quot; where the first character after the leading &apos;[&apos;  is
+       not  an  &apos;!&apos;  matches  a  single  character, namely any of the characters
+       enclosed by the brackets.  The string enclosed by the brackets cannot  be
+       empty;  therefore  &apos;]&apos; can be allowed between the brackets, provided that
+       it is the first character.  (Thus, &quot;[][!]&quot; matches the  three  characters
+       &apos;[&apos;, &apos;]&apos; and &apos;!&apos;.)
+
+       Ranges
+
+       There is one special convention: two characters separated by &apos;-&apos; denote a
+       range.     (Thus,    &quot;[A-Fa-f0-9]&quot;    is    equivalent    to     &quot;[ABCDE&#8208;
+       Fabcdef0123456789]&quot;.)  One may include &apos;-&apos; in its literal meaning by mak&#8208;
+       ing it the first or last character between the brackets.   (Thus,  &quot;[]-]&quot;
+       matches  just  the  two  characters  &apos;]&apos; and &apos;-&apos;, and &quot;[--0]&quot; matches the
+       three characters &apos;-&apos;, &apos;.&apos;, &apos;0&apos;, since &apos;/&apos; cannot be matched.)
+
+       Complementation
+
+       An expression &quot;[!...]&quot; matches a single character, namely  any  character
+       that  is not matched by the expression obtained by removing the first &apos;!&apos;
+       from it.  (Thus, &quot;[!]a-]&quot; matches any single character  except  &apos;]&apos;,  &apos;a&apos;
+       and &apos;-&apos;.)
+
+       One  can remove the special meaning of &apos;?&apos;, &apos;*&apos; and &apos;[&apos; by preceding them
+       by a backslash, or, in case this is part of a shell command line, enclos&#8208;
+       ing  them  in  quotes.  Between brackets these characters stand for them&#8208;
+       selves.  Thus, &quot;[[?*\]&quot; matches the four characters  &apos;[&apos;,  &apos;?&apos;,  &apos;*&apos;  and
+       &apos;\&apos;.
+
+   Pathnames
+       Globbing  is  applied on each of the components of a pathname separately.
+       A &apos;/&apos; in a pathname cannot be matched by a &apos;?&apos; or &apos;*&apos; wildcard, or  by  a
+       range  like  &quot;[.-0]&quot;.   A range cannot contain an explicit &apos;/&apos; character;
+       this would lead to a syntax error.
+
+       If a filename starts with a &apos;.&apos;, this character must be  matched  explic&#8208;
+       itly.  (Thus, rm * will not remove .profile, and tar c * will not archive
+       all your files; tar c . is better.)
+
+   Empty Lists
+       The nice and simple rule given above: &quot;expand a wildcard pattern into the
+       list of matching pathnames&quot; was the original UNIX definition.  It allowed
+       one to have patterns that expand into an empty list, as in
+
+           xv -wait 0 *.gif *.jpg
+
+       where perhaps no *.gif files are present (and  this  is  not  an  error).
+       However, POSIX requires that a wildcard pattern is left unchanged when it
+       is syntactically incorrect, or the list of matching pathnames  is  empty.
+       With bash one can force the classical behavior using this command:
+
+           shopt -s nullglob
+
+       (Similar problems occur elsewhere.  E.g., where old scripts have
+
+           rm `find . -name &quot;*~&quot;`
+
+       new scripts require
+
+           rm -f nosuchfile `find . -name &quot;*~&quot;`
+
+       to avoid error messages from rm called with an empty argument list.)
+
+NOTES
+   Regular expressions
+       Note  that  wildcard  patterns are not regular expressions, although they
+       are a bit similar.  First of all, they match filenames, rather than text,
+       and secondly, the conventions are not the same: for example, in a regular
+       expression &apos;*&apos; means zero or more copies of the preceding thing.
+
+       Now that regular expressions have bracket expressions where the  negation
+       is  indicated  by a &apos;^&apos;, POSIX has declared the effect of a wildcard pat&#8208;
+       tern &quot;[^...]&quot; to be undefined.
+
+   Character classes and Internationalization
+       Of course ranges were originally  meant  to  be  ASCII  ranges,  so  that
+       &quot;[ -%]&quot;  stands for &quot;[ !&quot;#$%]&quot; and &quot;[a-z]&quot; stands for &quot;any lowercase let&#8208;
+       ter&quot;.  Some UNIX implementations generalized this so  that  a  range  X-Y
+       stands  for  the  set of characters with code between the codes for X and
+       for Y.  However, this requires the user to know the character  coding  in
+       use on the local system, and moreover, is not convenient if the collating
+       sequence for the local alphabet differs from the ordering of the  charac&#8208;
+       ter  codes.  Therefore, POSIX extended the bracket notation greatly, both
+       for wildcard patterns and for regular expressions.  In the above  we  saw
+       three  types  of items that can occur in a bracket expression: namely (i)
+       the negation, (ii) explicit single characters, and (iii)  ranges.   POSIX
+       specifies  ranges  in  an  internationally more useful way and adds three
+       more types:
+
+       (iii) Ranges X-Y comprise all  characters  that  fall  between  X  and  Y
+       (inclusive)  in  the current collating sequence as defined by the LC_COL&#8208;
+       LATE category in the current locale.
+
+       (iv) Named character classes, like
+
+       [:alnum:]  [:alpha:]  [:blank:]  [:cntrl:]
+       [:digit:]  [:graph:]  [:lower:]  [:print:]
+       [:punct:]  [:space:]  [:upper:]  [:xdigit:]
+
+       so that one can say &quot;[[:lower:]]&quot; instead of  &quot;[a-z]&quot;,  and  have  things
+       work  in  Denmark,  too,  where  there  are three letters past &apos;z&apos; in the
+       alphabet.  These character classes are defined by the  LC_CTYPE  category
+       in the current locale.
+&#12;       (v)  Collating  symbols, like &quot;[.ch.]&quot; or &quot;[.a-acute.]&quot;, where the string
+       between &quot;[.&quot; and &quot;.]&quot; is a collating  element  defined  for  the  current
+       locale.  Note that this may be a multicharacter element.
+
+       (vi)  Equivalence  class  expressions,  like  &quot;[=a=]&quot;,  where  the string
+       between &quot;[=&quot; and &quot;=]&quot; is  any  collating  element  from  its  equivalence
+       class,  as  defined for the current locale.  For example, &quot;[[=a=]]&quot; might
+       be equivalent to &quot;[a&#225;&#224;&#228;&#226;]&quot;,  that  is,  to  &quot;[a[.a-acute.][.a-grave.][.a-
+       umlaut.][.a-circumflex.]]&quot;.
+
+SEE ALSO
+       sh(1), fnmatch(3), glob(3), locale(7), regex(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-07-28                            GLOB(7)
+
+</pre></body></html>

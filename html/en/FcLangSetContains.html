@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcLangSetContains - check langset subset relation</title></head>
+<body><pre>
+
+FcLangSetContains(3)                                        FcLangSetContains(3)
+
+
+
+NAME
+       FcLangSetContains - check langset subset relation
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcLangSetContains (const FcLangSet *ls_a, const FcLangSet *ls_b);
+
+DESCRIPTION
+       FcLangSetContains returns FcTrue if ls_a contains every language in ls_b.
+       ls_a will &apos;contain&apos; a language from ls_b if ls_a  has  exactly  the  lan&#8208;
+       guage, or either the language or ls_a has no territory.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012             FcLangSetContains(3)
+
+</pre></body></html>

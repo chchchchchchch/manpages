@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pango-querymodules - Module registration utility</title></head>
+<body><pre>
+
+PANGO-QUERYMODULES(1)            [FIXME: manual]           PANGO-QUERYMODULES(1)
+
+
+
+NAME
+       pango-querymodules - Module registration utility
+
+SYNOPSIS
+       pango-querymodules [module...]
+
+DESCRIPTION
+       pango-querymodules collects information about loadable modules for Pango
+       and writes it to stdout.
+
+       If called without arguments, it looks for modules in the Pango module
+       path.
+
+       If called with arguments, it looks for the specified modules. The
+       arguments may be absolute or relative paths.
+
+ENVIRONMENT
+       The Pango module path is specified by the key Pango/ModulesPath in the
+       Pango config database, which is read from sysconfdir/pango/pangorc,
+       ~/.pangorc and the file specified in the environment variable
+       PANGO_RC_FILE.
+
+BUGS
+       None known yet.
+
+
+
+[FIXME: source]                    03/26/2012              PANGO-QUERYMODULES(1)
+
+</pre></body></html>

@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SemTryWait - Attempt to lock a semaphore but don't suspend the thread.</title></head>
+<body><pre>
+
+SDL_SemTryWait(3)               SDL API Reference              SDL_SemTryWait(3)
+
+
+
+NAME
+       SDL_SemTryWait  -  Attempt  to  lock  a  semaphore  but don&apos;t suspend the
+       thread.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_SemTryWait(SDL_sem *sem);
+
+DESCRIPTION
+       SDL_SemTryWait is a non-blocking varient of SDL_SemWait. If the value  of
+       the  semaphore pointed to by sem is positive it will atomically decrement
+       the  semaphore  value  and   return   0,   otherwise   it   will   return
+       SDL_MUTEX_TIMEOUT instead of suspending the thread.
+
+       After SDL_SemTryWait is successful, the semaphore can be released and its
+       count atomically incremented by a successful call to SDL_SemPost.
+
+RETURN VALUE
+       Returns  0  if  the  semaphore  was   successfully   locked   or   either
+       SDL_MUTEX_TIMEOUT  or  -1 if the thread would have suspended or there was
+       an error, respectivly.
+
+       If the semaphore was not  successfully  locked,  the  semaphore  will  be
+       unchanged.
+
+EXAMPLES
+       res = SDL_SemTryWait(my_sem);
+
+       if (res == SDL_MUTEX_TIMEOUT) {
+               return TRY_AGAIN;
+       }
+       if (res == -1) {
+               return WAIT_ERROR;
+       }
+
+       ...
+
+       SDL_SemPost(my_sem);
+
+SEE ALSO
+       SDL_CreateSemaphore,  SDL_DestroySemaphore, SDL_SemWait, SDL_SemWaitTime&#8208;
+       out, SDL_SemPost, SDL_SemValue
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00            SDL_SemTryWait(3)
+
+</pre></body></html>

@@ -1,0 +1,108 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Mail::Util - mail utility functions</title></head>
+<body><pre>
+
+Mail::Util(3pm)        User Contributed Perl Documentation       Mail::Util(3pm)
+
+
+
+NAME
+       Mail::Util - mail utility functions
+
+INHERITANCE
+        Mail::Util
+          is a Exporter
+
+SYNOPSIS
+         use Mail::Util qw( ... );
+
+DESCRIPTION
+       This package provides several mail related utility functions. Any
+       function required must by explicitly listed on the use line to be
+       exported into the calling package.
+
+FUNCTIONS
+       mailaddress()
+           Return a guess at the current users mail address. The user can force
+           the return value by setting the MAILADDRESS environment variable.
+
+           WARNING: When not supplied via the environment variable,
+           &lt;mailaddress&gt; looks at various configuration files and other
+           environmental data. Although this seems to be smart behavior, this is
+           not predictable enough (IMHO) to be used.  Please set the MAILADDRESS
+           explicitly, and do not trust on the &quot;automatic detection&quot;, even when
+           that produces a correct address (on the moment)
+
+           example:
+
+            # in your main script
+            $ENV{MAILADDRESS} = &apos;me@example.com&apos;;
+
+            # everywhere else
+            use Mail::Util &apos;mailaddress&apos;;
+            print mailaddress;
+
+       maildomain()
+           Attempt to determine the current uers mail domain string via the
+           following methods
+
+           &#183;   Look for the MAILDOMAIN enviroment variable, which can be set
+               from outside the program.  This is by far the best way to
+               configure the domain.
+
+           &#183;   Look for a sendmail.cf file and extract DH parameter
+
+           &#183;   Look for a smail config file and usr the first host defined in
+               hostname(s)
+
+           &#183;   Try an SMTP connect (if Net::SMTP exists) first to mailhost then
+               localhost
+
+           &#183;   Use value from Net::Domain::domainname (if Net::Domain exists)
+
+           WARNING: On modern machines, there is only one good way to provide
+           information to this method: the first; always explicitly configure
+           the MAILDOMAIN.
+
+           example:
+
+            # in your main script
+            $ENV{MAILDOMAIN} = &apos;example.com&apos;;
+&#12;            # everywhere else
+            use Mail::Util &apos;maildomain&apos;;
+            print maildomain;
+
+       read_mbox(FILE)
+           Read FILE, a binmail mailbox file, and return a list of  references.
+           Each reference is a reference to an array containg one message.
+
+           WARNING: This method does not quote lines which accidentally also
+           start with the message separator &quot;From&quot;, so this implementation can
+           be considered broken.  See Mail::Box::Mbox
+
+SEE ALSO
+       This module is part of the MailTools distribution,
+       http://perl.overmeer.net/mailtools/.
+
+AUTHORS
+       The MailTools bundle was developed by Graham Barr.  Later, Mark Overmeer
+       took over maintenance without commitment to further development.
+
+       Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;.  Mail::Field::AddrList by Peter
+       Orbaek &lt;poe@cit.dk&gt;.  Mail::Mailer and Mail::Send by Tim Bunce
+       &lt;Tim.Bunce@ig.co.uk&gt;.  For other contributors see ChangeLog.
+
+LICENSE
+       Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and 2001-2007 Mark
+       Overmeer &lt;perl@overmeer.net&gt;.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.  See
+       http://www.perl.com/perl/misc/Artistic.html
+
+
+
+perl v5.14.2                       2012-02-25                    Mail::Util(3pm)
+
+</pre></body></html>

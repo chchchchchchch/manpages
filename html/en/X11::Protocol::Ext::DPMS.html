@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X11::Protocol::Ext::DPMS - Perl module for the X11 Protocol DPMS Extension</title></head>
+<body><pre>
+
+Protocol::Ext::DPMS(3pmUser Contributed Perl DocumentatiProtocol::Ext::DPMS(3pm)
+
+
+
+NAME
+       X11::Protocol::Ext::DPMS - Perl module for the X11 Protocol DPMS
+       Extension
+
+SYNOPSIS
+         use X11::Protocol;
+         $x = X11::Protocol-&gt;new();
+         $x-&gt;init_extension(&apos;DPMS&apos;);
+
+DESCRIPTION
+       This module is used to control the DPMS features of compliant monitors.
+
+SYMBOLIC CONSTANTS
+       This extension adds the constant type DPMSPowerLevels, with values as
+       defined in the standard.
+
+REQUESTS
+       This extension adds several requests, called as shown below:
+
+         $x-&gt;DPMSGetVersion =&gt; ($major, $minor)
+
+         $x-&gt;DPMSCapable =&gt; ($capable)
+
+         $x-&gt;DPMSGetTimeouts =&gt; ($standby_timeout, $suspend_timeout, $off_timeout)
+
+         $x-&gt;DPMSSetTimeouts($standby_timeout, $suspend_timeout, $off_timeout) =&gt; ()
+
+         $x-&gt;DPMSEnable =&gt; ()
+
+         $x-&gt;DPMSDisable =&gt; ()
+
+         $x-&gt;DPMSForceLevel($power_level) =&gt; ()
+
+         $x-&gt;DPMSInfo =&gt; ($power_level,$state)
+
+AUTHOR
+       Jay Kominek &lt;jay.kominek@colorado.edu&gt;
+
+SEE ALSO
+       perl(1), X11::Protocol, X Display Power Management Signaling (DPMS)
+       Extension (X Consortium Standard)
+
+
+
+perl v5.14.2                       2003-05-11           Protocol::Ext::DPMS(3pm)
+
+</pre></body></html>

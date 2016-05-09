@@ -1,0 +1,384 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Biber::Config - Configuration items which need to be saved across the</title></head>
+<body><pre>
+
+Biber::Config(3pm)     User Contributed Perl Documentation    Biber::Config(3pm)
+
+
+
+NAME
+       Biber::Config - Configuration items which need to be saved across the
+                       lifetime of a Biber object
+
+         This class contains a static object and static methods to access
+         configuration and state data. There are several classes of data in here
+         which have separate accessors:
+
+         * Biber options
+         * Biblatex options
+         * State information used by Biber as it processes entries
+         * displaymode date
+
+   _init
+           Reset internal hashes to defaults.
+
+   _initopts
+           Initialise default options, optionally with config file as argument
+
+   config_file
+       Returns the full path of the Biber configuration file.  If returns the
+       first file found among:
+
+       &#183;   &quot;biber.conf&quot; in the current directory
+
+       &#183;   &quot;$HOME/.biber.conf&quot;
+
+       &#183;   &quot;$ENV{XDG_CONFIG_HOME}/biber/biber.conf&quot;
+
+       &#183;   &quot;$HOME/Library/biber/biber.conf&quot; (Mac OSX only)
+
+       &#183;   &quot;$ENV{APPDATA}/biber.conf&quot; (Windows only)
+
+       &#183;   the output of &quot;kpsewhich biber.conf&quot; (if available on the system).
+
+       If no file is found, it returns &quot;undef&quot;.
+
+   get_unul_done
+           Return a boolean saying whether uniquenename+uniquelist processing is finished
+
+   set_unul_changed
+           Set a boolean saying whether uniquename+uniquelist has changed
+
+   postprocess_biber_opts
+           Place to postprocess biber options when they have been
+           gathered from all the possible places that set them
+
+   set_structure
+           Sets the structure information object
+
+   get_structure
+           Gets the structure information object
+
+   set_ctrlfile_path
+           Stores the path to the control file
+
+   get_ctrlfile_path
+           Retrieved the path to the control file
+
+   setoption
+           Store a Biber config option
+&#12;   getoption
+           Get a Biber option
+
+   setcmdlineoption
+           Store a Biber command-line option
+
+   setconfigfileoption
+           Store a Biber config-file option
+
+   iscmdlineoption
+           Check if an option is explicitly set by user on the command
+           line
+
+   isconfigfileoption
+           Check if an option is explicitly set by user in their
+           config file
+
+   isexplicitoption
+           Check if an option is explicitly set by user on the command
+           line or in the config file
+
+   setblxoption
+           Set a biblatex option on the appropriate scope
+
+   getblxoption
+           Get a biblatex option from the global or per entry-type scope
+
+           getblxoption(&apos;option&apos;, [&apos;entrytype&apos;], [&apos;citekey&apos;])
+
+           Returns the value of option. In order of decreasing preference, returns:
+           1. Biblatex option defined for entry
+           2. Biblatex option defined for entry type
+           3. Biblatex option defined globally
+
+   set_graph
+           Record who inherited what fields from whom
+           Can be used for crossrefs and xdata. This records the actual fields
+           inherited from another entry, for tree generation.
+
+           Biber::Config-&gt;set_graph($source_key, $target_key, $source_field, $target_field)
+
+   get_graph
+           Return an inheritance graph data structure for an inheritance type
+
+   set_inheritance
+           Record that $target inherited information from $source
+           Can be used for crossrefs and xdata. This just records that an entry
+           inherited from another entry, for loop detection.
+
+           Biber::Config-&gt;set_inheritance($source, $target)
+
+   get_inheritance
+           Check if $target directly inherited information from $source
+           Can be used for crossrefs and xdata
+
+           Biber::Config-&gt;get_inheritance($source, $target)
+
+   is_inheritance_path
+         Checks for an inheritance path from entry $e1 to $e2
+         Can be used for crossrefs and xdata
+
+       [
+                    {s =&gt; &apos;A&apos;,
+                     t =&gt; &apos;B&apos;},
+                    {s =&gt; &apos;A&apos;,
+                     t =&gt; &apos;E&apos;},
+                    {s =&gt; &apos;B&apos;,
+                     t =&gt; &apos;C&apos;},
+                    {s =&gt; &apos;C&apos;,
+                     t =&gt; &apos;D&apos;} ];
+
+         Biber::Config-&gt;is_inheritance_path($type, $key1, $key2)
+
+   incr_la_disambiguation
+           Increment a counter to say we have seen this labelalpha
+
+           Biber::Config-&gt;incr_la_disambiguation($la);
+
+   get_la_disambiguation
+           Get the disambiguation counter for this labelalpha
+
+           Biber::Config-&gt;get_la_disambiguation($la);
+
+   get_seenkey
+           Get the count of a key
+
+           Biber::Config-&gt;get_seenkey($hash);
+
+   incr_seenkey
+           Increment the seen count of a key
+
+           Biber::Config-&gt;incr_seenkey($ay);
+
+   get_seenname
+           Get the count of occurences of a labelname which
+           takes into account all of maxcitenames, uniquelist,
+           uniquename, useprefix
+
+           Biber::Config-&gt;get_seenname($name);
+
+   incr_seenname
+           Increment the count of occurences of a labelname which
+           takes into account all of maxcitenames, uniquelist,
+           uniquename, useprefix
+
+           Biber::Config-&gt;incr_seename($name);
+
+   reset_seen_extra
+           Reset the counters for extra*
+
+           Biber::Config-&gt;reset_extra;
+
+   incr_seen_extrayear
+           Increment and return the counter for extrayear
+
+           Biber::Config-&gt;incr_seen_extrayear($ay);
+
+   incr_seen_extraalpha
+           Increment and return the counter for extraalpha
+
+           Biber::Config-&gt;incr_seen_extraalpha($ay);
+
+   get_seen_nameyear
+           Get the count of an labelname/labelyear combination for tracking
+           extrayear. It uses labelyear plus name as we need to disambiguate
+           entries with different labelyear (like differentiating 1984--1986 from
+           just 1984)
+
+           Biber::Config-&gt;get_seen_nameyear($ny);
+
+   incr_seen_nameyear
+           Increment the count of an labelname/labelyear combination for extrayear
+&#12;           Biber::Config-&gt;incr_seen_nameyear($ns, $ys);
+
+           We pass in the name and year strings separately as we have to
+           be careful and only increment this counter beyond 1 if there is
+           both a name and year component. Otherwise, extrayear gets defined for all
+           entries with no name but the same year etc.
+
+   get_uniquelistcount
+           Get the number of uniquelist entries for a (possibly partial) list
+
+           Biber::Config-&gt;get_uniquelistcount($namelist);
+
+   add_uniquelistcount
+           Incremenent the count for a list part to the data for a name
+
+           Biber::Config-&gt;add_uniquelistcount($liststring);
+
+   add_uniquelistcount_final
+           Incremenent the count for a complete list to the data for a name
+
+           Biber::Config-&gt;add_uniquelistcount_final($liststring);
+
+   add_uniquelistcount_minyear
+           Incremenent the count for a list and year to the data for a name
+           Used to track uniquelist = minyear
+
+           Biber::Config-&gt;add_uniquelistcount_minyear($minyearliststring, $year, $namelist);
+
+   get_uniquelistcount_minyear
+           Get the count for a list and year to the data for a name
+           Used to track uniquelist = minyear
+
+           Biber::Config-&gt;get_uniquelistcount_minyear($minyearliststring, $year);
+
+   get_uniquelistcount_final
+           Get the number of uniquelist entries for a full list
+
+           Biber::Config-&gt;get_uniquelistcount_final($namelist);
+
+   reset_uniquelistcount
+           Reset the count for list parts and complete lists
+
+           Biber::Config-&gt;reset_uniquelistcount;
+
+   list_differs_nth
+           Returns true if some other list differs at passed nth place
+           and is at least as long
+
+           list_differs_nth([a, b, c, d, e], 3) = 1
+
+           if there is another list like any of these:
+
+           [a, b, d, e, f]
+           [a, b, e, z, z, y]
+
+           Biber::Config-&gt;list_differs_nth($namelist, $n)
+
+   list_differs_last
+           Returns true if some list differs from passed list in its last place
+
+           list_differs_last([a, b, c]) = 1
+
+           if there is another list like any of these:
+
+           [a, b, d]
+           [a, b, d, e]
+&#12;           Biber::Config-&gt;list_differs_last($namelist)
+
+   list_differs_superset
+           Returns true if some list differs from passed list by being
+           identical to the list up to the end of the list but also
+           by having extra elements after this
+
+           list_differs_superset([a, b, c]) = 1
+
+           if there is another list like any of these:
+
+           [a, b, c, d]
+           [a, b, c, d, e]
+
+           Biber::Config-&gt;list_differs_superset($namelist)
+
+   get_numofuniquenames
+           Get the number of uniquenames entries for a visible name
+
+           Biber::Config-&gt;get_numofuniquenames($name);
+
+   get_numofuniquenames_all
+           Get the number of uniquenames entries for a name
+
+           Biber::Config-&gt;get_numofuniquenames_all($name);
+
+   add_uniquenamecount
+           Add a name to the list of name contexts which have the name in it
+           (only called for visible names)
+
+           Biber::Config-&gt;add_uniquenamecount($name, $namecontext);
+
+   add_uniquenamecount_all
+           Add a name to the list of name contexts which have the name in it
+           (called for all names)
+
+           Biber::Config-&gt;add_uniquenamecount_all($name, $namecontext);
+
+   reset_uniquenamecount
+           Reset the list of names which have the name part in it
+
+           Biber::Config-&gt;reset_uniquenamecount;
+
+   _get_uniquename
+           Get the list of name contexts which contain a name
+           Mainly for use in tests
+
+           Biber::Config-&gt;get_uniquename($name);
+
+   get_crossrefkeys
+           Return ref to array of keys which are crossref targets
+
+           Biber::Config-&gt;get_crossrefkeys();
+
+   get_crossrefkey
+           Return an integer representing the number of times a
+           crossref target key has been ref&apos;ed
+
+           Biber::Config-&gt;get_crossrefkey($key);
+
+   del_crossrefkey
+           Remove a crossref target key from the crossrefkeys state
+
+           Biber::Config-&gt;del_crossrefkey($key);
+
+   incr_crossrefkey
+           Increment the crossreferences count for a target crossref key
+&#12;           Biber::Config-&gt;incr_crossrefkey($key);
+
+   set_displaymode
+           Set the display mode for a field.
+           setdisplaymode([&apos;entrytype&apos;], [&apos;field&apos;], [&apos;citekey&apos;], $value)
+
+           This sets the desired displaymode to use for some data in the bib.
+           Of course, this is entirey separate semantically from the
+           displaymodes *defined* in the bib which just tell you what to return
+           for a particular displaymode request for some data.
+
+   get_displaymode
+           Get the display mode for a field.
+           getdisplaymode([&apos;entrytype&apos;], [&apos;field&apos;], [&apos;citekey&apos;])
+
+           Returns the displaymode. In order of decreasing preference, returns:
+           1. Mode defined for a specific field in a specific citekey
+           2. Mode defined for a citekey
+           3. Mode defined for a fieldtype (any citekey)
+           4. Mode defined for an entrytype (any citekey)
+           5. Mode defined globally (any citekey)
+
+   dump
+           Dump config information (for debugging)
+
+AUTHORS
+       Francois Charette, &quot;&lt;firmicus at ankabut.net&gt;&quot; Philip Kime &quot;&lt;philip at
+       kime.org.uk&gt;&quot;
+
+BUGS
+       Please report any bugs or feature requests on our sourceforge tracker at
+       &lt;https://sourceforge.net/tracker2/?func=browse&amp;group_id=228270&gt;.
+
+COPYRIGHT &amp; LICENSE
+       Copyright 2009-2012 Francois Charette and Philip Kime, all rights
+       reserved.
+
+       This module is free software.  You can redistribute it and/or modify it
+       under the terms of the Artistic License 2.0.
+
+       This program is distributed in the hope that it will be useful, but
+       without any warranty; without even the implied warranty of
+       merchantability or fitness for a particular purpose.
+
+
+
+perl v5.14.2                       2012-06-17                 Biber::Config(3pm)
+
+</pre></body></html>

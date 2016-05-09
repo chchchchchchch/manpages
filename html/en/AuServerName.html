@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuServerName - get name of the server to use.</title></head>
+<body><pre>
+
+AuServerName(3)                                                  AuServerName(3)
+
+
+
+Name
+       AuServerName - get name of the server to use.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       char *AuServerName(string)
+           char *string;
+
+Arguments
+       string    Specifies the default name.
+
+Description
+       AuServerName  returns the name of the server to use or an empty string if
+       it can not determine the proper value.  If string isn&apos;t NULL or a pointer
+       to NUL, AuServerName returns string, otherwise, AuServerName looks in the
+       enviroment for AUDIOSERVER or if thats not set, DISPLAY.
+
+See Also
+       AuGetErrorDatabaseText,  AuGetErrorText,  AuSetErrorHandler,   AuSetIOEr&#8208;
+       rorHandler, AuSynchronize.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - housekeeping               1.9.3                      AuServerName(3)
+
+</pre></body></html>

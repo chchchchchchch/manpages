@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdf270 - rotate the pages of pdf files</title></head>
+<body><pre>
+
+pdf270(1)                                                              pdf270(1)
+
+
+
+NAME
+       pdf270 - rotate the pages of pdf files
+
+SYNOPSIS
+       pdf270 [OPTION [OPTION] ...] [SRC [PAGESPEC] [SRC [PAGESPEC]] ...]
+
+DESCRIPTION
+       pdf270  rotates  the pages of files in the Adobe Portable Document Format
+       (PDF) through 90 degrees (clockwise).
+
+       If no source PDF file (&apos;SRC&apos;) is specified, input is from /dev/stdin.  If
+       &apos;PAGESPEC&apos; is omitted, all pages are processed.
+
+       Source  files  are processed sequentially into a single output unless the
+       &apos;--batch&apos; option is used, in which case they are processed separately.
+
+       pdf270 operates on one or more PDF files, and (either with the  &apos;--batch&apos;
+       option  or with &apos;--outfile DIR&apos; where &apos;DIR&apos; is a directory) the resulting
+       files have the suffix &apos;rotated270&apos; applied to their names by default.  To
+       change the suffix, use the &apos;--suffix&apos; option, for example
+
+              pdf270 --suffix &apos;-turned&apos; --batch myfile1.pdf myfile2.pdf
+
+       will result in files named &apos;myfile1-turned.pdf&apos; and &apos;myfile2-turned.pdf&apos;.
+
+       pdf270  is  a  simple wrapper for pdfjam, which is a front end to many of
+       the capabilities of the pdfpages package for pdflatex.  A working instal&#8208;
+       lation of pdflatex with the pdfpages package is required.
+
+       pdf270  is  part  of  the &quot;PDFjam&quot; package of tools, whose homepage is at
+       http://go.warwick.ac.uk/pdfjam.
+
+SETUP
+       See http://go.warwick.ac.uk/pdfjam .
+
+USAGE
+       For the available options and site/user defaults, see the output of
+
+                  pdfjam --help
+
+       For  further   information   and   some   examples   see   http://go.war&#8208;
+       wick.ac.uk/pdfjam .
+
+LIMITATIONS AND BUGS
+       pdf270  does  not  work  with  encrypted PDF files, and does not preserve
+       hyperlinks.
+
+       Please report bugs! See the website at http://go.warwick.ac.uk/pdfjam .
+
+SEE ALSO
+       pdfjam(1).
+
+LICENSE
+       PDFjam is distributed under the GNU public license.
+
+AUTHOR
+       pdf270 is written and maintained by David Firth as  part  of  the  PDFjam
+       package.
+
+
+
+
+                                  10 March 2010                        pdf270(1)
+
+</pre></body></html>

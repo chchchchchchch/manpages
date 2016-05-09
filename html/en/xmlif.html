@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xmlif - conditional processing instructions for XML</title></head>
+<body><pre>
+
+XMLIF(1)                              xmlif                             XMLIF(1)
+
+
+
+NAME
+       xmlif - conditional processing instructions for XML
+
+SYNOPSIS
+       xmlif [attrib=value...]
+
+DESCRIPTION
+       xmlif filters XML according to conditionalizing markup. This can be
+       useful for formatting one of several versions of an XML document
+       depending on conditions passed to the command.
+
+       Attribute/value pairs from the command line are matched against the
+       attributes associated with certain processing instructions in the
+       document. The instructions are &lt;?xmlif if?&gt; and its inverse &lt;?xmlif if
+       not?&gt;, &lt;?xmlif elif?&gt; and its inverse &lt;?xmlif elif not?&gt;, &lt;?xmlif else?&gt;,
+       and &lt;?xmlif fi?&gt;.
+
+       Argument/value pairs given on the command line are checked against the
+       value of corresponding attributes in the conditional processing
+       instructions. An `attribute match&apos; happens if an attribute occurs in both
+       the command-line arguments and the tag, and the values match. An
+       `attribute mismatch&apos; happens if an attribute occurs in both the
+       command-line arguments and the tag, but the values do not match.
+
+       Spans between &lt;?xmlif if?&gt; or &lt;?xmlif elif?&gt; and the next conditional
+       processing instruction at the same nesting level are passed through
+       unaltered if there is at least one attribute match and no attribute
+       mismatch; spans between &lt;?xmlif if not?&gt; and &lt;?xmlif elif not?&gt; and the
+       next conditional processing instruction are passed otherwise. Spans
+       between &lt;?xmlif else?&gt; and the next conditional-processing tag are passed
+       through only if no previous span at the same level has been passed
+       through.  &lt;?xmlif if?&gt; and &lt;?xmlif fi?&gt; (and their `not&apos; variants) change
+       the current nesting level; &lt;?xmlif else?&gt; and &lt;?xmlif elif?&gt; do not.
+
+       All these processing instructions will be removed from the output
+       produced. Aside from the conditionalization, all other input is passed
+       through untouched; in particular, entity references are not resolved.
+
+       Value matching is by string equality, except that &quot;|&quot; in an attribute
+       value is interpreted as an alternation character. Thus, saying
+       foo=&apos;red|blue&apos; on the command line enables conditions red and blue.
+       Saying color=&apos;black|white&apos; in a tag matches command-line conditions
+       color=&apos;black&apos; and color=&apos;white&apos;.
+
+       Here is an example:
+
+           Always issue this text.
+           &lt;?xmlif if condition=&apos;html&apos;?&gt;
+           Issue this text if &apos;condition=html&apos; is given on the command line.
+           &lt;?xmlif elif condition=&apos;pdf|ps&apos;?&gt;
+           Issue this text if &apos;condition=pdf&apos; or &apos;condition=ps&apos;
+           is given on the command line.
+           &lt;?xmlif else?&gt;
+           Otherwise issue this text.
+           &lt;?xmlif fi?&gt;
+           Always issue this text.
+
+AUTHOR
+       Eric S. Raymond &lt;esr@snark.thyrsus.com&gt;
+           Author of xmlif program
+
+
+
+Linux                              April 2009                           XMLIF(1)
+
+</pre></body></html>

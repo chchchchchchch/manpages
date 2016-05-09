@@ -1,0 +1,111 @@
+<html>
+<head><meta charset=utf-8/>
+<title>glmatrix - simulates the title sequence effect of the movie</title></head>
+<body><pre>
+
+glmatrix(6x)                   XScreenSaver manual                  glmatrix(6x)
+
+
+
+NAME
+       glmatrix - simulates the title sequence effect of the movie
+
+SYNOPSIS
+       glmatrix  [-display  host:display.screen]  [-window]  [-root]  [-install]
+       [-visual visual] [-delay usecs] [-speed ratio] [-density  pct]  [-no-fog]
+       [-no-waves]   [-no-rotate]   [-binary]   [-hexadecimal]  [-dna]  [-clock]
+       [-timefmt fmt] [-wireframe] [-fps]
+
+DESCRIPTION
+       The glmatrix program draws the 3D &quot;digital rain&quot; effect, as seen  in  the
+       title sequence of the Wachowski brothers&apos; film, &quot;The Matrix&quot;.
+
+       Also  see  xmatrix(6x)  for  a  2D  rendering  of the similar effect that
+       appeared on the computer monitors actually in the movie.
+
+OPTIONS
+       glmatrix accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -delay usecs
+               The delay between  frames  of  the  animation,  in  microseconds:
+               default 30000.
+
+       -speed ratio
+               How fast the glyphs should move; default 1.0.  2.0 means twice as
+               fast, 0.5 means half as fast.
+
+       -density percentage
+               The approximate percentage of the screen that  should  be  filled
+               with characters at any given time.  Default 20%.
+
+       -no-fog By  default,  glyphs  are dimmer the farther away they are.  This
+               argument disables that.
+
+       -no-waves
+               By default, waves of color roll down the columns of glyphs.  This
+               argument disables that.
+
+       -no-rotate
+               By  default,  the  scene slowly tilts and rotates.  This argument
+               disables that.
+
+       -binary Instead of displaying Matrix glyphs, only display ones and zeros.
+
+       -hexadecimal
+               Instead of displaying Matrix glyphs, display hexadecimal digits.
+
+       -dna    Instead of displaying Matrix glyphs, display genetic  code  (gua&#8208;
+               nine, adenine, thymine, and cytosine.)
+&#12;       -clock  Hide a clock displaying the current time somewhere in the glyphs.
+
+       -timefmt strftime-string
+               How  to  format  the  clock  when  -clock  is specified.  Default
+               &quot; %l%M%p &quot;.
+
+       -speed ratio
+               Less than 1 for slower, greater than 1 for faster.  Default 1.
+
+       -wireframe
+               Just draw boxes instead of textured characters.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       xmatrix(6x), X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright  &#169;  1999-2003 by Jamie Zawinski.  Permission to use, copy, mod&#8208;
+       ify, distribute, and sell this software and  its  documentation  for  any
+       purpose  is hereby granted without fee, provided that the above copyright
+       notice appear in all copies and that both that copyright notice and  this
+       permission notice appear in supporting documentation.  No representations
+       are made about the suitability of this software for any purpose.   It  is
+       provided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Jamie Zawinski &lt;jwz@jwz.org&gt;, 8-Jun-2003.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                   glmatrix(6x)
+
+</pre></body></html>

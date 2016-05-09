@@ -1,0 +1,144 @@
+<html>
+<head><meta charset=utf-8/>
+<title>HTML::Formatter - Base class for HTML formatters</title></head>
+<body><pre>
+
+HTML::Formatter(3pm)   User Contributed Perl Documentation  HTML::Formatter(3pm)
+
+
+
+NAME
+       HTML::Formatter - Base class for HTML formatters
+
+VERSION
+       version 2.10
+
+SYNOPSIS
+         use HTML::FormatSomething;
+         my $infile  = &quot;whatever.html&quot;;
+         my $outfile = &quot;whatever.file&quot;;
+         open OUT, &quot;&gt;$outfile&quot;
+          or die &quot;Can&apos;t write-open $outfile: $!\n&quot;;
+
+         print OUT HTML::FormatSomething-&gt;format_file(
+           $infile,
+             &apos;option1&apos; =&gt; &apos;value1&apos;,
+             &apos;option2&apos; =&gt; &apos;value2&apos;,
+             ...
+         );
+         close(OUT);
+
+DESCRIPTION
+       HTML::Formatter is a base class for classes that take HTML and format it
+       to some output format.  When you take an object of such a base class and
+       call &quot;$formatter-&gt;format( $tree )&quot; with an HTML::TreeBuilder (or
+       HTML::Element) object, they return the
+
+       HTML formatters are able to format a HTML syntax tree into various
+       printable formats.  Different formatters produce output for different
+       output media.  Common for all formatters are that they will return the
+       formatted output when the format() method is called.  The format() method
+       takes a HTML::Element object (usually the HTML::TreeBuilder root object)
+       as parameter.
+
+METHODS
+   new
+           my $formatter = FormatterClass-&gt;new(
+               option1 =&gt; value1, option2 =&gt; value2, ...
+           );
+
+       This creates a new formatter object with the given options.
+
+   format_file
+   format_from_file
+           $string = FormatterClass-&gt;format_file(
+               $html_source,
+               option1 =&gt; value1, option2 =&gt; value2, ...
+               );
+
+       Return a string consisting of the result of using the given class to
+       format the given HTML file according to the given (optional) options.
+       Internally it calls &quot;SomeClass-&gt;new( ... )-&gt;format( ... )&quot; on a new
+       HTML::TreeBuilder object based on the given HTML file.
+
+   format_string
+   format_from_string
+           $string = FormatterClass-&gt;format_string(
+               $html_source,
+               option1 =&gt; value1, option2 =&gt; value2, ...
+               );
+
+       Return a string consisting of the result of using the given class to
+       format the given HTML source according to the given (optional) options.
+       Internally it calls &quot;SomeClass-&gt;new( ... )-&gt;format( ... )&quot; on a new
+       HTML::TreeBuilder object based on the given source.
+
+   format
+           my $render_string = $formatter-&gt;format( $html_tree_object );
+
+       This renders the given HTML object according to the options set for
+       $formatter.
+
+       After you&apos;ve used a particular formatter object to format a particular
+       HTML tree object, you probably should not use either again.
+
+SEE ALSO
+       The three specific formatters:-
+
+       HTML::FormatText
+           Format HTML into plain text
+
+       HTML::FormatPS
+           Format HTML into postscript
+
+       HTML::FormatRTF
+           Format HTML into Rich Text Format
+
+       Also the HTML manipulation libraries used - HTML::TreeBuilder,
+       HTML::Element and HTML::Tree
+
+INSTALLATION
+       See perlmodinstall for information and options on installing Perl
+       modules.
+
+BUGS AND LIMITATIONS
+       No bugs have been reported.
+
+       Please report any bugs or feature requests through the web interface at
+       http://rt.cpan.org/Public/Dist/Display.html?Name=HTML-Format
+       &lt;http://rt.cpan.org/Public/Dist/Display.html?Name=HTML-Format&gt;.
+
+AVAILABILITY
+       The project homepage is http://search.cpan.org/dist/HTML-Format
+       &lt;http://search.cpan.org/dist/HTML-Format&gt;.
+
+       The latest version of this module is available from the Comprehensive
+       Perl Archive Network (CPAN). Visit &lt;http://www.perl.com/CPAN/&gt; to find a
+       CPAN site near you, or see http://search.cpan.org/dist/HTML-Format/
+       &lt;http://search.cpan.org/dist/HTML-Format/&gt;.
+
+       The development version lives at http://github.com/nigelm/html-format
+       &lt;http://github.com/nigelm/html-format&gt; and may be cloned from
+       git://github.com/nigelm/html-format.git &lt;git://github.com/nigelm/html-
+       format.git&gt;.  Instead of sending patches, please fork this project using
+       the standard git and github infrastructure.
+
+AUTHORS
+       &#183;   Nigel Metheringham &lt;nigelm@cpan.org&gt;
+
+       &#183;   Sean M Burke &lt;sburke@cpan.org&gt;
+
+       &#183;   Gisle Aas &lt;gisle@ActiveState.com&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2011 by Nigel Metheringham, 2002-2005 Sean
+       M Burke, 1999-2002 Gisle Aas.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.12.4                       2011-07-26               HTML::Formatter(3pm)
+
+</pre></body></html>

@@ -1,0 +1,85 @@
+<html>
+<head><meta charset=utf-8/>
+<title>geoipupdate - a program for updating the MaxMind GeoIP databases</title></head>
+<body><pre>
+
+GEOIPUPDATE(1)                                                    GEOIPUPDATE(1)
+
+
+
+NAME
+       geoipupdate - a program for updating the MaxMind GeoIP databases
+
+SYNOPSIS
+       geoipupdate [-v] [-f licensefile]
+
+DESCRIPTION
+       geoipupdate  automatically  updates  the  GeoIP  database  for GeoIP sub&#8208;
+       scribers.  It connects to the MaxMind GeoIP Update server and checks  for
+       an  updated database.  If it finds an updated database, then it downloads
+       it, uncompresses it, and installs it.  If you are running a firewall,  it
+       requires that the DNS and HTTP (80) ports be open.
+
+       For example
+
+       geoipupdate -v
+
+       Performs the update in verbose mode.
+
+OPTIONS
+       -v     Verbose mode, prints out the steps that geoipupdate takes.
+
+       -d     Specify   a   custom   directory   target  to  install  the  GeoIP
+              datafile(s).  By default geoipupdate installs to /usr/share/GeoIP
+
+       -f     Specifies the configuration file that contains  the  license  key.
+              Defaults to /etc/GeoIP.conf
+
+USAGE
+       Typically  you&apos;ll  want  to write a weekly crontab that will run geoipup&#8208;
+       date.  Below is a sample crontab that runs geoipupdate on each  Wednesday
+       at noon:
+
+              # top of crontab
+
+              MAILTO=your@email.com
+
+              0 12 * * 3 BIN_DIR/geoipupdate
+
+              # end of crontab
+       To  use  with  a  proxy  server, set the http_proxy environment variable.
+       E.g.
+              export http_proxy=&quot;http://proxy-hostname:port&quot;
+
+RETURN CODES
+       geoipupdate returns 0 on success, 1 on error.
+
+FILES
+       /etc/GeoIP.conf
+
+       Configuration file for GeoIP, should contain license key.
+
+AUTHOR
+       Written by T.J. Mather
+
+REPORTING BUGS
+       Report bugs to &lt;support@maxmind.com&gt;
+
+COPYRIGHT
+       Copyright &#194;&#169; 2011 MaxMind LLC
+
+       This is free software; see the source for copying conditions.   There  is
+       NO  warranty;  not  even  for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       Visit &lt;http://www.maxmind.com/app/products&gt; to sign up for a  GeoIP  sub&#8208;
+       scription.
+
+       geoiplookup(1), crontab(5)
+
+
+
+4th Berkeley Distribution          5 Oct 2010                     GEOIPUPDATE(1)
+
+</pre></body></html>

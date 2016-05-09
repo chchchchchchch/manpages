@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigGetFontDirs - Get font directories</title></head>
+<body><pre>
+
+FcConfigGetFontDirs(3)                                    FcConfigGetFontDirs(3)
+
+
+
+NAME
+       FcConfigGetFontDirs - Get font directories
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcStrList * FcConfigGetFontDirs (FcConfig *config);
+
+DESCRIPTION
+       Returns the list of font directories in config. This includes the config&#8208;
+       ured font directories along with  any  directories  below  those  in  the
+       filesystem.  If config is NULL, the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012           FcConfigGetFontDirs(3)
+
+</pre></body></html>

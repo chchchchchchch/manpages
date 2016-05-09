@@ -1,0 +1,455 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_accel - calls the graphics accelerator</title></head>
+<body><pre>
+
+vga_accel(3)                   Svgalib User Manual                  vga_accel(3)
+
+
+
+NAME
+       vga_accel - calls the graphics accelerator
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_accel(unsigned operation, ...);
+
+
+DESCRIPTION
+       This  is  the  major  function of the new accelerator interface which was
+       sketched in version 1.2.3 (Michael: Hmm, it must have been later) but was
+       implemented much later.
+
+       The  main goal is to define functions that can be used as part of certain
+       kinds of interesting graphical operations  (not  necessarily  interesting
+       primitives  on  their  own).  Obvious  useful primitives in their own are
+       FillBox, ScreenCopy, DrawHLineList (solid polygon), DrawLine.
+
+       An interesting purpose  is  the  fast  drawing  of  color  bitmaps,  both
+       straight  and transparent (masked, certain color not written). For masked
+       bitmaps (&quot;sprites&quot;), there is a number of possible  methods,  the  avail&#8208;
+       ability  of which depends on the chips. Caching in non-visible video mem&#8208;
+       ory is often useful. One way is to use a transparency color compare  fea&#8208;
+       ture  of  a BITBLT chip, either transferring the image from system memory
+       or cached in video memory.  If transparency compare is not available,  it
+       may  be possible to first clear (zeroe) the mask in the destination area,
+       and then use BITBLT raster-operation to OR the image into the destination
+       (this  requires  the mask color to be 0). A higher level (library) inter&#8208;
+       face should control this kind of operation.
+
+       vga.h contains several macros which may be used for operation.   Most  of
+       them  accept several optional arguments which you may specify after them.
+       The accel(6) svgalib demo shows basic usage of this function.  The  func&#8208;
+       tion returns -1 if the operation is not available and 0 if it is (or bet&#8208;
+       ter: wasi and could be performed).
+
+       Currently the following parameters for vga_accel() are defined:
+
+
+       vga_accel(ACCEL_FILLBOX, int x, int y, int w, int h)
+              Simple solid fill of a box at pixels x, y with width w and  height
+              h in the current foreground color
+
+       vga_accel(ACCEL_SCREENCOPY, int x1, int y1, int x2, int y2, int w, int h)
+              Simple  screen-to-screen  blit.  It  copies  a  box of width w and
+              height h pixels from position x1, y1 to position x2, y2.  You  may
+              assume  that  the  copy  is  non corrupting in case of overlapping
+              source and destination areas.
+
+       vga_accel(ACCEL_SCREENCOPYMONO, int x1, int y1, int x2, int  y2,  int  w,
+       int h)
+              Monochrome  screen-to-screen  blit. It copies a box of width w and
+              height h pixels from position x1, y1 to position x2, y2.
+
+              However, each pixel will all bits set to 0 is drawn in  the  back&#8208;
+              ground  color,  each  pixel with all bits set to 1 is drawn in the
+              foreground color. To allow many different architectures supporting
+              this  routine,  behaviour  is  undefined  for other values. Bitmap
+              transparency might be supported as well.
+
+              You should not expect ACCEL_SCREENCOPYBITMAP handling  overlapping
+              screen areas gracefully.
+
+       vga_accel(ACCEL_PUTIMAGE, int x, int y, int w, int h, void *p)
+              Straight  image  transfer. It fills the given box with the data in
+              memory area p.  The memory buffer must contain the pixels  in  the
+              same representation as used in the vga memory, starting at the top
+              left corner, from left to right, and then, line by line,  from  up
+              to down, without any gaps and interline spaces.
+
+       vga_accel(ACCEL_DRAWLINE, int x1, int y1, int x2, int y2))
+              General  line draw. Draws a line from x1, y1 to position x2, y2 in
+              the foreground color.  You should not expect the reverse line from
+              x2,  y2  to  position  x1,  y1 to use the exact same pixels on the
+              screen.  Several, esp. hardware, algorithms tend to yield to  sur&#8208;
+              prising results.
+
+       vga_accel(ACCEL_SETFGCOLOR, int color)
+              Sets foreground color. It is used by most other draw commands.
+
+
+       vga_accel(ACCEL_SETBGCOLOR, int color)
+              Set background color. It is used by draw commands which might also
+
+
+       vga_accel(ACCEL_SETTRANSPARENCY, int mode, ...)
+              Set  transparency  mode,  see  the  table below for an explanation
+              parameters.
+
+
+       vga_accel(ACCEL_SETRASTEROP, int mode)
+              Set raster-operation, see the table below for  an  explanation  of
+              parameters.
+
+
+       vga_accel(ACCEL_PUTBITMAP, int x, int y, int w, int h, void *p)
+              Color-expand  bitmap. This works similar to ACCEL_PUTIMAGE but the
+              bitmap *p is a one bit bitmap.  Each pixel related to a set bit in
+              *p is drawn in the foreground color, the other pixels are drawn in
+              the background color.
+
+              Each byte at *p contains 8 pixels.  The lowest order bit  of  each
+              byte  is  leftmost  on the screen (contrary to the VGA tradition),
+              irrespective of the  bitmap  bit  order  flag.  Each  scanline  is
+              aligned to a multiple of 32-bits.
+
+              If  the  transparency  mode is enabled (irrespective of the trans&#8208;
+              parency color), then bits that are zero  in  the  bitmap  are  not
+              written (the background color is not used).
+
+
+       vga_accel(ACCEL_SCREENCOPYBITMAP,  int x1, int y1, int x2, int y2, int w,
+       int h)
+              Color-expand from screen. This works  similar  to  ACCEL_PUTBITMAP
+              but  the bitmap lies at position x1, y1 and the destination box at
+              x2, y2.
+
+              Alas, the sizes of the pixels in both bitmap  are  different.  The
+              bitmap  *p  must  have the format corresponding to ACCEL_PUTBITMAP
+              but will start at the screen memory location where the pixel  (x1,
+              y1) would be (probably in off screen memory).
+
+              In  modes where pixel will not start at byte boundaries (typically
+              those with less then 256 colors), the pixel (x1, y1) must start at
+              a  byte boundary (for example in a 16 color mode (4bpp rather than
+              8bpp for 256 colors) this means that x1 should be an even number).
+&#12;              The easiest way to achieve this is probably to choose x1 ==  0  in
+              these situations.
+
+              You  should not expect ACCEL_SCREENCOPYBITMAP handling overlapping
+              screen areas gracefully.
+
+       vga_accel(ACCEL_DRAWHLINELIST, int y, int n, int *x1, int *x2)
+              Draw horizontal spans. Each of the *x1 and *x2 arrays  contains  n
+              x-coordinate  pairs. Starting with a horizontal line from *x1,y to
+              *x2,y consecutive horizontal lines (with increasing y values)  are
+              drawn using the start and end points in *x1 and *x2.  This is usu&#8208;
+              ally a very quick operation and useful to draw arbitrary  polygons
+              (when the accelerator cannot do an arbitrary polygon fill itself).
+
+       vga_accel(ACCEL_POLYLINE, int flag, int n, unsigned short *coords)
+              draws  a  contiguous  line through the n points listed in *coords.
+              *coords contains n pairs of shorts, the first is the x coordinate,
+              the second is the y coordinate.
+
+              Normally flag should have the value ACCEL_START | ACCEL_END.  How&#8208;
+              ever, if the evaluation of the points is costly, you can mix  cal&#8208;
+              culations  and drawings.  Your first call to vga_accel(ACCEL_POLY&#8208;
+              LINE, ...)  must have ACCEL_START set. This  will  initialize  the
+              accelerator.  If  you  do not specify ACCEL_END, you can (actually
+              you have to) follow your call with  another  vga_accel(ACCEL_POLY&#8208;
+              LINE, ...)  call which will give additional points to connect.
+
+              It  is important that no other operations (even no color settings)
+              take place between a call with ACCEL_START and the  one  with  the
+              corresponding  ACCEL_END.   Because  of this, it is also important
+              that you lock the console with vga_lockvc(3) and  vga_unlockvc(3),
+              s.t. you cannot be interrupted by a console switch.
+
+              It  is  allowed  not  to  set  ACCEL_END  for  your  last  call to
+              vga_accel(ACCEL_POLYLINE,   ...).Thiswillnotdrawthelastpixelofthe&#8208;
+              last line which is important for some raster operations when draw&#8208;
+              ing closed polygons.  The accelerator  will  automatically  deini&#8208;
+              tialize when called with another operation in this situation.
+
+              It  is  undefined  what  happens when you specify other values for
+              flag and when your polyline contains only a single point. The line
+              segments must also not be of length zero.
+
+              For  implementors: In conjunction with raster operations (ROP_XOR,
+              ROP_INV) it is important that endpoints of inner line section  are
+              only  drawn once. If you cannot achieve that, you must signal that
+              this function cannot be used in  conjunction  with  raster  opera&#8208;
+              tions.   In this case it is valid to always draw all points of the
+              line segments including the endpoints regardless of the  existence
+              of a ACCEL_END parameter.
+
+       vga_accel(ACCEL_POLYHLINE,  int  flag, int y, int n, unsigned short *xco&#8208;
+       ords)
+              This  function  combines  the  features  of   ACCEL_POLYLINE   and
+              ACCEL_DRAWHLINELIST.  Starting in row y horizontal lines are drawn
+              from top to bottom. For each horizontal scanline the *coords array
+              will  contain  a  number  m followed by m x coordinates in left to
+              right order. Horizontal lines are drawn between the first and  the
+              second,  the third and the fourth x coordinates, and so on. If the
+              m coordinates are exhausted, y is increased, a  new  number  m  is
+              read from the *coords array and operation continues.
+
+              This procedure is done for n scan lines.
+
+              In  addition  there  is  a  flag  parameter which works similar to
+              ACCEL_POLYLINE.  Your first call to ACCEL_DRAWHLINELIST must  have
+              the ACCEL_START bit set for proper initialization. The y parameter
+              is ignored when ACCEL_START is not given.
+
+              On contrary to ACCEL_POLYLINE it is required that  the  last  call
+              has the ACCEL_END bit set.
+
+              The function is intended for drawing complex filled polygons using
+              horizontal scanlines.  By issuing small and  fast  calls  for  few
+              scanlines  only  it  is  possible to intermix drawing and calcula&#8208;
+              tions.
+
+              The operation of ACCEL_POLYHLINE is undefined if the x coordinates
+              are  not  sorted  from left to right or there are zero length seg&#8208;
+              ments in any scan line or if n or one of the m counters are  zero,
+              or one of the m&apos;s is not even.
+
+       vga_accel(ACCEL_POLYFILLMODE, onoff)
+              Switches polygon fill mode on (onoff non-zero) or off.
+
+              When  in polygon fill mode, ACCEL_DRAWLINE and ACCEL_POLYLINE will
+              only draw a single point on each scanline of  each  line  segment.
+              ACCEL_SCREENCOPYMONO  will  horizontally scan it&apos;s source area and
+              start drawing in the foreground color when  it  encounters  a  set
+              pixel. When the next pixel is encountered, it will start using the
+              background color and so on.
+
+              This can be used for hardware filled polygons:
+
+              1.     Enable polygon fill mode.
+
+              2.     Fill an offscreen rectangular area with a  the  color  with
+                     all bits zero (usually black).
+
+              3.     Draw  a  (usually closed) polygon outline in this offscreen
+                     area in the color with all bits set (usually white). To get
+                     the  proper  bits set for the polygon outline, it is recom&#8208;
+                     mended to use ROP_XOR s.t. outlines intersecting in a  sin&#8208;
+                     gle  point  are  handled  correctly. To ensure that polygon
+                     corners are handled right, both start and end  points  must
+                     be  drawn  (in  ROP_XOR  mode).  Thus  it  is  best  to use
+                     ACCEL_DRAWLINE instead of  ACCEL_POLYLINE.   Finally,  skip
+                     drawing   all   horizontal   lines   (which  would  confuse
+                     ACCEL_SCREENCOPYMONO).
+
+              4.     Set fore- and background colors, raster  operation,  bitmap
+                     transparency to those you want for your polygon.
+
+              5.     Use  ACCEL_SCREENCOPYMONO  to copy the offscreen pattern to
+                     the screen.
+
+              The rasteroperations and transparency which are  signalled  to  be
+              supported  for  ACCEL_POLYFILLMODE  by vga_ext_set(3) are actually
+              meant to apply to the last ACCEL_SCREENCOPYMONO call.
+
+              Because this polygon drawing uses more  screen  read/write  opera&#8208;
+              tions  it  is  probably  slower  than using ACCEL_DRAWHLINELIST or
+              ACCEL_POLYHLINE for drawing a polygon scanline by  scanline.  How&#8208;
+              ever,  it  is easier to use and it will work mostly without inter&#8208;
+              vention of the CPU which can do other calculations then. See  BUGS
+              below.
+
+              It is unspecified if the left or right end points of the scanlines
+              are drawn, and most probably some cards (like  Mach32)  will  omit
+              them  on one end, at least. Because of that you should always draw
+              the boundary line in the fill color (or another color) after fill&#8208;
+              ing the polygon.
+
+       vga_accel(ACCEL_SETMODE, mode)
+              Set  blit  strategy.  There  are  two  choices  for  mode,  namely
+              BLITS_SYNC and BLITS_IN_BACKGROUND.   The  first  ensures  that  a
+              vga_accel()  call  only  returns when the accelerator has finished
+              its operation. The second allows for an immediate return and  thus
+              allows parallel operation of the CPU and the accelerator. Consecu&#8208;
+              tive accelerator operations will wait for each other  to  complete
+              (and  block  if  necessary).  However, direct screen memory access
+              (also when done implicitly by some call to  an  svgalib  function)
+              may  find any intermediate state in vga memory or even corrupt the
+              running accelerator operation.
+
+       vga_accel(ACCEL_SYNC)
+              Wait for accelerator to finish  when  in  vga_accel(BLITS_IN_BACK&#8208;
+              GROUND) mode.
+
+       vga_accel(ACCEL_SETOFFSET, int address)
+              set  a  screen  offset  as  vga_setdisplaystart(3)  does. The same
+              restrictions for this function as reported  by  vga_getmodeinfo(3)
+              apply to address.
+
+              Whenever  the  video  screen offset is modified, the accelerator&apos;s
+              offset will follow. However you can  modify  it  later  with  this
+              function.
+
+
+       The  following  mode  values  are  defined  for vga_accel(ACCEL_SETTRANS&#8208;
+       PARENCY, int mode, ...)
+
+       vga_accel(ACCEL_SETTRANSPARENCY, ENABLE_TRANSPARENCY_COLOR, int color)
+              Whenever one of the vga_accel() operations would draw a  pixel  in
+              color  color,  no operation is performed and the destination pixel
+              is left unchanged. In fact that color is defined to  be  transpar&#8208;
+              ent.
+
+       vga_accel(ACCEL_SETTRANSPARENCY, DISABLE_TRANSPARENCY_COLOR)
+              disables the previous functionality.
+
+       vga_accel(ACCEL_SETTRANSPARENCY, ENABLE_BITMAP_TRANSPARENCY)
+              in   the   bitmap   expanding   operations   ACCEL_PUTBITMAP   and
+              ACCEL_SCREENCOPYBITMAP whenever a non set bit is  encountered,  to
+              not  perform  any  draw  operation.  The 0 bits do not draw in the
+              background color. Instead they are defined to be transparent.
+
+       vga_accel(ACCEL_SETTRANSPARENCY, DISABLE_BITMAP_TRANSPARENCY)
+              disables the previous functionality.
+
+
+       The following mode values are  defined  for  vga_accel(ACCEL_SETRASTEROP,
+       int mode)
+
+       vga_accel(ACCEL_SETRASTEROP, ROP_COPY)
+              Straight  copy.  Pixels  drawn by vga_accel() replace the destina&#8208;
+              tion.
+
+       vga_accel(ACCEL_SETRASTEROP, ROP_OR)
+              Logical or. Pixels drawn by vga_accel() are logical (bitwise) ored
+              to the destination.
+
+       vga_accel(ACCEL_SETRASTEROP, ROP_AND)
+              Logical  and.  Pixels  drawn  by vga_accel() are logical (bitwise)
+              anded to the destination.
+
+       vga_accel(ACCEL_SETRASTEROP, ROP_XOR)
+              Logical exclusive or. Pixels  drawn  by  vga_accel()  are  logical
+              (bitwise) exclusive ored to the destination (bits set in the drawn
+              pixels flip those pits in the destination).
+
+       vga_accel(ACCEL_SETRASTEROP, ROP_INV)
+              Inversion. Pixels drawn by vga_accel() are inverted.  Which  color
+              is drawn is actually ignored. Any pixel which would be overwritten
+              is simply inverted (bitwise) instead.
+
+
+       IMPORTANT!  Please note that a 0  returned  by  vga_accel(ACCEL_SETTRANS&#8208;
+       PARENCY,  int mode, ...)  and vga_accel(ACCEL_SETRASTEROP, int mode) sim&#8208;
+       ply means that the set function is available (and thus probably  some  of
+       above  features)  but  only  partial functionality may be available.  The
+       VGA_AVAIL_ROPMODES    and    VGA_AVAIL_TRANSMODES     subfunctions     of
+       vga_ext_set(3) allow you to check for valid parameters. The VGA_AVAIL_ROP
+       and VGA_AVAIL_TRANSPARENCY subfunctions return  which  of  the  vga_accel
+       operations are actually affected by these set functions.
+
+
+       Instead  of  calling  vga_accel() for each operation to find out if it is
+       supported, you can call:
+
+       #include &lt;vga.h&gt;
+
+       int vga_ext_set(VGA_EXT_AVAILABLE, VGA_AVAIL_ACCEL)
+
+       When the logical bitwise and of the return value with one of the  follow&#8208;
+       ing predefined (one bit set only) integer constants is non zero, the cor&#8208;
+       responding operation is available:  ACCELFLAG_FILLBOX,  ACCELFLAG_SCREEN&#8208;
+       COPY,   ACCELFLAG_PUTIMAGE,   ACCELFLAG_DRAWLINE,   ACCELFLAG_SETFGCOLOR,
+       ACCELFLAG_SETBGCOLOR,  ACCELFLAG_SETTRANSPARENCY,  ACCELFLAG_SETRASTEROP,
+       ACCELFLAG_PUTBITMAP, ACCELFLAG_SCREENCOPYBITMAP, ACCELFLAG_DRAWHLINELIST,
+       ACCELFLAG_SETMODE and ACCELFLAG_SYNC.
+
+       In addition, calling
+
+       #include &lt;vga.h&gt;
+
+       int vga_ext_set(VGA_EXT_AVAILABLE, VGA_AVAIL_TRANSPARENCY)
+
+       or
+
+       int vga_ext_set(VGA_EXT_AVAILABLE, VGA_AVAIL_ROP)
+
+       does not list the supported values for raster operations and transparency
+       but  instead returns the ACCELFLAG_ values for the accelerator operations
+       which respond the raster operation resp. transparency settings.
+
+
+       The availability of the operations will usually  depend  on  the  current
+       video  mode selected.  You should not try to use them or check for avail&#8208;
+       ability prior to selecting the mode you want to use with set_mode(3).
+
+BUGS
+       I found the Mach32 buggy in that it occasionally omits drawing last  pix&#8208;
+       els  of  lines when in polygon fill modes (that means, a single point for
+       the last scanline touched by a line).  Obviously this confuses the  poly&#8208;
+       gon  fill  hardware. However, screen corruption will always be restricted
+       to a small area as ACCEL_SCREENCOPYMONO will work only on a limited area.
+       It  is not clear if this is a driver error, but it seems to be a hardware
+       bug, and I don&apos;t know a clutch to avoid it yet. In  case  you  experience
+       problems  with  certain applications, try blit nopolyfillmode in the con&#8208;
+       figuration file or the SVGALIB_CONFIG environment variable.
+
+       You must ensure that the given screen coordinates lie in  screen  memory.
+       Actually  you may not really be sure how offscreen areas are handled, you
+       can only really trust that coordinates which are visible  are  supported.
+       For  example,  the  Mach32 restricts the allowable x and y coordinates to
+       the range -512 .. 1535. However, even on a 1MB VGA memory card, the  off&#8208;
+       screen  point (0, 1599) would identify a valid screen memory location (if
+       you could use it).
+
+       Where supported, the  vga_accel(ACCEL_SETOFFSET,  ...)   directive  might
+       help to ease things a bit in such situations.
+
+       Svgalib&apos;s  accelerator  support  is  a mess. Right now, only the Ark, the
+       Cirrus, the Chips&amp;Technologies, and the Mach32 svga drivers  really  sup&#8208;
+       port this function. The Mach32 still also supports the old style acceler&#8208;
+       ator   functions    vga_bitblt(3),    vga_blitwait(3),    vga_fillblt(3),
+       vga_hlinelistblt(3) and vga_imageblt(3) which were first designed for the
+       Cirrus cards and thus the Mach32 has its problems emulating them. The gl_
+       functions  use the accelerator to some extend. Currently the use both the
+       new and the old style accelerator. You should avoid mixing calls  of  the
+       new and the old style kinds.
+
+       These functions are not well tested. You should expect weird bugs. In any
+       case, the accelerator is of not much use in many typical svgalib applica&#8208;
+       tions. Best if you are not using them.
+
+       BEWARE!   You  should  not use the graphics accelerator together with the
+       background feature of vga_runinbackground(3).  However, you can try using
+       vga_lockvc(3) to lock the vc prior to using the accelerator.
+
+       The  Mach32  driver  does  this  on  it&apos;s own, and even keeps the console
+       locked while background accelerator  functions  are  in  progress.  Other
+       drivers might not be as graceful.
+
+
+SEE ALSO
+       svgalib(7),    vgagl(7),   libvga.config(5),   accel(6),   vga_bitblt(3),
+       vga_blitwait(3),  vga_ext_set(3),   vga_fillblt(3),   vga_getmodeinfo(3),
+       vga_hlinelistblt(3),  vga_imageblt(3), vga_runinbackground(3), vga_runin&#8208;
+       background_version(3)
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997                      vga_accel(3)
+
+</pre></body></html>

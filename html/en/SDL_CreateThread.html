@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CreateThread - Creates a new thread of execution that shares its parent's properties.</title></head>
+<body><pre>
+
+SDL_CreateThread(3)             SDL API Reference            SDL_CreateThread(3)
+
+
+
+NAME
+       SDL_CreateThread - Creates a new thread of execution that shares its par&#8208;
+       ent&apos;s properties.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       SDL_Thread *SDL_CreateThread(int (*fn)(void *), void *data);
+
+DESCRIPTION
+       SDL_CreateThread creates a new thread of execution that shares all of its
+       parent&apos;s  global memory, signal handlers, file descriptors, etc, and runs
+       the function fn passed the void pointer data The thread quits  when  this
+       function returns.
+
+SEE ALSO
+       SDL_KillThread
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00          SDL_CreateThread(3)
+
+</pre></body></html>

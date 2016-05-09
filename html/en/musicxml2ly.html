@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>musicxml2ly - manual page for musicxml2ly (LilyPond) 2.14.2</title></head>
+<body><pre>
+
+MUSICXML2LY(1)                    User Commands                   MUSICXML2LY(1)
+
+
+
+NAME
+       musicxml2ly - manual page for musicxml2ly (LilyPond) 2.14.2
+
+SYNOPSIS
+       musicxml2ly [OPTION]... FILE.xml
+
+DESCRIPTION
+       Convert  MusicXML from FILE.xml to LilyPond input.  If the given filename
+       is -, musicxml2ly reads from the command line.
+
+OPTIONS
+       -h, --help
+              show this help and exit
+
+       --version
+              show version number and exit
+
+       -v, --verbose
+              be verbose
+
+       --lxml use lxml.etree; uses less memory and cpu time
+
+       -z, --compressed
+              input file is a zip-compressed MusicXML file
+
+       -r, --relative
+              convert pitches in relative mode (default)
+
+       -a, --absolute
+              convert pitches in absolute mode
+
+       -l, --language=LANG
+              use LANG for pitch names, e.g. &apos;deutsch&apos; for note names in German
+
+       --nd --no-articulation-directions
+              do not convert directions (^, _ or -) for articulations, dynamics,
+              etc.
+
+       --nrp --no-rest-positions
+              do not convert exact vertical positions of rests
+
+       --npl --no-page-layout
+              do not convert the exact page layout and breaks
+
+       --no-beaming
+              do not convert beaming information, use lilypond&apos;s automatic beam&#8208;
+              ing instead
+
+       -o, --output=FILE
+              set output filename to FILE, stdout if -
+
+REPORTING BUGS
+       Report bugs via http://post.gmane.org/post.php?group=gmane.comp.gnu.lily&#8208;
+       pond.bugs
+
+COPYRIGHT
+       Copyright &#169; 2005--2011 by
+           Han-Wen Nienhuys &lt;hanwen@xs4all.nl&gt;,
+           Jan Nieuwenhuizen &lt;janneke@gnu.org&gt; and
+           Reinhold Kainhofer &lt;reinhold@kainhofer.com&gt;
+
+       This  program  is free software.  It is covered by the GNU General Public
+       License and you are welcome to change it and/or distribute copies  of  it
+       under  certain  conditions.   Invoke  as  `lilypond  --warranty&apos; for more
+       information.
+
+SEE ALSO
+       The full documentation for musicxml2ly is maintained as a Texinfo manual.
+       If the info and musicxml2ly programs are properly installed at your site,
+       the command
+
+              info musicxml2ly
+
+       should give you access to the complete manual.
+
+
+
+musicxml2ly (LilyPond) 2.14.2     February 2013                   MUSICXML2LY(1)
+
+</pre></body></html>

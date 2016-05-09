@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoystickEventState - Enable/disable joystick event polling</title></head>
+<body><pre>
+
+SDL_JoystickEventState(3)       SDL API Reference      SDL_JoystickEventState(3)
+
+
+
+NAME
+       SDL_JoystickEventState - Enable/disable joystick event polling
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       int SDL_JoystickEventState(int state);
+
+DESCRIPTION
+       This  function  is  used  to enable or disable joystick event processing.
+       With joystick event processing disabled you will have to update  joystick
+       states  with  SDL_JoystickUpdate  and read the joystick information manu&#8208;
+       ally. state is either SDL_QUERY, SDL_ENABLE or SDL_IGNORE.
+
+              Note:
+
+              Joystick event handling is prefered
+
+RETURN VALUE
+       If state is SDL_QUERY then the current state is returned,  otherwise  the
+       new processing state is returned.
+
+SEE ALSO
+       SDL Joystick Functions, SDL_JoystickUpdate, SDL_JoyAxisEvent, SDL_JoyBal&#8208;
+       lEvent, SDL_JoyButtonEvent, SDL_JoyHatEvent
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59    SDL_JoystickEventState(3)
+
+</pre></body></html>

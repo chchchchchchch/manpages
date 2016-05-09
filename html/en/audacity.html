@@ -1,0 +1,151 @@
+<html>
+<head><meta charset=utf-8/>
+<title>audacity - Graphical cross-platform audio editor</title></head>
+<body><pre>
+
+audacity(1)                                                          audacity(1)
+
+
+
+NAME
+       audacity - Graphical cross-platform audio editor
+
+SYNOPSIS
+       audacity -help
+       audacity -version
+
+       audacity [-blocksize nnn] -test
+       audacity [-blocksize nnn] [ AUDIO-FILE ] ...
+
+DESCRIPTION
+       Audacity  is  a  graphical audio editor.  This man page does not describe
+       all of the features of Audacity or how to use it; for this, see the  html
+       documentation that came with the program, which should be accessible from
+       the Help menu.  This  man  page  describes  the  Unix-specific  features,
+       including special files and environment variables.
+
+       Audacity  currently  uses libsndfile to open many uncompressed audio for&#8208;
+       mats such as WAV, AIFF, and AU, and it can also be linked to libmad, lib&#8208;
+       vorbis,  and  libflac,  to provide support for opening MP2/3, Ogg Vorbis,
+       and FLAC files, respectively.  LAME, libvorbis,  libflac  and  libtwolame
+       provide facilities to export files to all these formats as well.
+
+       Audacity  is primarily an interactive, graphical editor, not a batch-pro&#8208;
+       cessing tool. Whilst there is a basic batch processing tool it is experi&#8208;
+       mental  and  incomplete.  If you need to batch-process audio or do simple
+       edits from the command line, using sox  or  ecasound  driven  by  a  bash
+       script will be much more powerful than audacity.
+
+
+OPTIONS
+       -help     display a brief list of command line options
+
+       -version  display the audacity version number
+
+       -test     run self diagnostics tests (only present in development builds)
+
+       -blocksize nnn
+                 set  the  audacity  block size for writing files to disk to nnn
+                 bytes
+
+
+FILES
+       ~/.audacity-data/audacity.cfg
+              Per user configuration file.
+
+       /var/tmp/audacity-&lt;user&gt;/
+              Default location of Audacity&apos;s temp  directory,  where  &lt;user&gt;  is
+              your username.  If this location is not suitable (not enough space
+              in /var/tmp, for example), you should change the temp directory in
+              the  Preferences  and  restart Audacity.  Audacity is a disk-based
+              editor, so the temp directory is very important: it should  always
+              be on a fast (local) disk with lots of free space.
+
+              Note that older versions of Audacity put the temp directory inside
+              of the user&apos;s home directory.  This is undesirable  on  many  sys&#8208;
+              tems, and using some directory in /tmp is recommended.
+
+              On  many  modern  Linux systems all files in /tmp/ will be deleted
+              each time the system boots up, which makes recovering a  recording
+              that was going on when the system crashed much harder. This is why
+              the default is to use a directory in /var/tmp/ which will not nor&#8208;
+              mally be deleted by the system. Open the Preferences to check.
+
+SEARCH PATH
+       When  looking for plug-ins, help files, localization files, or other con&#8208;
+       figuration files, Audacity searches  the  following  locations,  in  this
+       order:
+
+       AUDACITY_PATH
+              Any  directories in the AUDACITY_PATH environment variable will be
+              searched before anywhere else.
+
+       .
+              The current working directory when Audacity is started.
+
+       ~/.audacity-files
+
+       &lt;prefix&gt;/share/audacity
+              The system-wide Audacity directory, where &lt;prefix&gt; is usually /usr
+              or /usr/local, depending on where the program was installed.
+
+       &lt;prefix&gt;/share/doc/audacity
+              The  system-wide  Audacity documentation directory, where &lt;prefix&gt;
+              is usually /usr or /usr/local, depending on where the program  was
+              installed.
+
+       For  localization files in particular (i.e. translations of Audacity into
+       other languages), Audacity also searches &lt;prefix&gt;/share/locale
+
+
+PLUG-INS
+       Audacity supports two types of plug-ins on Unix: LADSPA and Nyquist plug-
+       ins.  These are generally placed in a directory called plug-ins somewhere
+       on the search path (see above).
+
+       LADSPA plug-ins can either be in the plug-ins directory, or alternatively
+       in  a  ladspa  directory  on the search path if you choose to create one.
+       Audacity will also search the directories in the LADSPA_PATH  environment
+       variable for additional LADSPA plug-ins.
+
+       Nyquist  plug-ins  can  either  be in the plug-ins directory, or alterna&#8208;
+       tively in a nyquist directory on the search path if you choose to  create
+       one.
+
+
+VERSION
+       This man page documents audacity version 1.3.5
+
+
+LICENSE
+       Audacity  is  distributed under the GPL, however some of the libraries it
+       links to are distributed under other free licenses,  including  the  LGPL
+       and BSD licenses.
+
+
+BUGS
+       For  details  of  known  problems, see the release notes and the audacity
+       wiki:
+       http://www.audacityteam.org/wiki/index.php?title=Known_Issues
+
+       To report a bug, see the instructions at
+       http://www.audacityteam.org/wiki/index.php?title=Reporting_Bugs
+
+
+AUTHORS
+       Project leaders include  Dominic  Mazzoni,  Matt  Brubeck,  James  Crook,
+       Vaughan  Johnson,  Leland  Lucius, and Markus Meyer, but dozens of others
+       have contributed, and Audacity would not be possible  without  wxWindows,
+       libsndfile,  and  many  of the other libraries it is built upon.  For the
+       most recent list of contributors and current  email  addresses,  see  our
+       website:
+
+       http://audacity.sourceforge.net/about/credits/
+
+
+
+
+
+                                                                     audacity(1)
+
+</pre></body></html>

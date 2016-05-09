@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigBuildFonts - Build font database</title></head>
+<body><pre>
+
+FcConfigBuildFonts(3)                                      FcConfigBuildFonts(3)
+
+
+
+NAME
+       FcConfigBuildFonts - Build font database
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcConfigBuildFonts (FcConfig *config);
+
+DESCRIPTION
+       Builds the set of available fonts for the given configuration.  Note that
+       any changes to the  configuration  after  this  call  have  indeterminate
+       effects.   Returns FcFalse if this operation runs out of memory.  If con&#8208;
+       fig is NULL, the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012            FcConfigBuildFonts(3)
+
+</pre></body></html>

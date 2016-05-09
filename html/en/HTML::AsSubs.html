@@ -1,0 +1,124 @@
+<html>
+<head><meta charset=utf-8/>
+<title>HTML::AsSubs - functions that construct a HTML syntax tree</title></head>
+<body><pre>
+
+HTML::AsSubs(3pm)      User Contributed Perl Documentation     HTML::AsSubs(3pm)
+
+
+
+NAME
+       HTML::AsSubs - functions that construct a HTML syntax tree
+
+VERSION
+       This document describes version 5.02 of HTML::AsSubs, released June 27,
+       2012 as part of HTML-Tree.
+
+SYNOPSIS
+        use HTML::AsSubs;
+        $h = body(
+                  h1(&quot;This is the heading&quot;),
+                  p(&quot;This is the first paragraph which contains a &quot;,
+                    a({href=&gt;&apos;link.html&apos;}, &quot;link&quot;),
+                    &quot; and an &quot;,
+                    img({src=&gt;&apos;img.gif&apos;, alt=&gt;&apos;image&apos;}),
+                    &quot;.&quot;
+                   ),
+                 );
+        print $h-&gt;as_HTML;
+
+DESCRIPTION
+       This module exports functions that can be used to construct various HTML
+       elements. The functions are named after the tags of the corresponding
+       HTML element and are all written in lower case. If the first argument is
+       a hash reference then it will be used to initialize the attributes of
+       this element. The remaining arguments are regarded as content.
+
+       For a similar idea (i.e., it&apos;s another case where the syntax tree of the
+       Perl source mirrors the syntax tree of the HTML produced), see
+       HTML::Element&apos;s &quot;new_from_lol&quot; method.
+
+       For what I now think is a cleaner implementation of this same idea, see
+       the excellent module &quot;XML::Generator&quot;, which is what I suggest for actual
+       real-life use.  (I suggest this over &quot;HTML::AsSubs&quot; and over &quot;CGI.pm&quot;&apos;s
+       HTML-making functions.)
+
+ACKNOWLEDGEMENT
+       This module was inspired by the following message:
+
+        Date: Tue, 4 Oct 1994 16:11:30 +0100
+        Subject: Wow! I have a large lightbulb above my head!
+
+        Take a moment to consider these lines:
+
+        %OVERLOAD=( &apos;&quot;&quot;&apos; =&gt; sub { join(&quot;&quot;, @{$_[0]}) } );
+
+        sub html { my($type)=shift; bless [&quot;&lt;$type&gt;&quot;, @_, &quot;&lt;/$type&gt;&quot;]; }
+
+        :-)  I *love* Perl 5!  Thankyou Larry and Ilya.
+
+        Regards,
+        Tim Bunce.
+
+        p.s. If you didn&apos;t get it, think about recursive data types: html(html())
+        p.p.s. I&apos;ll turn this into a much more practical example in a day or two.
+        p.p.p.s. It&apos;s a pity that overloads are not inherited. Is this a bug?
+
+BUGS
+       The exported link() function overrides the builtin link() function.  The
+       exported tr() function must be called using &amp;tr(...) syntax because it
+       clashes with the builtin tr/../../ operator.
+&#12;SEE ALSO
+       HTML::Element, XML::Generator
+
+   html head title base link meta isindex nextid script style body h1 h2 h3 h4
+       h5 h6 p pre div blockquote a img br hr ol ul dir menu li dl dt dd dfn
+       cite code em kbd samp strong var address span b i u tt center font big
+       small strike sub sup table tr td th caption form input select option
+       textarea object applet param map area frame frameset noframe
+       A bunch of methods for creating tags.
+
+Private Functions
+   _elem()
+       The _elem() function is wrapped by all the html &apos;tag&apos; functions. It takes
+       a tag-name, optional hashref of attributes and a list of content as
+       parameters.
+
+AUTHOR
+       Current maintainers:
+
+       &#183;   Christopher J. Madsen &quot;&lt;perl AT cjmweb.net&gt;&quot;
+
+       &#183;   Jeff Fearn &quot;&lt;jfearn AT cpan.org&gt;&quot;
+
+       Original HTML-Tree author:
+
+       &#183;   Gisle Aas
+
+       Former maintainers:
+
+       &#183;   Sean M. Burke
+
+       &#183;   Andy Lester
+
+       &#183;   Pete Krawczyk &quot;&lt;petek AT cpan.org&gt;&quot;
+
+       You can follow or contribute to HTML-Tree&apos;s development at
+       http://github.com/madsen/HTML-Tree &lt;http://github.com/madsen/HTML-Tree&gt;.
+
+COPYRIGHT AND LICENSE
+       Copyright 1995-1998 Gisle Aas, 1999-2004 Sean M. Burke, 2005 Andy Lester,
+       2006 Pete Krawczyk, 2010 Jeff Fearn, 2012 Christopher J. Madsen.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+       The programs in this library are distributed in the hope that they will
+       be useful, but without any warranty; without even the implied warranty of
+       merchantability or fitness for a particular purpose.
+
+
+
+perl v5.14.2                       2012-06-30                  HTML::AsSubs(3pm)
+
+</pre></body></html>

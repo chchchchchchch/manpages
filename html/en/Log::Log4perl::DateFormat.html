@@ -1,0 +1,130 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::DateFormat - Log4perl advanced date formatter helper class</title></head>
+<body><pre>
+
+DateFormat(3pm)        User Contributed Perl Documentation       DateFormat(3pm)
+
+
+
+NAME
+       Log::Log4perl::DateFormat - Log4perl advanced date formatter helper class
+
+SYNOPSIS
+           use Log::Log4perl::DateFormat;
+
+           my $format = Log::Log4perl::DateFormat-&gt;new(&quot;HH:mm:ss,SSS&quot;);
+
+           # Simple time, resolution in seconds
+           my $time = time();
+           print $format-&gt;format($time), &quot;\n&quot;;
+               # =&gt; &quot;17:02:39,000&quot;
+
+           # Advanced time, resultion in milliseconds
+           use Time::HiRes;
+           my ($secs, $msecs) = Time::HiRes::gettimeofday();
+           print $format-&gt;format($secs, $msecs), &quot;\n&quot;;
+               # =&gt; &quot;17:02:39,959&quot;
+
+DESCRIPTION
+       &quot;Log::Log4perl::DateFormat&quot; is a low-level helper class for the advanced
+       date formatting functions in &quot;Log::Log4perl::Layout::PatternLayout&quot;.
+
+       Unless you&apos;re writing your own Layout class like
+       Log::Log4perl::Layout::PatternLayout, there&apos;s probably not much use for
+       you to read this.
+
+       &quot;Log::Log4perl::DateFormat&quot; is a formatter which allows dates to be
+       formatted according to the log4j spec on
+
+           http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html
+
+       which allows the following placeholders to be recognized and processed:
+
+           Symbol Meaning              Presentation    Example
+           ------ -------              ------------    -------
+           G      era designator       (Text)          AD
+           y      year                 (Number)        1996
+           M      month in year        (Text &amp; Number) July &amp; 07
+           d      day in month         (Number)        10
+           h      hour in am/pm (1~12) (Number)        12
+           H      hour in day (0~23)   (Number)        0
+           m      minute in hour       (Number)        30
+           s      second in minute     (Number)        55
+           S      millisecond          (Number)        978
+           E      day in week          (Text)          Tuesday
+           D      day in year          (Number)        189
+           F      day of week in month (Number)        2 (2nd Wed in July)
+           w      week in year         (Number)        27
+           W      week in month        (Number)        2
+           a      am/pm marker         (Text)          PM
+           k      hour in day (1~24)   (Number)        24
+           K      hour in am/pm (0~11) (Number)        0
+           z      time zone            (Text)          Pacific Standard Time
+           Z      RFC 822 time zone    (Text)          -0800
+           &apos;      escape for text      (Delimiter)
+           &apos;&apos;     single quote         (Literal)       &apos;
+
+       For example, if you want to format the current Unix time in &quot;MM/dd HH:mm&quot;
+       format, all you have to do is this:
+
+           use Log::Log4perl::DateFormat;
+&#12;           my $format = Log::Log4perl::DateFormat-&gt;new(&quot;MM/dd HH:mm&quot;);
+
+           my $time = time();
+           print $format-&gt;format($time), &quot;\n&quot;;
+
+       While the &quot;new()&quot; method is expensive, because it parses the format
+       strings and sets up all kinds of structures behind the scenes, followup
+       calls to &quot;format()&quot; are fast, because &quot;DateFormat&quot; will just call
+       &quot;localtime()&quot; and &quot;sprintf()&quot; once to return the formatted date/time
+       string.
+
+       So, typically, you would initialize the formatter once and then reuse it
+       over and over again to display all kinds of time values.
+
+       Also, for your convenience, the following predefined formats are
+       available, just as outlined in the log4j spec:
+
+           Format   Equivalent                     Example
+           ABSOLUTE &quot;HH:mm:ss,SSS&quot;                 &quot;15:49:37,459&quot;
+           DATE     &quot;dd MMM yyyy HH:mm:ss,SSS&quot;     &quot;06 Nov 1994 15:49:37,459&quot;
+           ISO8601  &quot;yyyy-MM-dd HH:mm:ss,SSS&quot;      &quot;1999-11-27 15:49:37,459&quot;
+           APACHE   &quot;[EEE MMM dd HH:mm:ss yyyy]&quot;   &quot;[Wed Mar 16 15:49:37 2005]&quot;
+
+       So, instead of passing
+
+           Log::Log4perl::DateFormat-&gt;new(&quot;HH:mm:ss,SSS&quot;);
+
+       you could just as well say
+
+           Log::Log4perl::DateFormat-&gt;new(&quot;ABSOLUTE&quot;);
+
+       and get the same result later on.
+
+   Known Shortcomings
+       The following placeholders are currently not recognized, unless someone
+       (and that could be you :) implements them:
+
+           F day of week in month
+           w week in year
+           W week in month
+           k hour in day
+           K hour in am/pm
+           z timezone (but we got &apos;Z&apos; for the numeric time zone value)
+
+       Also, &quot;Log::Log4perl::DateFormat&quot; just knows about English week and month
+       names, internationalization support has to be added.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                    DateFormat(3pm)
+
+</pre></body></html>

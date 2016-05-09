@@ -1,0 +1,112 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pkgenpack - PackageKit Pack Generator</title></head>
+<body><pre>
+
+PKGENPACK(1)                     [FIXME: manual]                    PKGENPACK(1)
+
+
+
+NAME
+       pkgenpack - PackageKit Pack Generator
+
+SYNOPSIS
+       pkgenpack [--help] [--verbose] [--with-package-list] [--output]
+                 [--package] [--updates]
+
+DESCRIPTION
+       This manual page documents briefly the pkgenpack command.
+
+       pkgenpack is the command line client for PackageKit for creating service
+       packs.
+
+WHAT IS A SERVICE PACK?
+       A service pack is a tarball which contains a set of packages and their
+       dependencies. The user can reduce the dependencies to be packed using the
+       --with-package-list option. Along with the dependencies, a service pack
+       has a file named metadata.conf which contains the information about the
+       distribution and creation date of the pack.
+
+CREATING A SERVICE PACK?
+       A service pack is created using the command pkgenpack.
+
+OPTIONS
+       This program follows the usual GNU command line syntax, with long options
+       starting with two dashes (`-&apos;). A summary of options is included below.
+
+       --help
+           Show summary of options.
+
+       --verbose
+           Show extra debugging information.
+
+       --with-package-list
+           Set the filename of dependencies to be excluded.
+
+           Generally, the file list of packages is generated when doing a
+           PackageKit refresh on the target system. If not specified, pkgenpack
+           uses /var/lib/PackageKit/system.package-list by default.
+
+       --output
+           The directory to put the pack file, or the current directory if
+           omitted.
+
+       --package
+           The package to be put into the ServicePack.
+
+       --update
+           Put all updates available in the ServicePack.
+
+NAMING A SERVICE PACK
+       The only valid extension for a service pack is &quot;.servicepack&quot;.
+
+EXAMPLES
+       1. Tim is facing problems with his Internet connection at home. He needs
+       a service pack with valgrind and it&apos;s dependencies for his system. He
+       asks James to generate a pack for him. Both know James&apos;s system should
+       contain similar packages as Tim&apos;s system, as both of them have installed
+       Fedora 9 two days ago.
+
+       James simply runs:
+&#12;           [james@jamesbook:~]$ pkgenpack --output=/media/USB/TimPacks --package=valgrind
+
+       This generates a file
+       /media/USB/TimPacks/valgrind-fedora-9-i686.servicepack on the USB key Tim
+       gave to James. Tim can now go home, insert the USB key and double clicks
+       on the valgrind-fedora-9-i686.servicepack file to be prompted to install
+       these packages.
+
+       2. Bill wants to create a service pack named
+       kdegames-fedora-9-i686.servicepack for his new system which does not have
+       an internet connection. He generates a list of packages on his system
+       using pkcon list-create and copies that list to his USB key. He then
+       gives that USB to Rishi who has a good internet connectivity. Rishi runs
+       the following command on his system:
+
+           [rishi@devils-temple:~]$ pkgenpack --with-package-list=/media/USB/bill.package-list \
+                                              --output=/home/rishi/Desktop --program=kdegames
+
+       This generates a service pack, kdegames-fedora-9-i686.servicepack, on
+       Rishi&apos;s Desktop, which can be distributed to Bill and users with similar
+       requirements.
+
+INSTALLING A SERVICE PACK
+       Service Packs can be installed using pkcon. For example:
+
+           [hacker@tim-lounge:~]$ pkcon install /media/USB/TimPacks/valgrind-fedora-9-i686.servicepack
+
+SEE ALSO
+       pkmon (1).  pkcon(1).
+
+AUTHOR
+       This manual page was written by Shishir Goel crazyontheedge@gmail.com and
+       Richard Hughes richard@hughsie.com.
+
+COPYRIGHT
+       Copyright &#169; 2008 Shishir Goel
+
+
+
+[FIXME: source]                   31 July,2008                      PKGENPACK(1)
+
+</pre></body></html>

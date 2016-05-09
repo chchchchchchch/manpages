@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rapt-file - APT package searching utility -- search remotely</title></head>
+<body><pre>
+
+RAPT-FILE(1)                                                        RAPT-FILE(1)
+
+
+
+NAME
+       rapt-file - APT package searching utility -- search remotely
+
+SYNOPSIS
+       rapt-file [ options ] [ action ] [ pattern ]
+
+
+DESCRIPTION
+       rapt-file  is a command line tool for searching files in packages for the
+       APT package management system.  It differs from apt-file in that it works
+       with remote package indices, so it doesn&apos;t need to download full Contents
+       files.
+
+       find   Alias for search.
+
+       list   List the contents of a package matching the pattern pattern.  This
+              action  is  very  close  to the dpkg -L command except the package
+              does not need to be installed or fetched.
+
+       search Search in which package a file is included. A list of all packages
+              containing the pattern pattern is returned.
+
+              rapt-file  will  only  search  for filenames, not directory names.
+              This is due to the format of the Contents files it searches.
+
+       show   Alias for list.
+
+OPTIONS
+          -a, --architecture architecture
+              Sets architecture to architecture. This option is  useful  if  you
+              search  a  package  for  a  different  architecture  from  the one
+              installed on your system.  It determines how the $ARCH variable in
+              sources.list  is expanded (but it does not influence the search in
+              any other way).
+
+          -l, --package-only
+              Only display package name; do not display file names.
+
+          -v, --verbose
+              Run rapt-file in verbose mode.
+
+          -h, --help
+              Display a short help screen.
+
+FILES
+       /etc/apt/sources.list
+              Locations to fetch package contents from.
+
+       /etc/apt/sources.list.d/
+              Directory with additional sources.list snippets
+
+AUTHOR
+       rapt-file was written by Enrico Zini &lt;enrico@debian.org&gt;.
+
+
+
+                                    May 2012                        RAPT-FILE(1)
+
+</pre></body></html>

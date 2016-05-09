@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>archpath - output arch (tla/Bazaar) archive names, with support for branches</title></head>
+<body><pre>
+
+ARCHPATH(1)                                                          ARCHPATH(1)
+
+
+
+NAME
+       archpath  -  output  arch  (tla/Bazaar)  archive  names, with support for
+       branches
+
+SYNOPSIS
+       archpath
+       archpath branch
+       archpath branch--version
+
+DESCRIPTION
+       archpath is intended to be run in an arch (tla or Bazaar) working copy.
+
+       In its simplest usage, archpath with no parameters  outputs  the  package
+       name  (archive/category--branch--version)  associated  with  the  working
+       copy.
+
+       If a parameter is given, it may either be  a  branch--version,  in  which
+       case archpath will output a corresponding package name in the current ar&#8208;
+       chive and category, or a plain branch name (without &#8216;--&quot;), in which  case
+       archpath  will output a corresponding package name in the current archive
+       and category and with the same version as the current working copy.
+
+       This is useful for branching.  For example, if you&apos;re  using  Bazaar  and
+       you  want  to  create a branch for a new feature, you might use a command
+       like this:
+
+              baz branch $(archpath) $(archpath new-feature)
+
+       Or if you want to tag your current code onto a &#8216;releases&#8217; branch as  ver&#8208;
+       sion 1.0, you might use a command like this:
+
+              baz branch $(archpath) $(archpath releases--1.0)
+
+       That&apos;s  much  easier than using &#8216;baz tree-version&#8217; to look up the package
+       name and manually modifying the result.
+
+AUTHOR
+       archpath was written by Colin Watson &lt;cjwatson@debian.org&gt;.   Like  arch&#8208;
+       path,  this manual page is released under the GNU General Public License,
+       version 2 or later.
+
+
+
+DEBIAN                          Debian Utilities                     ARCHPATH(1)
+
+</pre></body></html>

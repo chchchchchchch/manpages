@@ -1,0 +1,292 @@
+<html>
+<head><meta charset=utf-8/>
+<title>texindy - create sorted and tagged index from raw LaTeX index</title></head>
+<body><pre>
+
+texindy(1)                            xindy                           texindy(1)
+
+
+
+NAME
+       texindy - create sorted and tagged index from raw LaTeX index
+
+SYNOPSIS
+        texindy [-V?h] [-qv] [-iglr] [-d magic] [-o outfile.ind] [-t log] \
+                [-L lang] [-C codepage] [-M module] [idx0 idx1 ...]
+
+       GNU-Style Long Options for Short Options:
+
+        -V / --version
+        -? / -h / --help
+        -q / --quiet
+        -v / --verbose
+        -i / --stdin
+        -g / --german
+        -l / --letter-ordering
+        -r / --no-ranges
+        -d / --debug          (multiple times)
+        -o / --out-file
+        -t / --log-file
+        -L / --language
+        -C / --codepage
+        -M / --module         (multiple times)
+        -I / --input-markup   (supported: latex, omega)
+
+DESCRIPTION
+       texindy is the LaTeX-specific command of xindy, the flexible indexing
+       system. It takes a raw index as input, and produces a merged, sorted and
+       tagged index. Merging, sorting, and tagging is controlled by xindy
+       modules, with a convenient set already preloaded.
+
+       Files with the raw index are passed as arguments. If no arguments are
+       passed, the raw index will be read from standard input.
+
+       A good introductionary description of texindy appears in the indexing
+       chapter of the LaTeX Companion (2nd ed.)
+
+       If you want to produce an index for LaTeX documents with special index
+       markup, the command xindy(1) is probably more of interest for you.
+
+       texindy is an approach to merge support for the make-rules framework, own
+       xindy modules (e.g., for special LaTeX commands in the index), and a
+       reasonable level of MakeIndex compatibility. There are other older
+       approaches, eventually they will get a description on the xindy Web Site,
+       http://www.xindy.org/.
+
+OPTIONS
+       &quot;--version&quot; / -V
+           output version numbers of all relevant components and exit.
+
+       &quot;--help&quot; / -h / -?
+           output usage message with options explanation.
+
+       &quot;--quiet&quot; / -q
+           Don&apos;t output progress messages. Output only error messages.
+
+       &quot;--verbose&quot; / -v
+           Output verbose progress messages.
+
+       &quot;--debug&quot; magic / -d magic
+           Output debug messages, this option may be specified multiple times.
+           magic determines what is output:
+
+            magic          remark
+            ------------------------------------------------------------
+            script         internal progress messages of driver scripts
+            keep_tmpfiles  don&apos;t discard temporary files
+            markup         output markup trace, as explained in xindy manual
+            level=n        log level, n is 0 (default), 1, 2, or 3
+
+       &quot;--out-file&quot; outfile.ind / -o outfile.ind
+           Output index to file outfile.ind. If this option is not passed, the
+           name of the output file is the base name of the first argument and
+           the file extension ind. If the raw index is read from standard input,
+           this option is mandatory.
+
+       &quot;--log-file&quot; log.ilg / -t log.ilg
+           Output log messages to file log.ilg. These log messages are
+           independent from the progress messages that you can influence with
+           &quot;--debug&quot; or &quot;--verbose&quot;.
+
+       &quot;--language&quot; lang / -L lang
+           The index is sorted according to the rules of language lang. These
+           rules are encoded in a xindy module created by make-rules.
+
+           If no input encoding is specified via &quot;--codepage&quot;, a xindy module
+           for that language is searched with a latin, a cp, an iso, or ascii
+           encoding, in that order.
+
+       &quot;--codepage&quot; enc / B &lt;-C&gt; enc
+           The raw input is in input encoding enc. This information is used to
+           select the correct xindy sort module and also the inputenc target
+           encoding for &quot;latex&quot; input markup.
+
+           When &quot;omega&quot; input markup is used, &quot;utf8&quot; is always used as the sort
+           codepage and no inputenc module is loaded. Then this option is
+           ignored.
+
+       &quot;--module&quot; module / -M module
+           Load the xindy module module.xdy. This option may be specified
+           multiple times. The modules are searched in the xindy search path
+           that can be changed with the environment variable &quot;XINDY_SEARCHPATH&quot;.
+
+       &quot;--input-markup&quot; input / -I input
+           Specifies the input markup of the raw index. Supported values for
+           input are &quot;latex&quot; and &quot;omega&quot;.
+
+           &quot;latex&quot; input markup is the one that is emitted by default from the
+           LaTeX kernel, or by the &quot;index&quot; macro package of David Jones.
+           ^^-notation of single byte characters is supported. Usage of LaTeX&apos;s
+           inputenc package is assumed as well.
+
+           &quot;omega&quot; input markup is like &quot;latex&quot; input markup, but with Omega&apos;s
+           ^^-notation as encoding for non-ASCII characters. LaTeX inputenc
+           encoding is not used then, and &quot;utf8&quot; is enforced to be the codepage
+           for sorting.
+
+SUPPORTED LANGUAGES / CODEPAGES
+       The following languages are supported:
+
+       Latin scripts
+
+        albanian      gypsy             portuguese
+        croatian      hausa             romanian
+        czech         hungarian         russian-iso
+        danish        icelandic         slovak-small
+        english       italian           slovak-large
+        esperanto     kurdish-bedirxan  slovenian
+        estonian      kurdish-turkish   spanish-modern
+        finnish       latin             spanish-traditional
+        french        latvian           swedish
+        general       lithuanian        turkish
+        german-din    lower-sorbian     upper-sorbian
+        german-duden  norwegian         vietnamese
+        greek-iso     polish
+
+       German recognizes two different sorting schemes to handle umlauts:
+       normally, &quot;ae&quot; is sorted like &quot;ae&quot;, but in phone books or dictionaries,
+       it is sorted like &quot;a&quot;. The first scheme is known as DIN order, the second
+       as Duden order.
+
+       &quot;*-iso&quot; language names assume that the raw index entries are in ISO
+       8859-9 encoding.
+
+       &quot;gypsy&quot; is a northern Russian dialect.
+
+       Cyrillic scripts
+
+        belarusian    mongolian         serbian
+        bulgarian     russian           ukrainian
+        macedonian
+
+       Other scripts
+
+        greek         klingon
+
+       Available Codepages
+
+       This is not yet written. You can look them up in your xindy distribution,
+       in the modules/lang/language/ directory (where language is your
+       language). They are named variant-codepage-lang.xdy, where variant- is
+       most often empty (for german, it&apos;s &quot;din5007&quot; and &quot;duden&quot;; for spanish,
+       it&apos;s &quot;modern&quot; and &quot;traditional&quot;, etc.)
+
+        &lt; Describe available codepages for each language &gt;
+
+        &lt; Describe relevance of codepages (as internal representation) for
+          LaTeX inputenc &gt;
+
+TEXINDY STANDARD MODULES
+       There is a set of texindy standard modules that help to process LaTeX
+       index files. Some of them are automatically loaded. Some of them are
+       loaded by default, this can be turned off with a texindy option. Others
+       may be specified as &quot;--module&quot; argument to achieve a specific effect.
+
+        xindy Module    Category  Description
+
+       Sorting
+
+        word-order      Default   A space comes before any letter in the
+                                  alphabet: ``index style&apos;&apos; is listed before
+                                  ``indexing&apos;&apos;. Turn it off with option -l.
+        letter-order    Add-on    Spaces are ignored: ``index style&apos;&apos;
+                                  is sorted after ``indexing&apos;&apos;.
+        keep-blanks     Add-on    Leading and trailing white space (blanks
+                                  and tabs) are not ignored; intermediate
+                                  white space is not changed.
+        ignore-hyphen   Add-on    Hyphens are ignored:
+                                  ``ad-hoc&apos;&apos; is sorted as ``adhoc&apos;&apos;.
+        ignore-punctuation Add-on All kinds of punctuation characters are
+                                  ignored: hyphens, periods, commas, slashes,
+                                  parentheses, and so on.
+        numeric-sort    Auto      Numbers are sorted numerically, not like
+                                  characters: ``V64&apos;&apos; appears before ``V128&apos;&apos;.
+
+       Page Numbers
+
+        page-ranges     Default   Appearances on more than two consecutive
+                                  pages are listed as a range: ``1--4&apos;&apos;.
+                                  Turn it off with option -r.
+        ff-ranges       Add-on    Uses implicit ``ff&apos;&apos; notation for ranges
+                                  of three pages, and explicit ranges
+                                  thereafter: 2f, 2ff, 2--6.
+        ff-ranges-only  Add-on    Uses only implicit ranges: 2f, 2ff.
+        book-order      Add-on    Sorts page numbers with common book numbering
+                                  scheme correctly -- Roman numerals first, then
+                                  Arabic numbers, then others: i, 1, A.
+
+       Markup and Layout
+
+        tex             Auto      Handles basic TeX conventions.
+        latex-loc-fmts  Auto      Provides LaTeX formatting commands
+                                  for page number encapsulation.
+        latex           Auto      Handles LaTeX conventions, both in raw
+                                  index entries and output markup; implies
+                                  tex.
+        makeindex       Auto      Emulates the default MakeIndex input syntax
+                                  and quoting behavior.
+        latin-lettergroups Auto   Layout contains a single Latin letter
+                                  above each group of words starting with the
+                                  same letter.
+        german-sty      Add-on    Handles umlaut markup of babel&apos;s german
+                                  and ngerman options.
+
+COMPATIBILITY TO MAKEINDEX
+       xindy does not claim to be completely compatible with MakeIndex, that
+       would prevent some of its enhancements. That said, we strive to deliver
+       as much compatibility as possible. The most important incompatibilities
+       are
+
+       &#183;   For raw index entries in LaTeX syntax, &quot;\index{aaa|bbb}&quot; is
+           interpreted differently. For MakeIndex &quot;bbb&quot; is markup that is output
+           as a LaTeX tag for this page number. For xindy, this is a location
+           attribute, an abstract identifier that will be later associated with
+           markup that should be output for that attribute.
+
+           For straight-forward usage, when &quot;bbb&quot; is &quot;textbf&quot; or similar, we
+           supply location attribute definitions that mimic MakeIndex&apos;s
+           behaviour.
+
+           For more complex usage, when &quot;bbb&quot; is not an identifier, no such
+           compatibility definitions exist and may also not been created with
+           current xindy. In particular, this means that by default the LaTeX
+           package &quot;hyperref&quot; will create raw index files that cannot be
+           processed with xindy. This is not a bug, this is the unfortunate
+           result of an intented incompatibility. It is currently not possible
+           to get both hyperref&apos;s index links and use xindy.
+
+           A similar situation is reported to exist for the &quot;memoir&quot; LaTeX
+           class.
+
+           Programmers who know Common Lisp and Lex and want to work on a remedy
+           should please contact the author.
+
+       &#183;   The MakeIndex compatibility definitions support only the default raw
+           index syntax and markup definition. It is not possible to configure
+           raw index parsing or use a MakeIndex style file to describe output
+           markup.
+
+ENVIRONMENT
+       &quot;TEXINDY_AUTO_MODULE&quot;
+           This is the name of the xindy module that loads all auto-loaded
+           modules. The default is &quot;texindy&quot;.
+
+AUTHOR
+       Joachim Schrod
+
+LEGALESE
+       texindy is free software; you can redistribute it and/or modify it under
+       the terms of the GNU General Public License as published by the Free
+       Software Foundation; either version 2 of the License, or (at your option)
+       any later version.
+
+       This program is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+       Public License for more details.
+
+
+
+Version 1.11                       2010-05-10                         texindy(1)
+
+</pre></body></html>

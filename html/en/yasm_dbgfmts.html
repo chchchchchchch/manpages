@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>yasm_dbgfmts - Yasm Supported Debugging Formats</title></head>
+<body><pre>
+
+YASM_DBGFMTS(7)           Yasm Supported Debug Formats           YASM_DBGFMTS(7)
+
+
+
+NAME
+       yasm_dbgfmts - Yasm Supported Debugging Formats
+
+SYNOPSIS
+       yasm -g dbgfmt ...
+
+DESCRIPTION
+       The standard Yasm distribution includes a number of modules for different
+       debugging formats. The debugging information is embedded into the object
+       file. Use of a non-&#8220;null&#8221; debug format also causes Yasm to output all
+       symbols to the object file (including local symbols).
+
+       The debug format is selected on the yasm(1) command line by use of the -g
+       dbgfmt command line option.
+
+CV8
+       The CV8 debug format is used by Microsoft Visual Studio 2005 (version
+       8.0) and is completely undocumented, although it bears strong
+       similarities to earlier CodeView formats. Yasm&#180;s support for the CV8
+       debug format is currently limited to generating assembly-level line
+       number information (to allow some level of source-level debugging). The
+       CV8 debug information is stored in the .debug$S and .debug$T sections of
+       the Win64 object file.
+
+DWARF2
+       The DWARF 2 debug format is a complex, well-documented standard for
+       debugging information. It was created to overcome shortcomings in STABS,
+       allowing for much more detailed and compact descriptions of data
+       structures, data variable movement, and complex language structures such
+       as in C++. The debugging information is stored in sections (just like
+       normal program sections) in the object file. Yasm supports full
+       pass-through of DWARF2 debugging information (e.g. from a C++ compiler),
+       and can also generate assembly-level line number information.
+
+NULL
+       The &#8220;null&#8221; debug format is a placeholder; it adds no debugging
+       information to the output file.
+
+STABS
+       The STABS debug format is a poorly documented, semi-standard format for
+       debugging information in COFF and ELF object files. The debugging
+       information is stored as part of the object file&#180;s symbol table and thus
+       is limited in complexity and scope. Despite this, STABS is a common
+       debugging format on older Unix and compatible systems, as well as DJGPP.
+
+SEE ALSO
+       yasm(1), yasm_objfmts(7)
+
+AUTHOR
+       Peter Johnson &lt;peter@tortall.net&gt;
+           Author.
+
+COPYRIGHT
+       Copyright &#169; 2006 Peter Johnson
+
+
+
+Yasm                              October 2006                   YASM_DBGFMTS(7)
+
+</pre></body></html>

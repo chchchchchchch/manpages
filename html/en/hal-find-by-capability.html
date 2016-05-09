@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hal-find-by-capability - find device objects by capability matching</title></head>
+<body><pre>
+
+HAL-FIND-BY-CAPABILITY(1)                              HAL-FIND-BY-CAPABILITY(1)
+
+
+
+NAME
+       hal-find-by-capability - find device objects by capability matching
+
+SYNOPSIS
+       hal-find-by-capability [options]
+
+
+DESCRIPTION
+       hal-get-capability  finds  device  object  in  the HAL device database by
+       looking at device capabilities. For more information about both  the  big
+       picture  and  specific HAL properties, refer to the HAL spec which can be
+       found in /usr/share/doc/hal-doc/spec/hal-spec.html depending on the  dis&#8208;
+       tribution.
+
+
+OPTIONS
+       The following options are supported:
+
+       --capability
+              The name of the capability.
+
+       --verbose
+              Verbose output.
+
+       --help Print out usage.
+
+       --version
+              Print the version.
+
+
+RETURN VALUE
+       If  devices  matching  the  given  capability  are found each UDI (Unique
+       Device Identifier) is printed on stdout and the program exits  with  exit
+       code  0.  If  no devices are found or an error occured, the program exits
+       with a non-zero exit code.
+
+
+BUGS
+       Please send bug reports to either the distribution  or  the  HAL  mailing
+       list,  see  http://lists.freedesktop.org/mailman/listinfo/hal  on  how to
+       subscribe.
+
+
+SEE ALSO
+       hald(8), lshal(1), hal-set-property(1), hal-get-property(1), hal-find-by-
+       property(1), dbus-send(1)
+
+
+AUTHOR
+       Written  by  David  Zeuthen &lt;david@fubar.dk&gt; with a lot of help from many
+       others.
+
+
+
+
+                                                       HAL-FIND-BY-CAPABILITY(1)
+
+</pre></body></html>

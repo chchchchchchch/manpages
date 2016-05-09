@@ -1,0 +1,165 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::Header - DNS packet header class</title></head>
+<body><pre>
+
+Net::DNS::Header(3pm)  User Contributed Perl Documentation Net::DNS::Header(3pm)
+
+
+
+NAME
+       Net::DNS::Header - DNS packet header class
+
+SYNOPSIS
+       &quot;use Net::DNS::Header;&quot;
+
+DESCRIPTION
+       A &quot;Net::DNS::Header&quot; object represents the header portion of a DNS
+       packet.
+
+METHODS
+   new
+           $header = Net::DNS::Header-&gt;new;
+
+       &quot;new&quot; creates a header object appropriate for making a DNS query.
+
+   parse
+           ($header, $offset) = Net::DNS::Header-&gt;parse(\$data);
+
+       Parses the header record at the start of a DNS packet.  The argument is a
+       reference to the packet data.
+
+       Returns a Net::DNS::Header object and the offset of the next location in
+       the packet.
+
+       Parsing is aborted if the header object cannot be created (e.g., corrupt
+       or insufficient data).
+
+   print
+           $header-&gt;print;
+
+       Prints the header record on the standard output.
+
+   string
+           print $header-&gt;string;
+
+       Returns a string representation of the header object.
+
+   id
+           print &quot;query id = &quot;, $header-&gt;id, &quot;\n&quot;;
+           $header-&gt;id(1234);
+
+       Gets or sets the query identification number.
+
+   qr
+           print &quot;query response flag = &quot;, $header-&gt;qr, &quot;\n&quot;;
+           $header-&gt;qr(0);
+
+       Gets or sets the query response flag.
+
+   opcode
+           print &quot;query opcode = &quot;, $header-&gt;opcode, &quot;\n&quot;;
+           $header-&gt;opcode(&quot;UPDATE&quot;);
+
+       Gets or sets the query opcode (the purpose of the query).
+
+   aa
+           print &quot;answer is &quot;, $header-&gt;aa ? &quot;&quot; : &quot;non-&quot;, &quot;authoritative\n&quot;;
+           $header-&gt;aa(0);
+
+       Gets or sets the authoritative answer flag.
+&#12;   tc
+           print &quot;packet is &quot;, $header-&gt;tc ? &quot;&quot; : &quot;not &quot;, &quot;truncated\n&quot;;
+           $header-&gt;tc(0);
+
+       Gets or sets the truncated packet flag.
+
+   rd
+           print &quot;recursion was &quot;, $header-&gt;rd ? &quot;&quot; : &quot;not &quot;, &quot;desired\n&quot;;
+           $header-&gt;rd(0);
+
+       Gets or sets the recursion desired flag.
+
+   cd
+           print &quot;checking was &quot;, $header-&gt;cd ? &quot;not&quot; : &quot;&quot;, &quot;desired\n&quot;;
+           $header-&gt;cd(0);
+
+       Gets or sets the checking disabled flag.
+
+   ra
+           print &quot;recursion is &quot;, $header-&gt;ra ? &quot;&quot; : &quot;not &quot;, &quot;available\n&quot;;
+           $header-&gt;ra(0);
+
+       Gets or sets the recursion available flag.
+
+   ad
+           print &quot;The result has &quot;, $header-&gt;ad ? &quot;&quot; : &quot;not&quot;, &quot;been verified\n&quot;
+
+       Relevant in DNSSEC context.
+
+       (The AD bit is only set on answers where signatures have been
+       cryptographically verified or the server is authoritative for the data
+       and is allowed to set the bit by policy.)
+
+   rcode
+           print &quot;query response code = &quot;, $header-&gt;rcode, &quot;\n&quot;;
+           $header-&gt;rcode(&quot;SERVFAIL&quot;);
+
+       Gets or sets the query response code (the status of the query).
+
+   qdcount, zocount
+           print &quot;# of question records: &quot;, $header-&gt;qdcount, &quot;\n&quot;;
+           $header-&gt;qdcount(2);
+
+       Gets or sets the number of records in the question section of the packet.
+       In dynamic update packets, this field is known as &quot;zocount&quot; and refers to
+       the number of RRs in the zone section.
+
+   ancount, prcount
+           print &quot;# of answer records: &quot;, $header-&gt;ancount, &quot;\n&quot;;
+           $header-&gt;ancount(5);
+
+       Gets or sets the number of records in the answer section of the packet.
+       In dynamic update packets, this field is known as &quot;prcount&quot; and refers to
+       the number of RRs in the prerequisite section.
+
+   nscount, upcount
+           print &quot;# of authority records: &quot;, $header-&gt;nscount, &quot;\n&quot;;
+           $header-&gt;nscount(2);
+
+       Gets or sets the number of records in the authority section of the
+       packet.  In dynamic update packets, this field is known as &quot;upcount&quot; and
+       refers to the number of RRs in the update section.
+
+   arcount, adcount
+           print &quot;# of additional records: &quot;, $header-&gt;arcount, &quot;\n&quot;;
+           $header-&gt;arcount(3);
+&#12;       Gets or sets the number of records in the additional section of the
+       packet.  In dynamic update packets, this field is known as &quot;adcount&quot;.
+
+   data
+           $hdata = $header-&gt;data;
+
+       Returns the header data in binary format, appropriate for use in a DNS
+       query packet.
+
+COPYRIGHT
+       Copyright (c) 1997-2002 Michael Fuhr.
+
+       Portions Copyright (c) 2002-2004 Chris Reinhardt.
+
+       Portions Copyright (c) 2007 Dick Franks.
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Update, Net::DNS::Question, Net::DNS::RR, RFC 1035 Section
+       4.1.1
+
+
+
+perl v5.14.2                       2009-12-30              Net::DNS::Header(3pm)
+
+</pre></body></html>

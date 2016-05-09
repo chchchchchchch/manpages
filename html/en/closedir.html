@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>closedir - close a directory</title></head>
+<body><pre>
+
+CLOSEDIR(3)                 Linux Programmer&apos;s Manual                CLOSEDIR(3)
+
+
+
+NAME
+       closedir - close a directory
+
+SYNOPSIS
+       #include &lt;sys/types.h&gt;
+
+       #include &lt;dirent.h&gt;
+
+       int closedir(DIR *dirp);
+
+DESCRIPTION
+       The closedir() function closes the directory stream associated with dirp.
+       A successful call to closedir() also closes the underlying file  descrip&#8208;
+       tor  associated  with  dirp.  The directory stream descriptor dirp is not
+       available after this call.
+
+RETURN VALUE
+       The closedir() function returns 0 on success.  On error, -1 is  returned,
+       and errno is set appropriately.
+
+ERRORS
+       EBADF  Invalid directory stream descriptor dirp.
+
+CONFORMING TO
+       SVr4, POSIX.1-2001, 4.3BSD.
+
+SEE ALSO
+       close(2),  opendir(3),  readdir(3), rewinddir(3), scandir(3), seekdir(3),
+       telldir(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2008-09-23                        CLOSEDIR(3)
+
+</pre></body></html>

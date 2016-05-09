@@ -1,0 +1,94 @@
+<html>
+<head><meta charset=utf-8/>
+<title>spheremonics - 3d spherical harmonic shapes.</title></head>
+<body><pre>
+
+spheremonics(6x)               XScreenSaver manual              spheremonics(6x)
+
+
+
+NAME
+       spheremonics - 3d spherical harmonic shapes.
+
+SYNOPSIS
+       spheremonics  [-display  host:display.screen]  [-visual visual] [-window]
+       [-root] [-delay number] [-duration number] [-resolution number] [-wander]
+       [-no-spin]  [-spin  [XYZ]]  [-wireframe]  [-no-smooth] [-no-grid] [-bbox]
+       [-fps]
+
+DESCRIPTION
+       These closed objects are commonly called  spherical  harmonics,  although
+       they  are  only  remotely related to the mathematical definition found in
+       the solution to certain wave functions, most notable  the  eigenfunctions
+       of angular momentum operators.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the id number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -delay number
+               Per-frame  delay,  in  microseconds.   Default:  30000 (0.03 sec&#8208;
+               onds.).
+
+       -duration number
+               Duration.  5 - 1000.  Default: 100.
+
+       -resolution number
+               Resolution.  5 - 100.  Default: 64.
+
+       -wander | -no-wander
+               Whether the object should wander around the screen.
+
+       -spin [XYZ]
+               Around which axes should the object spin?
+
+       -no-spin
+               Don&apos;t spin.
+
+       -wireframe
+               Render in wireframe instead of solid.
+
+       -smooth | -no-smooth
+               Smoothed Lines.  Boolean.
+
+       -grid | -no-grid
+               Draw Grid.  Boolean.
+
+       -bbox | -no-bbox
+               Draw Bounding Box.  Boolean.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright  &#169;  2002 by Paul Bourke and Jamie Zawinski.  Permission to use,
+       copy, modify, distribute, and sell this software  and  its  documentation
+       for  any  purpose  is hereby granted without fee, provided that the above
+       copyright notice appear in all copies and that both that copyright notice
+       and this permission notice appear in supporting documentation.  No repre&#8208;
+       sentations are made about the suitability of this software for  any  pur&#8208;
+       pose.  It is provided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Paul Bourke and Jamie Zawinski.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)               spheremonics(6x)
+
+</pre></body></html>

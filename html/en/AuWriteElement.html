@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuWriteElement - write data to an ImportClient element in a flow</title></head>
+<body><pre>
+
+AuWriteElement(3)                                              AuWriteElement(3)
+
+
+
+Name
+       AuWriteElement - write data to an ImportClient element in a flow
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       void  AuWriteElement(server, flow, element, num_bytes, data, end_of_data,
+       status)
+           AuServer *server;
+           AuFlowID flow;
+           int element;
+           AuUint32 num_bytes;
+           AuPointer data;
+           AuBool end_of_data;
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       flow      Specifies the ID of the flow.
+
+       element   Specifies the index of the ImportClient element  to  write  the
+                 data to.
+
+       num_bytes Specifies the number of bytes of audio data to write.
+
+       data      Specifies the buffer to get the audio data from.
+
+       end_of_data
+                 Specifies if this is the last write for this import.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuWriteElement transfers audio data from the client  application  to  the
+       server, writing num_bytes from data to the ImportClient specified by ele&#8208;
+       ment in the audio flow flow.   If  end_of_data  is  AuTrue,  the  Import&#8208;
+       Client&apos;s eof flag will be set when the write is completed.
+
+Note
+       If  the  flow  is  &quot;trivial&quot;  (consisting  only of an ImportClient and an
+       ExportBucket), the num_samples fields in  the  ImportClient  and  Export&#8208;
+       Bucket  are ignored and a write past the end of the bucket will result in
+       an AuBadLength error.
+
+Errors
+       AuBadFlow, AuBadElement, AuBadValue, AuBadLength.
+
+See Also
+       AuReadElement.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - write to element           1.9.3                    AuWriteElement(3)
+
+</pre></body></html>

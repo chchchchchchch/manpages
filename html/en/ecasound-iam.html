@@ -1,0 +1,792 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ecasound-iam - ecasound interactive mode</title></head>
+<body><pre>
+
+ecasound-iam(1)                Multimedia software               ecasound-iam(1)
+
+
+
+NAME
+       ecasound-iam - ecasound interactive mode
+
+SYNOPSIS
+DESCRIPTION
+       Ecasound library contains an interpreter module that understands a set of
+       commands aimed at controlling various library services.  This  is  called
+       the  ecasound  interactive  mode  (EIAM). All programs linked to ecasound
+       library can use this facility.
+
+ECI API and return types
+       A special case of interactive mode use is  ecasound&#8217;s  control  interface
+       (ECI),  which is a small library providing easy access to the interactive
+       mode commands from outside of libecasound. When  issuing  inter  commands
+       using  the  control  interface,  it&#8217;s  possible that commands also return
+       information.  Currently supported return value  types  are:  string  [s],
+       list of strings [S] (elements separated by commas; escaped if necessary),
+       integer [i], long integer [li] and floating-point number [f]. These defi&#8208;
+       nitions  are  used throughout this document. Commands that return nothing
+       (void) are marked with [-]. Additionally, return type [e] marks an  error
+       condition.   When  an  interactive  mode  command results in an error, an
+       error string explaining the condition is returned.
+
+Limitations related to real-time control and modifications
+       It&#8217;s not possible to use all interactive mode commands to modify and con&#8208;
+       trol  objects  that belong to a connected chainsetup. Ecasound will auto&#8208;
+       matically disconnect (and later try to reconnect) the chainsetup in  case
+       these commands are received while connected. Commands that have this lim&#8208;
+       itation are:
+
+              cs-remove, cs-set-length,  cs-set-length-samples,  cs-toggle-loop,
+              cs-set-param,   cs-option,  c-add,   c-remove,  c-rename, c-clear,
+              ai-add,    ai-remove,    ai-attach,     ai-forward,     ai-rewind,
+              ai-set-position,  ai-set-position-samples, ao-add, ao-add-default,
+              ao-remove,  ao-attach,   ao-forward,  ao-rewind,  ao-set-position,
+              ao-set-position-samples.
+
+
+       The  following  commands  may be used on with a connected chainsetup, but
+       they require pausing the engine temporarily (if  running)  and  this  can
+       cause  audible  gaps to playback and recording. In practise this means it
+       is currently not possible to add or remove  chain  operators  in  a  gap&#8208;
+       less/seamless fashion. The affected commands:
+
+              cop-add, ctrl-add,
+
+
+       The following commands can be used on a connected chainsetup and when the
+       engine is running (not a complete list but at least  these  commands  are
+       supported):
+
+              cop-set,   copp-set,   ctrlp-set,   c-bypass,   c-muting,  setpos,
+              cs-set-position, *-describe *-deselect, *-get, *-list,  *-register
+              *-select, *-selected, *-status, dump-*, int-*, jack-*, map-*
+
+
+GENERAL
+       quit, q
+              Quit  ecasound session. What this means in practice depends on the
+              client implementation. In ecasound interactive mode, &#8217;quit&#8217; termi&#8208;
+              nates the ecasound process. When sent over ecasound server connec&#8208;
+              tion (aka NetECI), &#8217;quit&#8217; terminates the  active  network  connec&#8208;
+              tion, but does not terminate the ecasound server process. [-]
+
+       start, t
+              Processing is started (play). Error string is return if any errors
+              upon startup are encountered. [e]
+
+       stop, s
+              Stop processing. [-]
+
+       stop-sync, s
+              Stop processing with a blocking call (do not return  until  engine
+              has actually stopped). [-]
+
+       run    Like &#8217;start&#8217; but blocks until processing is finished. Error string
+              is return if any errors  upon  startup,  or  during  process,  are
+              encountered. [e]
+
+       debug &#8217;debug-level&#8217;
+              Set  debug level to &#8217;debug-level&#8217;. Notice that client programs can
+              reimplement the debug routines. [-]
+
+
+       resource-file &#8217;path-to-file&#8217;
+              Overrides the global and user  resource  files.  Does  not  affect
+              already  created  objects. This command is equivalent to &#8217;-R&#8217; eca&#8208;
+              sound option (see ecasound (1) man page).
+
+       -prefix:arg1,...,argN
+              Equivalent to issuing &#8217;cs-option -prefix:arg1,...,argN). See docu&#8208;
+              mentation for &#8217;cs-option&#8217;.
+
+       help&#8217;, &#8217;h&#8217;
+              Help! [-]
+
+GLOBAL
+       engine-status
+              Returns  a  string describing the engine status (running, stopped,
+              finished, error, not ready). See also cs-status. [s]
+
+       engine-launch
+              Starts the real-time engine. Engine  will  execute  the  currently
+              connected  chainsetup  (see &#8217;cs-connect). This action does not yet
+              start actual processing (see start and  stop).  When  ecasound  is
+              used  as  a  JACK  client, issuing engine-launch makes ecasound an
+              active JACK client (i.e. ecasound&#8217;s  ports  can  be  connected  to
+              other JACK clients). [-]
+
+       engine-halt
+              Stops the engine. Does not disconnect the chainsetup that was run&#8208;
+              ning. See also cs-disconnet and stop. When ecasound is used  as  a
+              JACK  client,  engine-halt will cause ecasound to become a deacti&#8208;
+              vated client (all JACK connections are torn down). [-]
+
+CHAINSETUPS
+       Chainsetup is the central data object. All other  objects  (inputs,  out&#8208;
+       puts,  chains,  etc)  are connected to some chainsetup. There can be many
+       chainsetups but only one can be connected. Similarly only one  chainsetup
+       can  be  selected.  If not otherwise specified operations are done on the
+       selected chainsetup. Some operations also require  that  selected  chain&#8208;
+       setup is not connected.
+
+       cs-add &#8217;name&#8217;
+              Adds a new chainsetup with name &#8217;name&#8217;. &#8217;name&#8217; is now the selected
+              chainsetup. [-]
+
+       cs-remove
+              Removes currently selected chainsetup. [-]
+&#12;       cs-list
+              Returns a list of all chainsetups. [S]
+
+       cs-select &#8217;name&#8217;
+              Selects chainsetup &#8217;name&#8217;. [-]
+
+       cs-selected
+              Returns the name of currently selected chainsetup. [s]
+
+       cs-index-select &#8217;cs_index&#8217;, cs-iselect &#8217;cs_index&#8217;
+              Selects a chainsetup based on a  short  index  string.  Chainsetup
+              names can be rather long. This command can be used to avoid typing
+              these long names. &#8217;cs_index&#8217; is an integer value, where &#8217;1&#8217; refers
+              to  the  first  audio  input/output.  You  can  use  &#8217;cs-list&#8217; and
+              &#8217;cs-status&#8217; to get a full list of currently available chainsetups.
+              [-]
+
+       cs-load &#8217;filename&#8217;
+              Adds  a new chainsetup by loading it from file &#8217;filename&#8217;.  &#8217;file&#8208;
+              name&#8217; is now the selected chainsetup. [-]
+
+       cs-save
+              Saves the currently selected chainsetup to file. If chainsetup was
+              loaded  from  a file, the saved version will replace the original.
+              If it doesn&#8217;t have a  default  filename,  it&#8217;s  saved  to  &quot;chain&#8208;
+              setup_name.ecs&quot;. [-]
+
+       cs-save-as &#8217;filename&#8217;
+              Saves currently selected chainsetup to file &#8217;filename&#8217;. [-]
+
+       cs-edit
+              Currently  selected  chainsetup is saved to a temporary file. This
+              file is loaded to an external editor (see ecasoundrc  (5)).  After
+              editing, the chainsetup is loaded back to ecasound. [-]
+
+       cs-is-valid
+              Whether  currently  selected  chainsetup  is  valid  (=can be con&#8208;
+              nected)? [i]
+
+       cs-connect
+              Connect currently selected chainsetup to engine. When  connecting,
+              all  resources  (e.g. files, soundcard devices, external programs)
+              needed to execute the chainsetup are reserved. Only one chainsetup
+              can be connected at a time. Error string is returned if connection
+              fails (for instance due to error in allocating the resources). [e]
+
+       cs-disconnect
+              Disconnect currently connected chainsetup. This action  will  free
+              all external resources needed by the chainsetup. [-]
+
+       cs-connected
+              Returns the name of currently connected chainsetup. [s]
+
+       cs-rewind  &#8217;time-in-seconds&#8217;,  rewind &#8217;time-in-seconds&#8217;, rw &#8217;time-in-sec&#8208;
+       onds&#8217;
+              Rewinds the current chainsetup position by &#8217;time-in-seconds&#8217;  sec&#8208;
+              onds.  Position of all inputs and outputs attached to the selected
+              chainsetup is also affected. [-]
+
+       cs-forward    &#8217;time-in-seconds&#8217;,    forward     &#8217;time-in-seconds&#8217;,     fw
+       &#8217;ttime-in-seconds&#8217;
+              The  current chainsetup position is forwarded by &#8217;time-in-seconds&#8217;
+              seconds. Position of  all  inputs  and  outputs  attached  to  the
+              selected chainsetup is also affected. [-]
+
+       cs-set-position  &#8217;time-in-seconds&#8217;,  cs-setpos  &#8217;time-in-seconds&#8217;, setpos
+       &#8217;time-in-seconds&#8217;, set-position &#8217;time-in-seconds&#8217;
+              Sets the chainsetup position to &#8217;time-in-seconds&#8217; seconds from the
+              beginning.  Position  of  all  inputs  and outputs attached to the
+              selected chainsetup is also affected. [-]
+
+       cs-set-position-samples &#8217;time-in-samples&#8217;
+              Sets the chainsetup position to &#8217;time-in-samples&#8217; samples from the
+              beginning.  Position  of  all  inputs  and outputs attached to the
+              selected chainsetup is also affected. [-]
+
+       cs-get-position, cs-getpos, getpos, get-position
+              Returns the current chainsetup position in seconds. [f]
+
+       cs-get-position-samples
+              Returns the current chainsetup position in samples. [li]
+
+       cs-get-length, get-length
+              Returns the chainsetup length in seconds (if known). [f]
+
+       cs-get-length-samples, get-length-samples
+              Returns the chainsetup length in samples (if known). [li]
+
+       cs-set-length &#8217;seconds&#8217;
+              Sets processing time in seconds (doesn&#8217;t have  to  be  an  integer
+              value).   A  special-case  value  of  &#8217;-1&#8217; will set the chainsetup
+              length according to the longest input object. [-]
+
+       cs-set-length-samples &#8217;samples&#8217;
+              Sets processing time in samples. [-]
+
+       cs-toggle-loop
+              Toggle looping. When processing is  finished,  engine  will  start
+              again  from  the  initial  position.  It&#8217;s  not always possible to
+              enable looping (for instance all inputs and outputs have  infinite
+              length   and   chainsetup   length  is  not  explicitly  set  with
+              &#8217;cs-set-length&#8217;). [-]
+
+       cs-set-param
+              Interpret general chainsetup  parameters  like  for  example  &quot;-b&quot;
+              (buffersize),  &quot;-n&quot;  (name),  etc. See ecasound (1) for more info.
+              [-]
+
+       cs-set-audio-format &#8217;bits,channels,sample_rate&#8217;
+              Set the default sample parameters for  currently  selected  chain&#8208;
+              setup.   For  example cd-quality audio would be &quot;16,2,44100&quot;. This
+              does the same as command-line argument &quot;-f&quot;  (see  ecasound  (1)).
+              [-]
+
+       cs-status, status, st
+              Prints   out   status   information  about  available  chainsetup.
+              Detailed information is printed out for connected (=available  for
+              running)  nd selected (=available for editing) chainsetups.  Other
+              chainsetups are listed, but further details are suppressed. To get
+              full  details of a specific chainsetup, select it with &#8217;cs-select&#8217;
+              or &#8217;cs-iselect&#8217;, and then issue &#8217;cs-select&#8217;. [s]
+
+       cs-option &#8217;-prefix:arg1,...,argN&#8217;
+              One powerful feature of the interactive-mode is that  it  provides
+              full access to ecasound&#8217;s command-line syntax.  For instance, com&#8208;
+              mand &quot;cs-option -efb:400,200&quot; means  that  a  bandpass  filter  is
+              added to the currently selected chain, with initial parameters 400
+              (center frequency) and 200 (width in Hz).
+
+       Note that session level options (such as setting debug level) can not  be
+       used with &#8217;cs-option&#8217; (i.e. only options that modify chainsetups).
+
+       Note!  Ecasound interactive mode implicitly interprets all strings begin&#8208;
+       ning with a &#8217;-&#8217; as &quot;cs-option string&quot;.
+&#12;CHAINS
+       Chain is a simple signal flow abstraction. Every chain has one input  and
+       one  output.  All  chain  operators and their controllers are attached to
+       chains. Chains can be muted, unmuted and be bypassed.  If  not  otherwise
+       stated, all operations are done to currently selected chainsetup.
+
+       c-add &#8217;cname1,...,cnameN&#8217;
+              Adds  a  set  of  chains. Added chains are automatically selected.
+              Note that commas in chain names are not allowed. [-]
+
+       c-remove
+              Removes selected chains. [-]
+
+       c-list Returns a list of all chains. [S]
+
+       c-select &#8217;cname1,...,cnameN&#8217;
+              Selects chains. Other chains are automatically deselected. [-]
+
+       c-index-select &#8217;index1,...,indexN&#8217;, c-iselect &#8217;index1,...,indexN&#8217;
+              Selects a set of chains based on the list of indixes.  Each  index
+              is  an integer value, where &#8217;1&#8217; refers to the first chain. You can
+              use &#8217;c-list&#8217; and &#8217;c-status&#8217; to get a full list of currently avail&#8208;
+              able chains. [-]
+
+       c-select-all
+              Selects all chains. [-]
+
+       c-select-add &#8217;cname1,...,cnameN&#8217;
+              Selects more chains. [-]
+
+       c-deselect &#8217;cname1,...,cnameN&#8217;
+              Deselects chains. [-]
+
+       c-selected
+              Returns a list of selected chains. [S]
+
+       c-clear
+              Clear  selected  chains  by  removing all chain operators and con&#8208;
+              trollers.  Doesn&#8217;t change how chains are connected to  inputs  and
+              outputs. [-]
+
+       c-rename &#8217;new_name&#8217;
+              Renames  the  selected chain. When using this command, exactly one
+              chain must be selected. [-]
+
+       c-mute &lt;on|off|toggle&gt;
+              Set the mute state of the currently selected chain. When chain  is
+              muted, it will only output silence.
+
+       The  command  takes  a single parameter: &quot;on&quot; -&gt; chain is muted, &quot;off&quot; -&gt;
+       not muted, and &quot;toggle&quot; -&gt; change the  muting  state.   If  parameter  is
+       omitted,  &quot;toggle&quot;  is  assumed  (muting  is  either enabled or disabled,
+       depending on previous state).
+
+       Control of chain and chain operator muting  states  is  independent.   If
+       &quot;c-mute  off&quot;  is  executed, the states of individual cop-bypass commands
+       will take effect. If chain is muted, the chain will output silence  irre&#8208;
+       spective of the individual chain operator muting state. [-]
+
+       c-bypass &lt;on|off|toggle&gt;
+              Set  the  bypass state of the currently selected chain. When chain
+              is bypassed, sample data is passed through unprocessed (all  chain
+              operators are disabled for the given chain).
+
+       The command takes a single parameter: &quot;on&quot; -&gt; chain is bypassed, &quot;off&quot; -&gt;
+       no bypass, and &quot;toggle&quot; -&gt; change the  bypass  state.   If  parameter  is
+       omitted,  &quot;toggle&quot;  is  assumed  (bypass  is  either enabled or disabled,
+       depending on previous state).
+
+       Control of chain and chain operator bypass  states  is  independent.   If
+       chain  bypass  is  disabled, the states of individual cop-bypass commands
+       will take effect. If chain is bypassed, all operators are bypassed  inde&#8208;
+       pendetly of their cop-bypass state. [-]
+
+       c-status, cs
+              Print status info about all chains. [s]
+
+       c-is-bypassed
+              Returns  true if selected chain is currently bypassed (none of the
+              chain operators are run). See &#8217;c-bypass&#8217;. [i]
+
+       c-is-mute
+              Returns true if selected chain is currently muted (outputs silence
+              as its output). See &#8217;c-mute&#8217;. [i]
+
+AUDIO INPUT/OUTPUT OBJECTS
+       If  not  otherwise  stated, all operations are done to currently selected
+       object. All commands with ai- prefix operate on audio inputs, while  com&#8208;
+       mands with ao- operate on outputs.
+
+       ai-add &#8217;input_format_string&#8217;
+              Adds  a  new input object. See ecasound (1) man page for more info
+              about the argument format (&#8217;-i&#8217; option). Note on syntax: if any of
+              the parameters (such as a filename) contains commas, the parameter
+              should be enclosed in double-quotes. [-]
+
+       ao-add &#8217;output_format_string&#8217;
+              Adds a new output object. See ecasound (1) man page for more  info
+              about the argument format (&#8217;-o&#8217; option). If argument is omitted, a
+              default output device is added (see ecasoundrc (5)). Note on  syn&#8208;
+              tax:  if  any of the parameters (such as a filename) contains com&#8208;
+              mas, the parameter should be enclosed in double-quotes. [-]
+
+       ao-add-default
+              Adds the default output device (see ecasoundrc (5)). [-]
+
+       ai-describe, ao-describe
+              Returns a Ecasound Option Syntax (EOS) compliant string describing
+              the  input/output. See the Ecasound User&#8217;s Guide for more informa&#8208;
+              tion about EOS. This command was introduced in ecasound 2.4.4. [s]
+
+       ai-select &#8217;aobject_name&#8217;, ao-select &#8217;aobject_name&#8217;
+              Selects an audio object. &#8217;aobject_name&#8217; refers to the string  used
+              when   creating   the   object   (the   first  argument  given  to
+              ai-add/ao-add).   Note  that  as   a   important   difference   to
+              ai-add/ao-add,  one  should  not enclose the object name in double
+              quotes for ai-select/ao-select. In the case a chainsetup  contains
+              multiple  inputs, or outputs, with identical name, &#8217;ai-select&#8217; and
+              &#8217;ao-select&#8217; will select the first matching instance. In  order  to
+              select a specific instance, the &#8217;ai-iselect&#8217; and &#8217;ao-iselect&#8217; com&#8208;
+              mands need to be used. [-]
+
+       ai-index-select     &#8217;aobject_index&#8217;,     ai-iselect      &#8217;aobject_index&#8217;,
+       ao-index-select &#8217;aobject_index&#8217;, ao-iselect &#8217;aobject_index&#8217;
+              Select some audio object based on a short index string. Especially
+              file names can be rather long. This command can be used  to  avoid
+              typing  these  long  names  when  selecting  audio  objects. &#8217;aob&#8208;
+              ject_index&#8217; is an integer value, where &#8217;1&#8217;  refers  to  the  first
+              audio  input/output.  You can use &#8217;ai-list&#8217; and &#8217;ao-list&#8217; to get a
+              full list of currently available inputs/outputs. [-]
+
+       ai-selected, ao-selected
+              Returns the name of the currently selected audio object. [s]
+
+       ai-attach, ao-attach
+              Attaches the currently  selected  audio  object  to  all  selected
+              chains. [-]
+
+       ai-remove, ao-remove
+              Removes  the  currently selected audio object from the chainsetup.
+              [-]
+
+       ai-forward   &#8217;time_in_seconds&#8217;,   ai-fw   &#8217;time_in_seconds&#8217;,   ao-forward
+       &#8217;time_in_seconds&#8217;, ao-fw &#8217;time_in_seconds&#8217;
+              Selected  audio  object is forwarded by &#8217;time-in-seconds&#8217; seconds.
+              Time should be given as a floating point value (eg. 0.001  is  the
+              same as 1ms). [-]
+
+       ai-rewind    &#8217;time_in_seconds&#8217;,    ai-rw   &#8217;time_in_seconds&#8217;,   ao-rewind
+       &#8217;time_in_seconds&#8217;, ao-rw &#8217;time_in_seconds&#8217;
+              Selected audio object is rewinded  by  &#8217;time-in-seconds&#8217;  seconds.
+              Time  should  be given as a floating point value (eg. 0.001 is the
+              same as 1ms). [-]
+
+       ai-setpos &#8217;time_in_seconds&#8217;, ai-set-position &#8217;time_in_seconds&#8217;, ao-setpos
+       &#8217;time_in_seconds&#8217;, ao-set-position &#8217;time_in_seconds&#8217;
+              Set audio object position to &#8217;time_in_seconds&#8217;. [-]
+
+       ai-set-position-samples     &#8217;time_in_samples&#8217;,    ao-set-position-samples
+       &#8217;time_in_samples&#8217;
+              Set audio object position to &#8217;time_in_samples&#8217;. [-]
+
+       ai-getpos, ai-get-position, ao-getpos, ao-get-position
+              Returns the audio object position in seconds. [f]
+
+       ai-get-position-samples, ao-get-position-samples
+              Returns the audio object position in samples. [li]
+
+       ai-get-length, ao-get-length
+              Returns the audio object length in seconds. [f]
+
+       ai-get-length-samples, ao-get-length-samples
+              Returns the audio object length in samples. [li]
+
+       ai-get-format, ao-get-format
+              Returns the audio format of the selected audio input/output  as  a
+              formatted  string. See documentation for &#8217;-f&#8217; command-line option.
+              [s]
+
+       ai-list, ao-list
+              Returns a list of all input/output objects. [S]
+
+       aio-register
+              Prints a list of registered audio object types. [s]
+
+       aio-status
+              Audio object status (index strings, position, length, etc). [s]
+
+CHAIN OPERATORS
+       Chain operators are used to process and analyze sample  data.   They  are
+       attached  to  chains.  If not otherwise stated, currently selected chain&#8208;
+       setup and chain are used. Also, &#8217;chainop_id&#8217; and &#8217;param_id&#8217; are  used  to
+       select  chain operators and their parameters. First valid value for these
+       parameters is 1.
+
+       cop-add &#8217;cop_format_string&#8217;
+              Adds a new chain operator. In addition to normal chain  operators,
+              this  commmand  can also be used to add effect presets and various
+              plugins. Note; it is not possible to  add  operators  to  multiple
+              chains  at  once. In other words only one chain should be selected
+              when issuing &#8217;cop-add&#8217;.  See ecasound (1) man page for more  info.
+              [-]
+
+       cop-bypass &lt;on|off|toggle&gt;
+              Set  the  bypass  state  of the currently selected chain operator.
+              The  command  takes  a  single  parameter:  &quot;on&quot;  -&gt;  operator  is
+              bypassed,  &quot;off&quot;  -&gt;  no bypass, and &quot;toggle&quot; -&gt; change the bypass
+              state.  If parameter is omitted, &quot;toggle&quot; is  assumed  (bypass  is
+              either enabled or disabled, depending on previous state). [-]
+
+       cop-is-bypassed
+              Returns  true  if  selected  chain  operator is currently bypassed
+              (temporarily not part of the processing chain). [i]
+
+       cop-describe
+              Returns a Ecasound Option Syntax (EOS) compliant string describing
+              the  chain operator. See the Ecasound User&#8217;s Guide for more infor&#8208;
+              mation about EOS. This command was introduced in  ecasound  2.4.4.
+              [s]
+
+       cop-remove
+              Removes the selected chain operator. [-]
+
+       cop-list
+              Returns  a  list  of all chain operators attached to the currently
+              selected chain. [S]
+
+       cop-select   &#8217;param_id&#8217;,   cop-index-select    &#8217;param_id&#8217;,    cop-iselect
+       &#8217;param_id&#8217;
+              Selects a chain operator. [-]
+
+       cop-selected
+              Returns the index number of currently selected chain operator. [i]
+
+       cop-set &#8217;chainop_id,param_id,value&#8217;
+              Changes  the  value  of  a single chain operator parameter. Unlike
+              other chain operator commands, this can also be used  during  pro&#8208;
+              cessing.  See also &#8217;cop-get&#8217;. [-]
+
+       cop-get &#8217;chainop_id,param_id&#8217;
+              Returns  the  current value of chain operator parameter identified
+              by &#8217;chainop_id&#8217; and &#8217;param_id&#8217;. This command is  a  shorthand  for
+              &#8217;cop-select chainop_id ; copp-iselect param_id ; copp-get&#8217;. [f]
+
+       cop-status
+              Returns info about chain operator status. [s]
+
+       copp-list
+              Returns a list of selected chain operator&#8217;s parameters. [S]
+
+       copp-select   &#8217;param_id&#8217;,   copp-index-select   &#8217;param_id&#8217;,  copp-iselect
+       &#8217;param_id&#8217;
+              Selects a chain operator parameter. [-]
+
+       copp-selected
+              Returns the index number  of  currently  selected  chain  operator
+              parameter. [i]
+
+       copp-set &#8217;value&#8217;
+              Sets the selected parameter value to &#8217;value&#8217;. [-]
+
+       copp-get
+              Returns the selected parameter value. See also &#8217;cop-get&#8217;. [f]
+
+       cop-register
+              Prints a list of registered chain operators. [s]
+
+       preset-register
+              Prints a list of registered effect presets. [s]
+
+       ladspa-register
+              Prints a list of registered LADSPA plugins. [s]
+
+CONTROLLERS
+       Controllers  are  used  to  control individual chain operator parameters.
+       They are attached to chains. If not otherwise stated, currently  selected
+       chainsetup and chains are used.
+
+       ctrl-add &#8217;copc_format_string&#8217;
+              Adds  a  new  controller and attach it to currently selected chain
+              operator.      The      argument      syntax       is       either
+              &quot;-&lt;id_string&gt;:par1,...,parN&quot;  or just &quot;&lt;id_string&gt;:par1,...,parN&quot;.
+              If parameter itself  contains  commas,  the  parameter  should  be
+              enclosed  in  double-quotes.   See  ecasound (1) man page for more
+              info. [-]
+
+       ctrl-describe
+              Returns a Ecasound Option Syntax (EOS) compliant string describing
+              the controller. See the Ecasound User&#8217;s Guide for more information
+              about EOS. This command was introduced in ecasound 2.4.4. [s]
+
+       ctrl-remove
+              Removes the selected controller. [-]
+
+       ctrl-list
+              Returns a list  of  all  controllers  attached  to  the  currently
+              selected chain. [S]
+
+       ctrl-select   &#8217;param_id&#8217;,   ctrl-index-select   &#8217;param_id&#8217;,  ctrl-iselect
+       &#8217;param_id&#8217;
+              Selects a controller. [-]
+
+       ctrl-selected
+              Returns the index number of currently selected controller. [i]
+
+       ctrl-status
+              Returns info about controller status. [s]
+
+       ctrl-register
+              Prints a list of registered controllers. [s]
+
+       ctrl-get-target
+              Returns the index number of the chain operator that  is  connected
+              to  the selected controller. The returned index refers to the cur&#8208;
+              rently selected chain (see &#8217;cop-list&#8217;). [i]
+
+       ctrlp-list
+              Returns a list of all  controller  parameters.  This  command  was
+              introduced in ecasound 2.4.2. [S]
+
+       ctrlp-select
+              Selects  a  controller  parameter.  This command was introduced in
+              ecasound 2.4.2. [-]
+
+       ctrlp-selected
+              Returns the index number of currently selected controller  parame&#8208;
+              ter. This command was introduced in ecasound 2.4.2. [i]
+
+       ctrlp-get
+              Returns  the selected controller parameter value. This command was
+              introduced in ecasound 2.4.2. [f]
+
+       ctrlp-set
+              Sets the selected controller parameter value to &#8217;value&#8217;. This com&#8208;
+              mand was introduced in ecasound 2.4.2. [-]
+
+JACK CONNECTION MANAGEMENT
+       If Ecasound is compiled with support for JACK audio server, the following
+       set of commands is provided  for  controlling  connections  between  JACK
+       ports.
+
+       jack-connect &#8217;src-port&#8217; &#8217;dest-port&#8217;
+              Make  a connection between the two ports given as parameters. This
+              command is similar to the &#8217;jack_connect&#8217; command line tool that is
+              distributed with JACK package. [-]
+&#12;       jack-disconnect &#8217;src-port&#8217; &#8217;dest-port&#8217;
+              Disconnect the two ports given as parameters. This command is sim&#8208;
+              ilar to the &#8217;jack_disconnect&#8217; command line tool that  is  distrib&#8208;
+              uted with JACK package. [-]
+
+       jack-list-connections
+              Returns  a  list  of  all JACK ports and a list of connections for
+              each port. This command is similar to the &#8217;jack_lsp&#8217; command  line
+              tool  (e.g.  &#8217;jack_lsp -c&#8217;) that is distributed with JACK package.
+              [s]
+
+INTERNAL COMMANDS
+       Internal commands are not directly aimed at normal use. They are  primar&#8208;
+       ily meant for use in scripting and frontends.
+
+       int-cmd-list
+              Returns a list of all registered interactive mode commands. [S]
+
+       int-log-history
+              Returns recent log messages sent by libecasound modules. This is a
+              good tool for debugging ECI/EIAM scripts  and  applications.  This
+              command was introduced in ecasound 2.4.0. [s]
+
+       int-output-mode-wellformed
+              Select the well-format output format for log messages. [-]
+
+       int-set-float-to-string-precision
+              Sets  precision  used in float to text conversions. Note that this
+              can be used to control the precision of float  return  values  for
+              ECI commands. [-]
+
+       int-set-log-history-length
+              Sets  the  log  history length. Defaults to 0 items.  This command
+              was introduced in ecasound 2.4.0. [-]
+
+       int-cmd-version-string
+              Returns ecasound interactive mode parser version string. [s]
+
+       int-cmd-version-lib-current
+              Returns  ecasound  interactive  mode  library  interface   version
+              (libtool). [i]
+
+       int-cmd-version-lib-revision
+              Returns  ecasound  interactive  mode  library  interface  revision
+              (libtool). [i]
+
+       int-cmd-version-lib-age
+              Returns ecasound interactive mode library interface age (libtool).
+              [i]
+
+OBJECT MAPS
+       Object  maps are central repositories for commonly used object types.  By
+       querying the maps, applications can get a list of all  registered  object
+       types and their properties.
+
+       map-cop-list
+              Prints a list of registered chain operators using the format spec&#8208;
+              ified in section OPERATOR DESCRIPTIONS. [s]
+
+       map-preset-list
+              Prints a list of registered effect presets using the format speci&#8208;
+              fied in section OPERATOR DESCRIPTIONS. [s]
+
+       map-ladspa-list
+              Prints a list of registered LADSPA plugins using the format speci&#8208;
+              fied in section OPERATOR DESCRIPTIONS. [s]
+
+       map-ladspa-id-list
+              Prints a list of registered LADSPA plugins using the format speci&#8208;
+              fied  in  section  OPERATOR DESCRIPTIONS.  Numerical LADPSA plugin
+              identifiers are used. [s]
+
+       map-ctrl-list
+              Prints a list of registered controllers using the format specified
+              in section OPERATOR DESCRIPTIONS. [s]
+
+DUMP COMMANDS
+       The  following dump commands are not meant for normal use.  Their primary
+       purpose is to provide an easy way to get internal state information  from
+       libecasound.  All  dump  commands  output  a single line with syntax &quot;key
+       value&quot; to the selected output stream (defaults to stdout).
+
+       dump-target &#8217;filename&#8217;
+              Set target stream for dumping. [-]
+
+       dump-status
+              Dumps  engine  status  -  &#8217;running&#8217;,  &#8217;stopped&#8217;,   &#8217;finished&#8217;   or
+              &#8217;notready&#8217;. [-]
+
+       dump-position
+              Dumps  the  global  position.  Printed  in  seconds using a float&#8208;
+              ing-point representation. [-]
+
+       dump-length
+              Dumps the overall processing length. Printed in  seconds  using  a
+              floating-point representation. [-]
+
+       dump-cs-status
+              Dumps  status string for the currently selected chainsetup - &#8217;con&#8208;
+              nected&#8217;, &#8217;selected&#8217; or an empty string. [-]
+
+       dump-c-selected
+              Dumps the name of currently selected chain. [-]
+
+       dump-ai-selected
+              Dumps label of currently selected audio  input.  If  no  input  is
+              selected, dumps an empty string. [-]
+
+       dump-ai-position
+              Dumps position of currently selected audio inputs. Printed in sec&#8208;
+              onds, using a floating-point representation. [-]
+
+       dump-ai-length
+              Dumps length of currently selected audio input.  Printed  in  sec&#8208;
+              onds, using a floating-point representation. [-]
+
+       dump-ai-open-state
+              Dumps audio input state info. Either &#8217;open&#8217; or &#8217;closed&#8217;. [-]
+
+       dump-ao-selected
+              Dumps  label  of  currently selected audio output. If no output is
+              selected, dumps an empty string. [-]
+
+       dump-ao-position
+              Dumps position of currently selected  audio  outputs.  Printed  in
+              seconds, using a floating-point representation. [-]
+
+       dump-ao-length
+              Dumps  length  of currently selected audio output. Printed in sec&#8208;
+              onds, using a floating-point representation. [-]
+
+       dump-ao-open-state
+              Dumps audio output state info. Either &#8217;open&#8217; or &#8217;closed&#8217;. [-]
+
+       dump-cop-value &#8217;chainop,param&#8217;
+              Dumps chain operator parameter value. &#8217;chainop&#8217;  and  &#8217;param&#8217;  are
+              operator and parameter index values (1...n). [-]
+
+OPERATOR DESCRIPTIONS
+       The  map-xxx-list  commands  return  a  string  containing all registered
+       objects of the given type xxx. Each line of the output describes one reg&#8208;
+       istered type. The used syntax is:
+
+              &#8217;keyword,name,description,num_of_params,par1_def,par2_def,...&#8217;
+
+              parX_def  describes  one  object  parameter.  This  definition  is
+              present for all parameters of the described object type.  The used
+              syntax is:
+
+              &#8217;name,description,defaultvalue,upper_bound_flag,upper_bound,
+              lower_bound_flag,lower_bound,toggled_flag,integer_flag,  logarith&#8208;
+              mic_flag,output_flag&#8217;
+
+              For exact descriptions of these fields, please see the header file
+              ecasound/libecasound/eca-operator.h.
+
+DEPRECATED COMMANDS
+       Use of following commands is deprecated. They still work in current  ver&#8208;
+       sion of Ecasound, but will be dropped in the future:
+
+              ai-wave-edit, ao-wave-edit
+
+
+SEE ALSO
+       ecasound (1), ecatools (1), ecasoundrc (5)
+
+AUTHOR
+            Kai Vehmanen, &lt;kvehmanen -at- eca -dot- cx &lt;kvehmanen -at- eca -dot-
+       cx&gt;&gt;
+
+
+
+                                   03.06.2012                    ecasound-iam(1)
+
+</pre></body></html>

@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>iswspace - test for whitespace wide character</title></head>
+<body><pre>
+
+ISWSPACE(3)                 Linux Programmer&apos;s Manual                ISWSPACE(3)
+
+
+
+NAME
+       iswspace - test for whitespace wide character
+
+SYNOPSIS
+       #include &lt;wctype.h&gt;
+
+       int iswspace(wint_t wc);
+
+DESCRIPTION
+       The  iswspace()  function  is  the  wide-character equivalent of the iss&#8208;
+       pace(3) function.  It tests whether wc is a wide character  belonging  to
+       the wide-character class &quot;space&quot;.
+
+       The  wide-character  class  &quot;space&quot;  is  disjoint from the wide-character
+       class &quot;graph&quot; and therefore also disjoint from  its  subclasses  &quot;alnum&quot;,
+       &quot;alpha&quot;, &quot;upper&quot;, &quot;lower&quot;, &quot;digit&quot;, &quot;xdigit&quot;, &quot;punct&quot;.
+
+       The  wide-character  class  &quot;space&quot;  contains  the  wide-character  class
+       &quot;blank&quot;.
+
+       The wide-character class &quot;space&quot; always contains at least the space char&#8208;
+       acter and the control characters &apos;\f&apos;, &apos;\n&apos;, &apos;\r&apos;, &apos;\t&apos;, &apos;\v&apos;.
+
+RETURN VALUE
+       The iswspace() function returns nonzero if wc is a wide character belong&#8208;
+       ing to the wide-character class &quot;space&quot;.  Otherwise it returns zero.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The behavior of iswspace() depends on the LC_CTYPE category of  the  cur&#8208;
+       rent locale.
+
+SEE ALSO
+       isspace(3), iswctype(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1999-07-25                        ISWSPACE(3)
+
+</pre></body></html>

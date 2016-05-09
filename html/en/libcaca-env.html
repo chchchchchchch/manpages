@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca-env - Libcaca environment variables Some environment variables can be used to change the behaviour of libcaca without having to modify the program which uses it. These variables are:</title></head>
+<body><pre>
+
+libcaca-env(3caca)                   libcaca                  libcaca-env(3caca)
+
+
+
+NAME
+       libcaca-env - Libcaca environment variables Some environment variables
+       can be used to change the behaviour of libcaca without having to modify
+       the program which uses it. These variables are:
+
+       &#183; CACA_DRIVER: set the backend video driver. In order of preference:
+         &#183; conio uses the DOS conio.h interface.
+         &#183; ncurses uses the ncurses library.
+         &#183; slang uses the S-Lang library.
+         &#183; x11 uses the native X11 driver.
+         &#183; gl uses freeglut and opengl libraries.
+         &#183; raw outputs to the standard output instead of rendering the canvas.
+           This is can be used together with cacaserver.
+       &#183; CACA_GEOMETRY: set the video display size. The format of this variable
+         must be XxY, with X and Y being integer values. This option currently
+         works with the raw, X11 and GL drivers.
+       &#183; CACA_FONT: set the rendered font. The format of this variable is
+         implementation dependent, but since it currently only works with the
+         X11 driver, an X11 font name such as fixed or 5x7 is expected.
+Version 0.99.beta18              Fri Apr 6 2012               libcaca-env(3caca)
+
+</pre></body></html>

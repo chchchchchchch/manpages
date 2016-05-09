@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSoundPlayFromFile - create a flow to play a file.</title></head>
+<body><pre>
+
+AuSoundPlayFromFile(3)                                    AuSoundPlayFromFile(3)
+
+
+
+Name
+       AuSoundPlayFromFile - create a flow to play a file.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+       #include &lt;audio/soundlib.h&gt;
+
+       AuEventHandlerRec   *AuSoundPlayFromFile(server,  filename,  destination,
+       volume, callback, callback_data, flow ,volume_mult_elem, monitor_element,
+       status)
+           AuServer *server;
+           char *filename;
+           AuDeviceID destination;
+           AuFixedPoint volume;
+           void    (*callback)    (AuServer   *,   AuEventHandlerRec   *,AuEvent
+       *,AuPointer);
+           AuPointer callback_data;
+           AuFlowID *flow; /* RETURN */
+           int *volume_mult_elem; /* RETURN */
+           int *monitor_element; /* RETURN */
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       filename  Specifies the name of the file to play.
+
+       destination
+                 Specifies the device to output the audio data.
+
+       volume    Specifies the volume.
+
+       callback  Specifies the procedure to be called for additional event  pro&#8208;
+                 cessing.
+
+       callback_data
+                 Specifies  any  additional  arguments to be passed to the call&#8208;
+                 back.
+
+       flow      If non-NULL, returns the flow ID.
+
+       volume_mult_elem
+                 If non-NULL, returns the index of the volume multipler element.
+
+       monitor_element
+                 If non-NULL, include an ExportMonitor element in the  flow  and
+                 return it&apos;s index.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSoundPlayFromFile creates a flow to play filename on device and returns
+       a pointer to the event handler created or NULL if there was an error.
+
+Errors
+       AuBadDevice.
+
+See Also
+       AuSoundPlay,  AuSoundPlayFromBucket, AuSoundPlayFromData, AuSoundPlaySyn&#8208;
+       chronousFromFile.
+&#12;       audiolib - Network Audio System C Language Interface
+
+
+
+soundlib                              1.9.3               AuSoundPlayFromFile(3)
+
+</pre></body></html>

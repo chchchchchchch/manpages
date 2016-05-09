@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pod2usage - print usage messages from embedded pod docs in files</title></head>
+<body><pre>
+
+POD2USAGE(1)            Perl Programmers Reference Guide            POD2USAGE(1)
+
+
+
+NAME
+       pod2usage - print usage messages from embedded pod docs in files
+
+SYNOPSIS
+       pod2usage   [-help] [-man] [-exit exitval] [-output outfile] [-verbose
+                   level] [-pathlist dirlist] file
+
+OPTIONS AND ARGUMENTS
+       -help   Print a brief help message and exit.
+
+       -man    Print this command&apos;s manual page and exit.
+
+       -exit exitval
+               The exit status value to return.
+
+       -output outfile
+               The output file to print to. If the special names &quot;-&quot; or &quot;&gt;&amp;1&quot; or
+               &quot;&gt;&amp;STDOUT&quot; are used then standard output is used. If &quot;&gt;&amp;2&quot; or
+               &quot;&gt;&amp;STDERR&quot; is used then standard error is used.
+
+       -verbose level
+               The desired level of verbosity to use:
+
+                   1 : print SYNOPSIS only
+                   2 : print SYNOPSIS sections and any OPTIONS/ARGUMENTS sections
+                   3 : print the entire manpage (similar to running pod2text)
+
+       -pathlist dirlist
+               Specifies one or more directories to search for the input file if
+               it was not supplied with an absolute path. Each directory path in
+               the given list should be separated by a &apos;:&apos; on Unix (&apos;;&apos; on
+               MSWin32 and DOS).
+
+       file    The pathname of a file containing pod documentation to be output
+               in usage message format (defaults to standard input).
+
+DESCRIPTION
+       pod2usage will read the given input file looking for pod documentation
+       and will print the corresponding usage message.  If no input file is
+       specified then standard input is read.
+
+       pod2usage invokes the pod2usage() function in the Pod::Usage module.
+       Please see &quot;pod2usage()&quot; in Pod::Usage.
+
+SEE ALSO
+       Pod::Usage, pod2text(1)
+
+AUTHOR
+       Please report bugs using &lt;http://rt.cpan.org&gt;.
+
+       Brad Appleton &lt;bradapp@enteract.com&gt;
+
+       Based on code for pod2text(1) written by Tom Christiansen
+       &lt;tchrist@mox.perl.com&gt;
+
+
+
+perl v5.14.2                       2014-09-30                       POD2USAGE(1)
+
+</pre></body></html>

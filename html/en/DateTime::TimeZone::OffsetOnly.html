@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::TimeZone::OffsetOnly - A DateTime::TimeZone object that just contains an offset</title></head>
+<body><pre>
+
+DateTime::TimeZone::OffUsernContributed Perl DateTime::TimeZone::OffsetOnly(3pm)
+
+
+
+NAME
+       DateTime::TimeZone::OffsetOnly - A DateTime::TimeZone object that just
+       contains an offset
+
+VERSION
+       version 1.58
+
+SYNOPSIS
+         my $offset_tz = DateTime::TimeZone-&gt;new( name =&gt; &apos;-0300&apos; );
+
+DESCRIPTION
+       This class is used to provide the DateTime::TimeZone API needed by
+       DateTime.pm, but with a fixed offset.  An object in this class always
+       returns the same offset as was given in its constructor, regardless of
+       the date.
+
+USAGE
+       This class has the same methods as a real time zone object, but the
+       &quot;category()&quot; method returns undef.
+
+   DateTime::TimeZone::OffsetOnly-&gt;new ( offset =&gt; $offset )
+       The value given to the offset parameter must be a string such as &quot;+0300&quot;.
+       Strings will be converted into numbers by the
+       &quot;DateTime::TimeZone::offset_as_seconds()&quot; function.
+
+   $tz-&gt;offset_for_datetime( $datetime )
+       No matter what date is given, the offset provided to the constructor is
+       always used.
+
+   $tz-&gt;name()
+   $tz-&gt;short_name_for_datetime()
+       Both of these methods return the offset in string form.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2013 by Dave Rolsky.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.14.2                       2013-03-11DateTime::TimeZone::OffsetOnly(3pm)
+
+</pre></body></html>

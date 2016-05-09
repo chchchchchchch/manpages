@@ -1,0 +1,66 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gii_cmd_event, gii_cmd_nodata_event - LibGII commands and information events</title></head>
+<body><pre>
+
+gii_cmd_event(3)                       GGI                      gii_cmd_event(3)
+
+
+
+NAME
+       gii_cmd_event,  gii_cmd_nodata_event  -  LibGII  commands and information
+       events
+
+SYNOPSIS
+       #include &lt;ggi/events.h&gt;
+
+       typedef struct {
+
+           COMMON_DATA;
+
+           uint32_t  code;
+
+       } gii_cmd_nodata_event;
+
+       #define GII_CMD_DATA_MAX  (248-sizeof(gii_cmd_nodata_event))
+
+       typedef struct gii_cmd_event {
+
+           COMMON_DATA;
+
+           uint32_t  code;
+           uint8_t   data[GII_CMD_DATA_MAX];
+
+       } gii_cmd_event;
+
+
+DESCRIPTION
+       These are used internally either to the application or  the  kernel.  The
+       same event is used for both Command and Information events.
+
+GENERATED EVENTS
+       gii_cmd_event  is  the  basic  structure  for evCommand and evInformation
+       events.  It may need to be casted to some other structure  (depending  on
+       code) to access the data.
+
+STRUCTURE MEMBERS
+       code   The command or request code.
+
+
+       data   Provides  raw  access  to the device and/or command specific data.
+              The recipient must not store references to the data. If  the  data
+              information is needed afterwards, copy it!
+
+
+DEVICE INFORMATION
+       One  use of evCommand is to convey some capabilities of a GII device, via
+       the GII_CMDCODE_GETDEVINFO command code.
+
+SEE ALSO
+       gii_event(3), gii_cmddata_getdevinfo(3)
+
+
+
+libgii-1.0.x                       2006-12-30                   gii_cmd_event(3)
+
+</pre></body></html>

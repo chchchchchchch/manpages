@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>tan, tanf, tanl - tangent function</title></head>
+<body><pre>
+
+TAN(3)                      Linux Programmer&apos;s Manual                     TAN(3)
+
+
+
+NAME
+       tan, tanf, tanl - tangent function
+
+SYNOPSIS
+       #include &lt;math.h&gt;
+
+       double tan(double x);
+       float tanf(float x);
+       long double tanl(long double x);
+
+       Link with -lm.
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       tanf(), tanl():
+           _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE
+           || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
+
+DESCRIPTION
+       The tan() function returns the tangent of x, where x is given in radians.
+
+RETURN VALUE
+       On success, these functions return the tangent of x.
+
+       If x is a NaN, a NaN is returned.
+
+       If x is positive infinity or negative infinity, a  domain  error  occurs,
+       and a NaN is returned.
+
+       If the correct result would overflow, a range error occurs, and the func&#8208;
+       tions return HUGE_VAL, HUGE_VALF, or HUGE_VALL,  respectively,  with  the
+       mathematically correct sign.
+
+ERRORS
+       See  math_error(7)  for  information on how to determine whether an error
+       has occurred when calling these functions.
+
+       The following errors can occur:
+
+       Domain error: x is an infinity
+              errno is set to EDOM (but see BUGS).   An  invalid  floating-point
+              exception (FE_INVALID) is raised.
+
+       Range error: result overflow
+              An overflow floating-point exception (FE_OVERFLOW) is raised.
+
+CONFORMING TO
+       C99,  POSIX.1-2001.   The variant returning double also conforms to SVr4,
+       4.3BSD, C89.
+
+BUGS
+       Before version 2.10, the glibc implementation did not set errno  to  EDOM
+       when a domain error occurred.
+
+SEE ALSO
+       acos(3), asin(3), atan(3), atan2(3), cos(3), ctan(3), sin(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2010-09-11                             TAN(3)
+
+</pre></body></html>

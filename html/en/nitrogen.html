@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>nitrogen - X11 background previewer and setter</title></head>
+<body><pre>
+
+NITROGEN(1)                         NITROGEN                         NITROGEN(1)
+
+
+
+NAME
+       nitrogen - X11 background previewer and setter
+
+SYNOPSIS
+       nitrogen [ OPTIONS ] DIRECTORY?
+
+DESCRIPTION
+       In normal working mode, provides an interface which displays all pictures
+       in the given DIRECTORY.  From this interface, it is possible to  set  the
+       X11  root pixmap either temporarily or set and store the picture, drawing
+       mode, and X display for restoration later.  If no directory is specified,
+       it  uses  the  stored  directories in your &quot;library&quot; (as of 1.5). See the
+       Preferences dialog.
+
+       When the --restore option is passed, nitrogen sets all  backgrounds  that
+       it  has  a configuration for and exits immediatly, for use in an .xinitrc
+       or .xsession file.
+
+OPTIONS
+       --no-recurse
+              Do not recurse into subdirectories of DIRECTORY.
+
+       --restore
+              Restores previously saved pictures to the root displays.
+
+       --sort=[option]
+              Sorts the background list by the given option.  By default,  items
+              are  sorted  as  they are found on the filesystem, giving a quasi-
+              newest first sorting order.  Valid options are:
+
+              alpha  Alphabetical order.
+
+              ralpha Reverse alphabetical order.
+
+              time   Modified time, ascending.
+
+              rtime  Modified time, descending.
+
+       --help A mystery option which saves the iguanas of Sweden.
+
+FILES
+       ~/.config/nitrogen/
+              Holds the configuration for saved backgrounds.
+
+BUGS
+       There are probably plenty of  them.   Report  all  bugs  to  Dave  Foster
+       &lt;daf@minuslab.net&gt;.
+
+AUTHORS
+       Dave Foster &lt;daf@minuslab.net&gt; Javeed Shaikh &lt;syscrash2k@gmail.com&gt;
+
+AVAILABILITY
+       Homepage  - http://projects.l3ib.org/nitrogen/.  The git repository is at
+       http://code.l3ib.org/nitrogen.git
+
+
+
+
+
+NITROGEN                           MARCH 2006                        NITROGEN(1)
+
+</pre></body></html>

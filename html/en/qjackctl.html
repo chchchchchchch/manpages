@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>qjackctl - User interface for controlling JACK (Jack Audio Connection Kit)</title></head>
+<body><pre>
+
+QJACKCTL(1)                                                          QJACKCTL(1)
+
+
+
+NAME
+       qjackctl  -  User  interface  for controlling JACK (Jack Audio Connection
+       Kit)
+
+SYNOPSIS
+       qjackctl [options]
+
+DESCRIPTION
+       This manual page documents briefly the  qjackctl  command.   This  manual
+       page was written for the Debian distribution because the original program
+       does not have a manual page.
+
+
+       qjackctl  is used for controlling the Jack Audio  Connection  Kit  (JACK)
+       and  as  a  patchbay for ALSA MIDI devices. Qjackctl also has support for
+       the JACK transport control protocol, so you can use it to start and  stop
+       the  JACK  transport.  Once  you start qjackctl, you get presented with a
+       single GUI window, the buttons are self-explanatory and have tooltips.
+
+
+OPTIONS
+       This program follows the usual GNU command line syntax, with long options
+       starting  with two dashes (`-&apos;).  A summary of options is included below.
+       For a complete description, see the Info files.
+
+       -s, --start
+              Start JACK audio server immediately
+
+       -p, --preset=[label]
+              Set default settings preset name
+
+       -a, --active-patchbay=[path]
+              Set active patchbay definition file
+
+       -n, --server-name=[label]
+              Set default JACK audio server name
+
+       -h, --help
+              Show help about command line options
+
+       -v, --version
+              Show version information.
+
+SEE ALSO
+       jackd(1).
+
+
+FILES
+       Settings   for    the    JACK    system    are    stored    in    ~/.con&#8208;
+       fig/rncbc.org/QjackCtl.conf and optionally in ~/.jackdrc.
+
+
+AUTHOR
+       This  manual  page was written by Guenter Geiger &lt;geiger@debian.org&gt;, for
+       the Debian project (but may be used by others).
+
+
+
+                                January 11, 2010                     QJACKCTL(1)
+
+</pre></body></html>

@@ -1,0 +1,139 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wicd-wired-settings.conf - controls Wicd's wireless network settings</title></head>
+<body><pre>
+
+WICD-WIRELESS-SETTINGS.CONF(5)                    WICD-WIRELESS-SETTINGS.CONF(5)
+
+
+
+NAME
+       wicd-wired-settings.conf - controls Wicd&apos;s wireless network settings
+
+
+DESCRIPTION
+       This  file  contains configuration information for wireless interfaces in
+       Wicd.
+       This file is located at /etc/wicd/wireless-settings.conf
+
+
+
+SETTINGS
+       bssid = &lt;BSSID_of_network&gt;
+              This value can be found using iwconfig(8).
+
+       essid = &lt;ESSID_of_network&gt;
+              This value can be found using iwconfig(8).
+
+       hidden = &lt;True|False&gt;
+              This option notes whether the network&apos;s ESSID is broadcast or not.
+
+       channel = &lt;integer_value&gt;
+              Valid channels are dependent upon country.
+              This value can be found using iwconfig(8).
+
+       mode = &lt;Master|Ad-hoc&gt;
+              This value can be found using iwconfig(8).
+
+       enctype = &lt;encryption_template&gt;
+              This can take the  value  of  any  encryption  template  shown  in
+              /etc/wicd/encryption/templates/.
+
+       encryption_method = WEP|WPA|WPA2&gt;
+              This value can be found using iwconfig(8).
+
+       key = &lt;plain_text_key&gt;
+              Be sure this file is readable only by root.
+
+       automatic = &lt;True|False&gt;
+              This  option  determines whether Wicd should automatically connect
+              to this network.
+
+       ip = &lt;None|ip_address&gt;
+              Use this option if you have a static ip address for your system.
+
+       netmask = &lt;None|networkmask&gt;
+              This setting is only appropriate if a static ip address is config&#8208;
+              ured above.
+
+       broadcast = &lt;None|broadcast_address&gt;
+              This setting is only appropriate if a static ip address is config&#8208;
+              ured above.
+
+       gateway = &lt;None|gateway_address&gt;
+              This setting is only appropriate if a static ip address is config&#8208;
+              ured above.
+
+       use_static_dns = &lt;True|False&gt;
+              True  =  use static DNS servers instead of accepting what the dhcp
+              server supplies.
+
+       use_global_dns = &lt;True|False&gt;
+              True = use the global DNS servers  provided  in  wicd-manager-set&#8208;
+              tings.conf(5).
+              This option is only appropriate if &quot;use_static_dns = True&quot;
+
+       dns1 = &lt;None|ip_address&gt;
+              Static  DNS address if &quot;use_static_dns = True&quot; and &quot;use_global_dns
+              = False&quot;
+
+       dns2 = &lt;None|ip_address&gt;
+              Static DNS address if &quot;use_static_dns = True&quot; and  &quot;use_global_dns
+              = False&quot;
+
+       dns3 = &lt;None|ip_address&gt;
+              Static  DNS address if &quot;use_static_dns = True&quot; and &quot;use_global_dns
+              = False&quot;
+
+       use_settings_globally = &lt;0|1&gt;
+              Wicd keeps track of whether to autoconnect to  networks  based  on
+              bssid.   This  ensures  that  you  don&apos;t  accidentally  connect to
+              another network that is not yours but happens  to  have  the  same
+              essid  - for example, there are a lot of commercial routers in use
+              with &quot;linksys&quot; as the essid.
+              0 = Do not use settings globally
+              1 = Use settings globally
+
+       beforescript = &lt;None|arbitrary_script&gt;
+              This defines a script to run before Wicd brings up the connection.
+              IMPORTANT - scripts should ONLY be writable by root and should  be
+              located in a directory that is writable by only root.
+
+       afterscript = &lt;None|arbitrary_script&gt;
+              This defines a script to run after Wicd brings up the connection.
+              IMPORTANT - scripts should ONLY be writable by root and located in
+              a directory that is writable by only root.
+
+       predisconnectscript = &lt;None|arbitrary_script&gt;
+              This defines a script to run before Wicd  disconnects  the  inter&#8208;
+              face.
+
+       postdisconnectscript = &lt;None|arbitrary_script&gt;
+              This defines a script to run after Wicd disconnects the interface.
+              IMPORTANT - scripts should ONLY be writable by root and located in
+              a directory that is writable by only root.
+
+
+
+
+OTHER
+       The &quot;use_settings_globally&quot; option determines how an individual network&apos;s
+       configuration  stanza  starts.  If the option is &quot;0&quot; (do not use settings
+       globally), then the stanza&apos;s top line will be the  bssid  of  the  access
+       point (in this format):
+       [00:15:3E:87:D3:68]
+       If the &quot;option is set to &quot;1&quot; (use settings globally), then the first line
+       of the stanza will be in this format:
+       [essid:UA Public Wireless Network]
+
+
+SEE ALSO
+       wicd(8), wicd-curses(8),  wicd-manager-settings.conf(5),  wicd-wired-set&#8208;
+       tings.conf(5).
+
+
+
+
+                                  wicd-1.7.2.4    WICD-WIRELESS-SETTINGS.CONF(5)
+
+</pre></body></html>

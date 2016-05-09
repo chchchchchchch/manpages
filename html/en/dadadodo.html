@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dadadodo - exterminate all rational thought</title></head>
+<body><pre>
+
+dadadodo(1)                                                          dadadodo(1)
+
+
+
+NAME
+       dadadodo - exterminate all rational thought
+
+SYNOPSIS
+       dadadodo [ options ] [ input-files ]
+
+DESCRIPTION
+       dadadodo is a program that analyses texts for Markov chains of word prob&#8208;
+       abilities and then generates random sentences based on  those  probabili&#8208;
+       ties.   Sometimes  these  sentences  are nonsense, but sometimes they cut
+       right through to the heart of the matter and reveal hidden meanings.
+
+OPTIONS
+       dadadodo accepts the following options:
+
+       -c, -count n
+              Generate n sentences.
+
+       -h, -help
+              Show summary of options and exit.
+
+       -html  Output HTML instead of plain text.
+
+       -l, -load file
+              Load compiled data from file (&#8216;-&#8217; for standard input).
+
+       -o, -output file
+              Save compiled data in file (&#8216;-&#8217; for standard output).
+
+       -p, -pause s
+              Delay s seconds between paragraphs.
+
+       -w, -columns columns
+              Format output for a device columns character cells in  width.   If
+              not  specified,  the  value of the environment variable COLUMNS is
+              used to determine the width.  If that variable is not  defined,  a
+              width of 72 is assumed.
+
+NOTES
+       Non-option  arguments  are  input files.  These should be text files, but
+       may be mail folders or HTML.  MIME messages are handled  sensibly.   When
+       no  output  file is specified, sentences will be generated from the input
+       data directly.  However, loading a saved file is far faster than re-pars&#8208;
+       ing the text files each time.
+
+ENVIRONMENT
+       COLUMNS
+              Determines the width (in character cells) of the output if the -w,
+              -columns option is not used.   If  not  set,  a  width  of  72  is
+              assumed.
+
+SEE ALSO
+       dadadodo&apos;s upstream website is http://www.jwz.org/dadadodo/.
+
+AUTHOR
+       dadadodo was written by Jamie Zawinski.
+
+       This  manual  page  was  written by Sudhakar Chandrasekharan &lt;thaths@net&#8208;
+       scape.com&gt;, based on the program&apos;s usage message.
+
+
+
+                                                                     dadadodo(1)
+
+</pre></body></html>

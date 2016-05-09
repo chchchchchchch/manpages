@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>BN_generate_prime, BN_is_prime, BN_is_prime_fasttest - generate primes and test for primality</title></head>
+<body><pre>
+
+BN_generate_prime(3SSL)              OpenSSL             BN_generate_prime(3SSL)
+
+
+
+NAME
+       BN_generate_prime, BN_is_prime, BN_is_prime_fasttest - generate primes
+       and test for primality
+
+SYNOPSIS
+        #include &lt;openssl/bn.h&gt;
+
+        BIGNUM *BN_generate_prime(BIGNUM *ret, int num, int safe, BIGNUM *add,
+            BIGNUM *rem, void (*callback)(int, int, void *), void *cb_arg);
+
+        int BN_is_prime(const BIGNUM *a, int checks, void (*callback)(int, int,
+            void *), BN_CTX *ctx, void *cb_arg);
+
+        int BN_is_prime_fasttest(const BIGNUM *a, int checks,
+            void (*callback)(int, int, void *), BN_CTX *ctx, void *cb_arg,
+            int do_trial_division);
+
+DESCRIPTION
+       BN_generate_prime() generates a pseudo-random prime number of num bits.
+       If ret is not NULL, it will be used to store the number.
+
+       If callback is not NULL, it is called as follows:
+
+       &#183;   callback(0, i, cb_arg) is called after generating the i-th potential
+           prime number.
+
+       &#183;   While the number is being tested for primality, callback(1, j,
+           cb_arg) is called as described below.
+
+       &#183;   When a prime has been found, callback(2, i, cb_arg) is called.
+
+       The prime may have to fulfill additional requirements for use in Diffie-
+       Hellman key exchange:
+
+       If add is not NULL, the prime will fulfill the condition p % add == rem
+       (p % add == 1 if rem == NULL) in order to suit a given generator.
+
+       If safe is true, it will be a safe prime (i.e. a prime p so that (p-1)/2
+       is also prime).
+
+       The PRNG must be seeded prior to calling BN_generate_prime().  The prime
+       number generation has a negligible error probability.
+
+       BN_is_prime() and BN_is_prime_fasttest() test if the number a is prime.
+       The following tests are performed until one of them shows that a is
+       composite; if a passes all these tests, it is considered prime.
+
+       BN_is_prime_fasttest(), when called with do_trial_division == 1, first
+       attempts trial division by a number of small primes; if no divisors are
+       found by this test and callback is not NULL, callback(1, -1, cb_arg) is
+       called.  If do_trial_division == 0, this test is skipped.
+
+       Both BN_is_prime() and BN_is_prime_fasttest() perform a Miller-Rabin
+       probabilistic primality test with checks iterations. If checks ==
+       BN_prime_checks, a number of iterations is used that yields a false
+       positive rate of at most 2^-80 for random input.
+
+       If callback is not NULL, callback(1, j, cb_arg) is called after the j-th
+       iteration (j = 0, 1, ...). ctx is a pre-allocated BN_CTX (to save the
+       overhead of allocating and freeing the structure in a loop), or NULL.
+
+RETURN VALUES
+       BN_generate_prime() returns the prime number on success, NULL otherwise.
+&#12;       BN_is_prime() returns 0 if the number is composite, 1 if it is prime with
+       an error probability of less than 0.25^checks, and -1 on error.
+
+       The error codes can be obtained by ERR_get_error(3).
+
+SEE ALSO
+       bn(3), ERR_get_error(3), rand(3)
+
+HISTORY
+       The cb_arg arguments to BN_generate_prime() and to BN_is_prime() were
+       added in SSLeay 0.9.0. The ret argument to BN_generate_prime() was added
+       in SSLeay 0.9.1.  BN_is_prime_fasttest() was added in OpenSSL 0.9.5.
+
+
+
+1.0.1e                             2013-02-11            BN_generate_prime(3SSL)
+
+</pre></body></html>

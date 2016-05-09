@@ -1,0 +1,37 @@
+<html>
+<head><meta charset=utf-8/>
+<title>debconf-loadtemplate - load template file into debconf database</title></head>
+<body><pre>
+
+DEBCONF-LOADTEMPLATE(1)              Debconf             DEBCONF-LOADTEMPLATE(1)
+
+
+
+NAME
+       debconf-loadtemplate - load template file into debconf database
+
+SYNOPSIS
+        debconf-loadtemplate owner file [file ..]
+
+DESCRIPTION
+       Loads one or more template files into the debconf database. The first
+       parameter specifies the owner of the templates (typically, the owner is
+       the name of a debian package). The remaining parameters are template
+       files to load.
+
+WARNING
+       This program should never be used from a maintainer script of a package
+       that uses debconf! It may however, be useful in debugging, or to seed the
+       debconf database.
+
+SEE ALSO
+       debconf-communicate(1)
+
+AUTHOR
+       Joey Hess &lt;joeyh@debian.org&gt;
+
+
+
+                                   2012-09-10            DEBCONF-LOADTEMPLATE(1)
+
+</pre></body></html>

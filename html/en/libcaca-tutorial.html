@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca-tutorial - A libcaca tutorial First, a very simple working program, to check for basic libcaca functionalities.</title></head>
+<body><pre>
+
+libcaca-tutorial(3caca)              libcaca             libcaca-tutorial(3caca)
+
+
+
+NAME
+       libcaca-tutorial - A libcaca tutorial First, a very simple working
+       program, to check for basic libcaca functionalities.
+
+       #include &lt;caca.h&gt;
+
+       int main(void)
+       {
+           caca_canvas_t *cv; caca_display_t *dp; caca_event_t ev;
+
+           dp = caca_create_display(NULL);
+           if(!dp) return 1;
+           cv = caca_get_canvas(dp);
+
+           caca_set_display_title(dp, &apos;Hello!&apos;);
+           caca_set_color_ansi(cv, CACA_BLACK, CACA_WHITE);
+           caca_put_str(cv, 0, 0, &apos;This is a message&apos;);
+           caca_refresh_display(dp);
+           caca_get_event(dp, CACA_EVENT_KEY_PRESS, &amp;ev, -1);
+           caca_free_display(dp);
+
+           return 0;
+       }
+
+       What does it do?
+
+       &#183; Create a display. Physically, the display is either a window or a
+         context in a terminal (ncurses, slang) or even the whole screen (VGA).
+
+       &#183; Get the display&apos;s associated canvas. A canvas is the surface where
+         everything happens: writing characters, sprites, strings, images... It
+         is unavoidable. Here the size of the canvas is set by the display.
+
+       &#183; Set the display&apos;s window name (only available in windowed displays,
+         does nothing otherwise).
+
+       &#183; Set the current canvas colours to black background and white
+         foreground.
+
+       &#183; Write the string &apos;This is a message&apos; onto the canvas, using the current
+         colour pair.
+
+       &#183; Refresh the display, causing the text to be effectively displayed.
+
+       &#183; Wait for an event of type CACA_EVENT_KEY_PRESS.
+
+       &#183; Free the display (release memory). Since it was created together with
+         the display, the canvas will be automatically freed as well.
+
+       You can then compile this code on an UNIX-like system using the following
+       commans (requiring pkg-config and gcc):
+
+       gcc `pkg-config --libs --cflags caca` example.c -o example
+
+
+Version 0.99.beta18              Fri Apr 6 2012          libcaca-tutorial(3caca)
+
+</pre></body></html>

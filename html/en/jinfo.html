@@ -1,0 +1,98 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jinfo - Configuration Info</title></head>
+<body><pre>
+
+jinfo(1)                                                                jinfo(1)
+
+
+
+Name
+       jinfo - Configuration Info
+
+SYNOPSIS
+       jinfo [ option ] pid
+       jinfo [ option ] executable core
+       jinfo [ option ] [server-id@]remote-hostname-or-IP
+
+
+PARAMETERS
+          option
+             Options  are  mutually  exclusive.  Option,  if used, should follow
+             immediately after the command name.
+
+
+          pid
+             process id for which the configuration info is to be  printed.  The
+             process  must  be  a  Java process. To get a list of Java processes
+             running on a machine, jps(1) may be used.
+
+
+          executable
+             Java executable from which the core dump was produced.
+
+
+          core
+             core file for which the configuration info is to be printed.
+
+
+          remote-hostname-or-IP
+             remote debug server&apos;s (see jsadebugd(1)) hostname or IP address.
+
+
+          server-id
+             optional unique id, if multiple debug servers are  running  on  the
+             same remote host.
+
+
+DESCRIPTION
+       jinfo  prints  Java configuration information for a given Java process or
+       core file or a remote debug server.  Configuration  information  includes
+       Java  System  properties  and Java virtual machine command line flags. If
+       the given process is running on a 64-bit VM, you may need to specify  the
+       -J-d64 option, e.g.:
+       jinfo -J-d64 -sysprops pid
+
+       NOTE  -  This  utility  is unsupported and may or may not be available in
+       future versions of the JDK. In Windows Systems where  dbgeng.dll  is  not
+       present, &apos;Debugging Tools For Windows&apos; need to be installed to have these
+       tools working. Also, PATH environment variable should contain  the  loca&#8208;
+       tion of jvm.dll used by the target process or the location from which the
+       Crash Dump file was produced.
+
+       For example, set PATH=&lt;jdk&gt;\jre\bin\client;%PATH%
+
+OPTIONS
+          &lt;no option&gt;
+             prints both command line flags as well as System  properties  name,
+             value pairs.
+
+          -flag name
+             prints the name and value of the given command line flag.
+&#12;          -flag [+|-]name
+             enables or disables the given boolean command line flag.
+
+          -flag name=value
+             sets the given command line flag to the specified value.
+
+          -flags
+             prints command line flags passed to the JVM. pairs.
+
+          -sysprops
+             prints Java System properties as name, value pairs.
+
+          -h prints a help message
+
+          -help
+             prints a help message
+
+
+SEE ALSO
+          o jps(1)
+
+          o jsadebugd(1)
+
+
+                                   16 Mar 2012                          jinfo(1)
+
+</pre></body></html>

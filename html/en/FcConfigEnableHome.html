@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigEnableHome - controls use of the home directory.</title></head>
+<body><pre>
+
+FcConfigEnableHome(3)                                      FcConfigEnableHome(3)
+
+
+
+NAME
+       FcConfigEnableHome - controls use of the home directory.
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcConfigEnableHome (FcBool enable);
+
+DESCRIPTION
+       If  enable  is  FcTrue,  then Fontconfig will use various files which are
+       specified relative to the user&apos;s home directory (using the ~ notation  in
+       the  configuration).  When  enable  is  FcFalse, then all use of the home
+       directory in these contexts will be disabled. The previous setting of the
+       value is returned.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012            FcConfigEnableHome(3)
+
+</pre></body></html>

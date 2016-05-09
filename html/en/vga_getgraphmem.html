@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_getgraphmem - returns the address of the VGA memory</title></head>
+<body><pre>
+
+vga_getgraphmem(3)             Svgalib User Manual            vga_getgraphmem(3)
+
+
+
+NAME
+       vga_getgraphmem - returns the address of the VGA memory
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       unsigned char *graph_mem; /* This declaration is already in vga.h */
+
+       unsigned char *vga_getgraphmem(void);
+
+
+DESCRIPTION
+       returns  a  pointer  to the 64K VGA frame buffer window.  vga_setpage(3),
+       vga_setreadpage(3) and vga_setwritepage(3) allow to select which page  of
+       the  VGA  memory  shows  up at this position.  vga_setlinearaddressing(3)
+       maps all VGA memory at a consecutive memory area (if  the  hardware  sup&#8208;
+       ports  it).   In this mode, vga_getgraphmem() will return the location of
+       this area too. You can also access the global variable  graph_mem,  which
+       will also contain this address.
+
+       Most  demos, esp.  vgatest(6) show the simple direct use of this function
+       to access screen memory.
+
+
+SEE ALSO
+       svgalib(7),  vgatest(6),  fun(6),  testlinear(6),   vga_setlinearaddress&#8208;
+       ing(3),   vga_claimvideomemory(3),   vga_getmodeinfo(3),  vga_setpage(3),
+       vga_setreadpage(3), vga_setwritepage(3),
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997                vga_getgraphmem(3)
+
+</pre></body></html>

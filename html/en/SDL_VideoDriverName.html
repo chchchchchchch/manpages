@@ -1,0 +1,35 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_VideoDriverName - Obtain the name of the video driver</title></head>
+<body><pre>
+
+SDL_VideoDriverName(3)          SDL API Reference         SDL_VideoDriverName(3)
+
+
+
+NAME
+       SDL_VideoDriverName - Obtain the name of the video driver
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       char *SDL_VideoDriverName(char *namebuf, int maxlen);
+
+DESCRIPTION
+       The  buffer  pointed  to  by  namebuf is filled up to a maximum of maxlen
+       characters (include the NULL terminator) with the name of the initialised
+       video  driver. The driver name is a simple one word identifier like &quot;x11&quot;
+       or &quot;windib&quot;.
+
+RETURN VALUE
+       Returns NULL if video has not been initialised with SDL_Init or a pointer
+       to namebuf otherwise.
+
+SEE ALSO
+       SDL_Init SDL_InitSubSystem
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01       SDL_VideoDriverName(3)
+
+</pre></body></html>

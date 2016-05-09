@@ -1,0 +1,37 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtAppReleaseCacheRefs - decrement reference counts for resources</title></head>
+<body><pre>
+
+XtAppReleaseCacheRefs(3)          XT FUNCTIONS          XtAppReleaseCacheRefs(3)
+
+
+
+NAME
+       XtAppReleaseCacheRefs - decrement reference counts for resources
+
+SYNTAX
+       void XtAppReleaseCacheRefs(XtAppContext app_context, XtCacheRef* refs);
+
+ARGUMENTS
+       app_context
+                 Specifies the application context.
+
+       refs      Specifies the list of cache references to be released.
+
+DESCRIPTION
+       XtAppReleaseCacheRefs decrements the reference count for the conversion
+       entries identified by the refs argument. This argument is a pointer to a
+       NULL-terminated list of XtCacheRef values. If any reference count reaches
+       zero, the destructor, if any, will be called and the resource removed
+       from the conversion cache.
+
+SEE ALSO
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3          XtAppReleaseCacheRefs(3)
+
+</pre></body></html>

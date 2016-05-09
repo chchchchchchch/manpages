@@ -1,0 +1,62 @@
+<html>
+<head><meta charset=utf-8/>
+<title>putpwent - write a password file entry</title></head>
+<body><pre>
+
+PUTPWENT(3)                 Linux Programmer&apos;s Manual                PUTPWENT(3)
+
+
+
+NAME
+       putpwent - write a password file entry
+
+SYNOPSIS
+       #include &lt;stdio.h&gt;
+       #include &lt;sys/types.h&gt;
+       #include &lt;pwd.h&gt;
+
+       int putpwent(const struct passwd *p, FILE *stream);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       putpwent(): _SVID_SOURCE
+
+DESCRIPTION
+       The  putpwent()  function writes a password entry from the structure p in
+       the file associated with stream.
+
+       The passwd structure is defined in &lt;pwd.h&gt; as follows:
+
+           struct passwd {
+               char    *pw_name;        /* username */
+               char    *pw_passwd;      /* user password */
+               uid_t    pw_uid;         /* user ID */
+               gid_t    pw_gid;         /* group ID */
+               char    *pw_gecos;       /* real name */
+               char    *pw_dir;         /* home directory */
+               char    *pw_shell;       /* shell program */
+           };
+
+RETURN VALUE
+       The putpwent() function returns 0 on success, or -1 if an error occurs.
+
+ERRORS
+       EINVAL Invalid (NULL) argument given.
+
+CONFORMING TO
+       SVr4.
+
+SEE ALSO
+       endpwent(3),  fgetpwent(3),  getpw(3),  getpwent(3),  getpwnam(3),  getp&#8208;
+       wuid(3), setpwent(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2007-07-26                        PUTPWENT(3)
+
+</pre></body></html>

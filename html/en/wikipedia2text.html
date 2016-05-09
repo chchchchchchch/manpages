@@ -1,0 +1,207 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wikipedia2text — displays Wikipedia entries on the command line</title></head>
+<body><pre>
+
+WIKIPEDIA2TEXT(1)                                              WIKIPEDIA2TEXT(1)
+
+
+
+NAME
+       wikipedia2text &#8212; displays Wikipedia entries on the command line
+
+SYNOPSIS
+       wikipedia2text  [-BCnNoOpPsSuU]   [-b  prog]   [ {-c  | -i  | -I }  patt]
+       [-l lang]  [-W base-url]  Query
+
+       wikipedia2text  -o [-b prog]  [-l lang]  Query
+
+       wikipedia2text [-h]
+
+       wikipedia2text  -v
+
+       wikipedia2text  -r
+
+DESCRIPTION
+       This manual page documents briefly the wikipedia2text command.
+
+       wikipedia2text fetches and renders Wikipedia articles using  a  text-mode
+       web-browser  (currently  recognises  elinks, links2, links, lynx and w3m)
+       and display the text of the article on STDOUT respectively in a pager.
+
+OPTIONS
+       The program recognizes the following command line options:
+
+       -b prog   Use program prog as browser.
+
+       -B        Do not use browser configured via configuration file  or  envi&#8208;
+                 ronment.
+
+       -c patt, -I patt
+                 Colorize case-sensitive pattern patt in output.
+
+       -C, -N    Colorize output.
+
+       -h        Show help and a summary of options.
+
+       -i patt   Colorize case-insensitive pattern patt in output.
+
+       -l lang   use  Wikipedia  in  language  lang. See the Wikipedia Languages
+                 entry elsewhere in this document.
+
+       -n        Do not colorize output.
+
+       -o        Open the Wikipedia page in the browser.
+
+       -O        Do not open the Wikipedia page in the browser.
+
+       -p        Use a pager (set by default).
+
+       -P        Don&apos;t use a pager.
+
+       -r        Display a random Wikipedia article.
+
+       -s        Display only the summary of the Wikipedia article.
+
+       -S        Display the full content of the Wikipedia article and not  only
+                 the summary.
+
+       -u        Just print the URL of the Wikipedia page and exit.
+
+       -U        Display  the full content of the Wikipedia article and not only
+                 print the URL of the page.
+
+       -v        Show version number.
+
+       -W base-url
+                 use base-url as base URL for wikipedia (e.g.  use  a  different
+                 wiki),  querying  this  URL will happen by appending the search
+                 term.
+
+ENVIRONMENT
+       The following environment variables are recognized:
+
+       ABROWSER  Browser to use as default instead of to found or configured web
+                 browser.
+
+       IGNCASE   Default  value  for  case-sensitivity of colorizing the output.
+                 Can be set to &quot;true&quot; or &quot;false&quot;.
+
+       LOCAL     Default value for language in which Wikipedia should  be  used.
+                 See the Wikipedia Languages entry elsewhere in this document.
+
+       OUTPUTURL Determines,  if  wikipedia2text  should display only the URL of
+                 the Wikipedia article by default.  Can  be  set  to  &quot;true&quot;  or
+                 &quot;false&quot;.
+
+       PAGER     Default  value  for pager to use. Can also be set to &quot;true&quot;, in
+                 which case, wikipedia2text tries to figure out the  appropriate
+                 pager, or &quot;false&quot;, which means not to use a pager at all.
+
+       SHORT     Determines,  if  wikipedia2text should display only the summary
+                 of the Wikipedia article by default. Can be set  to  &quot;true&quot;  or
+                 &quot;false&quot;.
+
+       USEBROWSER
+                 Determines,  if  wikipedia2text  should open the Wikipedia page
+                 via openurl in the globally set default browser,  i.e.  Firefox
+                 or Konqueror, by default. Can be set to &quot;true&quot; or &quot;false&quot;.
+
+FILES
+       $HOME/.wikipedia2textrc
+                 Will  be sourced from wikipedia2text on startup. Should contain
+                 variable assignments. The same variables as for the environment
+                 are recognised.
+
+WIKIPEDIA LANGUAGES
+       wikipedia2text currently supports the following Wikipedia languages:
+
+       af        Cape Dutch (Afrikaans)
+
+       als       Alemannic
+
+       ca        Catalan
+
+       cs        Czech
+
+       da        Danish
+
+       de        German
+
+       en        English
+
+       eo        Esperanto
+
+       es        Spanish
+
+       fi        Finnish
+
+       fr        French
+&#12;       hu        Hungarian
+
+       ia        Interlingua
+
+       is        Islandic
+
+       it        Italian
+
+       la        Latin
+
+       lb        Luxembourgian
+
+       nds       Low German
+
+       nl        Dutch
+
+       nn, no    Norwegian (Nynorsk and Bokm&#229;l)
+
+       pl        Polish
+
+       pt        Portuguese
+
+       rm        Rhaeto-Romanic
+
+       ro        Romanian
+
+       simple    Simple English
+
+       sk        Slovak
+
+       sl        Slovenian
+
+       sv        Swedish
+
+       tr        Turkish
+
+SEE ALSO
+       elinks(1), links(1), links2(1), lynx(1), w3m(1)
+
+AUTHOR
+       wikipedia2text was written by Christian Brabandt &lt;cb@256bit.org&gt;. Patches
+       also from Axel Beckert &lt;abe@deuxchevaux.org&gt;.
+
+       This manual page was written by Axel  Beckert  &lt;abe@deuxchevaux.org&gt;  for
+       the  Debian system (but may be used by others).  Permission is granted to
+       copy, distribute and/or modify this document under the terms of  the  GNU
+       General  Public  License  (GPL), Version 2 any later version published by
+       the Free Software Foundation.
+
+       On Debian systems, the complete text of the GNU  General  Public  License
+       can be found in /usr/share/common-licenses/GPL.
+
+HISTORY
+       wikipedia2text  was  first  released by Christian Brabandt on in his blog
+       (link   to   URL    http://blog.256bit.org/archives/126-Wikipedia-in-der-
+       Shell.html)   with as script named wiki. Some users may find it useful to
+       create an  alias  with  that  name  for  speeding  up  the  typing  of  a
+       wikipedia2text command if no other command of that name is present.
+
+OTHER INFO
+       The current version of wikipedia2text should be available at on Christian
+       Brabandt&apos;s website (link to URL http://www.256bit.org/~chrisbra/wiki) .
+
+
+
+                                                               WIKIPEDIA2TEXT(1)
+
+</pre></body></html>

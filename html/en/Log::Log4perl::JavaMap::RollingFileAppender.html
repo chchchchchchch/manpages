@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::JavaMap::RollingFileAppender - wraps Log::Dispatch::FileRotate</title></head>
+<body><pre>
+
+JavaMap::RollingFileAppUserrContributed Perl DoJavaMap::RollingFileAppender(3pm)
+
+
+
+NAME
+       Log::Log4perl::JavaMap::RollingFileAppender - wraps
+       Log::Dispatch::FileRotate
+
+SYNOPSIS
+DESCRIPTION
+       This maps log4j&apos;s RollingFileAppender to Log::Dispatch::FileRotate by
+       Mark Pfeiffer, &lt;markpf@mlp-consulting.com.au&gt;.
+
+       Possible config properties for log4j ConsoleAppender are
+
+           File
+           Append      &quot;true|false|1|0&quot; default=true
+           BufferedIO  &quot;true|false|1|0&quot; default=false (i.e. autoflush is on)
+           MaxFileSize default 10_000_000
+           MaxBackupIndex default is 1
+
+       Possible config properties for Log::Dispatch::FileRotate are
+
+           filename
+           mode  &quot;write|append&quot;
+           autoflush 0|1
+           size
+           max
+
+SEE ALSO
+       http://jakarta.apache.org/log4j/docs/
+
+       Log::Log4perl::Javamap
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21  JavaMap::RollingFileAppender(3pm)
+
+</pre></body></html>

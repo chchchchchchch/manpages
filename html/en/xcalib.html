@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xcalib - Tiny monitor calibration loader for Xorg.</title></head>
+<body><pre>
+
+XCALIB(1)                            xcalib                            XCALIB(1)
+
+
+
+NAME
+       xcalib - Tiny monitor calibration loader for Xorg.
+
+SYNOPSIS
+       xcalib [-options] ICCPROFILE
+
+DESCRIPTION
+       xcalib  loads  &apos;vcgt&apos;-tag of ICC profiles to the X-server using the XVid&#8208;
+       Mode Extension in order to calibrate your display.
+
+OPTIONS
+       -d, -display &lt;host:dpy&gt;
+
+       -s, -screen &lt;screen-#&gt;
+
+       -c, -clear
+
+       -n, -noaction
+
+       -v, -verbose
+
+       -p, -printramps
+
+       -l, -loss
+
+       -i, -invert
+
+       -gc, -gammacor &lt;gamma&gt;
+
+       -b, -brightness &lt;percent&gt;
+
+       -co, -contrast &lt;percent&gt;
+
+       -red &lt;gamma&gt; &lt;brightness-percent&gt; &lt;contrast-percent&gt;
+
+       -green &lt;gamma&gt; &lt;brightness-percent&gt; &lt;contrast-percent&gt;
+
+       -blue &lt;gamma&gt; &lt;brightness-percent&gt; &lt;contrast-percent&gt;
+
+       -a, -alter
+
+       -h, -help
+
+       -version
+
+       Last parameter MUST be an ICC profile containing a vcgt or  mLUT  tag  or
+       empty  if  the  &quot;-a&quot;  or  &quot;-alter&quot;  paramter  is used or the LUT is to be
+       cleared.
+
+SEE ALSO
+       Homepage: &lt;http://www.etg.e-technik.uni-erlangen.de/web/doe/xcalib/&gt;
+
+AUTHOR
+       Stefan Dohla &lt;stefan AT doehla DOT de&gt;
+
+OTHER
+       This manual page was  written  by  Jorge  Salamero  Sanz  &lt;bencer@cauter&#8208;
+       ized.net&gt;  for  the  Debian GNU/Linux system (but may be used by others).
+       Permission is granted to copy, distribute  and/or  modify  this  document
+       under  the terms of the GNU General Public License version 2 or any later
+       version published by the Free Software Foundation.
+
+
+
+Stefan Dohla                      07 July 2007                         XCALIB(1)
+
+</pre></body></html>

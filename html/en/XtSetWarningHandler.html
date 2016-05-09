@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtError, XtSetErrorHandler, XtSetWarningHandler, XtWarning - low-level error handlers</title></head>
+<body><pre>
+
+XtError(3)                 XT COMPATIBILITY FUNCTIONS                 XtError(3)
+
+
+
+NAME
+       XtError, XtSetErrorHandler, XtSetWarningHandler, XtWarning - low-level
+       error handlers
+
+SYNTAX
+       void XtError(String message);
+
+       void XtSetErrorHandler(XtErrorHandler handler):
+
+       void XtSetWarningHandler(XtErrorHandler handler);
+
+       void XtWarning(String message);
+
+ARGUMENTS
+       message   Specifies the nonfatal error message that is to be reported.
+
+       handler   Specifies the new fatal error procedure, which should not
+                 return, or the nonfatal error procedure, which usually returns.
+
+       message   Specifies the message that is to be reported.
+
+DESCRIPTION
+       The XtError function has been superceded by XtAppError.
+
+       The XtSetErrorHandler function has been superceded by XtAppSetErrorHan&#8208;
+       dler.
+
+       The XtSetWarningHandler function has been superceded by XtAppSetWarning&#8208;
+       Handler.
+
+       The XtWarning function has been superceded by XtAppWarning.
+
+SEE ALSO
+       XtAppError(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                        XtError(3)
+
+</pre></body></html>

@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>strfry - randomize a string</title></head>
+<body><pre>
+
+STRFRY(3)                   Linux Programmer&apos;s Manual                  STRFRY(3)
+
+
+
+NAME
+       strfry - randomize a string
+
+SYNOPSIS
+       #define _GNU_SOURCE         /* See feature_test_macros(7) */
+       #include &lt;string.h&gt;
+
+       char *strfry(char *string);
+
+DESCRIPTION
+       The  strfry() function randomizes the contents of string by using rand(3)
+       to randomly swap characters in the string.  The result is an  anagram  of
+       string.
+
+RETURN VALUE
+       The strfry() functions returns a pointer to the randomized string.
+
+CONFORMING TO
+       The strfry() function is unique to the GNU C Library.
+
+SEE ALSO
+       memfrob(3), string(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2010-09-20                          STRFRY(3)
+
+</pre></body></html>

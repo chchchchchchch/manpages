@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DBus::ASyncReply - asynchronous method reply handler</title></head>
+<body><pre>
+
+Net::DBus::ASyncReply(3User Contributed Perl DocumentaNet::DBus::ASyncReply(3pm)
+
+
+
+NAME
+       Net::DBus::ASyncReply - asynchronous method reply handler
+
+SYNOPSIS
+         use Net::DBus::Annotation qw(:call);
+
+         my $object = $service-&gt;get_object(&quot;/org/example/systemMonitor&quot;);
+
+         # List processes &amp; get on with other work until
+         # the list is returned.
+         my $asyncreply = $object-&gt;list_processes(dbus_call_async, &quot;someuser&quot;);
+
+         while (!$asyncreply-&gt;is_ready) {
+           ... do some background work..
+         }
+
+         my $processes = $asyncreply-&gt;get_result;
+
+DESCRIPTION
+       This object provides a handler for receiving asynchronous method replies.
+       An asynchronous reply object is generated when making remote method call
+       with the &quot;dbus_call_async&quot; annotation set.
+
+METHODS
+       $asyncreply-&gt;discard_result;
+           Indicates that the caller is no longer interested in recieving the
+           reply &amp; that it should be discarded. After calling this method, this
+           object should not be used again.
+
+       $asyncreply-&gt;wait_for_result;
+           Blocks the caller waiting for completion of the of the asynchronous
+           reply. Upon returning from this method, the result can be obtained
+           with the &quot;get_result&quot; method.
+
+       my $boolean = $asyncreply-&gt;is_ready;
+           Returns a true value if the asynchronous reply is now complete (or a
+           timeout has occurred). When this method returns true, the result can
+           be obtained with the &quot;get_result&quot; method.
+
+       $asyncreply-&gt;set_notify($coderef);
+           Sets a notify function which will be invoked when the asynchronous
+           reply finally completes. The callback will be invoked with a single
+           parameter which is this object.
+
+       my @data = $asyncreply-&gt;get_result;
+           Retrieves the data associated with the asynchronous reply.  If a
+           timeout occurred, then this method will throw an exception. This
+           method can only be called once the reply is complete, as indicated by
+           the &quot;is_ready&quot; method returning a true value. After calling this
+           method, this object should no longer be used.
+
+AUTHOR
+       Daniel Berrange &lt;dan@berrange.com&gt;
+
+COPYRIGHT
+       Copright (C) 2006-2011, Daniel Berrange.
+
+SEE ALSO
+       Net::DBus, Net::DBus::RemoteObject, Net::DBus::Annotation
+
+
+
+perl v5.14.2                       2011-06-30         Net::DBus::ASyncReply(3pm)
+
+</pre></body></html>

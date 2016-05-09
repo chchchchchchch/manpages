@@ -1,0 +1,128 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DBus::Test::MockObject - Fake an object from the bus for unit testing</title></head>
+<body><pre>
+
+Net::DBus::Test::MockObUser(Contributed Perl DocNet::DBus::Test::MockObject(3pm)
+
+
+
+NAME
+       Net::DBus::Test::MockObject - Fake an object from the bus for unit
+       testing
+
+SYNOPSIS
+         use Net::DBus;
+         use Net::DBus::Test::MockObject;
+
+         my $bus = Net::DBus-&gt;test
+
+         # Lets fake presence of HAL...
+
+         # First we need to define the service
+         my $service = $bus-&gt;export_service(&quot;org.freedesktop.Hal&quot;);
+
+         # Then create a mock object
+         my $object = Net::DBus::Test::MockObject-&gt;new($service,
+                                                       &quot;/org/freedesktop/Hal/Manager&quot;);
+
+         # Fake the &apos;GetAllDevices&apos; method
+         $object-&gt;seed_action(&quot;org.freedesktop.Hal.Manager&quot;,
+                              &quot;GetAllDevices&quot;,
+                              reply =&gt; {
+                                return =&gt; [ &quot;/org/freedesktop/Hal/devices/computer_i8042_Aux_Port&quot;,
+                                            &quot;/org/freedesktop/Hal/devices/computer_i8042_Aux_Port_logicaldev_input&quot;,
+                                            &quot;/org/freedesktop/Hal/devices/computer_i8042_Kbd_Port&quot;,
+                                            &quot;/org/freedesktop/Hal/devices/computer_i8042_Kbd_Port_logicaldev_input&quot;
+                                ],
+                              });
+
+
+         # Now can test any class which calls out to &apos;GetAllDevices&apos; in HAL
+         ....test stuff....
+
+DESCRIPTION
+       This provides an alternate for Net::DBus::Object to enable bus objects to
+       be quickly mocked up, thus facilitating creation of unit tests for
+       services which may need to call out to objects provided by 3rd party
+       services on the bus. It is typically used as a companion to the
+       Net::DBus::MockBus object, to enable complex services to be tested
+       without actually starting a real bus.
+
+       !!!!! WARNING !!!
+
+       This object &amp; its APIs should be considered very experimental at this
+       point in time, and no guarentees about future API compatability are
+       provided what-so-ever. Comments &amp; suggestions on how to evolve this
+       framework are, however, welcome &amp; encouraged.
+
+METHODS
+       my $object = Net::DBus::Test::MockObject-&gt;new($service, $path,
+       $interface);
+           Create a new mock object, attaching to the service defined by the
+           $service parameter. This would be an instance of the
+           Net::DBus::Service object. The $path parameter defines the object
+           path at which to attach this mock object, and $interface defines the
+           interface it will support.
+
+       my $service = $object-&gt;get_service
+           Retrieves the Net::DBus::Service object within which this object is
+           exported.
+&#12;       my $path = $object-&gt;get_object_path
+           Retrieves the path under which this object is exported
+
+       my $msg = $object-&gt;get_last_message
+           Retrieves the last message processed by this object. The returned
+           object is an instance of Net::DBus::Binding::Message
+
+       my $sig = $object-&gt;get_last_message_signature
+           Retrieves the type signature of the last processed message.
+
+       my $value = $object-&gt;get_last_message_param
+           Returns the first value supplied as an argument to the last processed
+           message.
+
+       my @values = $object-&gt;get_last_message_param_list
+           Returns a list of all the values supplied as arguments to the last
+           processed message.
+
+       $object-&gt;seed_action($interface, $method, %action);
+           Registers an action to be performed when a message corresponding to
+           the method $method within the interface $interface is received. The
+           %action parameter can have a number of possible keys set:
+
+           signals
+               Causes a signal to be emitted when the method is invoked. The
+               value associated with this key should be an instance of the
+               Net::DBus::Binding::Message::Signal class.
+
+           error
+               Causes an error to be generated when the method is invoked. The
+               value associated with this key should be a hash reference, with
+               two elements. The first, &quot;name&quot;, giving the error name, and the
+               second, &quot;description&quot;, providing the descriptive text.
+
+           reply
+               Causes a normal method return to be generated. The value
+               associated with this key should be an array reference, whose
+               elements are the values to be returned by the method.
+
+BUGS
+       It doesn&apos;t completely replicate the API of Net::DBus::Binding::Object,
+       merely enough to make the high level bindings work in a test scenario.
+
+AUTHOR
+       Daniel P. Berrange
+
+COPYRIGHT
+       Copyright (C) 2004-2009 Daniel P. Berrange
+
+SEE ALSO
+       Net::DBus, Net::DBus::Object, Net::DBus::Test::MockConnection,
+       &lt;http://www.mockobjects.com/Faq.html&gt;
+
+
+
+perl v5.14.2                       2011-06-30   Net::DBus::Test::MockObject(3pm)
+
+</pre></body></html>

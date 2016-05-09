@@ -1,0 +1,101 @@
+<html>
+<head><meta charset=utf-8/>
+<title>HTTP::Headers::Util - Header value parsing utility functions</title></head>
+<body><pre>
+
+HTTP::Headers::Util(3pmUser Contributed Perl DocumentatiHTTP::Headers::Util(3pm)
+
+
+
+NAME
+       HTTP::Headers::Util - Header value parsing utility functions
+
+SYNOPSIS
+         use HTTP::Headers::Util qw(split_header_words);
+         @values = split_header_words($h-&gt;header(&quot;Content-Type&quot;));
+
+DESCRIPTION
+       This module provides a few functions that helps parsing and construction
+       of valid HTTP header values.  None of the functions are exported by
+       default.
+
+       The following functions are available:
+
+       split_header_words( @header_values )
+           This function will parse the header values given as argument into a
+           list of anonymous arrays containing key/value pairs.  The function
+           knows how to deal with &quot;,&quot;, &quot;;&quot; and &quot;=&quot; as well as quoted values
+           after &quot;=&quot;.  A list of space separated tokens are parsed as if they
+           were separated by &quot;;&quot;.
+
+           If the @header_values passed as argument contains multiple values,
+           then they are treated as if they were a single value separated by
+           comma &quot;,&quot;.
+
+           This means that this function is useful for parsing header fields
+           that follow this syntax (BNF as from the HTTP/1.1 specification, but
+           we relax the requirement for tokens).
+
+             headers           = #header
+             header            = (token | parameter) *( [&quot;;&quot;] (token | parameter))
+
+             token             = 1*&lt;any CHAR except CTLs or separators&gt;
+             separators        = &quot;(&quot; | &quot;)&quot; | &quot;&lt;&quot; | &quot;&gt;&quot; | &quot;@&quot;
+                               | &quot;,&quot; | &quot;;&quot; | &quot;:&quot; | &quot;\&quot; | &lt;&quot;&gt;
+                               | &quot;/&quot; | &quot;[&quot; | &quot;]&quot; | &quot;?&quot; | &quot;=&quot;
+                               | &quot;{&quot; | &quot;}&quot; | SP | HT
+
+             quoted-string     = ( &lt;&quot;&gt; *(qdtext | quoted-pair ) &lt;&quot;&gt; )
+             qdtext            = &lt;any TEXT except &lt;&quot;&gt;&gt;
+             quoted-pair       = &quot;\&quot; CHAR
+
+             parameter         = attribute &quot;=&quot; value
+             attribute         = token
+             value             = token | quoted-string
+
+           Each header is represented by an anonymous array of key/value pairs.
+           The keys will be all be forced to lower case.  The value for a simple
+           token (not part of a parameter) is &quot;undef&quot;.  Syntactically incorrect
+           headers will not necessarily be parsed as you would want.
+
+           This is easier to describe with some examples:
+
+              split_header_words(&apos;foo=&quot;bar&quot;; port=&quot;80,81&quot;; DISCARD, BAR=baz&apos;);
+              split_header_words(&apos;text/html; charset=&quot;iso-8859-1&quot;&apos;);
+              split_header_words(&apos;Basic realm=&quot;\\&quot;foo\\\\bar\\&quot;&quot;&apos;);
+
+           will return
+
+              [foo=&gt;&apos;bar&apos;, port=&gt;&apos;80,81&apos;, discard=&gt; undef], [bar=&gt;&apos;baz&apos; ]
+              [&apos;text/html&apos; =&gt; undef, charset =&gt; &apos;iso-8859-1&apos;]
+              [basic =&gt; undef, realm =&gt; &quot;\&quot;foo\\bar\&quot;&quot;]
+&#12;           If you don&apos;t want the function to convert tokens and attribute keys
+           to lower case you can call it as &quot;_split_header_words&quot; instead (with
+           a leading underscore).
+
+       join_header_words( @arrays )
+           This will do the opposite of the conversion done by
+           split_header_words().  It takes a list of anonymous arrays as
+           arguments (or a list of key/value pairs) and produces a single header
+           value.  Attribute values are quoted if needed.
+
+           Example:
+
+              join_header_words([&quot;text/plain&quot; =&gt; undef, charset =&gt; &quot;iso-8859/1&quot;]);
+              join_header_words(&quot;text/plain&quot; =&gt; undef, charset =&gt; &quot;iso-8859/1&quot;);
+
+           will both return the string:
+
+              text/plain; charset=&quot;iso-8859/1&quot;
+
+COPYRIGHT
+       Copyright 1997-1998, Gisle Aas
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-02-16           HTTP::Headers::Util(3pm)
+
+</pre></body></html>

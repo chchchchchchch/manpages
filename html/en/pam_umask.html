@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pam_umask - PAM module to set the file mode creation mask</title></head>
+<body><pre>
+
+PAM_UMASK(8)                    Linux-PAM Manual                    PAM_UMASK(8)
+
+
+
+NAME
+       pam_umask - PAM module to set the file mode creation mask
+
+SYNOPSIS
+       pam_umask.so [debug] [silent] [usergroups] [umask=mask]
+
+DESCRIPTION
+       pam_umask is a PAM module to set the file mode creation mask of the
+       current environment. The umask affects the default permissions assigned
+       to newly created files.
+
+       The PAM module tries to get the umask value from the following places in
+       the following order:
+
+       &#183;   umask= argument
+
+       &#183;   umask= entry of the users GECOS field
+
+       &#183;   pri= entry of the users GECOS field
+
+       &#183;   ulimit= entry of the users GECOS field
+
+       &#183;   UMASK= entry from /etc/default/login
+
+       &#183;   UMASK entry from /etc/login.defs
+
+
+OPTIONS
+       debug
+           Print debug information.
+
+       silent
+           Don&apos;t print informative messages.
+
+       usergroups
+           If the user is not root and the username is the same as primary group
+           name, the umask group bits are set to be the same as owner bits
+           (examples: 022 -&gt; 002, 077 -&gt; 007).
+
+       umask=mask
+           Sets the calling process&apos;s file mode creation mask (umask) to mask &amp;
+           0777. The value is interpreted as Octal.
+
+MODULE TYPES PROVIDED
+       Only the session type is provided.
+
+RETURN VALUES
+       PAM_SUCCESS
+           The new umask was set successfully.
+
+       PAM_SERVICE_ERR
+           No username was given.
+
+       PAM_USER_UNKNOWN
+           User not known.
+
+EXAMPLES
+       Add the following line to /etc/pam.d/login to set the user specific umask
+       at login:
+
+                   session optional pam_umask.so umask=0022
+&#12;
+
+SEE ALSO
+       pam.conf(5), pam.d(5), pam(7)
+
+AUTHOR
+       pam_umask was written by Thorsten Kukuk &lt;kukuk@thkukuk.de&gt;.
+
+
+
+Linux-PAM Manual                   06/04/2011                       PAM_UMASK(8)
+
+</pre></body></html>

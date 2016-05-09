@@ -1,0 +1,101 @@
+<html>
+<head><meta charset=utf-8/>
+<title>synclient - commandline utility to query and modify Synaptics driver options.</title></head>
+<body><pre>
+
+synclient(1)                                                        synclient(1)
+
+
+
+NAME
+       synclient  -  commandline  utility  to  query and modify Synaptics driver
+       options.
+
+SYNOPSIS
+       synclient [-m interval]
+       synclient [-hlV?] [var1=value1 [var2=value2] ...]
+
+DESCRIPTION
+       This  program  lets  you  change  your  Synaptics  TouchPad  driver   for
+       XOrg/XFree86 server parameters while X is running.
+
+       For the -m and -h options, SHM must be enabled by setting the option SHM&#8208;
+       Config &quot;on&quot; in your XOrg/XFree86 configuration.
+
+OPTIONS
+       -m interval
+              monitor changes to the touchpad  state.   Interval  specifies  how
+              often  (in  ms)  to poll the touchpad state.  Whenever a change in
+              the touchpad state is detected, one line of  output  is  generated
+              that  describes the current state of the touchpad.  This option is
+              only available in SHM mode.  The following data is included in the
+              output.
+
+              time   Time in seconds since the logging was started.
+
+              x,y    The  x/y  coordinates  of  the finger on the touchpad.  The
+                     origin is in the upper left corner.
+
+              z      The &quot;pressure&quot; value.  Pressing the finger  harder  on  the
+                     touchpad typically produces a larger value.  Note that most
+                     touchpads don&apos;t measure the real pressure though.  Instead,
+                     capacitance is usually measured, which is correlated to the
+                     contact area between the finger and  the  touchpad.   Since
+                     more  pressure  usually  means  a  larger contact area, the
+                     reported pressure value is at least indirectly  related  to
+                     the real pressure.
+
+              f      The  number  of  fingers  currently  touching the touchpad.
+                     Note that only some touchpads can report more than one fin&#8208;
+                     ger.   Generally,  synaptics touchpads can, but ALPS touch&#8208;
+                     pads can&apos;t.
+
+              w      The w value is a measurement of the finger width.  This  is
+                     only supported by some synaptics touchpads.  Touchpads that
+                     can&apos;t measure the finger width  typically  report  a  faked
+                     constant value when a finger is touching the touchpad.
+
+              l,r,u,d,m,multi
+                     The  state  of  the left, right, up, down, middle and multi
+                     buttons.  Zero means not pressed, one means  pressed.   Not
+                     all  touchpads have all these buttons.  If a button doesn&apos;t
+                     exist, the value is always reported as 0.
+
+       -l     List current user settings. This is the default if  no  option  is
+              given.
+
+       -V     Print version number and exit.
+
+       -?     Show the help message.
+
+       var=value
+              Set user parameter var to value.
+&#12;
+
+FILES
+       /etc/X11/xorg.conf
+
+       /etc/X11/XF86Config-4
+
+EXAMPLES
+       To disable EdgeMotionSpeed:
+
+       synclient EdgeMotionSpeed=0
+
+       To monitor touchpad events (requires SHM):
+
+       synclient -m 100
+
+AUTHORS
+       Peter Osterlund &lt;petero2@telia.com&gt; and many others.
+
+       This man page was written by Mattia Dongili &lt;malattia@debian.org&gt;
+
+SEE ALSO
+       Xorg(1), syndaemon(1), synaptics(4)
+
+
+
+X Version 11               xf86-input-synaptics 1.6.2               synclient(1)
+
+</pre></body></html>

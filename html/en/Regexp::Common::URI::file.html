@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::URI::file -- Returns a pattern for file URIs.</title></head>
+<body><pre>
+
+Regexp::Common::URI::fiUserpContributed Perl DocumRegexp::Common::URI::file(3pm)
+
+
+
+NAME
+       Regexp::Common::URI::file -- Returns a pattern for file URIs.
+
+SYNOPSIS
+           use Regexp::Common qw /URI/;
+
+           while (&lt;&gt;) {
+               /$RE{URI}{file}/       and  print &quot;Contains a file URI.\n&quot;;
+           }
+
+DESCRIPTION
+   $RE{URI}{file}
+       Returns a pattern that matches file URIs, as defined by RFC 1738.  File
+       URIs have the form:
+
+           &quot;file:&quot; &quot;//&quot; [ host | &quot;localhost&quot; ] &quot;/&quot; fpath
+
+       Under &quot;{-keep}&quot;, the following are returned:
+
+       $1  The complete URI.
+
+       $2  The scheme.
+
+       $3  The part of the URI following &quot;file://&quot;.
+
+       $4  The hostname.
+
+       $5  The path name, including the leading slash.
+
+       $6  The path name, without the leading slash.
+
+REFERENCES
+       [RFC 1738]
+           Berners-Lee, Tim, Masinter, L., McCahill, M.: Uniform Resource
+           Locators (URL). December 1994.
+
+SEE ALSO
+       Regexp::Common::URI for other supported URIs.
+
+AUTHOR
+       Damian Conway (damian@conway.org)
+
+MAINTAINANCE
+       This package is maintained by Abigail (regexp-common@abigail.be).
+
+BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2010-02-23     Regexp::Common::URI::file(3pm)
+
+</pre></body></html>

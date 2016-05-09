@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ardour - a digital audio workstation</title></head>
+<body><pre>
+
+ARDOUR(1)                                                              ARDOUR(1)
+
+
+
+NAME
+       ardour - a digital audio workstation
+
+SYNOPSIS
+       ardour -b [-U file] [session]
+       ardour --help
+
+DESCRIPTION
+       Ardour is a multichannel hard disk recorder (HDR) and digital audio work&#8208;
+       station (DAW).  It is capable of simultaneous recording 24 or more  chan&#8208;
+       nels of 32 bit audio at 48kHz.  Ardour is intended to function as a &quot;pro&#8208;
+       fessional&quot; HDR system, replacing dedicated hardware solutions such as the
+       Mackie  HDR,  the  Tascam 2424 and more traditional tape systems like the
+       Alesis ADAT series.  It is also intended to provide the  same  or  better
+       functionality  as  software  systems  such as ProTools, Samplitude, Logic
+       Audio, Nuendo and Cubase VST (we acknowledge these and all other names as
+       trademarks  of  their  respective owners).  It supports MIDI Machine Con&#8208;
+       trol, and so can be controlled from  any  MMC  controller,  such  as  the
+       Mackie Digital 8 Bus mixer and many other modern digital mixers.
+
+OPTIONS
+       -b     Print all possible keyboard binding names.
+
+       -U     Specify  the  path to the GTK RC file to use.  The provided one is
+              called ardour_ui.rc and lives  in  the  top  level  Ardour  source
+              directory.   This  file  controls  all  color  and font use within
+              Ardour.  Ardour will run without it, but its appearance  is,  uhm,
+              ugly.
+
+       --help Displays the help message.
+
+FILES
+       ardour.rc
+              Defaults and startup settings for Ardour.
+
+       ardour_ui.rc
+              Definitions for the Ardour interface.
+
+ENVIRONMENT
+       ARDOUR_RC
+              Path to ardour.rc.
+
+       ARDOUR_SYSTEM_RC
+              Path to the ardour_system.rc
+
+       LADSPA_PATH
+              Path to LADSPA plugins.
+
+BUGS
+       Yes.  http://ardour.org/mantis is the preferred bugtracker.
+
+AUTHOR
+       Paul  Davis.   Do  not  contact  him  directly.   Instead, contact him at
+       &lt;ardour-dev@lists.ardour.org&gt;.  You can subscribe here:
+       http://lists.ardour.org/listinfo.cgi/ardour-dev-ardour.org
+
+
+
+                                   2002-12-29                          ARDOUR(1)
+
+</pre></body></html>

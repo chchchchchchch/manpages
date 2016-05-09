@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuFreeBucketAttributes - free memory used by lists of bucket attributes</title></head>
+<body><pre>
+
+AuFreeBucketAttributes(3)                              AuFreeBucketAttributes(3)
+
+
+
+Name
+       AuFreeBucketAttributes - free memory used by lists of bucket attributes
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       void AuFreeBucketAttributes(server, nattributes, attributes)
+           AuServer *server;
+           int nattributes;
+           AuBucketAttributes *attributes;
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       nattributes
+                 Specifies the number of bucket attributes to free.
+
+       attributes
+                 Specifies  a  single  bucket  attribute  structure  returned by
+                 AuGetBucketAttributes or a list of bucket  attributes  returned
+                 by AuListBuckets.
+
+Description
+       AuFreeBucketAttributes  frees  the  memory  allocated  by  AuGetBucketAt&#8208;
+       tributes or AuListBuckets.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - bucket attributes          1.9.3            AuFreeBucketAttributes(3)
+
+</pre></body></html>

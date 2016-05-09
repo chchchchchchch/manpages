@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>avahi.service - avahi-daemon static service file</title></head>
+<body><pre>
+
+avahi.service(5)                                                avahi.service(5)
+
+
+
+NAME
+       avahi.service - avahi-daemon static service file
+
+SYNOPSIS
+       /etc/avahi/services/*.service
+
+DESCRIPTION
+       /etc/avahi/services/*.service  are XML fragments containing static DNS-SD
+       service data. Every service file can contain multiple service definitions
+       which share the same name. This is useful for publishing service data for
+       services which implement multiple protocols. (i.e. a printer implementing
+       _ipp._tcp and _printer._tcp)
+
+XML TAGS
+       &lt;service-group&gt;  The  document tag of avahi service files. Should contain
+       one &lt;name&gt; and one or more &lt;service&gt; elements.
+
+       &lt;name replace-wildcards=&quot;yes|no&quot;&gt; The service name. If  replace-wildcards
+       is  &quot;yes&quot;, any occurence of the string &quot;%h&quot; will be replaced by the local
+       host name. This can be used for service names like  &quot;Remote  Terminal  on
+       %h&quot;. If replace-wildcards is not specified, defaults to &quot;no&quot;.
+
+       &lt;service  protocol=&quot;ipv4|ipv6|any&quot;&gt;  Contains the service information for
+       exactly one service type. Should contain one &lt;type&gt; and one  &lt;port&gt;  ele&#8208;
+       ment.  Optionally  it may contain one &lt;domain-name&gt;, one &lt;host-name&gt;, any
+       number  of  &lt;subtype&gt;  and  any  number  of  &lt;txt-record&gt;  elements.  The
+       attribute protocol specifies the protocol to advertise the service on. If
+       any is used (which is the default), the service  will  be  advertised  on
+       both IPv4 and IPv6.
+
+       &lt;type&gt;   Contains   the  DNS-SD  service  type  for  this  service.  e.g.
+       &quot;_http._tcp&quot;.
+
+       &lt;subtype&gt; Contains an additional DNS-SD service subtype for this service.
+       e.g. &quot;_anon._sub._ftp._tcp&quot;.
+
+       &lt;domain-name&gt;  The  domain  name  this  service  should be registered. If
+       omited defaults to the default domain  of  the  avahi  daemon.  (probably
+       .local)
+
+       &lt;host-name&gt;  The  host  name of the host that provides this service. This
+       should be a host that is resolvable by multicast or unicast  DNS.  Please
+       note  that you need to specify a fully-qualified domain name (FQDN) here,
+       i.e. .local is not appended implicitly! The host name doesn&apos;t need to  be
+       part  of  the  domain  specified in &lt;domain-name&gt;. See avahi.hosts(5) for
+       more information how to publish additional host name mappings.
+
+       &lt;port&gt; The IP port number the service listens on.
+
+       &lt;txt-record&gt; DNS-SD TXT record data.
+
+AUTHORS
+       The Avahi Developers &lt;avahi (at)  lists  (dot)  freedesktop  (dot)  org&gt;;
+       Avahi is available from http://avahi.org/
+
+SEE ALSO
+       avahi-daemon(8), avahi.hosts(5)
+
+COMMENTS
+       This man page was written using xml2man(1) by Oliver Kurth.
+
+
+
+Manuals                               User                      avahi.service(5)
+
+</pre></body></html>

@@ -1,0 +1,85 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ether_aton, ether_ntoa, ether_ntohost, ether_hostton, ether_line, ether_ntoa_r, ether_aton_r - Ethernet address manipulation routines</title></head>
+<body><pre>
+
+ETHER_ATON(3)               Linux Programmer&apos;s Manual              ETHER_ATON(3)
+
+
+
+NAME
+       ether_aton,   ether_ntoa,   ether_ntohost,   ether_hostton,   ether_line,
+       ether_ntoa_r, ether_aton_r - Ethernet address manipulation routines
+
+SYNOPSIS
+       #include &lt;netinet/ether.h&gt;
+
+       char *ether_ntoa(const struct ether_addr *addr);
+
+       struct ether_addr *ether_aton(const char *asc);
+
+       int ether_ntohost(char *hostname, const struct ether_addr *addr);
+
+       int ether_hostton(const char *hostname, struct ether_addr *addr);
+
+       int ether_line(const char *line, struct ether_addr *addr,
+                      char *hostname);
+
+       /* GNU extensions */
+       char *ether_ntoa_r(const struct ether_addr *addr, char *buf);
+
+       struct ether_addr *ether_aton_r(const char *asc,
+                                       struct ether_addr *addr);
+
+DESCRIPTION
+       ether_aton() converts the 48-bit Ethernet host address asc from the stan&#8208;
+       dard  hex-digits-and-colons  notation  into  binary  data in network byte
+       order and returns a pointer to it in a statically allocated buffer, which
+       subsequent  calls  will  overwrite.   ether_aton()  returns  NULL  if the
+       address is invalid.
+
+       The ether_ntoa() function converts the Ethernet host address  addr  given
+       in network byte order to a string in standard hex-digits-and-colons nota&#8208;
+       tion, omitting leading zeros.  The string is  returned  in  a  statically
+       allocated buffer, which subsequent calls will overwrite.
+
+       The  ether_ntohost() function maps an Ethernet address to the correspond&#8208;
+       ing hostname in /etc/ethers and returns nonzero if it cannot be found.
+
+       The ether_hostton() function maps a hostname to the corresponding  Ether&#8208;
+       net address in /etc/ethers and returns nonzero if it cannot be found.
+
+       The  ether_line()  function parses a line in /etc/ethers format (ethernet
+       address followed by whitespace followed by  hostname;  &apos;#&apos;  introduces  a
+       comment)  and returns an address and hostname pair, or nonzero if it can&#8208;
+       not be parsed.  The buffer pointed to by hostname  must  be  sufficiently
+       long, for example, have the same length as line.
+
+       The functions ether_ntoa_r() and ether_aton_r() are reentrant thread-safe
+       versions of ether_ntoa() and ether_aton() respectively, and  do  not  use
+       static buffers.
+
+       The structure ether_addr is defined in &lt;net/ethernet.h&gt; as:
+
+           struct ether_addr {
+               uint8_t ether_addr_octet[6];
+           }
+
+CONFORMING TO
+       4.3BSD, SunOS.
+
+BUGS
+       The glibc 2.2.5 implementation of ether_line() is broken.
+&#12;SEE ALSO
+       ethers(5)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2002-07-20                      ETHER_ATON(3)
+
+</pre></body></html>

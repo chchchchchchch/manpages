@@ -1,0 +1,325 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::Base - DateTime locale package for "Base" - Base class for individual locale objects</title></head>
+<body><pre>
+
+DateTime::Locale::Base(User Contributed Perl DocumentDateTime::Locale::Base(3pm)
+
+
+
+NAME
+       DateTime::Locale::Base - DateTime locale package for &quot;Base&quot; - Base class
+       for individual locale objects
+
+SYNOPSIS
+         use base &apos;DateTime::Locale::Base&apos;;
+
+DEFAULT FORMATS
+       Each locale has a set of four default date and time formats.  They are
+       distinguished by length, and are called &quot;full&quot;, &quot;long&quot;, &quot;medium&quot;, and
+       &quot;short&quot;. Each locale may have a different default length which it uses
+       when its &quot;$locale-&gt;date_format_default()&quot;,
+       &quot;$locale-&gt;time_format_default()&quot;, or &quot;$locale-&gt;datetime_format_default()&quot;
+       methods are called.
+
+       This can be changed by calling the &quot;$locale-&gt;set_default_date_format()&quot;
+       or &quot;$locale-&gt;set_default_time_format()&quot; methods.  These methods accept a
+       string which must be one of &quot;full&quot;, &quot;long&quot;, &quot;medium&quot;, or &quot;short&quot;.
+
+NAME FORMS
+       Most names come in a number of variations. First, they may vary based on
+       length, with wide, abbreviated, and narrow forms. The wide form is
+       typically the full name, while the narrow form is often a single
+       character. The narrow forms may not be unique. For example, &quot;T&quot; may be
+       used for Tuesday and Thursday in the English narrow forms.
+
+       Many names also distinguish between &quot;format&quot; and &quot;stand-alone&quot; forms of a
+       pattern. The format pattern is used when the thing in question is being
+       placed into a larger string. The stand-alone form is used when displaying
+       that item by itself, for example in a calendar.
+
+METHODS
+       All locales provide the following methods:
+
+       &#183;   $locale-&gt;id()
+
+           The locale&apos;s id.
+
+       &#183;   $locale-&gt;language_id()
+
+           The language portion of the id.
+
+       &#183;   $locale-&gt;script_id()
+
+           The script portion of the id, if any.
+
+       &#183;   $locale-&gt;territory_id()
+
+           The territory portion of the id, if any.
+
+       &#183;   $locale-&gt;variant_id()
+
+           The variant portion of the id, if any.
+
+       &#183;   $locale-&gt;name()
+
+           The full name for the locale in English.
+
+       &#183;   $locale-&gt;language()
+
+           The language name for the locale in English.
+&#12;       &#183;   $locale-&gt;script()
+
+           The script name for the locale in English, if any.
+
+       &#183;   $locale-&gt;territory()
+
+           The territory name for the locale in English, if any.
+
+       &#183;   $locale-&gt;variant()
+
+           The variant name for the locale in English, if any.
+
+       &#183;   $locale-&gt;native_name()
+
+           The full name for the locale in its native language, if any.
+
+       &#183;   $locale-&gt;native_language()
+
+           The language name for the locale in its native language, if any.
+
+       &#183;   $locale-&gt;native_script()
+
+           The script name for the locale in its native language, if any.
+
+       &#183;   $locale-&gt;native_territory()
+
+           The territory name for the locale in its native language, if any.
+
+       &#183;   $locale-&gt;native_variant()
+
+           The variant name for the locale in its native language, if any.
+
+       &#183;   $locale-&gt;month_format_wide()
+
+           Returns an array reference containing the wide format names of the
+           months, with January as the first month.
+
+       &#183;   $locale-&gt;month_format_abbreviated()
+
+           Returns an array reference containing the abbreviated format names of
+           the months, with January as the first month.
+
+       &#183;   $locale-&gt;month_format_narrow()
+
+           Returns an array reference containing the narrow format names of the
+           months, with January as the first month.
+
+       &#183;   $locale-&gt;month_stand_alone_wide()
+
+           Returns an array reference containing the wide stand-alone names of
+           the months, with January as the first month.
+
+       &#183;   $locale-&gt;month_stand_alone_abbreviated()
+
+           Returns an array reference containing the abbreviated stand-alone
+           names of the months, with January as the first month.
+
+       &#183;   $locale-&gt;month_stand_alone_narrow()
+
+           Returns an array reference containing the narrow stand-alone names of
+           the months, with January as the first month.
+
+       &#183;   $locale-&gt;day_format_wide()
+
+           Returns an array reference containing the wide format names of the
+           days, with Monday as the first day.
+
+       &#183;   $locale-&gt;day_format_abbreviated()
+
+           Returns an array reference containing the abbreviated format names of
+           the days, with Monday as the first day.
+
+       &#183;   $locale-&gt;day_format_narrow()
+
+           Returns an array reference containing the narrow format names of the
+           days, with Monday as the first day.
+
+       &#183;   $locale-&gt;day_stand_alone_wide()
+
+           Returns an array reference containing the wide stand-alone names of
+           the days, with Monday as the first day.
+
+       &#183;   $locale-&gt;day_stand_alone_abbreviated()
+
+           Returns an array reference containing the abbreviated stand-alone
+           names of the days, with Monday as the first day.
+
+       &#183;   $locale-&gt;day_stand_alone_narrow()
+
+           Returns an array reference containing the narrow stand-alone names of
+           the days, with Monday as the first day.
+
+       &#183;   $locale-&gt;quarter_format_wide()
+
+           Returns an array reference containing the wide format names of the
+           quarters.
+
+       &#183;   $locale-&gt;quarter_format_abbreviated()
+
+           Returns an array reference containing the abbreviated format names of
+           the quarters.
+
+       &#183;   $locale-&gt;quarter_format_narrow()
+
+           Returns an array reference containing the narrow format names of the
+           quarters.
+
+       &#183;   $locale-&gt;quarter_stand_alone_wide()
+
+           Returns an array reference containing the wide stand-alone names of
+           the quarters.
+
+       &#183;   $locale-&gt;quarter_stand_alone_abbreviated()
+
+           Returns an array reference containing the abbreviated stand-alone
+           names of the quarters.
+
+       &#183;   $locale-&gt;quarter_stand_alone_narrow()
+
+           Returns an array reference containing the narrow stand-alone names of
+           the quarters.
+
+       &#183;   $locale-&gt;era_wide()
+
+           Returns an array reference containing the wide names of the eras,
+           with &quot;BCE&quot; first.
+
+       &#183;   $locale-&gt;era_abbreviated()
+
+           Returns an array reference containing the abbreviated names of the
+           eras, with &quot;BCE&quot; first.
+&#12;       &#183;   $locale-&gt;era_narrow()
+
+           Returns an array reference containing the abbreviated names of the
+           eras, with &quot;BCE&quot; first. However, most locales do not differ between
+           the narrow and abbreviated length of the era.
+
+       &#183;   $locale-&gt;am_pm_abbreviated()
+
+           Returns an array reference containing the abbreviated names of &quot;AM&quot;
+           and &quot;PM&quot;.
+
+       &#183;   $locale-&gt;date_format_long()
+
+       &#183;   $locale-&gt;date_format_full()
+
+       &#183;   $locale-&gt;date_format_medium()
+
+       &#183;   $locale-&gt;date_format_short()
+
+           Returns the CLDR date pattern of the appropriate length.
+
+       &#183;   $locale-&gt;date_formats()
+
+           Returns a hash reference of CLDR date patterns for the date formats,
+           where the keys are &quot;full&quot;, &quot;long&quot;, &quot;medium&quot;, and &quot;short&quot;.
+
+       &#183;   $locale-&gt;time_format_long()
+
+       &#183;   $locale-&gt;time_format_full()
+
+       &#183;   $locale-&gt;time_format_medium()
+
+       &#183;   $locale-&gt;time_format_short()
+
+           Returns the CLDR date pattern of the appropriate length.
+
+       &#183;   $locale-&gt;time_formats()
+
+           Returns a hash reference of CLDR date patterns for the time formats,
+           where the keys are &quot;full&quot;, &quot;long&quot;, &quot;medium&quot;, and &quot;short&quot;.
+
+       &#183;   $locale-&gt;datetime_format_long()
+
+       &#183;   $locale-&gt;datetime_format_full()
+
+       &#183;   $locale-&gt;datetime_format_medium()
+
+       &#183;   $locale-&gt;datetime_format_short()
+
+           Returns the CLDR date pattern of the appropriate length.
+
+       &#183;   $locale-&gt;datetime_formats()
+
+           Returns a hash reference of CLDR date patterns for the datetime
+           formats, where the keys are &quot;full&quot;, &quot;long&quot;, &quot;medium&quot;, and &quot;short&quot;.
+
+       &#183;   $locale-&gt;date_format_default()
+
+       &#183;   $locale-&gt;time_format_default()
+
+       &#183;   $locale-&gt;datetime_format_default()
+
+           Returns the default CLDR date pattern. The length of this format is
+           based on the value of &quot;$locale-&gt;default_date_format_length()&quot; and/or
+           &quot;$locale-&gt;default_time_format_length()&quot;.
+&#12;       &#183;   $locale-&gt;default_date_format_length()
+
+       &#183;   $locale-&gt;default_time_format_length()
+
+           Returns the default length for the format, one of &quot;full&quot;, &quot;long&quot;,
+           &quot;medium&quot;, or &quot;short&quot;.
+
+       &#183;   $locale-&gt;set_default_date_format_length()
+
+       &#183;   $locale-&gt;set_default_time_format_length()
+
+           Sets the default length for the format. This must be one of &quot;full&quot;,
+           &quot;long&quot;, &quot;medium&quot;, or &quot;short&quot;.
+
+       &#183;   $locale-&gt;prefers_24_hour_time()
+
+           Returns a boolean indicating the preferred hour format for this
+           locale.
+
+       &#183;   $locale-&gt;first_day_of_week()
+
+           Returns a number from 1 to 7 indicating the local first day of the
+           week, with Monday being 1 and Sunday being 7. For example, for a US
+           locale this returns 7.
+
+       &#183;   $locale-&gt;available_formats()
+
+           A list of format names, like &quot;MMdd&quot; or &quot;yyyyMM&quot;. This should be the
+           list directly supported by the subclass, not its parents.
+
+       &#183;   $locale-&gt;format_for($key)
+
+           Given a valid name, returns the CLDR date pattern for that thing, if
+           one exists.
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHORS
+       Richard Evans &lt;rich@ridas.com&gt;
+
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2003 Richard Evans. Copyright (c) 2004-2005 David Rolsky.
+       All rights reserved. This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+       The full text of the license can be found in the LICENSE file included
+       with this module.
+
+
+
+perl v5.10.1                       2010-03-19        DateTime::Locale::Base(3pm)
+
+</pre></body></html>

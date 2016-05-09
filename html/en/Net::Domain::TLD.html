@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::Domain::TLD - Work with TLD names</title></head>
+<body><pre>
+
+Net::Domain::TLD(3pm)  User Contributed Perl Documentation Net::Domain::TLD(3pm)
+
+
+
+NAME
+         Net::Domain::TLD - Work with TLD names
+
+SYNOPSIS
+         use Net::Domain::TLD qw(tlds tld_exists);
+         my @ccTLDs = tlds(&apos;cc&apos;);
+         print &quot;TLD ok\n&quot; if tld_exists(&apos;ac&apos;,&apos;cc&apos;);
+
+DESCRIPTION
+         The purpose of this module is to provide user with current list of
+         available top level domain names including new ICANN additions and ccTLDs
+         Currently TLD definitions have been acquired from the following sources:
+
+         http://www.icann.org/tlds/
+         http://www.dnso.org/constituency/gtld/gtld.html
+         http://www.iana.org/cctld/cctld-whois.htm
+
+PUBLIC METHODS
+         Each public function/method is described here.
+         These are how you should interact with this module.
+
+       &quot;tlds&quot;
+
+         This routine returns the tlds requested.
+
+         my @all_tlds = tlds; #array of tlds
+         my $all_tlds = tlds; #hashref of tlds and their descriptions
+
+         my @cc_tlds = tlds(&apos;cc&apos;); #array of just &apos;cc&apos; type tlds
+         my $cc_tlds = tlds(&apos;cc&apos;); #hashref of just &apos;cc&apos; type tlds and their descriptions
+
+         Valid types are:
+           cc                 - country code domains
+           gtld_open          - generic domains that anyone can register
+           gtld_restricted    - generic restricted registration domains
+           new_open           - recently added generic domains
+           new_restricted     - new restricted registration domains
+
+       &quot;tld_exists&quot;
+
+         This routine returns true if the given domain exists and false otherwise.
+
+         die &quot;no such domain&quot; unless tld_exists($tld); #call without tld type
+         die &quot;no such domain&quot; unless tld_exists($tld, &apos;new_open&apos;); #call with tld type
+
+COPYRIGHT
+         Copyright (c) 2003-2005 Alex Pavlovic, all rights reserved.  This program
+         is free software; you can redistribute it and/or modify it under the same terms
+         as Perl itself.
+
+AUTHORS
+         Alexander Pavlovic &lt;alex.pavlovic@taskforce-1.com&gt;
+         Ricardo SIGNES &lt;rjbs@cpan.org&gt;
+
+
+
+perl v5.10.1                       2011-04-18              Net::Domain::TLD(3pm)
+
+</pre></body></html>

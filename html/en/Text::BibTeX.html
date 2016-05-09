@@ -1,0 +1,443 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Text::BibTeX - interface to read and parse BibTeX files</title></head>
+<body><pre>
+
+Text::BibTeX(3pm)      User Contributed Perl Documentation     Text::BibTeX(3pm)
+
+
+
+NAME
+       Text::BibTeX - interface to read and parse BibTeX files
+
+SYNOPSIS
+          use Text::BibTeX;
+
+          $bibfile = new Text::BibTeX::File &quot;foo.bib&quot;;
+          $newfile = new Text::BibTeX::File &quot;&gt;newfoo.bib&quot;;
+
+          while ($entry = new Text::BibTeX::Entry $bibfile)
+          {
+             next unless $entry-&gt;parse_ok;
+
+                .             # hack on $entry contents, using various
+                .             # Text::BibTeX::Entry methods
+                .
+
+             $entry-&gt;write ($newfile);
+          }
+
+DESCRIPTION
+       The &quot;Text::BibTeX&quot; module serves mainly as a high-level introduction to
+       the &quot;Text::BibTeX&quot; library, for both code and documentation purposes.
+       The code loads the two fundamental modules for processing BibTeX files
+       (&quot;Text::BibTeX::File&quot; and &quot;Text::BibTeX::Entry&quot;), and this documentation
+       gives a broad overview of the whole library that isn&apos;t available in the
+       documentation for the individual modules that comprise it.
+
+       In addition, the &quot;Text::BibTeX&quot; module provides a number of miscellaneous
+       functions that are useful in processing BibTeX data (especially the kind
+       that comes from bibliographies as defined by BibTeX 0.99, rather than
+       generic database files).  These functions don&apos;t generally fit in the
+       object-oriented class hierarchy centred around the &quot;Text::BibTeX::Entry&quot;
+       class, mainly because they are specific to bibliographic data and operate
+       on generic strings (rather than being tied to a particular BibTeX entry).
+       These are also documented here, in &quot;MISCELLANEOUS FUNCTIONS&quot;.
+
+       Note that every module described here begins with the &quot;Text::BibTeX&quot;
+       prefix.  For brevity, I have dropped this prefix from most class and
+       module names in the rest of this manual page (and in most of the other
+       manual pages in the library).
+
+MODULES AND CLASSES
+       The &quot;Text::BibTeX&quot; library includes a number of modules, many of which
+       provide classes.  Usually, the relationship is simple and obvious: a
+       module provides a class of the same name---for instance, the
+       &quot;Text::BibTeX::Entry&quot; module provides the &quot;Text::BibTeX::Entry&quot; class.
+       There are a few exceptions, though: most obviously, the &quot;Text::BibTeX&quot;
+       module doesn&apos;t provide any classes itself, it merely loads two modules
+       (&quot;Text::BibTeX::Entry&quot; and &quot;Text::BibTeX::File&quot;) that do.  The other
+       exceptions are mentioned in the descriptions below, and discussed in
+       detail in the documentation for the respective modules.
+
+       The modules are presented roughly in order of increasing specialization:
+       the first three are essential for any program that processes BibTeX data
+       files, regardless of what kind of data they hold.  The later modules are
+       specialized for use with bibliographic databases, and serve both to
+       emulate BibTeX 0.99&apos;s standard styles and to provide an example of how to
+       define a database structure through such specialized modules.  Each
+       module is fully documented in its respective manual page.
+
+       &quot;Text::BibTeX&quot;
+           Loads the two fundamental modules (&quot;Entry&quot; and &quot;File&quot;), and provides
+           a number of miscellaneous functions that don&apos;t fit anywhere in the
+           class hierarchy.
+
+       &quot;Text::BibTeX::File&quot;
+           Provides an object-oriented interface to BibTeX database files.  In
+           addition to the obvious attributes of filename and filehandle, the
+           &quot;file&quot; abstraction manages properties such as the database structure
+           and options for it.
+
+       &quot;Text::BibTeX::Entry&quot;
+           Provides an object-oriented interface to BibTeX entries, which can be
+           parsed from &quot;File&quot; objects, arbitrary filehandles, or strings.
+           Manages all the properties of a single entry: type, key, fields, and
+           values.  Also serves as the base class for the structured entry
+           classes (described in detail in Text::BibTeX::Structure).
+
+       &quot;Text::BibTeX::Value&quot;
+           Provides an object-oriented interface to values and simple values,
+           high-level constructs that can be used to represent the strings
+           associated with each field in an entry.  Normally, field values are
+           returned simply as Perl strings, with macros expanded and multiple
+           strings &quot;pasted&quot; together.  If desired, you can instruct
+           &quot;Text::BibTeX&quot; to return &quot;Text::BibTeX::Value&quot; objects, which give
+           you access to the original form of the data.
+
+       &quot;Text::BibTeX::Structure&quot;
+           Provides the &quot;Structure&quot; and &quot;StructuredEntry&quot; classes, which serve
+           primarily as base classes for the two kinds of classes that define
+           database structures.  Read this man page for a comprehensive
+           description of the mechanism for implementing Perl classes analogous
+           to BibTeX &quot;style files&quot;.
+
+       &quot;Text::BibTeX::Bib&quot;
+           Provides the &quot;BibStructure&quot; and &quot;BibEntry&quot; classes, which serve two
+           purposes: they fulfill the same role as the standard style files of
+           BibTeX 0.99, and they give an example of how to write new database
+           structures.  These ultimately derive from, respectively, the
+           &quot;Structure&quot; and &quot;StructuredEntry&quot; classes provided by the &quot;Structure&quot;
+           module.
+
+       &quot;Text::BibTeX::BibSort&quot;
+           One of the &quot;BibEntry&quot; class&apos;s base classes: handles the generation of
+           sort keys for sorting prior to output formatting.
+
+       &quot;Text::BibTeX::BibFormat&quot;
+           One of the &quot;BibEntry&quot; class&apos;s base classes: handles the formatting of
+           bibliographic data for output in a markup language such as LaTeX.
+
+       &quot;Text::BibTeX::Name&quot;
+           A class used by the &quot;Bib&quot; structure and specific to bibliographic
+           data as defined by BibTeX itself: parses individual author names into
+           &quot;first&quot;, &quot;von&quot;, &quot;last&quot;, and &quot;jr&quot; parts.
+
+       &quot;Text::BibTeX::NameFormat&quot;
+           Also specific to bibliographic data: puts split-up names (as parsed
+           by the &quot;Name&quot; class) back together in a custom way.
+
+       For a first time through the library, you&apos;ll probably want to confine
+       your reading to Text::BibTeX::File and Text::BibTeX::Entry.  The other
+       modules will come in handy eventually, especially if you need to emulate
+       BibTeX in a fairly fine grained way (e.g. parsing names, generating sort
+       keys).  But for the simple database hacks that are the bread and butter
+       of the &quot;Text::BibTeX&quot; library, the &quot;File&quot; and &quot;Entry&quot; classes are the
+       bulk of what you&apos;ll need.  You may also find some of the material in this
+       manual page useful, namely &quot;CONSTANT VALUES&quot; and &quot;UTILITY FUNCTIONS&quot;.
+
+EXPORTS
+       The &quot;Text::BibTeX&quot; module has a number of optional exports, most of them
+       constant values described in &quot;CONSTANT VALUES&quot; below.  The default
+       exports are a subset of these constant values that are used particularly
+       often, the &quot;entry metatypes&quot; (also accessible via the export tag
+       &quot;metatypes&quot;).  Thus, the following two lines are equivalent:
+
+          use Text::BibTeX;
+          use Text::BibTeX qw(:metatypes);
+
+       Some of the various subroutines provided by the module are also
+       exportable.  &quot;bibloop&quot;, &quot;split_list&quot;, &quot;purify_string&quot;, and &quot;change_case&quot;
+       are all useful in everyday processing of BibTeX data, but don&apos;t really
+       fit anywhere in the class hierarchy.  They may be imported from
+       &quot;Text::BibTeX&quot; using the &quot;subs&quot; export tag.  &quot;check_class&quot; and
+       &quot;display_list&quot; are also exportable, but only by name; they are not
+       included in any export tag.  (These two mainly exist for use by other
+       modules in the library.)  For instance, to use &quot;Text::BibTeX&quot; and import
+       the entry metatype constants and the common subroutines:
+
+          use Text::BibTeX qw(:metatypes :subs);
+
+       Another group of subroutines exists for direct manipulation of the macro
+       table maintained by the underlying C library.  These functions (see
+       &quot;Macro table functions&quot;, below) allow you to define, delete, and query
+       the value of BibTeX macros (or &quot;abbreviations&quot;).  They may be imported en
+       masse using the &quot;macrosubs&quot; export tag:
+
+          use Text::BibTeX qw(:macrosubs);
+
+CONSTANT VALUES
+       The &quot;Text::BibTeX&quot; module makes a number of constant values available.
+       These correspond to the values of various enumerated types in the
+       underlying C library, btparse, and their meanings are more fully
+       explained in the btparse documentation.
+
+       Each group of constants is optionally exportable using an export tag
+       given in the descriptions below.
+
+       Entry metatypes
+           &quot;BTE_UNKNOWN&quot;, &quot;BTE_REGULAR&quot;, &quot;BTE_COMMENT&quot;, &quot;BTE_PREAMBLE&quot;,
+           &quot;BTE_MACRODEF&quot;.  The &quot;metatype&quot; method in the &quot;Entry&quot; class always
+           returns one of these values.  The latter three describe,
+           respectively, &quot;comment&quot;, &quot;preamble&quot;, and &quot;string&quot; entries;
+           &quot;BTE_REGULAR&quot; describes all other entry types.  &quot;BTE_UNKNOWN&quot; should
+           never be seen (it&apos;s mainly useful for C code that might have to
+           detect half-baked data structures).  See also btparse.  Export tag:
+           &quot;metatypes&quot;.
+
+       AST node types
+           &quot;BTAST_STRING&quot;, &quot;BTAST_MACRO&quot;, &quot;BTAST_NUMBER&quot;.  Used to distinguish
+           the three kinds of simple values---strings, macros, and numbers.  The
+           &quot;SimpleValue&quot; class&apos; &quot;type&quot; method always returns one of these three
+           values.  See also Text::BibTeX::Value, btparse.  Export tag:
+           &quot;nodetypes&quot;.
+
+       Name parts
+           &quot;BTN_FIRST&quot;, &quot;BTN_VON&quot;, &quot;BTN_LAST&quot;, &quot;BTN_JR&quot;, &quot;BTN_NONE&quot;.  Used to
+           specify the various parts of a name after it has been split up.
+           These are mainly useful when using the &quot;NameFormat&quot; class.  See also
+           bt_split_names and bt_format_names.  Export tag: &quot;nameparts&quot;.
+
+       Join methods
+           &quot;BTJ_MAYTIE&quot;, &quot;BTJ_SPACE&quot;, &quot;BTJ_FORCETIE&quot;, &quot;BTJ_NOTHING&quot;.  Used to
+           tell the &quot;NameFormat&quot; class how to join adjacent tokens together; see
+           Text::BibTeX::NameFormat and bt_format_names.  Export tag:
+           &quot;joinmethods&quot;.
+
+UTILITY FUNCTIONS
+       &quot;Text::BibTeX&quot; provides several functions that operate outside of the
+       normal class hierarchy.  Of these, only &quot;bibloop&quot; is likely to be of much
+       use to you in writing everyday BibTeX-hacking programs; the other two
+       (&quot;check_class&quot; and &quot;display_list&quot;) are mainly provided for the use of
+       other modules in the library.  They are documented here mainly for
+       completeness, but also because they might conceivably be useful in other
+       circumstances.
+
+       bibloop (ACTION, FILES [, DEST])
+           Loops over all entries in a set of BibTeX files, performing some
+           caller-supplied action on each entry.  FILES should be a reference to
+           the list of filenames to process, and ACTION a reference to a
+           subroutine that will be called on each entry.  DEST, if given, should
+           be a &quot;Text::BibTeX::File&quot; object (opened for output) to which entries
+           might be printed.
+
+           The subroutine referenced by ACTION is called with exactly one
+           argument: the &quot;Text::BibTeX::Entry&quot; object representing the entry
+           currently being processed.  Information about both the entry itself
+           and the file where it originated is available through this object;
+           see Text::BibTeX::Entry.  The ACTION subroutine is only called if the
+           entry was successfully parsed; any syntax errors will result in a
+           warning message being printed, and that entry being skipped.  Note
+           that all successfully parsed entries are passed to the ACTION
+           subroutine, even &quot;preamble&quot;, &quot;string&quot;, and &quot;comment&quot; entries.  To
+           skip these pseudo-entries and only process &quot;regular&quot; entries, then
+           your action subroutine should look something like this:
+
+              sub action {
+                 my $entry = shift;
+                 return unless $entry-&gt;metatype == BTE_REGULAR;
+                 # process $entry ...
+              }
+
+           If your action subroutine needs any more arguments, you can just
+           create a closure (anonymous subroutine) as a wrapper, and pass it to
+           &quot;bibloop&quot;:
+
+              sub action {
+                 my ($entry, $extra_stuff) = @_;
+                 # ...
+              }
+
+              my $extra = ...;
+              Text::BibTeX::bibloop (sub { &amp;action ($_[0], $extra) }, \@files);
+
+           If the ACTION subroutine returns a true value and DEST was given,
+           then the processed entry will be written to DEST.
+
+       check_class (PACKAGE, DESCRIPTION, SUPERCLASS, METHODS)
+           Ensures that a PACKAGE implements a class meeting certain
+           requirements.  First, it inspects Perl&apos;s symbol tables to ensure that
+           a package named PACKAGE actually exists.  Then, it ensures that the
+           class named by PACKAGE derives from SUPERCLASS (using the universal
+           method &quot;isa&quot;).  This derivation might be through multiple
+           inheritance, or through several generations of a class hierarchy; the
+           only requirement is that SUPERCLASS is somewhere in PACKAGE&apos;s tree of
+           base classes.  Finally, it checks that PACKAGE provides each method
+           listed in METHODS (a reference to a list of method names).  This is
+           done with the universal method &quot;can&quot;, so the methods might actually
+           come from one of PACKAGE&apos;s base classes.
+
+           DESCRIPTION should be a brief string describing the class that was
+           expected to be provided by PACKAGE.  It is used for generating
+           warning messages if any of the class requirements are not met.
+
+           This is mainly used by the supervisory code in
+           &quot;Text::BibTeX::Structure&quot;, to ensure that user-supplied structure
+           modules meet the rules required of them.
+&#12;       display_list (LIST, QUOTE)
+           Converts a list of strings to the grammatical conventions of a human
+           language (currently, only English rules are supported).  LIST must be
+           a reference to a list of strings.  If this list is empty, the empty
+           string is returned.  If it has one element, then just that element is
+           returned.  If it has two elements, then they are joined with the
+           string &quot; and &quot; and the resulting string is returned.  Otherwise, the
+           list has N elements for N &gt;= 3; elements 1..N-1 are joined with
+           commas, and the final element is tacked on with an intervening &quot;, and
+           &quot;.
+
+           If QUOTE is true, then each string is encased in single quotes before
+           anything else is done.
+
+           This is used elsewhere in the library for two very distinct purposes:
+           for generating warning messages describing lists of fields that
+           should be present or are conflicting in an entry, and for generating
+           lists of author names in formatted bibliographies.
+
+MISCELLANEOUS FUNCTIONS
+       In addition to loading the &quot;File&quot; and &quot;Entry&quot; modules, &quot;Text::BibTeX&quot;
+       loads the XSUB code which bridges the Perl modules to the underlying C
+       library, btparse.  This XSUB code provides a number of miscellaneous
+       utility functions, most of which are put into other packages in the
+       &quot;Text::BibTeX&quot; family for use by the corresponding classes.  (For
+       instance, the XSUB code loaded by &quot;Text::BibTeX&quot; provides a function
+       &quot;Text::BibTeX::Entry::parse&quot;, which is actually documented as the &quot;parse&quot;
+       method of the &quot;Text::BibTeX::Entry&quot; class---see Text::BibTeX::Entry.
+       However, for completeness this function---and all the other functions
+       that become available when you &quot;use Text::BibTeX&quot;---are at least
+       mentioned here.  The only functions from this group that you&apos;re ever
+       likely to use are described in &quot;Generic string-processing functions&quot;.
+
+   Startup/shutdown functions
+       These just initialize and shutdown the underlying C library.  Don&apos;t call
+       either one of them; the &quot;Text::BibTeX&quot; startup/shutdown code takes care
+       of it as appropriate.  They&apos;re just mentioned here for completeness.
+
+       initialize ()
+       cleanup ()
+
+   Generic string-processing functions
+       split_list (STRING, DELIM [, FILENAME [, LINE [, DESCRIPTION]]])
+           Splits a string on a fixed delimiter according to the BibTeX rules
+           for splitting up lists of names.  With BibTeX, the delimiter is hard-
+           coded as &quot;and&quot;; here, you can supply any string.  Instances of DELIM
+           in STRING are considered delimiters if they are at brace-depth zero,
+           surrounded by whitespace, and not at the beginning or end of STRING;
+           the comparison is case-insensitive.  See bt_split_names for full
+           details of how splitting is done (it&apos;s not the same as Perl&apos;s &quot;split&quot;
+           function).
+
+           Returns the list of strings resulting from splitting STRING on DELIM.
+
+       purify_string (STRING [, OPTIONS])
+           &quot;Purifies&quot; STRING in the BibTeX way (usually for generation of sort
+           keys).  See bt_misc for details; note that, unlike the C interface,
+           &quot;purify_string&quot; does not modify STRING in-place.  A purified copy of
+           the input string is returned.
+
+           OPTIONS is currently unused.
+
+       change_case (TRANFORM, STRING [, OPTIONS])
+           Transforms the case of STRING according to TRANSFORM (a single
+           character, one of &apos;u&apos;, &apos;l&apos;, or &apos;t&apos;).  See bt_misc for details; again,
+           &quot;change_case&quot; differs from the C interface in that STRING is not
+           modified in-place---the input string is copied, and the transformed
+           copy is returned.
+
+   Entry-parsing functions
+       Although these functions are provided by the &quot;Text::BibTeX&quot; module, they
+       are actually in the &quot;Text::BibTeX::Entry&quot; package.  That&apos;s because they
+       are implemented in C, and thus loaded with the XSUB code that
+       &quot;Text::BibTeX&quot; loads; however, they are actually methods in the
+       &quot;Text::BibTeX::Entry&quot; class.  Thus, they are documented as methods in
+       Text::BibTeX::Entry.
+
+       parse (ENTRY_STRUCT, FILENAME, FILEHANDLE)
+       parse_s (ENTRY_STRUCT, TEXT)
+
+   Macro table functions
+       These functions allow direct access to the macro table maintained by
+       btparse, the C library underlying &quot;Text::BibTeX&quot;.  In the normal course
+       of events, macro definitions always accumulate, and are only defined as a
+       result of parsing a macro definition (@string) entry.  btparse never
+       deletes old macro definitions for you, and doesn&apos;t have any built-in
+       default macros.  If, for example, you wish to start fresh with new macros
+       for every file, use &quot;delete_all_macros&quot;.  If you wish to pre-define
+       certain macros, use &quot;add_macro_text&quot;.  (But note that the &quot;Bib&quot;
+       structure, as part of its mission to emulate BibTeX 0.99, defines the
+       standard &quot;month name&quot; macros for you.)
+
+       See also bt_macros in the btparse documentation for a description of the
+       C interface to these functions.
+
+       add_macro_text (MACRO, TEXT [, FILENAME [, LINE]])
+           Defines a new macro, or redefines an old one.  MACRO is the name of
+           the macro, and TEXT is the text it should expand to.  FILENAME and
+           LINE are just used to generate any warnings about the macro
+           definition.  The only such warning occurs when you redefine an old
+           macro: its value is overridden, and &quot;add_macro_text()&quot; issues a
+           warning saying so.
+
+       delete_macro (MACRO)
+           Deletes a macro from the macro table.  If MACRO isn&apos;t defined, takes
+           no action.
+
+       delete_all_macros ()
+           Deletes all macros from the macro table.
+
+       macro_length (MACRO)
+           Returns the length of a macro&apos;s expansion text.  If the macro is
+           undefined, returns 0; no warning is issued.
+
+       macro_text (MACRO [, FILENAME [, LINE]])
+           Returns the expansion text of a macro.  If the macro is not defined,
+           issues a warning and returns &quot;undef&quot;.  FILENAME and LINE, if
+           supplied, are used for generating this warning; they should be
+           supplied if you&apos;re looking up the macro as a result of finding it in
+           a file.
+
+   Name-parsing functions
+       These are both private functions for the use of the &quot;Name&quot; class, and
+       therefore are put in the &quot;Text::BibTeX::Name&quot; package.  You should use
+       the interface provided by that class for parsing names in the BibTeX
+       style.
+
+       _split (NAME_STRUCT, NAME, FILENAME, LINE, NAME_NUM, KEEP_CSTRUCT)
+       free (NAME_STRUCT)
+
+   Name-formatting functions
+       These are private functions for the use of the &quot;NameFormat&quot; class, and
+       therefore are put in the &quot;Text::BibTeX::NameFormat&quot; package.  You should
+       use the interface provided by that class for formatting names in the
+       BibTeX style.
+&#12;       create ([PARTS [, ABBREV_FIRST]])
+       free (FORMAT_STRUCT)
+       _set_text (FORMAT_STRUCT, PART, PRE_PART, POST_PART, PRE_TOKEN,
+       POST_TOKEN)
+       _set_options (FORMAT_STRUCT, PART, ABBREV, JOIN_TOKENS, JOIN_PART)
+       format_name (NAME_STRUCT, FORMAT_STRUCT)
+
+BUGS AND LIMITATIONS
+       &quot;Text::BibTeX&quot; inherits several limitations from its base C library,
+       btparse; see &quot;BUGS AND LIMITATIONS&quot; in btparse for details.  In addition,
+       &quot;Text::BibTeX&quot; will not work with a Perl binary built using the &quot;sfio&quot;
+       library.  This is because Perl&apos;s I/O abstraction layer does not extend to
+       third-party C libraries that use stdio, and btparse most certainly does
+       use stdio.
+
+SEE ALSO
+       btool_faq, Text::BibTeX::File, Text::BibTeX::Entry, Text::BibTeX::Value
+
+AUTHOR
+       Greg Ward &lt;gward@python.net&gt;
+
+COPYRIGHT
+       Copyright (c) 1997-2000 by Gregory P. Ward.  All rights reserved.  This
+       file is part of the Text::BibTeX library.  This library is free software;
+       you may redistribute it and/or modify it under the same terms as Perl
+       itself.
+
+
+
+perl v5.14.2                       2012-06-02                  Text::BibTeX(3pm)
+
+</pre></body></html>

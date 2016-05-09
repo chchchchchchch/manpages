@@ -1,0 +1,358 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Parse::DebianChangelog - parse Debian changelogs and output them in other formats</title></head>
+<body><pre>
+
+Parse::DebianChangelog(User Contributed Perl DocumentParse::DebianChangelog(3pm)
+
+
+
+NAME
+       Parse::DebianChangelog - parse Debian changelogs and output them in other
+       formats
+
+SYNOPSIS
+           use Parse::DebianChangelog;
+
+           my $chglog = Parse::DebianChangelog-&gt;init( { infile =&gt; &apos;debian/changelog&apos;,
+                                                        HTML =&gt; { outfile =&gt; &apos;changelog.html&apos; } );
+           $chglog-&gt;html;
+
+           # the following is semantically equivalent
+           my $chglog = Parse::DebianChangelog-&gt;init();
+           $chglog-&gt;parse( { infile =&gt; &apos;debian/changelog&apos; } );
+           $chglog-&gt;html( { outfile =&gt; &apos;changelog.html&apos; } );
+
+           my $changes = $chglog-&gt;dpkg_str( { since =&gt; &apos;1.0-1&apos; } );
+           print $changes;
+
+DESCRIPTION
+       Parse::DebianChangelog parses Debian changelogs as described in the
+       Debian policy (version 3.6.2.1 at the time of this writing). See section
+       &quot;SEE ALSO&quot; for locations where to find this definition.
+
+       The parser tries to ignore most cruft like # or /* */ style comments, CVS
+       comments, vim variables, emacs local variables and stuff from older
+       changelogs with other formats at the end of the file.  NOTE: most of
+       these are ignored silently currently, there is no parser error issued for
+       them. This should become configurable in the future.
+
+       Beside giving access to the details of the parsed file via the &quot;data&quot;
+       method, Parse::DebianChangelog also supports converting these changelogs
+       to various other formats. These are currently:
+
+       dpkg
+           Format as known from dpkg-parsechangelog(1). All requested entries
+           (see &quot;METHODS&quot; for an explanation what this means) are returned in
+           the usual Debian control format, merged in one stanza, ready to be
+           used in a .changes file.
+
+       rfc822
+           Similar to the &quot;dpkg&quot; format, but the requested entries are returned
+           as one stanza each, i.e. they are not merged. This is probably the
+           format to use if you want a machine-usable representation of the
+           changelog.
+
+       xml Just a simple XML dump of the changelog data. Without any schema or
+           DTD currently, just some made up XML. The actual format might still
+           change. Comments and Improvements welcome.
+
+       html
+           The changelog is converted to a somewhat nice looking HTML file with
+           some nice features as a quick-link bar with direct links to every
+           entry.  NOTE: This is not very configurable yet and was specifically
+           designed to be used on &lt;http://packages.debian.org/&gt;. This is planned
+           to be changed until version 1.0.
+
+   METHODS
+       init
+
+       Creates a new object instance. Takes a reference to a hash as optional
+       argument, which is interpreted as configuration options.  There are
+       currently no supported general configuration options, but see the other
+       methods for more specific configuration options which can also specified
+       to &quot;init&quot;.
+
+       If &quot;infile&quot; or &quot;instring&quot; are specified (see parse), &quot;parse()&quot; is called
+       from &quot;init&quot;. If a fatal error is encountered during parsing (e.g. the
+       file can&apos;t be opened), &quot;init&quot; will not return a valid object but &quot;undef&quot;!
+
+       reset_parse_errors
+
+       Can be used to delete all information about errors ocurred during
+       previous parse runs. Note that &quot;parse()&quot; also calls this method.
+
+       get_parse_errors
+
+       Returns all error messages from the last parse run.  If called in scalar
+       context returns a human readable string representation. If called in list
+       context returns an array of arrays. Each of these arrays contains
+
+       1.  the filename of the parsed file or &quot;String&quot; if a string was parsed
+           directly
+
+       2.  the line number where the error occurred
+
+       3.  an error description
+
+       4.  the original line
+
+       NOTE: This format isn&apos;t stable yet and may change in later versions of
+       this module.
+
+       get_error
+
+       Get the last non-parser error (e.g. the file to parse couldn&apos;t be
+       opened).
+
+       parse
+
+       Parses either the file named in configuration item &quot;infile&quot; or the string
+       saved in configuration item &quot;instring&quot;.  Accepts a hash ref as optional
+       argument which can contain configuration items.
+
+       Returns &quot;undef&quot; in case of error (e.g. &quot;file not found&quot;, not parse
+       errors) and the object if successful. If &quot;undef&quot; was returned, you can
+       get the reason for the failure by calling the get_error method.
+
+       data
+
+       &quot;data&quot; returns an array (if called in list context) or a reference to an
+       array of Parse::DebianChangelog::Entry objects which each represent one
+       entry of the changelog.
+
+       This is currently merely a placeholder to enable users to get to the raw
+       data, expect changes to this API in the near future.
+
+       This method supports the common output options described in section
+       &quot;COMMON OUTPUT OPTIONS&quot;.
+
+       dpkg
+
+       (and dpkg_str)
+
+       &quot;dpkg&quot; returns a hash (in list context) or a hash reference (in scalar
+       context) where the keys are field names and the values are field values.
+       The following fields are given:
+&#12;       Source
+           package name (in the first entry)
+
+       Version
+           packages&apos; version (from first entry)
+
+       Distribution
+           target distribution (from first entry)
+
+       Urgency
+           urgency (highest of all printed entries)
+
+       Maintainer
+           person that created the (first) entry
+
+       Date
+           date of the (first) entry
+
+       Closes
+           bugs closed by the entry/entries, sorted by bug number
+
+       Changes
+           content of the the entry/entries
+
+       &quot;dpkg_str&quot; returns a stringified version of this hash which should look
+       exactly like the output of dpkg-parsechangelog(1). The fields are ordered
+       like in the list above.
+
+       Both methods only support the common output options described in section
+       &quot;COMMON OUTPUT OPTIONS&quot;.
+
+       dpkg_str
+
+       See dpkg.
+
+       rfc822
+
+       (and rfc822_str)
+
+       &quot;rfc822&quot; returns an array of hashes (in list context) or a reference to
+       this array (in scalar context) where each hash represents one entry in
+       the changelog. For the format of such a hash see the description of the
+       &quot;dpkg&quot; method (while ignoring the remarks about which values are taken
+       from the first entry).
+
+       &quot;rfc822_str&quot; returns a stringified version of this hash which looks
+       similar to the output of dpkg-parsechangelog but instead of one stanza
+       the output contains one stanza for each entry.
+
+       Both methods only support the common output options described in section
+       &quot;COMMON OUTPUT OPTIONS&quot;.
+
+       rfc822_str
+
+       See rfc822.
+
+       xml
+
+       (and xml_str)
+
+       &quot;xml&quot; converts the changelog to some free-form (i.e. there is neither a
+       DTD or a schema for it) XML.
+
+       The method &quot;xml_str&quot; is an alias for &quot;xml&quot;.
+
+       Both methods support the common output options described in section
+       &quot;COMMON OUTPUT OPTIONS&quot; and additionally the following configuration
+       options (as usual to give in a hash reference as parameter to the method
+       call):
+
+       outfile
+           directly write the output to the file specified
+
+       xml_str
+
+       See xml.
+
+       html
+
+       (and html_str)
+
+       &quot;html&quot; converts the changelog to a HTML file with some nice features such
+       as a quick-link bar with direct links to every entry. The HTML is
+       generated with the help of HTML::Template. If you want to change the
+       output you should use the default template provided with this module as a
+       base and read the documentation of HTML::Template to understand how to
+       edit it.
+
+       The method &quot;html_str&quot; is an alias for &quot;html&quot;.
+
+       Both methods support the common output options described in section
+       &quot;COMMON OUTPUT OPTIONS&quot; and additionally the following configuration
+       options (as usual to give in a hash reference as parameter to the method
+       call):
+
+       outfile
+           directly write the output to the file specified
+
+       template
+           template file to use, defaults to tmpl/default.tmpl, so you most
+           likely want to override that.  NOTE: The plan is to provide a
+           configuration file for the module later to be able to use sane
+           defaults here.
+
+       style
+           path to the CSS stylesheet to use (a default might be specified in
+           the template and will be honoured, see the default template for an
+           example)
+
+       print_style
+           path to the CSS stylesheet to use for printing (see the notes for
+           &quot;style&quot; about default values)
+
+       html_str
+
+       See html.
+
+       init_filters
+
+       not yet documented
+
+       apply_filters
+
+       not yet documented
+
+       add_filter, delete_filter, replace_filter
+
+       not yet documented
+
+COMMON OUTPUT OPTIONS
+       The following options are supported by all output methods, all take a
+       version number as value:
+
+       since
+           Causes changelog information from all versions strictly later than
+           version to be used.
+
+           (works exactly like the &quot;-v&quot; option of dpkg-parsechangelog).
+
+       until
+           Causes changelog information from all versions strictly earlier than
+           version to be used.
+
+       from
+           Similar to &quot;since&quot; but also includes the information for the
+           specified version itself.
+
+       to  Similar to &quot;until&quot; but also includes the information for the
+           specified version itself.
+
+       The following options also supported by all output methods but don&apos;t take
+       version numbers as values:
+
+       all If set to a true value, all entries of the changelog are returned,
+           this overrides all other options. While the XML and HTML formats
+           default to all == true, this does of course not overwrite other
+           options unless it is set explicitly with the call.
+
+       count
+           Expects a signed integer as value. Returns &quot;value&quot; entries from the
+           top of the changelog if set to a positive integer, and &quot;abs(value)&quot;
+           entries from the tail if set to a negative integer.
+
+       offset
+           Expects a signed integer as value. Changes the starting point for
+           &quot;count&quot;, either counted from the top (positive integer) or from the
+           tail (negative integer). &quot;offset&quot; has no effect if &quot;count&quot; wasn&apos;t
+           given as well.
+
+       Some examples for the above options. Imagine an example changelog with
+       entries for the versions 1.2, 1.3, 2.0, 2.1, 2.2, 3.0 and 3.1.
+
+                   Call                               Included entries
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ since =E&lt;gt&gt; &apos;2.0&apos; })&gt;  3.1, 3.0, 2.2
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ until =E&lt;gt&gt; &apos;2.0&apos; })&gt;  1.3, 1.2
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ from =E&lt;gt&gt; &apos;2.0&apos; })&gt;   3.1, 3.0, 2.2, 2.1, 2.0
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ to =E&lt;gt&gt; &apos;2.0&apos; })&gt;     2.0, 1.3, 1.2
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ count =E&lt;gt&gt; 2 }&gt;&gt;      3.1, 3.0
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ count =E&lt;gt&gt; -2 }&gt;&gt;     1.3, 1.2
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ count =E&lt;gt&gt; 3,
+                             offset=E&lt;gt&gt; 2 }&gt;&gt;      2.2, 2.1, 2.0
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ count =E&lt;gt&gt; 2,
+                             offset=E&lt;gt&gt; -3 }&gt;&gt;     2.0, 1.3
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ count =E&lt;gt&gt; -2,
+                             offset=E&lt;gt&gt; 3 }&gt;&gt;      3.0, 2.2
+        C&lt;E&lt;lt&gt;formatE&lt;gt&gt;({ count =E&lt;gt&gt; -2,
+                             offset=E&lt;gt&gt; -3 }&gt;&gt;     2.2, 2.1
+
+       Any combination of one option of &quot;since&quot; and &quot;from&quot; and one of &quot;until&quot;
+       and &quot;to&quot; returns the intersection of the two results with only one of the
+       options specified.
+
+SEE ALSO
+       Parse::DebianChangelog::Entry, Parse::DebianChangelog::ChangesFilters
+
+       Description of the Debian changelog format in the Debian policy:
+       &lt;http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog&gt;.
+&#12;AUTHOR
+       Frank Lichtenheld, &lt;frank@lichtenheld.de&gt;
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2005 by Frank Lichtenheld
+
+       This program is free software; you can redistribute it and/or modify it
+       under the terms of the GNU General Public License as published by the
+       Free Software Foundation; either version 2 of the License, or (at your
+       option) any later version.
+
+       This program is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+       Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with this program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+
+
+perl v5.10.1                       2011-04-04        Parse::DebianChangelog(3pm)
+
+</pre></body></html>

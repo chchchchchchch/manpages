@@ -1,0 +1,47 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_installcron - install cron scripts into etc/cron.*</title></head>
+<body><pre>
+
+DH_INSTALLCRON(1)                   Debhelper                  DH_INSTALLCRON(1)
+
+
+
+NAME
+       dh_installcron - install cron scripts into etc/cron.*
+
+SYNOPSIS
+       dh_installcron [debhelper&#194; options] [--name=name]
+
+DESCRIPTION
+       dh_installcron is a debhelper program that is responsible for installing
+       cron scripts.
+
+FILES
+       debian/package.cron.daily
+       debian/package.cron.weekly
+       debian/package.cron.monthly
+       debian/package.cron.hourly
+       debian/package.cron.d
+           Installed into the appropriate etc/cron.*/ directory in the package
+           build directory.
+
+OPTIONS
+       --name=name
+           Look for files named debian/package.name.cron.* and install them as
+           etc/cron.*/name, instead of using the usual files and installing them
+           as the package name.
+
+SEE ALSO
+       debhelper(7)
+
+       This program is a part of debhelper.
+
+AUTHOR
+       Joey Hess &lt;joeyh@debian.org&gt;
+
+
+
+9.20120909                         2011-09-12                  DH_INSTALLCRON(1)
+
+</pre></body></html>

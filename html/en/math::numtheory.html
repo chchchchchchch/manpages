@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>math::numtheory - Number Theory</title></head>
+<body><pre>
+
+math::numtheory(3tcl)           Tcl Math Library           math::numtheory(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       math::numtheory - Number Theory
+
+SYNOPSIS
+       package require Tcl  ?8.5?
+
+       package require math::numtheory  ?1.0?
+
+       math::numtheory::isprime N ?option value ...?
+
+_________________________________________________________________
+
+DESCRIPTION
+       This  package  is  for  collecting  various  number-theoretic operations,
+       though at the moment it only provides that of testing whether an  integer
+       is a prime.
+
+       math::numtheory::isprime N ?option value ...?
+              The  isprime  command  tests  whether  the  integer  N is a prime,
+              returning a boolean true value for prime N  and  a  boolean  false
+              value  for  non-prime  N. The formal definition of &#180;prime&apos; used is
+              the conventional, that the number being tested is greater  than  1
+              and only has trivial divisors.
+
+              To  be  precise,  the return value is one of 0 (if N is definitely
+              not a prime), 1 (if N is definitely a prime),  and  on  (if  N  is
+              probably  prime); the latter two are both boolean true values. The
+              case that an integer may be classified as &quot;probably prime&quot;  arises
+              because the Miller-Rabin algorithm used in the test implementation
+              is basically probabilistic, and may if  we  are  unlucky  fail  to
+              detect  that a number is in fact composite. Options may be used to
+              select the risk of such  &quot;false  positives&quot;  in  the  test.  1  is
+              returned  for  &quot;small&quot; N (which currently means N &lt; 118670087467),
+              where it is known that no false positives are possible.
+
+              The only option currently defined is:
+
+              -randommr repetitions
+                     which controls how many times the Miller-Rabin test  should
+                     be  repeated  with  randomly  chosen bases. Each repetition
+                     reduces the probability of a false positive by a factor  at
+                     least 4. The default for repetitions is 4.
+
+              Unknown options are silently ignored.
+
+KEYWORDS
+       number theory, prime
+
+CATEGORY
+       Mathematics
+
+COPYRIGHT
+       Copyright (c) 2010 Lars Hellstr&#246;m &lt;Lars dot Hellstrom at residenset dot net&gt;
+
+
+
+
+math                                   1.0                 math::numtheory(3tcl)
+
+</pre></body></html>

@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Authen::SASL::Perl::LOGIN - Login Authentication class</title></head>
+<body><pre>
+
+Authen::SASL::Perl::LOGUserpContributed Perl DocumAuthen::SASL::Perl::LOGIN(3pm)
+
+
+
+NAME
+       Authen::SASL::Perl::LOGIN - Login Authentication class
+
+SYNOPSIS
+         use Authen::SASL qw(Perl);
+
+         $sasl = Authen::SASL-&gt;new(
+           mechanism =&gt; &apos;LOGIN&apos;,
+           callback  =&gt; {
+             user =&gt; $user,
+             pass =&gt; $pass
+           },
+         );
+
+DESCRIPTION
+       This method implements the client and server part of the LOGIN SASL
+       algorithm, as described in IETF Draft draft-murchison-sasl-login-XX.txt.
+
+   CALLBACK
+       The callbacks used are:
+
+       Client
+
+       user
+           The username to be used for authentication
+
+       pass
+           The user&apos;s password to be used for authentication
+
+       Server
+
+       getsecret(username)
+           returns the password associated with &quot;username&quot;
+
+       checkpass(username, password)
+           returns true and false depending on the validity of the credentials
+           passed in arguments.
+
+SEE ALSO
+       Authen::SASL, Authen::SASL::Perl
+
+AUTHORS
+       Software written by Graham Barr &lt;gbarr@pobox.com&gt;, documentation written
+       by Peter Marschall &lt;peter@adpm.de&gt;.  Server support by Yann Kerherve
+       &lt;yannk@cpan.org&gt;
+
+       Please report any bugs, or post any suggestions, to the perl-ldap mailing
+       list &lt;perl-ldap@perl.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2002-2004 Graham Barr.  All rights reserved. This program
+       is free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       Documentation Copyright (c) 2004 Peter Marschall.  All rights reserved.
+       This documentation is distributed, and may be redistributed, under the
+       same terms as Perl itself.
+
+       Server support Copyright (c) 2009 Yann Kerherve.  All rights reserved.
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-06-06     Authen::SASL::Perl::LOGIN(3pm)
+
+</pre></body></html>

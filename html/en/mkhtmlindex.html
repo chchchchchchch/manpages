@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mkhtmlindex - generate index files for HTML man pages</title></head>
+<body><pre>
+
+mkhtmlindex(1)                                                    mkhtmlindex(1)
+
+
+
+NAME
+       mkhtmlindex - generate index files for HTML man pages
+
+SYNOPSIS
+       mkhtmlindex htmlmandir
+
+DESCRIPTION
+       The  mkhtmlindex  program  generates index files for a directory of HTML-
+       formatted manual pages.  It searches for files whose  names  are  of  the
+       form  &#8220;name.1.html&#8221;,  and  outputs  index files &#8220;manindex1.html&#8221;, &#8220;manin&#8208;
+       dex.2.html&#8221;, and so on, one for each manual volume.   Empty  index  files
+       will  be removed.  Names and descriptions are found by scanning the first
+       &lt;H2&gt; section of each page.
+
+OPTIONS
+       mkhtmlindex takes only one argument: the directory to process.
+
+NOTES
+       This utility is currently rather specific to X manual pages.  In particu&#8208;
+       lar, the format of the index files it outputs is not configurable, nor is
+       the HTML formatting it expects of manual pages.
+
+AUTHOR
+       The version of the mkhtmlindex included in this X.Org Foundation  release
+       was originally written by David Dawes wrote as a part of XFree86.
+
+       Colin Watson wrote this manual page, originally for the Debian Project.
+
+
+
+X Version 11                       imake 1.0.5                    mkhtmlindex(1)
+
+</pre></body></html>

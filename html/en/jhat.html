@@ -1,0 +1,113 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jhat - Java Heap Analysis Tool</title></head>
+<body><pre>
+
+jhat(1)                                                                  jhat(1)
+
+
+
+Name
+       jhat - Java Heap Analysis Tool
+
+SYNOPSIS
+       jhat [ options ] &lt;heap-dump-file&gt;
+
+
+
+PARAMETERS
+          options
+             Options, if used, should follow immediately after the command name.
+
+          heap-dump-file
+             Java binary heap dump file to be browsed. For a dump file that con&#8208;
+             tains multiple heap dumps, you may specify which dump in  the  file
+             by appending &quot;#&lt;number&gt; to the file name, i.e. &quot;foo.hprof#3&quot;.
+
+
+DESCRIPTION
+       The  jhat  command parses a java heap dump file and launches a webserver.
+       jhat enables you to browse heap dumps  using  your  favorite  webbrowser.
+       jhat  supports  pre-designed  queries  (such  as &apos;show all instances of a
+       known class &quot;Foo&quot;&apos;) as well as OQL (Object Query Language) -  a  SQL-like
+       query language to query heap dumps. Help on OQL is available from the OQL
+       help page shown by jhat. With the default port, OQL help is available  at
+       http://localhost:7000/oqlhelp/
+
+       There are several ways to generate a java heap dump:
+
+          o Use jmap(1) -dump option to obtain a heap dump at runtime;
+
+          o Use jconsole(1) option to obtain a heap dump via HotSpotDiagnos&#8208;
+            ticMXBean @
+            http://docs.oracle.com/javase/7/docs/jre/api/management/exten&#8208;
+            sion/com/sun/management/HotSpotDiagnosticMXBean.html at runtime;
+
+          o Heap dump will be generated when OutOfMemoryError is thrown by spec&#8208;
+            ifying -XX:+HeapDumpOnOutOfMemoryError VM option;
+
+          o Use hprof @
+            http://java.sun.com/developer/technicalArticles/Program&#8208;
+            ming/HPROF.html.
+
+
+       NOTE: This tool is experimental and may not be available in future ver&#8208;
+       sions of the JDK.
+
+OPTIONS
+          -stack false/true
+             Turn off tracking object allocation call stack. Note that if allo&#8208;
+             cation site information is not available in the heap dump, you have
+             to set this flag to false. Default is true.
+
+          -refs false/true
+             Turn off tracking of references to objects. Default is true. By
+             default, back pointers (objects pointing to a given object a.k.a
+             referrers or in-coming references) are calculated for all objects
+             in the heap.
+
+          -port port-number
+             Set the port for the jhat&apos;s HTTP server. Default is 7000.
+&#12;          -exclude exclude-file
+             Specify a file that lists data members that should be excluded from
+             the &quot;reachable objects&quot; query. For example, if the file lists
+             java.lang.String.value, then, whenever list of objects reachable
+             from a specific object &quot;o&quot; are calculated, reference paths involv&#8208;
+             ing java.lang.String.value field will not considered.
+
+          -baseline baseline-dump-file
+             Specify a baseline heap dump. Objects in both heap dumps with the
+             same object ID will be marked as not being &quot;new&quot;. Other objects
+             will be marked as &quot;new&quot;. This is useful while comparing two differ&#8208;
+             ent heap dumps.
+
+          -debug int
+             Set debug level for this tool. 0 means no debug output. Set higher
+             values for more verbose modes.
+
+          -version
+             Report version number and exit.
+
+          -h Output help message and exit.
+
+          -help
+             Output help message and exit.
+
+          -J&lt;flag&gt;
+             Pass &lt;flag&gt; to the Java virtual machine on which jhat is run. For
+             example, -J-Xmx512m to use a maximum heap size of 512MB.
+
+
+SEE ALSO
+          o jmap(1)
+
+          o jconsole(1)
+
+          o hprof - Heap and CPU profiling tool @
+            http://java.sun.com/developer/technicalArticles/Program&#8208;
+            ming/HPROF.html
+
+
+                                   16 Mar 2012                           jhat(1)
+
+</pre></body></html>

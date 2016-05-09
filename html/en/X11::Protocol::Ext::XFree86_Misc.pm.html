@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X11::Protocol::Ext::XFree86_Misc.pm - Perl module for the XFree86 Misc Extension</title></head>
+<body><pre>
+
+Protocol::Ext::XFree86_User(Contributed Perl DocProtocol::Ext::XFree86_Misc(3pm)
+
+
+
+NAME
+       X11::Protocol::Ext::XFree86_Misc.pm - Perl module for the XFree86 Misc
+       Extension
+
+SYNOPSIS
+         use X11::Protocol;
+         $x = X11::Protocol-&gt;new();
+         $x-&gt;init_extension(&apos;XFree86-Misc&apos;);
+
+DESCRIPTION
+       This module is used to access miscellaneous features of XFree86 servers
+
+SYMBOLIC CONSTANTS
+       This extension adds the MouseTypes, KeyboardTypes and MouseFlags
+       constants, with values as defined in the XFree86 3.3.3 source code.
+
+REQUESTS
+       This extension adds several requests, called as shown below:
+
+         $x-&gt;XF86MiscQueryVersion =&gt; ($major, $minor)
+
+         $x-&gt;XF86MiscGetSaver($screen) =&gt; ($suspendtime, $offtime)
+
+         $x-&gt;XF86MiscSetSaver($screen, $suspendtime, $offtime)
+
+         $x-&gt;XF86MiscGetMouseSettings =&gt; (%settings)
+
+         $x-&gt;XF86MiscSetMouseSettings(%settings)
+
+         $x-&gt;XF86MiscGetKbdSettings =&gt; ($type, $rate, $delay, $servnumlock)
+
+         $x-&gt;XF86MiscSetKbdSettings($type, $rate, $delay, $servnumlock)
+
+AUTHOR
+       Jay Kominek &lt;jay.kominek@colorado.edu&gt;
+
+SEE ALSO
+       perl(1), X11::Protocol
+
+
+
+perl v5.14.2                       2003-05-11   Protocol::Ext::XFree86_Misc(3pm)
+
+</pre></body></html>

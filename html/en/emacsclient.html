@@ -1,0 +1,107 @@
+<html>
+<head><meta charset=utf-8/>
+<title>emacsclient - tells a running Emacs to visit a file</title></head>
+<body><pre>
+
+EMACSCLIENT(1)                                                    EMACSCLIENT(1)
+
+
+
+NAME
+       emacsclient - tells a running Emacs to visit a file
+
+SYNOPSIS
+       emacsclient [options] files ...
+
+DESCRIPTION
+       This  manual  page documents briefly the emacsclient command.  Full docu&#8208;
+       mentation is available in the GNU Info format; see  below.   This  manual
+       page was originally written for the Debian GNU/Linux distribution, but is
+       not specific to that system.
+
+       emacsclient works in conjunction with the built-in Emacs server.
+
+       You can either call emacsclient directly or let other programs run it for
+       you  when  necessary.   On GNU and Unix systems many programs consult the
+       environment variable EDITOR (sometimes also VISUAL) to obtain the command
+       used  for  editing.   Thus,  setting  this environment variable to &apos;emac&#8208;
+       sclient&apos; will allow these programs to use an already  running  Emacs  for
+       editing.  Other operating systems might have their own methods for defin&#8208;
+       ing the default editor.
+
+       For emacsclient to work, you need an already running Emacs with a server.
+       Within  Emacs, call the functions `server-start&apos; or `server-mode&apos;.  (Your
+       `.emacs&apos; file can do this  automatically  if  you  add  either  `(server-
+       start)&apos; or `(server-mode 1)&apos; to it.)
+
+       When  you&apos;ve  finished  editing the buffer, type `C-x #&apos; (`server-edit&apos;).
+       This saves the file and sends a message back to the `emacsclient&apos; program
+       telling it to exit.  The programs that use `EDITOR&apos; wait for the &quot;editor&quot;
+       (actually, `emacsclient&apos;) to exit.  `C-x #&apos; also checks for other pending
+       external requests to edit various files, and selects the next such file.
+
+       If  you  set the variable `server-window&apos; to a window or a frame, `C-x #&apos;
+       displays the server buffer in that window or in that frame.
+
+
+OPTIONS
+       The programs follow the usual GNU command line syntax, with long  options
+       starting with two dashes (`-&apos;).
+
+       -a, --alternate-editor=EDITOR
+              if  the  Emacs  server  is  not  running, run the specified editor
+              instead.  This can also be specified  via  the  `ALTERNATE_EDITOR&apos;
+              environment variable.  If the value of EDITOR is the empty string,
+              then Emacs is started in daemon mode and emacsclient will  try  to
+              connect to it.
+
+       -c, --create-frame
+              create  a  new  frame  instead  of trying to use the current Emacs
+              frame
+
+       -d, --display=DISPLAY
+              tell the server to display the files on the given display.
+
+       -e, --eval
+              do not visit files but instead evaluate  the  arguments  as  Emacs
+              Lisp expressions.
+
+       -f, --server-file=FILENAME
+              use  TCP  configuration file FILENAME for communication.  This can
+              also be specified via the  `EMACS_SERVER_FILE&apos;  environment  vari&#8208;
+              able.
+
+       -n, --no-wait
+              returns immediately without waiting for you to &quot;finish&quot; the buffer
+              in Emacs.
+
+       -nw, -t, --tty
+              open a new Emacs frame on the current terminal
+
+       -s, --socket-name=FILENAME
+              use socket named FILENAME for communication.
+
+       -V, --version
+              print version information and exit
+
+       -H, --help
+              print this usage information message and exit
+
+SEE ALSO
+       The program is documented fully in Using Emacs as a Server available  via
+       the Info system.
+
+AUTHOR
+       This     manual    page    was    written    by    Stephane    Bortzmeyer
+       &lt;bortzmeyer@debian.org&gt;, for the Debian GNU/Linux system (but may be used
+       by others).
+
+COPYING
+       This manual page is in the public domain.
+
+
+
+
+                                                                  EMACSCLIENT(1)
+
+</pre></body></html>

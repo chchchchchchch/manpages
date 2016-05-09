@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>exiqgrep - Search in the exim queue</title></head>
+<body><pre>
+
+EXIQGREP(8)                                                          EXIQGREP(8)
+
+
+
+NAME
+       exiqgrep - Search in the exim queue
+
+SYNOPSIS
+       exiqgrep [-a] [-c]
+
+
+DESCRIPTION
+       The  exiqgrep utility is a Perl script which offers possibilities to grep
+       in the exim queue output. Unlike exiqsumm, it invokes  exim  -bpu  itself
+       and does not need to be invoked in a pipe.
+
+
+OPTIONS
+       -h        Print help
+
+       -f &lt;regexp&gt;
+                 Match sender address (field is &#8220;&lt; &gt;&#8221; wrapped)
+
+       -r &lt;regexp&gt;
+                 Match recipient address
+
+       -s &lt;regexp&gt;
+                 Match against the site field from long output
+
+       -y &lt;seconds&gt;
+                 Message younger than
+
+       -o &lt;seconds&gt;
+                 Message older than
+
+       -z        Frozen messages only (exclude non-frozen)
+
+       -x        Non-frozen messages only (exclude frozen)
+
+       -c        Display match count
+
+       -l        Long Format [Default]
+
+       -i        Message IDs only
+
+       -b        Brief Format
+
+       -R        Reverse order
+
+
+BUGS
+       This  manual  page  needs a major re-work. If somebody knows better groff
+       than us and has more experience in  writing  manual  pages,  any  patches
+       would be greatly appreciated.
+
+
+SEE ALSO
+       exim(8), /usr/share/doc/exim4-base/
+
+
+AUTHOR
+       This manual page was stitched together from the source code by Marc Haber
+       &lt;mh+debian-packages@zugschlus.de&gt;, using the exiqsumm man page by Andreas
+       Metzler &lt;ametzler at downhill.at.eu.org&gt;, for the Debian GNU/Linux system
+       (but may be used by others).
+
+
+
+                                 March 26, 2003                      EXIQGREP(8)
+
+</pre></body></html>

@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-ca-certificates - update /etc/ssl/certs and certificates.crt</title></head>
+<body><pre>
+
+UPDATE-CA-CERTIFICATES(8)                              UPDATE-CA-CERTIFICATES(8)
+
+
+
+NAME
+       update-ca-certificates - update /etc/ssl/certs and certificates.crt
+
+SYNOPSIS
+       update-ca-certificates [options]
+
+DESCRIPTION
+       This  manual  page documents briefly the update-ca-certificates commands.
+       This manual page was written for the Debian distribution.
+
+       update-ca-certificates  is  a  program   that   updates   the   directory
+       /etc/ssl/certs to hold SSL certificates and generates certificates.crt, a
+       concatenated single-file list of certificates.
+
+       It reads the file /etc/ca-certificates.conf. Each line gives  a  pathname
+       of  a  CA  certificate  under  /usr/share/ca-certificates  that should be
+       trusted.  Lines that begin with &quot;#&quot; are comment lines and  thus  ignored.
+       Lines that begin with &quot;!&quot; are deselected, causing the deactivation of the
+       CA certificate in question.
+
+       Furthermore all certificates found below /usr/local/share/ca-certificates
+       are also included as implicitly trusted.
+
+       Before  terminating, update-ca-certificates invokes run-parts on /etc/ca-
+       certificates/update.d and calls each hook with a  list  of  certificates:
+       those added are prefixed with a +, those removed are prefixed with a -.
+
+OPTIONS
+       A summary of options is included below.
+
+       -h, --help
+              Show summary of options.
+
+       -v, --verbose
+              Be verbose. Output c_rehash.
+
+       -f, --fresh
+              Fresh updates.  Remove symlinks in /etc/ssl/certs directory.
+
+FILES
+       /etc/ca-certificates.conf
+              A configuration file.
+
+       /etc/ssl/certs/ca-certificates.crt
+              A  single-file  version of CA certificates.  This hold all CA cer&#8208;
+              tificates that you activated in /etc/ca-certificates.conf.
+
+       /usr/share/ca-certificates
+              Directory of CA certificates.
+
+       /usr/local/share/ca-certificates
+              Directory of local CA certificates (with .crt extension).
+
+SEE ALSO
+       c_rehash(1),
+
+AUTHOR
+       This manual page was written by Fumitoshi UKAI  &lt;ukai@debian.or.jp&gt;,  for
+       the Debian project (but may be used by others).
+
+
+
+                                  20 April 2003        UPDATE-CA-CERTIFICATES(8)
+
+</pre></body></html>

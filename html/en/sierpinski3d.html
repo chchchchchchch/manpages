@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sierpinski3d - 3D Sierpinski triangle fractal.</title></head>
+<body><pre>
+
+sierpinski3d(6x)               XScreenSaver manual              sierpinski3d(6x)
+
+
+
+NAME
+       sierpinski3d - 3D Sierpinski triangle fractal.
+
+SYNOPSIS
+       sierpinski3d  [-display  host:display.screen]  [-visual visual] [-window]
+       [-root] [-delay number]  [-speed  number]  [-depth  number]  [-wireframe]
+       [-fps]
+
+DESCRIPTION
+       This draws the three-dimensional variant of the recursive Sierpinski tri&#8208;
+       angle fractal, using GL.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -delay number
+               Per-frame delay, in  microseconds.   Default:  20000  (0.02  sec&#8208;
+               onds.).
+
+       -speed number
+               Number of frames before changing shape.  Default: 150.
+
+       -depth number
+               Max  depth  to  descend.   Default:  5.   You probably don&apos;t have
+               enough memory for 6.
+
+       -wireframe
+               Render in wireframe instead of solid.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright  &#169; 2002 by Tim Robinson and Jamie Zawinski.  Permission to use,
+       copy, modify, distribute, and sell this software  and  its  documentation
+       for  any  purpose  is hereby granted without fee, provided that the above
+       copyright notice appear in all copies and that both that copyright notice
+       and this permission notice appear in supporting documentation.  No repre&#8208;
+       sentations are made about the suitability of this software for  any  pur&#8208;
+       pose.  It is provided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Tim Robinson and Jamie Zawinski.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)               sierpinski3d(6x)
+
+</pre></body></html>

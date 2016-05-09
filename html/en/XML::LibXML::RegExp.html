@@ -1,0 +1,66 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::LibXML::RegExp - XML::LibXML::RegExp - interface to libxml2 regular expressions</title></head>
+<body><pre>
+
+XML::LibXML::RegExp(3pmUser Contributed Perl DocumentatiXML::LibXML::RegExp(3pm)
+
+
+
+NAME
+       XML::LibXML::RegExp - XML::LibXML::RegExp - interface to libxml2 regular
+       expressions
+
+SYNOPSIS
+         use XML::LibXML;
+         my $compiled_re = XML::LibXML::RegExp-&gt;new(&apos;[0-9]{5}(-[0-9]{4})?&apos;);
+         if ($compiled_re-&gt;isDeterministic()) { ... }
+         if ($compiled_re-&gt;matches($string)) { ... }
+
+         $compiled_re = XML::LibXML::RegExp-&gt;new( $regexp_str );
+         $bool = $compiled_re-&gt;matches($string);
+         $bool = $compiled_re-&gt;isDeterministic();
+
+DESCRIPTION
+       This is a perl interface to libxml2&apos;s implementation of regular
+       expressions, which are used e.g. for validation of XML Schema simple
+       types (pattern facet).
+
+       new()
+             $compiled_re = XML::LibXML::RegExp-&gt;new( $regexp_str );
+
+           The constructor takes a string containing a regular expression and
+           returns a compiled regexp object.
+
+       matches($string)
+             $bool = $compiled_re-&gt;matches($string);
+
+           Given a string value, returns a true value if the value is matched by
+           the compiled regular expression.
+
+       isDeterministic()
+             $bool = $compiled_re-&gt;isDeterministic();
+
+           Returns a true value if the regular expression is deterministic;
+           returns false otherwise. (See the definition of determinism in the
+           XML spec (http://www.w3.org/TR/REC-xml/#determinism
+           &lt;http://www.w3.org/TR/REC-xml/#determinism&gt;))
+
+AUTHORS
+       Matt Sergeant, Christian Glahn, Petr Pajas
+
+VERSION
+       2.0001
+
+COPYRIGHT
+       2001-2007, AxKit.com Ltd.
+
+       2002-2006, Christian Glahn.
+
+       2006-2009, Petr Pajas.
+
+
+
+perl v5.14.2                       2012-06-20           XML::LibXML::RegExp(3pm)
+
+</pre></body></html>

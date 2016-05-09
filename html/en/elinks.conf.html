@@ -1,0 +1,2346 @@
+<html>
+<head><meta charset=utf-8/>
+<title>elinks.conf - ELinks configuration file</title></head>
+<body><pre>
+
+ELINKS.CONF(5)              ELinks configuration file             ELINKS.CONF(5)
+
+
+
+NAME
+       elinks.conf - ELinks configuration file
+
+SYNOPSIS
+           set     &lt;option&gt; = &lt;value&gt;
+           unset   &lt;option&gt;
+           bind    &quot;&lt;keymap&gt;&quot; &quot;&lt;key&gt;&quot; = &quot;&lt;action&gt;&quot;
+           include &quot;&lt;file&gt;&quot;
+
+DESCRIPTION
+       The elinks.conf file contains configuration information for ELinks. It
+       can be used to configure the behaviour of ELinks in a wide variety of
+       ways: protocol behaviour, keybindings, colors used for rendering and for
+       the user interface.
+
+       It is read at startup and saved only when requested. All options
+       described in this document can be fully configured from within ELinks so
+       no editing of elinks.conf is needed.
+
+       Note that MIME-related options used for specifying handlers of various
+       MIME types are NOT described in this document. Documentation for these
+       options can be found at the ELinks homepage. Keybindings can also be
+       specified in elinks.conf. This is described in elinkskeys(5).
+
+
+SYNTAX
+       The syntax of the configuration file is very simple. The elinks.conf file
+       is a free-form ASCII text file. The file may contain extra tabs and
+       newlines for formatting purposes. Keywords in the file are
+       case-sensitive. Comments may be placed anywhere within the file (except
+       within quotes). Comments begin with the # character and end at the end of
+       the line.
+
+
+EXAMPLES
+       Some sample settings:
+
+
+           # Use asynchronous DNS resolver?
+           set connection.async_dns = 1
+           # horizontal text margin.
+           set document.browse.margin_width = 3
+           # Default document codepage.
+           set document.codepage.assume = &quot;ISO-8859-1&quot;
+           # User defined protocol handlers
+           set protocol.user.mailto.unix = &quot;mutt %h -s \&quot;%s\&quot;&quot;
+
+OPTIONS
+       Generated using output from ELinks version 0.12pre5.
+
+
+   bookmarks (Bookmarks)
+       Bookmark options.
+
+       bookmarks.file_format &lt;num&gt; (default: 0)
+           File format for bookmarks (affects both reading and saving):
+
+           &#183;   0 is the default native ELinks format
+
+           &#183;   1 is XBEL universal XML bookmarks format
+
+       bookmarks.folder_state [0|1] (default: 1)
+           When saving bookmarks also store whether folders are expanded or not,
+           so the look of the bookmark dialog is kept across ELinks sessions. If
+           disabled all folders will appear unexpanded next time ELinks is run.
+
+   config (Configuration system)
+       Configuration handling options.
+
+       config.comments &lt;num&gt; (default: 3)
+           Amount of comments automatically written to the config file:
+
+           &#183;   0 is no comments are written
+
+           &#183;   1 is only the &quot;blurb&quot; (name+type) is written
+
+           &#183;   2 is only the description is written
+
+           &#183;   3 is full comments are written
+
+       config.indentation &lt;num&gt; (default: 2)
+           Shift width of one indentation level in the configuration file. Zero
+           means that no indentation is performed at all when saving the
+           configuration.
+
+       config.saving_style &lt;num&gt; (default: 3)
+           Determines what happens when you tell ELinks to save options:
+
+           &#183;   0 is only values of current options are altered
+
+           &#183;   1 is values of current options are altered and missing options
+               are added at the end of the file
+
+           &#183;   2 is the configuration file is rewritten from scratch
+
+           &#183;   3 is values of current options are altered and missing options
+               CHANGED during this ELinks session are added at the end of the
+               file
+
+       config.i18n [0|1] (default: 0)
+           If set to 1, comments in the configuration file will be translated to
+           the language used by UI. Note that if you have different language set
+           in different terminals, the language used in the configuration file
+           MAY be the same as on the terminal where you saved the file, but it
+           should be generally considered unpredictable.
+
+       config.saving_style_w [0|1] (default: 0)
+           This is internal option used when displaying a warning about obsolete
+           config.saving_style. You shouldn&#180;t touch it.
+
+       config.show_template [0|1] (default: 0)
+           Show template options in autocreated trees in the options manager and
+           save them to the configuration file.
+
+   connection (Connections)
+       Connection options.
+
+       connection.async_dns [0|1] (default: 1)
+           Whether to use asynchronous DNS resolving.
+
+       connection.max_connections &lt;num&gt; (default: 10)
+           Maximum number of concurrent connections.
+
+       connection.max_connections_to_host &lt;num&gt; (default: 2)
+           Maximum number of concurrent connections to a given host.
+
+       connection.receive_timeout &lt;num&gt; (default: 120)
+           Receive timeout (in seconds).
+
+       connection.retries &lt;num&gt; (default: 3)
+           Number of tries to establish a connection. Zero means try forever.
+
+       connection.try_ipv4 [0|1] (default: 1)
+           Whether to try to connect to a host over IPv4. Note that if
+           connection.try_ipv6 is enabled too, it takes precedence. And better
+           do not touch this at all unless you are sure what are you doing.
+
+           Note that you can also force a given protocol to be used on a
+           per-connection basis by using a URL in the style of e.g.
+           http4://elinks.cz/.
+
+       connection.try_ipv6 [0|1] (default: 1)
+           Whether to try to connect to a host over IPv6.
+
+           Note that you can also force a given protocol to be used on a
+           per-connection basis by using a URL in the style of e.g.
+           http6://elinks.cz/.
+
+       connection.unrestartable_receive_timeout &lt;num&gt; (default: 600)
+           Timeout for non-restartable connections (in seconds).
+
+   connection.ssl (SSL)
+       SSL options.
+
+       connection.ssl.cert_verify [0|1] (default: 0)
+           Verify the peer&#180;s SSL certificate. Note that this needs extensive
+           configuration of OpenSSL by the user.
+
+   connection.ssl.client_cert (Client Certificates)
+       X509 client certificate options.
+
+       connection.ssl.client_cert.enable [0|1] (default: 0)
+           Enable or not the sending of X509 client certificates to servers
+           which request them.
+
+       connection.ssl.client_cert.file &lt;str&gt; (default: &quot;&quot;)
+           The location of a file containing the client certificate and
+           unencrypted private key in PEM format. If unset, the file pointed to
+           by the X509_CLIENT_CERT variable is used instead.
+
+   cookies (Cookies)
+       Cookies options.
+
+       cookies.accept_policy &lt;num&gt; (default: 2)
+           Cookies accepting policy:
+
+           &#183;   0 is accept no cookies
+
+           &#183;   1 is ask for confirmation before accepting cookie
+
+           &#183;   2 is accept all cookies
+
+       cookies.max_age &lt;num&gt; (default: -1)
+           Cookie maximum age (in days):
+
+           &#183;   -1 is use cookie&#180;s expiration date if any
+
+           &#183;   0 is force expiration at the end of session, ignoring cookie&#180;s
+               expiration date
+
+           &#183;   1+ is use cookie&#180;s expiration date, but limit age to the given
+               number of days
+
+       cookies.paranoid_security [0|1] (default: 0)
+           When enabled, we&#180;ll require three dots in cookies domain for all
+           non-international domains (instead of just two dots). Some countries
+           have generic second level domains (eg. .com.pl, .co.uk) and allowing
+           sites to set cookies for these generic domains could potentially be
+           very bad. Note, it is off by default as it breaks a lot of sites.
+
+       cookies.save [0|1] (default: 1)
+           Whether cookies should be loaded from and saved to disk.
+
+       cookies.resave [0|1] (default: 1)
+           Save cookies after each change in cookies list? No effect when cookie
+           saving (cookies.save) is off.
+
+   document (Document)
+       Document options.
+
+
+   document.browse (Browsing)
+       Document browsing options (mainly interactivity).
+
+       document.browse.margin_width &lt;num&gt; (default: 3)
+           Horizontal text margin.
+
+       document.browse.refresh [0|1] (default: 1)
+           Automatically follow document-specified refresh directives (&#180;&lt;meta&gt;
+           refresh&#180; tags). Web-page authors use these to instruct the browser to
+           reload a document at a given interval or to load another page.
+           Regardless of the value the refresh URI is accessible as a link.
+
+           Use the document.browse.minimum_refresh_time to control the minimum
+           number of seconds a refresh will wait.
+
+       document.browse.minimum_refresh_time &lt;num&gt; (default: 1000)
+           The minimum number of milliseconds that should pass before
+           refreshing. If set to zero the document refresh time is used
+           unchanged. It can fix going back in history for some sites that use
+           refreshing with zero values.
+
+       document.browse.table_move_order [0|1] (default: 0)
+           Move by columns in table, instead of rows.
+
+   document.browse.accesskey (Access keys)
+       Options for handling of link access keys. An HTML document can use the
+       ACCESSKEY attribute to assign an access key to an element. When an access
+       key is pressed, the corresponding element will be given focus.
+
+       document.browse.accesskey.auto_follow [0|1] (default: 0)
+           Automatically follow a link or submit a form if appropriate accesskey
+           is pressed &#8211; this is the standard behaviour, but it&#180;s considered
+           dangerous.
+
+       document.browse.accesskey.display [0|1] (default: 0)
+           Display access key in link info.
+
+       document.browse.accesskey.priority &lt;num&gt; (default: 0)
+           Priority of &#180;accesskey&#180; HTML attribute:
+
+           &#183;   0 is first try all normal bindings; if it fails, check accesskey
+
+           &#183;   1 is first try only frame bindings; if it fails, check accesskey
+
+           &#183;   2 is first check accesskey (this can be dangerous)
+
+   document.browse.forms (Forms)
+       Options for handling of the forms interaction.
+&#12;       document.browse.forms.auto_submit [0|1] (default: 1)
+           Automagically submit a form when enter is pressed with a text field
+           selected.
+
+       document.browse.forms.confirm_submit [0|1] (default: 1)
+           Ask for confirmation when submitting a form.
+
+       document.browse.forms.input_size &lt;num&gt; (default: 20)
+           Default form input size if none is specified.
+
+       document.browse.forms.insert_mode [0|1] (default: 1)
+           The setting for this option affects how key presses are handled when
+           one selects a text-input form-field. When enabled, one must
+           explicitly &#180;enter&#180; a selected text-field to edit it; this prevents
+           text fields from capturing key presses, such as presses of a scroll
+           key, when it is inadvertently selected. When disabled, key presses
+           are always inserted into a selected text field.
+
+       document.browse.forms.editor &lt;str&gt; (default: &quot;&quot;)
+           Path to the executable that ELinks should launch when the user
+           requests to edit a textarea with an external editor.
+
+           If this is blank, ELinks will use the value of the environmental
+           variable $EDITOR. If $EDITOR is empty or not set, ELinks will then
+           default to vi.
+
+       document.browse.forms.show_formhist [0|1] (default: 0)
+           Ask if a login form should be saved to file or not. This option only
+           disables the dialog, already saved login forms are unaffected.
+
+   document.browse.images (Images)
+       Options for handling of images.
+
+       document.browse.images.display_style &lt;num&gt; (default: 2)
+           Display style for image tags when displayed:
+
+           &#183;   0 means always display IMG
+
+           &#183;   1 means always display filename
+
+           &#183;   2 means display alt/title attribute if possible, IMG if not
+
+           &#183;   3 means display alt/title attribute if possible, filename if not
+
+       document.browse.images.filename_maxlen &lt;num&gt; (default: 0)
+           Maximum length of image filename when displayed:
+
+           &#183;   0 means always display full filename
+
+           &#183;   1-500 means display filename with this maximal length; if it is
+               longer, the middle is substituted by an asterisk
+
+       document.browse.images.image_link_tagging &lt;num&gt; (default: 1)
+           When to enclose image links:
+
+           &#183;   0 means never
+
+           &#183;   1 means never if alt or title are provided (old behavior)
+
+           &#183;   2 means always
+
+       document.browse.images.image_link_prefix &lt;str&gt; (default: &quot;[&quot;)
+           Prefix string to use to mark image links.
+
+       document.browse.images.image_link_suffix &lt;str&gt; (default: &quot;]&quot;)
+           Suffix string to use to mark image links.
+
+       document.browse.images.label_maxlen &lt;num&gt; (default: 0)
+           Maximum length of image label (alt/title):
+
+           &#183;   0 means always display full label
+
+           &#183;   1-500 means display label with this maximal length; if it is
+               longer, the middle is substituted by an asterisk
+
+       document.browse.images.show_as_links [0|1] (default: 0)
+           Display links to images without an alt attribute. If this option is
+           off, these images are completely invisible.
+
+       document.browse.images.show_any_as_links [0|1] (default: 1)
+           Display links to any images in the document, regardless of them
+           having an alt attribute or not. If this option is off, the alt
+           attribute contents is shown, but as normal text, not selectable as a
+           link.
+
+   document.browse.links (Links)
+       Options for handling of links to other documents.
+
+       document.browse.links.color_dirs [0|1] (default: 1)
+           Highlight links to directories in FTP and local directory listing.
+
+       document.browse.links.numbering [0|1] (default: 0)
+           Display numbers next to the links.
+
+       document.browse.links.target_blank &lt;num&gt; (default: 0)
+           Define how to handle links having target=_blank set:
+
+           &#183;   0 means open link in current tab
+
+           &#183;   1 means open link in new tab in foreground
+
+           &#183;   2 means open link in new tab in background
+
+           &#183;   3 means open link in new window
+
+       document.browse.links.use_tabindex [0|1] (default: 1)
+           Whether to navigate links using tabindex specified ordering. The
+           TABINDEX attribute in HTML elements specifies the order in which
+           links should receive focus when using the keyboard to navigate the
+           document.
+
+       document.browse.links.missing_fragment [0|1] (default: 1)
+           Open a message box when document has no tag with given id.
+
+       document.browse.links.number_keys_select_link &lt;num&gt; (default: 1)
+           Number keys select links rather than specify command prefixes. This
+           is a tristate:
+
+           &#183;   0 means never
+
+           &#183;   1 means if document.browse.links.numbering = 1
+
+           &#183;   2 means always
+
+       document.browse.links.warn_malicious [0|1] (default: 1)
+           When following a link the user ID part of the URI is checked and if a
+           maliciously crafted URI is detected a warning dialog will ask before
+           following the link.
+
+       document.browse.links.wraparound [0|1] (default: 0)
+           When pressing &#180;down&#180; on the last link, jump to the first one, and
+           vice versa.
+
+   document.browse.links.active_link (Active link)
+       Options for the active link.
+
+       document.browse.links.active_link.enable_color [0|1] (default: 0)
+           Enable use of the active link background and text color settings
+           instead of the link colors from the document.
+
+       document.browse.links.active_link.bold [0|1] (default: 0)
+           Make the active link text bold.
+
+       document.browse.links.active_link.invert [0|1] (default: 1)
+           Invert the fore- and background color so the link stands out.
+
+       document.browse.links.active_link.underline [0|1] (default: 0)
+           Underline the active link.
+
+   document.browse.links.active_link.colors (Colors)
+       Active link colors.
+
+       document.browse.links.active_link.colors.background &lt;color|#rrggbb&gt;
+       (default: blue)
+           Default background color.
+
+       document.browse.links.active_link.colors.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+   document.browse.scrolling (Scrolling)
+       Scrolling options.
+
+       document.browse.scrolling.horizontal_extended [0|1] (default: 1)
+           Whether to allow horizontal scrolling when the document does not
+           extend off the screen. Useful for copy/paste operations.
+
+       document.browse.scrolling.horizontal_step &lt;num&gt; (default: 8)
+           Number of columns to scroll when a key bound to scroll-left or
+           scroll-right is pressed and no prefix was given.
+
+       document.browse.scrolling.margin &lt;num&gt; (default: 3)
+           Size of the virtual margin &#8211; when you click inside of that margin,
+           document scrolls in that direction.
+
+       document.browse.scrolling.vertical_step &lt;num&gt; (default: 2)
+           Number of lines to scroll when a key bound to scroll-up or
+           scroll-down is pressed and no prefix was given.
+
+   document.browse.search (Searching)
+       Options for searching.
+
+       document.browse.search.case [0|1] (default: 0)
+           Whether the search should match the document text while maintaining
+           case sensitivity.
+
+       document.browse.search.regex &lt;num&gt; (default: 0)
+           Enable searching with regular expressions:
+
+           &#183;   0 for plain text searching
+
+           &#183;   1 for basic regular expression searches
+
+           &#183;   2 for extended regular expression searches
+
+       document.browse.search.show_hit_top_bottom [0|1] (default: 1)
+           Whether to show a dialog when the search hits the top or bottom of
+           the document.
+
+       document.browse.search.wraparound [0|1] (default: 1)
+           Wrap around when searching. Currently only used for typeahead.
+
+       document.browse.search.show_not_found &lt;num&gt; (default: 2)
+           How to inform the user when nothing is matched:
+
+           &#183;   0 means do nothing
+
+           &#183;   1 means beep the terminal
+
+           &#183;   2 means pop up message box
+
+       document.browse.search.typeahead &lt;num&gt; (default: 0)
+           Start typeahead searching when an unbound key is pressed without any
+           modifiers. Note that most keys have default bindings, so this feature
+           will not be useful unless you unbind them.
+
+           &#183;   0 disables this feature; typeahead searching will only be used
+               when you press a key bound to search-typeahead or similar
+
+           &#183;   1 automatically starts typeahead searching thru link text
+
+           &#183;   2 automatically starts typeahead searching thru all document text
+
+   document.cache (Cache)
+       Cache options.
+
+       document.cache.cache_redirects [0|1] (default: 0)
+           Cache even redirects sent by server (usually thru HTTP by a 302 HTTP
+           code and a Location header). This was the original behaviour for
+           quite some time, but it causes problems in a situation very common to
+           various web login systems &#8211; frequently, when accessing a certain
+           location, they will redirect you to a login page if they don&#180;t
+           receive an auth cookie, the login page then gives you the cookie and
+           redirects you back to the original page, but there you have already
+           cached redirect back to the login page! If this option has value of
+           0, this malfunction is fixed, but occasionally you may get
+           superfluous (depends on how you take it ;-) requests to the server.
+           If this option has value of 1, experienced users can still workaround
+           it by clever combination of usage of reload, jumping around in
+           session history and hitting ctrl+enter.
+
+           Note that this option is checked when retrieving the information from
+           cache, not when saving it to cache &#8211; thus if you enable it, even
+           previous redirects will be taken from cache instead of asking the
+           server.
+
+       document.cache.ignore_cache_control [0|1] (default: 1)
+           Ignore Cache-Control and Pragma server headers. When set, the
+           document is cached even with &#180;Cache-Control: no-cache&#180;.
+
+       document.cache.revalidation_interval &lt;num&gt; (default: -1)
+           Period in seconds that a cache entry is considered to be up-to-date.
+           When a document is loaded and this interval has elapsed since the
+           document was initially loaded or most recently revalidated with the
+           server, the server will be checked in case there is a more up-to-date
+           version of the document.
+
+           A value of -1 disables automatic revalidation.
+
+   document.cache.format (Formatted documents)
+       Format cache options.
+
+       document.cache.format.size &lt;num&gt; (default: 5)
+           Number of cached formatted pages. Do not get too generous here,
+           &#180;formatted&#180; means that all the accompanying structures are kept in
+           memory so that you get the cached document immediatelly, but these
+           structures may take a lot &#8211; 2x the size of the HTML source is
+           probably not unusual, but it can be even more if the document
+           consists of a lot of short lines (padded right, if possible) and
+           links and not much other markup. So if you set this to 256 and then
+           you don&#180;t like your ELinks eating 90M, don&#180;t come complaining to us.
+           ;-)
+
+           Also note that the format cache itself is not counted to the memory
+           cache size, but the HTML source of the formatted documents is always
+           cached, even if it is over the memory cache size threshold. (Then of
+           course no other documents can be cached.)
+
+   document.cache.memory (Memory cache)
+       Memory cache options.
+
+       document.cache.memory.size &lt;num&gt; (default: 1048576)
+           Memory cache size (in bytes).
+
+   document.codepage (Charset)
+       Charset options.
+
+       document.codepage.assume &lt;codepage&gt; (default: System)
+           Default document codepage. &#180;System&#180; stands for a codepage determined
+           by a selected locale.
+
+       document.codepage.force_assumed [0|1] (default: 0)
+           Ignore charset info sent by server.
+
+   document.colors (Default color settings)
+       Default document color settings.
+
+       document.colors.text &lt;color|#rrggbb&gt; (default: gray75)
+           Default text color.
+
+       document.colors.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+       document.colors.link &lt;color|#rrggbb&gt; (default: blue)
+           Default link color.
+
+       document.colors.vlink &lt;color|#rrggbb&gt; (default: yellow)
+           Default visited link color.
+
+       document.colors.image &lt;color|#rrggbb&gt; (default: darkolivegreen)
+           Default image link color.
+
+       document.colors.bookmark &lt;color|#rrggbb&gt; (default: hotpink)
+           Default bookmarked link color.
+
+       document.colors.dirs &lt;color|#rrggbb&gt; (default: yellow)
+           Default directory color.
+
+           See document.browse.links.color_dirs option.
+
+       document.colors.increase_contrast [0|1] (default: 1)
+           Increase the contrast between the foreground and background colors to
+           ensure readability. For example it disallows dark colors on a black
+           background. Note, this is different from ensuring the contrast with
+           the ensure_contrast option.
+
+       document.colors.ensure_contrast [0|1] (default: 1)
+           Makes sure that the back- and foreground colors are never equal.
+
+       document.colors.use_document_colors &lt;num&gt; (default: 2)
+           Use colors specified in document:
+
+           &#183;   0 is use always the default settings
+
+           &#183;   1 is use document colors if available, except background
+
+           &#183;   2 is use document colors, including background. This can mostly
+               look very impressive, but some sites will appear really ugly.
+               Note, that obviously if the background is not black, it will
+               break the behaviour of transparency.
+
+   document.css (Cascading Style Sheets)
+       Options concerning how to use CSS for styling documents.
+
+       document.css.enable [0|1] (default: 1)
+           Enable adding of CSS style info to documents.
+
+       document.css.import [0|1] (default: 1)
+           When enabled any external style sheets that are imported from either
+           CSS itself using the @import keyword or from the HTML using &lt;link&gt;
+           tags in the document header will also be downloaded.
+
+       document.css.stylesheet &lt;str&gt; (default: &quot;&quot;)
+           The path to the file containing the default user defined Cascading
+           Style Sheet. It can be used to control the basic layout of HTML
+           documents. The path is assumed to be relative to ELinks&#180; home
+           directory.
+
+           Leave as &quot;&quot; to use built-in document styling.
+
+   document.download (Downloading)
+       Options regarding files downloading and handling.
+
+       document.download.directory &lt;str&gt; (default: &quot;./&quot;)
+           Default download directory.
+
+       document.download.set_original_time [0|1] (default: 0)
+           Set the timestamp of each downloaded file to the timestamp stored on
+           the server.
+
+       document.download.overwrite &lt;num&gt; (default: 2)
+           Prevent overwriting the local files:
+
+           &#183;   0 is files will silently be overwritten
+
+           &#183;   1 is add a suffix .{number} (for example &#180;.1&#180;) to the name
+
+           &#183;   2 is ask the user
+
+       document.download.notify_bell &lt;num&gt; (default: 0)
+           Audio notification when download is completed:
+
+           &#183;   0 is never
+
+           &#183;   1 is when background notification is active
+
+           &#183;   2 is always
+
+   document.dump (Dump output)
+       Dump output options.
+
+       document.dump.codepage &lt;codepage&gt; (default: System)
+           Codepage used in dump output. &#180;System&#180; stands for a codepage
+           determined by a selected locale.
+
+       document.dump.color_mode &lt;num&gt; (default: -1)
+           Color mode for dumps.
+
+           Some modes may have been disabled at compile time. The Setup -&gt;
+           Terminal options dialog lists the modes supported by this executable.
+           If you select an unsupported mode, ELinks uses 16 colors.
+
+           The color modes are:
+
+           &#183;   -1 is standard dump mode
+
+           &#183;   0 is mono mode
+
+           &#183;   1 is 16 color mode
+
+           &#183;   2 is 88 color mode
+
+           &#183;   3 is 256 color mode
+
+           &#183;   4 is true color mode
+
+       document.dump.footer &lt;str&gt; (default: &quot;&quot;)
+           Footer string used in dumps. %u is substituted by URL.
+
+       document.dump.header &lt;str&gt; (default: &quot;&quot;)
+           Header string used in dumps. %u is substituted by URL.
+
+       document.dump.numbering [0|1] (default: 1)
+           Whether to print link numbers in dump output.
+
+       document.dump.references [0|1] (default: 1)
+           Whether to print references (URIs) of document links in dump output.
+
+       document.dump.separator &lt;str&gt; (default: &quot; &quot;)
+           String which separates two dumps.
+
+       document.dump.width &lt;num&gt; (default: 80)
+           Width of screen in characters when dumping documents.
+
+   document.history (History)
+       History options.
+
+       document.history.keep_unhistory [0|1] (default: 1)
+           Keep unhistory (&quot;forward history&quot;).
+
+   document.history.global (Global history)
+       Global history options.
+
+       document.history.global.enable [0|1] (default: 1)
+           Enable global history (&quot;history of all pages visited&quot;).
+
+       document.history.global.max_items &lt;num&gt; (default: 1024)
+           Maximum number of entries in the global history.
+
+       document.history.global.display_type &lt;num&gt; (default: 0)
+           What to display in global history dialog:
+
+           &#183;   0 is URLs
+
+           &#183;   1 is page titles
+
+   document.html (HTML rendering)
+       Options concerning the display of HTML pages.
+
+       document.html.display_frames [0|1] (default: 1)
+           Display frames.
+&#12;       document.html.display_tables [0|1] (default: 1)
+           Display tables.
+
+       document.html.display_subs [0|1] (default: 1)
+           Display subscripts (as [thing]).
+
+       document.html.display_sups [0|1] (default: 1)
+           Display superscripts (as ^thing).
+
+       document.html.link_display &lt;num&gt; (default: 2)
+           How to render &lt;link&gt; tags from the HTML header:
+
+           &#183;   0 is nothing
+
+           &#183;   1 is title
+
+           &#183;   2 is name in addition
+
+           &#183;   3 is hreflang in addition
+
+           &#183;   4 is type in addition
+
+           &#183;   5 is everything
+
+       document.html.underline_links [0|1] (default: 0)
+           Underline links.
+
+       document.html.wrap_nbsp [0|1] (default: 0)
+           If set do not honour non breaking space (the nbsp entity) but allow
+           to wrap the text. This can help keeping the width of documents down
+           so no horizontal scrolling is needed.
+
+   document.plain (Plain rendering)
+       Options concerning the display of plain text pages.
+
+       document.plain.display_links [0|1] (default: 0)
+           Display URIs in the document as links.
+
+       document.plain.compress_empty_lines [0|1] (default: 0)
+           Compress successive empty lines to only one in displayed text.
+
+   document.uri_passing (URI passing)
+       Rules for passing URIs to external commands. When one rule is defined the
+       link and tab menu will have a menu item that makes it possible to pass
+       the the link, frame or tab URI to an external command. If several rules
+       are defined the link and tab menu will have a submenu of items for each
+       rule.
+
+       Note, this is mostly useful for launching graphical viewers, since there
+       is no support for releasing the terminal while the command runs. The
+       action and submenus are also available by binding keys to the
+       frame-external-command, the link-external-command, and the
+       tab-external-command actions.
+
+       document.uri_passing._template_ &lt;str&gt; (default: &quot;&quot;)
+           A rule for passing URI to an external command. The format is:
+
+           &#183;   %c in the string means the current URL
+
+           &#183;   %% in the string means &#180;%&#180;
+
+               Do not put single- or double-quotes around %c.
+
+   ecmascript (ECMAScript)
+       ECMAScript options.
+&#12;       ecmascript.enable [0|1] (default: 0)
+           Whether to run those scripts inside of documents.
+
+       ecmascript.error_reporting [0|1] (default: 0)
+           Open a message box when a script reports an error.
+
+       ecmascript.ignore_noscript [0|1] (default: 0)
+           Whether to ignore content enclosed by the &lt;noscript&gt; tag when
+           ECMAScript is enabled.
+
+       ecmascript.max_exec_time &lt;num&gt; (default: 5)
+           Maximum execution time in seconds for a script.
+
+       ecmascript.block_window_opening [0|1] (default: 0)
+           Whether to disallow scripts to open new windows or tabs.
+
+   infofiles (Information files)
+       Options for information files in ~/.elinks.
+
+       infofiles.save_interval &lt;num&gt; (default: 300)
+           Interval at which to trigger information files in ~/.elinks to be
+           saved to disk if they have changed (seconds; 0 to disable)
+
+       infofiles.secure_save [0|1] (default: 1)
+           First write data to unique temporary file, then rename this file upon
+           successfully finishing this. Note that this relates only to config
+           files, not downloaded files. You may want to disable it if you are
+           using some exotic permissions for concerned files. Secure file saving
+           is automagically disabled if file is symlink.
+
+           Warning: some systems (ie. OS/2, Win32) require that destination file
+           doesn&#180;t exist when rename(3) is called, breaking atomicity, and
+           reducing reliability of this feature.
+
+       infofiles.secure_save_fsync [0|1] (default: 1)
+           When using secure file saving, call fsync(3), if the OS supports it,
+           to force the OS immediately to write the data to permanent storage.
+           This is optional for those who wish to avoid excessive disk I/O.
+
+   mime (MIME)
+       MIME-related options (handlers of various MIME types).
+
+       mime.default_type &lt;str&gt; (default: &quot;application/octet-stream&quot;)
+           Document MIME-type to assume by default (when we are unable to guess
+           it properly from known information about the document).
+
+   mime.extension (File extension associations)
+       Extension &#8596; MIME type association.
+
+       mime.extension._template_ &lt;str&gt; (default: &quot;&quot;)
+           MIME-type matching this file extension (&#180;*&#180; is used here in place of
+           &#180;.&#180;).
+
+   mime.handler (File type handlers)
+       A file type handler is a set of information about how to use an external
+       program to view a file. It is possible to refer to it for several MIME
+       types &#8212; e.g., you can define an &#180;image&#180; handler to which
+       mime.type.image.png, mime.type.image.jpeg, and so on will refer; or one
+       might define a handler for a more specific type of file &#8212; e.g., PDF
+       files. Note you must define both a MIME handler and a MIME type
+       association for it to work.
+
+
+   mime.handler._template_ (Template option folder)
+       Description of this handler.
+&#12;
+   mime.handler._template_._template_ (Template option folder)
+       System-specific handler description (ie. unix, unix-xwin, ...).
+
+       mime.handler._template_._template_.ask [0|1] (default: 1)
+           Ask before opening.
+
+       mime.handler._template_._template_.block [0|1] (default: 1)
+           Block the terminal when the handler is running.
+
+       mime.handler._template_._template_.program &lt;str&gt; (default: &quot;&quot;)
+           External viewer for this file type. &#180;%&#180; in this string will be
+           substituted by a file name. Do not put single- or double-quotes
+           around the % sign.
+
+   mime.mailcap (Mailcap)
+       Options for mailcap support.
+
+       mime.mailcap.enable [0|1] (default: 1)
+           Enable mailcap support.
+
+       mime.mailcap.path &lt;str&gt; (default:
+       &quot;~/.mailcap:/etc/mailcap:/usr/local/etc/mailcap:/usr/share/mailcap:/usr/share/misc/mailcap&quot;)
+           Mailcap search path. Colon-separated list of files. Leave as &quot;&quot; to
+           use MAILCAP environment variable instead.
+
+       mime.mailcap.ask [0|1] (default: 1)
+           Ask before using the handlers defined by mailcap.
+
+       mime.mailcap.description &lt;num&gt; (default: 0)
+           Type of description to show in &quot;what to do with this file&quot; query
+           dialog:
+
+           &#183;   0 is show &quot;mailcap&quot;
+
+           &#183;   1 is show program to be run
+
+           &#183;   2 is show mailcap description field if any; &quot;mailcap&quot; otherwise
+
+       mime.mailcap.prioritize [0|1] (default: 1)
+           Prioritize entries by the order of the files in the mailcap path.
+           This means that wildcard entries (like: image/*) will also be checked
+           before deciding the handler.
+
+   mime.mimetypes (Mimetypes files)
+       Options for the support of mime.types files. These files can be used to
+       find the content type of a URL by looking at the extension of the file
+       name.
+
+       mime.mimetypes.enable [0|1] (default: 1)
+           Enable mime.types support.
+
+       mime.mimetypes.path &lt;str&gt; (default:
+       &quot;~/.mime.types:/etc/mime.types:/usr/local/etc/mime.types:/usr/share/mime.types:/usr/share/misc/mime.types&quot;)
+           The search path for mime.types files. Colon-separated list of files.
+
+   mime.type (MIME type associations)
+       Handler &#8596; MIME type association. The first sub-tree is the MIME class
+       while the second sub-tree is the MIME type (ie. image/gif handler will
+       reside at mime.type.image.gif). Each MIME type option should contain
+       (case-sensitive) name of the MIME handler (its properties are stored at
+       mime.handler.&lt;name&gt;).
+
+
+   mime.type._template_ (Template option folder)
+       Handler matching this MIME-type class (&#180;*&#180; is used here in place of &#180;.&#180;).
+&#12;       mime.type._template_._template_ &lt;str&gt; (default: &quot;&quot;)
+           Handler matching this MIME-type name (&#180;*&#180; is used here in place of
+           &#180;.&#180;).
+
+   protocol (Protocols)
+       Protocol specific options.
+
+       protocol.no_proxy &lt;str&gt; (default: &quot;&quot;)
+           Comma separated list of domains for which the proxy (HTTP/FTP) should
+           be disabled. Optionally, a port can be specified for some domains as
+           well. If it&#180;s blank, NO_PROXY environment variable is checked as
+           well.
+
+   protocol.bittorrent (BitTorrent)
+       BitTorrent specific options.
+
+       protocol.bittorrent.piece_cache_size &lt;num&gt; (default: 1048576)
+           The maximum amount of memory used to hold recently downloaded pieces.
+
+           Set to 0 to have unlimited size.
+
+       protocol.bittorrent.max_uploads &lt;num&gt; (default: 7)
+           The maximum number of uploads to allow at once.
+
+       protocol.bittorrent.min_uploads &lt;num&gt; (default: 2)
+           The minimum number of uploads which should at least be used for new
+           connections.
+
+       protocol.bittorrent.request_queue_size &lt;num&gt; (default: 5)
+           How many piece requests to continuously keep in queue. Pipelining of
+           requests is essential to saturate connections and get a good
+           connection performance and thus a faster download. However, a very
+           big queue size can lead to wasting bandwidth near the end of the
+           connection since remaining piece blocks will be requested from
+           multiple peers.
+
+       protocol.bittorrent.choke_interval &lt;num&gt; (default: 10)
+           The number of seconds between updating the connection state and most
+           importantly choke and unchoke peer connections. The choke period
+           should be big enough for newly unchoked connections to get started
+           but small enough to not allow freeriders too much room for stealing
+           bandwidth.
+
+       protocol.bittorrent.rarest_first_cutoff &lt;num&gt; (default: 4)
+           The number of pieces to obtain before switching piece selection
+           strategy from random to rarest first.
+
+       protocol.bittorrent.allow_blacklist [0|1] (default: 1)
+           Allow blacklisting of buggy peers.
+
+   protocol.bittorrent.ports (Port range)
+       Port range allowed to be used for listening on.
+
+       protocol.bittorrent.ports.min &lt;num&gt; (default: 6881)
+           The minimum port to try and listen on.
+
+       protocol.bittorrent.ports.max &lt;num&gt; (default: 6999)
+           The maximum port to try and listen on.
+
+   protocol.bittorrent.tracker (Tracker)
+       Tracker options.
+
+       protocol.bittorrent.tracker.compact [0|1] (default: 0)
+           Whether to request that the tracker returns peer info in compact
+           format. Note, the compact format only supports IPv4 addresses.
+
+       protocol.bittorrent.tracker.interval &lt;num&gt; (default: 0)
+           The number of seconds to wait between periodically contacting the
+           tracker for announcing progress and requesting more peers. Set to
+           zero to use the interval requested by the tracker.
+
+       protocol.bittorrent.tracker.ip_address &lt;str&gt; (default: &quot;&quot;)
+           What IP address to report to the tracker. If set to &quot;&quot; no IP address
+           will be sent and the tracker will automatically determine an
+           appropriate IP address.
+
+       protocol.bittorrent.tracker.key &lt;str&gt; (default: &quot;&quot;)
+           An additional identification that is not shared with any users. It is
+           intended to allow a client to prove their identity should their IP
+           address change. It is an optional parameter, but some trackers
+           require this parameter. If set to &quot;&quot; no user key will be sent to the
+           tracker.
+
+       protocol.bittorrent.tracker.numwant &lt;num&gt; (default: 50)
+           The maximum number of peers to request from the tracker. Set to 0 to
+           use the server default.
+
+       protocol.bittorrent.tracker.min_skip_size &lt;num&gt; (default: 20)
+           The minimum number of peers to have in the current peer info pool
+           before skipping requesting of more peers. I.e. setting numwant to
+           zero. Set to 0 to not have any limit.
+
+   protocol.bittorrent.peerwire (Peer-wire)
+       Lowlevel peer-wire options.
+
+       protocol.bittorrent.peerwire.connections &lt;num&gt; (default: 55)
+           The maximum number of allowed connections to both active and
+           non-active peers. By increasing the number of allowed connections,
+           the chance of finding good peers to download from is increased.
+           However, too many connections can lead to TCP congestion. If the
+           maximum is reached all new incoming connections will be closed.
+
+       protocol.bittorrent.peerwire.max_message_length &lt;num&gt; (default: 8388608)
+           The maximum length of messages to accept over the wire. Larger values
+           will cause the connection to be dropped.
+
+       protocol.bittorrent.peerwire.max_request_length &lt;num&gt; (default: 8388608)
+           The maximum length to allow for incoming requests. Larger requests
+           will cause the connection to be dropped.
+
+       protocol.bittorrent.peerwire.request_length &lt;num&gt; (default: 16384)
+           How many bytes to query for per request. This is complementary to the
+           max_request_length option. If the configured length is bigger than
+           the piece length it will be truncated.
+
+       protocol.bittorrent.peerwire.timeout &lt;num&gt; (default: 300)
+           The number of seconds to wait before closing a socket on which
+           nothing has been received or sent.
+
+       protocol.bittorrent.peerwire.pool_size &lt;num&gt; (default: 55)
+           Maximum number of items in the peer pool. The peer pool contains
+           information used for establishing connections to new peers.
+
+           Set to 0 to have unlimited size.
+
+   protocol.file (Local files)
+       Options specific to local browsing.
+
+       protocol.file.allow_special_files [0|1] (default: 0)
+           Whether to allow reading from non-regular files. Note this can be
+           dangerous; reading /dev/urandom or /dev/zero can ruin your day!
+
+       protocol.file.show_hidden_files [0|1] (default: 1)
+           When set to false, files with name starting with a dot will be hidden
+           in local directory listings.
+
+       protocol.file.try_encoding_extensions [0|1] (default: 1)
+           When set, if we can&#180;t open a file named &#180;filename&#180;, we&#180;ll try to open
+           &#180;filename&#180; with some encoding extension appended (ie. &#180;filename.gz&#180;);
+           it depends on the supported encodings.
+
+   protocol.file.cgi (Local CGI)
+       Local CGI specific options.
+
+       protocol.file.cgi.path &lt;str&gt; (default: &quot;&quot;)
+           Colon separated list of directories, where CGI scripts are stored.
+
+       protocol.file.cgi.policy [0|1] (default: 0)
+           Whether to execute local CGI scripts.
+
+   protocol.fsp (FSP)
+       FSP specific options.
+
+       protocol.fsp.sort [0|1] (default: 1)
+           Whether to sort entries in directory listings.
+
+   protocol.ftp (FTP)
+       FTP specific options.
+
+       protocol.ftp.anon_passwd &lt;str&gt; (default: &quot;some@host.domain&quot;)
+           FTP anonymous password to be sent.
+
+       protocol.ftp.use_pasv [0|1] (default: 1)
+           Use PASV instead of PORT (passive vs active mode, IPv4 only).
+
+       protocol.ftp.use_epsv [0|1] (default: 0)
+           Use EPSV instead of EPRT (passive vs active mode, IPv6 only).
+
+   protocol.ftp.proxy (Proxy configuration)
+       FTP proxy configuration.
+
+       protocol.ftp.proxy.host &lt;str&gt; (default: &quot;&quot;)
+           Host and port-number (host:port) of the FTP proxy, or blank. If it&#180;s
+           blank, FTP_PROXY environment variable is checked as well.
+
+   protocol.http (HTTP)
+       HTTP-specific options.
+
+       protocol.http.accept_language &lt;str&gt; (default: &quot;&quot;)
+           Send Accept-Language header.
+
+       protocol.http.accept_ui_language [0|1] (default: 1)
+           Request localised versions of documents from web-servers (using the
+           Accept-Language header) using the language you have configured for
+           ELinks&#180; user-interface (this also affects navigator.language
+           ECMAScript value available to scripts). Note that some see this as a
+           potential security risk because it tells web-masters and the FBI
+           sniffers about your language preference.
+
+       protocol.http.compression [0|1] (default: 0)
+           If enabled, the capability to receive compressed content (gzip and/or
+           bzip2) is announced to the server, which usually sends the reply
+           compressed, thus saving some bandwidth at slight CPU expense.
+
+           If ELinks displays a incomplete page or garbage, try disabling this
+           option. If that helps, there may be a bug in the decompression part
+           of ELinks. Please report such bugs.
+
+           If ELinks has been compiled without compression support, this option
+           has no effect. To check the supported features, see Help -&gt; About.
+&#12;       protocol.http.trace [0|1] (default: 0)
+           If active, all HTTP requests are sent with TRACE as their method
+           rather than GET or POST. This is useful for debugging of both ELinks
+           and various server-side scripts &#8212; the server only returns the
+           client&#180;s request back to the client verbatim. Note that this type of
+           request may not be enabled on all servers.
+
+       protocol.http.user_agent &lt;str&gt; (default: &quot;ELinks/%v (textmode; %s;
+       %t-%b)&quot;)
+           Change the User Agent ID. That means identification string, which is
+           sent to HTTP server when a document is requested. The &#180;textmode&#180;
+           token in the first field is our silent attempt to establish this as a
+           standard for new textmode user agents, so that the webmasters can
+           have just a single uniform test for these if they are e.g. pushing
+           some lite version to them automagically.
+
+           Use &quot; &quot; if you don&#180;t want any User-Agent header to be sent at all.
+
+           &#183;   %v in the string means ELinks version,
+
+           &#183;   %s in the string means system identification,
+
+           &#183;   %t in the string means size of the terminal,
+
+           &#183;   %b in the string means number of bars displayed by ELinks.
+
+   protocol.http.bugs (Server bug workarounds)
+       Server-side HTTP bugs workarounds.
+
+       protocol.http.bugs.accept_charset [0|1] (default: 1)
+           The Accept-Charset header is quite long and sending it can trigger
+           bugs in some rarely found servers.
+
+       protocol.http.bugs.allow_blacklist [0|1] (default: 1)
+           Allow blacklisting of buggy servers.
+
+       protocol.http.bugs.broken_302_redirect [0|1] (default: 1)
+           Broken 302 redirect (violates RFC but compatible with Netscape). This
+           is a problem for a lot of web discussion boards and the like. If they
+           will do strange things to you, try to play with this.
+
+       protocol.http.bugs.post_no_keepalive [0|1] (default: 0)
+           Disable keepalive connection after POST request.
+
+       protocol.http.bugs.http10 [0|1] (default: 0)
+           Use HTTP/1.0 protocol instead of HTTP/1.1.
+
+   protocol.http.proxy (Proxy configuration)
+       HTTP proxy configuration.
+
+       protocol.http.proxy.host &lt;str&gt; (default: &quot;&quot;)
+           Host and port-number (host:port) of the HTTP proxy, or blank. If it&#180;s
+           blank, HTTP_PROXY environment variable is checked as well.
+
+       protocol.http.proxy.user &lt;str&gt; (default: &quot;&quot;)
+           Proxy authentication username.
+
+       protocol.http.proxy.passwd &lt;str&gt; (default: &quot;&quot;)
+           Proxy authentication password.
+
+   protocol.http.referer (Referer sending)
+       HTTP referer sending options. HTTP referer is a special header sent in
+       the HTTP requests, which is supposed to contain the previous page visited
+       by the browser.This way, the server can know what link did you follow
+       when accessing that page. However, this behaviour can unfortunately
+       considerably affect privacy and can lead even to a security problem on
+       some badly designed web pages.
+
+       protocol.http.referer.policy &lt;num&gt; (default: 3)
+           Mode of sending HTTP referer:
+
+           &#183;   0 is send no referer
+
+           &#183;   1 is send current URL as referer
+
+           &#183;   2 is send fixed fake referer
+
+           &#183;   3 is send previous URL as referer (correct, but insecure)
+
+       protocol.http.referer.fake &lt;str&gt; (default: &quot;&quot;)
+           Fake referer to be sent when policy is 2.
+
+   protocol.https (HTTPS)
+       HTTPS-specific options.
+
+
+   protocol.https.proxy (Proxy configuration)
+       HTTPS proxy configuration.
+
+       protocol.https.proxy.host &lt;str&gt; (default: &quot;&quot;)
+           Host and port-number (host:port) of the HTTPS CONNECT proxy, or
+           blank. If it&#180;s blank, HTTPS_PROXY environment variable is checked as
+           well.
+
+   protocol.nntp (NNTP)
+       NNTP and news specific options.
+
+       protocol.nntp.server &lt;str&gt; (default: &quot;&quot;)
+           Used when resolving news: URIs. If set to the empty string the value
+           of the NNTPSERVER environment variable will be used.
+
+       protocol.nntp.header_entries &lt;str&gt; (default:
+       &quot;Subject,From,Date,Message-ID,Newsgroups&quot;)
+           Comma separated list of which entries in the article header to show.
+           E.g. &#180;Subject&#180; and &#180;From&#180;. All header entries can be read in the
+           header info dialog.
+
+   protocol.rewrite (URI rewriting)
+       Rules for rewriting URIs entered in the goto dialog. It makes it possible
+       to define a set of prefixes that will be expanded if they match a string
+       entered in the goto dialog. The prefixes can be dumb, meaning that they
+       work only like URI abbreviations, or smart ones, making it possible to
+       pass arguments to them like search engine keywords.
+
+       protocol.rewrite.default_template &lt;str&gt; (default: &quot;&quot;)
+           Default URI template used when the string entered in the goto dialog
+           does not appear to be a URI or a filename (i.e. contains no &#180;.&#180;, &#180;:&#180;
+           or &#180;/&#180; characters), and does not match any defined prefixes. Set the
+           value to &quot;&quot; to disable use of the default template rewrite rule.
+
+           &#183;   %c in the template means the current URL,
+
+           &#183;   %s in the template means the whole string from the goto dialog,
+
+           &#183;   %0,%1,...,%9 mean the 1st,2nd,...,10th space-delimited part of
+               %s,
+
+           &#183;   %% in the template means &#180;%&#180;.
+
+       protocol.rewrite.enable-dumb [0|1] (default: 1)
+           Enable dumb prefixes &#8211; simple URI abbreviations which can be written
+           to the Goto URL dialog instead of actual URIs &#8211; i.e. if you write
+           &#180;elinks&#180; there, you are directed to http://elinks.cz/.
+&#12;       protocol.rewrite.enable-smart [0|1] (default: 1)
+           Enable smart prefixes &#8211; URI templates triggered by writing given
+           abbreviation to the Goto URL dialog followed by a list of arguments
+           from which the actual URI is composed &#8211; i.e. &#180;gg:search keywords&#180; or
+           &#180;gn search keywords for news&#180;.
+
+   protocol.rewrite.dumb (Dumb Prefixes)
+       Dumb prefixes, see enable-dumb description for details.
+
+       protocol.rewrite.dumb._template_ &lt;str&gt; (default: &quot;&quot;)
+           Replacement URI for this dumbprefix:
+
+           &#183;   %c in the string means the current URL
+
+           &#183;   %% in the string means &#180;%&#180;
+
+   protocol.rewrite.smart (Smart Prefixes)
+       Smart prefixes, see enable-smart description for details.
+
+       protocol.rewrite.smart._template_ &lt;str&gt; (default: &quot;&quot;)
+           Replacement URI for this smartprefix:
+
+           &#183;   %c in the string means the current URL
+
+           &#183;   %s in the string means the whole argument to smartprefix
+
+           &#183;   %0,%1,...,%9 means argument 0, 1, ..., 9
+
+           &#183;   %% in the string means &#180;%&#180;
+
+   protocol.user (User protocols)
+       User protocols. Options in this tree specify external handlers for the
+       appropriate protocols. Ie. protocol.user.mailto.unix.
+
+
+   protocol.user._template_ (Template option folder)
+       Handler (external program) for this protocol. Name the options in this
+       tree after your system (ie. unix, unix-xwin).
+
+       protocol.user._template_._template_ &lt;str&gt; (default: &quot;&quot;)
+           Handler (external program) for this protocol and system.
+
+           &#183;   %f in the string means file name to include form data from
+
+           &#183;   %h in the string means hostname (or email address)
+
+           &#183;   %p in the string means port
+
+           &#183;   %d in the string means path (everything after the port)
+
+           &#183;   %s in the string means subject (?subject=&lt;this&gt;)
+
+           &#183;   %u in the string means the whole URL
+
+   terminal (Terminals)
+       Terminal options.
+
+
+   terminal._template_ (Template option folder)
+       Options specific to this terminal type (according to $TERM value).
+
+       terminal._template_.type &lt;num&gt; (default: 0)
+           Terminal type; matters mostly only when drawing frames and dialog box
+           borders:
+
+           &#183;   0 is dumb terminal type, ASCII art
+&#12;           &#183;   1 is VT100, simple but portable
+
+           &#183;   2 is Linux, you get double frames and other goodies
+
+           &#183;   3 is KOI-8
+
+           &#183;   4 is FreeBSD
+
+       terminal._template_.latin1_title [0|1] (default: 1)
+           When updating the window title of xterm or a similar terminal
+           emulator, encode the title in ISO-8859-1 (Latin-1), rather than in
+           the charset used for other text in the window. Cyrillic and other
+           characters get replaced with Latin ones. Xterm requires this unless
+           you explicitly enable UTF-8 titles in it.
+
+           If this option does not take effect immediately, try switching to a
+           different page so that ELinks notices it needs to update the title.
+
+       terminal._template_.m11_hack [0|1] (default: 0)
+           Switch fonts when drawing lines, enabling both local characters and
+           lines working at the same time.  ELinks uses this option only if
+           UTF-8 I/O is disabled and the terminal type is Linux or FreeBSD.
+
+       terminal._template_.utf_8_io [0|1] (default: 0)
+           Enable I/O in UTF-8 for Unicode terminals. Note that currently, only
+           the subset of UTF-8 according to terminal codepage is used.  ELinks
+           ignores this option if the terminal codepage is UTF-8.
+
+       terminal._template_.restrict_852 [0|1] (default: 0)
+           Restrict the characters used when drawing lines. Makes sense only
+           with linux terminals using the cp850/852 character sets.
+
+       terminal._template_.block_cursor [0|1] (default: 0)
+           Move cursor to bottom right corner when done drawing. This is
+           particularly useful when we have a block cursor, so that inversed
+           text is displayed correctly.
+
+       terminal._template_.colors &lt;num&gt; (default: 0)
+           The color mode controls what colors are used and how they are output
+           to the terminal.
+
+           Some modes may have been disabled at compile time. The Setup -&gt;
+           Terminal options dialog lists the modes supported by this executable.
+           If you select an unsupported mode, ELinks uses 16 colors.
+
+           The color modes are:
+
+           &#183;   0 is mono mode, only 2 colors are used
+
+           &#183;   1 is 16 color mode, uses the common ANSI colors
+
+           &#183;   2 is 88 color mode, uses XTerm RGB codes
+
+           &#183;   3 is 256 color mode, uses XTerm RGB codes
+
+           &#183;   4 is true color mode, uses konsole RGB codes
+
+       terminal._template_.transparency [0|1] (default: 0)
+           If we should not set the background to black. This is particularly
+           useful when we have a terminal (typically in some windowing
+           environment) with a background image or a transparent background &#8211; it
+           will be visible in ELinks as well (but ELinks document color handling
+           will still assume the background is black so if you have a bright
+           background you might experience contrast problems). Note that this
+           option makes sense only when colors are enabled.
+
+       terminal._template_.underline [0|1] (default: 0)
+           If we should use underline or enhance the color instead.
+
+       terminal._template_.charset &lt;codepage&gt; (default: System)
+           Codepage of charset used for displaying content on terminal. &#180;System&#180;
+           stands for a codepage determined by a selected locale.
+
+   ui (User interface)
+       User interface options.
+
+       ui.date_format &lt;str&gt; (default: &quot;%b %e %H:%M&quot;)
+           Date format to use in dialogs. See strftime(3).
+
+       ui.language &lt;language&gt; (default: &quot;System&quot;)
+           Language of user interface. &#180;System&#180; means that the language will be
+           extracted from the environment dynamically.
+
+       ui.show_menu_bar_always [0|1] (default: 0)
+           Always show menu bar on the screen.
+
+       ui.show_status_bar [0|1] (default: 1)
+           Show status bar on the screen.
+
+       ui.show_title_bar [0|1] (default: 1)
+           Show title bar on the screen.
+
+       ui.startup_goto_dialog [0|1] (default: 1)
+           Pop up goto dialog in newly created tabs when there&#180;s no homepage
+           set. This means also showing goto dialog on startup.
+
+       ui.success_msgbox [0|1] (default: 1)
+           When you pressed a Save button in some manager, this option will make
+           sure that a box confirming success of the operation will pop up.
+
+       ui.window_title [0|1] (default: 1)
+           Set the window title when running in a windowing environment in an
+           xterm-like terminal. This way the document&#180;s title is shown on the
+           window titlebar.
+
+   ui.clock (Clock)
+       Digital clock in the status bar.
+
+       ui.clock.enable [0|1] (default: 0)
+           Whether to display a digital clock in the status bar.
+
+       ui.clock.format &lt;str&gt; (default: &quot;[%H:%M]&quot;)
+           Format string for the digital clock. See the strftime(3) manpage for
+           details.
+
+   ui.colors (Color settings)
+       Default user interface color settings.
+
+
+   ui.colors.color (Color terminals)
+       Color settings for color terminal.
+
+
+   ui.colors.color.mainmenu (Main menu bar)
+       Main menu bar colors.
+
+
+   ui.colors.color.mainmenu.normal (Unselected main menu bar item)
+       Unselected main menu bar item colors.
+
+       ui.colors.color.mainmenu.normal.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.mainmenu.normal.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.mainmenu.selected (Selected main menu bar item)
+       Selected main menu bar item colors.
+
+       ui.colors.color.mainmenu.selected.text &lt;color|#rrggbb&gt; (default: green)
+           Default text color.
+
+       ui.colors.color.mainmenu.selected.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.color.mainmenu.hotkey (Hotkey)
+       Main menu hotkey colors.
+
+
+   ui.colors.color.mainmenu.hotkey.normal (Unselected hotkey)
+       Main menu unselected hotkey colors.
+
+       ui.colors.color.mainmenu.hotkey.normal.text &lt;color|#rrggbb&gt; (default:
+       darkred)
+           Default text color.
+
+       ui.colors.color.mainmenu.hotkey.normal.background &lt;color|#rrggbb&gt;
+       (default: white)
+           Default background color.
+
+   ui.colors.color.mainmenu.hotkey.selected (Selected hotkey)
+       Main menu selected hotkey colors.
+
+       ui.colors.color.mainmenu.hotkey.selected.text &lt;color|#rrggbb&gt; (default:
+       darkred)
+           Default text color.
+
+       ui.colors.color.mainmenu.hotkey.selected.background &lt;color|#rrggbb&gt;
+       (default: green)
+           Default background color.
+
+   ui.colors.color.menu (Menu bar)
+       Menu bar colors.
+
+
+   ui.colors.color.menu.normal (Unselected menu item)
+       Unselected menu item colors.
+
+       ui.colors.color.menu.normal.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.menu.normal.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.menu.selected (Selected menu item)
+       Selected menu item colors.
+
+       ui.colors.color.menu.selected.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.menu.selected.background &lt;color|#rrggbb&gt; (default: green)
+           Default background color.
+
+   ui.colors.color.menu.marked (Marked menu item)
+       Marked menu item colors.
+
+       ui.colors.color.menu.marked.text &lt;color|#rrggbb&gt; (default: red)
+           Default text color.
+&#12;       ui.colors.color.menu.marked.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.menu.hotkey (Hotkey)
+       Menu item hotkey colors.
+
+
+   ui.colors.color.menu.hotkey.normal (Unselected hotkey)
+       Menu item unselected hotkey colors.
+
+       ui.colors.color.menu.hotkey.normal.text &lt;color|#rrggbb&gt; (default:
+       darkred)
+           Default text color.
+
+       ui.colors.color.menu.hotkey.normal.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.menu.hotkey.selected (Selected hotkey)
+       Menu item selected hotkey colors.
+
+       ui.colors.color.menu.hotkey.selected.text &lt;color|#rrggbb&gt; (default:
+       darkred)
+           Default text color.
+
+       ui.colors.color.menu.hotkey.selected.background &lt;color|#rrggbb&gt; (default:
+       green)
+           Default background color.
+
+   ui.colors.color.menu.frame (Menu frame)
+       Menu frame colors.
+
+       ui.colors.color.menu.frame.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.menu.frame.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.dialog (Dialog)
+       Dialog colors.
+
+
+   ui.colors.color.dialog.generic (Generic)
+       Generic dialog colors.
+
+       ui.colors.color.dialog.generic.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.dialog.generic.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.dialog.frame (Frame)
+       Dialog frame colors.
+
+       ui.colors.color.dialog.frame.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.dialog.frame.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.dialog.scrollbar (Scrollbar)
+       Scrollbar colors.
+
+       ui.colors.color.dialog.scrollbar.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+&#12;       ui.colors.color.dialog.scrollbar.background &lt;color|#rrggbb&gt; (default:
+       blue)
+           Default background color.
+
+   ui.colors.color.dialog.scrollbar-selected (Selected scrollbar)
+       Scrollbar selected colors.
+
+       ui.colors.color.dialog.scrollbar-selected.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+       ui.colors.color.dialog.scrollbar-selected.background &lt;color|#rrggbb&gt;
+       (default: green)
+           Default background color.
+
+   ui.colors.color.dialog.title (Title)
+       Dialog title colors.
+
+       ui.colors.color.dialog.title.text &lt;color|#rrggbb&gt; (default: darkred)
+           Default text color.
+
+       ui.colors.color.dialog.title.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.dialog.text (Text)
+       Dialog text colors.
+
+       ui.colors.color.dialog.text.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.dialog.text.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.dialog.checkbox (Checkbox)
+       Dialog checkbox colors.
+
+       ui.colors.color.dialog.checkbox.text &lt;color|#rrggbb&gt; (default: darkred)
+           Default text color.
+
+       ui.colors.color.dialog.checkbox.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.dialog.checkbox-selected (Selected checkbox)
+       Dialog selected checkbox colors.
+
+       ui.colors.color.dialog.checkbox-selected.text &lt;color|#rrggbb&gt; (default:
+       yellow)
+           Default text color.
+
+       ui.colors.color.dialog.checkbox-selected.background &lt;color|#rrggbb&gt;
+       (default: green)
+           Default background color.
+
+   ui.colors.color.dialog.checkbox-label (Checkbox label)
+       Dialog checkbox label colors.
+
+       ui.colors.color.dialog.checkbox-label.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+       ui.colors.color.dialog.checkbox-label.background &lt;color|#rrggbb&gt;
+       (default: white)
+           Default background color.
+
+   ui.colors.color.dialog.button (Button)
+       Dialog button colors.
+&#12;       ui.colors.color.dialog.button.text &lt;color|#rrggbb&gt; (default: white)
+           Default text color.
+
+       ui.colors.color.dialog.button.background &lt;color|#rrggbb&gt; (default: blue)
+           Default background color.
+
+   ui.colors.color.dialog.button-selected (Selected button)
+       Dialog selected button colors.
+
+       ui.colors.color.dialog.button-selected.text &lt;color|#rrggbb&gt; (default:
+       yellow)
+           Default text color.
+
+       ui.colors.color.dialog.button-selected.background &lt;color|#rrggbb&gt;
+       (default: green)
+           Default background color.
+
+   ui.colors.color.dialog.button-shortcut (Button shortcut)
+       Dialog button colors.
+
+       ui.colors.color.dialog.button-shortcut.text &lt;color|#rrggbb&gt; (default:
+       yellow)
+           Default text color.
+
+       ui.colors.color.dialog.button-shortcut.background &lt;color|#rrggbb&gt;
+       (default: blue)
+           Default background color.
+
+   ui.colors.color.dialog.button-shortcut-selected (Selected button shortcut)
+       Dialog selected button colors.
+
+       ui.colors.color.dialog.button-shortcut-selected.text &lt;color|#rrggbb&gt;
+       (default: white)
+           Default text color.
+
+       ui.colors.color.dialog.button-shortcut-selected.background
+       &lt;color|#rrggbb&gt; (default: blue)
+           Default background color.
+
+   ui.colors.color.dialog.field (Text field)
+       Dialog text field colors.
+
+       ui.colors.color.dialog.field.text &lt;color|#rrggbb&gt; (default: white)
+           Default text color.
+
+       ui.colors.color.dialog.field.background &lt;color|#rrggbb&gt; (default: blue)
+           Default background color.
+
+   ui.colors.color.dialog.field-text (Text field text)
+       Dialog field text colors.
+
+       ui.colors.color.dialog.field-text.text &lt;color|#rrggbb&gt; (default: yellow)
+           Default text color.
+
+       ui.colors.color.dialog.field-text.background &lt;color|#rrggbb&gt; (default:
+       blue)
+           Default background color.
+
+   ui.colors.color.dialog.meter (Meter)
+       Dialog meter colors.
+
+       ui.colors.color.dialog.meter.text &lt;color|#rrggbb&gt; (default: white)
+           Default text color.
+
+       ui.colors.color.dialog.meter.background &lt;color|#rrggbb&gt; (default: blue)
+           Default background color.
+
+   ui.colors.color.dialog.shadow (Shadow)
+       Dialog shadow colors (see ui.shadows option).
+&#12;       ui.colors.color.dialog.shadow.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.dialog.shadow.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.color.title (Title bar)
+       Title bar colors.
+
+
+   ui.colors.color.title.title-bar (Generic title bar)
+       Generic title bar colors.
+
+       ui.colors.color.title.title-bar.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.title.title-bar.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.title.title-text (Title bar text)
+       Title bar text colors.
+
+       ui.colors.color.title.title-text.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.title.title-text.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.status (Status bar)
+       Status bar colors.
+
+
+   ui.colors.color.status.status-bar (Generic status bar)
+       Generic status bar colors.
+
+       ui.colors.color.status.status-bar.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.status.status-bar.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.status.status-text (Status bar text)
+       Status bar text colors.
+
+       ui.colors.color.status.status-text.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.status.status-text.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.tabs (Tabs bar)
+       Tabs bar colors.
+
+
+   ui.colors.color.tabs.unvisited (Unvisited tab)
+       Tab colors for tabs that have not been selected since they completed
+       loading.
+
+       ui.colors.color.tabs.unvisited.text &lt;color|#rrggbb&gt; (default: darkblue)
+           Default text color.
+
+       ui.colors.color.tabs.unvisited.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.tabs.normal (Unselected tab)
+       Unselected tab colors.
+&#12;       ui.colors.color.tabs.normal.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.tabs.normal.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.tabs.loading (Loading tab)
+       Tab colors for tabs that are loading in the background.
+
+       ui.colors.color.tabs.loading.text &lt;color|#rrggbb&gt; (default: darkred)
+           Default text color.
+
+       ui.colors.color.tabs.loading.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.color.tabs.selected (Selected tab)
+       Selected tab colors.
+
+       ui.colors.color.tabs.selected.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.tabs.selected.background &lt;color|#rrggbb&gt; (default: green)
+           Default background color.
+
+   ui.colors.color.tabs.separator (Tab separator)
+       Tab separator colors.
+
+       ui.colors.color.tabs.separator.text &lt;color|#rrggbb&gt; (default: brown)
+           Default text color.
+
+       ui.colors.color.tabs.separator.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.color.searched (Searched strings)
+       Searched string highlight colors.
+
+       ui.colors.color.searched.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.color.searched.background &lt;color|#rrggbb&gt; (default: lime)
+           Default background color.
+
+   ui.colors.mono (Non-color terminals)
+       Color settings for non-color terminal.
+
+
+   ui.colors.mono.mainmenu (Main menu bar)
+       Main menu bar colors.
+
+
+   ui.colors.mono.mainmenu.normal (Unselected main menu bar item)
+       Unselected main menu bar item colors.
+
+       ui.colors.mono.mainmenu.normal.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.mainmenu.normal.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.mono.mainmenu.selected (Selected main menu bar item)
+       Selected main menu bar item colors.
+
+       ui.colors.mono.mainmenu.selected.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.mainmenu.selected.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.mainmenu.hotkey (Hotkey)
+       Main menu hotkey colors.
+&#12;
+   ui.colors.mono.mainmenu.hotkey.normal (Unselected hotkey)
+       Main menu unselected hotkey colors.
+
+       ui.colors.mono.mainmenu.hotkey.normal.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+       ui.colors.mono.mainmenu.hotkey.normal.background &lt;color|#rrggbb&gt;
+       (default: white)
+           Default background color.
+
+   ui.colors.mono.mainmenu.hotkey.selected (Selected hotkey)
+       Main menu selected hotkey colors.
+
+       ui.colors.mono.mainmenu.hotkey.selected.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+       ui.colors.mono.mainmenu.hotkey.selected.background &lt;color|#rrggbb&gt;
+       (default: white)
+           Default background color.
+
+   ui.colors.mono.menu (Menu bar)
+       Menu bar colors.
+
+
+   ui.colors.mono.menu.normal (Unselected menu item)
+       Unselected menu item colors.
+
+       ui.colors.mono.menu.normal.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.menu.normal.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.menu.selected (Selected menu item)
+       Selected menu item colors.
+
+       ui.colors.mono.menu.selected.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.menu.selected.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.mono.menu.marked (Marked menu item)
+       Marked menu item colors.
+
+       ui.colors.mono.menu.marked.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.menu.marked.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.menu.hotkey (Hotkey)
+       Menu item hotkey colors.
+
+
+   ui.colors.mono.menu.hotkey.normal (Unselected hotkey)
+       Menu item unselected hotkey colors.
+
+       ui.colors.mono.menu.hotkey.normal.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.menu.hotkey.normal.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.menu.hotkey.selected (Selected hotkey)
+       Menu item selected hotkey colors.
+
+       ui.colors.mono.menu.hotkey.selected.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+&#12;       ui.colors.mono.menu.hotkey.selected.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.menu.frame (Menu frame)
+       Menu frame colors.
+
+       ui.colors.mono.menu.frame.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.menu.frame.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.dialog (Dialog)
+       Dialog colors.
+
+
+   ui.colors.mono.dialog.generic (Generic)
+       Generic dialog colors.
+
+       ui.colors.mono.dialog.generic.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.generic.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.dialog.frame (Frame)
+       Dialog frame colors.
+
+       ui.colors.mono.dialog.frame.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.frame.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.dialog.scrollbar (Scrollbar)
+       Scrollbar colors.
+
+       ui.colors.mono.dialog.scrollbar.text &lt;color|#rrggbb&gt; (default: white)
+           Default text color.
+
+       ui.colors.mono.dialog.scrollbar.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.dialog.scrollbar-selected (Selected scrollbar)
+       Scrollbar selected colors.
+
+       ui.colors.mono.dialog.scrollbar-selected.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+       ui.colors.mono.dialog.scrollbar-selected.background &lt;color|#rrggbb&gt;
+       (default: white)
+           Default background color.
+
+   ui.colors.mono.dialog.title (Title)
+       Dialog title colors.
+
+       ui.colors.mono.dialog.title.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.dialog.title.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.mono.dialog.text (Text)
+       Dialog text colors.
+
+       ui.colors.mono.dialog.text.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.text.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+&#12;   ui.colors.mono.dialog.checkbox (Checkbox)
+       Dialog checkbox colors.
+
+       ui.colors.mono.dialog.checkbox.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.checkbox.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.mono.dialog.checkbox-selected (Selected checkbox)
+       Dialog selected checkbox colors.
+
+       ui.colors.mono.dialog.checkbox-selected.text &lt;color|#rrggbb&gt; (default:
+       white)
+           Default text color.
+
+       ui.colors.mono.dialog.checkbox-selected.background &lt;color|#rrggbb&gt;
+       (default: black)
+           Default background color.
+
+   ui.colors.mono.dialog.checkbox-label (Checkbox label)
+       Dialog checkbox label colors.
+
+       ui.colors.mono.dialog.checkbox-label.text &lt;color|#rrggbb&gt; (default:
+       black)
+           Default text color.
+
+       ui.colors.mono.dialog.checkbox-label.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.mono.dialog.button (Button)
+       Dialog button colors.
+
+       ui.colors.mono.dialog.button.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.button.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.dialog.button-selected (Selected button)
+       Dialog selected button colors.
+
+       ui.colors.mono.dialog.button-selected.text &lt;color|#rrggbb&gt; (default:
+       white)
+           Default text color.
+
+       ui.colors.mono.dialog.button-selected.background &lt;color|#rrggbb&gt;
+       (default: black)
+           Default background color.
+
+   ui.colors.mono.dialog.button-shortcut (Button shortcut)
+       Dialog button colors.
+
+       ui.colors.mono.dialog.button-shortcut.text &lt;color|#rrggbb&gt; (default:
+       white)
+           Default text color.
+
+       ui.colors.mono.dialog.button-shortcut.background &lt;color|#rrggbb&gt;
+       (default: black)
+           Default background color.
+
+   ui.colors.mono.dialog.button-shortcut-selected (Selected button shortcut)
+       Dialog selected button colors.
+
+       ui.colors.mono.dialog.button-shortcut-selected.text &lt;color|#rrggbb&gt;
+       (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.button-shortcut-selected.background &lt;color|#rrggbb&gt;
+       (default: white)
+           Default background color.
+&#12;   ui.colors.mono.dialog.field (Text field)
+       Dialog text field colors.
+
+       ui.colors.mono.dialog.field.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.dialog.field.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.mono.dialog.field-text (Text field text)
+       Dialog field text colors.
+
+       ui.colors.mono.dialog.field-text.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.dialog.field-text.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.dialog.meter (Meter)
+       Dialog meter colors.
+
+       ui.colors.mono.dialog.meter.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.dialog.meter.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.mono.dialog.shadow (Shadow)
+       Dialog shadow colors (see ui.shadows option).
+
+       ui.colors.mono.dialog.shadow.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.dialog.shadow.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.mono.title (Title bar)
+       Title bar colors.
+
+
+   ui.colors.mono.title.title-bar (Generic title bar)
+       Generic title bar colors.
+
+       ui.colors.mono.title.title-bar.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.title.title-bar.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.title.title-text (Title bar text)
+       Title bar text colors.
+
+       ui.colors.mono.title.title-text.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.title.title-text.background &lt;color|#rrggbb&gt; (default:
+       black)
+           Default background color.
+
+   ui.colors.mono.status (Status bar)
+       Status bar colors.
+
+
+   ui.colors.mono.status.status-bar (Generic status bar)
+       Generic status bar colors.
+
+       ui.colors.mono.status.status-bar.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.status.status-bar.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.mono.status.status-text (Status bar text)
+       Status bar text colors.
+
+       ui.colors.mono.status.status-text.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.status.status-text.background &lt;color|#rrggbb&gt; (default:
+       white)
+           Default background color.
+
+   ui.colors.mono.tabs (Tabs bar)
+       Tabs bar colors.
+
+
+   ui.colors.mono.tabs.unvisited (Unvisited tab)
+       Tab colors for tabs that have not been selected since they completed
+       loading.
+
+       ui.colors.mono.tabs.unvisited.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.tabs.unvisited.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.tabs.normal (Unselected tab)
+       Unselected tab colors.
+
+       ui.colors.mono.tabs.normal.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.tabs.normal.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.tabs.loading (Loading tab)
+       Tab colors for tabs that are loading in the background.
+
+       ui.colors.mono.tabs.loading.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.tabs.loading.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.tabs.selected (Selected tab)
+       Selected tab colors.
+
+       ui.colors.mono.tabs.selected.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.tabs.selected.background &lt;color|#rrggbb&gt; (default: black)
+           Default background color.
+
+   ui.colors.mono.tabs.separator (Tab separator)
+       Tab separator colors.
+
+       ui.colors.mono.tabs.separator.text &lt;color|#rrggbb&gt; (default: gray)
+           Default text color.
+
+       ui.colors.mono.tabs.separator.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.colors.mono.searched (Searched strings)
+       Searched string highlight colors.
+
+       ui.colors.mono.searched.text &lt;color|#rrggbb&gt; (default: black)
+           Default text color.
+
+       ui.colors.mono.searched.background &lt;color|#rrggbb&gt; (default: white)
+           Default background color.
+
+   ui.dialogs (Dialog settings)
+       Dialogs-specific appearance and behaviour settings.
+
+       ui.dialogs.listbox_min_height &lt;num&gt; (default: 10)
+           Minimal height of the listbox widget (used e.g. for bookmarks or
+           global history).
+
+       ui.dialogs.shadows [0|1] (default: 0)
+           Make dialogs drop shadows (the shadows are solid, you can adjust
+           their color by ui.colors.*.dialog.shadow). You may also want to
+           eliminate the wide borders by adjusting setup.h.
+
+       ui.dialogs.underline_hotkeys [0|1] (default: 0)
+           Whether to underline hotkeys in menus to make them more visible.
+           Requires that underlining is enabled for the terminal.
+
+       ui.dialogs.underline_button_shortcuts [0|1] (default: 0)
+           Whether to underline button shortcuts to make them more visible.
+           Requires that underlining is enabled for the terminal.
+
+   ui.leds (LEDs)
+       LEDs (visual indicators) options.
+
+       ui.leds.enable [0|1] (default: 0)
+           Enable LEDs. These visual indicators will inform you about various
+           states.
+
+   ui.sessions (Sessions)
+       Sessions settings.
+
+       ui.sessions.auto_restore [0|1] (default: 0)
+           Automatically restore the session at start.
+
+           This feature requires bookmark support.
+
+       ui.sessions.auto_save [0|1] (default: 0)
+           Automatically save the session when quitting.
+
+           This feature requires bookmark support.
+
+       ui.sessions.auto_save_foldername &lt;str&gt; (default: &quot;Auto saved session&quot;)
+           Name of the bookmarks folder used for auto saving and restoring
+           session. The name has to be unique. Any folders with the same name
+           will be deleted.
+
+           This only makes sense with bookmark support.
+
+       ui.sessions.homepage &lt;str&gt; (default: &quot;&quot;)
+           The URI to load either at startup time when no URI was given on the
+           command line or when requested by the goto-url-home action. Set to &quot;&quot;
+           if the environment variable WWW_HOME should be used as homepage URI
+           instead.
+
+       ui.sessions.keep_session_active [0|1] (default: 0)
+           Keep the session active even if the last terminal exits.
+
+       ui.sessions.snapshot [0|1] (default: 0)
+           Automatically save a snapshot of all tabs periodically. This will
+           periodically bookmark the tabs of each terminal in a separate folder
+           for recovery after a crash.
+
+           This feature requires bookmark support.
+
+   ui.tabs (Window tabs)
+       Window tabs settings.
+
+       ui.tabs.show_bar &lt;num&gt; (default: 1)
+           Show tabs bar on the screen:
+
+           &#183;   0 means never
+
+           &#183;   1 means only if two or more tabs are open
+
+           &#183;   2 means always
+
+       ui.tabs.top [0|1] (default: 0)
+           Whether display tab bar at top like other browsers do.
+&#12;       ui.tabs.wraparound [0|1] (default: 1)
+           When moving right from the last tab, jump to the first one, and vice
+           versa.
+
+       ui.tabs.confirm_close [0|1] (default: 0)
+           When closing a tab show confirmation dialog.
+
+   ui.timer (Timer options)
+       Timed action after certain interval of user inactivity. Someone can even
+       find this useful, although you may not believe that.
+
+       ui.timer.enable &lt;num&gt; (default: 0)
+           Whether to enable the timer or not:
+
+           &#183;   0 is don&#180;t count down anything
+
+           &#183;   1 is count down, but don&#180;t show the timer
+
+           &#183;   2 is count down and show the timer near LEDs
+
+       ui.timer.duration &lt;num&gt; (default: 86400)
+           Inactivity timeout in seconds. The maximum of one day should be
+           enough for just everyone (TM).
+
+       ui.timer.action &lt;str&gt; (default: &quot;&quot;)
+           Keybinding action to be triggered when timer reaches zero.
+
+SEE ALSO
+       elinks(1), elinkskeys(5)
+
+
+
+
+ELinks 0.12pre5                    07/07/2009                     ELINKS.CONF(5)
+
+</pre></body></html>

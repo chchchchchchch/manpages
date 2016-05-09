@@ -1,0 +1,115 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Appender::Buffer - Buffering Appender</title></head>
+<body><pre>
+
+Appender::Buffer(3pm)  User Contributed Perl Documentation Appender::Buffer(3pm)
+
+
+
+NAME
+           Log::Log4perl::Appender::Buffer - Buffering Appender
+
+SYNOPSIS
+           use Log::Log4perl qw(:easy);
+
+           my $conf = qq(
+           log4perl.category                  = DEBUG, Buffer
+
+               # Regular Screen Appender
+           log4perl.appender.Screen           = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.stdout    = 1
+           log4perl.appender.Screen.layout    = PatternLayout
+           log4perl.appender.Screen.layout.ConversionPattern = %d %p %c %m %n
+
+               # Buffering appender, using the appender above as outlet
+           log4perl.appender.Buffer               = Log::Log4perl::Appender::Buffer
+           log4perl.appender.Buffer.appender      = Screen
+           log4perl.appender.Buffer.trigger_level = ERROR
+           );
+
+           Log::Log4perl-&gt;init(\$conf);
+
+           DEBUG(&quot;This message gets buffered.&quot;);
+           INFO(&quot;This message gets buffered also.&quot;);
+
+           # Time passes. Nothing happens. But then ...
+
+           print &quot;It&apos;s GO time!!!\n&quot;;
+
+           ERROR(&quot;This message triggers a buffer flush.&quot;);
+
+DESCRIPTION
+       &quot;Log::Log4perl::Appender::Buffer&quot; takes these arguments:
+
+       &quot;appender&quot;
+           Specifies the name of the appender it buffers messages for. The
+           appender specified must be defined somewhere in the configuration
+           file, not necessarily before the definition of
+           &quot;Log::Log4perl::Appender::Buffer&quot;.
+
+       &quot;max_messages&quot;
+           Specifies the maximum number of messages the appender will hold in
+           its ring buffer. &quot;max_messages&quot; is optional. By default,
+           &quot;Log::Log4perl::Appender::Buffer&quot; will not limit the number of
+           messages buffered. This might be undesirable in long-running
+           processes accumulating lots of messages before a flush happens. If
+           &quot;max_messages&quot; is set to a numeric value,
+           &quot;Log::Log4perl::Appender::Buffer&quot; will displace old messages in its
+           buffer to make room if the buffer is full.
+
+       &quot;trigger_level&quot;
+           If trigger_level is set to one of Log4perl&apos;s levels (see
+           Log::Log4perl::Level), a &quot;trigger&quot; function will be defined
+           internally to flush the buffer if a message with a priority of $level
+           or higher comes along. This is just a convenience function. Defining
+
+               log4perl.appender.Buffer.trigger_level = ERROR
+
+           is equivalent to creating a trigger function like
+
+               log4perl.appender.Buffer.trigger = sub {   \
+                   my($self, $params) = @_;               \
+                   return $params-&gt;{log4p_level} &gt;=       \
+                          $Log::Log4perl::Level::ERROR; }
+&#12;           See the next section for defining generic trigger functions.
+
+       &quot;trigger&quot;
+           &quot;trigger&quot; holds a reference to a subroutine, which
+           &quot;Log::Log4perl::Appender::Buffer&quot; will call on every incoming message
+           with the same parameters as the appender&apos;s &quot;log()&quot; method:
+
+                   my($self, $params) = @_;
+
+           $params references a hash containing the message priority (key
+           &quot;l4p_level&quot;), the message category (key &quot;l4p_category&quot;) and the
+           content of the message (key &quot;message&quot;).
+
+           If the subroutine returns 1, it will trigger a flush of buffered
+           messages.
+
+           Shortcut
+
+DEVELOPMENT NOTES
+       &quot;Log::Log4perl::Appender::Buffer&quot; is a composite appender.  Unlike other
+       appenders, it doesn&apos;t log any messages, it just passes them on to its
+       attached sub-appender.  For this reason, it doesn&apos;t need a layout
+       (contrary to regular appenders).  If it defines none, messages are passed
+       on unaltered.
+
+       Custom filters are also applied to the composite appender only.  They are
+       not applied to the sub-appender. Same applies to appender thresholds.
+       This behaviour might change in the future.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21              Appender::Buffer(3pm)
+
+</pre></body></html>

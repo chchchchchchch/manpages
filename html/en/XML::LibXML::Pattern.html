@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::LibXML::Pattern - XML::LibXML::Pattern - interface to libxml2 XPath patterns</title></head>
+<body><pre>
+
+XML::LibXML::Pattern(3pUser Contributed Perl DocumentatXML::LibXML::Pattern(3pm)
+
+
+
+NAME
+       XML::LibXML::Pattern - XML::LibXML::Pattern - interface to libxml2 XPath
+       patterns
+
+SYNOPSIS
+         use XML::LibXML;
+         my $pattern = XML::LibXML::Pattern-&gt;new(&apos;/x:html/x:body//x:div&apos;, { &apos;x&apos; =&gt; &apos;http://www.w3.org/1999/xhtml&apos; });
+         # test a match on an XML::LibXML::Node $node
+
+         if ($pattern-&gt;matchesNode($node)) { ... }
+
+         # or on an XML::LibXML::Reader
+
+         if ($reader-&gt;matchesPattern($pattern)) { ... }
+
+         # or skip reading all nodes that do not match
+
+         print $reader-&gt;nodePath while $reader-&gt;nextPatternMatch($pattern);
+
+         $pattern = XML::LibXML::Pattern-&gt;new( pattern, { prefix =&gt; namespace_URI, ... } );
+         $bool = $pattern-&gt;matchesNode($node);
+
+DESCRIPTION
+       This is a perl interface to libxml2&apos;s pattern matching support
+       http://xmlsoft.org/html/libxml-pattern.html. This feature requires recent
+       versions of libxml2.
+
+       Patterns are a small subset of XPath language, which is limited to
+       (disjunctions of) location paths involving the child and descendant axes
+       in abbreviated form as described by the extended BNF given below:
+
+         Selector ::=     Path ( &apos;|&apos; Path )*
+         Path     ::=     (&apos;.//&apos; | &apos;//&apos; | &apos;/&apos; )? Step ( &apos;/&apos; Step )*
+         Step     ::=     &apos;.&apos; | NameTest
+         NameTest ::=     QName | &apos;*&apos; | NCName &apos;:&apos; &apos;*&apos;
+
+       For readability, whitespace may be used in selector XPath expressions
+       even though not explicitly allowed by the grammar: whitespace may be
+       freely added within patterns before or after any token, where
+
+         token     ::=     &apos;.&apos; | &apos;/&apos; | &apos;//&apos; | &apos;|&apos; | NameTest
+
+       Note that no predicates or attribute tests are allowed.
+
+       Patterns are particularly useful for stream parsing provided via the
+       &quot;XML::LibXML::Reader&quot; interface.
+
+       new()
+             $pattern = XML::LibXML::Pattern-&gt;new( pattern, { prefix =&gt; namespace_URI, ... } );
+
+           The constructor of a pattern takes a pattern expression (as described
+           by the BNF grammar above) and an optional HASH reference mapping
+           prefixes to namespace URIs. The method returns a compiled pattern
+           object.
+
+           Note that if the document has a default namespace, it must still be
+           given an prefix in order to be matched (as demanded by the XPath 1.0
+           specification). For example, to match an element &quot;&lt;a
+           xmlns=&quot;http://foo.bar&quot;&lt;/a&gt;&quot;, one should use a pattern like this:
+
+             $pattern = XML::LibXML::Pattern-&gt;new( &apos;foo:a&apos;, { foo =&gt; &apos;http://foo.bar&apos; });
+&#12;       matchesNode($node)
+             $bool = $pattern-&gt;matchesNode($node);
+
+           Given an XML::LibXML::Node object, returns a true value if the node
+           is matched by the compiled pattern expression.
+
+SEE ALSO
+       XML::LibXML::Reader for other methods involving compiled patterns.
+
+AUTHORS
+       Matt Sergeant, Christian Glahn, Petr Pajas
+
+VERSION
+       2.0001
+
+COPYRIGHT
+       2001-2007, AxKit.com Ltd.
+
+       2002-2006, Christian Glahn.
+
+       2006-2009, Petr Pajas.
+
+
+
+perl v5.14.2                       2012-06-20          XML::LibXML::Pattern(3pm)
+
+</pre></body></html>

@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Parse::DebianChangelog::Entry - represents one entry in a Debian changelog</title></head>
+<body><pre>
+
+Parse::DebianChangelog:UserrContributed Perl DParse::DebianChangelog::Entry(3pm)
+
+
+
+NAME
+       Parse::DebianChangelog::Entry - represents one entry in a Debian
+       changelog
+
+SYNOPSIS
+DESCRIPTION
+   Methods
+       init
+
+       Creates a new object, no options.
+
+       new
+
+       Alias for init.
+
+       is_empty
+
+       Checks if the object is actually initialized with data. Due to
+       limitations in Parse::DebianChangelog this currently simply checks if one
+       of the fields Source, Version, Maintainer, Date, or Changes is
+       initalized.
+
+   Accessors
+       The following fields are available via accessor functions (all fields are
+       string values unless otherwise noted):
+
+       &#183;   Source
+
+       &#183;   Version
+
+       &#183;   Distribution
+
+       &#183;   Urgency
+
+       &#183;   ExtraFields (all fields except for urgency as hash)
+
+       &#183;   Header (the whole header in verbatim form)
+
+       &#183;   Changes (the actual content of the bug report, in verbatim form)
+
+       &#183;   Trailer (the whole trailer in verbatim form)
+
+       &#183;   Closes (Array of bug numbers)
+
+       &#183;   Maintainer (name and email address)
+
+       &#183;   Date
+
+       &#183;   Timestamp (Date expressed in seconds since the epoche)
+
+       &#183;   ERROR (last parse error related to this entry in the format described
+           at Parse::DebianChangelog::get_parse_errors.
+
+SEE ALSO
+       Parse::DebianChangelog
+
+AUTHOR
+       Frank Lichtenheld, &lt;frank@lichtenheld.de&gt;
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2005 by Frank Lichtenheld
+&#12;       This program is free software; you can redistribute it and/or modify it
+       under the terms of the GNU General Public License as published by the
+       Free Software Foundation; either version 2 of the License, or (at your
+       option) any later version.
+
+       This program is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+       Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with this program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+
+
+perl v5.10.1                       2011-04-04 Parse::DebianChangelog::Entry(3pm)
+
+</pre></body></html>

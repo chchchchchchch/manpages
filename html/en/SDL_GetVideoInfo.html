@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_GetVideoInfo - returns a pointer to information about the video hardware</title></head>
+<body><pre>
+
+SDL_GetVideoInfo(3)             SDL API Reference            SDL_GetVideoInfo(3)
+
+
+
+NAME
+       SDL_GetVideoInfo - returns a pointer to information about the video hard&#8208;
+       ware
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDL_VideoInfo *SDL_GetVideoInfo(void);
+
+DESCRIPTION
+       This function returns a read-only pointer to information about the  video
+       hardware.  If  this is called before SDL_SetVideoMode, the vfmt member of
+       the returned structure will contain the pixel format of the &quot;best&quot;  video
+       mode.
+
+SEE ALSO
+       SDL_SetVideoMode, SDL_VideoInfo
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01          SDL_GetVideoInfo(3)
+
+</pre></body></html>

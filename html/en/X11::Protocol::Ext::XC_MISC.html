@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X11::Protocol::Ext::XC_MISC - Perl module for the X11 Protocol XC-MISC Extension</title></head>
+<body><pre>
+
+Protocol::Ext::XC_MISC(User Contributed Perl DocumentProtocol::Ext::XC_MISC(3pm)
+
+
+
+NAME
+       X11::Protocol::Ext::XC_MISC - Perl module for the X11 Protocol XC-MISC
+       Extension
+
+SYNOPSIS
+         use X11::Protocol;
+         $x = X11::Protocol-&gt;new();
+         $x-&gt;init_extension(&apos;XC-MISC&apos;);
+
+DESCRIPTION
+       This module is used by the programmer to pre-acquire large numbers of X
+       resource IDs to be used with the X11::Protocol module.
+
+       If supported by the server, X11::Protocol will load this module
+       automatically when additional resource IDs are needed via the standard
+       new_rsrc() interface.  However, if you anticipate that a program will run
+       for a long time and allocate many resources, it would be a good idea to
+       initialize the extension at startup to verify its existence.
+
+REQUESTS
+       This extension adds three requests, called as shown below:
+
+         $x-&gt;XCMiscGetVersion =&gt; ($major, $minor)
+
+         $x-&gt;XCMiscGetXIDRange =&gt; ($start_id, $count)
+
+         $x-&gt;XCMiscGetXIDList($count) =&gt; ($count, @ids)
+
+AUTHOR
+       Jay Kominek &lt;jay.kominek@colorado.edu&gt;.
+
+SEE ALSO
+       perl(1), X11::Protocol, XC-MISC Extension (X Consortium Standard).
+
+
+
+perl v5.14.2                       2003-05-11        Protocol::Ext::XC_MISC(3pm)
+
+</pre></body></html>

@@ -1,0 +1,253 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca basic functions -</title></head>
+<body><pre>
+
+libcaca basic functions(3caca)       libcaca      libcaca basic functions(3caca)
+
+
+
+NAME
+       libcaca basic functions -
+
+   Functions
+       __extern caca_canvas_t * caca_create_canvas (int, int)
+           Initialise a libcaca canvas.
+       __extern int caca_manage_canvas (caca_canvas_t *, int(*)(void *), void *)
+           Manage a canvas.
+       __extern int caca_unmanage_canvas (caca_canvas_t *, int(*)(void *), void
+           *)
+           unmanage a canvas.
+       __extern int caca_set_canvas_size (caca_canvas_t *, int, int)
+           Resize a canvas.
+       __extern int caca_get_canvas_width (caca_canvas_t const *)
+           Get the canvas width.
+       __extern int caca_get_canvas_height (caca_canvas_t const *)
+           Get the canvas height.
+       __extern uint32_t const * caca_get_canvas_chars (caca_canvas_t const *)
+           Get the canvas character array.
+       __extern uint32_t const * caca_get_canvas_attrs (caca_canvas_t const *)
+           Get the canvas attribute array.
+       __extern int caca_free_canvas (caca_canvas_t *)
+           Free a libcaca canvas.
+       __extern int caca_rand (int, int)
+           Generate a random integer within a range.
+       __extern char const * caca_get_version (void)
+           Return the libcaca version.
+
+Detailed Description
+       These functions provide the basic libcaca routines for library
+       initialisation, system information retrieval and configuration.
+
+Function Documentation
+   __extern caca_canvas_t* caca_create_canvas (intwidth, intheight) Initialise
+       internal libcaca structures and the backend that will be used for
+       subsequent graphical operations. It must be the first libcaca function to
+       be called in a function. caca_free_canvas() should be called at the end
+       of the program to free all allocated resources.
+       Both the cursor and the canvas&apos; handle are initialised at the top-left
+       corner.
+
+       If an error occurs, NULL is returned and errno is set accordingly:
+
+       &#183; EINVAL Specified width or height is invalid.
+
+       &#183; ENOMEM Not enough memory for the requested canvas size.
+
+       Parameters:
+           width The desired canvas width
+           height The desired canvas height
+
+       Returns:
+           A libcaca canvas handle upon success, NULL if an error occurred.
+
+       References CACA_DEFAULT, caca_set_color_ansi(), and CACA_TRANSPARENT.
+
+       Referenced by caca_conio_movetext(), caca_create_display_with_driver(),
+       caca_export_area_to_memory(), caca_import_area_from_file(),
+       caca_import_area_from_memory(), and caca_set_canvas_boundaries().
+
+   __extern int caca_manage_canvas (caca_canvas_t *cv, int(*)(void *)callback,
+       void *p) Lock a canvas to prevent it from being resized. If non-NULL, the
+       callback function pointer will be called upon each caca_set_canvas_size
+       call and if the returned value is zero, the canvas resize request will be
+       denied.
+       This function is only useful for display drivers such as the libcaca
+       library.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EBUSY The canvas is already being managed.
+
+       Parameters:
+           cv A libcaca canvas.
+           callback An optional callback function pointer.
+           p The argument to be passed to callback.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       Referenced by caca_create_display_with_driver().
+
+   __extern int caca_unmanage_canvas (caca_canvas_t *cv, int(*)(void *)callback,
+       void *p) unlock a canvas previously locked by caca_manage_canvas(). for
+       safety reasons, the callback and callback data arguments must be the same
+       as for the caca_manage_canvas() call.
+       this function is only useful for display drivers such as the libcaca
+       library.
+
+       if an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; einval the canvas is not managed, or the callback arguments do not
+         match.
+
+       Parameters:
+           cv a libcaca canvas.
+           callback the callback argument previously passed to
+           caca_manage_canvas().
+           p the p argument previously passed to caca_manage_canvas().
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       Referenced by caca_create_display_with_driver(), and caca_free_display().
+
+   __extern int caca_set_canvas_size (caca_canvas_t *cv, intwidth, intheight)
+       Set the canvas&apos; width and height, in character cells.
+       The contents of the canvas are preserved to the extent of the new canvas
+       size. Newly allocated character cells at the right and/or at the bottom
+       of the canvas are filled with spaces.
+
+       If as a result of the resize the cursor coordinates fall outside the new
+       canvas boundaries, they are readjusted. For instance, if the current X
+       cursor coordinate is 11 and the requested width is 10, the new X cursor
+       coordinate will be 10.
+
+       It is an error to try to resize the canvas if an output driver has been
+       attached to the canvas using caca_create_display(). You need to remove
+       the output driver using caca_free_display() before you can change the
+       canvas size again. However, the caca output driver can cause a canvas
+       resize through user interaction. See the caca_event() documentation for
+       more about this.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EINVAL Specified width or height is invalid.
+
+       &#183; EBUSY The canvas is in use by a display driver and cannot be resized.
+
+       &#183; ENOMEM Not enough memory for the requested canvas size. If this
+         happens, the canvas handle becomes invalid and should not be used.
+
+       Parameters:
+           cv A libcaca canvas.
+           width The desired canvas width.
+           height The desired canvas height.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       Referenced by caca_canvas_set_figfont(), caca_flush_figlet(), and
+       caca_put_figchar().
+
+   __extern int caca_get_canvas_width (caca_canvas_t const *cv) Return the
+       current canvas&apos; width, in character cells.
+       This function never fails.
+
+       Parameters:
+           cv A libcaca canvas.
+
+       Returns:
+           The canvas width.
+
+       Referenced by caca_conio_clreol(), caca_conio_movetext(), and
+       caca_get_mouse_x().
+
+   __extern int caca_get_canvas_height (caca_canvas_t const *cv) Returns the
+       current canvas&apos; height, in character cells.
+       This function never fails.
+
+       Parameters:
+           cv A libcaca canvas.
+
+       Returns:
+           The canvas height.
+
+       Referenced by caca_flush_figlet(), and caca_get_mouse_y().
+
+   __extern uint32_t const* caca_get_canvas_chars (caca_canvas_t const *cv)
+       Return the current canvas&apos; internal character array. The array elements
+       consist in native endian 32-bit Unicode values as returned by
+       caca_get_char().
+       This function is probably only useful for libcaca &apos;s internal display
+       drivers.
+
+       This function never fails.
+
+       Parameters:
+           cv A libcaca canvas.
+
+       Returns:
+           The canvas character array.
+
+   __extern uint32_t const* caca_get_canvas_attrs (caca_canvas_t const *cv)
+       Returns the current canvas&apos; internal attribute array. The array elements
+       consist in native endian 32-bit attribute values as returned by
+       caca_get_attr().
+       This function is probably only useful for libcaca &apos;s internal display
+       drivers.
+
+       This function never fails.
+
+       Parameters:
+           cv A libcaca canvas.
+
+       Returns:
+           The canvas attribute array.
+
+   __extern int caca_free_canvas (caca_canvas_t *cv) Free all resources
+       allocated by caca_create_canvas(). The canvas pointer becomes invalid and
+       must no longer be used unless a new call to caca_create_canvas() is made.
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EBUSY The canvas is in use by a display driver and cannot be freed.
+
+       Parameters:
+           cv A libcaca canvas.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       References caca_canvas_set_figfont().
+
+       Referenced by caca_canvas_set_figfont(),
+       caca_create_display_with_driver(), caca_export_area_to_memory(),
+       caca_free_display(), caca_import_area_from_file(), and
+       caca_import_area_from_memory().
+
+   __extern int caca_rand (intmin, intmax) Generate a random integer within the
+       given range.
+       This function never fails.
+
+       Parameters:
+           min The lower bound of the integer range.
+           max The upper bound of the integer range.
+
+       Returns:
+           A random integer comprised between min and max - 1 (inclusive).
+
+   __extern char const* caca_get_version (void) Return a read-only string with
+       the libcaca version information.
+       This function never fails.
+
+       Returns:
+           The libcaca version information.
+
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2012   libcaca basic functions(3caca)
+
+</pre></body></html>

@@ -1,0 +1,144 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Glib::Log -  A flexible logging mechanism</title></head>
+<body><pre>
+
+Glib::Log(3pm)         User Contributed Perl Documentation        Glib::Log(3pm)
+
+
+
+NAME
+       Glib::Log -  A flexible logging mechanism
+
+METHODS
+   scalar = Glib::Log-&gt;set_always_fatal ($fatal_mask)
+       &#183;   $fatal_mask (scalar)
+
+   Glib-&gt;critical ($domain, $message)
+       &#183;   $domain (string or undef)
+
+       &#183;   $message (string)
+
+   Glib::Log::default_handler ($log_domain, $log_level, $message, ...)
+       &#183;   $log_domain (string)
+
+       &#183;   $log_level (scalar)
+
+       &#183;   $message (string)
+
+       &#183;   ... (list) possible &quot;userdata&quot; argument ignored
+
+       The arguments are the same as taken by the function for set_handler or
+       set_default_handler.
+
+   prev_log_func = Glib-&gt;set_default_handler ($log_func, $user_data)
+       &#183;   $log_func (subroutine) handler function or undef
+
+       &#183;   $user_data (scalar)
+
+       Install log_func as the default log handler.  log_func is called for
+       anything which doesn&apos;t otherwise have a handler (either
+       Glib::Log-&gt;set_handler, or the Glib::xsapi gperl_handle_logs_for),
+
+           &amp;$log_func ($log_domain, $log_levels, $message, $user_data)
+
+       where $log_domain is a string, and $log_levels is a Glib::LogLevelFlags
+       of level and flags being reported.
+
+       If log_func is \&amp;Glib::Log::default_handler or undef then Glib&apos;s default
+       handler is set.
+
+       The return value from &quot;set_default_handler&quot; is the previous handler.
+       This is \&amp;Glib::Log::default_handler for Glib&apos;s default, otherwise a Perl
+       function previously installed.  If the handler is some other non-Perl
+       function then currently the return is undef, but perhaps that will change
+       to some wrapped thing, except that without associated userdata there&apos;s
+       very little which could be done with it (it couldn&apos;t be reinstalled later
+       without its userdata).
+
+       Since: glib 2.6
+
+   Glib-&gt;error ($domain, $message)
+       &#183;   $domain (string or undef)
+
+       &#183;   $message (string)
+
+   scalar = Glib::Log-&gt;set_fatal_mask ($log_domain, $fatal_mask)
+       &#183;   $log_domain (string)
+
+       &#183;   $fatal_mask (scalar)
+
+   integer = Glib::Log-&gt;set_handler ($log_domain, $log_levels, $log_func,
+       $user_data=undef)
+       &#183;   $log_domain (string or undef) name of the domain to handle with this
+           callback.
+
+       &#183;   $log_levels (Glib::LogLevelFlags) log levels to handle with this
+           callback
+
+       &#183;   $log_func (subroutine) handler function
+
+       &#183;   $user_data (scalar)
+
+       $log_func will be called as
+
+           &amp;$log_func ($log_domain, $log_levels, $message, $user_data);
+
+       where $log_domain is the name requested and $log_levels is a
+       Glib::LogLevelFlags of level and flags being reported.
+
+   Glib-&gt;log ($log_domain, $log_level, $message)
+       &#183;   $log_domain (string or undef)
+
+       &#183;   $log_level (scalar)
+
+       &#183;   $message (string)
+
+   Glib-&gt;message ($domain, $message)
+       &#183;   $domain (string or undef)
+
+       &#183;   $message (string)
+
+   Glib::Log-&gt;remove_handler ($log_domain, $handler_id)
+       &#183;   $log_domain (string or undef)
+
+       &#183;   $handler_id (integer) as returned by &quot;set_handler&quot;
+
+   Glib-&gt;warning ($domain, $message)
+       &#183;   $domain (string or undef)
+
+       &#183;   $message (string)
+
+ENUMS AND FLAGS
+   flags Glib::LogLevelFlags
+       &#183;   &apos;recursion&apos; / &apos;G_LOG_FLAG_RECURSION&apos;
+
+       &#183;   &apos;fatal&apos; / &apos;G_LOG_FLAG_FATAL&apos;
+
+       &#183;   &apos;error&apos; / &apos;G_LOG_LEVEL_ERROR&apos;
+
+       &#183;   &apos;critical&apos; / &apos;G_LOG_LEVEL_CRITICAL&apos;
+
+       &#183;   &apos;warning&apos; / &apos;G_LOG_LEVEL_WARNING&apos;
+
+       &#183;   &apos;message&apos; / &apos;G_LOG_LEVEL_MESSAGE&apos;
+
+       &#183;   &apos;info&apos; / &apos;G_LOG_LEVEL_INFO&apos;
+
+       &#183;   &apos;debug&apos; / &apos;G_LOG_LEVEL_DEBUG&apos;
+
+       &#183;   &apos;fatal-mask&apos; / &apos;G_LOG_FATAL_MASK&apos;
+
+SEE ALSO
+       Glib
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Glib for a full notice.
+
+
+
+perl v5.14.2                       2012-05-24                     Glib::Log(3pm)
+
+</pre></body></html>

@@ -1,0 +1,148 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-u12 - SANE backend for Plustek USB flatbed scanners, based on older parport designs</title></head>
+<body><pre>
+
+sane-u12(5)               SANE Scanner Access Now Easy               sane-u12(5)
+
+
+
+NAME
+       sane-u12  - SANE backend for Plustek USB flatbed scanners, based on older
+       parport designs
+
+DESCRIPTION
+       The sane-u12 library implements a SANE (Scanner Access Now Easy)  backend
+       that  provides  access  to  USB  flatbed scanners based on Plusteks&apos; ASIC
+       98003 (parallel-port ASIC) and a GeneSys Logics&apos; USB-parport bridge chip.
+
+
+SUPPORTED DEVICES
+       The backend is able to support some early Plustek USB scanner based their
+       old  parport  design  around  the  ASIC  98003 and other rebadged Plustek
+       devices. The following tables will give you a short overview.
+
+       If your Plustek scanner has another Product ID, then the  device  is  NOT
+       supported by this backend.
+
+       Vendor Plustek - ID: 0x07B3
+       ----------------------------------------------------------
+       Model:                   Vendor-ID:       Product-ID:
+       ----------------------------------------------------------
+       OpticPro U12             0x07B3           0x0001
+       OpticPro U1212           0x07B3           0x0001
+       OpticPro UT12            0x07B3           0x0001
+
+       Vendor KYE/Genius
+       --------------------------------------------------------
+       USB Model:               Vendor-ID:       Product-ID:
+       --------------------------------------------------------
+       ColorPage Vivid III USB  0x07B3           0x0001
+       ColorPage HR6 V1         0x0458           0x2004
+
+CONFIGURATION
+       To  use  your scanner with this backend, you need at least two entries in
+       the configuration file /etc/sane.d/u12.conf
+              [usb] vendor-id product-id
+              device /dev/usbscanner
+
+       [usb] tells the backend, that the following  devicename  (here  /dev/usb&#8208;
+       scanner)  has  to  be  interpreted  as USB scanner device. If vendor- and
+       product-id has not been specified, the backend tries to  detect  this  by
+       its own. If device is set to auto then the next matching device is used.
+
+       The Options:
+
+       option warmup t
+              t specifies the warmup period in seconds
+
+       option lampOff t
+              t  is  the  time in seconds for switching off the lamps in standby
+              mode
+
+       option lOffonEnd b
+              b specifies the behaviour when closing the backend, 1  --&gt;  switch
+              lamps off, 0 --&gt; do not change lamp status
+
+
+       See the u12.conf file for examples.
+
+       Note:
+       You have to make sure, that the USB subsystem is loaded correctly and you
+       have access to the device-node. For more details see  sane-usb  (5)  man&#8208;
+       page.  You  might  use sane-find-scanner to check that you have access to
+       your device.
+
+       Note:
+       If there&apos;s no configuration file, the backend defaults to device auto
+
+
+FILES
+       /etc/sane.d/u12.conf
+              The backend configuration file
+
+       /usr/lib/arch_triplet/sane/libsane-u12.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-u12.so
+              The shared library implementing this backend (present  on  systems
+              that support dynamic loading).
+
+
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This  environment  variable specifies the list of directories that
+              may contain the configuration file.  Under UNIX,  the  directories
+              are  separated by a colon (`:&apos;), under OS/2, they are separated by
+              a semi-colon (`;&apos;).  If this variable is not set,  the  configura&#8208;
+              tion  file is searched in two default directories: first, the cur&#8208;
+              rent working directory (&quot;.&quot;) and  then  in  /etc/sane.d.   If  the
+              value  of the environment variable ends with the directory separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly  specified directories.  For example, setting SANE_CON&#8208;
+              FIG_DIR to &quot;/tmp/config:&quot; would result  in  directories  &quot;tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_U12
+              If the library was compiled with debug support enabled, this envi&#8208;
+              ronment variable  controls  the  debug  level  for  this  backend.
+              Higher debug levels increase the verbosity of the output.
+
+              Example: export SANE_DEBUG_U12=10
+
+
+SEE ALSO
+       sane(7), sane-usb(5), sane-plustek(5),
+       /usr/share/doc/libsane/u12/U12.changes
+       http://www.gjaeger.de/scanner/u12/
+
+
+CONTACT AND BUG-REPORTS
+       Please send any information and bug-reports to:
+       SANE Mailing List
+
+       Additional info and hints can be obtained from our
+       Mailing-List archive at:
+       http://www.sane-project.org/mailing-lists.html
+
+       or directly from the projects&apos; homepage at:
+       http://www.gjaeger.de/scanner/u12/
+
+       To  obtain  debug  messages from the backend, please set the environment-
+       variable SANE_DEBUG_U12 before calling your favorite scan-frontend  (i.e.
+       xscanimage).
+       i.e.: export SANE_DEBUG_U12=20 ; xscanimage
+
+       The value controls the verbosity of the backend.
+&#12;
+KNOWN BUGS &amp; RESTRICTIONS
+       * The driver is in alpha state, so please don&apos;t expect too much!!!
+
+       *  When using libusb, it might be, that the backend hangs.  In that case,
+       reconnect the scanner.
+
+
+
+                                   14 Jul 2008                       sane-u12(5)
+
+</pre></body></html>

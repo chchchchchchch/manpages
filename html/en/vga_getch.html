@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_getch - wait for a key</title></head>
+<body><pre>
+
+vga_getch(3)                   Svgalib User Manual                  vga_getch(3)
+
+
+
+NAME
+       vga_getch - wait for a key
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_getch(void);
+
+
+DESCRIPTION
+       waits for a key press just like getchar(3) would.
+
+       For  a  non  blocking  check  for  a  keypress  use  vga_getkey(3) or use
+       vga_waitevent(3) if you want to wait for several events to occur at once.
+
+
+SEE ALSO
+       svgalib(7),   vgagl(7),   libvga.config(5),    vga_getkey(3),    vga_set&#8208;
+       flipchar(3), vga_waitevent(3), getchar(3)
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced function as well as of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997                      vga_getch(3)
+
+</pre></body></html>

@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ppdi - import ppd files</title></head>
+<body><pre>
+
+ppdi(1)                            Apple Inc.                            ppdi(1)
+
+
+
+NAME
+       ppdi - import ppd files
+
+SYNOPSIS
+       ppdi [ -I include-directory ] [ -o source-file ] ppd-file [ ppd-file2 ...
+       ppd-fileN ]
+
+DESCRIPTION
+       ppdi imports one or more PPD files into a PPD compiler source file.  Mul&#8208;
+       tiple  languages  of  the  same PPD file are merged into a single printer
+       definition to facilitate accurate changes for all localizations.
+
+       The -o option specifies the PPD source file to update. If the source file
+       does not exist, a new source file is created. Otherwise the existing file
+       is merged with the new PPD file(s) on the command-line. If no source file
+       is specified, the filename &quot;ppdi.drv&quot; is used.
+
+SEE ALSO
+       ppdc(1), ppdhtml(1), ppdmerge(1), ppdpo(1), ppdcfile(5)
+       http://localhost:631/help
+
+COPYRIGHT
+       Copyright 2007-2011 by Apple Inc.
+
+
+
+20 May 2008                           CUPS                               ppdi(1)
+
+</pre></body></html>

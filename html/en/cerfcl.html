@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cerf, cerff, cerfl, cerfc, cerfcf, cerfcl - complex error function</title></head>
+<body><pre>
+
+CERF(3)                     Linux Programmer&apos;s Manual                    CERF(3)
+
+
+
+NAME
+       cerf, cerff, cerfl, cerfc, cerfcf, cerfcl - complex error function
+
+SYNOPSIS
+       #include &lt;complex.h&gt;
+
+       double complex cerf(double complex z);
+       float complex cerff(float complex z);
+       long double complex cerfl(long double complex z);
+
+       double complex cerfc(double complex z);
+       float complex cerfcf(float complex z);
+       long double complex cerfcl(long double complex z);
+
+       Link with -lm.
+
+DESCRIPTION
+       The  (unimplemented)  function cerf() is the complex version of the error
+       function.  erf(z) = 2/sqrt(pi) * integral from 0 to z  of  exp(-t*t)  dt.
+       The function cerfc() is defined as cerfc(z) = 1-cerf(z).
+
+CONFORMING TO
+       The function names are reserved for future use in C99.
+
+AVAILABILITY
+       Not yet in glibc, as at version 2.12.
+
+SEE ALSO
+       erf(3), complex(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2010-09-12                            CERF(3)
+
+</pre></body></html>

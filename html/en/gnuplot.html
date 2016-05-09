@@ -1,0 +1,271 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gnuplot - an interactive plotting program</title></head>
+<body><pre>
+
+GNUPLOT(1)                                                            GNUPLOT(1)
+
+
+
+NAME
+       gnuplot - an interactive plotting program
+
+SYNOPSIS
+       gnuplot [X11 options] [options] [file ...]
+
+DESCRIPTION
+       Gnuplot is a command-driven interactive function plotting program.
+
+       If file names are given on the command line, gnuplot loads each file with
+       the load command, in the order specified, and exits after the  last  file
+       is  processed.   If  no  files are given, gnuplot prompts for interactive
+       commands.
+
+       Here are some of its features:
+
+       Plots any number of functions, built up of C operators, C  library  func&#8208;
+       tions, and some things C doesn&apos;t have like **, sgn(), etc.
+
+       User-defined constants and functions.
+
+       All  computations performed in the complex domain.  Just the real part is
+       plotted by default, but functions like imag() and  abs()  and  arg()  are
+       available to override this.
+
+       Also support for plotting data files, to compare actual data to theoreti&#8208;
+       cal curves.
+
+       Nonlinear least-squares fitting.
+
+       2D plots with mouse-controlled zooming.
+
+       3D plots with mouse-controlled point of view.
+
+       User-defined X and Y ranges (optional auto-ranging), smart axes  scaling,
+       smart tic marks.
+
+       Labelling of X and Y axes.
+
+       Shell escapes and command line substitution.
+
+       Load and save capability.
+
+       Support for many output devices and file formats.
+
+       Output redirection.
+
+OPTIONS
+       -p, --persist lets plot windows survive after main gnuplot program exits.
+
+       -e &quot;command list&quot; executes the requested commands before loading the next
+       input file.
+
+       -h, --help print summary of usage
+
+       -V show current version
+
+X11 OPTIONS
+       Gnuplot provides the x11 terminal type for use with X servers. This  ter&#8208;
+       minal  type  is  set  automatically at startup if the DISPLAY environment
+       variable is set, if the TERM environment variable is set to xterm, or  if
+       the -display command line option is used.  For terminal type x11, gnuplot
+       accepts the standard X Toolkit options and resources  such  as  geometry,
+       font,  and  background.  See  the  X(1) man page for a description of the
+       options.  In addition to the X Toolkit options:
+
+       -clear requests that the window be cleared momentarily before a new  plot
+       is displayed.
+
+       -gray  requests  grayscale  rendering  on  grayscale  or  color displays.
+       (Grayscale displays receive monochrome rendering by default.)
+
+       -mono forces monochrome rendering on color displays.
+
+       -raise raises the plot window after each plot.
+
+       -noraise does not raise the plot window after each plot.
+
+       -tvtwm requests that geometry specifications for position of  the  window
+       be made relative to the currently displayed portion of the virtual root.
+
+       These  options  may  also be controlled with resources in your .Xdefaults
+       file.  For example: gnuplot*gray: on .
+
+       Gnuplot provides a command line option  (-pointsize  v)  and  a  resource
+       (gnuplot*pointsize:  v)  to  control  the size of points plotted with the
+       &quot;points&quot; plotting style. The value v is a real number (greater than 0 and
+       less  than or equal to ten) used as a scaling factor for point sizes. For
+       example, -pointsize 2 uses points twice the default size, and  -pointsize
+       0.5 uses points half the normal size.
+
+       For  monochrome displays, gnuplot does not honor foreground or background
+       colors. The default is black-on-white. -rv  or  gnuplot*reverseVideo:  on
+       requests white-on-black.
+
+       For  color  displays  gnuplot  honors the following resources (shown here
+       with default values). The values may be color names in  the  X11  rgb.txt
+       file  on your system, hexadecimal RGB color specifications (see X11 docu&#8208;
+       mentation), or a color name followed by a comma and  an  intensity  value
+       from 0 to 1. For example, blue,.5 means a half intensity blue.
+
+       gnuplot*background: white
+       gnuplot*textColor: black
+       gnuplot*borderColor: black
+       gnuplot*axisColor: black
+       gnuplot*line1Color: red
+       gnuplot*line2Color: green
+       gnuplot*line3Color: blue
+       gnuplot*line4Color: magenta
+       gnuplot*line5Color: cyan
+       gnuplot*line6Color: sienna
+       gnuplot*line7Color: orange
+       gnuplot*line8Color: coral
+
+       When  -gray  is  selected,  gnuplot  honors  the  following resources for
+       grayscale or color displays (shown here with default values).  Note  that
+       the default background is black.
+
+       gnuplot*background: black
+       gnuplot*textGray: white
+       gnuplot*borderGray: gray50
+       gnuplot*axisGray: gray50
+       gnuplot*line1Gray: gray100
+       gnuplot*line2Gray: gray60
+       gnuplot*line3Gray: gray80
+       gnuplot*line4Gray: gray40
+       gnuplot*line5Gray: gray90
+       gnuplot*line6Gray: gray50
+       gnuplot*line7Gray: gray70
+       gnuplot*line8Gray: gray30
+
+       Gnuplot honors the following resources for setting the width in pixels of
+       plot lines (shown here with default values.) 0 or 1 means a minimal width
+       line  of  1 pixel width. A value of 2 or 3 may improve the  appearance of
+       some plots.
+
+       gnuplot*borderWidth: 2
+       gnuplot*axisWidth: 0
+       gnuplot*line1Width: 0
+       gnuplot*line2Width: 0
+       gnuplot*line3Width: 0
+       gnuplot*line4Width: 0
+       gnuplot*line5Width: 0
+       gnuplot*line6Width: 0
+       gnuplot*line7Width: 0
+       gnuplot*line8Width: 0
+
+       Gnuplot honors the following resources for setting the  dash  style  used
+       for  plotting  lines.  0 means a solid line. A 2 digit number jk (j and k
+       are &gt;= 1  and &lt;= 9) means a dashed line with a repeated pattern of j pix&#8208;
+       els  on  followed  by k pixels off.  For example, &apos;16&apos; is a &quot;dotted&quot; line
+       with 1 pixel on followed by 6 pixels off.  More elaborate on/off patterns
+       can  be  specified  with a 4 digit value.  For example, &apos;4441&apos; is 4 on, 4
+       off, 4 on, 1 off. The default values shown below are for monochrome  dis&#8208;
+       plays  or  monochrome rendering on color or grayscale displays. For color
+       displays, the defaults for all are 0 (solid line) except  for  axisDashes
+       which defaults to a &apos;16&apos; dotted line.
+
+       gnuplot*borderDashes: 0
+       gnuplot*axisDashes: 16
+       gnuplot*line1Dashes: 0
+       gnuplot*line2Dashes: 42
+       gnuplot*line3Dashes: 13
+       gnuplot*line4Dashes: 44
+       gnuplot*line5Dashes: 15
+       gnuplot*line6Dashes: 4441
+       gnuplot*line7Dashes: 42
+       gnuplot*line8Dashes: 13
+
+       The size or aspect ratio of a plot may be changed by resizing the gnuplot
+       window.
+
+ENVIRONMENT
+       A number of shell environment variables are understood by gnuplot.   None
+       of these are required.
+
+       GNUTERM
+              The name of the terminal type to be used.  This overrides any ter&#8208;
+              minal type sensed by gnuplot on start-up, but is itself overridden
+              by the .gnuplot (or equivalent) start-up file (see FILES and &quot;help
+              start-up&quot;) and, of course, by later explicit changes.
+
+       GNUHELP
+              The pathname of the HELP file (gnuplot.gih).
+
+       HOME   The name of a directory to search for a .gnuplot file if  none  is
+              found in the current directory.
+
+       PAGER  An output filter for help messages.
+
+       SHELL  The program used for the &quot;shell&quot; command.
+
+       FIT_SCRIPT
+              Specifies  a  gnuplot  command to be executed when a fit is inter&#8208;
+              rupted---see &quot;help fit&quot;.
+
+       FIT_LOG
+              The name of the logfile maintained by fit.
+
+       GNUPLOT_LIB
+              Additional search directories for  data  and  command  files.  The
+              variable  may contain a single directory name, or a list of direc&#8208;
+              tories separated by &apos;:&apos;. The contents of GNUPLOT_LIB are  appended
+              to  the  &quot;loadpath&quot;  variable,  but  not saved with the &quot;save&quot; and
+              &quot;save set&quot; commands.
+
+       GDFONTPATH
+              Several gnuplot terminal drivers access TrueType fonts via the  gd
+              library.  This variable gives the font search path for these driv&#8208;
+              ers.
+
+       GNUPLOT_DEFAULT_GDFONT
+              The default font for the terminal  drivers  that  access  TrueType
+              fonts via the gd library.
+
+       GNUPLOT_FONTPATH
+              The  font  search path used by the postscript terminal. The format
+              is the same as for GNUPLOT_LIB. The contents  of  GNUPLOT_FONTPATH
+              are  appended  to  the &quot;fontpath&quot; variable, but not saved with the
+              &quot;save&quot; and &quot;save set&quot; commands.
+
+       GNUPLOT_PS_DIR
+              Used by the postscript driver to locate external  prologue  files.
+              Depending  on the build process, gnuplot contains either a builtin
+              copy of those files or simply a default hardcoded path.  Use  this
+              variable  to  test  the  postscript  terminal with custom prologue
+              files. See &quot;help postscript prologue&quot;.
+
+FILES
+       .gnuplot
+              Gnuplot looks for this initialization file, first in  the  current
+              directory,  then  in the HOME directory.  It may contain any legal
+              gnuplot commands, but typically they are limited  to  setting  the
+              terminal and defining frequently-used functions or variables.
+
+       fit.log
+              The default name of the logfile maintained by fit.
+
+AUTHORS
+       Thomas Williams, Pixar Corporation,
+       (gnuplot-info@lists.sourceforge.net)
+       and Colin Kelley.
+
+       Additions for labelling by Russell Lang, Monash University, Australia.
+       (rjl@monu1.cc.monash.edu.au)
+       Further  additions  by  David Kotz, Dartmouth College, New Hampshire, USA
+       (formerly of Duke University, North Carolina, USA).
+       (David.Kotz@Dartmouth.edu)
+
+BUGS
+       See the help bugs command in gnuplot.
+
+SEE ALSO
+       See the printed manual or the on-line help for details on  specific  com&#8208;
+       mands.
+       X(1).
+
+
+
+4th Berkeley Distribution         7 October 2008                      GNUPLOT(1)
+
+</pre></body></html>

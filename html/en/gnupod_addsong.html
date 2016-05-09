@@ -1,0 +1,125 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gnupod_addsong - upload music to the iPod</title></head>
+<body><pre>
+
+GNUPOD_ADDSONG(1)                 User Commands                GNUPOD_ADDSONG(1)
+
+
+
+NAME
+       gnupod_addsong - upload music to the iPod
+
+SYNOPSIS
+       gnupod_addsong [OPTION]...
+
+DESCRIPTION
+       Upload  Music  to  the iPod.  This Version can read MP3 AAC/ALAC (no DRM)
+       and PCM (aka .wav) files.  It can even read FLAC files if Audio::FLAC  is
+       aviable and the --decode switch was used. (Note: The iPod can&apos;t play FLAC
+       files, in this case, gnupod_addsong converts the FLAC files  &apos;on-the-fly&apos;
+       using &apos;flac&apos;)
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       -m, --mount=DIRECTORY
+              iPod mountpoint. Default is $IPOD_MOUNTPOINT
+
+       -r, --restore
+              Restore  the  iPod.  Use  this if your iPod is messed up. You will
+              lose all playlists
+
+       -d, --duplicate
+              Allow duplicate files.  Per  default,  gnupod_addsong  checks  for
+              duplicate files.  Use this switch to disable the check.
+
+       -p, --playlist=NAME
+              Add songs to this playlist
+
+       --disable-v1
+              Do not read ID3v1 Tags
+
+       --disable-v2
+              Do not read ID3v2 Tags
+
+       --decode=mp3|pcm|aac|aacbm
+              Convert  FLAC and OGG files On-The-Fly into choosen format and add
+              them.  You need the Perl modules  &apos;Audio::FLAC::Header&apos;  for  FLAC
+              files  and  &apos;Ogg::Vorbis::Header::PurePerl&apos; for OGG files. Lame is
+              needed for MP3 Output and FAAC (&gt;= 1.24) is needed for AAC output.
+              Btw:  &apos;aacbm&apos;  means  a  Bookmark-AAC File (M4B) See --reencode to
+              specify the quality of the output file.
+
+       -e, --reencode=INT
+              Re-encode while adding Files.  0=God  /  9=Bad  Quality.  Lame  is
+              needed for MP3, FAAC for AAC (m4a).
+
+       --set-title=STRING
+              Force Title
+
+       --set-artist=STRING
+              Force Artist
+
+       --set-album=STRING
+              Force Album
+
+       --set-genre=STRING
+              Force Genre
+&#12;       --set-rating=INT
+              Force  Rating:  0 = 0 starts / 20 = 1 star / 40 = 2 stars / 60 = 3
+              stars / 80 = 4 stars / 100 = 5 stars
+
+       --set-playcount=INT
+              Force Playcount
+
+       --set-songnum
+              Order songs on the iPod in the same order as they  were  added  (=
+              Overwrite songnum tag)
+
+       --set-bookmarkable
+              Set this song as bookmarkable (= Remember position)
+
+       --set-shuffleskip
+              Exclude this file in shuffle-mode
+
+       --set-compilation
+              Mark songs as being part of a compilation
+
+       --min-vol-adj=INT
+              Minimum  volume  adjustment  done  if ID3v2.4 RVA2 tags are found.
+              Default is 0 (= Do nothing)
+
+       --max-vol-adj=INT
+              Maximum volume adjustment done if ID3v2.4  RVA2  tags  are  found.
+              Default is 0 (= Do nothing) Using this two options, you can adjust
+              the volume in the range -100% to +100%.
+
+AUTHOR
+       Written by Adrian Ulrich
+
+REPORTING BUGS
+       Report bugs to &lt;bug-gnupod@nongnu.org&gt;
+
+COPYRIGHT
+       Copyright &#169; Adrian Ulrich
+       This is free software; see the source for copying conditions.   There  is
+       NO  warranty;  not  even  for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       The full documentation for gnupod is maintained as a Texinfo manual.   If
+       the info program and GNUpod are properly installed at your site, the com&#8208;
+       mand
+
+              info gnupod
+
+       should give you access to the complete manual.
+
+
+
+gnupod_addsong 1.00                April 2007                  GNUPOD_ADDSONG(1)
+
+</pre></body></html>

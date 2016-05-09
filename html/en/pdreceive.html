@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdreceive - receive messages from pd on this or a remote machine</title></head>
+<body><pre>
+
+pdreceive(1)                                                        pdreceive(1)
+
+
+
+NAME
+       pdreceive - receive messages from pd on this or a remote machine
+
+SYNOPSIS
+       pdreceive port-number [udp|tcp]
+
+DESCRIPTION
+       Pdreceive  opens  a socket (with the specified port number) and waits for
+       messages to arrive from one or more instances  of  pd(1).   Each  message
+       received  is  printed  to  the standard output with a trailing semicolon.
+       The protocol used is easy to implement and is called FUDI.
+
+       The port number should agree with the port number of a  &quot;netsend&quot;  object
+       within  pd.   The  protocol is &quot;tcp&quot; by default; this does a handshake to
+       guarantee that all messages arrive complete and in their  correct  order;
+       if  you  are sending messages locally or point-to-point you can often get
+       away with the faster udp protocol instead.
+
+       You can also use this to get messages from a Max  &quot;pdnetsend&quot;  object  or
+       even just a &quot;pdsend&quot; in another shell.  If you&apos;re writing another program
+       you&apos;re welcome to just grab the sources for  pdsend/pdreceive  and  adapt
+       them to your own ends; they&apos;re part of the Pd distribution.
+
+SEE ALSO
+       pd(1), pdsend(1)
+
+
+
+GNU                                1996 Mar 20                      pdreceive(1)
+
+</pre></body></html>

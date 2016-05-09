@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>filter-key, filter-keytrans - Generic key event translator</title></head>
+<body><pre>
+
+filter-key(7)                          GGI                         filter-key(7)
+
+
+
+NAME
+       filter-key, filter-keytrans - Generic key event translator
+
+SYNOPSIS
+       filter-key: [&lt;file&gt;]
+
+       filter-keytrans: [&lt;file&gt;]
+
+
+DESCRIPTION
+       This  filter  translates  key  events  according  to a set of translation
+       rules. This can be used to remap a keyboard.
+
+OPTIONS
+       file   The name of the configuration file. If none given, the filter will
+              first  look for the file filter/keytrans in the user GGI directory
+              ($HOME/.ggi/ on UNIX), then in  the  base  GGI  directory  if  not
+              found.
+
+
+CONFIGURATION
+       The  mapping  is  specified through a simple text file, each line being a
+       translation rule. A line starting with a # is a comment. Each  line  must
+       contain 10 values in the following order:
+
+       modifier_mask
+              Consider only the bits set here.
+
+
+       modifier_value
+              The bits set above must match this value.
+
+
+       button_in, label_in, symbol_in
+              If  this  is  not KEY_UNMAPPED==0xffff, the button/label/symbol of
+              the incoming key must match these fields.
+
+
+       modifier_changemask
+              Change these bits from the original modifiers...
+
+
+       modifier_ormask
+              ... set them to these - one shouldn&apos;t use that.
+
+
+       button_out, label_out, symbol_out
+              The data that is then sent by the keymapper.  Any  fields  set  to
+              KEY_UNMAPPED==0xffff will be copied from the incoming event.
+
+
+EXAMPLE
+       Mapping a symbol:
+
+       # Take any key that produces a symbol of 0x41 (&apos;A&apos;) map it to ESC
+       #
+       # modmsk modval buttin lablin symin  modchg modor  butout labout symout
+       0x0000 0x0000 0xffff 0xffff 0x0041 0x0000 0x0000 0xffff 0xffff 0x001b
+
+
+
+
+libgii-1.0.x                       2003-08-11                      filter-key(7)
+
+</pre></body></html>

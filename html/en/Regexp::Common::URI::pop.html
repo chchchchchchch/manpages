@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::URI::pop -- Returns a pattern for POP URIs.</title></head>
+<body><pre>
+
+Regexp::Common::URI::poUsermContributed Perl DocumeRegexp::Common::URI::pop(3pm)
+
+
+
+NAME
+       Regexp::Common::URI::pop -- Returns a pattern for POP URIs.
+
+SYNOPSIS
+           use Regexp::Common qw /URI/;
+
+           while (&lt;&gt;) {
+               /$RE{URI}{POP}/       and  print &quot;Contains a POP URI.\n&quot;;
+           }
+
+DESCRIPTION
+   $RE{URI}{POP}
+       Returns a pattern that matches POP URIs, as defined by RFC 2384.  POP
+       URIs have the form:
+
+           &quot;pop:&quot; &quot;//&quot; [ user [ &quot;;AUTH&quot; ( &quot;*&quot; | auth_type ) ] &quot;@&quot; ]
+                         host [ &quot;:&quot; port ]
+
+       Under &quot;{-keep}&quot;, the following are returned:
+
+       $1  The complete URI.
+
+       $2  The scheme.
+
+       $3  The user, if given.
+
+       $4  The authentication type, if given (could be a *).
+
+       $5  The host.
+
+       $6  The port, if given.
+
+REFERENCES
+       [RFC 2384]
+           Gellens, R.: POP URL Scheme. August 1998.
+
+SEE ALSO
+       Regexp::Common::URI for other supported URIs.
+
+AUTHOR
+       Abigail. (regexp-common@abigail.be).
+
+BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2010-02-23      Regexp::Common::URI::pop(3pm)
+
+</pre></body></html>

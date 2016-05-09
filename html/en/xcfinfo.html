@@ -1,0 +1,115 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xcfinfo - display information about GIMP xcf files</title></head>
+<body><pre>
+
+xcfinfo(1)                                                            xcfinfo(1)
+
+
+
+NAME
+       xcfinfo - display information about GIMP xcf files
+
+SYNOPSIS
+       xcfinfo [ options ] filename
+
+DESCRIPTION
+       xcfinfo  is  a command-line tool that displays information about the con&#8208;
+       tents of image files in the XCF  format  used  by  gimp(1),  particularly
+       about the layers in the image.
+
+OPTIONS
+       -h, --help
+               Print an option summery to standard output and exit with a return
+               code of 0.
+
+       -j, --bzip
+               Equivalent to -Z bzcat.  Default if the filename ends with bz2.
+
+       -u, --utf8
+               Use the raw UTF-8 representation from the XCF file to compare and
+               display  layer  names.  Ordinarily, layer names will be converted
+               to the character set of the current locale.
+
+       -v, --verbose
+               Print progress messages about the conversion to standard error.
+
+       -V, --version
+               Print the version numer of xcftools to standard output  and  exit
+               with a return code of 0.
+
+       -z, --gzip
+               Equivalent to -Z zcat.  Default if the filename ends with gz.
+
+       -Z command, --unpack command
+               Specify  a command that the input file is filtered through before
+               being interpreted as an XCF file. The command is invoked as  com&#8208;
+               mand  filename  and  must  produce output to its standard output.
+               Note that it is not possible to specify arguments as part of com&#8208;
+               mand.   An uncompressor is selected automatically if the filename
+               ends with gz or bz2; to suppress  this,  use  -Z  cat  (which  is
+               implemented without actually starting a cat(1) process).
+
+OUTPUT
+       Information  about  the  image is displayed on standard output in a fixed
+       format.  The first line contains general information about the XCF file:
+
+       -  The file format version
+
+       -  The canvas size
+
+       -  The image mode (color, grayscale, or indexed)
+
+       -  The numer of layers
+
+       -  The internal compression algorithm
+
+       Following this line there is a line for each layer:
+
+       1) The character + if the layer is visible and - if it is not
+
+       2) The size and offset of the layer
+&#12;       3) The pixel format of the layer, including  whether  the  layer  has  an
+          alpha channel.
+
+       4) The  layer  mode, as well as the opacity if not 100%, and /mask if the
+          layer has an active layer mask.
+
+       5) The name of the layer.
+
+EXIT STATUS
+       The exit status of xcfinfo is
+
+       0    Success
+
+       20   Problems parsing the command line.
+
+       21   The specified XCF file does not exist or cannot be read.
+
+       123  The XCF file contains presumably valid features that  xcftools  does
+            not  support.   (As of this writing there is no known way of getting
+            the Gimp to write an XCF file that will provoke this return.  Please
+            notify the author if you discover one).
+
+       125  The XCF file is malformed.
+
+       126  An uncompression program could not be executed, or terminated abnor&#8208;
+            mally.
+
+       127  Unexpected I/O error, internal errors, or other &quot;this can&apos;t  happen&quot;
+            situations.
+
+       If  an  uncompression  program returns an error exit status, this will be
+       returned from xcfinfo too.
+
+AUTHOR
+       xcfinfo was written by Henning Makholm &lt;henning@makholm.net&gt;.
+
+SEE ALSO
+       xcf2pnm(1), xcf2png(1)
+
+
+
+Xcftools                           2006-02-12                         xcfinfo(1)
+
+</pre></body></html>

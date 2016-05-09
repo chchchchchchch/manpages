@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_guesstiming - calculate a timing line for the given resolution</title></head>
+<body><pre>
+
+vga_addtiming(3)               Svgalib User Manual              vga_addtiming(3)
+
+
+
+NAME
+       vga_guesstiming - calculate a timing line for the given resolution
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_guesstiming(int x, int y, int clue, int arg);
+
+
+DESCRIPTION
+       Calculates  a timing line for a x*y resolution, according to the value of
+       clue.
+
+
+CALCULATION METHODS
+       If clue is 0, then the aspect ratio for the requested mode ( x:y  )  must
+       be 4:3. A mode with the same aspect ratio closest to the requested, while
+       still having a higher resolution is found, and then scaled  down  to  the
+       requested mode.
+
+       If  clue  is 1, then the aspect ratio for the requested mode ( x:y ) must
+       be 4:3. A mode with the same aspect ratio closest to the requested, while
+       still  having  a  lower  resolution is found, and then scaled down to the
+       requested mode.
+
+
+BUGS
+       No guarantee that a modeline will be created, or that a created  modeline
+       will be usefull is given.
+
+
+SEE ALSO
+       vga_addmode(3) vga_addtiming(3) addmodetest(6)
+
+
+AUTHOR
+       This manual page was written by Matan Ziv-Av
+
+
+
+Svgalib (&gt;= 1.4.0)                7 April 1999                  vga_addtiming(3)
+
+</pre></body></html>

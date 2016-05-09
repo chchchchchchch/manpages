@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>startpar - start runlevel scripts in parallel</title></head>
+<body><pre>
+
+STARTPAR(8)                                                          STARTPAR(8)
+
+
+
+NAME
+       startpar - start runlevel scripts in parallel
+
+
+SYNOPSIS
+       startpar  [-p  par] [-i iorate] [-t timeout] [-T global_timeout] [-a arg]
+       prg1 prg2 ...
+       startpar [-p par] [-i iorate]  [-t  timeout]  [-T  global_timeout]  -M  [
+       boot|start|stop]
+
+
+DESCRIPTION
+       startpar  is  used  to  run  multiple run-level scripts in parallel.  The
+       degree of parallelism on one CPU can be  set  with  the  -p  option,  the
+       default  is  full  parallelism.  An argument to all of the scripts can be
+       provided with the -a option.  Processes blocked by pending I/O will cause
+       new  process creation to be weighted by the iorate factor 800.  To change
+       this factor the option -i can be used  to  specify  another  value.   The
+       amount  weight  =  (nblocked times iorate) / 1000 will be subtracted from
+       the total number of processes which could be started, where  nblocked  is
+       the number of processes currently blocked by pending I/O.
+
+       The  output of each script is buffered and written when the script exits,
+       so output lines of different scripts won&apos;t mix. You can modify  this  be&#8208;
+       haviour by setting a timeout.
+
+       The timeout set with the -t option is used as buffer timeout. If the out&#8208;
+       put buffer of a script is not empty and the last output was timeout  sec&#8208;
+       onds ago, startpar will flush the buffer.
+
+       The  -T  option  timeout works more globally. If no output is printed for
+       more than global_timeout seconds, startpar will flush the buffer  of  the
+       script  with  the  oldest output. Afterwards it will only print output of
+       this script until it is finished.
+
+       The -M option switches startpar into  a  make(1)  like  behaviour.   This
+       option takes three different arguments: boot, start, and stop for reading
+       .depend.boot or .depend.start or .depend.stop respectively in the  direc&#8208;
+       tory  /etc/init.d/.   By  scanning  the  boot and runlevel directories in
+       /etc/init.d/ it then executes the appropriate scripts in parallel.
+
+
+FILES
+       /etc/init.d/.depend.boot
+       /etc/init.d/.depend.start
+       /etc/init.d/.depend.stop
+
+
+SEE ALSO
+       init(8) insserv(8).
+
+
+COPYRIGHT
+       2003,2004 SuSE Linux AG, Nuernberg, Germany.
+       2007 SuSE LINUX Products GmbH, Nuernberg, Germany.
+
+
+AUTHOR
+       Michael Schroeder &lt;mls@suse.de&gt;
+       Takashi Iwai &lt;tiwai@suse.de&gt;
+       Werner Fink &lt;werner@suse.de&gt;
+
+
+
+                                    Jun 2003                         STARTPAR(8)
+
+</pre></body></html>

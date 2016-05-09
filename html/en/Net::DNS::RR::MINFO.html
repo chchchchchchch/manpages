@@ -1,0 +1,47 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::MINFO - DNS MINFO resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::MINFO(3pmUser Contributed Perl DocumentatiNet::DNS::RR::MINFO(3pm)
+
+
+
+NAME
+       Net::DNS::RR::MINFO - DNS MINFO resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for DNS Mailbox Information (MINFO) resource records.
+
+METHODS
+   rmailbx
+           print &quot;rmailbx = &quot;, $rr-&gt;rmailbx, &quot;\n&quot;;
+
+       Returns the RR&apos;s responsible mailbox field.  See RFC 1035.
+
+   emailbx
+           print &quot;emailbx = &quot;, $rr-&gt;emailbx, &quot;\n&quot;;
+
+       Returns the RR&apos;s error mailbox field.
+
+COPYRIGHT
+       Copyright (c) 1997-2002 Michael Fuhr.
+
+       Portions Copyright (c) 2002-2004 Chris Reinhardt.
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 1035 Section
+       3.3.7
+
+
+
+perl v5.14.2                       2009-12-30           Net::DNS::RR::MINFO(3pm)
+
+</pre></body></html>

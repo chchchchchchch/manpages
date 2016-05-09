@@ -1,0 +1,79 @@
+<html>
+<head><meta charset=utf-8/>
+<title>exiwhat - Finding out what Exim processes are doing</title></head>
+<body><pre>
+
+EXIWHAT(8)                                                            EXIWHAT(8)
+
+
+
+NAME
+       exiwhat - Finding out what Exim processes are doing
+
+SYNOPSIS
+       exiwhat
+
+
+DESCRIPTION
+       On  operating  systems  that  can restart a system call after receiving a
+       signal (most modern OS), an Exim process responds to the  SIGUSR1  signal
+       by   writing   a   line   describing   what  it  is  doing  to  the  file
+       exim-process.info in the Exim spool directory.  The exiwhat script  sends
+       the  signal  to  all Exim processes it can find, having first emptied the
+       file.  It then waits for one second to allow the Exim processes to  react
+       before  displaying the results.  In order to run exiwhat successfully you
+       have to have sufficient privilege to send the signal  to  the  Exim  pro&#8208;
+       cesses, so it is normally run as root.
+
+       Unfortunately,  the  ps command which exiwhat uses to find Exim processes
+       varies in different operating systems.  Not only  are  different  options
+       used,  but the format of the output is different.  For this reason, there
+       are some system configuration options that configure exactly how  exiwhat
+       works.   If  it  doesn&apos;t  seem to be working for you, check the following
+       compile-time options:
+
+       EXIWHAT_PS_CMD
+              the command for running &#8220;ps&#8221;
+
+       EXIWHAT_PS_ARG
+              the argument for &#8220;ps&#8221;
+
+       EXIWHAT_EGREP_ARG
+              the argument for &#8220;egrep&#8221; to select from &#8220;ps&#8221; output
+
+       EXIWHAT_KILL_ARG
+              the argument for the &#8220;kill&#8221; command
+
+       An example of typical output from exiwhat is
+
+         164 daemon: -q1h, listening on port 25
+       10483 running queue: waiting for 0tAycK-0002ij-00 (10492)
+       10492 delivering 0tAycK-0002ij-00 to mail.ref.example [10.19.42.42]
+         (editor@ref.example)
+       10592 handling incoming call from [192.168.243.242]
+       10628 accepting a local non-SMTP message
+
+       The first number in the output line is the  process  number.   The  third
+       line has been split here, in order to fit it on the page.
+
+
+BUGS
+       This  manual  page  needs a major re-work. If somebody knows better groff
+       than us and has more experience in  writing  manual  pages,  any  patches
+       would be greatly appreciated.
+
+
+SEE ALSO
+       exim(8), /usr/share/doc/exim4-base/
+
+
+AUTHOR
+       This  manual  page was stitched together from spec.txt by Andreas Metzler
+       &lt;ametzler at downhill.at.eu.org&gt;, for the Debian  GNU/Linux  system  (but
+       may be used by others).
+
+
+
+                                 March 26, 2003                       EXIWHAT(8)
+
+</pre></body></html>

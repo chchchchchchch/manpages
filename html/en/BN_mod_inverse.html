@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>BN_mod_inverse - compute inverse modulo n</title></head>
+<body><pre>
+
+BN_mod_inverse(3SSL)                 OpenSSL                BN_mod_inverse(3SSL)
+
+
+
+NAME
+       BN_mod_inverse - compute inverse modulo n
+
+SYNOPSIS
+        #include &lt;openssl/bn.h&gt;
+
+        BIGNUM *BN_mod_inverse(BIGNUM *r, BIGNUM *a, const BIGNUM *n,
+                  BN_CTX *ctx);
+
+DESCRIPTION
+       BN_mod_inverse() computes the inverse of a modulo n places the result in
+       r (&quot;(a*r)%n==1&quot;). If r is NULL, a new BIGNUM is created.
+
+       ctx is a previously allocated BN_CTX used for temporary variables. r may
+       be the same BIGNUM as a or n.
+
+RETURN VALUES
+       BN_mod_inverse() returns the BIGNUM containing the inverse, and NULL on
+       error. The error codes can be obtained by ERR_get_error(3).
+
+SEE ALSO
+       bn(3), ERR_get_error(3), BN_add(3)
+
+HISTORY
+       BN_mod_inverse() is available in all versions of SSLeay and OpenSSL.
+
+
+
+1.0.1e                             2013-02-11               BN_mod_inverse(3SSL)
+
+</pre></body></html>

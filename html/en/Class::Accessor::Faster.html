@@ -1,0 +1,44 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Class::Accessor::Faster - Even faster, but less expandable, accessors</title></head>
+<body><pre>
+
+Class::Accessor::FasterUser)Contributed Perl DocumenClass::Accessor::Faster(3pm)
+
+
+
+NAME
+       Class::Accessor::Faster - Even faster, but less expandable, accessors
+
+SYNOPSIS
+         package Foo;
+         use base qw(Class::Accessor::Faster);
+
+DESCRIPTION
+       This is a faster but less expandable version of Class::Accessor::Fast.
+
+       Class::Accessor&apos;s generated accessors require two method calls to
+       accompish their task (one for the accessor, another for get() or set()).
+
+       Class::Accessor::Fast eliminates calling set()/get() and does the access
+       itself, resulting in a somewhat faster accessor.
+
+       Class::Accessor::Faster uses an array reference underneath to be faster.
+
+       Read the documentation for Class::Accessor for more info.
+
+AUTHORS
+       Copyright 2007 Marty Pauley &lt;marty+perl@kasei.com&gt;
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.  That means either (a) the GNU
+       General Public License or (b) the Artistic License.
+
+SEE ALSO
+       Class::Accessor
+
+
+
+perl v5.10.0                       2009-09-15       Class::Accessor::Faster(3pm)
+
+</pre></body></html>

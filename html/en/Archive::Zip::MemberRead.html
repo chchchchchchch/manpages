@@ -1,0 +1,114 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Archive::Zip::MemberRead - A wrapper that lets you read Zip archive members as if they were files.</title></head>
+<body><pre>
+
+Archive::Zip::MemberReaUsermContributed Perl DocumeArchive::Zip::MemberRead(3pm)
+
+
+
+NAME
+       Archive::Zip::MemberRead - A wrapper that lets you read Zip archive
+       members as if they were files.
+
+SYNOPSIS
+         use Archive::Zip;
+         use Archive::Zip::MemberRead;
+         $zip = Archive::Zip-&gt;new(&quot;file.zip&quot;);
+         $fh  = Archive::Zip::MemberRead-&gt;new($zip, &quot;subdir/abc.txt&quot;);
+         while (defined($line = $fh-&gt;getline()))
+         {
+             print $fh-&gt;input_line_number . &quot;#: $line\n&quot;;
+         }
+
+         $read = $fh-&gt;read($buffer, 32*1024);
+         print &quot;Read $read bytes as :$buffer:\n&quot;;
+
+DESCRIPTION
+       The Archive::Zip::MemberRead module lets you read Zip archive member data
+       just like you read data from files.
+
+METHODS
+       Archive::Zip::Member::readFileHandle()
+           You can get a &quot;Archive::Zip::MemberRead&quot; from an archive member by
+           calling &quot;readFileHandle()&quot;:
+
+             my $member = $zip-&gt;memberNamed(&apos;abc/def.c&apos;);
+             my $fh = $member-&gt;readFileHandle();
+             while (defined($line = $fh-&gt;getline()))
+             {
+                 # ...
+             }
+             $fh-&gt;close();
+
+       Archive::Zip::MemberRead-&gt;new($zip, $fileName)
+       Archive::Zip::MemberRead-&gt;new($zip, $member)
+       Archive::Zip::MemberRead-&gt;new($member)
+           Construct a new Archive::Zip::MemberRead on the specified member.
+
+             my $fh = Archive::Zip::MemberRead-&gt;new($zip, &apos;fred.c&apos;)
+
+       setLineEnd(expr)
+           Set the line end character to use. This is set to \n by default
+           except on Windows systems where it is set to \r\n. You will only need
+           to set this on systems which are not Windows or Unix based and
+           require a line end diffrent from \n.  This is a class method so call
+           as &quot;Archive::Zip::MemberRead&quot;-&gt;&quot;setLineEnd($nl)&quot;
+
+       rewind()
+           Rewinds an &quot;Archive::Zip::MemberRead&quot; so that you can read from it
+           again starting at the beginning.
+
+       input_record_separator(expr)
+           If the argumnet is given, input_record_separator for this instance is
+           set to it. The current setting (which may be the global $/) is always
+           returned.
+
+       input_line_number()
+           Returns the current line number, but only if you&apos;re using
+           &quot;getline()&quot;.  Using &quot;read()&quot; will not update the line number.
+
+       close()
+           Closes the given file handle.
+&#12;       buffer_size([ $size ])
+           Gets or sets the buffer size used for reads.  Default is the chunk
+           size used by Archive::Zip.
+
+       getline()
+           Returns the next line from the currently open member.  Makes sense
+           only for text files.  A read error is considered fatal enough to die.
+           Returns undef on eof. All subsequent calls would return undef, unless
+           a rewind() is called.  Note: The line returned has the
+           input_record_separator (default: newline) removed.
+
+       read($buffer, $num_bytes_to_read)
+           Simulates a normal &quot;read()&quot; system call.  Returns the no. of bytes
+           read. &quot;undef&quot; on error, 0 on eof, e.g.:
+
+             $fh = Archive::Zip::MemberRead-&gt;new($zip, &quot;sreeji/secrets.bin&quot;);
+             while (1)
+             {
+               $read = $fh-&gt;read($buffer, 1024);
+               die &quot;FATAL ERROR reading my secrets !\n&quot; if (!defined($read));
+               last if (!$read);
+               # Do processing.
+               ....
+              }
+
+AUTHOR
+       Sreeji K. Das, &lt;sreeji_k@yahoo.com&gt; See Archive::Zip by Ned Konz without
+       which this module does not make any sense!
+
+       Minor mods by Ned Konz.
+
+COPYRIGHT
+       Copyright 2002 Sreeji K. Das.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2009-06-30      Archive::Zip::MemberRead(3pm)
+
+</pre></body></html>

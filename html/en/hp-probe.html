@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hp-probe - Printer Discovery Utility</title></head>
+<body><pre>
+
+hp-probe(1)                       User Manuals                       hp-probe(1)
+
+
+
+NAME
+       hp-probe - Printer Discovery Utility
+
+DESCRIPTION
+       Discover HPLIP supported USB, parallel, and network attached printers.
+
+SYNOPSIS
+       hp-probe [OPTIONS]
+
+OPTIONS
+       Bus to probe:
+              -b&lt;bus&gt;  or  --bus=&lt;bus&gt;  &lt;bus&gt;:  cups,  usb*,  net,  bt,  fw, par
+              (*default) (Note: bt and fw not supported in this release.)
+
+       Set Time to Live (TTL):
+              -t&lt;ttl&gt; or --ttl=&lt;ttl&gt; (Default is 4).
+
+       Set timeout:
+              -o&lt;timeout in secs.&gt; or --timeout=&lt;timeout is secs.&gt;
+
+       Filter by functionality:
+              -e&lt;filter list&gt; or --filter=&lt;filter  list&gt;  &lt;filter  list&gt;:  comma
+              separated  list  of  one  or  more  of: scan, pcard, fax, copy, or
+              none*. (*none is the default)
+
+       Search:
+              -s&lt;search re&gt; or --search=&lt;search re&gt; &lt;search re&gt; must be a  valid
+              regular expression (not case sensitive)
+
+       Network discovery method:
+              -m&lt;method&gt; or --method=&lt;method&gt;: &lt;method&gt; is &apos;slp&apos;* or &apos;mdns&apos;.
+
+       Set the logging level:
+              -l&lt;level&gt;  or --logging=&lt;level&gt; &lt;level&gt;: none, info*, error, warn,
+              debug (*default)
+
+       Run in debug mode:
+              -g (same as option: -ldebug)
+
+       This help information:
+              -h or --help
+
+EXAMPLES
+       Find all devices on the network:
+              hp-probe -bnet
+
+       Find all devices on USB that support scanning:
+              hp-probe -busb -escan
+
+       Find all networked devices that contain the name &apos;lnx&apos; and  that  support
+       photo cards or scanning:
+              hp-probe -bnet -slnx -escan,pcard
+
+       Find all devices that have queues installed in CUPS:
+              hp-probe -bcups
+
+       Find all devices on the USB bus:
+              hp-probe
+
+AUTHOR
+       HPLIP  (Hewlett-Packard  Linux  Imaging  and Printing) is an HP developed
+       solution for printing, scanning, and faxing  with  HP  inkjet  and  laser
+       based printers in Linux.
+
+REPORTING BUGS
+       The  HPLIP Launchpad.net site https://launchpad.net/hplip is available to
+       get help, report bugs, make suggestions, discuss  the  HPLIP  project  or
+       otherwise contact the HPLIP Team.
+
+COPYRIGHT
+       Copyright (c) 2001-14 Hewlett-Packard Development Company, L.P.
+
+       This  software comes with ABSOLUTELY NO WARRANTY.  This is free software,
+       and you are welcome to distribute it under certain conditions. See  COPY&#8208;
+       ING file for more details.
+
+
+
+
+Linux                                  4.1                           hp-probe(1)
+
+</pre></body></html>

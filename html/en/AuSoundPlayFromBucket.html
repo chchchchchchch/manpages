@@ -1,0 +1,81 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSoundPlayFromBucket - create a flow to play from a bucket.</title></head>
+<body><pre>
+
+AuSoundPlayFromBucket(3)                                AuSoundPlayFromBucket(3)
+
+
+
+Name
+       AuSoundPlayFromBucket - create a flow to play from a bucket.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+       #include &lt;audio/soundlib.h&gt;
+
+       AuEventHandlerRec   *AuSoundPlayFromBucket(server,  source,  destination,
+       volume, callback, callback_data, loop_count, flow, volume_mult_elem, mon&#8208;
+       itor_element, status)
+           AuServer *server;
+           AuBucketID source;
+           AuDeviceID destination;
+           AuFixedPoint volume;
+           void   (*callback)  (AuServer  *,  AuEventHandlerRec  *,  AuEvent  *,
+       AuPointer);
+           AuPointer callback_data;
+           int loop_count;
+           AuFlowID *flow; /* RETURN */
+           int *volume_mult_elem; /* RETURN */
+           int *monitor_element; /* RETURN */
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       source    Specifies the bucket to play.
+
+       destination
+                 Specifies the device to output the audio data.
+
+       volume    Specifies the volume.
+
+       callback  Specifies the procedure to be called for additional event  pro&#8208;
+                 cessing.
+
+       callback_data
+                 Specifies  any  additional  arguments to be passed to the call&#8208;
+                 back.
+
+       loop_count
+                 Specifies how many time the bucket should be played.
+
+       flow      If non-NULL, returns the flow ID.
+
+       volume_mult_elem
+                 If non-NULL, returns the index of the volume multipler element.
+
+       monitor_element
+                 If non-NULL, include an ExportMonitor element in the  flow  and
+                 return it&apos;s index.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSoundPlayFromBucket creates a flow to play bucket on device and returns
+       a pointer to the event handler created or NULL if there was an error.
+
+Errors
+       AuBadBucket, AuBadDevice.
+&#12;See Also
+       AuSoundPlay,  AuSoundPlayFromData,  AuSoundPlayFromFile,  AuSoundPlaySyn&#8208;
+       chronousFromFile.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+soundlib                              1.9.3             AuSoundPlayFromBucket(3)
+
+</pre></body></html>

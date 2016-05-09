@@ -1,0 +1,220 @@
+<html>
+<head><meta charset=utf-8/>
+<title>apmd - Advanced Power Management (APM) daemon</title></head>
+<body><pre>
+
+APMD(8)                                                                  APMD(8)
+
+
+
+NAME
+       apmd - Advanced Power Management (APM) daemon
+
+SYNOPSIS
+       apmd  [ -TVWciqv ] [ -P program ] [ -T seconds ] [ -c seconds ] [ -p per&#8208;
+       cent ] [ -v level ] [ -w percent ]
+
+DESCRIPTION
+       apmd is an monitoring daemon for the Advanced Power Management (APM) sub&#8208;
+       system.    The  APM  subsystem  consists  of  power-management  hardware,
+       firmware usually referred to as the APM BIOS and a driver in the  operat&#8208;
+       ing  system  kernel.   The  daemon can execute a program (usually a shell
+       script) when events are reported by the APM subsystem, and will log,  via
+       syslogd(8),  certain changes in power status.  When the available battery
+       power becomes very low it can alert the user.
+
+       When the APM subsystem notifies  the  daemon  of  a  pending  suspend  or
+       standby  request,  apmd  will run a proxy program, log the event, sync(2)
+       data to the disk and then tell the APM subsystem to continue  its  opera&#8208;
+       tion.
+
+       Preparations  for  power  management  events are made mainly by the proxy
+       program specified using the -P option.  The proxy program is invoked with
+       one or two arguments:
+
+       start  Invoked when the daemon starts.
+
+       stop   Invoked when the daemon stops.
+
+       standby ( system | user )
+              Invoked  when the APM subsystem reports that standby has been ini&#8208;
+              tiated.  The second parameter indicates  whether  firmware  (&quot;sys&#8208;
+              tem&quot;) or software (&quot;user&quot;) was the originator of the event.
+
+              The  &quot;standby&quot; mode conserves power but leaves the machine able to
+              respond almost immediately to user activity.  Most  laptops  can&apos;t
+              stay in standby mode on battery power for more than a few hours or
+              a day.  Normally, nothing special needs to be done to prepare  for
+              &quot;standing by&quot;.
+
+       suspend ( system | user )
+              Invoked  when  the  APM subsystem reports that suspension has been
+              initiated.  The second parameter indicates whether firmware (&quot;sys&#8208;
+              tem&quot;) or software (&quot;user&quot;) was the originator of the event.
+
+              The  &quot;suspend&quot;  mode  aggressively  conserves power.  Usually this
+              involves shutting off power to all devices except the CPU core and
+              memory,  which  are  put into a very low power mode.  Most laptops
+              can stay suspended, using battery power alone, for  several  days.
+              (&quot;Hibernation&quot; is a kind of super-suspend, where all that state is
+              written to disk and the machine uses  no  power.   Hibernation  is
+              treated like suspension by the APM subsystem.)
+
+              Before  suspending,  PCMCIA  devices may need to be disabled using
+              cardctl(8), and  some  modular  device  drivers  may  need  to  be
+              unloaded  if  they have not been designed to support power manage&#8208;
+              ment.
+
+       resume ( suspend | standby | critical )
+              Invoked when the APM subsystem reports that computer  has  resumed
+              normal  operation.   The  second  parameter  indicates the kind of
+              event from which the system is resuming.  (A &quot;critical&quot; suspend is
+              a  suspension  that  the  APM  subsystem performs in an emergency.
+              Some kernels do not pass  this  event  to  user  space.   If  apmd
+              receives  the  event,  it acknowledges the event and exits immedi&#8208;
+              ately without logging or running the proxy program.)
+
+              When resuming, PCMCIA devices may  need  to  be  re-enabled  using
+              cardctl(8),  and  some  modular  drivers  may need to be reloaded.
+              Note that in the case of a critical suspend, the system state  may
+              not have been completely saved.
+
+       change power
+              Invoked  when  the APM subsystem reports a change in power status,
+              such as a switch from mains to battery power.
+
+       change battery
+              Invoked when the APM subsystem reports that the charge of  one  or
+              more batteries is low.  A few minutes of battery power may remain.
+
+       change capability
+              Invoked  when  the APM subsystem reports some change in power man&#8208;
+              agement capabilities.  It may have been caused by operation  of  a
+              setup utility, or by the installation or removal of devices.
+
+       apmd emits various messages, most of which are self-explanatory.  Battery
+       status log entries contain three fields, separated by commas.  The  first
+       field  indicates how full the battery is as a percentage of its capacity.
+       The second field indicates whether the battery is charging, not charging,
+       or  discharging.  When possible, apmd adds in parentheses its estimate of
+       the rate of charging or discharging.  The third field indicates how  much
+       time the battery can or could be used to power the computer.  This infor&#8208;
+       mation is provided by the APM subsystem.  When  possible,  apmd  adds  in
+       parentheses  its  own estimate of the battery life (if discharging) or of
+       the time required to charge the battery fully (if charging).
+
+OPTIONS
+       -P program, --proxy program
+              Specifies the proxy program to execute when events  are  received.
+              See  above  for  information  about the arguments supplied to this
+              program.
+
+       -T [seconds] , --proxy-timeout [seconds]
+              Sets a time-out for the proxy.  Without this option (or with  this
+              option  and  a  negative argument) apmd waits indefinitely for the
+              proxy to finish.  If the proxy enters an  infinite  loop  or  wait
+              then  the  machine  may appear to have crashed.  If this option is
+              given a positive integer argument then apmd will  wait  only  that
+              many  seconds  for  the proxy to finish, after which it will log a
+              warning, kill the proxy, and continue processing the  event.   The
+              default is 30 seconds.
+
+       -V, --version
+              Prints the version of the apmd program.
+
+       -W, --wall
+              In addition to logging low battery status (as determined either by
+              the -w level or by the firmware) using syslog(2), apmd will, given
+              this  option,  also  use wall(1) to alert all users.  This is most
+              useful if syslogd(8) is not set up to write ALERT messages to  all
+              users.   If both methods are used, more warnings will be made dur&#8208;
+              ing the critical time period.
+
+       -c [seconds] , --check [seconds]
+              Controls how many seconds to wait  for  an  event.   Without  this
+              option  (or  with  this option and a negative argument) apmd waits
+              indefinitely for an event.  If this option  is  given  a  positive
+              integer argument then apmd will wait only that many seconds before
+              checking the battery level and possibly  sending  out  a  warning,
+              calling  the  proxy or making an entry in the log.  The default is
+              30 seconds.
+
+       -i, --ignore-bios-battery-low
+              Causes apmd to ignore a LOW BATTERY signal sent by the APM subsys&#8208;
+              tem.  Some firmware signals a low battery at the wrong time.  Note
+              that LOW BATTERY events may still  be  generated  by  apmd  itself
+              based on the warning level.
+
+       -p percent, --percentage percent
+              Controls  how  often  the battery status is logged.  A new line is
+              printed each time the battery content changes by percent_change if
+              logging  is  enabled.  The default is 5.  Use a value greater than
+              100 to disable periodic logging of the battery level.
+
+       -q, --quiet-bios-battery-low
+              Causes apmd not to generate a warning when a LOW BATTERY signal is
+              received  from  the  APM subsystem.  The firmware on some machines
+              produces an audible warning when power is about to be used up,  so
+              an extra warning may not be needed.
+
+       -v [level] , --verbose [level]
+              The  daemon  can  generate messages of varying degrees of unimpor&#8208;
+              tance.  Each message  is  assigned  one  of  the  priority  levels
+              defined for the syslogd(8) subsystem, ranging from 0 (EMERG, least
+              unimportant) to 7 (DEBUG, most unimportant).  This option sets the
+              threshold  level  above which messages are suppressed.  Without an
+              argument it increments the threshold by 1, thus making  apmd  more
+              verbose.  The default is 5 (NOTICE).
+
+       -w percent, --warn percent
+              When  the  battery  is  not  being charged and the battery content
+              falls below the specified percent of capacity, and no  such  event
+              has  yet  occurred in the current discharge cycle, apmd will log a
+              warning at the ALERT log level to syslog(2)  and  generate  a  LOW
+              BATTERY  event.   If the -W or --wall option was given, the daemon
+              will also use wall(1) to alert all users of impending  doom.   The
+              default warning level is 10.  Use a negative value to disable this
+              feature.
+
+       -h, --help
+              Causes apmd to print a brief command summary and exit.
+
+
+BUGS
+       This daemon supports all APM events described in the APM BIOS  specifica&#8208;
+       tion  version  1.2; however it fails to support some of the advanced fea&#8208;
+       tures of APM 1.2, such as reporting the conditions of multiple batteries.
+       (Multiple  batteries are currently treated as if they were just one large
+       one.)
+
+       Estimates of charge and discharge rates and times can be very inaccurate.
+
+       There is no interaction yet with ACPI support as found in newer PC  hard&#8208;
+       ware.
+
+FILES
+       /dev/apm_bios
+              Device through which apmd communicates with the Linux APM driver.
+
+       /proc/apm
+              APM driver status information
+
+       /etc/apmd_proxy
+              Proxy program that is run if none is specified.
+&#12;       /etc/apm/apmd_proxy
+              Proxy program that is run if none is specified. (Debian)
+
+AUTHOR
+       This  program  was  written  by  Rik  Faith (faith@cs.unc.edu) and may be
+       freely distributed under the terms of the  GNU  General  Public  License.
+       There is ABSOLUTELY NO WARRANTY for this program.  The current maintainer
+       is Avery Pennarun (apenwarr@worldvisions.ca).
+
+SEE ALSO
+       apm(1), xapm(1), cardctl(8), syslogd(8).
+
+
+
+                                  January 2004                           APMD(8)
+
+</pre></body></html>

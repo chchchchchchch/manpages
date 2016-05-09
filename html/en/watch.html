@@ -1,0 +1,131 @@
+<html>
+<head><meta charset=utf-8/>
+<title>watch - call Tcl procedures before and after each command</title></head>
+<body><pre>
+
+watch(n)                      BLT Built-In Commands                     watch(n)
+
+
+
+________________________________________________________________________________
+
+NAME
+       watch - call Tcl procedures before and after each command
+
+SYNOPSIS
+       watch create watchName ?options?
+
+       watch activate watchName
+
+       watch deactivate watchName
+
+       watch delete watchName
+
+       watch configure watchName ?options
+
+       watch info watchName
+
+       watch names
+_________________________________________________________________
+
+DESCRIPTION
+       The  watch  command  arranges for Tcl procedures to be invoked before and
+       after the execution of each Tcl command.
+
+INTRODUCTION
+       When an error occurs in Tcl, the global variable errorInfo will contain a
+       stack-trace  of the active procedures when the error occured.  Sometimes,
+       however, the stack trace is insufficient.  You may need to  know  exactly
+       where  in the program&apos;s execution the error occured.  In cases like this,
+       a more general tracing facility would be useful.
+
+       The watch command lets you designate Tcl procedures to be invoked  before
+       and  after the execution of each Tcl command.  This means you can display
+       the command line and  its  results  for  each  command  as  it  executes.
+       Another  use  is  to  profile your Tcl commands.  You can profile any Tcl
+       command (like if and set), not just Tcl procedures.
+
+EXAMPLE
+       The following example use watch to trace Tcl commands (printing to  stan&#8208;
+       dard error) both before and after they are executed.
+
+              proc preCmd { level command argv } {
+                  set name [lindex $argv 0]
+                  puts stderr &quot;$level $name =&gt; $command&quot;
+              }
+
+              proc postCmd { level command argv retcode results } {
+                  set name [lindex $argv 0]
+                  puts stderr &quot;$level $name =&gt; $argv0= ($retcode) $results&quot;
+              }
+              watch create trace \
+                -postcmd postCmd -precmd preCmd
+
+
+OPERATIONS
+       The following operations are available for the watch command:
+
+       watch activate watchName
+              Activates  the  watch,  causing  Tcl commands the be traced to the
+              maximum depth selected.
+&#12;       watch create watchName ?options?...
+              Creates a new watch watchName. It&apos;s  an  error  if  another  watch
+              watchName  already  exists  and an error message will be returned.
+              Options may have any of the values accepted by the watch configure
+              command.  This command returns the empty string.
+
+       watch configure watchName ?options...?
+              Queries  or modifies the configuration options of the watch watch&#8208;
+              Name.  WatchName is the name of a watch.  Options may have any  of
+              the following values:
+
+              -active boolean
+                     Specifies  if the watch is active.  By default, watches are
+                     active when created.
+
+              -postcmd string
+                     Specifies a Tcl procedure to be  called  immediately  after
+                     each  Tcl  command.   String is name of a Tcl procedure and
+                     any extra arguments to be passed to it.  Before  string  is
+                     invoked,  five  more arguments are appended: 1) the current
+                     level 2) the current command line 3) a list containing  the
+                     command  after  substitutions  and  split into words 4) the
+                     return code of the command, and 5) the results of the  com&#8208;
+                     mand.  The return status of the postcmd procedure is always
+                     ignored.
+
+              -precmd string
+                     Specifies a Tcl procedure to be called  immediately  before
+                     each  Tcl  command.   String is name of a Tcl procedure and
+                     any extra arguments to be passed to it.  Before  string  is
+                     invoked, three arguments are appended: 1) the current level
+                     2) the current command line, and 3) a list  containing  the
+                     command  after  substitutions  and  split  into words.  The
+                     return status of the -precmd procedure is always ignored.
+
+              -maxlevel number
+                     Specifies the maximum evaluation depth to  watch  Tcl  com&#8208;
+                     mands.  The default maximum level is 10000.
+
+       watch deactivate watchName
+              Deactivates  the  watch.  The -precmd and -postcmd procedures will
+              no longer be invoked.
+
+       watch info watchName
+              Returns the configuration information associated  with  the  watch
+              watchName.  WatchName is the name of a watch.
+
+       watch names ?state?
+              Lists  the  names  of the watches for a given state.  State may be
+              one of the following: active, idle, or ignore.  If a  state  argu&#8208;
+              ment isn&apos;t specified,
+               all watches are listed.
+
+KEYWORDS
+       debug, profile
+
+
+
+BLT                                    2.4                              watch(n)
+
+</pre></body></html>

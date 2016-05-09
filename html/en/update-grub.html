@@ -1,0 +1,98 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-grub - program to generate GRUB's menu.lst file</title></head>
+<body><pre>
+
+update-grub(8)                                                    update-grub(8)
+
+
+
+NAME
+       update-grub - program to generate GRUB&apos;s menu.lst file
+
+SYNOPSIS
+       update-grub
+
+DESCRIPTION
+       update-grub  is  a program used to generate the menu.lst file used by the
+       grub bootloader.  It works by looking in /boot for all files which  start
+       with  &quot;vmlinuz-&quot;.  They will be treated as kernels, and grub menu entries
+       will be created for each. It will also create  the  initial  menu.lst  if
+       none exists, after prompting the user.  It will also add initrd lines for
+       ramdisk images found  with  the  same  version  as  kernels  found.  e.g.
+       /boot/vmlinuz-2.4.5  and  /boot/initrd-2.4.5  will  cause a line of &quot;ini&#8208;
+       trd=/boot/initrd-2.4.5 or similar to be added for the kernel entry in the
+       menu.lst.
+
+       After  update-grub  has been run for the first time, the user is required
+       to edit the generated  menu.lst.  The  user  must  set  the  two  options
+       update-grub  uses.  Then  re-run  the  update-grub  script  to update the
+       menu.lst file using the default&apos;s that have been set.
+
+       These are the options passed to the linux kernel:
+       # kopt=root=/dev/hda1 ro
+       Everything after &quot;kopt=&quot; is passed to the kernel as parameters. See boot&#8208;
+       param(7) for more information.
+
+       This is the grub device from which grub loads the kernel:
+       # groot=(hd0,1)
+       (hd0,1)  is  a  partition in grub notation. See grub(8) for more informa&#8208;
+       tion.
+
+       This option controls if grub should create the alternative  boot  options
+       in the menu entries
+       # alternative=true
+       # alternative=false
+
+       This option controls if grub should lock the alternative boot options see
+       grub(8) for more information.
+       # lockalternative=true
+       # lockalternative=false
+
+       This option controls if grub should lock the old kernels.
+       # lockold=true
+       # lockold=false
+
+       This options controls what is used for the alternative boot options, mul&#8208;
+       tiple altoptions lines are allowed.
+       # altoptions=(some description) some kernel command line options
+       # altoptions=(recovery option) single
+       The  description  is  placed  in &apos;()&apos; and the kernel command line options
+       follow that.
+       # updatedefault=true
+       # updatedefault=false
+
+       This option controls if grub should update  the  default  entry  to  keep
+       booting the same kernel even if a new one is installed.
+
+
+       The  update-grub  script  can  be  ran  automagically  from the /etc/ker&#8208;
+       nel-img.conf file by adding the following lines:
+&#12;       postinst_hook = update-grub
+       postrm_hook = update-grub
+       do_bootloader = no
+
+       For further information related to /etc/kernel-img.conf, see the  manpage
+       kernel-img.conf(5).
+
+SEE ALSO
+       grub(8),  grub-install(8),  kernel-img.conf(5)  (contained in the kernel-
+       package package), bootparam(7).
+
+       The full documentation for grub is maintained as a Texinfo manual in  the
+       grub-legacy-doc  package.   If  the  info  and grub programs are properly
+       installed at your site, the command
+
+              info grub
+
+       should give you access to the complete manual.
+
+AUTHOR
+       This manual page was written by Jason Thomas &lt;jason@debian.org&gt;, for  the
+       Debian GNU/Linux system (but may be used by others).
+
+
+
+Jason Thomas                      June 18, 2001                   update-grub(8)
+
+</pre></body></html>

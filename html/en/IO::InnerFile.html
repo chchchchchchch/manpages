@@ -1,0 +1,72 @@
+<html>
+<head><meta charset=utf-8/>
+<title>IO::InnerFile - define a file inside another file</title></head>
+<body><pre>
+
+IO::InnerFile(3pm)     User Contributed Perl Documentation    IO::InnerFile(3pm)
+
+
+
+NAME
+       IO::InnerFile - define a file inside another file
+
+SYNOPSIS
+           ### Read a subset of a file:
+           $inner = IO::InnerFile-&gt;new($fh, $start, $length);
+           while (&lt;$inner&gt;) {
+               ...
+           }
+
+DESCRIPTION
+       If you have a filehandle that can seek() and tell(), then you can open an
+       IO::InnerFile on a range of the underlying file.
+
+PUBLIC INTERFACE
+       new FILEHANDLE, [START, [LENGTH]]
+           Class method, constructor.  Create a new inner-file opened on the
+           given FILEHANDLE, from bytes START to START+LENGTH.  Both START and
+           LENGTH default to 0; negative values are silently coerced to zero.
+
+           Note that FILEHANDLE must be able to seek() and tell(), in addition
+           to whatever other methods you may desire for reading it.
+
+       set_length LENGTH
+       get_length
+       add_length NBYTES
+           Instance methods.  Get/set the virtual length of the inner file.
+
+       set_start START
+       get_start
+       add_start NBYTES
+           Instance methods.  Get/set the virtual start position of the inner
+           file.
+
+       binmode
+       close
+       flush
+       getc
+       getline
+       print LIST
+       printf LIST
+       read BUF, NBYTES
+       readline
+       seek OFFFSET, WHENCE
+       tell
+       write ARGS...
+           Instance methods.  Standard filehandle methods.
+
+VERSION
+       $Id: InnerFile.pm,v 1.4 2005/02/10 21:21:53 dfs Exp $
+
+AUTHOR
+       Original version by Doru Petrescu (pdoru@kappa.ro).
+
+       Documentation and by Eryq (eryq@zeegee.com).
+
+       Currently maintained by David F. Skoll (dfs@roaringpenguin.com).
+
+
+
+perl v5.12.4                       2005-02-10                 IO::InnerFile(3pm)
+
+</pre></body></html>

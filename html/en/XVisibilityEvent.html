@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XVisibilityEvent - VisibilityNotify event structure</title></head>
+<body><pre>
+
+XVisibilityEvent(3)              XLIB FUNCTIONS              XVisibilityEvent(3)
+
+
+
+NAME
+       XVisibilityEvent - VisibilityNotify event structure
+
+STRUCTURES
+       The structure for VisibilityNotify events contains:
+
+       typedef struct {
+            int type;                /* VisibilityNotify */
+            unsigned long serial;    /* # of last request processed by server */
+            Bool send_event;         /* true if this came from a SendEvent request */
+            Display *display;        /* Display the event was read from */
+            Window window;
+            int state;
+       } XVisibilityEvent;
+
+       When you receive this event, the structure members are set as follows.
+
+       The type member is set to the event type constant name that uniquely
+       identifies it.  For example, when the X server reports a GraphicsExpose
+       event to a client application, it sends an XGraphicsExposeEvent structure
+       with the type member set to GraphicsExpose.  The display member is set to
+       a pointer to the display the event was read on.  The send_event member is
+       set to True if the event came from a SendEvent protocol request.  The
+       serial member is set from the serial number reported in the protocol but
+       expanded from the 16-bit least-significant bits to a full 32-bit value.
+       The window member is set to the window that is most useful to toolkit
+       dispatchers.
+
+       The window member is set to the window whose visibility state changes.
+       The state member is set to the state of the window&apos;s visibility and can
+       be VisibilityUnobscured, VisibilityPartiallyObscured, or VisibilityFully&#8208;
+       Obscured.  The X server ignores all of a window&apos;s subwindows when deter&#8208;
+       mining the visibility state of the window and processes VisibilityNotify
+       events according to the following:
+
+       &#183;    When the window changes state from partially obscured, fully
+            obscured, or not viewable to viewable and completely unobscured, the
+            X server generates the event with the state member of the XVisibili&#8208;
+            tyEvent structure set to VisibilityUnobscured.
+
+       &#183;    When the window changes state from viewable and completely unob&#8208;
+            scured or not viewable to viewable and partially obscured, the X
+            server generates the event with the state member of the XVisibili&#8208;
+            tyEvent structure set to VisibilityPartiallyObscured.
+
+       &#183;    When the window changes state from viewable and completely unob&#8208;
+            scured, viewable and partially obscured, or not viewable to viewable
+            and fully obscured, the X server generates the event with the state
+            member of the XVisibilityEvent structure set to VisibilityFullyOb&#8208;
+            scured.
+
+SEE ALSO
+       XAnyEvent(3), XButtonEvent(3), XCreateWindowEvent(3), XCirculateEvent(3),
+       XCirculateRequestEvent(3), XColormapEvent(3), XConfigureEvent(3), XCon&#8208;
+       figureRequestEvent(3), XCrossingEvent(3), XDestroyWindowEvent(3), XEr&#8208;
+       rorEvent(3), XExposeEvent(3), XFocusChangeEvent(3), XGraphicsEx&#8208;
+       poseEvent(3), XGravityEvent(3), XKeymapEvent(3), XMapEvent(3), XMapRe&#8208;
+       questEvent(3), XPropertyEvent(3), XReparentEvent(3), XResiz&#8208;
+       eRequestEvent(3), XSelectionClearEvent(3), XSelectionEvent(3), XSelec&#8208;
+       tionRequestEvent(3), XUnmapEvent(3),
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0               XVisibilityEvent(3)
+
+</pre></body></html>

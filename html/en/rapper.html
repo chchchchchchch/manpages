@@ -1,0 +1,168 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rapper - Raptor RDF parsing and serializing utility</title></head>
+<body><pre>
+
+rapper(1)                                                              rapper(1)
+
+
+
+NAME
+       rapper - Raptor RDF parsing and serializing utility
+
+SYNOPSIS
+       rapper [OPTIONS] INPUT-URI [INPUT-BASE-URI]
+
+EXAMPLE
+       rapper -o ntriples http://planetrdf.com/guide/rss.rdf
+       rapper -i rss-tag-soup -o rss-1.0 pile-of-rss.xml http://example.org/base/
+       rapper --count http://example.org/index.rdf
+
+DESCRIPTION
+       The rapper utility allows parsing of RDF content by the Raptor RDF parser
+       toolkit emitting the results as RDF triples in a choice of syntaxes.  The
+       INPUT-URI  can  be  a  file  name, &apos;-&apos; for standard input or if Raptor is
+       built with a WWW retrieval library, a general URI.  The  optional  INPUT-
+       BASE-URI  is  used  as  the document parser base URI if present otherwise
+       defaults to the IINPUT-URI.  A value of &apos;-&apos; means no base URI.
+
+OPTIONS
+       rapper uses the usual GNU command line syntax, with long options starting
+       with  two  dashes (`-&apos;) if supported by the getopt_long function.  Other&#8208;
+       wise the short options are only available.
+
+       -h, --help
+              Show a summary of the options.
+
+       -i, --input FORMAT
+              Set the input  FORMAT  to  one  of  &apos;rdfxml&apos;  (RDF/XML,  default),
+              &apos;ntriples&apos; (N-Triples, see below), &apos;turtle&apos; (Turtle, see below) or
+              &apos;rss-tag-soup&apos; (RSS Tag Soup).  The RSS Tag Soup parser  can  turn
+              the many XML RSS formats and Atom 0.3 into RDF triples.
+
+              The  list  of  parsers depends on how libraptor(3) was built.  The
+              list of supported parsers is given in the help  summary  given  by
+              -h.
+
+       -I, --input-uri URI
+              Set  the  input/parser base URI or use value &apos;-&apos; for no base.  The
+              default is the INPUT-URI argument value.
+
+       -o, --output FORMAT
+              Set the output FORMAT to &apos;ntriples&apos; (N-Triples, default), &apos;rdfxml&apos;
+              (RDF/XML),   &apos;rdfxml-abbrev&apos;   (RDF/XML   with  abbreviations)  or
+              &apos;rss-1.0&apos; (RSS 1.0, also an RDF/XML syntax).
+
+              The list of serializers depends on  how  libraptor(3)  was  built.
+              The  list  of  supported  serializers is given in the help summary
+              given by -h.
+
+       -O, --output-uri URI
+              Set the output/serializer base URI or use value &apos;-&apos; for  no  base.
+              The  default  is  the  input  base uri, either set by the argument
+              INPUT-BASE-URI or via options -I, --input-uri URI
+
+       -c, --count
+              Only count the triples and produce no other output.
+
+       -e, --ignore-errors
+              Ignore errors, do not emit the messages and try to continue  pars&#8208;
+              ing.
+&#12;       -f, --feature FEATURE[=VALUE]
+              Set  a parser or serializer feature FEATURE to a value, or to 1 if
+              VALUE is omitted, Use -f help to get lists  of  valid  parser  and
+              serializer features.
+
+              If the form -f &apos;xmlns:prefix=&quot;uri&quot;&apos; is used, the prefix and names&#8208;
+              pace uri given will be set for serializing.   The  syntax  matches
+              XML in that either or both of prefix or uri can be omitted.
+
+       -g, --guess
+              Guess the parser to use from the source-URI rather than use the -i
+              FORMAT.
+
+       -q, --quiet
+              No extra information messages.
+
+       -r, --replace-newlines
+              Replace newlines in multi-line literals with spaces.
+
+       -s, --scan
+              Scan for &lt;rdf:RDF&gt; element in the RDF/XML source content.
+
+       --show-graphs
+              Print graph names (URIs) as they are seen in the input.  This only
+              has  a  meaning  for  parsers that support graph names such as the
+              TRiG parser.
+
+       --show-namespaces
+              Print namespaces as they are seen in the input.
+
+       -t, --trace
+              Print URIs retrieved during parsing.  Especially useful for  moni&#8208;
+              toring what the guess and GRDDL parsers are doing.
+
+       -w, --ignore-warnings
+              Ignore warnings, do not emit the messages.
+
+       -v, --version
+              Print the raptor version and exit.
+
+EXAMPLES
+       rapper -q -i ntriples -o rdfxml -f &apos;xmlns:rss=&quot;http://purl.org/rss/1.0/&quot;&apos;
+       -f &apos;xmlns:ex=&quot;http://example.org/&quot;&apos; tests/test.nt
+       rapper  -q  -o  rdfxml   -f   &apos;xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-
+       schema#&quot;&apos; tests/rdf-schema.rdf &apos;http://www.w3.org/2000/01/rdf-schema#&apos;
+
+CONFORMING TO
+       RDF/XML  Syntax  (Revised), W3C Recommendation, http://www.w3.org/TR/rdf-
+       syntax-grammar/ &#10216;http://www.w3.org/TR/rdf-syntax-grammar/&#10217;
+
+       N-Triples, in RDF Test Cases, Jan Grant and Dave Beckett (eds.), W3C Rec&#8208;
+       ommendation,                 http://www.w3.org/TR/rdf-testcases/#ntriples
+       &#10216;http://www.w3.org/TR/rdf-testcases/#ntriples&#10217;
+
+       Turtle     Terse     RDF     Triple     Language,      Dave      Beckett,
+       http://www.dajobe.org/2004/01/turtle/
+       &#10216;http://www.dajobe.org/2004/01/turtle/&#10217;
+
+       RDFA in XHTML: Syntax and Processing,  Ben  Adida,  Mark  Birbeck,  Shane
+       McCarron  and  Steven  Pemberton (eds.), W3C Candidate Recommendation, 20
+       June       2008        http://www.w3.org/TR/2008/CR-rdfa-syntax-20080620/
+       &#10216;http://www.w3.org/TR/2008/CR-rdfa-syntax-20080620/&#10217;
+
+       RDF  Site  Summary  (RSS)  1.0,  2000-12-06  http://purl.org/rss/1.0/spec
+       &#10216;http://purl.org/rss/1.0/spec&#10217;
+&#12;SEE ALSO
+       libraptor(3),raptor-config(1)
+
+CHANGES
+   1.4.16
+       Added -I/--input-uri and -O/--output-uri to  set  the  input  and  output
+       (parser and serializer) base URIs separately.
+
+   1.4.15
+       Added -t/--trace to do URI traces.
+
+   1.4.5
+       Updated to add serializer rdfxml-abbrev
+
+   1.4.3
+       Updated  potential  parser  and serializers and described -f for defining
+       namespaces.
+
+   1.3.0
+       Added -f for features.
+       Added -g for guessing the parser to use.
+
+   1.1.0
+       Removed -a, --assume since rdf:RDF is now always optional.
+
+AUTHOR
+       Dave Beckett - http://www.dajobe.org/ &#10216;http://www.dajobe.org/&#10217;
+
+
+
+                                   2007-08-19                          rapper(1)
+
+</pre></body></html>

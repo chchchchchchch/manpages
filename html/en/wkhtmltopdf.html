@@ -1,0 +1,208 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wkhtmltopdf - html to pdf converter</title></head>
+<body><pre>
+
+WKHTMLTOPDF(1)                                                    WKHTMLTOPDF(1)
+
+
+
+Name
+       wkhtmltopdf - html to pdf converter
+
+
+
+Synopsis
+         wkhtmltopdf [OPTIONS]... &lt;input file&gt; [More input files] &lt;output file&gt;
+
+
+
+Description
+       Converts  one  or  more HTML pages into a PDF document, not using wkhtml&#8208;
+       topdf patched qt.
+
+
+
+General Options
+           --allow &lt;path&gt;
+              Allow the file or files from the specified  folder  to  be  loaded
+              (repeatable)
+           --collate
+              Collate when printing multiple copies
+           --cookie &lt;name&gt; &lt;value&gt;
+              Set an additional cookie (repeatable)
+           --cookie-jar &lt;path&gt;
+              Read and write cookies from and to the supplied cookie jar file
+           --copies &lt;number&gt;
+              Number of copies to print into the pdf file
+           --custom-header &lt;name&gt; &lt;value&gt;
+              Set an additional HTTP header (repeatable)
+           --debug-javascript
+              Show javascript debugging output
+       -n, --disable-javascript
+              Do not allow web pages to run javascript
+           --disallow-local-file-access
+              Do  not  allowed conversion of a local file to read in other local
+              files, unless explecitily allowed with --allow
+       -d, --dpi &lt;dpi&gt;
+              Change the dpi explicitly (this has no effect on  X11  based  sys&#8208;
+              tems)
+           --enable-plugins
+              Enable installed plugins (such as flash
+           --encoding &lt;encoding&gt;
+              Set the default text encoding, for input
+           --extended-help
+              Display   more  extensive  help,  detailing  less  common  command
+              switches
+       -g, --grayscale
+              PDF will be generated in grayscale
+       -h, --help
+              Display help
+           --htmldoc
+              Output program html help
+           --ignore-load-errors
+              Ignore pages that claimes to  have  encountered  an  error  during
+              loading
+       -l, --lowquality
+              Generates  lower quality pdf/ps. Useful to shrink the result docu&#8208;
+              ment space
+           --manpage
+              Output program man page
+       -B, --margin-bottom &lt;unitreal&gt;
+              Set the page bottom margin (default 10mm)
+       -L, --margin-left &lt;unitreal&gt;
+              Set the page left margin (default 10mm)
+       -R, --margin-right &lt;unitreal&gt;
+              Set the page right margin (default 10mm)
+       -T, --margin-top &lt;unitreal&gt;
+              Set the page top margin (default 10mm)
+           --minimum-font-size &lt;int&gt;
+              Minimum font size
+           --no-background
+              Do not print background
+       -O, --orientation &lt;orientation&gt;
+              Set orientation to Landscape or Portrait
+           --page-height &lt;unitreal&gt;
+              Page height (default unit millimeter)
+       -s, --page-size &lt;size&gt;
+              Set paper size to: A4, Letter, etc.
+           --page-width &lt;unitreal&gt;
+              Page width  (default unit millimeter)
+           --password &lt;password&gt;
+              HTTP Authentication password
+           --post &lt;name&gt; &lt;value&gt;
+              Add an additional post field (repeatable)
+           --post-file &lt;name&gt; &lt;path&gt;
+              Post an additional file (repeatable)
+       -p, --proxy &lt;proxy&gt;
+              Use a proxy
+       -q, --quiet
+              Be less verbose
+           --read-args-from-stdin
+              Read command line arguments from stdin
+           --readme
+              Output program readme
+           --redirect-delay &lt;msec&gt;
+              Wait some milliseconds for js-redirects
+           --stop-slow-scripts
+              Stop slow running javascripts
+           --title &lt;text&gt;
+              The title of the generated pdf file (The title of the first  docu&#8208;
+              ment is used if not specified)
+           --user-style-sheet &lt;url&gt;
+              Specify a user style sheet, to load with every page
+           --username &lt;username&gt;
+              HTTP Authentication username
+       -V, --version
+              Output version information an exit
+           --zoom &lt;float&gt;
+              Use this zoom factor
+
+
+
+Reduced Functionality
+       This  version  of  wkhtmltopdf  has been compiled against a version of QT
+       without the wkhtmltopdf patches. Therefore some features are missing,  if
+       you need these features please use the static version.
+
+       Currently the list of features only supported with patch QT includes:
+
+        * Printing more then one HTML document into a PDF file.
+        * Running without an X11 server.
+        * Adding a document outline to the PDF file.
+        * Adding headers and footers to the PDF file.
+        * Generating a table of contents.
+        * Adding links in the generated PDF file.
+        * Printing using the screen media-type.
+        * Disabling the smart shrink feature of webkit.
+
+
+
+Page sizes
+       The  default  page  size  of  the rendered document is A4, but using this
+       --page-size optionthis can be changed to almost anything else,  such  as:
+       A3,  Letter  and  Legal.  For a full list of supported pages sizes please
+       see &lt;http://doc.trolltech.com/4.6/qprinter.html#PageSize-enum&gt;.
+
+       For a more fine grained control over the page size the --page-height  and
+       --page-width options may be used
+
+
+
+Reading arguments from stdin
+       If  you  need  to  convert  a  lot of pages in a batch, and you feel that
+       wkhtmltopdf  is  a  bit  to  slow  to  start  up,  then  you  should  try
+       --read-args-from-stdin,
+
+       When  --read-args-from-stdin  each  line  of input sent to wkhtmltopdf on
+       stdin will act as a separate invocation of wkhtmltopdf,  with  the  argu&#8208;
+       ments  specified  on  the given line combined with the arguments given to
+       wkhtmltopdf
+
+       For example one could do the following:
+
+         echo &quot;http://doc.trolltech.com/4.5/qapplication.html  qapplication.pdf&quot;
+       &gt;&gt; cmds
+         echo   &quot;--cover   google.com  http://en.wikipedia.org/wiki/Qt_(toolkit)
+       qt.pdf&quot; &gt;&gt; cmds
+         wkhtmltopdf --read-args-from-stdin --book &lt; cmds
+
+
+
+Page Breaking
+       The current page breaking algorithm of WebKit leaves much to be  desired.
+       Basically  webkit will render everything into one long page, and then cut
+       it up into pages. This means that if you have two columns of  text  where
+       one  is  vertically  shifted  by half a line. Then webkit will cut a line
+       into to pieces display the top half on one page. And the bottom  half  on
+       another  page.  It  will  also  break image in two and so on.  If you are
+       using the patched version of QT you can  use  the  CSS  page-break-inside
+       property to remedy this somewhat. There is no easy solution to this prob&#8208;
+       lem, until this is solved try organising your HTML documents such that it
+       contains many lines on which pages can be cut cleanly.
+
+       See    also:   &lt;http://code.google.com/p/wkhtmltopdf/issues/detail?id=9&gt;,
+       &lt;http://code.google.com/p/wkhtmltopdf/issues/detail?id=33&gt;            and
+       &lt;http://code.google.com/p/wkhtmltopdf/issues/detail?id=57&gt;.
+
+
+
+Contact
+       If  you  experience  bugs  or  want  to request new features please visit
+       &lt;http://code.google.com/p/wkhtmltopdf/issues/list&gt;, if you have any prob&#8208;
+       lems    or    comments    please   feel   free   to   contact   me:   see
+       &lt;http://www.madalgo.au.dk/~jakobt/#about&gt;
+
+
+
+Authors
+       Written by Jakob Truelsen. Patches by M&#195;&#161;rio  Silva,  Benoit  Garret  and
+       Emmanuel Bouthenot.
+
+
+
+
+
+                                2009 February 23                  WKHTMLTOPDF(1)
+
+</pre></body></html>

@@ -1,0 +1,673 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SOAP::Transport - an abstract class extended by more specialized transport modules</title></head>
+<body><pre>
+
+SOAP::Transport(3pm)   User Contributed Perl Documentation  SOAP::Transport(3pm)
+
+
+
+NAME
+       SOAP::Transport - an abstract class extended by more specialized
+       transport modules
+
+DESCRIPTION
+       Objects of the SOAP::Transport class manage two roles: they manage both
+       the parameters related to transport as set through the containing
+       SOAP::Lite object, and they abstract the selection and loading of an
+       appropriate transport module. This is done with an AUTOLOAD function
+       within the class that intercepts all methods beyond the two defined next
+       and reroutes them to the underlying transport implementation code.
+
+METHODS
+       new
+               $trans = SOAP::Transport-&gt;new;
+
+           This is the constructor, which isn&apos;t usually called by an application
+           directly. An application can use this to create a fresh new
+           SOAP::Transport object, which may be installed using the
+           SOAP::Lite-&gt;transport method defined earlier. No arguments are
+           recognized.
+
+       proxy(optional URL string)
+               $trans-&gt;proxy(&apos;http://www.blackperl.com/SOAP&apos;);
+
+           Gets or sets the proxy (endpoint). This method must be called before
+           any other methods are called. The proper transport code is loaded
+           based on the scheme specified by the URL itself (http, jabber, etc.).
+           Until this method is called the first time with a URL string, the
+           underlying code has yet to be loaded, and the methods aren&apos;t
+           available. When getting the current proxy (calling with no
+           parameters), the returned value is a reference to the client object
+           created from the protocol class that matched the endpoint, not the
+           endpoint itself.
+
+SOAP Transport Sub-Classes
+       Because the bulk of the work is done within the &quot;SOAP::Lite&quot; module
+       itself, many of the transport-level modules are very simple in their
+       implementations. Transport modules are expected to define both client and
+       server classes within their files. If a module defines only one of the
+       types, it is assumed that the transport protocol itself supports only
+       that side of the conversation. An example is SOAP::Transport::FTP, which
+       provides only a &quot;SOAP::Transport::FTP::Client&quot; class.
+
+       &quot;SOAP::Transport::FTP&quot; - Client class only
+
+       &quot;SOAP::Transport::HTTP&quot; - Client, and server classes for CGI, FCGI,
+       Daemon and mod_perl
+
+       &quot;SOAP::Transport::IO&quot; - Server class only
+
+       &quot;SOAP::Transport::JABBER&quot; - Server and Client classes
+
+       &quot;SOAP::Transport::LOCAL&quot; - Client class only
+
+       &quot;SOAP::Transport::MAILTO&quot; - Client class only
+
+       &quot;SOAP::Transport::MQ&quot; - Server and Client classes
+
+       &quot;SOAP::Transport::POP3&quot; - Server class only
+
+       &quot;SOAP::Transport::TCP&quot; - Server and Client classes
+
+   METHODS
+       Each SOAP::Transport sub-class is expected to define (or inherit, if it
+       is subclassing another transport class) at least two methods. Any newly
+       developed transport classes are also expected to adhere to this
+       interface. Clients are expected to implement the &quot;new&quot; and &quot;send_receive&quot;
+       methods, and servers are expected to implement the &quot;new&quot; and &quot;handle&quot;
+       methods. Here they are:
+
+       new(optional key/value pairs)
+               $object = $class-&gt;new(%params);
+
+           Creates a new object instance and returns it. Like the constructors
+           for both &quot;SOAP::Lite&quot; and SOAP::Server classes, all arguments passed
+           in are treated as key/value pairs, where the key is expected to be
+           one of the methods the class supports, and the value is the argument
+           (or list reference of arguments) to the method.
+
+       send_receive(key/value pairs)
+               $client-&gt;send_recieve(%hash_table);
+
+           (Required for client classes only) When the SOAP::Lite objects
+           attempt to send out requests, the means for doing so is to attempt to
+           call this method on the object held within the SOAP::Transport object
+           contained within the client itself. All clients are expected to
+           provide this, and the call to this method always passes four values
+           for the hash keys:
+
+           action
+               The URI specifying the action being performed, usually the result
+               from the on_action hook on the client object.
+
+           encoding
+               The URI of the encoding scheme that governs the message being
+               sent.
+
+           endpoint
+               The URI specifying the endpoint to which the message is being
+               sent.
+
+           envelope
+               The XML content of the message to be sent. It is generally the
+               return value of the envelope method from the SOAP::Serializer
+               object instance that the client object maintains.
+
+           parts
+               Attachments to add to the request. Currently this only supports
+               an array of MIME::Entity objects, but in theory could support
+               attachments of any format.
+
+       handle
+               $server-&gt;handle;
+
+           (Required for server classes only.) This method is the central point
+           for the various server classes to provide an interface to handling
+           requests. The exact set and nature of parameters generally varies
+           based on the classes themselves.
+
+   SOAP::Transport::HTTP
+       The most commonly used transport module is the HTTP implementation. This
+       is loaded whenever an endpoint is given that starts with the characters,
+       http:// or https://. This is also the most involved of the transport
+       modules, defining not only a client class but several different server
+       classes as well.
+
+       HTTP PROXY SETTINGS
+
+       Because &quot;SOAP::Client&quot; inherits from &quot;LWP::UserAgent&quot;, you can use any of
+       &quot;LWP::UserAgent&quot;&apos;s proxy settings. For example:
+
+          SOAP::Lite-&gt;proxy(&quot;http://endpoint.server/&quot;,
+                            proxy =&gt; [&quot;http&quot; =&gt; &quot;http://my.proxy.server&quot;]);
+
+       or
+
+          $soap-&gt;transport-&gt;proxy(&quot;http&quot; =&gt; &quot;http://my.proxy.server&quot;);
+
+       The above code samples should specify a proxy server for you. And should
+       you use &quot;HTTP_proxy_user&quot; and &quot;HTTP_proxy_pass&quot; for proxy authorization,
+       &quot;SOAP::Lite&quot; will handle it properly.
+
+       HTTP BASIC AUTHENTICATION
+
+       HTTP Basic authentication is accomplished by overriding the
+       get_basic_credentials suboutine in &quot;LWP::UserAgent&quot; (which
+       &quot;SOAP::Transport::HTTP::Client&quot; is a subclass):
+
+         BEGIN {
+           sub SOAP::Transport::HTTP::Client::get_basic_credentials {
+             return &apos;username&apos; =&gt; &apos;password&apos;;
+           }
+         }
+
+       COOKIE-BASED AUTHENTICATION
+
+           use HTTP::Cookies;
+           my $cookies = HTTP::Cookies-&gt;new(ignore_discard =&gt; 1);
+           # you may also add &apos;file&apos; if you want to keep them between sessions
+           my $soap = SOAP::Lite-&gt;proxy(&apos;http://localhost/&apos;);
+           $soap-&gt;transport-&gt;cookie_jar($cookies);
+
+       Or, alternatively, you can do the above on a single line:
+
+         $soap-&gt;proxy(&apos;http://localhost/&apos;,
+                      cookie_jar =&gt; HTTP::Cookies-&gt;new(ignore_discard =&gt; 1));
+
+       Cookies will be taken from the response and provided to the request. You
+       may access and manipulate cookies received, as well as add cookies of
+       your own by using the &quot;HTTP::Cookies&quot; interfaces.
+
+       SSL CERTIFICATE AUTHENTICATION
+
+       To get certificate authentication working you need to set three
+       environment variables: &quot;HTTPS_CERT_FILE&quot;, &quot;HTTPS_KEY_FILE&quot;, and
+       optionally &quot;HTTPS_CERT_PASS&quot;. This can be done either through the command
+       line, or directly within your Perl script using the $ENV variable:
+
+         $ENV{HTTPS_CERT_FILE} = &apos;client-cert.pem&apos;;
+         $ENV{HTTPS_KEY_FILE}  = &apos;client-key.pem&apos;;
+
+       These settings are referrenced by &quot;Crypt::SSLeay&quot;, the module SOAP::Lite
+       used for HTTPS support. Other options (e.g. CA peer verification) can be
+       specified in a similar way. See Crypt::SSLeay documentation for more
+       information.
+
+       Those who would like to use encrypted keys may find the following thread
+       in the SOAP::Lite newsgroup helpful:
+
+       http://groups.yahoo.com/group/soaplite/message/729
+
+       COMPRESSION
+&#12;       SOAP::Lite provides you with the option for enabling compression over the
+       wire using HTTP only in both the server and client contexts, provided
+       that you have Compress::Zlib installed. Compression and decompression is
+       done transparantly to your application.
+
+       A server will respond with an encoded/compressed message only if the
+       client has asserted that it can accept it (indicated by client sending an
+       &quot;Accept-Encoding&quot; HTTP header with a &apos;deflate&apos; or &apos;*&apos; value).
+
+       &quot;SOAP::Lite&quot; clients all have fallback logic implemented so that if a
+       server doesn&apos;t understand the specified encoding (i.e. &quot;Content-Encoding:
+       deflate&quot;) and returns the proper HTTP status code (415 NOT ACCEPTABLE),
+       the client will repeat the request without using encoding/compression.
+       The client will then store this server in a per-session cache, so that
+       all subsequent requests to that server will be transmitted without
+       encoding.
+
+       Compression is enabled on the client side by specifying the
+       &quot;compress_threshold&quot; option, and if the size of the current request
+       exceeds that threshold.
+
+       Client Code Sample
+
+         print SOAP::Lite
+           -&gt;uri(&apos;http://localhost/My/Parameters&apos;)
+           -&gt;proxy(&apos;http://localhost/&apos;, options =&gt; {compress_threshold =&gt; 10000})
+           -&gt;echo(1 x 10000)
+           -&gt;result;
+
+       Servers will respond with a compressed message if the
+       &quot;compress_threshold&quot; option has been specified, if the size of the
+       current response exceeds that threshold, and if the calling client
+       transmitted the proper &quot;Accept-Encoding&quot; HTTP Header.
+
+       Server Code Sample
+
+         my $server = SOAP::Transport::HTTP::CGI
+           -&gt;dispatch_to(&apos;My::Parameters&apos;)
+           -&gt;options({compress_threshold =&gt; 10000})
+           -&gt;handle;
+
+       See also: Compress::Zlib
+
+       SOAP::Transport::HTTP::Client
+
+       Inherits from: SOAP::Client, LWP::UserAgent (from the LWP package).
+
+       With this class, clients are able to use HTTP for sending messages. This
+       class provides just the basic new and send_receive methods. Objects of
+       this class understand the compress_threshold option and use it if the
+       server being communicated to also understands it.
+
+       CHANGING THE DEFAULT USERAGENT CLASS
+
+       By default, &quot;SOAP::Transport::HTTP::Client&quot; extends &quot;LWP::UserAgent&quot;.
+       But under some circumstances, a user may wish to change the default
+       UserAgent class with their in order to better handle persist connections,
+       or to &quot;LWP::UserAgent::ProxyAny&quot;, for example, which has better
+       Win32/Internet Explorer interoperability.
+
+       One can use the code below as an example of how to change the default
+       UserAgent class.
+
+         use SOAP::Lite;
+         use SOAP::Transport::HTTP;
+         $SOAP::Transport::HTTP::Client::USERAGENT_CLASS = &quot;My::UserAgent&quot;;
+         my $client = SOAP::Lite-&gt;proxy(..)-&gt;uri(..);
+         my $som = $client-&gt;myMethod();
+&#12;       There is one caveat, however. The UserAgent class you use, MUST also be a
+       subclass of &quot;LWP::UserAgent&quot;. If it is not, then &quot;SOAP::Lite&quot; will issue
+       the following error: &quot;Could not load UserAgent class &lt;USERAGENT CLASS&gt;.&quot;
+
+       HTTP-KEEP-ALIVE, TIMEOUTS, AND MORE
+
+       Because &quot;SOAP::Transport::HTTP::Client&quot; extends &quot;LWP::UserAgent&quot;, all
+       methods available &quot;LWP::UserAgent&quot; are also available to your SOAP
+       Clients. For example, using &quot;LWP::UserAgent&quot; HTTP keep alive&apos;s are
+       accomplished using the following code:
+
+         my $ua = LWP::UserAgent-&gt;new(
+               keep_alive =&gt; 1,
+               timeout    =&gt; 30
+         );
+
+       Therefore, the same initialization parameters you would pass to
+       &quot;LWP::UserAgent&quot; can also be passed to your SOAP::Lite client&apos;s &quot;proxy&quot;
+       subroutine like so:
+
+           my $soap = SOAP::Lite
+              -&gt;uri($uri)
+              -&gt;proxy($proxyUrl,
+                  timeout =&gt; 30,
+                  keep_alive =&gt; 1,
+                );
+
+       This is true for all initialization parameters and methods of
+       &quot;LWP::UserAgent&quot;.
+
+       METHODS
+
+       http_request
+           This method gives you access to a prototype of the HTTP Request
+           object that will be transmitted to a SOAP::Server. The actual request
+           used is a copy of that object.
+
+           Do not use this method for anything else than setting prototypic
+           behaviour for the client object.
+
+       http_response
+           This method gives you access to the HTTP Response object that will
+           be, or was transmitted to a SOAP Server. It returns a HTTP::Response
+           object.
+
+       SOAP::Transport::HTTP::Server
+
+       Inherits from: SOAP::Server.
+
+       This is the most basic of the HTTP server implementations. It provides
+       the
+        basic methods, new and handle. The handle method&apos;s behavior is defined
+       here,
+        along with other methods specific to this class. The role of this class
+       is
+        primarily to act as a superclass for the other HTTP-based server
+       classes.
+
+       handle
+               $server-&gt;handle;
+
+           Expects the request method to have been used to associate a
+           HTTP::Request object with the server object prior to being called.
+           This method retrieves that object reference to get at the request
+           being handled.
+
+       request(optional value)
+               $server-&gt;request($req_object)
+&#12;           Gets or sets the HTTP::Request object reference that the server will
+           process within the handle method.
+
+       response(optional value)
+               $server-&gt;response(HTTP::Response-&gt;new(...));
+
+           Gets or sets the HTTP::Response object reference that the server has
+           prepared for sending back to the client.
+
+       make_response(code, body)
+               $server-&gt;make_response(200, $body_xml);
+
+           Constructs and returns an object of the HTTP::Response class, using
+           the response code and content provided.
+
+       make_fault(fault arguments)
+               $server-&gt;response($server-&gt;make_fault(@data));
+
+           Creates a HTTP::Response object reference using a predefined HTTP
+           response code to signify that a fault has occurred. The arguments are
+           the same as those for the make_fault method of the SOAP::Server
+           class.
+
+       product_tokens
+           This method takes no arguments and simply returns a string
+           identifying the elements of the server class itself. It is similar to
+           the product_tokens methods in the HTTP::Daemon and Apache classes.
+
+       SOAP::Transport::HTTP::CGI
+
+       Inherits from: SOAP::Transport::HTTP::Server.
+
+       This class is a direct subclass of SOAP::Transport::HTTP::Server and
+       defines no additional methods. It includes logic in its implementation of
+       the handle method that deals with the request headers and parameters
+       specific to a CGI environment.
+
+       EXAMPLE CGI
+
+       The following code sample is a CGI based Web Service that converts
+       celcius to fahrenheit:
+
+           #!/usr/bin/perl
+           use SOAP::Transport::HTTP;
+           SOAP::Transport::HTTP::CGI
+             -&gt;dispatch_to(&apos;C2FService&apos;)
+             -&gt;handle;
+           BEGIN {
+             package C2FService;
+             use vars qw(@ISA);
+             @ISA = qw(Exporter SOAP::Server::Parameters);
+             use SOAP::Lite;
+             sub c2f {
+               my $self = shift;
+               my $envelope = pop;
+               my $temp = $envelope-&gt;dataof(&quot;//c2f/temperature&quot;);
+               return SOAP::Data-&gt;name(&apos;convertedTemp&apos; =&gt; (((9/5)*($temp-&gt;value)) + 32));
+             }
+           }
+
+       EXAMPLE APACHE::REGISTRY USAGE
+
+       Using a strictly CGI based Web Service has certain performance drawbacks.
+       Running the same CGI under the Apache::Registery system has certain
+       performance gains.
+
+       httpd.conf
+
+         Alias /mod_perl/ &quot;/Your/Path/To/Deployed/Modules&quot;
+         &lt;Location /mod_perl&gt;
+           SetHandler perl-script
+           PerlHandler Apache::Registry
+           PerlSendHeader On
+           Options +ExecCGI
+         &lt;/Location&gt;
+&#12;       soap.cgi
+
+         use SOAP::Transport::HTTP;
+
+         SOAP::Transport::HTTP::CGI
+           -&gt;dispatch_to(&apos;/Your/Path/To/Deployed/Modules&apos;, &apos;Module::Name&apos;, &apos;Module::method&apos;)
+           -&gt;handle;
+
+       WARNING: Dynamic deployments with &quot;Apache::Registry&quot; will fail because
+       the module will be only loaded dynamically the first time. Subsequent
+       calls will produce &quot;denied access&quot; errors because once the module is
+       already in memory &quot;SOAP::Lite&quot; will bypass dynamic deployment. To work
+       around this, simply specify both the full PATH and MODULE name in
+       &quot;dispatch_to()&quot; and the module will be loaded dynamically, but will then
+       work as if under static deployment. See examples/server/soap.mod_cgi as
+       an example.
+
+       SOAP::Transport::HTTP::Daemon
+
+       Inherits from: SOAP::Transport::HTTP::Server.
+
+       The SOAP::Transport::HTTP::Daemon class encapsulates a reference to an
+       object of the HTTP::Daemon class (from the LWP package). The class
+       catches methods that aren&apos;t provided locally or by the superclass and
+       attempts to call them on the HTTP::Daemon object. Thus, all methods
+       defined in the documentation for that class are available to this class
+       as well. Any that conflict with methods in SOAP::Transport::HTTP::Server
+       (such as product_tokens) go to the superclass. Additionally, the behavior
+       of the handle method is specific to this class:
+
+       handle
+           When invoked, this method enters into the typical accept loop in
+           which it waits for a request on the socket that the daemon object
+           maintains and deals with the content of the request. When all
+           requests from the connection returned by the accept method of the
+           HTTP::Daemon object have been processed, this method returns.
+
+       REUSING SOCKETS ON RESTART
+
+       Often when implementing an HTTP daemon, sockets will get tied up when you
+       try to restart the daemon server. This prevents the server from
+       restarting. Often users will see an error like &quot;Cannot start server: port
+       already in use.&quot; To circumvent this, instruct SOAP::Lite to reuse open
+       sockets using &quot;Reuse =&gt; 1&quot;:
+
+         my $daemon = SOAP::Transport::HTTP::Daemon
+                         -&gt; new (LocalPort =&gt; 80000, Reuse =&gt; 1)
+
+       EXAMPLE DAEMON SERVER
+
+         use SOAP::Transport::HTTP;
+         # change LocalPort to 81 if you want to test it with soapmark.pl
+         my $daemon = SOAP::Transport::HTTP::Daemon
+           -&gt; new (LocalAddr =&gt; &apos;localhost&apos;, LocalPort =&gt; 80)
+           # specify list of objects-by-reference here
+           -&gt; objects_by_reference(qw(My::PersistentIterator My::SessionIterator My::Chat))
+           # specify path to My/Examples.pm here
+           -&gt; dispatch_to(&apos;/Your/Path/To/Deployed/Modules&apos;, &apos;Module::Name&apos;, &apos;Module::method&apos;)
+         ;
+         print &quot;Contact to SOAP server at &quot;, $daemon-&gt;url, &quot;\n&quot;;
+         $daemon-&gt;handle;
+
+       SOAP::Transport::HTTP::Apache
+
+       Inherits from: SOAP::Transport::HTTP::Server.
+
+       This class provides an integration of the SOAP::Server base class with
+       the mod_perl extension for Apache. To work as a location handler, the
+       package provides a method called handler, for which handle is made an
+       alias. The new method isn&apos;t functionally different from the superclass.
+       Here are the other methods provided by this class:
+
+       handler(Apache request)
+               $server-&gt;handler($r)
+
+           Defines the basis for a location handler in the mod_perl fashion. The
+           method expects an Apache request object as the parameter, from which
+           it pulls the body of the request and calls the superclass handle
+           method.
+
+           Note that in this class, the local method named handle is aliased to
+           this method.
+
+       configure(Apache request)
+               $server-&gt;configure(Apache-&gt;request);
+
+           Per-location configuration information can be provided to the server
+           object using the Apache DirConfig directive and calling this method
+           on the object itself. When invoked, the method reads the directory
+           configuration information from Apache and looks for lines of the
+           form:
+
+               method =&gt; param
+
+           Each line that matches the pattern is regarded as a potential method
+           to call on the server object, with the remaining token taken as the
+           parameter to the method. Methods that take hash references as
+           arguments may be specified as:
+
+               method =&gt; key =&gt; param, key =&gt; param
+
+           The key/value pairs will be made into a hash reference on demand. If
+           the server object doesn&apos;t recognize the named method as valid, it
+           ignores the line.
+
+       EXAMPLE APACHE MOD_PERL SERVER
+
+       See examples/server/Apache.pm and Apache::SOAP for more information.
+
+       httpd.conf
+
+         &lt;Location /soap&gt;
+           SetHandler perl-script
+           PerlHandler SOAP::Apache
+           PerlSetVar options &quot;compress_threshold =&gt; 10000&quot;
+         &lt;/Location&gt;
+
+       SOAP::Apache.pm
+
+         package SOAP::Apache;
+         use SOAP::Transport::HTTP;
+         my $server = SOAP::Transport::HTTP::Apache
+           -&gt;dispatch_to(&apos;/Your/Path/To/Deployed/Modules&apos;, &apos;Module::Name&apos;, &apos;Module::method&apos;);
+         sub handler { $server-&gt;handler(@_) }
+         1;
+
+       See also Apache::SOAP.
+
+       SOAP::Transport::HTTP::FCGI
+
+       Inherits from: SOAP::Transport::HTTP::CGI.
+
+       This is an extension of the SOAP::Transport::HTTP::CGI that implements
+       the differences needed for the FastCGI protocol. None of the methods are
+       functionally different.
+
+   SOAP::Transport::IO
+       The SOAP::Transport::IO-based class allows for a sort of I/O proxying by
+       allowing the application to configure what files or filehandles are used.
+       This module supplies only a server class.
+
+       SOAP::Transport::IO::Server
+
+       Inherits from: SOAP::Server.
+
+       The server class defined here inherits all methods from SOAP::Server, and
+       adds two additional methods specific to the nature of the class:
+
+       in
+               $server-&gt;in(IO::File-&gt;new($file));
+
+           Gets or sets the current filehandle being used as the input source.
+
+       out
+               $server-&gt;out(\*STDERR);
+
+           Gets or sets the filehandle being used as the output destination.
+
+   SOAP::Transport::LOCAL
+       The SOAP::Transport::LOCAL module is designed to provide a no-transport
+       client class for tracing and debugging communications traffic. It links
+       SOAP::Client and SOAP::Server so that the same object that &quot;sends&quot; the
+       request also &quot;receives&quot; it.
+
+       SOAP::Transport::LOCAL::Client
+
+       Inherits from: SOAP::Client, SOAP::Server.  The implementations of the
+       new and send_receive methods aren&apos;t noticeably different in their
+       interface. Their behavior warrants description, however:
+
+       new When the constructor creates a new object of this class, it sets up a
+           few things beyond the usual SOAP::Client layout. The is_success
+           method is set to a default value of 1. The dispatch_to method
+           inherited from SOAP::Server is called with the current value of the
+           global array @INC, allowing the client to call any methods that can
+           be found in the  current valid search path. And as with most of the
+           constructors in this module, the optional key/value pairs are treated
+           as method names and parameters.
+
+       send_receive
+           The implementation of this method simply passes the envelope portion
+           of the input data to the handle method of SOAP::Server. While no
+           network traffic results (directly) from this, it allows for debug
+           signals to be sent through the SOAP::Trace facility.
+
+   SOAP::Transport::MAILTO
+       This transport class manages SMTP-based sending of messages from a client
+       perspective. It doesn&apos;t provide a server class. The class gets selected
+       when a client object passes a URI to proxy or endpoint that starts with
+       the characters, mailto:.
+
+       SOAP::Transport::MAILTO::Client
+
+       Inherits from: SOAP::Client.
+
+       The client class for this protocol doesn&apos;t define any new methods. The
+       constructor functions in the same style as the others class constructors.
+       The functionality of the send_receive method is slightly different from
+       other classes, however.
+
+       When invoked, the send_receive method uses the MIME::Lite package to
+       encapsulate and transmit the message. Because mail messages are one-way
+       communications (the reply being a separate process), there is no response
+       message to be returned by the method. Instead, all the status-related
+       attributes (code, message, status, is_success) are set, and no value is
+       explicitly returned.
+
+   SOAP::Transport::POP3
+       POP3 support is limited to a server implementation. Just as the MAILTO
+       class detailed earlier operates by sending requests without expecting to
+       process a response, the server described here accepts request messages
+       and dispatches them without regard for sending a response other than that
+       which POP3 defines for successful delivery of a message.
+
+       SOAP::Transport::POP3::Server
+
+       Inherits from: SOAP::Server.
+
+       The new method of this class creates an object of the Net::POP3 class to
+       use internally for polling a specified POP3 server for incoming messages.
+       When an object of this class is created, it expects an endpoint to be
+       specified with a URI that begins with the characters pop:// and includes
+       user ID and password information as well as the hostname itself.
+
+       The handle method takes the messages present in the remote mailbox and
+       passes them (one at a time) to the superclass handle method. Each message
+       is deleted after being routed. All messages in the POP3 mailbox are
+       presumed to be SOAP messages.
+
+       Methods for the Net::POP3 object are detected and properly routed,
+       allowing operations such as $server-&gt;ping( ).
+
+       This means that the endpoint string doesn&apos;t need to provide the user ID
+       and password because the login method from the POP3 API may be used
+       directly.
+
+ACKNOWLEDGEMENTS
+       Special thanks to O&apos;Reilly publishing which has graciously allowed
+       SOAP::Lite to republish and redistribute large excerpts from Programming
+       Web Services with Perl, mainly the SOAP::Lite reference found in Appendix
+       B.
+
+COPYRIGHT
+       Copyright (C) 2000-2004 Paul Kulchenko. All rights reserved.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+AUTHORS
+       Paul Kulchenko (paulclinger@yahoo.com)
+
+       Randy J. Ray (rjray@blackperl.com)
+
+       Byrne Reese (byrne@majordojo.com)
+
+
+
+perl v5.12.4                       2011-08-18               SOAP::Transport(3pm)
+
+</pre></body></html>

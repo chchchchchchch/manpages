@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SemWait - Lock a semaphore and suspend the thread if the semaphore value is zero.</title></head>
+<body><pre>
+
+SDL_SemWait(3)                  SDL API Reference                 SDL_SemWait(3)
+
+
+
+NAME
+       SDL_SemWait  -  Lock  a semaphore and suspend the thread if the semaphore
+       value is zero.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_SemWait(SDL_sem *sem);
+
+DESCRIPTION
+       SDL_SemWait() suspends the calling  thread  until  either  the  semaphore
+       pointed to by sem has a positive value, the call is interrupted by a sig&#8208;
+       nal or error. If the call is successful it will atomically decrement  the
+       semaphore value.
+
+       After  SDL_SemWait() is successful, the semaphore can be released and its
+       count atomically incremented by a successful call to SDL_SemPost.
+
+RETURN VALUE
+       Returns 0 if successful or -1 if there was an error  (leaving  the  sema&#8208;
+       phore unchanged).
+
+EXAMPLES
+       if (SDL_SemWait(my_sem) == -1) {
+               return WAIT_FAILED;
+       }
+
+       ...
+
+       SDL_SemPost(my_sem);
+
+SEE ALSO
+       SDL_CreateSemaphore,  SDL_DestroySemaphore,  SDL_SemTryWait, SDL_SemWait&#8208;
+       Timeout, SDL_SemPost, SDL_SemValue
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00               SDL_SemWait(3)
+
+</pre></body></html>

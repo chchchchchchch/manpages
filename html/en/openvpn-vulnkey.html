@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>openvpn-vulnkey — check blacklist of compromised keys</title></head>
+<body><pre>
+
+OPENVPN-VULNKEY(1)        BSD General Commands Manual       OPENVPN-VULNKEY(1)
+
+NAME
+     openvpn-vulnkey &#8212; check blacklist of compromised keys
+
+SYNOPSIS
+     openvpn-vulnkey [-q] file ...
+
+DESCRIPTION
+     openvpn-vulnkey checks a key against a blacklist of compromised keys.
+
+     A substantial number of keys are known to have been generated using a bro&#8208;
+     ken version of OpenSSL distributed by Debian which failed to seed its ran&#8208;
+     dom number generator correctly.  Keys generated using these OpenSSL ver&#8208;
+     sions should be assumed to be compromised.  This tool may be useful in
+     checking for such OpenVPN shared static keys. See openssl-vulnkey(1) for
+     details on checking SSL/TLS certificates.
+
+     Keys that are compromised cannot be repaired; replacements must be gener&#8208;
+     ated using openvpn(8).  Shared keys can be regenerated with:
+
+           $ openvpn --genkey --secret file
+
+     The options are as follows:
+
+     -q      Quiet mode.  openvpn-vulnkey(1).  Normally, openvpn-vulnkey outputs
+             the fingerprint of each key scanned, with a description of its sta&#8208;
+             tus.  This option suppresses that output.
+
+BLACKLIST MD5SUM FORMAT
+     The blacklist file may start with comments, on lines starting with &#8220;#&#8221;.
+     After these initial comments, it must follow a strict format:
+
+           &#183;   Each line must consist of the lower-case hexadecimal MD5 key fin&#8208;
+               gerprint, and with the first 12 characters removed (that is, the
+               least significant 80 bits of the fingerprint).
+
+     The key fingerprint may be generated using
+
+           $ cat file.pem | sed &apos;/^[^0-9a-f]/d&apos; | md5sum | cut -d &apos; &apos; -f 1
+
+     This strict format is necessary to allow the blacklist file to be checked
+     quickly.
+
+SEE ALSO
+     openvpn(8) openssl-vulnkey(1)
+
+AUTHORS
+     Jamie Strandboge &#10216;jamie@ubuntu.com&#10217;
+
+     Much of this manpage is based on Colin Watson&apos;s ssh-vulnkey(1)
+
+BSD                               May 8, 2016                              BSD
+
+</pre></body></html>

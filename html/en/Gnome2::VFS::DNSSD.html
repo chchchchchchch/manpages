@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::VFS::DNSSD - network service discovery</title></head>
+<body><pre>
+
+Gnome2::VFS::DNSSD(3pm)User Contributed Perl DocumentatioGnome2::VFS::DNSSD(3pm)
+
+
+
+NAME
+       Gnome2::VFS::DNSSD - network service discovery
+
+METHODS
+   list = Gnome2::VFS::DNSSD-&gt;browse ($domain, $type, $func, $data=undef)
+       &#183;   $domain (string)
+
+       &#183;   $type (string)
+
+       &#183;   $func (scalar)
+
+       &#183;   $data (scalar)
+
+   list = Gnome2::VFS::DNSSD-&gt;browse_sync ($domain, $type, $timeout_msec)
+       &#183;   $domain (string)
+
+       &#183;   $type (string)
+
+       &#183;   $timeout_msec (integer)
+
+   list = Gnome2::VFS-&gt;get_default_browse_domains
+   list = Gnome2::VFS::DNSSD-&gt;list_browse_domains_sync ($domain, $timeout_msec)
+       &#183;   $domain (string)
+
+       &#183;   $timeout_msec (integer)
+
+   list = Gnome2::VFS::DNSSD-&gt;resolve ($name, $type, $domain, $timeout, $func,
+       $data=undef)
+       &#183;   $name (string)
+
+       &#183;   $type (string)
+
+       &#183;   $domain (string)
+
+       &#183;   $timeout (integer)
+
+       &#183;   $func (scalar)
+
+       &#183;   $data (scalar)
+
+   list = Gnome2::VFS::DNSSD-&gt;resolve_sync ($name, $type, $domain,
+       $timeout_msec)
+       &#183;   $name (string)
+
+       &#183;   $type (string)
+
+       &#183;   $domain (string)
+
+       &#183;   $timeout_msec (integer)
+
+SEE ALSO
+       Gnome2::VFS
+
+COPYRIGHT
+       Copyright (C) 2003-2007 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2::VFS for a full
+       notice.
+
+
+
+perl v5.14.2                       2011-11-15            Gnome2::VFS::DNSSD(3pm)
+
+</pre></body></html>

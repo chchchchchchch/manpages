@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::Font - a rendering-system independent font representation</title></head>
+<body><pre>
+
+Pango::Font(3pm)       User Contributed Perl Documentation      Pango::Font(3pm)
+
+
+
+NAME
+       Pango::Font - a rendering-system independent font representation
+
+HIERARCHY
+         Glib::Object
+         +----Pango::Font
+
+METHODS
+   fontdescription = $font-&gt;describe
+   fontdescription = $font-&gt;describe_with_absolute_size
+       Since: pango 1.14
+
+   list = Pango::extents_to_pixels ($inclusive, $nearest)
+       &#183;   $inclusive (array reference)
+
+       &#183;   $nearest (array reference)
+
+       Since: pango 1.16
+
+   fontmap = $font-&gt;get_font_map
+       Since: pango 1.10
+
+   list = $font-&gt;get_glyph_extents ($glyph)
+       &#183;   $glyph (integer)
+
+   fontmetrics = $font-&gt;get_metrics ($language)
+       &#183;   $language (Pango::Language)
+
+   integer = Pango::units_from_double ($d)
+       &#183;   $d (double)
+
+       Since: pango 1.16
+
+   double = Pango::units_to_double ($i)
+       &#183;   $i (integer)
+
+       Since: pango 1.16
+
+SEE ALSO
+       Pango, Glib::Object
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15                   Pango::Font(3pm)
+
+</pre></body></html>

@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuGetElementParameters - get the parameters of elements in a flow</title></head>
+<body><pre>
+
+AuGetElementParameters(3)                              AuGetElementParameters(3)
+
+
+
+Name
+       AuGetElementParameters - get the parameters of elements in a flow
+
+SYNTAX
+       #include &lt;audio/audiolib.h&gt;
+
+       AuBool AuGetElementParameters(server, num_parameters, parameters, status)
+           AuServer *server;
+           int num_parameters;
+           AuElementParameters *parameters; /* RETURN */
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       num_parameters
+                 Specifies the number of element parameters to return.
+
+       states    Specifies a list  of AuElementParameters structures which indi&#8208;
+                 cate the flow and element number of the elements to return  the
+                 parameters from.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       Not implemented.
+
+Errors
+       AuBadFlow, AuBadLenght, AuBadAlloc, AuBadElement.
+
+See Also
+       AuSetElementParameters.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - flow elements parameters   1.9.3            AuGetElementParameters(3)
+
+</pre></body></html>

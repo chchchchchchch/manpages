@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>strcoll - compare two strings using the current locale</title></head>
+<body><pre>
+
+STRCOLL(3)                  Linux Programmer&apos;s Manual                 STRCOLL(3)
+
+
+
+NAME
+       strcoll - compare two strings using the current locale
+
+SYNOPSIS
+       #include &lt;string.h&gt;
+
+       int strcoll(const char *s1, const char *s2);
+
+DESCRIPTION
+       The strcoll() function compares the two strings s1 and s2.  It returns an
+       integer less than, equal to, or greater than zero if s1 is found, respec&#8208;
+       tively, to be less than, to match, or be greater than s2.  The comparison
+       is based on strings interpreted as appropriate for the program&apos;s  current
+       locale for category LC_COLLATE.  (See setlocale(3).)
+
+RETURN VALUE
+       The strcoll() function returns an integer less than, equal to, or greater
+       than zero if s1 is found, respectively, to be less than, to match, or  be
+       greater than s2, when both are interpreted as appropriate for the current
+       locale.
+
+CONFORMING TO
+       SVr4, 4.3BSD, C89, C99.
+
+NOTES
+       In the &quot;POSIX&quot; or &quot;C&quot; locales strcoll() is equivalent to strcmp(3).
+
+SEE ALSO
+       bcmp(3), memcmp(3), setlocale(3),  strcasecmp(3),  strcmp(3),  string(3),
+       strxfrm(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2010-09-20                         STRCOLL(3)
+
+</pre></body></html>

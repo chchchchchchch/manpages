@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jsadebugd - Serviceability Agent Debug Daemon</title></head>
+<body><pre>
+
+jsadebugd(1)                                                        jsadebugd(1)
+
+
+
+Name
+       jsadebugd - Serviceability Agent Debug Daemon
+
+SYNOPSIS
+       jsadebugd pid [ server-id ]
+       jsadebugd executable core [ server-id ]
+
+
+PARAMETERS
+          pid
+             process  id of the process to which the debug server should attach.
+             The process must be a Java process. To get a list of Java processes
+             running  on  a machine, jps(1) may be used. At most one instance of
+             the debug server may be attached to a single process.
+
+          executable
+             Java executable from which the core dump was produced
+
+          core
+             Core file to which the debug server should attach.
+
+          server-id
+             Optional unique id, needed if multiple debug servers are started on
+             the  same  machine. This ID must be used by remote clients to iden&#8208;
+             tify the  particular  debug  server  to  attach.  Within  a  single
+             machine, this ID must be unique.
+
+
+DESCRIPTION
+       jsadebugd  attaches  to  a  Java process or core file and acts as a debug
+       server. Remote clients such  as  jstack(1),  jmap(1),  and  jinfo(1)  can
+       attach  to  the  server using Java Remote Method Invocation (RMI). Before
+       starting jsadebugd, rmiregistry @
+       http://docs.oracle.com/javase/7/docs/technotes/tools/index.html#rmi must
+       be started with:
+
+       rmiregistry -J-Xbootclasspath/p:$JAVA_HOME/lib/sajdi.jar
+
+
+       where $JAVA_HOME is the JDK installation directory. If rmiregistry was
+       not started, jsadebugd will start an rmiregistry in a standard (1099)
+       port internally. Debug server may be stopped by sending SIGINT (pressing
+       Ctrl-C) to it.
+
+       NOTE - This utility is unsupported and may or may not be available in
+       future versions of the JDK. In Windows Systems where dbgeng.dll is not
+       present, &apos;Debugging Tools For Windows&apos; needs to be installed to have
+       these tools working. Also, PATH environment variable should contain the
+       location of jvm.dll used by the target process or the location from which
+       the Crash Dump file was produced.
+
+       For example, set PATH=&lt;jdk&gt;\jre\bin\client;%PATH%
+
+SEE ALSO
+          o jinfo(1)
+
+          o jmap(1)
+
+          o jps(1)
+
+          o jstack(1)
+&#12;          o rmiregistry @
+            http://docs.oracle.com/javase/7/docs/technotes/tools/index.html#rmi
+
+
+                                   16 Mar 2012                      jsadebugd(1)
+
+</pre></body></html>

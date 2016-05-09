@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtRealizeWidget, XtIsRealized, XtUnrealizeWidget - realize and unrealize widgets</title></head>
+<body><pre>
+
+XtRealizeWidget(3)                XT FUNCTIONS                XtRealizeWidget(3)
+
+
+
+NAME
+       XtRealizeWidget, XtIsRealized, XtUnrealizeWidget - realize and unrealize
+       widgets
+
+SYNTAX
+       void XtRealizeWidget(Widget w);
+
+       Boolean XtIsRealized(Widget w);
+
+       void XtUnrealizeWidget(Widget w);
+
+ARGUMENTS
+       w         Specifies the widget.
+
+DESCRIPTION
+       If the widget is already realized, XtRealizeWidget simply returns.  Oth&#8208;
+       erwise, it performs the following:
+
+       &#183;    Binds all action names in the widget&apos;s translation table to proce&#8208;
+            dures (see Section 10.1.2).
+
+       &#183;    Makes a post-order traversal of the widget tree rooted at the speci&#8208;
+            fied widget and calls the change_managed procedure of each composite
+            widget that has one or more managed children.
+
+       &#183;    Constructs an XSetWindowAttributes structure filled in with informa&#8208;
+            tion derived from the Core widget fields and calls the realize pro&#8208;
+            cedure for the widget, which adds any widget-specific attributes and
+            creates the X window.
+
+       &#183;    If the widget is not a subclass of compositeWidgetClass, XtRealize&#8208;
+            Widget returns; otherwise, it continues and performs the following:
+
+            -    Descends recursively to each of the widget&apos;s managed children
+                 and calls the realize procedures.  Primitive widgets that
+                 instantiate children are responsible for realizing those chil&#8208;
+                 dren themselves.
+
+            -    Maps all of the managed children windows that have
+                 mapped_when_managed True.  (If a widget is managed but
+                 mapped_when_managed is False, the widget is allocated visual
+                 space but is not displayed.  Some people seem to like this to
+                 indicate certain states.)
+
+       If the widget is a top-level shell widget (that is, it has no parent),
+       and mapped_when_managed is True, XtRealizeWidget maps the widget window.
+
+       The XtIsRealized function returns True if the widget has been realized,
+       that is, if the widget has a nonzero X window ID.
+
+       Some widget procedures (for example, set_values) might wish to operate
+       differently after the widget has been realized.
+
+       The XtUnrealizeWidget function destroys the windows of an existing widget
+       and all of its children (recursively down the widget tree).  To recreate
+       the windows at a later time, call XtRealizeWidget again.  If the widget
+       was managed, it will be unmanaged automatically before its window is
+       freed.
+
+SEE ALSO
+       XtManageChildren(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                XtRealizeWidget(3)
+
+</pre></body></html>

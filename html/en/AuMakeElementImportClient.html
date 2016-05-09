@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuMakeElementImportClient - initialize an ImportClient element</title></head>
+<body><pre>
+
+AuMakeElementImportClient(3)                        AuMakeElementImportClient(3)
+
+
+
+Name
+       AuMakeElementImportClient - initialize an ImportClient element
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuMakeElementImportClient(element,  sample_rate, format, num_tracks, dis&#8208;
+       card, max_samples, low_water_mark, num_actions, actions)
+           AuElement *element; /* RETURN */
+           unsigned short sample_rate;
+           unsigned char format;
+           unsigned char num_tracks;
+           unsigned char discard;
+           AuUint32 max_samples;
+           AuUint32 low_water_mark;
+           int num_actions;
+           AuElementAction *actions;
+
+Arguments
+       element   Returns the initialized element.
+
+       sample_rate
+                 Specifies the sample rate of the audio data.
+
+       format    Specifies the format of the audio data.  Currently, the follow&#8208;
+                 ing   formats  are  defined:  AuFormatULAW8,  AuFormatLinearUn&#8208;
+                 signed8,   AuFormatLinearSigned8,    AuFormatLinearSigned16MSB,
+                 AuFormatLinearUnsigned16MSB,   AuFormatSignedLinear16LSB,   and
+                 AuFormatLinearUnsigned16LSB.
+
+       num_tracks
+                 Specifies the number of tracks in the audio data.
+
+       discard   Specifies if the import should be  paused  initally.   Normally
+                 AuTrue.  AuFalse may crash the server.
+
+       max_samples
+                 Specifies  the  maximum number of samples to accept in a single
+                 read.  Ignored for &quot;trivial&quot; flows.
+
+       low_water_mark
+                 Specifies when to request additional audio data from the client
+                 application.   When this number of samples are left in the buf&#8208;
+                 fer, and an EOF hasn&apos;t been received, a NotifyEvent  with  kind
+                 set  to  AuElementNotifyKindLowWater will be sent to the client
+                 application.
+
+       num_actions
+                 Specifies the number of actions in actions.
+
+       actions   Specifies the list of actions to associate with  this  element.
+                 Entries in this list can be initialized with AuMakeChangeState&#8208;
+                 Action, AuMakeSendNotifyAction, and AuMakeNoopAction.   May  be
+                 NULL.
+
+Description
+       AuMakeElementImportClient  sets  the  type of element to AuElementTypeIm&#8208;
+       portClient and initializes the importclient member of  element  with  the
+       remaining arguments.
+
+       AuMakeElementImportClient is implemented as a macro.
+&#12;See Also
+       AuMakeElementAddConstant, AuMakeElementBundle, AuMakeElementExportClient,
+       AuMakeElementExportDevice,  AuMakeElementExportBucket,   AuMakeElementEx&#8208;
+       portMonitor,  AuMakeElementImportDevice, AuMakeElementImportBucket, AuMa&#8208;
+       keElementImportWaveForm, AuMakeElementMultiplyConstant, AuMakeElementSum.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element initialization     1.9.3         AuMakeElementImportClient(3)
+
+</pre></body></html>

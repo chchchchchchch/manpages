@@ -1,0 +1,112 @@
+<html>
+<head><meta charset=utf-8/>
+<title>kate - Advanced text editor for KDE</title></head>
+<body><pre>
+
+KATE(1)                         KDE User&apos;s Manual                        KATE(1)
+
+
+
+NAME
+       kate - Advanced text editor for KDE
+
+SYNOPSIS
+       kate [-s, --start name] [--startanon] [-n, --new] [-b, --block] [-p,
+            --pid pid] [-e, --encoding name] [-l, --line line] [-c, --column
+            column] [-i, --stdin] [-u, --use] [KDE Generic Options]
+            [Qt Generic Options]
+
+DESCRIPTION
+       Kate is the KDE Advanced Text Editor.
+
+       Kate also provides the editor part for various applications, under the
+       name KWrite.
+
+       Some of Kate&apos;s many features include configurable syntax highlighting for
+       languages ranging from C and C++ to HTML to bash scripts, the ability to
+       create and maintain projects, a multiple document interface (MDI), and a
+       self-contained terminal emulator.
+
+       But Kate is more than a programmer&apos;s editor. Its ability to open several
+       files at once makes it ideal for editing UNIX&#174;&apos;s many configuration
+       files. This document was written in Kate.
+
+OPTIONS
+       -s, --start name
+           Start Kate with a given session.
+
+       --startanon
+           Start Kate with a new anonymous session, implies -n.
+
+       -n, --new
+           Force start of a new Kate instance (is ignored if start is used and
+           another Kate instance already has the given session opened), forced
+           if no parameters and no URLs are given at all.
+
+       -b, --block
+           If using an already running Kate instance, block until it exits, if
+           URLs given to open.
+
+       -p, --pid  pid
+           Only try to reuse kate instance with this pid (is ignored if start is
+           used and another Kate instance already has the given session opened).
+
+       -e, --encoding  name
+           Set encoding for the file to open
+
+           You can use this to force a file opened in utf-8 format, for
+           instance. (The command iconv -l provides a list of encodings, which
+           may be helpful to you.)
+
+       -l, --line  line
+           Navigate to this line
+
+       -c, --column  column
+           Navigate to this column
+
+       -i, --stdin
+           Read the contents of stdin
+
+       -u, --use
+           Use an already running Kate instance; default, only for compatibility
+
+SEE ALSO
+       More detailed user documentation is available from help:/kate (either
+       enter this URL into Konqueror, or run khelpcenter help:/kate).
+
+       There is also further information available at the Kate website[1].
+
+EXAMPLES
+       To open a file named source.cpp at column 15, line 25, in an existing
+       Kate window, you could use:
+
+           kate -c 15 -l
+           25 -u source.cpp
+
+       If you have an active internet connection, you can take advantage of
+       KDE&apos;s network transparency to open a file from an ftp site. If you do not
+       have write permission on the remote server, the file will be opened read
+       only and you will be prompted for a local filename to save to if you make
+       changes. If you do have write permission, changes will be saved
+       transparently over the network.
+
+           kate ftp://ftp.kde.org/pub/kde/README
+
+AUTHORS
+       The maintainer of Kate is Christoph Cullmann cullmann@kde.org. A
+       comprehensive list of authors and contributors is available in the
+       complete user manual mentioned above.
+
+AUTHOR
+       Lauri Watts &lt;lauri@kde.org&gt;
+           Author.
+
+NOTES
+        1. the Kate website
+           http://kate-editor.org/
+
+
+
+K Desktop Environment              2010-10-06                            KATE(1)
+
+</pre></body></html>

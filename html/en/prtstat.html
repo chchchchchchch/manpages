@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>prtstat - print statistics of a process</title></head>
+<body><pre>
+
+PRTSTAT(1)                        User Commands                       PRTSTAT(1)
+
+
+
+NAME
+       prtstat - print statistics of a process
+
+SYNOPSIS
+       prtstat [-r|--raw] pid
+       prtstat -V|--version
+
+DESCRIPTION
+       prtstat  prints the statistics of the specified process. This information
+       comes from the /proc/PID/stat file.
+
+OPTIONS
+       -r,--raw
+              Print the information in raw format.
+
+       -V,--version
+              Show the version information for prtstat.
+
+OPTIONS
+       -r,--raw
+              Print the information in raw format.
+
+       -V,--version
+              Show the version information for prtstat.
+
+FILES
+       /proc/&lt;PID&gt;/stat source of the information prtstat uses
+
+AUTHORS
+       Craig Small &lt;csmall@enc.com.au&gt;
+
+
+
+Linux                              2011-10-25                         PRTSTAT(1)
+
+</pre></body></html>

@@ -1,0 +1,159 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ggGetSwarType - Get CPU features</title></head>
+<body><pre>
+
+ggGetSwarType(3)                       GGI                      ggGetSwarType(3)
+
+
+
+NAME
+       ggGetSwarType - Get CPU features
+
+SYNOPSIS
+       #include &lt;ggi/gg.h&gt;
+
+       #if defined GG_HAVE_INT64
+       #endif
+
+       #if defined GG_LITTLE_ENDIAN
+       #endif
+
+       #if defined GG_BIG_ENDIAN
+       #endif
+
+       gg_swartype ggGetSwarType(void);
+
+
+DESCRIPTION
+       The  GG_HAVE_INT64  macro is defined on 64-bit architectures where 64-bit
+       integer values function as normal integer values with respect to C opera&#8208;
+       tions.  Otherwise it is not defined.
+
+       The GG_LITTLE_ENDIAN or GG_BIG_ENDIAN are defined, respectively, when the
+       architecture stores values in little or big endian order.  One of the two
+       will be defined, the other undefined, accordingly.
+
+       SWAR  stands  for SIMD Within A Register.  The most well known example of
+       SWAR is Intel MMX technology.
+
+       ggGetSwarType tells which specific SWAR instruction sets the  CPU  imple&#8208;
+       ments.   This is useful to choose at runtime a machine-specific implemen&#8208;
+       tation of a very calculation-intensive routine.  SWAR detection  is  done
+       once  during  ggInit(3)  and  the value is cached for future use, thus it
+       should be fast enough to choose implementations on the fly.  However, due
+       to  this, SMP machines must have identical feature sets in all processors
+       in order to ensure accurate results (see the GG_OPTS  option  description
+       below.)
+
+RETURN VALUE
+       ggGetSwarType  returns an integer in which each bit set means that a spe&#8208;
+       cific SWAR instruction set is available.  The integer  value  may  be  32
+       bits  long or 64 bits long, depending on whether LibGG was compiled for a
+       32-bit or 64-bit machine, as per the GG_HAVE_INT64 macro.
+
+RECOGNIZED SWARS
+       The following flags are defined for  all  architectures.   All  of  these
+       flags can be OR&apos;ed and are exclusive even between architectures.  Note at
+       this stage of development some of these SIMD sets are  not  yet  detected
+       correctly.
+
+       GG_SWAR_NONE
+              The CPU can run a vanilla C program. (hopefully! :-)
+
+
+       GG_SWAR_32BITC
+              The  CPU  can perform 32-bit math fast enough to give an advantage
+              over 16-bit math for software SWAR  implementations.   Almost  all
+              computers will have this capability today.
+
+
+       GG_SWAR_ALTIVEC
+              The CPU has an AltiVec matrix coprocessor (Motorola G4.)
+&#12;
+       GG_SWAR_SSE
+              The CPU supports Intel Streaming SIMD Extensions.
+
+
+       GG_SWAR_SSE2
+              The CPU supports Intel Streaming SIMD Extensions Version 2.
+
+
+       GG_SWAR_SSE3
+              The CPU supports Intel Streaming SIMD Extensions Version 3.
+
+
+       GG_SWAR_MMX
+              The CPU supports Intel Multimedia Extensions.
+
+
+       GG_SWAR_MMXPLUS
+              The  CPU  supports  Cyrix  enhancements to Intel Multimedia Exten&#8208;
+              sions.
+
+
+       GG_SWAR_3DNOW
+              The CPU supports AMD 3DNOW! instructions.
+
+
+       GG_SWAR_ADV3DNOW
+              The CPU supports AMD Advanced 3DNOW! instructions.
+
+
+       GG_SWAR_MAX
+              The CPU supports PA-RISC MAX Instructions.
+
+
+       GG_SWAR_SIGD
+              The CPU supports Microunity Mediaprocessor SIGD instructions.
+
+
+       Additionally, 64 bits architectures define the following flags:
+
+       GG_SWAR_64BITC
+              The CPU can perform 64-bit math fast enough to give  an  advantage
+              over 32-bit and 16-bit math for software SWAR implementations.
+
+
+       GG_SWAR_MVI
+              The CPU supports DEC (Compaq) Alpha Motion Video Instructions.
+
+
+       GG_SWAR_MAX2
+              The CPU supports PA-RISC MAX2 Instructions.
+
+
+       GG_SWAR_MDMX
+              The  CPU  supports  MIPS Digital Media Extension (MaDMaX) Instruc&#8208;
+              tions.
+
+
+       GG_SWAR_MAJC
+              The CPU supports SUN Microprocessor Architecture for Java  Comput&#8208;
+              ing.
+
+
+       GG_SWAR_VIS
+              The CPU supports the SUN Visual Instruction Set
+
+
+ENVIRONMENT VARIABLE
+       If  the  &quot;-banswar=0xhexnumber&quot; option is present in the GG_OPTS environ&#8208;
+       ment variable when ggInit is first called, bits set  in  the  0xhexnumber
+       field  will  not  be  presented to the application in the return value of
+       ggGetSwarType.  This feature can be used for performance benchmarking, to
+       disable  the use of certain SWAR implementations.  It may also be used if
+       a multiproccesor machine mis-detects  the  usable  SWAR  instruction  set
+       because the processors are not identical.
+
+BUGS
+       No support is currently implemented for PDP endian machines.
+
+       SWAR  detection  code  is  incomplete for many architectures, and as such
+       LibGG may may fail to detect SWAR in the CPU.
+
+
+
+libgg-1.0.x                        2005-08-26                   ggGetSwarType(3)
+
+</pre></body></html>

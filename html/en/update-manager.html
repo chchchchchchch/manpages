@@ -1,0 +1,79 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-manager - graphical management of software packages updates</title></head>
+<body><pre>
+
+UPDATE-MANAGER(8)                                              UPDATE-MANAGER(8)
+
+
+
+NAME
+       update-manager - graphical management of software packages updates
+
+SYNOPSIS
+       update-manager [options]
+
+DESCRIPTION
+       Update-manager  is  a  frontend for the apt package management system. It
+       allows you to perform some actions of the command line tool apt-get in  a
+       graphical environment.
+
+       Update-manager  is  especially  designed  for  upgrading  your system, or
+       migrating your system towards a more recent version.
+
+
+OPTIONS
+       For a daily use, you may launch update-manager with no  options  so  that
+       your system is just upgraded.
+
+       For migration purposes, update-manager accepts some options:
+
+
+       -h, --help
+              Show a similar help message
+
+       -c, --check-dist-upgrades
+              Check if a new distribution release is available
+
+       -d, --devel-release
+              Check if upgrading to the latest devel release is possible
+
+       -p, --proposed
+              Try to run a dist-upgrade
+
+       --dist-upgrade
+              Try to run a dist-upgrade
+
+
+ACTIONS PERFORMED DURING AN UPGRADE TO A NEW VERSION
+       * eventually reinstall the package ubuntu-desktop
+
+       * switch to an updated sources.list entries
+
+       * adds the default user to new groups if needed
+
+
+
+SEE ALSO
+       Synaptic, sources.list, aptitude
+
+
+AUTHORS
+       update-manager  was developed by Michael Vogt &lt;mvo@ubuntu.com&gt; with vari&#8208;
+       ous contributors (see AUTHORS file)
+
+       This manual page was originally written by Bruno Mangin and Michael  Vogt
+       &lt;mvo@ubuntu.com&gt;.
+
+
+COPYRIGHT
+       Copyright  (C)  2006-2007 Canonical
+&#12;       There is NO warranty.  You may redistribute this software under the terms
+       of  the  GNU General  Public License.  For more information  about  these
+       matters, see the files named COPYING.
+
+
+
+                                 August 2, 2007                UPDATE-MANAGER(8)
+
+</pre></body></html>

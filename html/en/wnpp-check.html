@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wnpp-check - check if a package is being packaged or if this has been requested</title></head>
+<body><pre>
+
+WNPP-CHECK(1)                                                      WNPP-CHECK(1)
+
+
+
+NAME
+       wnpp-check  -  check  if  a package is being packaged or if this has been
+       requested
+
+SYNOPSIS
+       wnpp-check package ...
+       wnpp-check --help|--version
+
+DESCRIPTION
+       wnpp-check downloads the lists of packages  which  are  listed  as  being
+       packaged  (ITPed)  or for which a package has been requested (RFPed) from
+       the WNPP website and lists any packages  supplied  on  the  command  line
+       which appear in those lists.
+
+       Note  that  WNPP,  and  therefore  wnpp-check&apos;s output, is source package
+       based.
+
+OPTIONS
+       --help, -h
+              Show a summary of options.
+
+       --version, -v
+              Show version and copyright information.
+
+SEE ALSO
+       http://www.debian.org/devel/wnpp
+
+EXIT STATUS
+       0      None of the packages supplied has an open ITP or RFP
+
+       1      Either an error occurred or at least one package supplied  has  an
+              open ITP or RFP
+
+AUTHOR
+       wnpp-check  was  written by David Paleino &lt;d.paleino@gmail.com&gt;; this man
+       page was written by Adam D. Barratt  &lt;adam@adam-barratt.org.uk&gt;  for  the
+       devscripts package.  wnpp-check was originally based on wnpp-alert, which
+       was written by Arthur Korn &lt;arthur@korn.ch&gt; and modified by Julian Gilbey
+       &lt;jdg@debian.org&gt;  for  the  devscripts  package.  Both scripts are in the
+       public domain.
+
+
+
+DEBIAN                          Debian Utilities                   WNPP-CHECK(1)
+
+</pre></body></html>

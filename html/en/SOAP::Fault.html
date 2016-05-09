@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SOAP::Fault - encapsulates SOAP faults prior to their serialization or after their deserialization</title></head>
+<body><pre>
+
+SOAP::Fault(3pm)       User Contributed Perl Documentation      SOAP::Fault(3pm)
+
+
+
+NAME
+       SOAP::Fault - encapsulates SOAP faults prior to their serialization or
+       after their deserialization
+
+DESCRIPTION
+       This class encapsulates SOAP faults prior to their serialization or after
+       their deserialization. The methods available are a constructor and four
+       accessors. Each accessor creates an object on demand, just as the other
+       classes do, when called as a static method. Like other accessors in the
+       SOAP::Lite package, they return the object itself when setting the
+       attribute.
+
+GENERATING A SOAP FAULT
+       To generate a SOAP Fault simply issue a Perl die command on the server
+       side as you might normally. The SOAP processor will intercept the die
+       command and return a SOAP Fault, using the string passed to the die
+       command as the faultstring, to the client making the call. If you require
+       having more control over the SOAP Fault returned to the client, then
+       simply pass a SOAP::Fault object to the die command and the SOAP
+       processor will behave accordingly. For example:
+
+         die SOAP::Fault-&gt;faultcode(&apos;Server.Custom&apos;) # will be qualified
+                        -&gt;faultstring(&apos;Died in server method&apos;)
+                        -&gt;faultdetail(bless {code =&gt; 1} =&gt; &apos;BadError&apos;)
+                        -&gt;faultactor(&apos;http://www.soaplite.com/custom&apos;);
+
+METHODS
+       new(optional data)
+               $fault = SOAP::Fault-&gt;new(faultcode =&gt; &apos;Server&apos;);
+
+           Explicitly creates a new SOAP::Fault object. Any of the four
+           attributes represented next by accessor methods may be passed in the
+           argument list with values immediately following their attribute name.
+
+       faultcode(optional value)
+               $fault-&gt;faultcode(&apos;MethodUnknown&apos;);
+
+           Returns the current fault code or sets it if a value is given.
+
+       faultstring(optional value)
+               $fault-&gt;faultstring(&quot;There is no $method here&quot;);
+
+           Returns or sets the fault string.
+
+       faultactor(optional value)
+               $fault-&gt;faultcode($header-&gt;actor);
+
+           Returns or sets the fault-actor element. Note that the actor isn&apos;t
+           always required in a SOAP fault.
+
+       faultdetail(optional value)
+               $fault-&gt;faultcode(bless { proxy =&gt; $ip }, &apos;Err&apos;);
+
+           Returns or sets the fault&apos;s detail element. Like the actor, this
+           isn&apos;t always a required element. Note that fault detail content in a
+           message is represented as tag blocks. Thus, the values passed to this
+           accessor when setting the value are either SOAP::Data objects, or
+           more general blessed hash references.
+
+       In addition to these methods, the SOAP::Fault package also provides
+       detail as an alias for faultdetail. The former is the actual name of the
+       element with SOAP faults, but the latter name is less ambiguous when
+       regarded with the rest of the SOAP::Lite package. Objects of this class
+       also have a special stringification enabled. If an object is printed or
+       otherwise stringified, the value produced is faultcode: faultstring, with
+       the attribute values of the object.
+
+SEE ALSO
+       SOAP::Data, SOAP::Header, SOAP::SOM
+
+ACKNOWLEDGEMENTS
+       Special thanks to O&apos;Reilly publishing which has graciously allowed
+       SOAP::Lite to republish and redistribute large excerpts from Programming
+       Web Services with Perl, mainly the SOAP::Lite reference found in Appendix
+       B.
+
+COPYRIGHT
+       Copyright (C) 2000-2004 Paul Kulchenko. All rights reserved.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+AUTHORS
+       Paul Kulchenko (paulclinger@yahoo.com)
+
+       Randy J. Ray (rjray@blackperl.com)
+
+       Byrne Reese (byrne@majordojo.com)
+
+
+
+perl v5.12.4                       2011-08-15                   SOAP::Fault(3pm)
+
+</pre></body></html>

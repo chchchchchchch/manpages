@@ -1,0 +1,143 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sonar - display a sonar scope</title></head>
+<body><pre>
+
+sonar(6x)                      XScreenSaver manual                     sonar(6x)
+
+
+
+NAME
+       sonar - display a sonar scope
+
+SYNOPSIS
+       sonar [-ping hosts-or-subnets] [-ping-timeout int] [-delay usecs] [-speed
+       ratio] [-sweep-size  ratio]  [-font-size  points]  [-team-a-name  string]
+       [-team-b-name  string]  [-team-a-count int] [-team-b-count int] [-no-dns]
+       [-no-times] [-no-wobble] [-debug] [-fps]
+
+DESCRIPTION
+       This draws a sonar screen that pings (get it?) the hosts  on  your  local
+       network,  and  plots  their distance (response time) from you.  The three
+       rings represent ping times of approximately 2.5, 70 and  2,000  millisec&#8208;
+       onds respectively.
+
+       Alternately, it can run a simulation that doesn&apos;t involve hosts.
+
+OPTIONS
+       sonar understands the following options:
+
+       -ping hosts-or-subnets
+               The  list of things to ping, separated by commas or spaces.  Ele&#8208;
+               ments of this list may be:
+
+               simulation  Run in simulation mode instead of pinging real hosts.
+
+               hostname    Ping the given host.
+
+               A.B.C.D     Ping the given IP address.
+
+               subnet      Ping the  local  class  C  subnet  (the  nearest  255
+                           addresses).
+
+               subnet/NN   Ping  a different-sized local subnet: e.g., subnet/28
+                           would ping a 4-bit subnet (the nearest 15 addresses).
+
+               A.B.C.D/NN  Ping an arbitrary other subnet.  The IP address spec&#8208;
+                           ifies  the base address, and the part after the slash
+                           is how wide the subnet is.  Typical  values  are  /24
+                           (for 255 addresses) and /28 (for 15 addresses).
+
+               filename    Ping  the  hosts listed in the given file.  This file
+                           can be in the format used by /etc/hosts, or it can be
+                           any  file  that has host names as the first or second
+                           element on each line.  If you use ssh, try this:
+
+                             sonar -ping $HOME/.ssh/known_hosts
+
+       -ping-timeout int
+               The amount of time in milliseconds the program will wait  for  an
+               answer to a ping.
+
+       -delay int
+               Delay between frames, in microseconds.  Default 20000.
+
+       -speed ratio
+               Less than 1 for slower, greater than 1 for faster.  Default 1.
+
+       -sweep-size ratio
+               How big the glowing sweep area should be. Default 0.3.
+
+       -font-size points
+               How large the text should be.  Default 10 points.
+&#12;       -no-wobble
+               Keep  the display stationary instead of very slowly wobbling back
+               and forth.
+
+       -no-dns Do not attempt to resolve IP addresses to hostnames.
+
+       -no-times
+               Do not display ping times beneath the host names.
+
+       -team-a-name string
+               In simulation mode, the name of team A.
+
+       -team-b-name string
+               In simulation mode, the name of team B.
+
+       -team-a-count int
+               In simulation mode, the number of bogies on team A.
+
+       -team-b-count int
+               In simulation mode, the number of bogies on team B.
+
+       -fps    Display the current frame rate, polygon count, and CPU load.
+
+NOTES
+       On most Unix systems, this program must be installed as  setuid  root  in
+       order  to ping hosts.  This is because root privileges are needed to cre&#8208;
+       ate an ICMP RAW socket.  Privileges are disavowed shortly  after  startup
+       (just after connecting to the X server) so this is believed to be safe:
+       chown root:root sonar
+       chmod u+s sonar
+       It is not necessary to make it setuid on MacOS systems, because on MacOS,
+       unprivileged programs can ping by using ICMP  DGRAM  sockets  instead  of
+       ICMP RAW.
+
+       In  ping-mode, the display is a logarithmic scale, calibrated so that the
+       three rings represent ping times of approximately 2.5, 70 and 2,000  mil&#8208;
+       liseconds respectively.
+
+       This  means that if any the hosts you are pinging take longer than 2 sec&#8208;
+       onds to respond, they won&apos;t show up; and if you are pinging several hosts
+       with  very  fast response times, they will all appear close to the center
+       of the screen (making their names hard to read.)
+
+SEE ALSO
+       X(1), xscreensaver(1), ping(8)
+
+COPYRIGHT
+       Copyright &#169; 2000-2008 by Jamie Zawinski &lt;jwz@jwz.org&gt;
+       Copyright &#169; 1998 by Stephen Martin. &lt;smartin@canada.com&gt;
+
+       Permission to use, copy, modify, distribute, and sell this  software  and
+       its documentation for any purpose is hereby granted without fee, provided
+       that the above copyright notice appear in all copies and that  both  that
+       copyright notice and this permission notice appear in supporting documen&#8208;
+       tation.  No representations are made about the suitability of this  soft&#8208;
+       ware  for any purpose.  It is provided &quot;as is&quot; without express or implied
+       warranty.
+
+
+AUTHORS
+       Stephen Martin &lt;smartin@canada.com&gt;, 3-nov-1998.
+
+       Subnet support, etc. added by Jamie Zawinski, 17-Jul-2000.
+
+       Rewritten using OpenGL instead of X11 by Jamie Zawinski, 12-Aug-2008.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                      sonar(6x)
+
+</pre></body></html>

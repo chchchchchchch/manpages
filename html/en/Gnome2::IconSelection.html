@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::IconSelection - wrapper for GnomeIconSelection</title></head>
+<body><pre>
+
+Gnome2::IconSelection(3User Contributed Perl DocumentaGnome2::IconSelection(3pm)
+
+
+
+NAME
+       Gnome2::IconSelection - wrapper for GnomeIconSelection
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Box
+                                  +----Gtk2::VBox
+                                       +----Gnome2::IconSelection
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+         Gtk2::Orientable
+
+METHODS
+   widget = Gnome2::IconSelection-&gt;new
+   $gis-&gt;add_defaults
+   $gis-&gt;add_directory ($dir)
+       &#183;   $dir (string)
+
+   widget = $gis-&gt;get_box
+   $gis-&gt;clear ($not_shown)
+       &#183;   $not_shown (boolean)
+
+   widget = $gis-&gt;get_gil
+   string = $gis-&gt;get_icon ($full_path)
+       &#183;   $full_path (boolean)
+
+   $gis-&gt;select_icon ($filename)
+       &#183;   $filename (string)
+
+   $gis-&gt;show_icons
+   $gis-&gt;stop_loading
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Box, Gtk2::VBox
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16         Gnome2::IconSelection(3pm)
+
+</pre></body></html>

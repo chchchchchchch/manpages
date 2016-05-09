@@ -1,0 +1,191 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::IconList - wrapper for GnomeIconList</title></head>
+<body><pre>
+
+Gnome2::IconList(3pm)  User Contributed Perl Documentation Gnome2::IconList(3pm)
+
+
+
+NAME
+       Gnome2::IconList - wrapper for GnomeIconList
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Layout
+                                  +----Gnome2::Canvas
+                                       +----Gnome2::IconList
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+
+METHODS
+   widget = Gnome2::IconList-&gt;new ($icon_width, $adj, $flags)
+       &#183;   $icon_width (integer)
+
+       &#183;   $adj (Gtk2::Adjustment)
+
+       &#183;   $flags (Gnome2::IconListFlags)
+
+   integer = $gil-&gt;append ($icon_filename, $text)
+       &#183;   $icon_filename (string)
+
+       &#183;   $text (string)
+
+   integer = $gil-&gt;append_pixbuf ($im, $icon_filename, $text)
+       &#183;   $im (Gtk2::Gdk::Pixbuf)
+
+       &#183;   $icon_filename (string)
+
+       &#183;   $text (string)
+
+   $gil-&gt;clear
+   $gil-&gt;set_col_spacing ($pixels)
+       &#183;   $pixels (integer)
+
+   integer = $gil-&gt;find_icon_from_filename ($filename)
+       &#183;   $filename (string)
+
+   $gil-&gt;focus_icon ($idx)
+       &#183;   $idx (integer)
+
+   $gil-&gt;freeze
+   $gil-&gt;set_hadjustment ($hadj)
+       &#183;   $hadj (Gtk2::Adjustment)
+
+   integer = $gil-&gt;get_icon_at ($x, $y)
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+   $gil-&gt;set_icon_border ($pixels)
+       &#183;   $pixels (integer)
+
+   string = $gil-&gt;get_icon_filename ($idx)
+       &#183;   $idx (integer)
+&#12;   visibility = $gil-&gt;icon_is_visible ($pos)
+       &#183;   $pos (integer)
+
+   object = $gil-&gt;get_icon_pixbuf_item ($idx)
+       &#183;   $idx (integer)
+
+   icontextitem = $gil-&gt;get_icon_text_item ($idx)
+       &#183;   $idx (integer)
+
+   $gil-&gt;set_icon_width ($w)
+       &#183;   $w (integer)
+
+   $gil-&gt;insert ($pos, $icon_filename, $text)
+       &#183;   $pos (integer)
+
+       &#183;   $icon_filename (string)
+
+       &#183;   $text (string)
+
+   $gil-&gt;insert_pixbuf ($pos, $im, $icon_filename, $text)
+       &#183;   $pos (integer)
+
+       &#183;   $im (Gtk2::Gdk::Pixbuf)
+
+       &#183;   $icon_filename (string)
+
+       &#183;   $text (string)
+
+   integer = $gil-&gt;get_items_per_line
+   $gil-&gt;moveto ($pos, $yalign)
+       &#183;   $pos (integer)
+
+       &#183;   $yalign (double)
+
+   integer = $gil-&gt;get_num_icons
+   $gil-&gt;remove ($pos)
+       &#183;   $pos (integer)
+
+   $gil-&gt;set_row_spacing ($pixels)
+       &#183;   $pixels (integer)
+
+   $gil-&gt;select_all
+       Since: libgnomeui 2.8
+
+   $gil-&gt;select_icon ($pos)
+       &#183;   $pos (integer)
+
+   list = $gil-&gt;get_selection
+       Returns a list of integers.
+
+   selectionmode = $gil-&gt;get_selection_mode
+   $gil-&gt;set_selection_mode ($mode)
+       &#183;   $mode (Gtk2::SelectionMode)
+
+   $gil-&gt;set_separators ($sep)
+       &#183;   $sep (string)
+
+   $gil-&gt;set_text_spacing ($pixels)
+       &#183;   $pixels (integer)
+
+   $gil-&gt;thaw
+   integer = $gil-&gt;unselect_all
+   $gil-&gt;unselect_icon ($pos)
+       &#183;   $pos (integer)
+
+   $gil-&gt;set_vadjustment ($vadj)
+       &#183;   $vadj (Gtk2::Adjustment)
+&#12;SIGNALS
+       select-icon (Gnome2::IconList, integer, Gtk2::Gdk::Event)
+       unselect-icon (Gnome2::IconList, integer, Gtk2::Gdk::Event)
+       focus-icon (Gnome2::IconList, integer)
+       boolean = text-changed (Gnome2::IconList, integer, string)
+       move-cursor (Gnome2::IconList, Gtk2::DirectionType, boolean)
+       toggle-cursor-selection (Gnome2::IconList)
+
+ENUMS AND FLAGS
+   enum Gtk2::DirectionType
+       &#183;   &apos;tab-forward&apos; / &apos;GTK_DIR_TAB_FORWARD&apos;
+
+       &#183;   &apos;tab-backward&apos; / &apos;GTK_DIR_TAB_BACKWARD&apos;
+
+       &#183;   &apos;up&apos; / &apos;GTK_DIR_UP&apos;
+
+       &#183;   &apos;down&apos; / &apos;GTK_DIR_DOWN&apos;
+
+       &#183;   &apos;left&apos; / &apos;GTK_DIR_LEFT&apos;
+
+       &#183;   &apos;right&apos; / &apos;GTK_DIR_RIGHT&apos;
+
+   enum Gtk2::SelectionMode
+       &#183;   &apos;none&apos; / &apos;GTK_SELECTION_NONE&apos;
+
+       &#183;   &apos;single&apos; / &apos;GTK_SELECTION_SINGLE&apos;
+
+       &#183;   &apos;browse&apos; / &apos;GTK_SELECTION_BROWSE&apos;
+
+       &#183;   &apos;multiple&apos; / &apos;GTK_SELECTION_MULTIPLE&apos;
+
+       &#183;   &apos;extended&apos; / &apos;GTK_SELECTION_EXTENDED&apos;
+
+   enum Gtk2::Visibility
+       &#183;   &apos;none&apos; / &apos;GTK_VISIBILITY_NONE&apos;
+
+       &#183;   &apos;partial&apos; / &apos;GTK_VISIBILITY_PARTIAL&apos;
+
+       &#183;   &apos;full&apos; / &apos;GTK_VISIBILITY_FULL&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Layout, Gnome2::Canvas
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16              Gnome2::IconList(3pm)
+
+</pre></body></html>

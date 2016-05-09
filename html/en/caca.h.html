@@ -1,0 +1,749 @@
+<html>
+<head><meta charset=utf-8/>
+<title>caca.h -</title></head>
+<body><pre>
+
+caca.h(3caca)                        libcaca                       caca.h(3caca)
+
+
+
+NAME
+       caca.h -
+
+       The libcaca public header.
+
+
+SYNOPSIS
+   Data Structures
+       struct caca_event
+           Handling of user events.
+       struct caca_option
+           Option parsing.
+       struct caca_conio_text_info
+           DOS text area information.
+
+   Defines
+       #define CACA_API_VERSION_1
+       #define CACA_MAGIC_FULLWIDTH   0x000ffffe
+
+   Typedefs
+       typedef struct caca_canvas caca_canvas_t
+       typedef struct caca_dither caca_dither_t
+       typedef struct caca_charfont caca_charfont_t
+       typedef struct caca_font caca_font_t
+       typedef struct caca_file caca_file_t
+       typedef struct caca_display caca_display_t
+       typedef struct caca_event caca_event_t
+
+   Enumerations
+       enum caca_color { CACA_BLACK =  0x00, CACA_BLUE =  0x01, CACA_GREEN =
+           0x02, CACA_CYAN =  0x03, CACA_RED =  0x04, CACA_MAGENTA =  0x05,
+           CACA_BROWN =  0x06, CACA_LIGHTGRAY =  0x07, CACA_DARKGRAY =  0x08,
+           CACA_LIGHTBLUE =  0x09, CACA_LIGHTGREEN =  0x0a, CACA_LIGHTCYAN =
+           0x0b, CACA_LIGHTRED =  0x0c, CACA_LIGHTMAGENTA =  0x0d, CACA_YELLOW =
+           0x0e, CACA_WHITE =  0x0f, CACA_DEFAULT =  0x10, CACA_TRANSPARENT =
+           0x20 }
+       enum caca_style { CACA_BOLD =  0x01, CACA_ITALICS =  0x02, CACA_UNDERLINE
+           =  0x04, CACA_BLINK =  0x08 }
+       enum caca_event_type { CACA_EVENT_NONE =  0x0000, CACA_EVENT_KEY_PRESS =
+           0x0001, CACA_EVENT_KEY_RELEASE =  0x0002, CACA_EVENT_MOUSE_PRESS =
+           0x0004, CACA_EVENT_MOUSE_RELEASE =  0x0008, CACA_EVENT_MOUSE_MOTION =
+           0x0010, CACA_EVENT_RESIZE =  0x0020, CACA_EVENT_QUIT =  0x0040,
+           CACA_EVENT_ANY =  0xffff }
+           User event type enumeration.
+       enum caca_key { CACA_KEY_UNKNOWN =  0x00, CACA_KEY_CTRL_A =  0x01,
+           CACA_KEY_CTRL_B =  0x02, CACA_KEY_CTRL_C =  0x03, CACA_KEY_CTRL_D =
+           0x04, CACA_KEY_CTRL_E =  0x05, CACA_KEY_CTRL_F =  0x06,
+           CACA_KEY_CTRL_G =  0x07, CACA_KEY_BACKSPACE =  0x08, CACA_KEY_TAB =
+           0x09, CACA_KEY_CTRL_J =  0x0a, CACA_KEY_CTRL_K =  0x0b,
+           CACA_KEY_CTRL_L =  0x0c, CACA_KEY_RETURN =  0x0d, CACA_KEY_CTRL_N =
+           0x0e, CACA_KEY_CTRL_O =  0x0f, CACA_KEY_CTRL_P =  0x10,
+           CACA_KEY_CTRL_Q =  0x11, CACA_KEY_CTRL_R =  0x12, CACA_KEY_PAUSE =
+           0x13, CACA_KEY_CTRL_T =  0x14, CACA_KEY_CTRL_U =  0x15,
+           CACA_KEY_CTRL_V =  0x16, CACA_KEY_CTRL_W =  0x17, CACA_KEY_CTRL_X =
+           0x18, CACA_KEY_CTRL_Y =  0x19, CACA_KEY_CTRL_Z =  0x1a,
+           CACA_KEY_ESCAPE =  0x1b, CACA_KEY_DELETE =  0x7f, CACA_KEY_UP =
+           0x111, CACA_KEY_DOWN =  0x112, CACA_KEY_LEFT =  0x113, CACA_KEY_RIGHT
+           =  0x114, CACA_KEY_INSERT =  0x115, CACA_KEY_HOME =  0x116,
+           CACA_KEY_END =  0x117, CACA_KEY_PAGEUP =  0x118, CACA_KEY_PAGEDOWN =
+           0x119, CACA_KEY_F1 =  0x11a, CACA_KEY_F2 =  0x11b, CACA_KEY_F3 =
+           0x11c, CACA_KEY_F4 =  0x11d, CACA_KEY_F5 =  0x11e, CACA_KEY_F6 =
+           0x11f, CACA_KEY_F7 =  0x120, CACA_KEY_F8 =  0x121, CACA_KEY_F9 =
+           0x122, CACA_KEY_F10 =  0x123, CACA_KEY_F11 =  0x124, CACA_KEY_F12 =
+           0x125, CACA_KEY_F13 =  0x126, CACA_KEY_F14 =  0x127, CACA_KEY_F15 =
+           0x128 }
+           Special key values.
+       enum CACA_CONIO_COLORS { CACA_CONIO_BLINK =  128, CACA_CONIO_BLACK =  0,
+           CACA_CONIO_BLUE =  1, CACA_CONIO_GREEN =  2, CACA_CONIO_CYAN =  3,
+           CACA_CONIO_RED =  4, CACA_CONIO_MAGENTA =  5, CACA_CONIO_BROWN =  6,
+           CACA_CONIO_LIGHTGRAY =  7, CACA_CONIO_DARKGRAY =  8,
+           CACA_CONIO_LIGHTBLUE =  9, CACA_CONIO_LIGHTGREEN =  10,
+           CACA_CONIO_LIGHTCYAN =  11, CACA_CONIO_LIGHTRED =  12,
+           CACA_CONIO_LIGHTMAGENTA =  13, CACA_CONIO_YELLOW =  14,
+           CACA_CONIO_WHITE =  15 }
+           DOS colours.
+       enum CACA_CONIO_CURSOR { CACA_CONIO__NOCURSOR =  0,
+           CACA_CONIO__SOLIDCURSOR =  1, CACA_CONIO__NORMALCURSOR =  2 }
+           DOS cursor modes.
+       enum CACA_CONIO_MODE { CACA_CONIO_LASTMODE =  -1, CACA_CONIO_BW40 =  0,
+           CACA_CONIO_C40 =  1, CACA_CONIO_BW80 =  2, CACA_CONIO_C80 =  3,
+           CACA_CONIO_MONO =  7, CACA_CONIO_C4350 =  64 }
+           DOS video modes.
+
+   Functions
+       __extern caca_canvas_t * caca_create_canvas (int, int)
+           Initialise a libcaca canvas.
+       __extern int caca_manage_canvas (caca_canvas_t *, int(*)(void *), void *)
+           Manage a canvas.
+       __extern int caca_unmanage_canvas (caca_canvas_t *, int(*)(void *), void
+           *)
+           unmanage a canvas.
+       __extern int caca_set_canvas_size (caca_canvas_t *, int, int)
+           Resize a canvas.
+       __extern int caca_get_canvas_width (caca_canvas_t const *)
+           Get the canvas width.
+       __extern int caca_get_canvas_height (caca_canvas_t const *)
+           Get the canvas height.
+       __extern uint32_t const * caca_get_canvas_chars (caca_canvas_t const *)
+           Get the canvas character array.
+       __extern uint32_t const * caca_get_canvas_attrs (caca_canvas_t const *)
+           Get the canvas attribute array.
+       __extern int caca_free_canvas (caca_canvas_t *)
+           Free a libcaca canvas.
+       __extern int caca_rand (int, int)
+           Generate a random integer within a range.
+       __extern char const * caca_get_version (void)
+           Return the libcaca version.
+       __extern int caca_gotoxy (caca_canvas_t *, int, int)
+           Set cursor position.
+       __extern int caca_wherex (caca_canvas_t const *)
+           Get X cursor position.
+       __extern int caca_wherey (caca_canvas_t const *)
+           Get Y cursor position.
+       __extern int caca_put_char (caca_canvas_t *, int, int, uint32_t)
+           Print an ASCII or Unicode character.
+       __extern uint32_t caca_get_char (caca_canvas_t const *, int, int)
+           Get the Unicode character at the given coordinates.
+       __extern int caca_put_str (caca_canvas_t *, int, int, char const *)
+           Print a string.
+       __extern int caca_printf (caca_canvas_t *, int, int, char const *,...)
+           Print a formated string.
+       __extern int caca_vprintf (caca_canvas_t *, int, int, char const *,
+           va_list)
+           Print a formated string (va_list version).
+       __extern int caca_clear_canvas (caca_canvas_t *)
+           Clear the canvas.
+       __extern int caca_set_canvas_handle (caca_canvas_t *, int, int)
+           Set cursor handle.
+       __extern int caca_get_canvas_handle_x (caca_canvas_t const *)
+           Get X handle position.
+       __extern int caca_get_canvas_handle_y (caca_canvas_t const *)
+           Get Y handle position.
+       __extern int caca_blit (caca_canvas_t *, int, int, caca_canvas_t const *,
+           caca_canvas_t const *)
+           Blit a canvas onto another one.
+       __extern int caca_set_canvas_boundaries (caca_canvas_t *, int, int, int,
+           int)
+           Set a canvas&apos; new boundaries.
+       __extern int caca_disable_dirty_rect (caca_canvas_t *)
+           Disable dirty rectangles.
+       __extern int caca_enable_dirty_rect (caca_canvas_t *)
+           Enable dirty rectangles.
+       __extern int caca_get_dirty_rect_count (caca_canvas_t *)
+           Get the number of dirty rectangles in the canvas.
+       __extern int caca_get_dirty_rect (caca_canvas_t *, int, int *, int *, int
+           *, int *)
+           Get a canvas&apos;s dirty rectangle.
+       __extern int caca_add_dirty_rect (caca_canvas_t *, int, int, int, int)
+           Add an area to the canvas&apos;s dirty rectangle list.
+       __extern int caca_remove_dirty_rect (caca_canvas_t *, int, int, int, int)
+           Remove an area from the dirty rectangle list.
+       __extern int caca_clear_dirty_rect_list (caca_canvas_t *)
+           Clear a canvas&apos;s dirty rectangle list.
+       __extern int caca_invert (caca_canvas_t *)
+           Invert a canvas&apos; colours.
+       __extern int caca_flip (caca_canvas_t *)
+           Flip a canvas horizontally.
+       __extern int caca_flop (caca_canvas_t *)
+           Flip a canvas vertically.
+       __extern int caca_rotate_180 (caca_canvas_t *)
+           Rotate a canvas.
+       __extern int caca_rotate_left (caca_canvas_t *)
+           Rotate a canvas, 90 degrees counterclockwise.
+       __extern int caca_rotate_right (caca_canvas_t *)
+           Rotate a canvas, 90 degrees counterclockwise.
+       __extern int caca_stretch_left (caca_canvas_t *)
+           Rotate and stretch a canvas, 90 degrees counterclockwise.
+       __extern int caca_stretch_right (caca_canvas_t *)
+           Rotate and stretch a canvas, 90 degrees clockwise.
+       __extern uint32_t caca_get_attr (caca_canvas_t const *, int, int)
+           Get the text attribute at the given coordinates.
+       __extern int caca_set_attr (caca_canvas_t *, uint32_t)
+           Set the default character attribute.
+       __extern int caca_unset_attr (caca_canvas_t *, uint32_t)
+           Unset flags in the default character attribute.
+       __extern int caca_toggle_attr (caca_canvas_t *, uint32_t)
+           Toggle flags in the default character attribute.
+       __extern int caca_put_attr (caca_canvas_t *, int, int, uint32_t)
+           Set the character attribute at the given coordinates.
+       __extern int caca_set_color_ansi (caca_canvas_t *, uint8_t, uint8_t)
+           Set the default colour pair for text (ANSI version).
+       __extern int caca_set_color_argb (caca_canvas_t *, uint16_t, uint16_t)
+           Set the default colour pair for text (truecolor version).
+       __extern uint8_t caca_attr_to_ansi (uint32_t)
+           Get DOS ANSI information from attribute.
+       __extern uint8_t caca_attr_to_ansi_fg (uint32_t)
+           Get ANSI foreground information from attribute.
+       __extern uint8_t caca_attr_to_ansi_bg (uint32_t)
+           Get ANSI background information from attribute.
+       __extern uint16_t caca_attr_to_rgb12_fg (uint32_t)
+           Get 12-bit RGB foreground information from attribute.
+       __extern uint16_t caca_attr_to_rgb12_bg (uint32_t)
+           Get 12-bit RGB background information from attribute.
+       __extern void caca_attr_to_argb64 (uint32_t, uint8_t[8])
+           Get 64-bit ARGB information from attribute.
+       __extern uint32_t caca_utf8_to_utf32 (char const *, size_t *)
+           Convert a UTF-8 character to UTF-32.
+       __extern size_t caca_utf32_to_utf8 (char *, uint32_t)
+           Convert a UTF-32 character to UTF-8.
+       __extern uint8_t caca_utf32_to_cp437 (uint32_t)
+           Convert a UTF-32 character to CP437.
+       __extern uint32_t caca_cp437_to_utf32 (uint8_t)
+           Convert a CP437 character to UTF-32.
+       __extern char caca_utf32_to_ascii (uint32_t)
+           Convert a UTF-32 character to ASCII.
+       __extern int caca_utf32_is_fullwidth (uint32_t)
+           Tell whether a UTF-32 character is fullwidth.
+       __extern int caca_draw_line (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Draw a line on the canvas using the given character.
+       __extern int caca_draw_polyline (caca_canvas_t *, int const x[], int
+           const y[], int, uint32_t)
+           Draw a polyline.
+       __extern int caca_draw_thin_line (caca_canvas_t *, int, int, int, int)
+           Draw a thin line on the canvas, using ASCII art.
+       __extern int caca_draw_thin_polyline (caca_canvas_t *, int const x[], int
+           const y[], int)
+           Draw an ASCII art thin polyline.
+       __extern int caca_draw_circle (caca_canvas_t *, int, int, int, uint32_t)
+           Draw a circle on the canvas using the given character.
+       __extern int caca_draw_ellipse (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Draw an ellipse on the canvas using the given character.
+       __extern int caca_draw_thin_ellipse (caca_canvas_t *, int, int, int, int)
+           Draw a thin ellipse on the canvas.
+       __extern int caca_fill_ellipse (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Fill an ellipse on the canvas using the given character.
+       __extern int caca_draw_box (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Draw a box on the canvas using the given character.
+       __extern int caca_draw_thin_box (caca_canvas_t *, int, int, int, int)
+           Draw a thin box on the canvas.
+       __extern int caca_draw_cp437_box (caca_canvas_t *, int, int, int, int)
+           Draw a box on the canvas using CP437 characters.
+       __extern int caca_fill_box (caca_canvas_t *, int, int, int, int,
+           uint32_t)
+           Fill a box on the canvas using the given character.
+       __extern int caca_draw_triangle (caca_canvas_t *, int, int, int, int,
+           int, int, uint32_t)
+           Draw a triangle on the canvas using the given character.
+       __extern int caca_draw_thin_triangle (caca_canvas_t *, int, int, int,
+           int, int, int)
+           Draw a thin triangle on the canvas.
+       __extern int caca_fill_triangle (caca_canvas_t *, int, int, int, int,
+           int, int, uint32_t)
+           Fill a triangle on the canvas using the given character.
+       __extern int caca_fill_triangle_textured (caca_canvas_t *cv, int
+           coords[6], caca_canvas_t *tex, float uv[6])
+           Fill a triangle on the canvas using an arbitrary-sized texture.
+       __extern int caca_get_frame_count (caca_canvas_t const *)
+           Get the number of frames in a canvas.
+       __extern int caca_set_frame (caca_canvas_t *, int)
+           Activate a given canvas frame.
+       __extern char const * caca_get_frame_name (caca_canvas_t const *)
+           Get the current frame&apos;s name.
+       __extern int caca_set_frame_name (caca_canvas_t *, char const *)
+           Set the current frame&apos;s name.
+       __extern int caca_create_frame (caca_canvas_t *, int)
+           Add a frame to a canvas.
+       __extern int caca_free_frame (caca_canvas_t *, int)
+           Remove a frame from a canvas.
+       __extern caca_dither_t * caca_create_dither (int, int, int, int,
+           uint32_t, uint32_t, uint32_t, uint32_t)
+           Create an internal dither object.
+       __extern int caca_set_dither_palette (caca_dither_t *, uint32_t r[],
+           uint32_t g[], uint32_t b[], uint32_t a[])
+           Set the palette of an 8bpp dither object.
+       __extern int caca_set_dither_brightness (caca_dither_t *, float)
+           Set the brightness of a dither object.
+       __extern float caca_get_dither_brightness (caca_dither_t const *)
+           Get the brightness of a dither object.
+       __extern int caca_set_dither_gamma (caca_dither_t *, float)
+           Set the gamma of a dither object.
+       __extern float caca_get_dither_gamma (caca_dither_t const *)
+           Get the gamma of a dither object.
+       __extern int caca_set_dither_contrast (caca_dither_t *, float)
+           Set the contrast of a dither object.
+       __extern float caca_get_dither_contrast (caca_dither_t const *)
+           Get the contrast of a dither object.
+       __extern int caca_set_dither_antialias (caca_dither_t *, char const *)
+           Set dither antialiasing.
+       __extern char const *const * caca_get_dither_antialias_list
+           (caca_dither_t const *)
+           Get available antialiasing methods.
+       __extern char const * caca_get_dither_antialias (caca_dither_t const *)
+           Get current antialiasing method.
+       __extern int caca_set_dither_color (caca_dither_t *, char const *)
+           Choose colours used for dithering.
+       __extern char const *const * caca_get_dither_color_list (caca_dither_t
+           const *)
+           Get available colour modes.
+       __extern char const * caca_get_dither_color (caca_dither_t const *)
+           Get current colour mode.
+       __extern int caca_set_dither_charset (caca_dither_t *, char const *)
+           Choose characters used for dithering.
+       __extern char const *const * caca_get_dither_charset_list (caca_dither_t
+           const *)
+           Get available dither character sets.
+       __extern char const * caca_get_dither_charset (caca_dither_t const *)
+           Get current character set.
+       __extern int caca_set_dither_algorithm (caca_dither_t *, char const *)
+           Set dithering algorithm.
+       __extern char const *const * caca_get_dither_algorithm_list
+           (caca_dither_t const *)
+           Get dithering algorithms.
+       __extern char const * caca_get_dither_algorithm (caca_dither_t const *)
+           Get current dithering algorithm.
+       __extern int caca_dither_bitmap (caca_canvas_t *, int, int, int, int,
+           caca_dither_t const *, void const *)
+           Dither a bitmap on the canvas.
+       __extern int caca_free_dither (caca_dither_t *)
+           Free the memory associated with a dither.
+       __extern caca_charfont_t * caca_load_charfont (void const *, size_t)
+       __extern int caca_free_charfont (caca_charfont_t *)
+       __extern caca_font_t * caca_load_font (void const *, size_t)
+           Load a font from memory for future use.
+       __extern char const *const * caca_get_font_list (void)
+           Get available builtin fonts.
+       __extern int caca_get_font_width (caca_font_t const *)
+           Get a font&apos;s standard glyph width.
+       __extern int caca_get_font_height (caca_font_t const *)
+           Get a font&apos;s standard glyph height.
+       __extern uint32_t const * caca_get_font_blocks (caca_font_t const *)
+           Get a font&apos;s list of supported glyphs.
+       __extern int caca_render_canvas (caca_canvas_t const *, caca_font_t const
+           *, void *, int, int, int)
+           Render the canvas onto an image buffer.
+       __extern int caca_free_font (caca_font_t *)
+           Free a font structure.
+       __extern int caca_canvas_set_figfont (caca_canvas_t *, char const *)
+           load a figfont and attach it to a canvas
+       __extern int caca_set_figfont_smush (caca_canvas_t *, char const *)
+           set the smushing mode of the figfont rendering
+       __extern int caca_set_figfont_width (caca_canvas_t *, int)
+           set the width of the figfont rendering
+       __extern int caca_put_figchar (caca_canvas_t *, uint32_t)
+           paste a character using the current figfont
+       __extern int caca_flush_figlet (caca_canvas_t *)
+           flush the figlet context
+       __extern caca_file_t * caca_file_open (char const *, const char *)
+           Open a file for reading or writing.
+       __extern int caca_file_close (caca_file_t *)
+           Close a file handle.
+       __extern uint64_t caca_file_tell (caca_file_t *)
+           Return the position in a file handle.
+       __extern size_t caca_file_read (caca_file_t *, void *, size_t)
+           Read data from a file handle.
+       __extern size_t caca_file_write (caca_file_t *, const void *, size_t)
+           Write data to a file handle.
+       __extern char * caca_file_gets (caca_file_t *, char *, int)
+           Read a line from a file handle.
+       __extern int caca_file_eof (caca_file_t *)
+           Tell whether a file handle reached end of file.
+       __extern ssize_t caca_import_canvas_from_memory (caca_canvas_t *, void
+           const *, size_t, char const *)
+           Import a memory buffer into a canvas.
+       __extern ssize_t caca_import_canvas_from_file (caca_canvas_t *, char
+           const *, char const *)
+           Import a file into a canvas.
+       __extern ssize_t caca_import_area_from_memory (caca_canvas_t *, int, int,
+           void const *, size_t, char const *)
+           Import a memory buffer into a canvas area.
+       __extern ssize_t caca_import_area_from_file (caca_canvas_t *, int, int,
+           char const *, char const *)
+           Import a file into a canvas area.
+       __extern char const *const * caca_get_import_list (void)
+           Get available import formats.
+       __extern void * caca_export_canvas_to_memory (caca_canvas_t const *, char
+           const *, size_t *)
+           Export a canvas into a foreign format.
+       __extern void * caca_export_area_to_memory (caca_canvas_t const *, int,
+           int, int, int, char const *, size_t *)
+           Export a canvas portion into a foreign format.
+       __extern char const *const * caca_get_export_list (void)
+           Get available export formats.
+       __extern caca_display_t * caca_create_display (caca_canvas_t *)
+           Attach a caca graphical context to a caca canvas.
+       __extern caca_display_t * caca_create_display_with_driver (caca_canvas_t
+           *, char const *)
+           Attach a specific caca graphical context to a caca canvas.
+       __extern char const *const * caca_get_display_driver_list (void)
+           Get available display drivers.
+       __extern char const * caca_get_display_driver (caca_display_t *)
+           Return a caca graphical context&apos;s current output driver.
+       __extern int caca_set_display_driver (caca_display_t *, char const *)
+           Set the output driver.
+       __extern int caca_free_display (caca_display_t *)
+           Detach a caca graphical context from a caca backend context.
+       __extern caca_canvas_t * caca_get_canvas (caca_display_t *)
+           Get the canvas attached to a caca graphical context.
+       __extern int caca_refresh_display (caca_display_t *)
+           Flush pending changes and redraw the screen.
+       __extern int caca_set_display_time (caca_display_t *, int)
+           Set the refresh delay.
+       __extern int caca_get_display_time (caca_display_t const *)
+           Get the display&apos;s average rendering time.
+       __extern int caca_get_display_width (caca_display_t const *)
+           Get the display width.
+       __extern int caca_get_display_height (caca_display_t const *)
+           Get the display height.
+       __extern int caca_set_display_title (caca_display_t *, char const *)
+           Set the display title.
+       __extern int caca_set_mouse (caca_display_t *, int)
+           Show or hide the mouse pointer.
+       __extern int caca_set_cursor (caca_display_t *, int)
+           Show or hide the cursor.
+       __extern int caca_get_event (caca_display_t *, int, caca_event_t *, int)
+           Get the next mouse or keyboard input event.
+       __extern int caca_get_mouse_x (caca_display_t const *)
+           Return the X mouse coordinate.
+       __extern int caca_get_mouse_y (caca_display_t const *)
+           Return the Y mouse coordinate.
+       __extern enum caca_event_type caca_get_event_type (caca_event_t const *)
+           Return an event&apos;s type.
+       __extern int caca_get_event_key_ch (caca_event_t const *)
+           Return a key press or key release event&apos;s value.
+       __extern uint32_t caca_get_event_key_utf32 (caca_event_t const *)
+           Return a key press or key release event&apos;s Unicode value.
+       __extern int caca_get_event_key_utf8 (caca_event_t const *, char *)
+           Return a key press or key release event&apos;s UTF-8 value.
+       __extern int caca_get_event_mouse_button (caca_event_t const *)
+           Return a mouse press or mouse release event&apos;s button.
+       __extern int caca_get_event_mouse_x (caca_event_t const *)
+           Return a mouse motion event&apos;s X coordinate.
+       __extern int caca_get_event_mouse_y (caca_event_t const *)
+           Return a mouse motion event&apos;s Y coordinate.
+       __extern int caca_get_event_resize_width (caca_event_t const *)
+           Return a resize event&apos;s display width value.
+       __extern int caca_get_event_resize_height (caca_event_t const *)
+           Return a resize event&apos;s display height value.
+       __extern int caca_getopt (int, char *const [], char const *, struct
+           caca_option const *, int *)
+       __extern char * caca_conio_cgets (char *str)
+           DOS conio.h cgets() equivalent.
+       __extern void caca_conio_clreol (void)
+           DOS conio.h clreol() equivalent.
+       __extern void caca_conio_clrscr (void)
+           DOS conio.h clrscr() equivalent.
+       __extern int caca_conio_cprintf (const char *format,...)
+           DOS conio.h cprintf() equivalent.
+       __extern int caca_conio_cputs (const char *str)
+           DOS conio.h cputs() equivalent.
+       __extern int caca_conio_cscanf (char *format,...)
+           DOS stdio.h cscanf() equivalent.
+       __extern void caca_conio_delay (unsigned int)
+           DOS dos.h delay() equivalent.
+       __extern void caca_conio_delline (void)
+           DOS conio.h delline() equivalent.
+       __extern int caca_conio_getch (void)
+           DOS conio.h getch() equivalent.
+       __extern int caca_conio_getche (void)
+           DOS conio.h getche() equivalent.
+       __extern char * caca_conio_getpass (const char *prompt)
+           DOS conio.h getpass() equivalent.
+       __extern int caca_conio_gettext (int left, int top, int right, int
+           bottom, void *destin)
+           DOS conio.h gettext() equivalent.
+       __extern void caca_conio_gettextinfo (struct caca_conio_text_info *r)
+           DOS conio.h gettextinfo() equivalent.
+       __extern void caca_conio_gotoxy (int x, int y)
+           DOS conio.h gotoxy() equivalent.
+       __extern void caca_conio_highvideo (void)
+           DOS conio.h highvideo() equivalent.
+       __extern void caca_conio_insline (void)
+           DOS conio.h insline() equivalent.
+       __extern int caca_conio_kbhit (void)
+           DOS conio.h kbhit() equivalent.
+       __extern void caca_conio_lowvideo (void)
+           DOS conio.h lowvideo() equivalent.
+       __extern int caca_conio_movetext (int left, int top, int right, int
+           bottom, int destleft, int desttop)
+           DOS conio.h movetext() equivalent.
+       __extern void caca_conio_normvideo (void)
+           DOS conio.h normvideo() equivalent.
+       __extern void caca_conio_nosound (void)
+           DOS dos.h nosound() equivalent.
+       __extern int caca_conio_printf (const char *format,...)
+           DOS stdio.h printf() equivalent.
+       __extern int caca_conio_putch (int ch)
+           DOS conio.h putch() equivalent.
+       __extern int caca_conio_puttext (int left, int top, int right, int
+           bottom, void *destin)
+           DOS conio.h puttext() equivalent.
+       __extern void caca_conio__setcursortype (int cur_t)
+           DOS conio.h _setcursortype() equivalent.
+       __extern void caca_conio_sleep (unsigned int)
+           DOS dos.h sleep() equivalent.
+       __extern void caca_conio_sound (unsigned int)
+           DOS dos.h sound() equivalent.
+       __extern void caca_conio_textattr (int newattr)
+           DOS conio.h textattr() equivalent.
+       __extern void caca_conio_textbackground (int newcolor)
+           DOS conio.h textbackground() equivalent.
+       __extern void caca_conio_textcolor (int newcolor)
+           DOS conio.h textcolor() equivalent.
+       __extern void caca_conio_textmode (int newmode)
+           DOS conio.h textmode() equivalent.
+       __extern int caca_conio_ungetch (int ch)
+           DOS conio.h ungetch() equivalent.
+       __extern int caca_conio_wherex (void)
+           DOS conio.h wherex() equivalent.
+       __extern int caca_conio_wherey (void)
+           DOS conio.h wherey() equivalent.
+       __extern void caca_conio_window (int left, int top, int right, int
+           bottom)
+           DOS conio.h window() equivalent.
+
+   Variables
+       __extern int caca_optind
+       __extern char * caca_optarg
+       __extern int caca_conio_directvideo
+           DOS direct video control.
+       __extern int caca_conio__wscroll
+           DOS scrolling control.
+
+Detailed Description
+       Author:
+           Sam Hocevar &lt;sam@hocevar.net&gt; This header contains the public types
+           and functions that applications using libcaca may use.
+
+Define Documentation
+   #define CACA_API_VERSION_1 libcaca API version
+Typedef Documentation
+   typedef struct caca_canvas caca_canvas_t libcaca canvas
+   typedef struct caca_dither caca_dither_t dither structure
+   typedef struct caca_charfont caca_charfont_t character font structure
+   typedef struct caca_font caca_font_t bitmap font structure
+   typedef struct caca_file caca_file_t file handle structure
+   typedef struct caca_display caca_display_t libcaca display context
+   typedef struct caca_event caca_event_t libcaca event structure
+Enumeration Type Documentation
+   enum caca_event_type This enum serves two purposes:
+       &#183; Build listening masks for caca_get_event().
+&#12;       &#183; Define the type of a caca_event_t.
+
+       Enumerator:
+
+       CACA_EVENT_NONE
+              No event.
+
+       CACA_EVENT_KEY_PRESS
+              A key was pressed.
+
+       CACA_EVENT_KEY_RELEASE
+              A key was released.
+
+       CACA_EVENT_MOUSE_PRESS
+              A mouse button was pressed.
+
+       CACA_EVENT_MOUSE_RELEASE
+              A mouse button was released.
+
+       CACA_EVENT_MOUSE_MOTION
+              The mouse was moved.
+
+       CACA_EVENT_RESIZE
+              The window was resized.
+
+       CACA_EVENT_QUIT
+              The user requested to quit.
+
+       CACA_EVENT_ANY
+              Bitmask for any event.
+
+   enum caca_key Special key values returned by caca_get_event() for which there
+       is no printable ASCII equivalent.
+       Enumerator:
+
+       CACA_KEY_UNKNOWN
+              Unknown key.
+
+       CACA_KEY_CTRL_A
+              The Ctrl-A key.
+
+       CACA_KEY_CTRL_B
+              The Ctrl-B key.
+
+       CACA_KEY_CTRL_C
+              The Ctrl-C key.
+
+       CACA_KEY_CTRL_D
+              The Ctrl-D key.
+
+       CACA_KEY_CTRL_E
+              The Ctrl-E key.
+
+       CACA_KEY_CTRL_F
+              The Ctrl-F key.
+
+       CACA_KEY_CTRL_G
+              The Ctrl-G key.
+
+       CACA_KEY_BACKSPACE
+              The backspace key.
+
+       CACA_KEY_TAB
+              The tabulation key.
+
+       CACA_KEY_CTRL_J
+              The Ctrl-J key.
+
+       CACA_KEY_CTRL_K
+              The Ctrl-K key.
+
+       CACA_KEY_CTRL_L
+              The Ctrl-L key.
+
+       CACA_KEY_RETURN
+              The return key.
+&#12;       CACA_KEY_CTRL_N
+              The Ctrl-N key.
+
+       CACA_KEY_CTRL_O
+              The Ctrl-O key.
+
+       CACA_KEY_CTRL_P
+              The Ctrl-P key.
+
+       CACA_KEY_CTRL_Q
+              The Ctrl-Q key.
+
+       CACA_KEY_CTRL_R
+              The Ctrl-R key.
+
+       CACA_KEY_PAUSE
+              The pause key.
+
+       CACA_KEY_CTRL_T
+              The Ctrl-T key.
+
+       CACA_KEY_CTRL_U
+              The Ctrl-U key.
+
+       CACA_KEY_CTRL_V
+              The Ctrl-V key.
+
+       CACA_KEY_CTRL_W
+              The Ctrl-W key.
+
+       CACA_KEY_CTRL_X
+              The Ctrl-X key.
+
+       CACA_KEY_CTRL_Y
+              The Ctrl-Y key.
+
+       CACA_KEY_CTRL_Z
+              The Ctrl-Z key.
+
+       CACA_KEY_ESCAPE
+              The escape key.
+
+       CACA_KEY_DELETE
+              The delete key.
+
+       CACA_KEY_UP
+              The up arrow key.
+
+       CACA_KEY_DOWN
+              The down arrow key.
+
+       CACA_KEY_LEFT
+              The left arrow key.
+
+       CACA_KEY_RIGHT
+              The right arrow key.
+
+       CACA_KEY_INSERT
+              The insert key.
+
+       CACA_KEY_HOME
+              The home key.
+
+       CACA_KEY_END
+              The end key.
+
+       CACA_KEY_PAGEUP
+              The page up key.
+
+       CACA_KEY_PAGEDOWN
+              The page down key.
+
+       CACA_KEY_F1
+              The F1 key.
+
+       CACA_KEY_F2
+              The F2 key.
+&#12;       CACA_KEY_F3
+              The F3 key.
+
+       CACA_KEY_F4
+              The F4 key.
+
+       CACA_KEY_F5
+              The F5 key.
+
+       CACA_KEY_F6
+              The F6 key.
+
+       CACA_KEY_F7
+              The F7 key.
+
+       CACA_KEY_F8
+              The F8 key.
+
+       CACA_KEY_F9
+              The F9 key.
+
+       CACA_KEY_F10
+              The F10 key.
+
+       CACA_KEY_F11
+              The F11 key.
+
+       CACA_KEY_F12
+              The F12 key.
+
+       CACA_KEY_F13
+              The F13 key.
+
+       CACA_KEY_F14
+              The F14 key.
+
+       CACA_KEY_F15
+              The F15 key.
+
+   enum CACA_CONIO_COLORS This enum lists the colour values for the DOS conio.h
+       compatibility layer.
+   enum CACA_CONIO_CURSOR This enum lists the cursor mode values for the DOS
+       conio.h compatibility layer.
+   enum CACA_CONIO_MODE This enum lists the video mode values for the DOS
+       conio.h compatibility layer.
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2012                    caca.h(3caca)
+
+</pre></body></html>

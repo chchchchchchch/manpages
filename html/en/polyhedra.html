@@ -1,0 +1,125 @@
+<html>
+<head><meta charset=utf-8/>
+<title>polyhedra - draws the 80 uniform polyhedra and their duals</title></head>
+<body><pre>
+
+polyhedra(6x)                  XScreenSaver manual                 polyhedra(6x)
+
+
+
+NAME
+       polyhedra - draws the 80 uniform polyhedra and their duals
+
+SYNOPSIS
+SYNOPSIS
+       polyhedra   [-display  host:display.screen]  [-visual  visual]  [-window]
+       [-root] [-delay number] [-speed float] [-duration  seconds]  [-no-wander]
+       [-spin XYZ] [-wireframe] [-no-titles] [-which name] [-wireframe] [-fps]
+
+DESCRIPTION
+       This  program renders 160 different 3D solids, and displays some informa&#8208;
+       tion about each.  A new solid is chosen every few seconds.
+
+       There are 75 uniform polyhedra, plus an inifinite number  of  prisms  and
+       antiprisms:
+
+         * Convex Uniform Polyhedra:
+           * Platonic solids (5)
+           * Archimedean solids (13)
+           * Convex prisms and antiprisms (2 infinite families)
+         * Nonconvex Uniform Polyhedra:
+           * Kepler-Poinsot polyhedra (4)
+           * Nonconvex uniform polyhedra (53)
+           * Nonconvex prisms, antiprisms, and crossed antiprisms
+             (3 infinite families)
+
+       Representative  samples  of the prism sets brings the total to 80 solids.
+       Including the dual of each brings the total up to 160.   (To  create  the
+       &quot;dual&quot;  of  a  polyhedron, faces are replaced with vertices, and vertices
+       with faces.)
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -delay number
+               Per-frame delay, in  microseconds.   Default:  30000  (0.03  sec&#8208;
+               onds.).
+
+       -speed number
+               Larger numbers mean run faster.  Default: 1.0.
+
+       -duration seconds
+               How  long  before switching to a new polyhedron.  Default 12 sec&#8208;
+               onds.
+
+       -wander | -no-wander
+               Whether the objects should wander around the screen.
+
+       -spin [XYZ] | -no-spin
+               Which axes, if any, to spin around on.
+
+       -titles | -no-titles
+               Whether to display text describing each object.
+
+       -which object-name
+               Display only one particular object, identified by  number,  name,
+               or Whthoff symbol.
+
+       -wireframe | -no-wireframe
+               Render in wireframe instead of solid.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+KEY BINDINGS
+       When  running  in  a  window,  you  can rotate the object with the mouse.
+       Also, the following keystrokes are defined:
+
+       SPC or TAB  Select a new polyhedron at random.
+
+       + or &gt;      Select the next-higher-numbered polyhedron.
+
+       - or &lt;      Select the next-lower-numbered polyhedron.
+
+       ESC or ^C   Quit.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 1991-2002 Dr. Zvi Har&apos;El.
+
+       Copyright  &#169;  2004 Jamie Zawinski.  Permission to use, copy, modify, dis&#8208;
+       tribute, and sell this software and its documentation for any purpose  is
+       hereby  granted  without  fee,  provided  that the above copyright notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion  notice  appear in supporting documentation.  No representations are
+       made about the suitability of this software for any purpose.  It is  pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Based  on  the  program  kaleido  (&quot;Kaleidoscopic construction of uniform
+       polyhedra&quot;), by Dr. Zvi Har&apos;El &lt;rl@math.technion.ac.il&gt;
+           http://www.math.technion.ac.il/~rl/
+           ftp://ftp.math.technion.ac.il/kaleido/
+
+       Adapted for OpenGL and XScreenSaver by Jamie Zawinski, 2004.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                  polyhedra(6x)
+
+</pre></body></html>

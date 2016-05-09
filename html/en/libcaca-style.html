@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca-style - Libcaca coding style</title></head>
+<body><pre>
+
+libcaca-style(3caca)                 libcaca                libcaca-style(3caca)
+
+
+
+NAME
+       libcaca-style - Libcaca coding style
+
+General guidelines
+       A pretty safe rule of thumb is: look at what has already been done and
+       try to do the same.
+
+       &#183; Tabulations should be avoided and replaced with eight spaces.
+
+       &#183; Indentation is generally 4 spaces.
+
+       &#183; Lines should wrap at most at 79 characters.
+
+       &#183; Do not leave whitespace at the end of lines.
+
+       &#183; Do not use multiple spaces for anything else than indentation.
+
+       &#183; Code qui fait des warnings == code de porc == deux baffes dans ta
+         gueule
+
+C coding style
+       Try to use short names whenever possible (i for indices, w for width, cv
+       for canvas...). Macros are always uppercase, variable and function names
+       are always lowercase. Use the underscore to separate words within names:
+
+       #define BROKEN 0
+       #define MAX(x, y) ((x &gt; y) ? (x) : (y))
+
+       unsigned int x, y, w, h;
+       char *font_name;
+       void frobulate_every_three_seconds(void);
+
+       const is a suffix. It&apos;s char const *foo, not const char *foo.
+
+       Use spaces after commas and between operators. Do not use spaces after an
+       opening parenthesis or before a closing one:
+
+       a += 2;
+       b = (a * (c + d));
+       x = min(x1, x2, x3);
+
+       Do not put a space between functions and the corresponding opening
+       parenthesis:
+
+       int function(int);
+
+       A space can be inserted after keywords such as for, while or if, but
+       consistency with the rest of the page is encouraged:
+
+       if(a == b)
+           return;
+
+       if (p == NULL)
+
+       Do not put parentheses around return values:
+
+       return a + (b &amp; x) + d[10];
+
+       Opening braces should be on a line of their own, aligned with the current
+       block. Braces are optional for one-liners:
+
+       int function(int a)
+       {
+           if(a &amp; 0x84)
+               return a;
+
+           if(a &lt; 0)
+           {
+               return -a;
+           }
+           else
+           {
+               a /= 2;
+
+               switch(a)
+               {
+                   case 0:
+                   case 1:
+                       return -1;
+                       break;
+                   default:
+                       return a;
+               }
+           }
+       }
+
+C++ coding style
+       Nothing here yet.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2012             libcaca-style(3caca)
+
+</pre></body></html>

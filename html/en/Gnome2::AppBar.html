@@ -1,0 +1,100 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::AppBar - wrapper for GnomeAppBar</title></head>
+<body><pre>
+
+Gnome2::AppBar(3pm)    User Contributed Perl Documentation   Gnome2::AppBar(3pm)
+
+
+
+NAME
+       Gnome2::AppBar - wrapper for GnomeAppBar
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Box
+                                  +----Gtk2::HBox
+                                       +----Gnome2::AppBar
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+         Gtk2::Orientable
+
+METHODS
+   widget = Gnome2::AppBar-&gt;new ($has_progress, $has_status, $interactivity)
+       &#183;   $has_progress (boolean)
+
+       &#183;   $has_status (boolean)
+
+       &#183;   $interactivity (Gnome2::PreferencesType)
+
+   $appbar-&gt;clear_prompt
+   $appbar-&gt;clear_stack
+   $appbar-&gt;set_default ($default_status)
+       &#183;   $default_status (string)
+
+   $appbar-&gt;install_menu_hints ($uiinfo)
+       &#183;   $uiinfo (Gnome2::UIInfo)
+
+   $appbar-&gt;pop
+   progressbar = $appbar-&gt;get_progress
+   $appbar-&gt;set_progress_percentage ($percentage)
+       &#183;   $percentage (double)
+
+   $appbar-&gt;set_prompt ($prompt, $modal)
+       &#183;   $prompt (string)
+
+       &#183;   $modal (boolean)
+
+   $appbar-&gt;push ($status)
+       &#183;   $status (string)
+
+   $appbar-&gt;refresh
+   string = $appbar-&gt;get_response
+   widget = $appbar-&gt;get_status
+   $appbar-&gt;set_status ($status)
+       &#183;   $status (string)
+
+PROPERTIES
+       &apos;has-progress&apos; (boolean : default false : readable / writable /
+       construct)
+           Create a progress widget.
+
+       &apos;has-status&apos; (boolean : default false : readable / writable / construct)
+           Create a status widget.
+
+       &apos;interactivity&apos; (Gnome2::PreferencesType : default &quot;never&quot; : readable /
+       writable / construct)
+           Level of user activity required.
+
+SIGNALS
+       user-response (Gnome2::AppBar)
+       clear-prompt (Gnome2::AppBar)
+
+ENUMS AND FLAGS
+   enum Gnome2::PreferencesType
+       &#183;   &apos;never&apos; / &apos;GNOME_PREFERENCES_NEVER&apos;
+
+       &#183;   &apos;user&apos; / &apos;GNOME_PREFERENCES_USER&apos;
+
+       &#183;   &apos;always&apos; / &apos;GNOME_PREFERENCES_ALWAYS&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Box, Gtk2::HBox
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16                Gnome2::AppBar(3pm)
+
+</pre></body></html>

@@ -1,0 +1,84 @@
+<html>
+<head><meta charset=utf-8/>
+<title>fixps - sanitize PostScript files</title></head>
+<body><pre>
+
+FIXPS(1)                               FSF                              FIXPS(1)
+
+
+
+NAME
+       fixps - sanitize PostScript files
+
+SYNOPSIS
+       fixps [OPTIONS] FILE
+
+DESCRIPTION
+       Try to fix common PostScript problems that break postprocessing.
+
+OPTIONS
+       -h, --help
+              display this help and exit
+
+       -v, --version
+              display version information and exit
+
+       -q, --quiet
+              don&apos;t print informational messages
+
+       -o, --output=FILE
+              save result in FILE.  If FILE is `-&apos;, send to stdout
+
+       -f, --force
+              force full rewrite by ghostscript
+
+       -n, --no-fix
+              don&apos;t fix the FILE, but still honor `-o&apos;
+
+       -c, --check, --dry-run
+              don&apos;t perform any action
+
+   Fixes:
+              -  Remove junk before and after PostScript content - Use only Unix
+              end of lines (
+
+       )
+
+              - Remove empty  lines  -  Fix  Apple  prologue  (fixmacps)  -  Fix
+              FrameMaker  prologue  (fixfmps) - Fix CorelDraw prologue (fixnt) -
+              Fix Windows NT 3.5/4.0 prologue (fixnt) - Fix Windows 95  prologue
+              -  Ensure  there  is a `%%BeginSetup/%%EndSetup&apos; section - Removes
+              Canvas&apos; extraneaous `%%EndDocument:&apos; comments  -  Split  too  long
+              lines
+
+       If  the FILE seems really in a bad state, ghostscript may be used to per&#8208;
+       form a full rewrite.  The output might then be significantly bigger,  but
+       much safer.
+
+AUTHOR
+       Written by Akim Demaille.
+
+REPORTING BUGS
+       Report bugs to &lt;bug-a2ps@gnu.org&gt;
+
+COPYRIGHT
+       Copyright &#169; 1998-2000 Akim Demaille, Miguel Santana
+       This  is  free software; see the source for copying conditions.  There is
+       NO warranty; not even for MERCHANTABILITY or  FITNESS  FOR  A  PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       a2ps(1), card(1), fixps(1), pdiff(1), psset(1), texi2dvi4a2ps(1).
+&#12;       The  full  documentation for fixps is maintained as a Texinfo manual.  If
+       the info and fixps programs are properly installed at your site, the com&#8208;
+       mand
+
+              info fixps
+
+       should give you access to the complete manual.
+
+
+
+fixps 1.5 (GNU a2ps 4.14)          March 2014                           FIXPS(1)
+
+</pre></body></html>

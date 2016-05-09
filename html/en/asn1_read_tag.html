@@ -1,0 +1,62 @@
+<html>
+<head><meta charset=utf-8/>
+<title>asn1_read_tag - API function</title></head>
+<body><pre>
+
+asn1_read_tag(3)                    libtasn1                    asn1_read_tag(3)
+
+
+
+NAME
+       asn1_read_tag - API function
+
+SYNOPSIS
+       #include &lt;libtasn1.h&gt;
+
+       asn1_retCode  asn1_read_tag(ASN1_TYPE root, const char * name, int * tag&#8208;
+       Value, int * classValue);
+
+ARGUMENTS
+       ASN1_TYPE root
+                   pointer to a structure
+
+       const char * name
+                   the name of the element inside a structure.
+
+       int * tagValue
+                   variable that will contain the TAG value.
+
+       int * classValue
+                   variable that will specify the TAG type.
+
+DESCRIPTION
+       Returns the TAG and the CLASS of one element inside a structure.
+
+CLASS CAN HAVE ONE OF THESE CONSTANTS
+       ASN1_CLASS_APPLICATION,   ASN1_CLASS_UNIVERSAL,   ASN1_CLASS_PRIVATE   or
+       ASN1_CLASS_CONTEXT_SPECIFIC.
+
+RETURNS
+       ASN1_SUCCESS if successful, ASN1_ELEMENT_NOT_FOUND if name is not a valid
+       element.
+
+COPYRIGHT
+       Copyright &#169; 2006-2011 Free Software Foundation, Inc..
+       Copying and distribution of this file, with or without modification,  are
+       permitted in any medium without royalty provided the copyright notice and
+       this notice are preserved.
+
+SEE ALSO
+       The full documentation for libtasn1 is maintained as  a  Texinfo  manual.
+       If  the  info  and libtasn1 programs are properly installed at your site,
+       the command
+
+              info libtasn1
+
+       should give you access to the complete manual.
+
+
+
+libtasn1                              2.13                      asn1_read_tag(3)
+
+</pre></body></html>

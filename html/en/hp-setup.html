@@ -1,0 +1,168 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hp-setup - Printer/Fax Setup Utility</title></head>
+<body><pre>
+
+hp-setup(1)                       User Manuals                       hp-setup(1)
+
+
+
+NAME
+       hp-setup - Printer/Fax Setup Utility
+
+DESCRIPTION
+       Installs HPLIP printers and faxes in the CUPS spooler. Tries to automati&#8208;
+       cally determine the correct PPD file to use. Allows  the  printing  of  a
+       testpage. Performs basic fax parameter setup.
+
+SYNOPSIS
+       hp-setup [MODE] [OPTIONS] [SERIAL NO.|USB bus:device|IP|DEVNODE]
+
+MODE
+       Run in graphical UI mode:
+              -u or --gui (Default)
+
+       Run in interactive mode:
+              -i or --interactive
+
+OPTIONS
+       Automatic mode:
+              -a or --auto (-i mode only)
+
+       To specify the port on a multi-port JetDirect:
+              --port=&lt;port&gt; (Valid values are 1*, 2, and 3. *default)
+
+       No testpage in automatic mode:
+              -x (-i mode only)
+
+       To specify a CUPS printer queue name:
+              -p&lt;printer&gt; or --printer=&lt;printer&gt; (-i mode only)
+
+       To specify a CUPS fax queue name:
+              -f&lt;fax&gt; or --fax=&lt;fax&gt; (-i mode only)
+
+       Type of queue(s) to install:
+              -t&lt;typelist&gt;   or   --type=&lt;typelist&gt;.  &lt;typelist&gt;:  print*,  fax*
+              (*default) (-i mode only)
+
+       To specify the device URI to install:
+              -d&lt;device&gt; or --device=&lt;device&gt; (--qt4 mode only)
+
+       Remove printers or faxes instead of setting-up:
+              -r or --rm or --remove (-u only)
+
+       Set the language:
+              -q &lt;lang&gt; or --lang=&lt;lang&gt;. Use -q? or --lang=? to see a  list  of
+              available language codes.
+
+       Set the logging level:
+              -l&lt;level&gt;  or --logging=&lt;level&gt; &lt;level&gt;: none, info*, error, warn,
+              debug (*default)
+
+       Run in debug mode:
+              -g (same as option: -ldebug)
+
+       This help information:
+              -h or --help
+
+SERIAL NO.|USB ID|IP|DEVNODE
+       USB bus:device (usb only):
+              &quot;xxx:yyy&quot; where &apos;xxx&apos; is the USB bus and &apos;yyy&apos; is the USB  device.
+              (Note:  The  &apos;:&apos;  and all leading zeros must be present.)  Use the
+              &apos;lsusb&apos; command to obtain this information.
+
+       IPs (network only):
+              IPv4 address &quot;a.b.c.d&quot; or &quot;hostname&quot;
+
+       DEVNODE (parallel only):
+              &quot;/dev/parportX&quot;, X=0,1,2,...
+
+       SERIAL NO. (usb and parallel only):
+              &quot;serial no.&quot;
+
+EXAMPLES
+       Setup using GUI mode:
+              $ hp-setup
+
+       Setup using GUI mode, specifying usb:
+              $ hp-setup -b usb
+
+       Setup using GUI mode, specifying an IP:
+              $ hp-setup 192.168.0.101
+
+       One USB printer attached, automatic:
+              $ hp-setup -i -a
+
+       USB, IDs specified:
+              $ hp-setup -i 001:002
+
+       Network:
+              $ hp-setup -i 66.35.250.209
+
+       Network, Jetdirect port 2:
+              $ hp-setup -i --port=2 66.35.250.209
+
+       Parallel:
+              $ hp-setup -i /dev/parport0
+
+       USB or parallel, using serial number:
+              $ hp-setup -i US12345678A
+
+       USB, automatic:
+              $ hp-setup -i --auto 001:002
+
+       Parallel, automatic, no testpage:
+              $ hp-setup -i -a -x /dev/parport0
+
+       Parallel, choose device:
+              $ hp-setup -i -b par
+
+NOTES
+       1. If no serial number, USB ID, IP, or device node is specified, the  USB
+       and parallel busses will be probed for devices.
+
+
+       2. Using &apos;lsusb&apos; to obtain USB IDs: (example)
+
+
+          $ lsusb
+
+
+                Bus 003 Device 011: ID 03f0:c202 Hewlett-Packard
+
+
+          $ hp-setup --auto 003:011
+
+
+          (Note: You may have to run &apos;lsusb&apos; from /sbin or another location. Use
+       &apos;$ locate lsusb&apos; to determine this.)
+&#12;
+       3. Parameters -a, -f, -p, or -t are not valid in GUI (-u) mode.
+
+
+SEE ALSO
+       hp-makeuri hp-probe
+
+AUTHOR
+       HPLIP (Hewlett-Packard Linux Imaging and Printing)  is  an  HP  developed
+       solution  for  printing,  scanning,  and  faxing with HP inkjet and laser
+       based printers in Linux.
+
+REPORTING BUGS
+       The HPLIP Launchpad.net site https://launchpad.net/hplip is available  to
+       get  help,  report  bugs,  make suggestions, discuss the HPLIP project or
+       otherwise contact the HPLIP Team.
+
+COPYRIGHT
+       Copyright (c) 2001-14 Hewlett-Packard Development Company, L.P.
+
+       This software comes with ABSOLUTELY NO WARRANTY.  This is free  software,
+       and  you are welcome to distribute it under certain conditions. See COPY&#8208;
+       ING file for more details.
+
+
+
+
+Linux                                  9.0                           hp-setup(1)
+
+</pre></body></html>

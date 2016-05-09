@@ -1,0 +1,222 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Text::BibTeX::Value - interfaces to BibTeX values and simple values</title></head>
+<body><pre>
+
+Text::BibTeX::Value(3pmUser Contributed Perl DocumentatiText::BibTeX::Value(3pm)
+
+
+
+NAME
+       Text::BibTeX::Value - interfaces to BibTeX values and simple values
+
+SYNOPSIS
+          use Text::BibTeX;
+
+          $entry = new Text::BibTeX::Entry;
+
+          # set the &apos;preserve_values&apos; flag to 1 for this parse
+          $entry-&gt;parse ($filename, $filehandle, 1);
+
+          # &apos;get&apos; method now returns a Text::BibTeX::Value object
+          # rather than a string
+          $value = $entry-&gt;get ($field);
+
+          # query the `Value&apos; object (list of SimpleValue objects)
+          @all_values = $value-&gt;values;
+          $first_value = $value-&gt;value (0);
+          $last_value = $value-&gt;value (-1);
+
+          # query the simple value objects -- type will be one of BTAST_STRING,
+          # BTAST_MACRO, or BTAST_NUMBER
+          use Text::BibTex (&apos;:nodetypes&apos;);   # import &quot;node type&quot; constants
+          $is_macro = ($first_value-&gt;type == BTAST_MACRO);
+          $text = $first_value-&gt;text;
+
+DESCRIPTION
+       The &quot;Text::BibTeX::Value&quot; module provides two classes,
+       &quot;Text::BibTeX::Value&quot; and &quot;Text::BibTeX::SimpleValue&quot;, which respectively
+       give you access to BibTeX &quot;compound values&quot; and &quot;simple values&quot;.  Recall
+       that every field value in a BibTeX entry is the concatenation of one or
+       more simple values, and that each of those simple values may be a literal
+       string, a macro (abbreviation), or a number.  Normally with
+       &quot;Text::BibTeX&quot;, field values are &quot;fully processed,&quot; so that you only have
+       access to the string that results from expanding macros, converting
+       numbers to strings, concatenating all sub-strings, and collapsing
+       whitespace in the resulting string.
+
+       For example, in the following entry:
+
+          @article{homer97,
+            author = &quot;Homer Simpson&quot; # and # &quot;Ned Flanders&quot;,
+            title = {Territorial Imperatives in Modern Suburbia},
+            journal = jss,
+            year = 1997
+          }
+
+       we see the full range of options.  The &quot;author&quot; field consists of three
+       simple values: a string, a macro (&quot;and&quot;), and another string.  The
+       &quot;title&quot; field is a single string, and the &quot;journal&quot; and &quot;year&quot; fields
+       are, respectively, a single macro and a single number.  If you parse this
+       entry in the usual way:
+
+          $entry = new Text::BibTeX::Entry $entry_text;
+
+       then the &quot;get&quot; method on $entry would return simple strings.  Assuming
+       that the &quot;and&quot; macro is defined as &quot; and &quot;, then
+
+          $entry-&gt;get (&apos;author&apos;)
+
+       would return the Perl string &quot;Homer Simpson and Ned Flanders&quot;.
+&#12;       However, you can also request that the library preserve the input values
+       in your entries, i.e. not lose the information about which values use
+       macros, which values are composed of multiple simple values, and so on.
+       There are two ways to make this request: per-file and per-entry.  For a
+       per-file request, use the &quot;preserve_values&quot; method on your &quot;File&quot; object:
+
+          $bibfile = new Text::BibTeX::File $filename;
+          $bibfile-&gt;preserve_values (1);
+
+          $entry = new Text::BibTeX::Entry $bibfile;
+          $entry-&gt;get ($field);        # returns a Value object
+
+          $bibfile-&gt;preserve_values (0);
+          $entry = new Text::BibTeX::Entry $bibfile;
+          $entry-&gt;get ($field);        # returns a string
+
+       If you&apos;re not using a &quot;File&quot; object, or want to control things at a finer
+       scale, then you have to pass in the &quot;preserve_values&quot; flag when invoking
+       &quot;read&quot;, &quot;parse&quot;, or &quot;parse_s&quot; on your &quot;Entry&quot; objects:
+
+          # no File object, parsing from a string
+          $entry = new Text::BibTeX::Entry;
+          $entry-&gt;parse_s ($entry_text, 0);  # preserve_values=0 (default)
+          $entry-&gt;get ($field);        # returns a string
+
+          $entry-&gt;parse_s ($entry_text, 1);
+          $entry-&gt;get ($field);        # returns a Value object
+
+          # using a File object, but want finer control
+          $entry-&gt;read ($bibfile, 0);  # now get will return strings (default)
+          $entry-&gt;read ($bibfile, 1);  # now get will return Value objects
+
+       A compound value, usually just called a value, is simply a list of simple
+       values.  The &quot;Text::BibTeX::Value&quot; class (hereinafter abbreviated as
+       &quot;Value&quot;) provides a simple interface to this list; you can request the
+       whole list, or an individual member of the list.  The &quot;SimpleValue&quot; class
+       gives you access to the innards of each simple value, which consist of
+       the type and the text.  The type just tells you if this simple value is a
+       string, macro, or number; it is represented using the Perl translation of
+       the &quot;node type&quot; enumeration from C.  The possible types are
+       &quot;BTAST_STRING&quot;, &quot;BTAST_NUMBER&quot;, and &quot;BTAST_MACRO&quot;.  The text is just what
+       appears in the original entry text, be it a string, number, or macro.
+
+       For example, we could parse the above entry in &quot;preserve values&quot; mode as
+       follows:
+
+          $entry-&gt;parse_s ($entry_text, 1);   # preserve_values is 1
+
+       Then, using the &quot;get&quot; method on $entry would return not a string, but a
+       &quot;Value&quot; object.  We can get the list of all simple values using the
+       &quot;values&quot; method, or a single value using &quot;value&quot;:
+
+          $author = $entry-&gt;get (&apos;author&apos;);   # now a Text::BibTeX::Value object
+          @all_values = $author-&gt;values;      # array of Text::BibTeX::SimpleValue
+          $second = $author-&gt;value (1);       # same as $all_values[1]
+
+       The simple values may be queried using the &quot;Text::BibTeX::SimpleValue&quot;
+       methods, &quot;type&quot; and &quot;text&quot;:
+
+          $all_values[0]-&gt;type;               # returns BTAST_STRING
+          $second-&gt;type;                      # returns BTAST_MACRO
+
+          $all_values[0]-&gt;text;               # &quot;Homer Simpson&quot;
+          $second-&gt;text;                      # &quot;and&quot; (NOT the macro expansion!)
+
+          $entry-&gt;get (&apos;year&apos;)-&gt;value (0)-&gt;text;   # &quot;1997&quot;
+
+METHODS
+       Normally, you won&apos;t need to create &quot;Value&quot; or &quot;SimpleValue&quot;
+       objects---they&apos;ll be created for you when an entry is parsed, and
+       returned to you by the &quot;get&quot; method in the &quot;Entry&quot; class.  Thus, the
+       query methods (&quot;values&quot; and &quot;value&quot; for the &quot;Value&quot; class, &quot;type&quot; and
+       &quot;text&quot; for &quot;SimpleValue&quot;) are probably all you need to worry about.  If
+       you wish, though, you can create new values and simple values using the
+       two classes&apos; respective constructors.  You can also put newly-created
+       &quot;Value&quot; objects back into an existing &quot;Entry&quot; object using the &quot;set&quot;
+       entry method; it doesn&apos;t matter how the entry was parsed, this is
+       acceptable anytime.
+
+   Text::BibTeX::Value methods
+       new (SVAL, ...)
+           Creates a new &quot;Value&quot; object from a list of simple values.  Each
+           simple value, SVAL, may be either a &quot;SimpleValue&quot; object or a
+           reference to a two-element list containing the type and text of the
+           simple value.  For example, one way to recreate the &quot;author&quot; field of
+           the example entry in &quot;DESCRIPTION&quot; would be:
+
+              $and_macro = new Text::BibTeX::SimpleValue (BTAST_MACRO, &apos;and&apos;);
+              $value = new Text::BibTeX::Value
+                 ([BTAST_STRING, &apos;Homer Simpson&apos;],
+                  $and_macro,
+                  [BTAST_STRING, &apos;Ned Flanders&apos;]);
+
+           The resulting &quot;Value&quot; object could then be installed into an entry
+           using the &quot;set&quot; method of the &quot;Entry&quot; class.
+
+       values ()
+           Returns the list of &quot;SimpleValue&quot; objects that make up a &quot;Value&quot;
+           object.
+
+       value (NUM)
+           Returns the NUM&apos;th &quot;SimpleValue&quot; object from the list of
+           &quot;SimpleValue&quot; objects that make up a &quot;Value&quot; object.  This is just
+           like a Perl array reference: NUM is zero-based, and negative numbers
+           count from the end of the array.
+
+   Text::BibTeX::SimpleValue methods
+       new (TYPE, TEXT)
+           Creates a new &quot;SimpleValue&quot; object with the specified TYPE and TEXT.
+           TYPE must be one of the allowed types for BibTeX simple values, i.e.
+           &quot;BTAST_STRING&quot;, &quot;BTAST_NUMBER&quot;, or &quot;BTAST_MACRO&quot;.  You&apos;ll probably
+           want to import these constants from &quot;Text::BibTeX&quot; using the
+           &quot;nodetypes&quot; export tag:
+
+              use Text::BibTeX qw(:nodetypes);
+
+           TEXT may be any string.  Note that if TYPE is &quot;BTAST_NUMBER&quot; and TEXT
+           is not a string of digits, the &quot;SimpleValue&quot; object will be created
+           anyways, but a warning will be issued.  No warning is issued about
+           non-existent macros.
+
+       type ()
+           Returns the type of a simple value.  This will be one of the allowed
+           &quot;node types&quot; as described under &quot;new&quot; above.
+
+       text ()
+           Returns the text of a simple value.  This is just the text that
+           appears in the original entry---unexpanded macro name, or unconverted
+           number.  (Of course, converting numbers doesn&apos;t make any difference
+           from Perl; in fact, it&apos;s all the same in C too, since the C code just
+           keeps numbers as strings of digits.  It&apos;s simply a matter of whether
+           the string of digits is represented as a string or a number, which
+           you might be interested in knowing if you want to preserve the
+           structure of the input as much possible.)
+
+SEE ALSO
+       Text::BibTeX, Text::BibTeX::File, Text::BibTeX::Entry
+
+AUTHOR
+       Greg Ward &lt;gward@python.net&gt;
+
+COPYRIGHT
+       Copyright (c) 1997-2000 by Gregory P. Ward.  All rights reserved.  This
+       file is part of the Text::BibTeX library.  This library is free software;
+       you may redistribute it and/or modify it under the same terms as Perl
+       itself.
+
+
+
+perl v5.14.2                       2012-06-02           Text::BibTeX::Value(3pm)
+
+</pre></body></html>

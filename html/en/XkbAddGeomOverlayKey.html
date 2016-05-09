@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbAddGeomOverlayKey - Add a key to an existing overlay row</title></head>
+<body><pre>
+
+XkbAddGeomOverlayKey(3)           XKB FUNCTIONS          XkbAddGeomOverlayKey(3)
+
+
+
+NAME
+       XkbAddGeomOverlayKey - Add a key to an existing overlay row
+
+SYNOPSIS
+       XkbOverlayKeyPtr  XkbAddGeomOverlayKey  (XkbOverlayPtr overlay, XkbRowPtr
+              row, char *under);
+
+ARGUMENTS
+       - overlay
+              overlay to be updated
+
+       - row  row in overlay to be updated
+
+       - under
+              primary name of the key to be considered
+
+DESCRIPTION
+       Xkb provides functions to add a single new element to the top-level  key&#8208;
+       board  geometry.  In  each  case  the  num_ * fields of the corresponding
+       structure is incremented by 1. These functions do not change sz_*  unless
+       there  is  no more room in the array. Some of these functions fill in the
+       values of the element&apos;s structure from the  arguments.  For  other  func&#8208;
+       tions, you must explicitly write code to fill the structure&apos;s elements.
+
+       The  top-level  geometry  description includes a list of geometry proper&#8208;
+       ties.  A geometry property associates an arbitrary string with an equally
+       arbitrary  name. Programs that display images of keyboards can use geome&#8208;
+       try properties as hints, but they are not interpreted by  Xkb.  No  other
+       geometry structures refer to geometry properties.
+
+       XkbAddGeomOverlayKey adds one key to the row in the overlay.  If there is
+       no key named under in the row of the underlying section,  XkbAddGeomOver&#8208;
+       layKey returns NULL.
+
+STRUCTURES
+           typedef struct _XkbOverlayKey {
+               XkbKeyNameRec           over;      /&#8727; name of this overlay key */
+               XkbKeyNameRec           under;     /&#8727; name of the key under this overlay key */
+           } XkbOverlayKeyRec,*XkbOverlayKeyPtr;
+
+
+
+
+X Version 11                      libX11 1.5.0           XkbAddGeomOverlayKey(3)
+
+</pre></body></html>

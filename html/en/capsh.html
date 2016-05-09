@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>capsh - 'bash' wrapper to raise and lower the bset and pI capabilities</title></head>
+<body><pre>
+
+CAPSH(8)                 System Administration Utilities                CAPSH(8)
+
+
+
+NAME
+       capsh - &apos;bash&apos; wrapper to raise and lower the bset and pI capabilities
+
+DESCRIPTION
+       /sbin/capsh [args ...]
+
+       --help this message
+
+       --print
+              display capability relevant state
+
+       --decode=xxx
+              decode a hex string to a list of caps
+
+       --drop=xxx
+              remove xxx,.. capabilities from bset
+
+       --caps=xxx
+              set caps as per cap_from_text()
+
+       --inh=xxx
+              set xxx,.. inheritiable set
+
+       --secbits=&lt;n&gt;
+              write a new value for securebits
+
+       --keep=&lt;n&gt;
+              set keep-capabability bit to &lt;n&gt;
+
+       --uid=&lt;n&gt;
+              set uid to &lt;n&gt; (hint: id &lt;username&gt;)
+
+       --chroot=path
+              chroot(2) to this path to invoke bash
+
+       --killit=&lt;n&gt;
+              send signal(n) to child
+
+       --forkfor=&lt;n&gt;
+              fork and make child sleep for &lt;n&gt; sec
+
+       ==     re-exec(capsh) with args as for --
+
+       --     remaing arguments are for /bin/bash (without -- [/sbin/capsh] will
+              simply exit(0))
+
+
+
+capsh 2.17                       September 2009                         CAPSH(8)
+
+</pre></body></html>

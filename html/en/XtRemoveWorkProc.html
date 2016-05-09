@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtAppAddWorkProc, XtRemoveWorkProc - Add and remove background processing procedures</title></head>
+<body><pre>
+
+XtAppAddWorkProc(3)               XT FUNCTIONS               XtAppAddWorkProc(3)
+
+
+
+NAME
+       XtAppAddWorkProc, XtRemoveWorkProc - Add and remove background processing
+       procedures
+
+SYNTAX
+       XtWorkProcId XtAppAddWorkProc(XtAppContext app_context, XtWorkProc proc,
+              XtPointer client_data);
+
+       void XtRemoveWorkProc(XtWorkProcId id);
+
+ARGUMENTS
+       app_context
+                 Specifies the application context that identifies the applica&#8208;
+                 tion.
+
+       client_data
+                 Specifies the argument that is to be passed to the specified
+                 procedure when it is called.
+
+       proc      Specifies the procedure that is.
+
+       id        Specifies which work procedure to remove.
+
+DESCRIPTION
+       The XtAppAddWorkProc function adds the specified work procedure for the
+       application identified by app_context.
+
+       The XtRemoveWorkProc function explicitly removes the specified background
+       work procedure.
+
+SEE ALSO
+       XtAppNextEvent(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3               XtAppAddWorkProc(3)
+
+</pre></body></html>

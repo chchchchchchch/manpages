@@ -1,0 +1,33 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcPatternAdd - Add a value to a pattern</title></head>
+<body><pre>
+
+FcPatternAdd(3)                                                  FcPatternAdd(3)
+
+
+
+NAME
+       FcPatternAdd - Add a value to a pattern
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool  FcPatternAdd  (FcPattern  *p,  const char *object, FcValue value,
+       FcBool append);
+
+DESCRIPTION
+       Adds a single value to the list of values associated  with  the  property
+       named  `object.   If  `append is FcTrue, the value is added at the end of
+       any existing list, otherwise it is inserted at the beginning.  `value&apos; is
+       saved  (with  FcValueSave)  when  inserted  into  the pattern so that the
+       library retains no reference to any application-supplied data structure.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                  FcPatternAdd(3)
+
+</pre></body></html>

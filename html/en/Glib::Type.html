@@ -1,0 +1,296 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Glib::Type -  Utilities for dealing with the GLib Type system</title></head>
+<body><pre>
+
+Glib::Type(3pm)        User Contributed Perl Documentation       Glib::Type(3pm)
+
+
+
+NAME
+       Glib::Type -  Utilities for dealing with the GLib Type system
+
+DESCRIPTION
+       This package defines several utilities for dealing with the GLib type
+       system from Perl.  Because of some fundamental differences in how the
+       GLib and Perl type systems work, a fair amount of the binding magic leaks
+       out, and you can find most of that in the &quot;Glib::Type::register*&quot;
+       functions, which register new types with the GLib type system.
+
+       Most of the rest of the functions provide introspection functionality,
+       such as listing properties and values and other cool stuff that is used
+       mainly by Glib&apos;s reference documentation generator (see Glib::GenPod).
+
+METHODS
+   list = Glib::Type-&gt;list_ancestors ($package)
+       &#183;   $package (string)
+
+       List the ancestry of package, as seen by the GLib type system.  The
+       important difference is that GLib&apos;s type system implements only single
+       inheritance, whereas Perl&apos;s @ISA allows multiple inheritance.
+
+       This returns the package names of the ancestral types in reverse order,
+       with the root of the tree at the end of the list.
+
+       See also list_interfaces ().
+
+   list = Glib::Type-&gt;list_interfaces ($package)
+       &#183;   $package (string)
+
+       List the GInterfaces implemented by the type associated with package.
+       The interfaces are returned as package names.
+
+   list = Glib::Type-&gt;list_signals ($package)
+       &#183;   $package (string)
+
+       List the signals associated with package.  This lists only the signals
+       for package, not any of its parents.  The signals are returned as a list
+       of anonymous hashes which mirror the GSignalQuery structure defined in
+       the C API reference.
+
+       - signal_id
+           Numeric id of a signal.  It&apos;s rare that you&apos;ll need this in
+           Gtk2-Perl.
+
+       - signal_name
+           Name of the signal, such as what you&apos;d pass to &quot;signal_connect&quot;.
+
+       - itype
+           The instance type for which this signal is defined.
+
+       - signal_flags
+           GSignalFlags describing this signal.
+
+       - return_type
+           The return type expected from handlers for this signal.  If undef or
+           not present, then no return is expected.  The type name is mapped to
+           the corresponding Perl package name if it is known, otherwise you get
+           the raw C name straight from GLib.
+
+       - param_types
+           The types of the parameters passed to any callbacks connected to the
+           emission of this signal.  The list does not include the instance,
+           which is always first, and the user data from &quot;signal_connect&quot;, which
+           is always last (unless the signal was connected with &quot;swap&quot;, which
+           swaps the instance and the data, but you get the point).
+
+   list = Glib::Type-&gt;list_values ($package)
+       &#183;   $package (string)
+
+       List the legal values for the GEnum or GFlags type $package.  If $package
+       is not a package name registered with the bindings, this name is passed
+       on to g_type_from_name() to see if it&apos;s a registered flags or enum type
+       that just hasn&apos;t been registered with the bindings by
+       &quot;gperl_register_fundamental()&quot; (see Glib::xsapi).  If $package is not the
+       name of an enum or flags type, this function will croak.
+
+       Returns the values as a list of hashes, one hash for each value,
+       containing the value, name and nickname, eg. for Glib::SignalFlags
+
+           { value =&gt; 8,
+             name  =&gt; &apos;G_SIGNAL_NO_RECURSE&apos;,
+             nick  =&gt; &apos;no-recurse&apos;
+           }
+
+   string = Glib::Type-&gt;package_from_cname ($cname)
+       &#183;   $cname (string)
+
+       Convert a C type name to the corresponding Perl package name.  If no
+       package is registered to that type, returns $cname.
+
+   Glib::Type-&gt;register ($parent_class, $new_class, ...)
+       &#183;   $parent_class (package) type from which to derive
+
+       &#183;   $new_class (package) name of new type
+
+       &#183;   ... (list) arguments for creation
+
+       Register a new type with the GLib type system.
+
+       This is a traffic-cop function.  If $parent_type derives from
+       Glib::Object, this passes the arguments through to &quot;register_object&quot;.  If
+       $parent_type is Glib::Flags or Glib::Enum, this strips $parent_type and
+       passes the remaining args on to &quot;register_enum&quot; or &quot;register_flags&quot;.  See
+       those functions&apos; documentation for more information.
+
+   Glib::Type-&gt;register_enum ($name, ...)
+       &#183;   $name (string) package name for new enum type
+
+       &#183;   ... (list) new enum&apos;s values; see description.
+
+       Register and initialize a new Glib::Enum type with the provided &quot;values&quot;.
+       This creates a type properly registered GLib so that it can be used for
+       property and signal parameter or return types created with
+       &quot;Glib::Type-&gt;register&quot; or &quot;Glib::Object::Subclass&quot;.
+
+       The list of values is used to create the &quot;nicknames&quot; that are used in
+       general Perl code; the actual numeric values used at the C level are
+       automatically assigned, starting with 1.  If you need to specify a
+       particular numeric value for a nick, use an array reference containing
+       the nickname and the numeric value, instead.  You may mix and match the
+       two styles.
+
+         Glib::Type-&gt;register_enum (&apos;MyFoo::Bar&apos;,
+                 &apos;value-one&apos;,            # assigned 1
+                 &apos;value-two&apos;,            # assigned 2
+                 [&apos;value-three&apos; =&gt; 15 ], # explicit 15
+                 [&apos;value-four&apos; =&gt; 35 ],  # explicit 35
+                 &apos;value-five&apos;,           # assigned 5
+         );
+&#12;       If you use the array-ref form, beware: the code performs no validation
+       for unique values.
+
+   Glib::Type-&gt;register_flags ($name, ...)
+       &#183;   $name (string) package name of new flags type
+
+       &#183;   ... (list) flag values, see discussion.
+
+       Register and initialize a new Glib::Flags type with the provided
+       &quot;values&quot;.  This creates a type properly registered GLib so that it can be
+       used for property and signal parameter or return types created with
+       &quot;Glib::Type-&gt;register&quot; or &quot;Glib::Object::Subclass&quot;.
+
+       The list of values is used to create the &quot;nicknames&quot; that are used in
+       general Perl code; the actual numeric values used at the C level are
+       automatically assigned, of the form 1&lt;&lt;i, starting with i = 0.  If you
+       need to specify a particular numeric value for a nick, use an array
+       reference containing the nickname and the numeric value, instead.  You
+       may mix and match the two styles.
+
+         Glib::Type-&gt;register_flags (&apos;MyFoo::Baz&apos;,
+                  &apos;value-one&apos;,               # assigned 1&lt;&lt;0
+                  &apos;value-two&apos;,               # assigned 1&lt;&lt;1
+                  [&apos;value-three&apos; =&gt; 1&lt;&lt;10 ], # explicit 1&lt;&lt;10
+                  [&apos;value-four&apos; =&gt; 0x0f ],   # explicit 0x0f
+                  &apos;value-five&apos;,              # assigned 1&lt;&lt;4
+         );
+
+       If you use the array-ref form, beware: the code performs no validation
+       for unique values.
+
+   Glib::Type-&gt;register_object ($parent_package, $new_package, ...)
+       &#183;   $parent_package (string) name of the parent package, which must be a
+           derivative of Glib::Object.
+
+       &#183;   $new_package (string) usually __PACKAGE__.
+
+       &#183;   ... (list) key/value pairs controlling how the class is created.
+
+       Register new_package as an officially GLib-sanctioned derivative of the
+       (GObject derivative) parent_package.  This automatically sets up an @ISA
+       entry for you, and creates a new GObjectClass under the hood.
+
+       The ... parameters are key/value pairs, currently supporting:
+
+       signals =&gt; HASHREF
+           The &quot;signals&quot; key contains a hash, keyed by signal names, which
+           describes how to set up the signals for new_package.
+
+           If the value is a code reference, the named signal must exist
+           somewhere in parent_package or its ancestry; the code reference will
+           be used to override the class closure for that signal.  This is the
+           officially sanctioned way to override virtual methods on
+           Glib::Objects.  The value may be a string rather than a code
+           reference, in which case the sub with that name in new_package will
+           be used.  (The function should not be inherited.)
+
+           If the value is a hash reference, the key will be the name of a new
+           signal created with the properties defined in the hash.  All of the
+           properties are optional, with defaults provided:
+
+           class_closure =&gt; subroutine or undef
+               Use this code reference (or sub name) as the class closure (that
+               is, the default handler for the signal).  If not specified,
+               &quot;do_signal_name&quot;, in the current package, is used.
+
+           return_type =&gt; package name or undef
+               Return type for the signal.  If not specified, then the signal
+               has void return.
+
+           param_types =&gt; ARRAYREF
+               Reference to a list of parameter types (package names), omitting
+               the instance and user data.  Callbacks connected to this signal
+               will receive the instance object as the first argument, followed
+               by arguments with the types listed here, and finally by any user
+               data that was supplied when the callback was connected.  Not
+               specifying this key is equivalent to supplying an empty list,
+               which actually means instance and maybe data.
+
+           flags =&gt; Glib::SignalFlags
+               Flags describing this signal&apos;s properties. See the GObject C API
+               reference&apos; description of GSignalFlags for a complete
+               description.
+
+           accumulator =&gt; subroutine or undef
+               The signal accumulator is a special callback that can be used to
+               collect return values of the various callbacks that are called
+               during a signal emission.  Generally, you can omit this
+               parameter; custom accumulators are used to do things like
+               stopping signal propagation by return value or creating a list of
+               returns, etc.  See &quot;SIGNALS&quot; in Glib::Object::Subclass for
+               details.
+
+       properties =&gt; ARRAYREF
+           Array of Glib::ParamSpec objects, each describing an object property
+           to add to the new type.  These properties are available for use by
+           all code that can access the object, regardless of implementation
+           language.  See Glib::ParamSpec.  This list may be empty; if it is
+           not, the functions &quot;GET_PROPERTY&quot; and &quot;SET_PROPERTY&quot; in $new_package
+           will be called to get and set the values.  Note that an object
+           property is just a mechanism for getting and setting a value -- it
+           implies no storage.  As a convenience, however, Glib::Object provides
+           fallbacks for GET_PROPERTY and SET_PROPERTY which use the property
+           nicknames as hash keys in the object variable for storage.
+
+           Additionally, you may specify ParamSpecs as a describing hash instead
+           of as an object; this form allows you to supply explicit getter and
+           setter methods which override GET_PROPERY and SET_PROPERTY.  The
+           getter and setter are both optional in the hash form.  For example:
+
+              Glib::Type-&gt;register_object (&apos;Glib::Object&apos;, &apos;Foo&apos;,
+                 properties =&gt; [
+                    # specified normally
+                    Glib::ParamSpec-&gt;string (...),
+                    # specified explicitly
+                    {
+                       pspec =&gt; Glib::ParamSpec-&gt;int (...),
+                       set =&gt; sub {
+                          my ($object, $newval) = @_;
+                          ...
+                       },
+                       get =&gt; sub {
+                          my ($object) = @_;
+                          ...
+                          return $val;
+                       },
+                    },
+                 ]
+              );
+
+           You can mix the two declaration styles as you like.  If you have
+           individual &quot;get_foo&quot; / &quot;set_foo&quot; methods with the operative code for
+           a property then the &quot;get&quot;/&quot;set&quot; form is a handy way to go straight to
+           that.
+
+       interfaces =&gt; ARRAYREF
+           Array of interface package names that the new object implements.
+           Interfaces are the GObject way of doing multiple inheritance, thus,
+           in Perl, the package names will be prepended to @ISA and certain
+           inheritable and overrideable ALLCAPS methods will automatically be
+           called whenever needed.  Which methods exactly depends on the
+           interface -- Gtk2::CellEditable for example uses START_EDITING,
+           EDITING_DONE, and REMOVE_WIDGET.
+
+SEE ALSO
+       Glib
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Glib for a full notice.
+
+
+
+perl v5.14.2                       2012-05-24                    Glib::Type(3pm)
+
+</pre></body></html>

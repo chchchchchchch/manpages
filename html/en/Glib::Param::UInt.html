@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Glib::Param::UInt -  Wrapper for uint parameters in GLib</title></head>
+<body><pre>
+
+Glib::Param::UInt(3pm) User Contributed Perl DocumentationGlib::Param::UInt(3pm)
+
+
+
+NAME
+       Glib::Param::UInt -  Wrapper for uint parameters in GLib
+
+HIERARCHY
+         Glib::ParamSpec
+         +----Glib::Param::UInt
+
+         Glib::ParamSpec
+         +----Glib::Param::UChar
+
+         Glib::ParamSpec
+         +----Glib::Param::ULong
+
+DESCRIPTION
+       This page documents the extra accessors available for all of the unsigned
+       integer type paramspecs: UChar, UInt, and ULong.  Perl really only
+       supports full-size integers, so all of these methods return UVs; the
+       distinction of integer size is important to the underlying C library and
+       also determines the data value range.
+
+METHODS
+   unsigned = $pspec-&gt;get_maximum
+   unsigned = $pspec-&gt;get_minimum
+SEE ALSO
+       Glib, Glib::ParamSpec, Glib::ParamSpec
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Glib for a full notice.
+
+
+
+perl v5.14.2                       2012-05-24             Glib::Param::UInt(3pm)
+
+</pre></body></html>

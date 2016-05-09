@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::LayoutLine - a line in a Pango::Layout</title></head>
+<body><pre>
+
+Pango::LayoutLine(3pm) User Contributed Perl DocumentationPango::LayoutLine(3pm)
+
+
+
+NAME
+       Pango::LayoutLine - a line in a Pango::Layout
+
+HIERARCHY
+         Glib::Boxed
+         +----Pango::LayoutLine
+
+METHODS
+   (ink_rect, logical_rect) = $line-&gt;get_extents
+   (ink_rect, logical_rect) = $line-&gt;get_pixel_extents
+   x_pos = $line-&gt;index_to_x ($index_, $trailing)
+       &#183;   $index_ (integer)
+
+       &#183;   $trailing (boolean)
+
+   list = $line-&gt;get_pixel_extents
+   list = $line-&gt;get_x_ranges ($start_index, $end_index)
+       &#183;   $start_index (integer)
+
+       &#183;   $end_index (integer)
+
+   list = $line-&gt;x_to_index ($x_pos)
+       &#183;   $x_pos (integer)
+
+SEE ALSO
+       Pango, Glib::Boxed
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15             Pango::LayoutLine(3pm)
+
+</pre></body></html>

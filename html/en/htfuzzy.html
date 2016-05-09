@@ -1,0 +1,80 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htfuzzy - fuzzy command-line search utility for the ht://Dig search engine</title></head>
+<body><pre>
+
+htdig(1)                                                                htdig(1)
+
+
+
+NAME
+       htfuzzy  -  fuzzy  command-line  search  utility  for the ht://Dig search
+       engine
+
+SYNOPSIS
+       htfuzzy [-c configfile] [-v] algorithm [options]
+
+DESCRIPTION
+       Description to follow here
+
+OPTIONS
+       -c configfile
+              Use the specified configfile instead of the default.
+
+       -v     Verbose mode Use this to get more  verbose  output  while  running
+              htfuzzy. More than one v can be specified (ie.  -vv , -vvv
+               etc  ).  Specifying more than two v&apos;s is probably only useful for
+              debugging purposes.
+
+Supported Algorithms
+       Different algorithms are supported for searching:
+              soundex Creates  a slightly modified soundex key database. Differ&#8208;
+              ences  with  the standard soundex algorithm are: Keys are 6 digits
+              and the first letter is also encoded.        metaphone  Creates  a
+              metaphone  key  database.  This algorithm is more specific to Eng&#8208;
+              lish, but  will  get  fewer   &quot;weird&quot;  matches  than  the  soundex
+              algorithm.
+
+              accents (No description of the algorithm at the moment)
+
+              endings  Creates   two   databases  which  can  be  used  to match
+              common word endings. The creation of these  databases  requires  a
+              list of affix rules and a dictionary which uses those affix rules.
+              The format of the affix  rules and  dictionary  files are the ones
+              used by the ispell program. Included with the distribution are the
+              affix rules for English and a  fairly  small  English  dictionary.
+              Other  languages  can  be  supported  by  getting  the appropriate
+              affix rules and dictionaries. These are available  for  many  lan&#8208;
+              guages; check the ispell distribution for more details.
+
+              synonyms Creates a database of synonyms for words. It reads a text
+              database of synonyms and creates a  database  that  htsearch   can
+              then  use.  Each line of the text database consists of words where
+              the first word will have the other words on that line as synonyms.
+
+
+Notes on searching
+       Please consult specialised literature to find out how the different algo&#8208;
+       rithms work or simply try another
+              search strategy you do not get the intended search results.
+
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+SEE ALSO
+       Please   refer   to   the   HTML   pages   (in   the  htdig-doc  package)
+       /usr/share/doc/htdig-doc/html/index.html and the manual  pages  htdigcon&#8208;
+       fig(8)  ,  htmerge(1)  ,  htnotify(1)  ,  htsearch(1) and rundig(1) for a
+       detailed description of ht://Dig and its commands.
+&#12;AUTHOR
+       This manual page was written by Robert Ribnitz. It is based on documenta&#8208;
+       tion  of  ht://Dig, and on earlier manpages provided by Christian Schwarz
+       and Stijn de Bekker.
+
+
+
+                                  21 July 1997                          htdig(1)
+
+</pre></body></html>

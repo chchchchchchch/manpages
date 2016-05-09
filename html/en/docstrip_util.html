@@ -1,0 +1,633 @@
+<html>
+<head><meta charset=utf-8/>
+<title>docstrip_util - Docstrip-related utilities</title></head>
+<body><pre>
+
+docstrip_util(3tcl)         Literate programming tool        docstrip_util(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       docstrip_util - Docstrip-related utilities
+
+SYNOPSIS
+       package require Tcl  8.4
+
+       package require docstrip  ?1.2?
+
+       package require docstrip::util  ?1.3?
+
+       pkgProvide name version terminals
+
+       pkgIndex ?terminal ...?
+
+       fileoptions ?option value ...?
+
+       docstrip::util::index_from_catalogue dir pattern ?option value ...?
+
+       docstrip::util::modules_from_catalogue target source ?option value ...?
+
+       docstrip::util::classical_preamble metaprefix message target ?source ter&#8208;
+       minals ...?
+
+       docstrip::util::classical_postamble  metaprefix  message  target  ?source
+       terminals ...?
+
+       docstrip::util::packages_provided text ?setup-script?
+
+       docstrip::util::ddt2man text
+
+       docstrip::util::guards subcmd text
+
+       docstrip::util::patch  source-var  terminals  fromtext diff ?option value
+       ...?
+
+       docstrip::util::thefile filename ?option value ...?
+
+       docstrip::util::import_unidiff diff-text ?warning-var?
+
+_________________________________________________________________
+
+DESCRIPTION
+       The docstrip::util package is meant for collecting various utility proce&#8208;
+       dures  that  are mainly useful at installation or development time. It is
+       separate from the base package to avoid overhead when the latter is  used
+       to source code.
+
+PACKAGE INDEXING COMMANDS
+       Like  raw  &quot;.tcl&quot;  files,  code  lines  in  docstrip  source files can be
+       searched for package declarations and corresponding indices  constructed.
+       A complication is however that one cannot tell from the code blocks them&#8208;
+       selves which will fit together to make a working package;  normally  that
+       information  would  be  found in an accompanying &quot;.ins&quot; file, but parsing
+       one of those is not an easy task.  Therefore docstrip::util introduces an
+       alternative  encoding  of  such information, in the form of a declarative
+       Tcl script: the catalogue (of the contents in a source file).
+
+       The special commands which are available inside a catalogue are:
+
+       pkgProvide name version terminals
+              Declares that the code for a package with name  name  and  version
+              version is made up from those modules in the source file which are
+              selected by the terminals list of guard expression terminals. This
+              code  should  preferably not contain a package provide command for
+              the package, as one will be provided by the package loading mecha&#8208;
+              nisms.
+
+       pkgIndex ?terminal ...?
+              Declares that the code for a package is made up from those modules
+              in the source file which are selected by the listed guard  expres&#8208;
+              sion terminals. The name and version of this package is determined
+              from package provide command(s) found in that  code  (hence  there
+              must be such a command in there).
+
+       fileoptions ?option value ...?
+              Declares the fconfigure options that should be in force when read&#8208;
+              ing the source; this can usually be ignored for pure ASCII  files,
+              but  if  the  file needs to be interpreted according to some other
+              -encoding then this is how to specify it. The command should  nor&#8208;
+              mally  appear  first in the catalogue, as it takes effect only for
+              commands following it.
+
+       Other Tcl commands are supported too ? a catalogue  is  parsed  by  being
+       evaluated  in  a  safe interpreter ? but they are rarely needed. To allow
+       for future extensions, unknown commands in  the  catalogue  are  silently
+       ignored.
+
+       To  simplify distribution of catalogues together with their source files,
+       the catalogue is stored in the source file itself as a module selected by
+       the  terminal &apos;docstrip.tcl::catalogue&apos;.  This supports both the style of
+       collecting all catalogue lines in one place and the style of putting each
+       catalogue line in close proximity of the code that it declares.
+
+       Putting  catalogue entries next to the code they declare may look as fol&#8208;
+       lows
+
+
+              %    First there&apos;s the catalogue entry
+              %    \begin{tcl}
+              %&lt;docstrip.tcl::catalogue&gt;pkgProvide foo::bar 1.0 {foobar load}
+              %    \end{tcl}
+              %    second a metacomment used to include a copyright message
+              %    \begin{macrocode}
+              %&lt;*foobar&gt;
+              %% This file is placed in the public domain.
+              %    \end{macrocode}
+              %    third the package implementation
+              %    \begin{tcl}
+              namespace eval foo::bar {
+                 # ... some clever piece of Tcl code elided ...
+              %    \end{tcl}
+              %    which at some point may have variant code to make use of a
+              %    |load|able extension
+              %    \begin{tcl}
+              %&lt;*load&gt;
+                 load [file rootname [info script]][info sharedlibextension]
+              %&lt;/load&gt;
+              %&lt;*!load&gt;
+                 # ... even more clever scripted counterpart of the extension
+                 # also elided ...
+              %&lt;/!load&gt;
+              }
+              %&lt;/foobar&gt;
+              %    \end{tcl}
+              %    and that&apos;s it!
+
+       The corresponding set-up with pkgIndex would be
+
+
+              %    First there&apos;s the catalogue entry
+              %    \begin{tcl}
+              %&lt;docstrip.tcl::catalogue&gt;pkgIndex foobar load
+              %    \end{tcl}
+              %    second a metacomment used to include a copyright message
+              %    \begin{tcl}
+              %&lt;*foobar&gt;
+              %% This file is placed in the public domain.
+              %    \end{tcl}
+              %    third the package implementation
+              %    \begin{tcl}
+              package provide foo::bar 1.0
+              namespace eval foo::bar {
+                 # ... some clever piece of Tcl code elided ...
+              %    \end{tcl}
+              %    which at some point may have variant code to make use of a
+              %    |load|able extension
+              %    \begin{tcl}
+              %&lt;*load&gt;
+                 load [file rootname [info script]][info sharedlibextension]
+              %&lt;/load&gt;
+              %&lt;*!load&gt;
+                 # ... even more clever scripted counterpart of the extension
+                 # also elided ...
+              %&lt;/!load&gt;
+              }
+              %&lt;/foobar&gt;
+              %    \end{tcl}
+              %    and that&apos;s it!
+
+
+       docstrip::util::index_from_catalogue dir pattern ?option value ...?
+              This command is a sibling of the standard pkg_mkIndex command,  in
+              that  it adds package entries to &quot;pkgIndex.tcl&quot; files. The differ&#8208;
+              ence is that it indexes docstrip-style source  files  rather  than
+              raw &quot;.tcl&quot; or loadable library files.  Only packages listed in the
+              catalogue of a file are considered.
+
+              The dir argument is the directory in which to look for files  (and
+              whose  &quot;pkgIndex.tcl&quot;  file should be amended).  The pattern argu&#8208;
+              ment is a glob pattern of files to  look  into;  a  typical  value
+              would  be  *.dtx  or  *.{dtx,ddt}. Remaining arguments are option-
+              value pairs, where the supported options are:
+
+              -recursein dirpattern
+                     If this option  is  given,  then  the  index_from_catalogue
+                     operation  will be repeated in each subdirectory whose name
+                     matches the dirpattern. -recursein * will cause the  entire
+                     subtree rooted at dir to be indexed.
+
+              -sourceconf dictionary
+                     Specify  fileoptions  to use when reading the catalogues of
+                     files (and also for reading the packages if  the  catalogue
+                     does  not contain a fileoptions command). Defaults to being
+                     empty. Primarily useful if your  system  encoding  is  very
+                     different from that of the source file (e.g., one is a two-
+                     byte encoding and the other is a one-byte encoding).  ascii
+                     and utf-8 are not very different in that sense.
+
+              -options terminals
+                     The  terminals  is  a list of terminals in addition to doc&#8208;
+                     strip.tcl::catalogue that  should  be  held  as  true  when
+                     extracting  the  catalogue.  Defaults  to being empty. This
+                     makes it possible to make use of &quot;variant sections&quot; in  the
+                     catalogue  itself,  e.g.  gaurd  some entries with an extra
+                     &quot;experimental&quot; and thus prevent them from appearing in  the
+                     index  unless  that  is generated with &quot;experimental&quot; among
+                     the -options.
+&#12;              -report boolean
+                     If the boolean is true then the return value will be a tex&#8208;
+                     tual, probably multiline, report on what was done. Defaults
+                     to false, in which  case  there  is  no  particular  return
+                     value.
+
+              -reportcmd commandPrefix
+                     Every  item in the report is handed as an extra argument to
+                     the command prefix. Since index_from_catalogue would  typi&#8208;
+                     cally  be  used  at  a  rather  high  level in installation
+                     scripts and the like, the commandPrefix defaults  to  &quot;puts
+                     stdout&quot;.  Use list to effectively disable this feature. The
+                     return values from the prefix are ignored.
+
+              The package ifneeded scripts that are generated contain one  pack&#8208;
+              age require docstrip command and one docstrip::sourcefrom command.
+              If the catalogue entry was of the pkgProvide kind then the package
+              ifneeded script also contains the package provide command.
+
+              Note  that  index_from_catalogue  never  removes  anything from an
+              existing &quot;pkgIndex.tcl&quot; file. Hence you may need to delete it  (or
+              have   pkg_mkIndex   recreate  it  from  scratch)  before  running
+              index_from_catalogue to update some piece of information, such  as
+              a package version number.
+
+
+       docstrip::util::modules_from_catalogue target source ?option value ...?
+              This  command is an alternative to index_from_catalogue which cre&#8208;
+              ates Tcl Module (&quot;.tm&quot;) files rather than &quot;pkgIndex.tcl&quot;  entries.
+              Since  this  action  is  more similar to what docstrip classically
+              does, it has features for putting pre- and postambles on the  gen&#8208;
+              erated files.
+
+              The  source  argument  is  the name of the source file to generate
+              &quot;.tm&quot; files from. The  target  argument  is  the  directory  which
+              should  count  as  a  module path, i.e., this is what the relative
+              paths derived from package names  are  joined  to.  The  supported
+              options are:
+
+              -preamble message
+                     A  message  to  put  in the preamble (initial block of com&#8208;
+                     ments) of generated files. Defaults to a space. May be sev&#8208;
+                     eral  lines,  which  are then separated by newlines. Tradi&#8208;
+                     tionally used for copyright notices or the like, but  meta&#8208;
+                     comment lines provide an alternative to that.
+
+              -postamble message
+                     Like  -preamble,  but  the message is put at the end of the
+                     file instead of the beginning. Defaults to being empty.
+
+              -sourceconf dictionary
+                     Specify fileoptions to use when reading  the  catalogue  of
+                     the  source (and also for reading the packages if the cata&#8208;
+                     logue does not contain a fileoptions command). Defaults  to
+                     being  empty.  Primarily  useful if your system encoding is
+                     very different from that of the source file (e.g., one is a
+                     two-byte  encoding  and  the other is a one-byte encoding).
+                     ascii and utf-8 are not very different in that sense.
+
+              -options terminals
+                     The terminals is a list of terminals in  addition  to  doc&#8208;
+                     strip.tcl::catalogue  that  should  be  held  as  true when
+                     extracting the catalogue. Defaults  to  being  empty.  This
+                     makes  it possible to make use of &quot;variant sections&quot; in the
+                     catalogue itself, e.g. gaurd some  entries  with  an  extra
+                     &quot;experimental&quot;  guard and thus prevent them from contribut&#8208;
+                     ing packages unless those are generated with &quot;experimental&quot;
+                     among the -options.
+
+              -formatpreamble commandPrefix
+                     Command  prefix used to actually format the preamble. Takes
+                     four additional arguments message, targetFilename,  source&#8208;
+                     Filename,  and  terminalList  and returns a fully formatted
+                     preamble.  Defaults  to  using  classical_preamble  with  a
+                     metaprefix of &apos;##&apos;.
+
+              -formatpostamble commandPrefix
+                     Command prefix used to actually format the postamble. Takes
+                     four additional arguments message, targetFilename,  source&#8208;
+                     Filename,  and  terminalList  and returns a fully formatted
+                     postamble. Defaults to  using  classical_postamble  with  a
+                     metaprefix of &apos;##&apos;.
+
+              -report boolean
+                     If  the  boolean  is  true  (which is the default) then the
+                     return value will be a textual, probably multiline,  report
+                     on  what was done. If it is false then there is no particu&#8208;
+                     lar return value.
+
+              -reportcmd commandPrefix
+                     Every item in the report is handed as an extra argument  to
+                     this  command  prefix.  Defaults to list, which effectively
+                     disables this feature. The return values  from  the  prefix
+                     are  ignored.  Use  for example &quot;puts stdout&quot; to get report
+                     items written immediately to the terminal.
+
+              An existing file of the same name as one to  be  created  will  be
+              overwritten.
+
+       docstrip::util::classical_preamble metaprefix message target ?source ter&#8208;
+       minals ...?
+              This command returns a preamble in the classical docstrip style
+
+
+              ##
+              ## This is `TARGET&apos;,
+              ## generated by the docstrip::util package.
+              ##
+              ## The original source files were:
+              ##
+              ## SOURCE (with options: `foo,bar&apos;)
+              ##
+              ## Some message line 1
+              ## line2
+              ## line3
+
+
+              if called as
+
+
+              docstrip::util::classical_preamble {##}\
+                &quot;\nSome message line 1\nline2\nline3&quot; TARGET SOURCE {foo bar}
+
+
+              The command supports preambles for files generated  from  multiple
+              sources,  even  though  modules_from_catalogue at present does not
+              need that.
+
+       docstrip::util::classical_postamble  metaprefix  message  target  ?source
+       terminals ...?
+              This command returns a postamble in the classical docstrip style
+
+
+              ## Some message line 1
+              ## line2
+              ## line3
+              ##
+              ## End of file `TARGET&apos;.
+
+
+              if called as
+
+
+              docstrip::util::classical_postamble {##}\
+                &quot;Some message line 1\nline2\nline3&quot; TARGET SOURCE {foo bar}
+
+
+              In  other  words,  the source and terminals arguments are ignored,
+              but supported for symmetry with classical_preamble.
+
+       docstrip::util::packages_provided text ?setup-script?
+              This command returns a list where every even index element is  the
+              name of a package provided by text when that is evaluated as a Tcl
+              script, and the following odd index element is  the  corresponding
+              version.  It is used to do package indexing of extracted pieces of
+              code, in the manner of pkg_mkIndex.
+
+              One difference to pkg_mkIndex is that the text gets evaluated in a
+              safe  interpreter.  package require commands are silently ignored,
+              as are unknown commands (which includes source  and  load).  Other
+              errors  cause  processing  of the text to stop, in which case only
+              those package declarations that had been  encountered  before  the
+              error will be included in the return value.
+
+              The  setup-script argument can be used to customise the evaluation
+              environment, if the code in text has some very special needs.  The
+              setup-script  is  evaluated  in  the  local  context  of the pack&#8208;
+              ages_provided procedure just before the text is processed. At that
+              time,  the name of the slave command for the safe interpreter that
+              will do this processing is kept in the local variable  c.  To  for
+              example  copy  the  contents of the ::env array to the safe inter&#8208;
+              preter, one might use a setup-script of
+
+                $c eval [list array set env [array get ::env]]
+
+SOURCE PROCESSING COMMANDS
+       Unlike the previous group of commands, which would use  docstrip::extract
+       to  extract some code lines and then process those further, the following
+       commands operate on text consisting of all types of lines.
+
+       docstrip::util::ddt2man text
+              The ddt2man command reformats text from the general docstrip  for&#8208;
+              mat  to doctools &quot;.man&quot; format (Tcl Markup Language for Manpages).
+              The different line types are treated as follows:
+
+              comment and metacomment lines
+                     The &apos;%&apos; and &apos;%%&apos; prefixes are removed, the rest of the text
+                     is kept as it is.
+
+              empty lines
+                     These  are  kept  as they are. (Effectively this means that
+                     they will count as comment lines after a comment  line  and
+                     as code lines after a code line.)
+
+              code lines
+                     example_begin  and  example_end  commands are placed at the
+                     beginning and end of every block of consecutive code lines.
+                     Brackets  in  a  code  line are converted to lb and rb com&#8208;
+                     mands.
+
+              verbatim guards
+                     These are processed as usual, so they do not show up in the
+                     result  but  every line in a verbatim block is treated as a
+                     code line.
+
+              other guards
+                     These are treated as code lines,  except  that  the  actual
+                     guard is emphasised.
+
+              At the time of writing, no project has employed doctools markup in
+              master source files, so experience  of  what  works  well  is  not
+              available. A source file could however look as follows
+
+
+              % [manpage_begin gcd n 1.0]
+              % [moddesc {Greatest Common Divisor}]
+              % [require gcd [opt 1.0]]
+              % [description]
+              %
+              % [list_begin definitions]
+              % [call [cmd gcd] [arg a] [arg b]]
+              %   The [cmd gcd] procedure takes two arguments [arg a] and [arg b] which
+              %   must be integers and returns their greatest common divisor.
+              proc gcd {a b} {
+              %   The first step is to take the absolute values of the arguments.
+              %   This relieves us of having to worry about how signs will be treated
+              %   by the remainder operation.
+                 set a [expr {abs($a)}]
+                 set b [expr {abs($b)}]
+              %   The next line does all of Euclid&apos;s algorithm! We can make do
+              %   without a temporary variable, since $a is substituted before the
+              %   [lb]set a $b[rb] and thus continues to hold a reference to the
+              %   &quot;old&quot; value of [var a].
+                 while {$b&gt;0} { set b [expr { $a % [set a $b] }] }
+              %   In Tcl 8.3 we might want to use [cmd set] instead of [cmd return]
+              %   to get the slight advantage of byte-compilation.
+              %&lt;tcl83&gt;  set a
+              %&lt;!tcl83&gt;   return $a
+              }
+              % [list_end]
+              %
+              % [manpage_end]
+
+
+              If  the above text is fed through docstrip::util::ddt2man then the
+              result will be a  syntactically  correct  doctools  manpage,  even
+              though its purpose is a bit different.
+
+              It is suggested that master source code files with doctools markup
+              are given the suffix &quot;.ddt&quot;, hence the &quot;ddt&quot; in ddt2man.
+
+       docstrip::util::guards subcmd text
+              The guards command returns information (mostly  of  a  statistical
+              nature) about the ordinary docstrip guards that occur in the text.
+              The subcmd selects what is returned.
+
+              counts List the guard expression terminals with counts. The format
+                     of the return value is a dictionary which maps the terminal
+                     name to the number of occurencies of it in the file.
+
+              exprcount
+                     List the guard expressions with counts. The format  of  the
+                     return  value  is a dictionary which maps the expression to
+                     the number of occurencies of it in the file.
+
+              exprerr
+                     List the syntactically incorrect  guard  expressions  (e.g.
+                     parentheses  do  not  match, or a terminal is missing). The
+                     return value is a list, with the elements in no  particular
+                     order.
+
+              expressions
+                     List  the  guard  expressions.  The return value is a list,
+                     with the elements in no particular order.
+
+              exprmods
+                     List the guard expressions with modifiers.  The  format  of
+                     the  return  value  is  a  dictionary where each index is a
+                     guard expression and each entry is a string with one  char&#8208;
+                     acter  for  every  guard line that has this expression. The
+                     characters in the entry specify what modifier was  used  in
+                     that  line:  +,  -,  *, /, or (for guard without modifier:)
+                     space. This is the most primitive form of  the  information
+                     gathered by guards.
+
+              names  List  the guard expression terminals. The return value is a
+                     list, with the elements in no particular order.
+
+              rotten List the malformed guard lines (this does not include lines
+                     where only the expression is malformed, though). The format
+                     of the return value is a dictionary which maps line numbers
+                     to their contents.
+
+       docstrip::util::patch  source-var  terminals  fromtext diff ?option value
+       ...?
+              This command tries to apply a diff file (for example a contributed
+              patch)  that  was  computed  for  a generated file to the docstrip
+              source. This can be useful if someone has edited a generated file,
+              thus  mistaking  it  for  being the source.  This command makes no
+              presumptions which are specific for the case  that  the  generated
+              file is a Tcl script.
+
+              patch  requires that the source file to patch is kept as a list of
+              lines in a variable, and the name of that variable in the  calling
+              context  is what goes into the source-var argument.  The terminals
+              is the list of terminals used to extract the file  that  has  been
+              patched.  The  diff  is  the  actual diff to apply (in a format as
+              explained below) and the fromtext is  the  contents  of  the  file
+              which  served as &quot;from&quot; when the diff was computed. Options can be
+              used to further control the process.
+
+              The process works by &quot;lifting&quot; the hunks in the diff  from  gener&#8208;
+              ated to source file, and then applying them to the elements of the
+              source-var. In order to do this lifting, it is necessary to deter&#8208;
+              mine  how  lines  in  the  fromtext  correspond to elements of the
+              source-var, and that is where the terminals come in; the source is
+              first  extracted under the given terminals, and the result of that
+              is then matched against the fromtext. This produces  a  map  which
+              translates  line  numbers stated in the diff to element numbers in
+              source-var, which is what is needed to lift the hunks.
+
+              The reason that both the terminals and the fromtext must be  given
+              is  twofold. First, it is very difficult to keep track of how many
+              lines of preamble are supplied some  other  way  than  by  copying
+              lines  from  source  files. Second, a generated file might contain
+              material from several source files. Both  make  it  impossible  to
+              predict  what line number an extracted file would have in the gen&#8208;
+              erated file, so instead the algorithm for computing the line  num&#8208;
+              ber  map  looks for a block of lines in the fromtext which matches
+              what can be extracted from the source. This matching  is  affected
+              by the following options:
+
+              -matching mode
+                     How  equal  must  two  lines be in order to match? The sup&#8208;
+                     ported modes are:
+
+                     exact  Lines must be equal as strings. This is the default.
+
+                     anyspace
+                            All sequences of whitespace characters are converted
+                            to single spaces before comparing.
+
+                     nonspace
+                            Only  non-whitespace  characters are considered when
+                            comparing.
+
+                     none   Any two lines are considered to be equal.
+
+              -metaprefix string
+                     The -metaprefix value to use when extracting.  Defaults  to
+                     &quot;%%&quot;,  but  for Tcl code it is more likely that &quot;#&quot; or &quot;##&quot;
+                     had been used for the generated file.
+
+              -trimlines boolean
+                     The -trimlines value to use when  extracting.  Defaults  to
+                     true.
+
+              The return value is in the form of a unified diff, containing only
+              those hunks which were not applied or were only partially applied;
+              a  comment  in  the header of each hunk specifies which case is at
+              hand. It is normally necessary to manually review both the  return
+              value from patch and the patched text itself, as this command can&#8208;
+              not adjust comment lines to match new content.
+
+              An example use would look like
+
+
+              set sourceL [split [docstrip::util::thefile from.dtx] \n]
+              set terminals {foo bar baz}
+              set fromtext [docstrip::util::thefile from.tcl]
+              set difftext [exec diff --unified from.tcl to.tcl]
+              set leftover [docstrip::util::patch sourceL $terminals $fromtext\
+                [docstrip::util::import_unidiff $difftext] -metaprefix {#}]
+              set F [open to.dtx w]; puts $F [join $sourceL \n]; close $F
+              return $leftover
+
+
+              Here, &quot;from.dtx&quot; was used as source for &quot;from.tcl&quot;, which  someone
+              modified into &quot;to.tcl&quot;. We&apos;re trying to construct a &quot;to.dtx&quot; which
+              can be used as source for &quot;to.tcl&quot;.
+
+       docstrip::util::thefile filename ?option value ...?
+              The thefile command opens the file  filename,  reads  it  to  end,
+              closes  it,  and returns the contents (dropping a final newline if
+              there is one). The option-value pairs are passed on to  fconfigure
+              to  configure  the  open file channel before anything is read from
+              it.
+
+       docstrip::util::import_unidiff diff-text ?warning-var?
+              This command parses a unified (diff flags -U and --unified) format
+              diff    into   the   list-of-hunks   format   expected   by   doc&#8208;
+              strip::util::patch. The diff-text argument is the  text  to  parse
+              and the warning-var is, if specified, the name in the calling con&#8208;
+              text of a variable to which any warnings  about  parsing  problems
+              will be appended.
+
+              The  return  value is a list of hunks. Each hunk is a list of five
+              elements &quot;start1 end1 start2 end2 lines&quot;. start1 and end1 are line
+              numbers  in  the  &quot;from&quot;  file  of the first and last respectively
+              lines of the hunk.  start2 and end2  are  the  corresponding  line
+              numbers  in the &quot;to&quot; file. Line numbers start at 1. The lines is a
+              list with two elements for each line in the hunk; the first speci&#8208;
+              fies  the  type  of  a line and the second is the actual line con&#8208;
+              tents. The type is - for lines only in  the  &quot;from&quot;  file,  +  for
+              lines  that are only in the &quot;to&quot; file, and 0 for lines that are in
+              both.
+
+SEE ALSO
+       docstrip, doctools, doctools_fmt
+
+KEYWORDS
+       .ddt, Tcl module, catalogue,  diff,  docstrip,  doctools,  documentation,
+       literate programming, module, package indexing, patch, source
+
+CATEGORY
+       Documentation tools
+&#12;COPYRIGHT
+       Copyright (c) 2003?2010 Lars Hellstr&#246;m &lt;Lars dot Hellstrom at residenset dot net&gt;
+
+
+
+
+docstrip                               1.3                   docstrip_util(3tcl)
+
+</pre></body></html>

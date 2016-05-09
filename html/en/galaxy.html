@@ -1,0 +1,100 @@
+<html>
+<head><meta charset=utf-8/>
+<title>galaxy - draws spinning galaxies</title></head>
+<body><pre>
+
+galaxy(6x)                     XScreenSaver manual                    galaxy(6x)
+
+
+
+NAME
+       galaxy - draws spinning galaxies
+
+SYNOPSIS
+       galaxy  [-display  host:display.screen]  [-foreground color] [-background
+       color] [-window] [-root] [-mono] [-install]  [-visual  visual]  [-ncolors
+       integer]  [-delay microseconds] [-cycles integer] [-count integer] [-size
+       integer] [-tracks] [-no-tracks] [-spin] [-no-spin]
+
+       [-fps]
+
+DESCRIPTION
+       The galaxy program draws spinning galaxies.
+
+OPTIONS
+       galaxy accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -mono   If on a color display, pretend we&apos;re on a monochrome display.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -ncolors integer
+               How many colors should be used (if possible).  Default  64.   The
+               colors  used  cycle  through  the  hue, making N stops around the
+               color wheel.
+
+       -cycles integer
+
+       -count integer
+
+       -size integer
+
+       -tracks
+
+       -no-tracks
+
+       -spin
+
+       -no-spin
+
+       -fps    Display the current frame rate and CPU load.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1), xlock(1)
+&#12;COPYRIGHT
+       Copyright &#169; 1994 by Hubert Feyrer.
+
+       Permission  to  use,  copy,  modify, and distribute this software and its
+       documentation for any purpose and without fee is hereby granted, provided
+       that  the  above copyright notice appear in all copies and that both that
+       copyright notice and this permission notice appear in supporting documen&#8208;
+       tation.
+
+AUTHOR
+       Original Amiga version by Uli Siegmund &lt;uli@wombat.okapi.sub.org&gt;
+        for EGS in Cluster.
+
+       Ported from Cluster/EGS to C/Intuition by Harald Backert.
+
+       Ported  to  X11  and  xlockmore  by  Hubert Feyrer &lt;hubert.feyrer@rz.uni-
+       regensburg.de&gt;, 30-Sep-94.
+
+       Modified by David Bagley &lt;bagleyd@bigfoot.com&gt;, 23-Oct-94.
+
+       Modified by Dave Mitchell &lt;davem@magnet.com&gt;, 7-Apr-97.
+
+       Ability to run standalone or with xscreensaver added  by  Jamie  Zawinski
+       &lt;jwz@jwz.org&gt;, 10-May-97.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                     galaxy(6x)
+
+</pre></body></html>

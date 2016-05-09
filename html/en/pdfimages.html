@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdfimages - Portable Document Format (PDF) image extractor (version 3.00)</title></head>
+<body><pre>
+
+pdfimages(1)                                                        pdfimages(1)
+
+
+
+NAME
+       pdfimages - Portable Document Format (PDF) image extractor (version 3.00)
+
+SYNOPSIS
+       pdfimages [options] PDF-file image-root
+
+DESCRIPTION
+       Pdfimages saves images from a Portable Document Format (PDF) file as Por&#8208;
+       table Pixmap (PPM), Portable Bitmap (PBM), or JPEG files.
+
+       Pdfimages reads the PDF file PDF-file,  scans  one  or  more  pages,  and
+       writes  one  PPM,  PBM,  or JPEG file for each image, image-root-nnn.xxx,
+       where nnn is the image number and xxx is  the  image  type  (.ppm,  .pbm,
+       .jpg).
+
+OPTIONS
+       -f number
+              Specifies the first page to scan.
+
+       -l number
+              Specifies the last page to scan.
+
+       -j     Normally, all images are written as PBM (for monochrome images) or
+              PPM (for non-monochrome images) files.  With this  option,  images
+              in  DCT  format  are  saved as JPEG files.  All non-DCT images are
+              saved in PBM/PPM format as usual.
+
+       -opw password
+              Specify the owner password for the PDF file.  Providing this  will
+              bypass all security restrictions.
+
+       -upw password
+              Specify the user password for the PDF file.
+
+       -p     Include page numbers in output file names.
+
+       -q     Don&apos;t print any messages or errors.
+
+       -v     Print copyright and version information.
+
+       -h     Print usage information.  (-help and --help are equivalent.)
+
+EXIT CODES
+       The Xpdf tools use the following exit codes:
+
+       0      No error.
+
+       1      Error opening a PDF file.
+
+       2      Error opening an output file.
+
+       3      Error related to PDF permissions.
+
+       99     Other error.
+
+AUTHOR
+       The  pdfimages software and documentation are copyright 1998-2004 Glyph &amp;
+       Cog, LLC.
+
+SEE ALSO
+       pdffonts(1),  pdfinfo(1),   pdftocairo(1),   pdftohtml(1),   pdftoppm(1),
+       pdftops(1), pdftotext(1)
+
+
+
+                                 22 January 2004                    pdfimages(1)
+
+</pre></body></html>

@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>resize - set environment and terminal settings to current xterm window size</title></head>
+<body><pre>
+
+RESIZE(1)                                                              RESIZE(1)
+
+
+
+NAME
+       resize  -  set  environment and terminal settings to current xterm window
+       size
+
+SYNOPSIS
+       resize [ -u | -c ] [ -s [ row col ] ]
+
+DESCRIPTION
+       Resize prints a shell command for  setting  the  appropriate  environment
+       variables  to  indicate  the  current size of xterm window from which the
+       command is run.  For this output to take effect, resize  must  either  be
+       evaluated as part of the command line (usually done with a shell alias or
+       function) or else redirected to a file which can then be read  in.   From
+       the  C  shell  (usually  known as /bin/csh), the following alias could be
+       defined in the user&apos;s .cshrc:
+
+               %  alias rs &apos;set noglob; eval `resize`&apos;
+
+       After resizing the window, the user would type:
+
+               %  rs
+
+       Users of versions of the Bourne shell (usually  known  as  /bin/sh)  that
+       don&apos;t  have command functions will need to send the output to a temporary
+       file and then read it back in with the &#8220;.&#8221; command:
+
+               $  resize &gt; /tmp/out
+               $  . /tmp/out
+
+       Resize determines the user&apos;s current shell by first checking if $SHELL is
+       set, and using that.  Otherwise it determines the user&apos;s shell by looking
+       in the password file.  Generally Bourne-shell variants (including ksh) do
+       not  modify  $SHELL,  so  it is possible for resize to be confused if one
+       runs resize from a Bourne shell spawned from a C shell.
+
+OPTIONS
+       The following options may be used with resize:
+
+       -u      This option indicates that Bourne shell commands should be gener&#8208;
+               ated even if the user&apos;s current shell isn&apos;t /bin/sh.
+
+       -c      This  option  indicates that C shell commands should be generated
+               even if the user&apos;s current shell isn&apos;t /bin/csh.
+
+       -s [rows columns]
+               This option indicates that Sun console escape sequences  will  be
+               used  instead of the VT100-style xterm escape codes.  If rows and
+               columns are given, resize will ask the xterm  to  resize  itself.
+               However, the window manager may choose to disallow the change.
+
+       Note  that  the  Sun  console  escape sequences are recognized by XFree86
+       xterm and by dtterm.  The resize program may  be  installed  as  sunsize,
+       which causes makes it assume the -s option.
+
+       The rows and columns arguments must appear last; though they are normally
+       associated with the -s option, they are parsed separately.
+
+FILES
+       /etc/termcap   for the base termcap entry to modify.
+
+       ~/.cshrc       user&apos;s alias for the command.
+&#12;ENVIRONMENT
+       TERM           set to &quot;xterm&quot; if not already set.
+
+       TERMCAP        variable set on systems using termcap
+
+       COLUMNS, LINES variables set on systems using terminfo
+
+SEE ALSO
+       csh(1), tset(1), xterm(1)
+
+AUTHORS
+       Mark Vandevoorde (MIT-Athena), Edward Moy (Berkeley)
+       Copyright (c) 1984, 1985 by X Consortium
+       See X(7) for a complete copyright notice.
+
+
+
+                                 X Window System                       RESIZE(1)
+
+</pre></body></html>

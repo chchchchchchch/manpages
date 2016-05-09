@@ -1,0 +1,548 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Convert::BinHex - extract data from Macintosh BinHex files</title></head>
+<body><pre>
+
+Convert::BinHex(3pm)   User Contributed Perl Documentation  Convert::BinHex(3pm)
+
+
+
+NAME
+       Convert::BinHex - extract data from Macintosh BinHex files
+
+       ALPHA WARNING: this code is currently in its Alpha release.  Things may
+       change drastically until the interface is hammered out: if you have sug&#8208;
+       gestions or objections, please speak up now!
+
+SYNOPSIS
+       Simple functions:
+
+           use Convert::BinHex qw(binhex_crc macbinary_crc);
+
+           # Compute HQX7-style CRC for data, pumping in old CRC if desired:
+           $crc = binhex_crc($data, $crc);
+
+           # Compute the MacBinary-II-style CRC for the data:
+           $crc = macbinary_crc($data, $crc);
+
+       Hex to bin, low-level interface.  Conversion is actually done via an
+       object (&quot;Convert::BinHex::Hex2Bin&quot;) which keeps internal conversion
+       state:
+
+           # Create and use a &quot;translator&quot; object:
+           my $H2B = Convert::BinHex-&gt;hex2bin;    # get a converter object
+           while (&lt;STDIN&gt;) {
+               print $STDOUT $H2B-&gt;next($_);        # convert some more input
+           }
+           print $STDOUT $H2B-&gt;done;              # no more input: finish up
+
+       Hex to bin, OO interface.  The following operations must be done in the
+       order shown!
+
+           # Read data in piecemeal:
+           $HQX = Convert::BinHex-&gt;open(FH=&gt;\*STDIN) || die &quot;open: $!&quot;;
+           $HQX-&gt;read_header;                  # read header info
+           @data = $HQX-&gt;read_data;            # read in all the data
+           @rsrc = $HQX-&gt;read_resource;        # read in all the resource
+
+       Bin to hex, low-level interface.  Conversion is actually done via an
+       object (&quot;Convert::BinHex::Bin2Hex&quot;) which keeps internal conversion
+       state:
+
+           # Create and use a &quot;translator&quot; object:
+           my $B2H = Convert::BinHex-&gt;bin2hex;    # get a converter object
+           while (&lt;STDIN&gt;) {
+               print $STDOUT $B2H-&gt;next($_);        # convert some more input
+           }
+           print $STDOUT $B2H-&gt;done;              # no more input: finish up
+
+       Bin to hex, file interface.  Yes, you can convert to BinHex as well as
+       from it!
+
+           # Create new, empty object:
+           my $HQX = Convert::BinHex-&gt;new;
+
+           # Set header attributes:
+           $HQX-&gt;filename(&quot;logo.gif&quot;);
+           $HQX-&gt;type(&quot;GIFA&quot;);
+           $HQX-&gt;creator(&quot;CNVS&quot;);
+
+           # Give it the data and resource forks (either can be absent):
+           $HQX-&gt;data(Path =&gt; &quot;/path/to/data&quot;);       # here, data is on disk
+           $HQX-&gt;resource(Data =&gt; $resourcefork);     # here, resource is in core
+&#12;           # Output as a BinHex stream, complete with leading comment:
+           $HQX-&gt;encode(\*STDOUT);
+
+       PLANNED!!!! Bin to hex, &quot;CAP&quot; interface.  Thanks to Ken Lunde for sug&#8208;
+       gesting this.
+
+           # Create new, empty object from CAP tree:
+           my $HQX = Convert::BinHex-&gt;from_cap(&quot;/path/to/root/file&quot;);
+           $HQX-&gt;encode(\*STDOUT);
+
+DESCRIPTION
+       BinHex is a format used by Macintosh for transporting Mac files safely
+       through electronic mail, as short-lined, 7-bit, semi-compressed data
+       streams.  Ths module provides a means of converting those data streams
+       back into into binary data.
+
+FORMAT
+       (Some text taken from RFC-1741.)  Files on the Macintosh consist of two
+       parts, called forks:
+
+       Data fork
+           The actual data included in the file.  The Data fork is typically the
+           only meaningful part of a Macintosh file on a non-Macintosh computer
+           system.  For example, if a Macintosh user wants to send a file of
+           data to a user on an IBM-PC, she would only send the Data fork.
+
+       Resource fork
+           Contains a collection of arbitrary attribute/value pairs, including
+           program segments, icon bitmaps, and parametric values.
+
+       Additional information regarding Macintosh files is stored by the Finder
+       in a hidden file, called the &quot;Desktop Database&quot;.
+
+       Because of the complications in storing different parts of a Macintosh
+       file in a non-Macintosh filesystem that only handles consecutive data in
+       one part, it is common to convert the Macintosh file into some other for&#8208;
+       mat before transferring it over the network.  The BinHex format squashes
+       that data into transmittable ASCII as follows:
+
+       1.  The file is output as a byte stream consisting of some basic header
+           information (filename, type, creator), then the data fork, then the
+           resource fork.
+
+       2.  The byte stream is compressed by looking for series of duplicated
+           bytes and representing them using a special binary escape sequence
+           (of course, any occurences of the escape character must also be
+           escaped).
+
+       3.  The compressed stream is encoded via the &quot;6/8 hemiola&quot; common to
+           base64 and uuencode: each group of three 8-bit bytes (24 bits) is
+           chopped into four 6-bit numbers, which are used as indexes into an
+           ASCII &quot;alphabet&quot;.  (I assume that leftover bytes are zero-padded;
+           documentation is thin).
+
+FUNCTIONS
+       CRC computation
+
+       macbinary_crc DATA, SEED
+           Compute the MacBinary-II-style CRC for the given DATA, with the CRC
+           seeded to SEED.  Normally, you start with a SEED of 0, and you pump
+           in the previous CRC as the SEED if you&apos;re handling a lot of data one
+           chunk at a time.  That is:
+
+               $crc = 0;
+               while (&lt;STDIN&gt;) {
+                   $crc = macbinary_crc($_, $crc);
+               }
+&#12;           Note: Extracted from the mcvert utility (Doug Moore, April &apos;87),
+           using a &quot;magic array&quot; algorithm by Jim Van Verth for efficiency.
+           Converted to Perl5 by Eryq.  Untested.
+
+       binhex_crc DATA, SEED
+           Compute the HQX-style CRC for the given DATA, with the CRC seeded to
+           SEED.  Normally, you start with a SEED of 0, and you pump in the pre&#8208;
+           vious CRC as the SEED if you&apos;re handling a lot of data one chunk at a
+           time.  That is:
+
+               $crc = 0;
+               while (&lt;STDIN&gt;) {
+                   $crc = binhex_crc($_, $crc);
+               }
+
+           Note: Extracted from the mcvert utility (Doug Moore, April &apos;87),
+           using a &quot;magic array&quot; algorithm by Jim Van Verth for efficiency.
+           Converted to Perl5 by Eryq.
+
+OO INTERFACE
+       Conversion
+
+       bin2hex
+           Class method, constructor.  Return a converter object.  Just creates
+           a new instance of &quot;Convert::BinHex::Bin2Hex&quot;; see that class for
+           details.
+
+       hex2bin
+           Class method, constructor.  Return a converter object.  Just creates
+           a new instance of &quot;Convert::BinHex::Hex2Bin&quot;; see that class for
+           details.
+
+       Construction
+
+       new PARAMHASH
+           Class method, constructor.  Return a handle on a BinHex&apos;able entity.
+           In general, the data and resource forks for such an entity are stored
+           in native format (binary) format.
+
+           Parameters in the PARAMHASH are the same as header-oriented method
+           names, and may be used to set attributes:
+
+               $HQX = new Convert::BinHex filename =&gt; &quot;icon.gif&quot;,
+                                          type    =&gt; &quot;GIFB&quot;,
+                                          creator =&gt; &quot;CNVS&quot;;
+
+       open PARAMHASH
+           Class method, constructor.  Return a handle on a new BinHex&apos;ed
+           stream, for parsing.  Params are:
+
+           Data
+               Input a HEX stream from the given data.  This can be a scalar, or
+               a reference to an array of scalars.
+
+           Expr
+               Input a HEX stream from any open()able expression.  It will be
+               opened and binmode&apos;d, and the filehandle will be closed either on
+               a &quot;close()&quot; or when the object is destructed.
+
+           FH  Input a HEX stream from the given filehandle.
+
+           NoComment
+               If true, the parser should not attempt to skip a leading &quot;(This
+               file...)&quot;  comment.  That means that the first nonwhite charac&#8208;
+               ters encountered must be the binhex&apos;ed data.
+
+       Get/set header information
+
+       creator [VALUE]
+           Instance method.  Get/set the creator of the file.  This is a four-
+           character string (though I don&apos;t know if it&apos;s guaranteed to be print&#8208;
+           able ASCII!)  that serves as part of the Macintosh&apos;s version of a
+           MIME &quot;content-type&quot;.
+
+           For example, a document created by &quot;Canvas&quot; might have creator
+           &quot;CNVS&quot;.
+
+       data [PARAMHASH]
+           Instance method.  Get/set the data fork.  Any arguments are passed
+           into the new() method of &quot;Convert::BinHex::Fork&quot;.
+
+       filename [VALUE]
+           Instance method.  Get/set the name of the file.
+
+       flags [VALUE]
+           Instance method.  Return the flags, as an integer.  Use bitmasking to
+           get as the values you need.
+
+       header_as_string
+           Return a stringified version of the header that you might use for
+           logging/debugging purposes.  It looks like this:
+
+               X-HQX-Software: BinHex 4.0 (Convert::BinHex 1.102)
+               X-HQX-Filename: Something_new.eps
+               X-HQX-Version: 0
+               X-HQX-Type: EPSF
+               X-HQX-Creator: ART5
+               X-HQX-Data-Length: 49731
+               X-HQX-Rsrc-Length: 23096
+
+           As some of you might have guessed, this is RFC-822-style, and may be
+           easily plunked down into the middle of a mail header, or split into
+           lines, etc.
+
+       requires [VALUE]
+           Instance method.  Get/set the software version required to convert
+           this file, as extracted from the comment that preceded the actual
+           binhex&apos;ed data; e.g.:
+
+               (This file must be converted with BinHex 4.0)
+
+           In this case, after parsing in the comment, the code:
+
+               $HQX-&gt;requires;
+
+           would get back &quot;4.0&quot;.
+
+       resource [PARAMHASH]
+           Instance method.  Get/set the resource fork.  Any arguments are
+           passed into the new() method of &quot;Convert::BinHex::Fork&quot;.
+
+       type [VALUE]
+           Instance method.  Get/set the type of the file.  This is a four-char&#8208;
+           acter string (though I don&apos;t know if it&apos;s guaranteed to be printable
+           ASCII!)  that serves as part of the Macintosh&apos;s version of a MIME
+           &quot;content-type&quot;.
+
+           For example, a GIF89a file might have type &quot;GF89&quot;.
+
+       version [VALUE]
+           Instance method.  Get/set the version, as an integer.
+
+       Decode, high-level
+
+       read_comment
+           Instance method.  Skip past the opening comment in the file, which is
+           of the form:
+
+              (This file must be converted with BinHex 4.0)
+
+           As per RFC-1741, this comment must immediately precede the BinHex
+           data, and any text before it will be ignored.
+
+           You don&apos;t need to invoke this method yourself; &quot;read_header()&quot; will
+           do it for you.  After the call, the version number in the comment is
+           accessible via the &quot;requires()&quot; method.
+
+       read_header
+           Instance method.  Read in the BinHex file header.  You must do this
+           first!
+
+       read_data [NBYTES]
+           Instance method.  Read information from the data fork.  Use it in an
+           array context to slurp all the data into an array of scalars:
+
+               @data = $HQX-&gt;read_data;
+
+           Or use it in a scalar context to get the data piecemeal:
+
+               while (defined($data = $HQX-&gt;read_data)) {
+                  # do stuff with $data
+               }
+
+           The NBYTES to read defaults to 2048.
+
+       read_resource [NBYTES]
+           Instance method.  Read in all/some of the resource fork.  See
+           &quot;read_data()&quot; for usage.
+
+       Encode, high-level
+
+       encode OUT
+           Encode the object as a BinHex stream to the given output handle OUT.
+           OUT can be a filehandle, or any blessed object that responds to a
+           &quot;print()&quot; message.
+
+           The leading comment is output, using the &quot;requires()&quot; attribute.
+
+SUBMODULES
+       Convert::BinHex::Bin2Hex
+
+       A BINary-to-HEX converter.  This kind of conversion requires a certain
+       amount of state information; it cannot be done by just calling a simple
+       function repeatedly.  Use it like this:
+
+           # Create and use a &quot;translator&quot; object:
+           my $B2H = Convert::BinHex-&gt;bin2hex;    # get a converter object
+           while (&lt;STDIN&gt;) {
+               print STDOUT $B2H-&gt;next($_);          # convert some more input
+           }
+           print STDOUT $B2H-&gt;done;               # no more input: finish up
+
+           # Re-use the object:
+           $B2H-&gt;rewind;                 # ready for more action!
+           while (&lt;MOREIN&gt;) { ...
+
+       On each iteration, &quot;next()&quot; (and &quot;done()&quot;) may return either a decent-
+       sized non-empty string (indicating that more converted data is ready for
+       you) or an empty string (indicating that the converter is waiting to
+       amass more input in its private buffers before handing you more stuff to
+       output.
+
+       Note that &quot;done()&quot; always converts and hands you whatever is left.
+
+       This may have been a good approach.  It may not.  Someday, the converter
+       may also allow you give it an object that responds to read(), or a File&#8208;
+       Handle, and it will do all the nasty buffer-filling on its own, serving
+       you stuff line by line:
+
+           # Someday, maybe...
+           my $B2H = Convert::BinHex-&gt;bin2hex(\*STDIN);
+           while (defined($_ = $B2H-&gt;getline)) {
+               print STDOUT $_;
+           }
+&#12;       Someday, maybe.  Feel free to voice your opinions.
+
+       Convert::BinHex::Hex2Bin
+
+       A HEX-to-BINary converter. This kind of conversion requires a certain
+       amount of state information; it cannot be done by just calling a simple
+       function repeatedly.  Use it like this:
+
+           # Create and use a &quot;translator&quot; object:
+           my $H2B = Convert::BinHex-&gt;hex2bin;    # get a converter object
+           while (&lt;STDIN&gt;) {
+               print STDOUT $H2B-&gt;next($_);          # convert some more input
+           }
+           print STDOUT $H2B-&gt;done;               # no more input: finish up
+
+           # Re-use the object:
+           $H2B-&gt;rewind;                 # ready for more action!
+           while (&lt;MOREIN&gt;) { ...
+
+       On each iteration, &quot;next()&quot; (and &quot;done()&quot;) may return either a decent-
+       sized non-empty string (indicating that more converted data is ready for
+       you) or an empty string (indicating that the converter is waiting to
+       amass more input in its private buffers before handing you more stuff to
+       output.
+
+       Note that &quot;done()&quot; always converts and hands you whatever is left.
+
+       Note that this converter does not find the initial &quot;BinHex version&quot; com&#8208;
+       ment.  You have to skip that yourself.  It only handles data between the
+       opening and closing &quot;:&quot;.
+
+       Convert::BinHex::Fork
+
+       A fork in a Macintosh file.
+
+           # How to get them...
+           $data_fork = $HQX-&gt;data;      # get the data fork
+           $rsrc_fork = $HQX-&gt;resource;  # get the resource fork
+
+           # Make a new fork:
+           $FORK = Convert::BinHex::Fork-&gt;new(Path =&gt; &quot;/tmp/file.data&quot;);
+           $FORK = Convert::BinHex::Fork-&gt;new(Data =&gt; $scalar);
+           $FORK = Convert::BinHex::Fork-&gt;new(Data =&gt; \@array_of_scalars);
+
+           # Get/set the length of the data fork:
+           $len = $FORK-&gt;length;
+           $FORK-&gt;length(170);        # this overrides the REAL value: be careful!
+
+           # Get/set the path to the underlying data (if in a disk file):
+           $path = $FORK-&gt;path;
+           $FORK-&gt;path(&quot;/tmp/file.data&quot;);
+
+           # Get/set the in-core data itself, which may be a scalar or an arrayref:
+           $data = $FORK-&gt;data;
+           $FORK-&gt;data($scalar);
+           $FORK-&gt;data(\@array_of_scalars);
+
+           # Get/set the CRC:
+           $crc = $FORK-&gt;crc;
+           $FORK-&gt;crc($crc);
+
+UNDER THE HOOD
+       Design issues
+
+       BinHex needs a stateful parser
+           Unlike its cousins base64 and uuencode, BinHex format is not amenable
+           to being parsed line-by-line.  There appears to be no guarantee that
+           lines contain 4n encoded characters... and even if there is one, the
+           BinHex compression algorithm interferes: even when you can decode one
+           line at a time, you can&apos;t necessarily decompress a line at a time.
+
+           For example: a decoded line ending with the byte &quot;\x90&quot; (the escape
+           or &quot;mark&quot; character) is ambiguous: depending on the next decoded
+           byte, it could mean a literal &quot;\x90&quot; (if the next byte is a &quot;\x00&quot;),
+           or it could mean n-1 more repetitions of the previous character (if
+           the next byte is some nonzero &quot;n&quot;).
+
+           For this reason, a BinHex parser has to be somewhat stateful: you
+           cannot have code like this:
+
+               #### NO! #### NO! #### NO! #### NO! #### NO! ####
+               while (&lt;STDIN&gt;) {            # read HEX
+                   print hexbin($_);          # convert and write BIN
+               }
+
+           unless something is happening &quot;behind the scenes&quot; to keep track of
+           what was last done.  The dangerous thing, however, is that this
+           approach will seem to work, if you only test it on BinHex files which
+           do not use compression and which have 4n HEX characters on each line.
+
+           Since we have to be stateful anyway, we use the parser object to keep
+           our state.
+
+       We need to be handle large input files
+           Solutions that demand reading everything into core don&apos;t cut it in my
+           book.  The first MPEG file that comes along can louse up your whole
+           day.  So, there are no size limitations in this module: the data is
+           read on-demand, and filehandles are always an option.
+
+       Boy, is this slow!
+           A lot of the byte-level manipulation that has to go on, particularly
+           the CRC computing (which involves intensive bit-shifting and masking)
+           slows this module down significantly.  What is needed perhaps is an
+           optional extension library where the slow pieces can be done more
+           quickly... a Convert::BinHex::CRC, if you will.  Volunteers, anyone?
+
+           Even considering that, however, it&apos;s slower than I&apos;d like.  I&apos;m sure
+           many improvements can be made in the HEX-to-BIN end of things.  No
+           doubt I&apos;ll attempt some as time goes on...
+
+       How it works
+
+       Since BinHex is a layered format, consisting of...
+
+             A Macintosh file [the &quot;BIN&quot;]...
+                Encoded as a structured 8-bit bytestream, then...
+                   Compressed to reduce duplicate bytes, then...
+                      Encoded as 7-bit ASCII [the &quot;HEX&quot;]
+
+       ...there is a layered parsing algorithm to reverse the process.  Basi&#8208;
+       cally, it works in a similar fashion to stdio&apos;s fread():
+
+              0. There is an internal buffer of decompressed (BIN) data,
+                 initially empty.
+              1. Application asks to read() n bytes of data from object
+              2. If the buffer is not full enough to accomodate the request:
+                   2a. The read() method grabs the next available chunk of input
+                       data (the HEX).
+                   2b. HEX data is converted and decompressed into as many BIN
+                       bytes as possible.
+                   2c. BIN bytes are added to the read() buffer.
+                   2d. Go back to step 2a. until the buffer is full enough
+                       or we hit end-of-input.
+
+       The conversion-and-decompression algorithms need their own internal buf&#8208;
+       fers and state (since the next input chunk may not contain all the data
+       needed for a complete conversion/decompression operation).  These are
+       maintained in the object, so parsing two different input streams simulta&#8208;
+       neously is possible.
+
+WARNINGS
+       Only handles &quot;Hqx7&quot; files, as per RFC-1741.
+
+       Remember that Macintosh text files use &quot;\r&quot; as end-of-line: this means
+       that if you want a textual file to look normal on a non-Mac system, you
+       probably want to do this to the data:
+
+           # Get the data, and output it according to normal conventions:
+           foreach ($HQX-&gt;read_data) { s/\r/\n/g; print }
+
+CHANGE LOG
+       Current version: $Id: BinHex.pm,v 1.119 1997/06/28 05:12:42 eryq Exp $
+
+       Version 1.118
+           Ready to go public (with Paul&apos;s version, patched for native Mac sup&#8208;
+           port)!  Warnings have been suppressed in a few places where undefined
+           values appear.
+
+       Version 1.115
+           Fixed another bug in comp2bin, related to the MARK falling on a
+           boundary between inputs.  Added testing code.
+
+       Version 1.114
+           Added BIN-to-HEX conversion.  Eh.  It&apos;s a start.  Also, a lot of doc&#8208;
+           umentation additions and cleanups.  Some methods were also renamed.
+
+       Version 1.103
+           Fixed bug in decompression (wasn&apos;t saving last character).  Fixed
+           &quot;NoComment&quot; bug.
+
+       Version 1.102
+           Initial release.
+
+AUTHOR AND CREDITS
+       Written by Eryq, http://www.enteract.com/~eryq / eryq@enteract.com
+
+       Support for native-Mac conversion, plus invaluable contributions in Alpha
+       Testing, plus a few patches, plus the baseline binhex/debinhex programs,
+       were provided by Paul J. Schinder (NASA/GSFC).
+
+       Ken Lunde (Adobe) suggested incorporating the CAP file representation.
+
+TERMS AND CONDITIONS
+       Copyright (c) 1997 by Eryq.  All rights reserved.  This program is free
+       software; you can redistribute it and/or modify it under the same terms
+       as Perl itself.
+
+       This software comes with NO WARRANTY of any kind.  See the COPYING file
+       in the distribution for details.
+
+
+
+perl v5.8.8                        2008-03-08               Convert::BinHex(3pm)
+
+</pre></body></html>

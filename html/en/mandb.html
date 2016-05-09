@@ -1,0 +1,162 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mandb - create or update the manual page index caches</title></head>
+<body><pre>
+
+MANDB(8)                       Manual pager utils                       MANDB(8)
+
+
+
+NAME
+       mandb - create or update the manual page index caches
+
+SYNOPSIS
+       mandb [-dqsucpt|-h|-V] [-C file] [manpath]
+       mandb [-dqsut] [-C file] -f filename ...
+
+DESCRIPTION
+       mandb is used to initialise or manually update index database caches that
+       are usually maintained by man.  The caches contain  information  relevant
+       to the current state of the manual page system and the information stored
+       within them is used by the man-db utilities to enhance  their  speed  and
+       functionality.
+
+       When  creating  or  updating  an  index,  mandb will warn of bad ROFF .so
+       requests, bogus manual page filenames and manual  pages  from  which  the
+       whatis cannot be parsed.
+
+       Supplying  mandb  with an optional colon-delimited path will override the
+       internal system manual page hierarchy search path, determined from infor&#8208;
+       mation found within the man-db configuration file.
+
+DATABASE CACHES
+       mandb  can be compiled with support for any one of the following database
+       types.
+
+
+       tab (@); l l l l.  Name@Type@Async@Filename _ Berkeley db@T{ Binary  tree
+       T}@Yes@index.bt  GNU gdbm v &gt;= 1.6@T{ Hashed T}@Yes@index.db GNU gdbm v &lt;
+       1.6@T{ Hashed T}@No@index.db UNIX ndbm@T{ Hashed T}@No@index.(dir|pag)
+
+       Those database types that support asynchronous updates  provide  enhanced
+       speed at the cost of possible corruption in the event of unusual termina&#8208;
+       tion.  In an unusual case where this has occurred, it may be necessary to
+       rerun mandb with the -c option to re-create the databases from scratch.
+
+OPTIONS
+       -d, --debug
+              Print debugging information.
+
+       -q, --quiet
+              Produce no warnings.
+
+       -s, --no-straycats
+              Do  not  spend time looking for or adding information to the data&#8208;
+              bases regarding stray cats.
+
+       -p, --no-purge
+              Do not spend time checking for deleted manual  pages  and  purging
+              them from the databases.
+
+       -c, --create
+              By  default, mandb will try to update any previously created data&#8208;
+              bases.  If a database does not exist, it  will  create  it.   This
+              option  forces  mandb  to  delete previous databases and re-create
+              them from scratch, and implies --no-purge.  This may be  necessary
+              if  a database becomes corrupt or if a new database storage scheme
+              is introduced in the future.
+
+       -u, --user-db
+              Create user databases only, even with write permissions  necessary
+              to create system databases.
+
+       -t, --test
+              Perform correctness checks on manual pages in the hierarchy search
+              path.  With this option, mandb will not alter existing databases.
+
+       -f, --filename
+              Update only the entries for the given filename.   This  option  is
+              not for general use; it is used internally by man when it has been
+              compiled with the MAN_DB_UPDATES option and finds that a  page  is
+              out of date.  It implies -p and disables -c and -s.
+
+       -C file, --config-file=file
+              Use  this  user  configuration  file  rather  than  the default of
+              ~/.manpath.
+
+       -h, --help
+              Show the usage message, then exit.
+
+       -V, --version
+              Show the version, then exit.
+
+EXIT STATUS
+       0      Successful program execution.
+
+       1      Usage, syntax, or configuration file error.
+
+       2      Operational error.
+
+       3      A child process failed.
+
+DIAGNOSTICS
+       The following warning messages can be emitted during database building.
+
+       &lt;filename&gt;: whatis parse for page(sec) failed
+              An attempt to extract whatis line(s)  from  the  given  &lt;filename&gt;
+              failed.   This is usually due to a poorly written manual page, but
+              if many such messages are emitted it is  likely  that  the  system
+              contains non-standard manual pages which are incompatible with the
+              man-db whatis parser.  See the  WHATIS  PARSING  section  in  lex&#8208;
+              grog(1) for more information.
+
+       &lt;filename&gt;: is a dangling symlink
+              &lt;filename&gt;  does  not  exist but is referenced by a symbolic link.
+              Further diagnostics are usually emitted to identify the &lt;filename&gt;
+              of the offending link.
+
+       &lt;filename&gt;: bad symlink or ROFF `.so&apos; request
+              &lt;filename&gt;  is  either  a  symbolic  link  to,  or contains a ROFF
+              include request to, a non existent file.
+
+       &lt;filename&gt;: ignoring bogus filename
+              The &lt;filename&gt; may or may not be a valid manual page but its  name
+              is  invalid.   This is usually due to a manual page with sectional
+              extension &lt;x&gt; being put in manual page section &lt;y&gt;.
+
+       &lt;filename_mask&gt;: competing extensions
+              The wildcard &lt;filename_mask&gt;  is  not  unique.   This  is  usually
+              caused by the existence of both a compressed and uncompressed ver&#8208;
+              sion of the same  manual  page.   All  but  the  most  recent  are
+              ignored.
+
+FILES
+       /etc/manpath.config
+              man-db configuration file.
+
+       /var/cache/man/index.(bt|db|dir|pag)
+              An FHS compliant global index database cache.
+&#12;       Older locations for the database cache included:
+
+       /usr/man/index.(bt|db|dir|pag)
+              A traditional global index database cache.
+
+       /var/catman/index.(bt|db|dir|pag)
+              An alternate or FSSTND compliant global index database cache.
+
+SEE ALSO
+       lexgrog(1), man(1), manpath(5), catman(8)
+
+       The  WHATIS  PARSING  section formerly in this manual page is now part of
+       lexgrog(1).
+
+AUTHOR
+       Wilf. (G.Wilford@ee.surrey.ac.uk).
+       Fabrizio Polacco (fpolacco@debian.org).
+       Colin Watson (cjwatson@debian.org).
+
+
+
+2.6.2                              2012-06-18                           MANDB(8)
+
+</pre></body></html>

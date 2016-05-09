@@ -1,0 +1,216 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gsimplecal - lightweight calendar applet</title></head>
+<body><pre>
+
+GSIMPLECAL(1)                                                      GSIMPLECAL(1)
+
+
+
+NAME
+       gsimplecal - lightweight calendar applet
+
+
+
+SYNOPSIS
+       gsimplecal [-h|--help|-v|--version|next_month|prev_month]
+
+
+
+DESCRIPTION
+       This manual page documents the usage of the gsimplecal command.
+
+
+       gsimplecal is a lightweight calendar applet. When it is started, it first
+       shows up, when you run it again, it closes the running instance.  It  was
+       intentionally  made  for  use  with tint2 panel to be launched upon clock
+       click, but of course it will work without it, you can  bind  it  to  some
+       hotkey in you window manager, for example.
+
+
+       Also,  you  may configure gsimplecal to display different world timezones
+       clocks.  See the CONFIGURATION section to get to know how to.
+
+
+
+COMMANDS AND OPTIONS
+       -v, --version
+            Print the program name and version to stdout, then exit with code 0.
+
+
+       -h, --help
+            Print the short usage help to stderr, then exit with error code 2.
+
+
+       prev_month, next_month
+            If the program is not running, simply run it.   If  the  program  is
+            running, change currently displayed month.
+
+
+       If  no options and commands are given, the program is toggled, i.e. if it
+       is running it stops, otherwise it starts.
+
+
+
+CONFIGURATION
+       To  configure  the  application  you  should  manually  create  the  file
+       $XDG_CONFIG_HOME/gsimplecal/config      (usually      it      will     be
+       ~/.config/gsimplecal/config) with contents like this:
+
+
+              show_calendar = 1
+              show_timezones = 1
+              mark_today = 1
+              show_week_numbers = 0
+              close_on_unfocus = 0
+              external_viewer = sunbird -showdate &quot;%Y-%m-%d&quot;
+              clock_format = %a %d %b %H:%M
+              mainwindow_decorated = 0
+              mainwindow_keep_above = 1
+              mainwindow_sticky = 0
+              mainwindow_skip_taskbar = 1
+              mainwindow_resizable = 0
+              mainwindow_position = none
+              mainwindow_xoffset = 0
+              mainwindow_yoffset = 0
+              clock_label = UTC
+              clock_tz = :UTC
+              clock_label = Local
+              clock_tz =
+
+
+       The  options  are  pretty  self  explanatory,  but   here   is   detailed
+       description:
+
+
+       show_calendar: 1 or 0, defaults to 1.
+            Sets  whether  the  calendar  should  be shown. Most users want this
+            option to be 1.
+
+
+       show_timezones: 1 or 0, defaults to 0.
+            Sets whether the different timezone clocks should be shown.
+
+
+       mark_today: 1 or 0, defaults to 1.
+            Sets whether today&apos;s date will be marked in  the  calendar  (besides
+            the  default  selection, i.e. when you click on the other day, today
+            will remain marked somehow, e.g. in bold print).
+
+
+       show_week_numbers: 1 or 0, defaults to 0.
+            Sets whether week numbers are shown in the calendar.
+
+
+       close_on_unfocus: 1 or 0, defaults to 0.
+            Sets whether the calendar will close if the window loses focus. Note
+            that if mainwindow_skip_taskbar is set to 1 then the calendar window
+            may not be given focus upon creation
+
+
+       external_viewer: string, defaults to empty string.
+            Command line to run when  doubleclicking  a  date.  This  string  is
+            strftime&apos;d  (see  man  strftime  for the possible substitutions) and
+            passed to the shell. Thus  you  can  use  pipes,  redirections,  and
+            whatever, I hope.
+            Currently the shell is hardcoded to /bin/sh though. I hope that will
+            do for all the users, but if you&apos;ve got a  trouble,  please  file  a
+            ticket (see REPORTING BUGS).
+
+
+       clock_format: string
+            Sets the clocks format. Look man strftime for the possible formats.
+
+
+       mainwindow_decorated: 1 or 0, defaults to 0.
+            Tells  your  window  manager to decorate or not to decorate the main
+            window.
+
+
+       mainwindow_keep_above: 1 or 0, defaults to 1.
+            Sets whether the main window  should  be  placed  on  top  of  other
+            windows by your window manager.
+
+
+       mainwindow_sticky: 1 or 0, defaults to 0.
+            Tells your window manager to show gsimplecal on all desktops.
+&#12;
+       mainwindow_skip_taskbar: 1 or 0, defaults to 1.
+            Sets  whether  the  main  window should be shown in the task list by
+            your panel or window manager.
+
+
+       mainwindow_resizable: 1 or 0, defaults to 1.
+            Sets whether your window manager should allow the main window to  be
+            resized.   If  you  are using a tiling window manager which supports
+            floating windows, setting this options to 0 will  most  likely  tell
+            your WM not to tile the window.  (Tested with XMonad and Awesome).
+
+
+       mainwindow_position: mouse|center|none, defaults to mouse.
+            Tells your window manager where to place the gsimplecal window:
+
+            mouse
+                 close to the mouse cursor position (this one is useful when you
+                 bind gsimplecal on some mouse click command);
+
+            center
+                 in the center of the screen;
+
+            none
+                 it&apos;s up to your window manager to decide, where  to  place  the
+                 window  (this one is useful when you bind gsimplecal invocation
+                 on some hotkey, so you can configure  your  window  manager  to
+                 place gsimplecal in some predefined position).
+
+
+       mainwindow_xoffset and mainwindow_yoffset: integer, default to 0.
+            Allow  for  main  window  position  fine tuning. Throw an integer at
+            these, and it&apos;ll move the window by that number of pixels.
+
+
+       clock_label and clock_tz: string
+            These two options should go in pairs and must be in the order given.
+            Each pair creates new  clock.  The  clock_label  variable  sets  the
+            string  to  be  displayed  near  the  clock,  the  clock_tz sets the
+            timezone.
+            If you omit the value for clock_tz, local time will be shown.
+            For a list of timezones see man timezone, or ls /usr/share/zoneinfo
+
+
+
+KEYBOARD ACCELERATORS
+       You may use the following keyboard accelerators while  gsimplecal  window
+       has a focus:
+
+
+              Escape, Ctrl+w, Ctrl+q: close the window
+              j: switch to the next month
+              k: switch to the previous month
+              J: jump one year forward
+              K: jump one year backward
+              g, Home: jump to the current date
+
+
+       These are not yet configurable, but I&apos;m working on it.
+
+
+
+REPORTING BUGS
+       Please,  report any issues to the gsimplecal issue tracker, available at:
+       https://github.com/dmedvinsky/gsimplecal/issues
+&#12;
+
+AUTHOR
+       Created by Dmitry Medvinsky et al.
+
+
+
+SEE ALSO
+       tzset(3), strftime(3)
+
+
+
+                                   2012-03-26                      GSIMPLECAL(1)
+
+</pre></body></html>

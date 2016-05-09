@@ -1,0 +1,47 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::RT - DNS RT resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::RT(3pm)  User Contributed Perl Documentation Net::DNS::RR::RT(3pm)
+
+
+
+NAME
+       Net::DNS::RR::RT - DNS RT resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for DNS Route Through (RT) resource records.
+
+METHODS
+   preference
+           print &quot;preference = &quot;, $rr-&gt;preference, &quot;\n&quot;;
+
+       Returns the preference for this route.
+
+   intermediate
+           print &quot;intermediate = &quot;, $rr-&gt;intermediate, &quot;\n&quot;;
+
+       Returns the domain name of the intermediate host.
+
+COPYRIGHT
+       Copyright (c) 1997-2002 Michael Fuhr.
+
+       Portions Copyright (c) 2002-2004 Chris Reinhardt.  Portions Copyright (c)
+       2005 Olaf Kolkman NLnet Labs.
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 1183 Section 3.3
+
+
+
+perl v5.14.2                       2009-12-30              Net::DNS::RR::RT(3pm)
+
+</pre></body></html>

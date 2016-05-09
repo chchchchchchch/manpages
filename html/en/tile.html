@@ -1,0 +1,102 @@
+<html>
+<head><meta charset=utf-8/>
+<title>tile -  Tiling versions of Tk widgets</title></head>
+<body><pre>
+
+tile(n)                       BLT Built-In Commands                      tile(n)
+
+
+
+________________________________________________________________________________
+
+NAME
+       tile -  Tiling versions of Tk widgets
+
+SYNOPSIS
+       tile::button pathName option value...
+
+       tile::checkbutton pathName option value...
+
+       tile::frame pathName option value...
+
+       tile::label pathName option value...
+
+       tile::radiobutton pathName option value...
+
+       tile::scrollbar pathName option value...
+
+       tile::toplevel pathName option value...
+
+_________________________________________________________________
+
+DESCRIPTION
+       The  tile  widgets let you create textured backgrounds.  The texture is a
+       Tk image which is tiled over the entire background of the widget.
+
+INTRODUCTION
+       With the advent of Tk 4.0, images are now  easy  to  create  and  use  in
+       applications.   Images  add interest to applications and they convey more
+       information.  But one area where Tk hasn&apos;t taken advantage of  images  is
+       using images as textures for widgets.  Since tiling is a standard feature
+       of windowing systems, it&apos;s very easy to use images as textures.
+
+       The tile widgets take the standard Tk 4.0 widgets and add tiling configu&#8208;
+       ration  options to them.  Textures are specified by the name of the image
+       you wish to be tiled across the background of the widget.
+
+EXAMPLE
+       To add tiling to a widget, you simply create an image  using  Tk&apos;s  image
+       command  and  use the image name as the value for the -tile configuration
+       option of the widget.
+
+              image create photo my_texture -file tan_paper.gif
+              blt::tile::frame .f -tile my_texture
+
+       The image my_texture is added to the frame.  If my_texture is updated, so
+       will the widget background.
+
+              image create photo my_texture -file rain.gif
+
+       The  tile  widget commands reside in the &quot;blt::tile&quot; namespace, so as not
+       to collide with the normal Tk widgets.  An easy  way  to  add  tiling  to
+       existing  programs  is to import the tile widget commands into the global
+       namespace.
+
+              image create photo my_texture -file tan_paper.gif
+              namespace import -force blt::tile::*
+              frame .f -tile my_texture
+
+       To use one image for all texturing, you can use the &quot;Tile&quot;  option  class
+       name to specify the same image for all tile widgets.
+&#12;              image create photo my_texture -file tan_paper.gif
+              option add *Tile my_texture
+
+
+OPTIONS
+       The following configurations options are added to the widgets. If a -tile
+       or -activetile option is specified, it overrides the background color  of
+       the widget.
+
+       -activetile image
+              Specifies  a  textured  background  to  display when the widget is
+              active.  This option is available for the  tilebutton,  tilecheck&#8208;
+              button,  tileradiobutton, and tilescrollbar widgets.  Image is the
+              name an image created using Tk&apos;s image command.  The background of
+              the  widget  is tiled with image.  If image is &quot;&quot;, then the active
+              background color is displayed.  The default is &quot;&quot;.
+
+       -tile image
+              Specifies a textured background to display for the widget.   Image
+              is  the name an image created using Tk&apos;s image command.  The back&#8208;
+              ground of the widget is tiled with image.  If image  is  &quot;&quot;,  then
+              the normal background color is displayed.  The default is &quot;&quot;.
+
+KEYWORDS
+       tile, texture, button, label, radiobutton, checkbutton, scrollbar, frame,
+       toplevel
+
+
+
+BLT                                    2.4                               tile(n)
+
+</pre></body></html>

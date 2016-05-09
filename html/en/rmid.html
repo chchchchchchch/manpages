@@ -1,0 +1,304 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rmid - The Java RMI Activation System Daemon</title></head>
+<body><pre>
+
+rmid(1)                                                                  rmid(1)
+
+
+
+Name
+       rmid - The Java RMI Activation System Daemon
+
+       rmid starts the activation system daemon that allows objects to be regis&#8208;
+       tered and activated in a virtual machine (VM).
+
+SYNOPSIS
+       rmid [options]
+
+
+DESCRIPTION
+       The rmid tool starts the activation system daemon. The activation  system
+       daemon  must  be  started before activatable objects can be either regis&#8208;
+       tered with the activation system or activated in a VM. See the Java RMI
+       Specification @
+       http://docs.oracle.com/javase/7/docs/platform/rmi/spec/rmiTOC.html and
+       Activation tutorials @
+       http://docs.oracle.com/javase/7/docs/technotes/guides/rmi/activa&#8208;
+       tion/overview.html for details on how to write programs that use activat&#8208;
+       able remote objects.
+
+       The daemon can be started by executing the rmid command, and specifying a
+       security policy file, as follows:
+
+           rmid -J-Djava.security.policy=rmid.policy
+
+
+       Note: When running Sun&apos;s implementation of rmid, by default you will need
+       to specify a security policy file so that rmid can verify whether or not
+       the information in each ActivationGroupDesc is allowed to be used to
+       launch a VM for an activation group. Specifically, the command and
+       options specified by the CommandEnvironment and any Properties passed to
+       an ActivationGroupDesc&apos;s constructor must now be explicitly allowed in
+       the security policy file for rmid. The value of the sun.rmi.activa&#8208;
+       tion.execPolicy property dictates the policy that rmid uses to determine
+       whether or not the information in an ActivationGroupDesc may be used to
+       launch a VM for an activation group.
+
+       Executing rmid by default
+
+          o starts the Activator and an internal registry on the default port,
+            1098, and
+
+          o binds an ActivationSystem to the name java.rmi.activation.Activa&#8208;
+            tionSystem in this internal registry.
+
+
+       To specify an alternate port for the registry, you must specify the -port
+       option when starting up rmid. For example,
+
+           rmid -J-Djava.security.policy=rmid.policy -port 1099
+
+
+       starts the activation system daemon and a registry on the registry&apos;s
+       default port, 1099.
+
+   Starting rmid from inetd/xinetd
+       An alternative to starting rmid from the command line is to configure
+       inetd (Solaris) or xinetd (Linux) to start rmid on demand.
+
+       When rmid starts up, it attempts to obtain an inherited channel (inher&#8208;
+       ited from inetd/xinetd) by invoking the System.inheritedChannel method.
+       If the inherited channel is null or not an instance of java.nio.chan&#8208;
+       nels.ServerSocketChannel, then rmid assumes that it was not started by
+       inetd/xinetd, and it starts up as described above.
+
+       If the inherited channel is a ServerSocketChannel instance, then rmid
+       uses the java.net.ServerSocket obtained from the ServerSocketChannel as
+       the server socket that accepts requests for the remote objects it
+       exports, namely the registry in which the java.rmi.activation.Activation&#8208;
+       System is bound and the java.rmi.activation.Activator remote object. In
+       this mode, rmid behaves the same as when it is started from the command
+       line, except:
+
+          o Output printed to System.err is redirected to a file. This file is
+            located in the directory specified by the java.io.tmpdir system
+            property (typically /var/tmp or /tmp) with the prefix &quot;rmid-err&quot; and
+            the suffix &quot;tmp&quot;.
+
+          o The -port option is disallowed. If this option is specified, rmid
+            will exit with an error message.
+
+          o The -log option is required. If this option is not specified, rmid
+            will exit with an error message.
+
+
+       See the man pages for inetd (Solaris) or xinetd (Linux) for details on
+       how to configure services to be started on demand.
+
+OPTIONS
+          -C&lt;someCommandLineOption&gt;
+             Specifies an option that is passed as a command-line argument to
+             each child process (activation group) of rmid when that process is
+             created. For example, you could pass a property to each virtual
+             machine spawned by the activation system daemon:
+                 rmid -C-Dsome.property=value
+             This ability to pass command-line arguments to child processes can
+             be useful for debugging. For example, the following command:
+                 rmid -C-Djava.rmi.server.logCalls=true
+             will enable server-call logging in all child VMs.
+
+          -J&lt;someCommandLineOption&gt;
+             Specifies an option that is passed to the java interpreter running
+             rmid. For example, to specify that rmid use a policy file named
+             rmid.policy, the -J option can be used to define the java.secu&#8208;
+             rity.policy property on rmid&apos;s command line, for example:
+                 rmid -J-Djava.security.policy=rmid.policy
+
+          -J-Dsun.rmi.activation.execPolicy=&lt;policy&gt;
+             Specifies the policy that rmid employs to check commands and com&#8208;
+             mand-line options used to launch the VM in which an activation
+             group runs. Please note that this option exists only in Sun&apos;s
+             implementation of the Java RMI activation daemon. If this property
+             is not specified on the command line, the result is the same as if
+             -J-Dsun.rmi.activation.execPolicy=default were specified. The pos&#8208;
+             sible values of &lt;policy&gt; can be default, &lt;policyClassName&gt;, or
+             none:
+
+             o default (or if this property is unspecified)
+
+             The default execPolicy allows rmid to execute commands with spe&#8208;
+             cific command-line options only if rmid has been granted permission
+             to execute those commands and options in the security policy file
+             that rmid uses. Only the default activation group implementation
+             can be used with the default execution policy.
+
+             rmid launches a VM for an activation group using the information in
+             the group&apos;s registered activation group descriptor, an Activation&#8208;
+             GroupDesc. The group descriptor specifies an optional Activation&#8208;
+             GroupDesc.CommandEnvironment which includes the command to execute
+             to start the activation group as well as any command line options
+             to be added to the command line. By default, rmid uses the java
+             command found in java.home. The group descriptor also contains
+             properties overrides that are added to the command line as options
+             defined as:
+                 -D&lt;property&gt;=&lt;value&gt;
+
+             The permission com.sun.rmi.rmid.ExecPermission is used to grant
+             rmid permission to execute a command, specified in the group
+             descriptor&apos;s CommandEnvironment to launch an activation group. The
+             permission com.sun.rmi.rmid.ExecOptionPermission is used to allow
+             rmid to use command-line options, specified as properties overrides
+             in the group descriptor or as options in the CommandEnvironment,
+             when launching the activation group.
+
+             When granting rmid permission to execute various commands and
+             options, the permissions ExecPermission and ExecOptionPermission
+             need to be granted universally (i.e., granted to all code sources).
+
+                ExecPermission
+                   The ExecPermission class represents permission for rmid to
+                   execute a specific command to launch an activation group.
+
+                Syntax
+                The name of an ExecPermission is the path name of a command to
+                grant rmid permission to execute. A path name that ends in &quot;/*&quot;
+                indicates all the files contained in that directory (where &quot;/&quot;
+                is the file-separator character, File.separatorChar). A path
+                name that ends with &quot;/-&quot; indicates all files and subdirectories
+                contained in that directory (recursively). A path name consist&#8208;
+                ing of the special token &quot;&lt;&lt;ALL FILES&gt;&gt;&quot; matches any file.
+
+                Note: A path name consisting of a single &quot;*&quot; indicates all the
+                files in the current directory, while a path name consisting of
+                a single &quot;-&quot; indicates all the files in the current directory
+                and (recursively) all files and subdirectories contained in the
+                current directory.
+
+                ExecOptionPermission
+                   The ExecOptionPermission class represents permission for rmid
+                   to use a specific command-line option when launching an acti&#8208;
+                   vation group. The name of an ExecOptionPermission is the
+                   value of a command line option.
+
+                Syntax
+                Options support a limited wildcard scheme. An asterisk signifies
+                a wildcard match, and it may appear as the option name itself
+                (i.e., it matches any option), or an asterisk may appear at the
+                end of the option name only if the asterisk follows either a &quot;.&quot;
+                or &quot;=&quot;.
+
+                For example: &quot;*&quot; or &quot;-Dfoo.*&quot; or &quot;-Da.b.c=*&quot; is valid, &quot;*foo&quot; or
+                &quot;-Da*b&quot; or &quot;ab*&quot; is not.
+
+                Policy file for rmid
+                   When granting rmid permission to execute various commands and
+                   options, the permissions ExecPermission and ExecOptionPermis&#8208;
+                   sion need to be granted universally (i.e., granted to all
+                   code sources). It is safe to grant these permissions univer&#8208;
+                   sally because only rmid checks these permissions.
+
+                An example policy file that grants various execute permissions
+                to rmid is:
+                grant {
+                    permission com.sun.rmi.rmid.ExecPermission
+                        &quot;/files/apps/java/jdk1.7.0/solaris/bin/java&quot;;
+
+                    permission com.sun.rmi.rmid.ExecPermission
+                        &quot;/files/apps/rmidcmds/*&quot;;
+
+                    permission com.sun.rmi.rmid.ExecOptionPermission
+                        &quot;-Djava.security.policy=/files/policies/group.policy&quot;;
+
+                    permission com.sun.rmi.rmid.ExecOptionPermission
+                        &quot;-Djava.security.debug=*&quot;;
+
+                    permission com.sun.rmi.rmid.ExecOptionPermission
+                        &quot;-Dsun.rmi.*&quot;;
+                };
+                The first permission granted allow rmid to execute the 1.7.0
+                version of the java command, specified by its explicit path
+                name. Note that by default, the version of the java command
+                found in java.home is used (the same one that rmid uses), and
+                does not need to be specified in the policy file. The second
+                permission allows rmid to execute any command in the directory
+                /files/apps/rmidcmds.
+
+                The third permission granted, an ExecOptionPermission, allows
+                rmid to launch an activation group that defines the security
+                policy file to be /files/policies/group.policy. The next permis&#8208;
+                sion allows the java.security.debug property to be used by an
+                activation group. The last permission allows any property in the
+                sun.rmi property name hierarchy to be used by activation groups.
+
+                To start rmid with a policy file, the java.security.policy prop&#8208;
+                erty needs to be specified on rmid&apos;s command line, for example:
+
+                rmid -J-Djava.security.policy=rmid.policy
+
+             o &lt;policyClassName&gt;
+
+             If the default behavior is not flexible enough, an administrator
+             can provide, when starting rmid, the name of a class whose checkEx&#8208;
+             ecCommand method is executed in order to check commands to be exe&#8208;
+             cuted by rmid.
+
+             The policyClassName specifies a public class with a public,
+             no-argument constructor and an implementation of the following
+             checkExecCommand method:
+                 public void checkExecCommand(ActivationGroupDesc desc,
+                                              String[] command)
+                     throws SecurityException;
+             Before launching an activation group, rmid calls the policy&apos;s
+             checkExecCommand method, passing it the activation group descriptor
+             and an array containing the complete command to launch the activa&#8208;
+             tion group. If the checkExecCommand throws a SecurityException,
+             rmid will not launch the activation group and an ActivationExcep&#8208;
+             tion will be thrown to the caller attempting to activate the
+             object.
+
+             o none
+
+             If the sun.rmi.activation.execPolicy property value is &quot;none&quot;, then
+             rmid will not perform any validation of commands to launch activa&#8208;
+             tion groups.
+
+          -log dir
+             Specifies the name of the directory the activation system daemon
+             uses to write its database and associated information. The log
+             directory defaults to creating a directory, log, in the directory
+             in which the rmid command was executed.
+
+          -port port
+             Specifies the port rmid&apos;s registry uses. The activation system dae&#8208;
+             mon binds the ActivationSystem, with the name java.rmi.activa&#8208;
+             tion.ActivationSystem, in this registry. Thus, the ActivationSystem
+             on the local machine can be obtained using the following Nam&#8208;
+             ing.lookup method call:
+                 import java.rmi.*;
+                 import java.rmi.activation.*;
+
+                 ActivationSystem system; system = (ActivationSystem)
+                 Naming.lookup(&quot;//:port/java.rmi.activation.ActivationSystem&quot;);
+
+          -stop
+             Stops the current invocation of rmid, for a port specified by the
+             -port option. If no port is specified, it will stop the rmid run&#8208;
+             ning on port 1098.
+
+
+ENVIRONMENT VARIABLES
+          CLASSPATH
+             Used to provide the system a path to user-defined classes. Directo&#8208;
+             ries are separated by colons. For example:
+                 .:/usr/local/java/classes
+
+
+SEE ALSO
+       rmic(1), CLASSPATH @
+       http://docs.oracle.com/javase/7/docs/technotes/tools/index.html#class&#8208;
+       path, java(1)
+
+                                   16 Mar 2012                           rmid(1)
+
+</pre></body></html>

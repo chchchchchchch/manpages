@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuMakeElementSum - initialize an Sum element</title></head>
+<body><pre>
+
+AuMakeElementSum(3)                                          AuMakeElementSum(3)
+
+
+
+Name
+       AuMakeElementSum - initialize an Sum element
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuMakeElementSum(element, num_inputs, inputs)
+           AuElement *element; /* RETURN */
+           unsigned short num_inputs;
+           unsigned short *inputs;
+
+Arguments
+       element   Returns the initialized element.
+
+       num_inputs
+                 Specifies the number of inputs.
+
+       inputs    Specifies  the  list  of  inputs.  Each entry in the list is an
+                 index of an element that will supply audio data  to  this  ele&#8208;
+                 ment.
+
+Description
+       AuMakeElementSum  sets the type member of element to AuElementTypeSum and
+       initializes the sum member of element with the remaining arguments.
+
+       AuMakeElementSum is implemented as a macro.
+
+See Also
+       AuMakeElementAddConstant, AuMakeElementBundle, AuMakeElementExportBucket,
+       AuMakeElementExportClient,   AuMakeElementExportDevice,  AuMakeElementEx&#8208;
+       portMonitor, AuMakeElementImportBucket, AuMakeElementImportClient,  AuMa&#8208;
+       keElementImportDevice,  AuMakeElementImportWaveForm,  AuMakeElementMulti&#8208;
+       plyConstant.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element initialization     1.9.3                  AuMakeElementSum(3)
+
+</pre></body></html>

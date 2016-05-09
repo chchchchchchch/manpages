@@ -1,0 +1,156 @@
+<html>
+<head><meta charset=utf-8/>
+<title>webcam - capture images and upload them to a webserver using ftp</title></head>
+<body><pre>
+
+webcam(1)                                                              webcam(1)
+
+
+
+NAME
+       webcam - capture images and upload them to a webserver using ftp
+
+SYNOPSIS
+       webcam [ config file ]
+
+DESCRIPTION
+       webcam  captures  images  from  a video4linux device like bttv, annotates
+       them and and uploads them to a webserver using ftp in a endless loop.
+
+CONFIGURATION
+       At startup webcam reads the configuration from the given config  file  or
+       ~/.webcamrc if none is specified in the command line.
+
+       The  config file has at least two sections.  The &quot;grab&quot; section holds the
+       capture parameters.  Any other section describes where the  image  should
+       be  uploaded.   Older  versions  used  &quot;ftp&quot;  as  name  for that section.
+       Recently the webcam utility got support for  multiple  connections,  thus
+       any  section  name is accepted and you can have more than one ftp section
+       (you have to use another name for each section  througth,  name  them  by
+       upload servers for example).
+
+       Here is an sample config file (the given values are the defaults):
+
+       [grab]
+       device = /dev/video0
+       driver = libv4l
+       text = &quot;webcam %Y-%m-%d %H:%M:%S&quot;
+       infofile = filename
+       fg_red = 255
+       fg_green = 255
+       fg_blue = 255
+       width = 320
+       height = 240
+       delay = 3
+       wait = 0
+       input = composite1
+       norm = pal
+       rotate = 0
+       top = 0
+       left = 0
+       bottom = -1
+       right = -1
+       quality = 75
+       trigger = 0
+       once = 0
+
+       [ftp]
+       host = www
+       user = webcam
+       pass = xxxxxx
+       dir  = public_html/images
+       file = webcam.jpeg
+       tmp  = uploading.jpeg
+       passive = 1
+       debug = 0
+       auto = 0
+       local = 0
+       ssh = 0
+
+       The annotation text is processed with strftime.  Check the strftime(3) or
+       date(1) manpage to see how you can format the timestamps.  The  text  can
+       also  be  read  from  a extern file (use infofile for that).  The default
+       color for the text overlay is white  (RGB=255,255,255).  Entries  in  the
+       range  of  0 through 255 for fg_red, fg_green, and fg_blue can be used to
+       define a different color.  Likewise bg_red, bg_green, and bg_blue can  be
+       used to set the background color (which defaults to transparent).
+
+       input  is  the  video  source  (TV/composite/whatever), norm the TV norm.
+       delay is the delay between two images in seconds.  wait  is  the  initial
+       delay  before the first image is grabbed (some cameras need some time for
+       adapting to lightning, thus don&apos;t return images with  reasonable  quality
+       within  the  first few seconds ...).  quality is the JPEG quality for the
+       stored images.
+
+       top, bottom, left, and right in the grab section allow cropping the image
+       after  it  is  grabbed.   They  should  satisfy 0&lt;=top&lt;bottom&lt;=height and
+       0&lt;=left&lt;right&lt;=width.  (0,0 is the top, left corner.)  If rotate is posi&#8208;
+       tive,  the output image will be rotated counter-clockwise 90 degrees that
+       number of times (1, 2, or 3).
+
+       With trigger set to a non-zero value webcam will upload the image only if
+       the content of the image has changed.  It just looks for the maximum dif&#8208;
+       ference between the last uploaded and current image and if it is  greater
+       than the specified value the image will be uploaded.  If once is set to 1
+       webcam will upload a single frame and quit.
+
+       archive can be used to create a (local) archive  of  the  webcam  images.
+       Just  specify  the filename for the files as argument.  The filename will
+       be processed with strftime(3), so you can use the place  the  usual  time
+       format  controls  into  the string to get unique filenames.  Non-existing
+       directories are created if needed.
+
+       If debug in the ftp section  is  set  to  1  the  complete  communication
+       between  webcam  and  the ftp utility is printed to stderr.  auto enables
+       autologin via ~/.netrc (starts the ftp utility without the  &apos;-n&apos;  switch,
+       check  the  ftp(1)  man  page for more info about the ~/.netrc file).  If
+       local in the ftp section is non-zero, files will be stored locally (using
+       the  dir,  tmp,  and file parameters) rather than ftped.  ssh set to non-
+       zero makes webcam use ssh instead of ftp.
+
+CORRECTION OF DISTORTION
+       contributed by Frederic Helin, the parameters belong into the [grab] sec&#8208;
+       tion of the config file too.
+
+       distor = 1
+              If distor param is set to 1, the correction of distortion works.
+
+       distor_k = 700
+              This  is the coefficient of distortion. This algorithm is based on
+              the paper &quot;Correcting Distortion of Image by  Image  Registration&quot;
+              of  Toru  Tamaki,  Tsuyoshi Yamamura and Noboru Ahnishi. More your
+              lens has an important distortion, more &apos;distor_k&apos; must  be  neared
+              of  0.  700 is the default value. Coefficient k of program is x100
+              than article.
+
+       distor_cx = 192
+
+       distor_cy = 144
+              Coordinates of the lens optical axis: width/2 and height/2 are the
+              default  values. The axis doesn&apos;t go through the image center. So,
+              you can change its coordinates  around  the  center  of  image  to
+              affine correction.
+
+       distor_zoom = 30
+              Zoom parameter is used to cache the distorted borders of image, if
+              you don&apos;t like this. Default value is 100.
+&#12;       distor_sensorw = 320
+
+       distor_sensorh = 240
+              Dimensions of camera sensor. Default values are for  1/4p  sensor.
+              This parameters used to have the same k coefficient than article.
+
+AUTHOR
+       Gerd Knorr &lt;kraxel@bytesex.org&gt;
+
+COPYRIGHT
+       Copyright (C) 1997-2002 Gerd Knorr
+       This program is distributed in the hope that it will be useful, but WITH&#8208;
+       OUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+       FITNESS FOR A PARTICULAR PURPOSE.
+
+
+
+                            (c) 1998-2000 Gerd Knorr                   webcam(1)
+
+</pre></body></html>

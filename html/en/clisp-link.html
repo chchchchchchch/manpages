@@ -1,0 +1,148 @@
+<html>
+<head><meta charset=utf-8/>
+<title>clisp-link - link a new external module to CLISP[1].</title></head>
+<body><pre>
+
+CLISP-LINK(1)              Platform: i686-pc-linux-gnu             CLISP-LINK(1)
+
+
+
+NAME
+       clisp-link - link a new external module to CLISP[1].
+
+SYNOPSIS
+       clisp-link [create] [module] [file...]
+
+       clisp-link [add] [source] [destination] [module...]
+
+       clisp-link [run] [source] [module...]
+
+       clisp-link [install] [module...]
+
+DESCRIPTION
+       This shell script operates on CLISP[1] module sets and linking sets:
+
+       &#183;   creates new module sets out of source files
+
+       &#183;   adds module sets to a linking set to produce a new linking set
+
+       &#183;   runs CLISP[1] with module sets added
+
+       &#183;   Only in CLISP[1] built without configure flag
+           --without-dynamic-modules.
+
+           installs new module sets for general use
+
+OPTIONS
+       create
+           The command
+
+               $ clisp-link create module file ...
+
+           creates a module set in module directory which refers (via symbolic
+           links) to files file... The files are expected to be modules of their
+           own.
+
+       add
+           The command
+
+               $ clisp-link add source destination module ...
+
+           combines the linking set in directory source and the modules in
+           directories module... to a new linking set, in the directory
+           destination which is newly created.
+
+       run
+           The command
+
+               $ clisp-link run source module ...
+
+           runs the linking set in directory source, with the modules in
+           directories module... Unless CLISP[1] has been built with the
+           configuration option --without-dynamic-modules, the loading will be
+           performed using SYS::DYNLOAD-MODULES. Otherwise - this is much slower
+           - a temporary linking set will be created and deleted afterwards.
+
+       install
+           Only in CLISP[1] built without configure flag
+           --without-dynamic-modules.
+
+           The command
+&#12;               $ clisp-link install module ...
+
+           installs the modules in directories module... into
+           CUSTOM:*LIB-DIRECTORY* or, if it is not writable to the user (e.g.,
+           if a system-wide CLISP[1] installation is used and the user does not
+           have administrative privileges), into CUSTOM:*USER-LIB-DIRECTORY*.
+
+           Variable CUSTOM:*USER-LIB-DIRECTORY* is initially set to
+           (MERGE-PATHNAMES[2] &quot;.clisp/&quot; (USER-HOMEDIR-PATHNAME[3])) if that
+           directory exists, and can be reset in the RC file.
+
+               Note
+               Do not add CUSTOM:*USER-LIB-DIRECTORY* to CUSTOM:*LOAD-PATHS* or
+               under any element thereof. Use REQUIRE instead of LOAD to load
+               dynamic modules.
+           For this command to work, each module directory must contain a
+           Makefile with a clisp-module-distrib target which uses LN to
+           distribute the files necessary to run the module into destdir. This
+           is in addition to the general requirement that link.sh is present.
+
+EXAMPLES
+       See Section 32.2.6, &#8220;Example&#8221;.
+
+FILES
+       clisp-link needs a &#8220;link kit&#8221; directory containing:
+
+       &#183;   &quot;modules.c&quot;
+
+       &#183;   &quot;clisp.h&quot;
+
+       clisp-link expects to find these files in a subdirectory linkkit/ of the
+       installation directory (i.e., CUSTOM:*LIB-DIRECTORY*) which it acquires
+       by running
+
+           $ `dirname $0`/clisp -b
+
+       This can be overridden by the environment variable[4] CLISP_LINKKIT.
+
+SEE ALSO
+           CLISP impnotes
+           clisp(1)
+
+AUTHORS
+       Bruno Haible &lt;http://www.haible.de/bruno/&gt;
+           The original author and long-time maintainer.
+
+       Michael Stoll &lt;http://www.faculty.iu-bremen.de/mstoll/&gt;
+           The original author.
+
+       Sam Steingold &lt;http://sds.podval.org/&gt;
+           Co-maintainer since 1998.
+
+       Others
+           See COPYRIGHT (file in the CLISP sources)  for the list of other
+           contributors and the license.
+
+COPYRIGHT
+       Copyright &#169; 1992-2010 Bruno Haible
+       Copyright &#169; 1998-2010 Sam Steingold
+
+NOTES
+        1. CLISP
+           http://clisp.cons.org
+
+        2. MERGE-PATHNAMES
+           http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/fun_merge-pathnames.html
+
+        3. USER-HOMEDIR-PATHNAME
+           http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/fun_user-homedir-pathname.html
+
+        4. environment variable
+           [set $man.base.url.for.relative.links]/basedefs/xbd_chap08.html
+
+
+
+CLISP 2.49                  Last modified: 2010-07-07              CLISP-LINK(1)
+
+</pre></body></html>

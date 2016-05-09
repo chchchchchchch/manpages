@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>from — print names of those who have sent mail</title></head>
+<body><pre>
+
+FROM(1)                   BSD General Commands Manual                  FROM(1)
+
+NAME
+     from &#8212; print names of those who have sent mail
+
+SYNOPSIS
+     from [-c] [-f file] [-s sender] [user]
+
+DESCRIPTION
+     The from utility prints out the mail header lines from the invoker&apos;s mail&#8208;
+     box.
+
+     The following options are available:
+
+     -c      Just print a count of messages and exit.
+
+     -f file
+             The supplied file is examined instead of the invoker&apos;s mailbox.  If
+             the -f option is used, the user argument should not be used.  Read
+             from standard input if file name &#8220;-&#8221; is given.
+
+     -s sender
+             Only mail from addresses containing the supplied string are
+             printed.
+
+     If user is given, the user&apos;s mailbox is examined instead of the invoker&apos;s
+     own mailbox.  (Privileges are required.)
+
+ENVIRONMENT
+     MAIL    If set, the location of the invoker&apos;s mailbox.  Otherwise, the
+             default in /var/mail is used.
+
+FILES
+     /var/mail/*
+
+SEE ALSO
+     biff(1), mail(1)
+
+HISTORY
+     The from command appeared in 3.0BSD.
+
+BSD                            December 30, 1993                           BSD
+
+</pre></body></html>

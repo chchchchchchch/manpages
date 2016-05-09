@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Alien::Package::Rpm - an object that represents a rpm package</title></head>
+<body><pre>
+
+Alien::Package::Rpm(3pmUser Contributed Perl DocumentatiAlien::Package::Rpm(3pm)
+
+
+
+NAME
+       Alien::Package::Rpm - an object that represents a rpm package
+
+DESCRIPTION
+       This is an object class that represents a rpm package. It is derived from
+       Alien::Package.
+
+FIELDS
+       prefixes
+           Relocatable rpm packages have a prefixes field.
+
+METHODS
+       checkfile
+           Detect rpm files by their extention.
+
+       install
+           Install a rpm. If RPMINSTALLOPT is set in the environement, the
+           options in it are passed to rpm on its command line.
+
+       scan
+           Implement the scan method to read a rpm file.
+
+       unpack
+           Implement the unpack method to unpack a rpm file. This is a little
+           nasty because it has to handle relocatable rpms and has to do a bit
+           of permissions fixing as well.
+
+       prep
+           Prepare for package building by generating the spec file.
+
+       cleantree
+           Delete the spec file.
+
+       build
+           Build a rpm. If RPMBUILDOPT is set in the environement, the options
+           in it are passed to rpm on its command line.
+
+           An optional parameter, if passed, can be used to specify the program
+           to use to build the rpm. It defaults to rpmbuild.
+
+       version
+           Set/get version.
+
+           When retreiving the version, remove any dashes in it.
+
+       postinst
+       postrm
+       preinst
+       prerm
+           Set/get script fields.
+
+           When retrieving a value, we have to do some truely sick mangling.
+           Since debian/slackware scripts can be anything -- perl programs or
+           binary files -- and rpm is limited to only shell scripts, we need to
+           encode the files and add a scrap of shell script to make it unextract
+           and run on the fly.
+
+           When setting a value, we do some mangling too. Rpm maintainer scripts
+           are typically shell scripts, but often lack the leading shebang line.
+           This can confuse dpkg, so add the shebang if it looks like there is
+           no shebang magic already in place.
+&#12;           Additionally, it&apos;s not uncommon for rpm maintainer scripts to contain
+           bashisms, which can be triggered when they are ran on systems where
+           /bin/sh is not bash. To work around this, the shebang line of the
+           scripts is changed to use bash.
+
+           Also, if the rpm is relocatable, the script could refer to
+           RPM_INSTALL_PREFIX, which is set by rpm at run time. Deal with this
+           by adding code to the script to set RPM_INSTALL_PREFIX.
+
+       arch
+           Set/get arch field. When the arch field is set, some sanitizing is
+           done first to convert it to the debian format used internally. When
+           it&apos;s retreived it&apos;s converted back to rpm form from the internal
+           form.
+
+AUTHOR
+       Joey Hess &lt;joey@kitenet.net&gt;
+
+
+
+perl v5.14.2                       2011-08-05           Alien::Package::Rpm(3pm)
+
+</pre></body></html>

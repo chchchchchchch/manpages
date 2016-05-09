@@ -1,0 +1,100 @@
+<html>
+<head><meta charset=utf-8/>
+<title>fstatat - get file status relative to a directory file descriptor</title></head>
+<body><pre>
+
+FSTATAT(2)                  Linux Programmer&apos;s Manual                 FSTATAT(2)
+
+
+
+NAME
+       fstatat - get file status relative to a directory file descriptor
+
+SYNOPSIS
+       #include &lt;fcntl.h&gt; /* Definition of AT_* constants */
+       #include &lt;sys/stat.h&gt;
+
+       int fstatat(int dirfd, const char *pathname, struct stat *buf,
+                   int flags);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       fstatat():
+           Since glibc 2.10:
+               _XOPEN_SOURCE &gt;= 700 || _POSIX_C_SOURCE &gt;= 200809L
+           Before glibc 2.10:
+               _ATFILE_SOURCE
+
+DESCRIPTION
+       The  fstatat()  system  call operates in exactly the same way as stat(2),
+       except for the differences described in this manual page.
+
+       If the pathname given in pathname is relative,  then  it  is  interpreted
+       relative  to  the  directory  referred  to  by  the file descriptor dirfd
+       (rather than relative to the current working  directory  of  the  calling
+       process, as is done by stat(2) for a relative pathname).
+
+       If  pathname  is  relative  and dirfd is the special value AT_FDCWD, then
+       pathname is interpreted relative to the current working directory of  the
+       calling process (like stat(2)).
+
+       If pathname is absolute, then dirfd is ignored.
+
+       flags  can  either  be  0,  or include one or more of the following flags
+       ORed:
+
+       AT_NO_AUTOMOUNT (since Linux 2.6.38)
+              Don&apos;t automount the terminal (&quot;basename&quot;) component of pathname if
+              it  is  a  directory  that is an automount point.  This allows the
+              caller to gather attributes of an automount point (rather than the
+              location  it  would  mount).   This flag can be used in tools that
+              scan directories to prevent mass-automounting of  a  directory  of
+              automount  points.   The AT_NO_AUTOMOUNT flag has no effect if the
+              mount point has already been mounted over.
+
+       AT_SYMLINK_NOFOLLOW
+              If pathname is a symbolic link, do  not  dereference  it:  instead
+              return  information  about  the  link  itself, like lstat(2).  (By
+              default, fstatat() dereferences symbolic links, like stat(2).)
+
+RETURN VALUE
+       On success, fstatat() returns 0.  On error, -1 is returned and  errno  is
+       set to indicate the error.
+
+ERRORS
+       The same errors that occur for stat(2) can also occur for fstatat().  The
+       following additional errors can occur for fstatat():
+
+       EBADF  dirfd is not a valid file descriptor.
+
+       EINVAL Invalid flag specified in flags.
+&#12;       ENOTDIR
+              pathname is relative and dirfd is a file descriptor referring to a
+              file other than a directory.
+
+VERSIONS
+       fstatat()  was added to Linux in kernel 2.6.16; library support was added
+       to glibc in version 2.4.
+
+CONFORMING TO
+       POSIX.1-2008.  A similar system call exists on Solaris.
+
+NOTES
+       See openat(2) for an explanation of the need for fstatat().
+
+       The underlying system call employed by the glibc fstatat() wrapper  func&#8208;
+       tion is actually called fstatat64().
+
+SEE ALSO
+       openat(2), stat(2), path_resolution(7), symlink(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-05-04                         FSTATAT(2)
+
+</pre></body></html>

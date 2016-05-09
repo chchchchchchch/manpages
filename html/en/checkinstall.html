@@ -1,0 +1,196 @@
+<html>
+<head><meta charset=utf-8/>
+<title>checkinstall —       Track installation of local software, and produce a binary manageable with your package management software.</title></head>
+<body><pre>
+
+CheckInstall(8)                                                  CheckInstall(8)
+
+
+
+NAME
+       checkinstall  &#8212;       Track installation of local software, and produce a
+       binary manageable with your package management software.
+
+
+SYNOPSIS
+       checkinstall [options]  [install command]
+
+DESCRIPTION
+       checkinstall is a program that monitors an installation  procedure  (such
+       as  make  install,  install.sh ), and creates a standard package for your
+       distribution (currently deb, rpm and tgz packages are supported) that you
+       can  install through your distribution&apos;s package management system (dpkg,
+       rpm or installpkg).
+
+
+       Note that for most useful actions, checkinstall must be run as root.
+
+
+OPTIONS
+       These programs follow the  usual  GNU  command  line  syntax,  with  long
+       options starting with two dashes (&apos;-&apos;).  A summary of options is included
+       below.
+
+       All the options that toggle a switch default to activate the option.   To
+       force  activation  or deactivation, call them with &apos;=yes&apos; or &apos;=no&apos;. As an
+       example, to disable stripping use --strip=no.
+
+       -h           --help
+                 Show summary of options.
+
+       --version Show version information.
+
+       --copyright
+                 Show Copyright information
+
+       --type    Choose packaging system. Can be one of &apos;slackware&apos;, &apos;debian&apos; or
+                 &apos;rpm&apos;.
+
+       -D        Create a Debian package.
+
+       -R        Create a RPM package.
+
+       -S        Create a Slackware Package.
+
+       --install Toggle installation of the created package.
+
+       --fstrans Enable/disable  filesystem  translation. Filesystem translation
+                 enabled causes the install to proceed in a temporary directory,
+                 thus not actually touching your system.
+
+       -y   --default
+                 Accept default answers to all questions.
+
+       --pkgname Set the package name.
+
+       --pkgversion
+                 Set package version.
+
+       -A   --arch    --pkgarch
+                 Set package architecture.
+&#12;       --pkgrelease
+                 Set the package release.
+
+       --pkglicense
+                 Set package license.
+
+       --pkggroup
+                 Set the package group.
+
+       --pkgsource
+                 Set source location
+
+       --pkgaltsource
+                 Set alternate source location
+
+       --pakdir  Where to save the new package.
+
+       --maintainer
+                 Set   the   package   maintainer.   Be   careful  to  correctly
+                 quote/escape the name, to prevent shell expansion
+
+       --provides
+                 Features provided by this package (currently only  on  RPM  and
+                 Deb).
+
+       --requires
+                 Dependencies required by this package.
+
+       --rpmflags
+                 Pass this flags to the rpm installer.
+
+       --rpmi    Use the -i flag when installing a rpm.
+
+       --rpmu    Use the -U flag when installing a rpm.
+
+       --dpkgflags
+                 Pass this flags to the dpkg installer
+
+       --spec    Where the .spec file is located
+
+       --nodoc   Do not include documentation files.
+
+       -d        Set debug level. Must be one of 0, 1 and 2.
+
+       -si       Run an interactive install command
+
+       --showinstall
+                 Toggle interactive install command.
+
+       -ss       Run an interactive Slackware installation script.
+
+       --showslack
+                 Toggle interactive Slackware installation script.
+
+       --autodoinst
+                 Toggle creation of a doinst.sh script.
+
+       --strip   Toggle stripping any ELF binaries found inside the package.
+
+       --stripso Toggle stripping any ELF libraries (.so) found inside the pack&#8208;
+                 age.
+
+       --addso   Search for any shared libs and add them to /etc/ld.so.conf
+
+       --reset-uids
+                 Reset perms for all files/dirs to 755 and the  owner/group  for
+                 all dirs to root.root
+
+       --gzman   Compress any man pages found inside the package.
+
+       --docdir  Where to put documentation files.
+
+       --umask   Set the umask value.
+
+       --exclude Exclude these files/directories from the package.
+
+       --include Force  the inclusion in the package of the files/dirs listed in
+                 the argument (a file).
+
+       --inspect Inspect the package&apos;s file list
+
+       --review-spec
+                 Review the spec file before creating a .rpm.
+
+       --review-control
+                 Review the control file before creating a .deb.
+
+       --newslack
+                 Use the new (8.1+) Slackware description  format  (&quot;--newslack&quot;
+                 implies &quot;-S&quot;)
+
+       --with-tar
+                 Manually set the path to the tar binary.
+
+       --deldoc  Toggle deletion of doc-pak upon termination.
+
+       --deldesc Toggle deletion of description-pak upon termination.
+
+       --delspec Toggle deletion of spec file upon termination.
+
+       --bk      Backup any overwritten files
+
+       --backup  Toggle backup
+
+FILES
+       This  program reads its configuration from /etc/checkinstallrc, which can
+       be used to override defaults.  Command line arguments  override  settings
+       in the configuration file.
+
+
+AUTHOR
+       This  manual  page was written by Felipe Sateler &lt;fsateler@gmail.com&gt; for
+       the Debian system (but may be used by others).  Permission is granted  to
+       copy,  distribute  and/or modify this document under the terms of the GNU
+       General Public License, Version 2.
+
+
+       On Debian systems, the complete text of the GNU  General  Public  License
+       can be found in /usr/share/common-licenses/GPL.
+
+
+
+
+                                                                 CheckInstall(8)
+
+</pre></body></html>

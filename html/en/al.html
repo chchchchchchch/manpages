@@ -1,0 +1,172 @@
+<html>
+<head><meta charset=utf-8/>
+<title>al, al2 - Mono Assembly Linker</title></head>
+<body><pre>
+
+al(1)                                                                      al(1)
+
+
+
+NAME
+       al, al2 - Mono Assembly Linker
+
+SYNOPSIS
+       al [option] [source-files]
+
+DESCRIPTION
+       AL is the Mono assembly linkder.
+
+       This  linker is used to put together assemblies from a collection of mod&#8208;
+       ules (.netmodule files), assembly manifest files and resources.
+
+       Do not confuse this with the monolinker, which is a tool  to  reduce  the
+       size of assemblies based on the code used.
+
+       Use al for processing 1.0 assemblies, use al2 to process 2.0 assemblies.
+
+OPTIONS
+       @&lt;filename&gt;
+              Read response file for more options.
+
+       -algid:&lt;id&gt;
+              Algorithm  used to hash files. The &lt;id&gt; must be specified in hexa&#8208;
+              decimal.
+
+       -base:&lt;addr&gt; | -baseaddress:&lt;addr&gt;
+              Base address for the library. THIS FEATURE ISN&apos;T IMPLEMENTED.
+
+       -bugreport:&lt;filename&gt;
+              Create a &apos;Bug Report&apos; file. THIS FEATURE ISN&apos;T IMPLEMENTED.
+
+       -comp:&lt;text&gt; | -company:&lt;text&gt;
+              This inserts the company name into the assembly metadata.  This is
+              equivalent  to  adding  the [AssemblyCompany (&quot;&lt;text&gt;&quot;)] attribute
+              into C# source code.
+
+       -config:&lt;text&gt; | -configuration:&lt;text&gt;
+              This inserts the configuration string into the assembly  metadata.
+              This   is   equivalent   to   adding   the  [AssemblyConfiguration
+              (&quot;&lt;text&gt;&quot;)] attribute into C# source code.
+
+       -copy:&lt;text&gt; | -copyright:&lt;text&gt;
+              This inserts the copyright message  into  the  assembly  metadata.
+              This  is  equivalent  to adding the [AssemblyCopyright (&quot;&lt;text&gt;&quot;)]
+              attribute into C# source code.
+
+       -c:&lt;text&gt; | -culture:&lt;text&gt;
+              This inserts the supported culture  into  the  assembly  metadata.
+              This  is  equivalent  to  adding  the [AssemblyCulture (&quot;&lt;text&gt;&quot;)]
+              attribute into C# source code.
+
+       -delay | -delay+ | -delaysign | -delaysign+
+              The generated assembly will be delay signed.  This  is  equivalent
+              to  adding  the [AssemblyDelaySignAttribute (true)] attribute into
+              C# source code.
+
+       -delay- | -delaysign-
+              The generated assembly  will  be  fully  signed  (i.e.  not  delay
+              signed).   This  is  the  default option when signing (-keyfile or
+              -keyname).
+
+       -descr:&lt;text&gt; | -description:&lt;text&gt;
+              This inserts a description of the assembly into the assembly meta&#8208;
+              data.   This  is  equivalent  to  adding  the [AssemblyDescription
+              (&quot;&lt;text&gt;&quot;)] attribute into C# source code.
+
+       -e:&lt;filename&gt; | -evidence:&lt;filename&gt;
+              This embed into the assembly the specified file as assembly  secu&#8208;
+              rity evidences.
+
+       -fileversion:&lt;version&gt;
+              Optional  Win32  version.  This overrides the normal assembly ver&#8208;
+              sion.
+
+       -flags:&lt;flags&gt;
+              Assembly flags. The &lt;flags&gt; must be specified in hexadecimal.
+
+       -fullpaths
+              Display files using fully-qualified filenames.
+
+       -keyf:&lt;filename&gt; | -keyfile:&lt;filename&gt;
+              Strongname (sign) the output assembly using the key  pair  present
+              in  the  specified  strong name key file (snk). A full key pair is
+              required  unless  the  delay  signing  option  is  also  specified
+              (-delay+).   This  is  equivalent  to  adding the [AssemblyKeyFile
+              (&quot;&lt;text&gt;&quot;)] attribute into C# source code.
+
+       -keyn:&lt;text&gt; | -keyname:&lt;text&gt;
+              Strongname (sign) the output assembly using the key  pair  present
+              in  the  specified  container.  Delay signing isn&apos;t supported when
+              using key containers.  This is equivalent to  adding  the  [Assem&#8208;
+              blyKeyName (&quot;&lt;text&gt;&quot;)] attribute into C# source code.
+
+       -main:&lt;method&gt;
+              Specifies the method name of the assembly entry point.
+
+       -nologo
+              Suppress the startup banner and copyright message.
+
+       -out:&lt;filename&gt;
+              Output file name for the assembly manifest.
+
+       -prod:&lt;text&gt; | product:&lt;text&gt;
+              This inserts the product name into the assembly metadata.  This is
+              equivalent to adding the  [AssemblyProduct  (&quot;&lt;text&gt;&quot;)]  attribute
+              into C# source code.
+
+       -productv[ersion]:&lt;text&gt;
+              This inserts the product version into the assembly metadata.  This
+              is  equivalent   to   adding   the   [AssemblyInformationalVersion
+              (&quot;&lt;text&gt;&quot;)] attribute into C# source code.
+
+       -t[arget]:&lt;target&gt; | -target=&lt;target&gt;
+              Valid &lt;target&gt;s are: lib | library to create a library (.dll), exe
+              to create a console executable (.exe), and win | winexe to  create
+              a Windows executable (.exe).
+
+       -template:&lt;filename&gt;
+              Specifies an assembly to get default options from.
+
+       -title:&lt;text&gt;
+              This  inserts  an assembly title into the assembly metadata.  This
+              is equivalent to adding the [AssemblyTitle  (&quot;&lt;text&gt;&quot;)]  attribute
+              into C# source code.
+
+       -trade:&lt;text&gt; | -trademark:&lt;text&gt;
+              This inserts a trademark message into the assembly metadata.  This
+              is  equivalent  to  adding  the   [AssemblyTrademark   (&quot;&lt;text&gt;&quot;)]
+              attribute into C# source code.
+
+       -v:&lt;version&gt; | -version:&lt;version&gt;
+              This  inserts the assembly version into the assembly metadata. You
+              can use * to auto-generate remaining numbers.  This is  equivalent
+              to  adding  the  [AssemblyVersion  (&quot;&lt;text&gt;&quot;)]  attribute  into C#
+              source code.
+
+       -win32icon:&lt;filename&gt;
+              Use this icon for the output.
+
+       -win32res:&lt;filename&gt;
+              Specifies the Win32 resource file.
+
+       -? | -help
+              Display information about AL
+
+SEE ALSO
+       sn(1), monolinker(1)
+
+COPYRIGHT
+       Copyright (C) 2005 Novell, Inc (http://www.novell.com)
+
+MAILING LISTS
+       Visit    http://lists.ximian.com/mailman/listinfo/mono-devel-list     for
+       details.
+
+WEB SITE
+       Visit: http://www.mono-project.com for details
+
+
+
+                                                                           al(1)
+
+</pre></body></html>

@@ -1,0 +1,290 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip-xfrm - transform configuration</title></head>
+<body><pre>
+
+IP-XFRM(8)                            Linux                           IP-XFRM(8)
+
+
+
+NAME
+       ip-xfrm - transform configuration
+
+SYNOPSIS
+       ip [ OPTIONS ] xfrm  { COMMAND | help }
+
+
+       ip xfrm XFRM-OBJECT { COMMAND | help }
+
+
+       XFRM-OBJECT := state | policy | monitor
+
+
+       ip xfrm state { add | update } ID [ ALGO-LIST ] [ mode MODE ] [ mark MARK
+               [ mask MASK ] ] [ reqid REQID ] [ seq SEQ ] [ replay-window SIZE
+               ] [ replay-seq SEQ ] [ replay-oseq SEQ ] [ flag FLAG-LIST ] [ sel
+               SELECTOR ] [ LIMIT-LIST ] [ encap ENCAP ] [ coa ADDR[/PLEN] ] [
+               ctx CTX ]
+
+       ip xfrm state allocspi ID [ mode MODE ] [ mark MARK [ mask MASK ] ] [
+               reqid REQID ] [ seq SEQ ] [ min SPI max SPI ]
+
+       ip xfrm state { delete | get } ID [ mark MARK [ mask MASK ] ]
+
+       ip xfrm state { deleteall | list } [ ID ] [ mode MODE ] [ reqid REQID ] [
+               flag FLAG-LIST ]
+
+       ip xfrm state flush [ proto XFRM-PROTO ]
+
+       ip xfrm state count
+
+       ID := [ src ADDR ] [ dst ADDR ] [ proto XFRM-PROTO ] [ spi SPI ]
+
+       XFRM-PROTO := esp | ah | comp | route2 | hao
+
+       ALGO-LIST := [ ALGO-LIST ] ALGO
+
+       ALGO := { enc | auth | comp } ALGO-NAME ALGO-KEY |
+               aead ALGO-NAME ALGO-KEY ALGO-ICV-LEN |
+               auth-trunc ALGO-NAME ALGO-KEY ALGO-TRUNC-LEN
+
+       MODE := transport | tunnel | ro | in_trigger | beet
+
+       FLAG-LIST := [ FLAG-LIST ] FLAG
+
+       FLAG := noecn | decap-dscp | nopmtudisc | wildrecv | icmp | af-unspec |
+               align4
+
+       SELECTOR := [ src ADDR[/PLEN] ] [ dst ADDR[/PLEN] ] [ dev DEV ]
+               [ UPSPEC ]
+
+       UPSPEC := proto { PROTO |
+               { tcp | udp | sctp | dccp } [ sport PORT ] [ dport PORT ] |
+               { icmp | ipv6-icmp | mobility-header } [ type NUMBER ] [ code
+               NUMBER ] |
+               gre [ key { DOTTED-QUAD | NUMBER } ] }
+
+       LIMIT-LIST := [ LIMIT-LIST ] limit LIMIT
+
+       LIMIT := { time-soft | time-hard | time-use-soft | time-use-hard } SEC&#8208;
+               ONDS |
+               { byte-soft | byte-hard } SIZE |
+               { packet-soft | packet-hard } COUNT
+
+       ENCAP := { espinudp | espinudp-nonike } SPORT DPORT OADDR
+
+       ip xfrm policy { add | update } SELECTOR dir DIR [ ctx CTX ] [ mark MARK
+               [ mask MASK ] ] [ index INDEX ] [ ptype PTYPE ] [ action ACTION ]
+               [ priority PRIORITY ] [ flag FLAG-LIST ] [ LIMIT-LIST ] [ TMPL-
+               LIST ]
+
+       ip xfrm policy { delete | get } { SELECTOR | index INDEX } dir DIR [ ctx
+               CTX ] [ mark MARK [ mask MASK ] ] [ ptype PTYPE ]
+
+       ip xfrm policy { deleteall | list } [ SELECTOR ] [ dir DIR ] [ index
+               INDEX ] [ ptype PTYPE ] [ action ACTION ] [ priority PRIORITY ]
+
+       ip xfrm policy flush [ ptype PTYPE ]
+
+       ip xfrm policy count
+
+       SELECTOR := [ src ADDR[/PLEN] ] [ dst ADDR[/PLEN] ] [ dev DEV ] [ UPSPEC
+               ]
+
+       UPSPEC := proto { PROTO |
+               { tcp | udp | sctp | dccp } [ sport PORT ] [ dport PORT ] |
+               { icmp | ipv6-icmp | mobility-header } [ type NUMBER ] [ code
+               NUMBER ] |
+               gre [ key { DOTTED-QUAD | NUMBER } ] }
+
+       DIR := in | out | fwd
+
+       PTYPE := main | sub
+
+       ACTION := allow | block
+
+       FLAG-LIST := [ FLAG-LIST ] FLAG
+
+       FLAG := localok | icmp
+
+       LIMIT-LIST := [ LIMIT-LIST ] limit LIMIT
+
+       LIMIT := { time-soft | time-hard | time-use-soft | time-use-hard } SEC&#8208;
+               ONDS |
+               { byte-soft | byte-hard } SIZE |
+               { packet-soft | packet-hard } COUNT
+
+       TMPL-LIST := [ TMPL-LIST ] tmpl TMPL
+
+       TMPL := ID [ mode MODE ] [ reqid REQID ] [ level LEVEL ]
+
+       ID := [ src ADDR ] [ dst ADDR ] [ proto XFRM-PROTO ] [ spi SPI ]
+
+       XFRM-PROTO := esp | ah | comp | route2 | hao
+
+       MODE := transport | tunnel | ro | in_trigger | beet
+
+       LEVEL := required | use
+
+       ip xfrm monitor [ all | LISTofXFRM-OBJECTS ]
+
+
+
+DESCRIPTION
+       xfrm is an IP framework for  transforming  packets  (such  as  encrypting
+       their  payloads).  This framework is used to implement the IPsec protocol
+       suite (with the state object operating on the Security Association  Data&#8208;
+       base,  and  the policy object operating on the Security Policy Database).
+       It is also used for the IP Payload Compression Protocol and  features  of
+       Mobile IPv6.
+
+
+   ip xfrm state add - add new state into xfrm
+   ip xfrm state update - update existing state in xfrm
+   ip xfrm state allocspi - allocate an SPI value
+   ip xfrm state delete - delete existing state in xfrm
+   ip xfrm state get - get existing state in xfrm
+   ip xfrm state deleteall - delete all existing state in xfrm
+   ip xfrm state list - print out the list of existing state in xfrm
+   ip xfrm state flush - flush all state in xfrm
+   ip xfrm state count - count all existing state in xfrm
+       ID     is  specified  by a source address, destination address, transform
+              protocol XFRM-PROTO, and/or Security Parameter Index SPI.
+
+
+       XFRM-PROTO
+              specifies a transform protocol: IPsec Encapsulating Security  Pay&#8208;
+              load  (esp), IPsec Authentication Header (ah), IP Payload Compres&#8208;
+              sion (comp), Mobile IPv6 Type 2 Routing Header (route2), or Mobile
+              IPv6 Home Address Option (hao).
+
+
+       ALGO-LIST
+              specifies  one  or  more  algorithms  ALGO to use. Algorithm types
+              include encryption (enc),  authentication  (auth),  authentication
+              with  a  specified  truncation  length (auth-trunc), authenticated
+              encryption with associated data (aead),  and  compression  (comp).
+              For  each  algorithm  used, the algorithm type, the algorithm name
+              ALGO-NAME, and the key ALGO-KEY must be specified. For  aead,  the
+              Integrity  Check  Value  length  ALGO-ICV-LEN must additionally be
+              specified.  For auth-trunc, the signature truncation length  ALGO-
+              TRUNC-LEN must additionally be specified.
+
+
+       MODE   specifies  a  mode of operation: IPsec transport mode (transport),
+              IPsec tunnel mode (tunnel), Mobile IPv6  route  optimization  mode
+              (ro),  Mobile IPv6 inbound trigger mode (in_trigger), or IPsec ESP
+              Bound End-to-End Tunnel Mode (beet).
+
+
+       FLAG-LIST
+              contains one or more  of  the  following  optional  flags:  noecn,
+              decap-dscp, nopmtudisc, wildrecv, icmp, af-unspec, or align4.
+
+
+       SELECTOR
+              selects  the  traffic that will be controlled by the policy, based
+              on the  source  address,  the  destination  address,  the  network
+              device, and/or UPSPEC.
+
+
+       UPSPEC selects  traffic by protocol. For the tcp, udp, sctp, or dccp pro&#8208;
+              tocols, the source and destination port can optionally  be  speci&#8208;
+              fied.   For the icmp, ipv6-icmp, or mobility-header protocols, the
+              type and code numbers can optionally be specified.   For  the  gre
+              protocol,  the key can optionally be specified as a dotted-quad or
+              number.  Other protocols can be selected by name or number PROTO.
+
+
+       LIMIT-LIST
+              sets limits in seconds, bytes, or numbers of packets.
+
+
+       ENCAP  encapsulates packets with protocol  espinudp  or  espinudp-nonike,
+              using  source  port  SPORT,  destination port DPORT , and original
+              address OADDR.
+
+
+   ip xfrm policy add - add a new policy
+   ip xfrm policy update - update an existing policy
+   ip xfrm policy delete - delete an existing policy
+   ip xfrm policy get - get an existing policy
+   ip xfrm policy deleteall - delete all existing xfrm policies
+   ip xfrm policy list - print out the list of xfrm policies
+   ip xfrm policy flush - flush policies
+   ip xfrm policy count - count existing policies
+       SELECTOR
+              selects the traffic that will be controlled by the  policy,  based
+              on  the  source  address,  the  destination  address,  the network
+              device, and/or UPSPEC.
+
+
+       UPSPEC selects traffic by protocol. For the tcp, udp, sctp, or dccp  pro&#8208;
+              tocols,  the  source and destination port can optionally be speci&#8208;
+              fied.  For the icmp, ipv6-icmp, or mobility-header protocols,  the
+              type  and  code  numbers can optionally be specified.  For the gre
+              protocol, the key can optionally be specified as a dotted-quad  or
+              number.  Other protocols can be selected by name or number PROTO.
+
+
+       DIR    selects the policy direction as in, out, or fwd.
+
+
+       CTX    sets the security context.
+
+
+       PTYPE  can be main (default) or sub.
+
+
+       ACTION can be allow (default) or block.
+
+
+       PRIORITY
+              is a number that defaults to zero.
+
+
+       FLAG-LIST
+              contains  one  or  both  of the following optional flags: local or
+              icmp.
+
+
+       LIMIT-LIST
+              sets limits in seconds, bytes, or numbers of packets.
+
+
+       TMPL-LIST
+              is a template list specified using ID, MODE, REQID, and/or LEVEL.
+
+
+       ID     is specified by a source address, destination  address,  transform
+              protocol XFRM-PROTO, and/or Security Parameter Index SPI.
+
+
+       XFRM-PROTO
+              specifies  a transform protocol: IPsec Encapsulating Security Pay&#8208;
+              load (esp), IPsec Authentication Header (ah), IP Payload  Compres&#8208;
+              sion (comp), Mobile IPv6 Type 2 Routing Header (route2), or Mobile
+              IPv6 Home Address Option (hao).
+
+
+       MODE   specifies a mode of operation: IPsec transport  mode  (transport),
+              IPsec  tunnel  mode  (tunnel), Mobile IPv6 route optimization mode
+              (ro), Mobile IPv6 inbound trigger mode (in_trigger), or IPsec  ESP
+              Bound End-to-End Tunnel Mode (beet).
+
+
+       LEVEL  can be required (default) or use.
+
+
+   ip xfrm monitor - state monitoring for xfrm objects
+       The xfrm objects to monitor can be optionally specified.
+
+
+AUTHOR
+       Manpage by David Ward
+
+
+
+iproute2                           20 Dec 2011                        IP-XFRM(8)
+
+</pre></body></html>

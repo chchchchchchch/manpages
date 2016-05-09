@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sigpause - atomically release blocked signals and wait for interrupt</title></head>
+<body><pre>
+
+SIGPAUSE(3)                 Linux Programmer&apos;s Manual                SIGPAUSE(3)
+
+
+
+NAME
+       sigpause - atomically release blocked signals and wait for interrupt
+
+SYNOPSIS
+       #include &lt;signal.h&gt;
+
+       int sigpause(int sigmask);  /* BSD */
+
+       int sigpause(int sig);      /* System V / UNIX 95 */
+
+DESCRIPTION
+       Don&apos;t use this function.  Use sigsuspend(2) instead.
+
+       The  function sigpause() is designed to wait for some signal.  It changes
+       the process&apos;s signal mask (set of blocked signals), and then waits for  a
+       signal  to arrive.  Upon arrival of a signal, the original signal mask is
+       restored.
+
+RETURN VALUE
+       If sigpause() returns, it was interrupted by  a  signal  and  the  return
+       value is -1 with errno set to EINTR.
+
+CONFORMING TO
+       The System V version of sigpause() is standardized in POSIX.1-2001.
+
+NOTES
+   History
+       The  classical  BSD version of this function appeared in 4.2BSD.  It sets
+       the process&apos;s signal mask to sigmask.  UNIX 95 standardized the incompat&#8208;
+       ible  System V version of this function, which removes only the specified
+       signal sig from the process&apos;s signal  mask.   The  unfortunate  situation
+       with  two  incompatible  functions  with  the same name was solved by the
+       sigsuspend(2) function, that takes a sigset_t * argument (instead  of  an
+       int).
+
+   Linux Notes
+       On  Linux,  this  routine  is  a  system call only on the Sparc (sparc64)
+       architecture.
+
+       Libc4 and libc5 only know about the BSD version.
+
+       Glibc uses the BSD version if  the  _BSD_SOURCE  feature  test  macro  is
+       defined   and  none  of  _POSIX_SOURCE,  _POSIX_C_SOURCE,  _XOPEN_SOURCE,
+       _GNU_SOURCE, or _SVID_SOURCE is defined.  Otherwise, the System V version
+       is used.
+
+SEE ALSO
+       kill(2),   sigaction(2),   sigprocmask(2),   sigsuspend(2),  sigblock(3),
+       sigvec(3), feature_test_macros(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-09-12                        SIGPAUSE(3)
+
+</pre></body></html>

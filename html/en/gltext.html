@@ -1,0 +1,108 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gltext - draws text spinning around in 3D</title></head>
+<body><pre>
+
+gltext(6x)                     XScreenSaver manual                    gltext(6x)
+
+
+
+NAME
+       gltext - draws text spinning around in 3D
+
+SYNOPSIS
+       gltext  [-display host:display.screen] [-window] [-root] [-visual visual]
+       [-delay microseconds] [-text string] [-program command]  [-wander]  [-no-
+       wander] [-spin axes] [-no-spin] [-front] [-no-front] [-wireframe] [-fps]
+
+DESCRIPTION
+       The  gltext  program  draws some text spinning around in 3D, using a font
+       that appears to be made of solid tubes.
+
+OPTIONS
+       gltext accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -text string
+               The text to display.  This may contain newlines, but it shouldn&apos;t
+               be  very long.  The default is to display the machine name and OS
+               version.
+
+               This may also be a format string acceptable to date(1) and  strf&#8208;
+               time(3),  in which case, it will be updated once a second.  So to
+               make this program display a spinning digital clock, you could  do
+               this:
+               gltext -text &quot;%A%n%d %b %Y%n%l:%M:%S %p&quot;
+               To include a literal `%&apos;, you must double it: `%%&apos;.
+
+               See the man page for strftime(3) for more details.
+
+       -program command
+               The given program is run, and its output is displayed.  If speci&#8208;
+               fied, this overrides -text.  The program will be re-run  every  5
+               seconds  to  re-generate  the  text.   It should run quickly, and
+               shouldn&apos;t generate too much text.
+
+       -wander Move the text around the screen.  This is the default.
+
+       -no-wander
+               Keep the text centered on the screen.
+
+       -spin   Which axes around which the text should  spin.   The  default  is
+               &quot;XYZ&quot;, meaning rotate it freely in space.  &quot;-spin Z&quot; would rotate
+               the text in the plane of the screen while not rotating it into or
+               out of the screen; etc.
+
+       -no-spin
+               Don&apos;t spin the text at all: the same as -spin &quot;&quot;.
+
+       -front  When  spinning,  never  spin  all  the way around or upside down:
+               always face mostly forward so that the text is easily readable.
+
+       -no-front
+               Allow spins to go all the way around or upside down.  This is the
+               default.
+
+       -wireframe
+               Render in wireframe instead of solid.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to  get  the  name  of  a resource file that overrides the global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 2001-2005 by Jamie Zawinski.  Permission to use,  copy,  mod&#8208;
+       ify,  distribute,  and  sell  this software and its documentation for any
+       purpose is hereby granted without fee, provided that the above  copyright
+       notice  appear in all copies and that both that copyright notice and this
+       permission notice appear in supporting documentation.  No representations
+       are  made  about the suitability of this software for any purpose.  It is
+       provided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Jamie Zawinski &lt;jwz@jwz.org&gt;
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                     gltext(6x)
+
+</pre></body></html>

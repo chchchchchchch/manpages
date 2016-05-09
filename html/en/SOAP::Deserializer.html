@@ -1,0 +1,65 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SOAP::Deserializer - the means by which the toolkit manages the conversion of XML into an object manageable by a developer</title></head>
+<body><pre>
+
+SOAP::Deserializer(3pm)User Contributed Perl DocumentatioSOAP::Deserializer(3pm)
+
+
+
+NAME
+       SOAP::Deserializer - the means by which the toolkit manages the
+       conversion of XML into an object manageable by a developer
+
+DESCRIPTION
+       SOAP::Deserializer provides the means by which incoming XML is decoded
+       into a Perl data structure.
+
+METHODS
+       context
+           This provides access to the calling context of &quot;SOAP::Deserializer&quot;.
+           In a client side context the often means a reference to an instance
+           of SOAP::Lite. In a server side context this means a reference to a
+           SOAP::Server instance.
+
+EXAMPLES
+   DESERIALIZING RAW XML INTO A SOAP::SOM OBJECT
+       A useful utility for SOAP::Deserializer is for parsing raw XML documents
+       or fragments into a SOAP::SOM object. SOAP::Lite developers use this
+       technique to write unit tests for the SOAP::Lite module itself. It is a
+       lot more efficient for testing aspects of the toolkit than generating
+       client calls over the network. This is a perfect way for developers to
+       write unit tests for their custom data types for example.
+
+       Here is an example of how raw XML content can be parsed into a SOAP::SOM
+       object by using SOAP::Deserializer:
+
+           $xml = &lt;&lt;END_XML;
+           &lt;foo&gt;
+             &lt;person&gt;
+               &lt;foo&gt;123&lt;/foo&gt;
+               &lt;foo&gt;456&lt;/foo&gt;
+             &lt;/person&gt;
+             &lt;person&gt;
+               &lt;foo&gt;789&lt;/foo&gt;
+               &lt;foo&gt;012&lt;/foo&gt;
+             &lt;/person&gt;
+           &lt;/foo&gt;
+           END_XML
+
+           my $som = SOAP::Deserializer-&gt;deserialize($xml);
+
+COPYRIGHT
+       Copyright (C) 2000-2004 Paul Kulchenko. All rights reserved.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+AUTHORS
+       Byrne Reese (byrne@majordojo.com)
+
+
+
+perl v5.12.4                       2010-06-03            SOAP::Deserializer(3pm)
+
+</pre></body></html>

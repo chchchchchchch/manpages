@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::TimeZone::Floating - A time zone that is always local</title></head>
+<body><pre>
+
+DateTime::TimeZone::FloUsergContributed Perl DoDateTime::TimeZone::Floating(3pm)
+
+
+
+NAME
+       DateTime::TimeZone::Floating - A time zone that is always local
+
+VERSION
+       version 1.58
+
+SYNOPSIS
+         my $floating_tz = DateTime::TimeZone::Floating-&gt;new;
+
+DESCRIPTION
+       This class is used to provide the DateTime::TimeZone API needed by
+       DateTime.pm, but for floating times, as defined by the RFC 2445 spec.  A
+       floating time has no time zone, and has an effective offset of zero.
+
+USAGE
+       This class has the same methods as a real time zone object, but the
+       &quot;short_name_for_datetime()&quot;, and &quot;category()&quot; methods both return undef.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2013 by Dave Rolsky.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.14.2                       2013-03-11  DateTime::TimeZone::Floating(3pm)
+
+</pre></body></html>

@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SSL_get_version - get the protocol version of a connection.</title></head>
+<body><pre>
+
+SSL_get_version(3SSL)                OpenSSL               SSL_get_version(3SSL)
+
+
+
+NAME
+       SSL_get_version - get the protocol version of a connection.
+
+SYNOPSIS
+        #include &lt;openssl/ssl.h&gt;
+
+        const char *SSL_get_version(const SSL *ssl);
+
+DESCRIPTION
+       SSL_get_cipher_version() returns the name of the protocol used for the
+       connection ssl.
+
+RETURN VALUES
+       The following strings can occur:
+
+       SSLv2
+           The connection uses the SSLv2 protocol.
+
+       SSLv3
+           The connection uses the SSLv3 protocol.
+
+       TLSv1
+           The connection uses the TLSv1 protocol.
+
+       unknown
+           This indicates that no version has been set (no connection
+           established).
+
+SEE ALSO
+       ssl(3)
+
+
+
+1.0.1e                             2013-02-11              SSL_get_version(3SSL)
+
+</pre></body></html>

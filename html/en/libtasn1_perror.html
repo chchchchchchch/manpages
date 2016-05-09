@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libtasn1_perror - API function</title></head>
+<body><pre>
+
+libtasn1_perror(3)                  libtasn1                  libtasn1_perror(3)
+
+
+
+NAME
+       libtasn1_perror - API function
+
+SYNOPSIS
+       #include &lt;libtasn1.h&gt;
+
+       void libtasn1_perror(asn1_retCode error);
+
+ARGUMENTS
+       asn1_retCode error
+                   is an error returned by a libtasn1 function.
+
+DESCRIPTION
+       Prints  a string to stderr with a description of an error.  This function
+       is like perror(). The  only  difference  is  that  it  accepts  an  error
+       returned by a libtasn1 function.
+
+DEPRECATED
+       Use asn1_perror() instead.
+
+COPYRIGHT
+       Copyright &#169; 2006-2011 Free Software Foundation, Inc..
+       Copying  and distribution of this file, with or without modification, are
+       permitted in any medium without royalty provided the copyright notice and
+       this notice are preserved.
+
+SEE ALSO
+       The  full  documentation  for libtasn1 is maintained as a Texinfo manual.
+       If the info and libtasn1 programs are properly installed  at  your  site,
+       the command
+
+              info libtasn1
+
+       should give you access to the complete manual.
+
+
+
+libtasn1                              2.13                    libtasn1_perror(3)
+
+</pre></body></html>

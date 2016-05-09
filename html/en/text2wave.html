@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>text2wave - convert text to .wav files</title></head>
+<body><pre>
+
+TEXT2WAVE(1)                                                        TEXT2WAVE(1)
+
+
+
+NAME
+       text2wave - convert text to .wav files
+
+SYNOPSIS
+       text2wave [options] &lt; text &gt; sound.wav
+
+
+
+DESCRIPTION
+       This script is part of the festival text-to-speech system.  It is a wrap&#8208;
+       per for festival&apos;s Scheme code for easy usage in TTS scripts.
+
+
+OPTIONS
+       -mode  string
+              Explicit tts mode.
+
+       -o     ofile
+              File to save waveform to.
+              The default is stdout.
+
+       -otype string
+              Output waveform type: alaw, ulaw, snd, aiff, riff, nist etc.
+              The default is riff.
+
+       -f     integer
+              Output frequency.
+
+       -scale float
+              Volume factor.
+
+       -eval  string
+              File or lisp s-expression to be evaluated before synthesis.
+
+
+BUGS
+       More than you can imagine.
+
+       A manual with much detail (though not complete) is available in  distrib&#8208;
+       uted as part of the system and is also accessible at
+       http://www.cstr.ed.ac.uk/projects/festival/manual/
+
+       Although  we  cannot  guarantee  the  time required to fix bugs, we would
+       appreciated it if they were reported to
+       festival-bug@cstr.ed.ac.uk
+
+
+AUTHOR
+       Alan W Black, Richard Caley and Paul Taylor
+       (C) Centre for Speech Technology Research, 1996-1998
+       University of Edinburgh
+       80 South Bridge
+       Edinburgh EH1 1HN
+       http://www.cstr.ed.ac.uk/projects/festival.html
+
+
+
+                                  6th Apr 1998                      TEXT2WAVE(1)
+
+</pre></body></html>

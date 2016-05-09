@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_nativejava - compile jar files to native code and register them</title></head>
+<body><pre>
+
+DH_NATIVEJAVA(1)                    Debhelper                   DH_NATIVEJAVA(1)
+
+
+
+NAME
+       dh_nativejava - compile jar files to native code and register them
+
+SYNOPSIS
+       dh_nativejava [debhelper options] [-n] [-o] [--sourcedir=dir]
+
+DESCRIPTION
+       dh_nativejava is a debhelper program that is responsible for compiling
+       jars to native code and to make them known to the system.
+
+       It also automatically generates the postinst and postrm commands needed
+       to updated the global classmap database and adds a dependency on libgcj-
+       common in the misc:Depends substitution variable.
+
+OPTIONS
+       -n, --noscripts
+           Do not modify postinst/postrm scripts.
+
+       -o, --onlyscripts
+           Only modify postinst/postrm scripts, do not actually compile any
+           files or register them. May be useful if the files are already built
+           and registered.
+
+       --destdir=directory
+           Use this if you want the compiled files to be put in a directory
+           other than the default of &quot;/usr/lib/gcj&quot;
+
+NOTES
+       Note that this command is not idempotent. &quot;dh_clean -k&quot; should be called
+       between invocations of this command. Otherwise, it may cause multiple
+       instances of the same text to be added to maintainer scripts.
+
+SEE ALSO
+       debhelper(7)
+
+AUTHOR
+       Michael Koch &lt;mkoch@debian.org&gt;, Matthias Klose &lt;doko@ubuntu.com&gt;
+
+
+
+perl v5.14.2                       2012-04-16                   DH_NATIVEJAVA(1)
+
+</pre></body></html>

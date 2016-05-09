@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lround, lroundf, lroundl, llround, llroundf, llroundl - round to nearest integer, away from zero</title></head>
+<body><pre>
+
+LROUND(3)                   Linux Programmer&apos;s Manual                  LROUND(3)
+
+
+
+NAME
+       lround,  lroundf, lroundl, llround, llroundf, llroundl - round to nearest
+       integer, away from zero
+
+SYNOPSIS
+       #include &lt;math.h&gt;
+
+       long int lround(double x);
+       long int lroundf(float x);
+       long int lroundl(long double x);
+
+       long long int llround(double x);
+       long long int llroundf(float x);
+       long long int llroundl(long double x);
+
+       Link with -lm.
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       All functions shown above:
+           _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
+
+DESCRIPTION
+       These functions round their argument to the nearest integer value, round&#8208;
+       ing  away  from  zero,  regardless of the current rounding direction (see
+       fenv(3)).
+
+       Note that unlike round(3), ceil(3), etc., the return type of these  func&#8208;
+       tions differs from that of their arguments.
+
+RETURN VALUE
+       These functions return the rounded integer value.
+
+       If  x  is  a  NaN or an infinity, or the rounded value is too large to be
+       stored in a long (long long in the case of  the  ll*  functions)  then  a
+       domain error occurs, and the return value is unspecified.
+
+ERRORS
+       See  math_error(7)  for  information on how to determine whether an error
+       has occurred when calling these functions.
+
+       The following errors can occur:
+
+       Domain error: x is a NaN or infinite, or the rounded value is too large
+              An invalid floating-point exception (FE_INVALID) is raised.
+
+       These functions do not set errno.
+
+VERSIONS
+       These functions first appeared in glibc in version 2.1.
+
+CONFORMING TO
+       C99, POSIX.1-2001.
+
+SEE ALSO
+       ceil(3), floor(3), lrint(3), nearbyint(3), rint(3), round(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2010-09-20                          LROUND(3)
+
+</pre></body></html>

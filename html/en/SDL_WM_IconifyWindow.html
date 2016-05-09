@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_WM_IconifyWindow - Iconify/Minimise the window</title></head>
+<body><pre>
+
+SDL_WM_IconifyWindow(3)         SDL API Reference        SDL_WM_IconifyWindow(3)
+
+
+
+NAME
+       SDL_WM_IconifyWindow - Iconify/Minimise the window
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       int SDL_WM_IconifyWindow(void);
+
+DESCRIPTION
+       If  the  application  is  running  in  a  window  managed environment SDL
+       attempts to iconify/minimise it. If SDL_WM_IconifyWindow  is  successful,
+       the application will receive a SDL_APPACTIVE loss event.
+
+RETURN VALUE
+       Returns  non-zero  on success or 0 if iconification is not support or was
+       refused by the window manager.
+
+
+
+SDL                          Tue 11 Sep 2001, 23:02      SDL_WM_IconifyWindow(3)
+
+</pre></body></html>

@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XVaCreateNestedList - allocate a nested variable argument list</title></head>
+<body><pre>
+
+XVaCreateNestedList(3)           XLIB FUNCTIONS           XVaCreateNestedList(3)
+
+
+
+NAME
+       XVaCreateNestedList - allocate a nested variable argument list
+
+SYNTAX
+       typedef void * XVaNestedList;
+
+       XVaNestedList XVaCreateNestedList(int dummy, ...);
+
+ARGUMENTS
+       dummy     Specifies an unused argument (required by ANSI C).
+
+       ...       Specifies the variable length argument list.
+
+DESCRIPTION
+       The XVaCreateNestedList function allocates memory and copies its argu&#8208;
+       ments into a single list pointer, which may be used as a value for argu&#8208;
+       ments requiring a list value.  Any entries are copied as specified.  Data
+       passed by reference is not copied; the caller must ensure data remains
+       valid for the lifetime of the nested list.  The list should be freed
+       using XFree when it is no longer needed.
+
+SEE ALSO
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0            XVaCreateNestedList(3)
+
+</pre></body></html>

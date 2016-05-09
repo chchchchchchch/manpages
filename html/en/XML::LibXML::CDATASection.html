@@ -1,0 +1,57 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::LibXML::CDATASection - XML::LibXML Class for CDATA Sections</title></head>
+<body><pre>
+
+XML::LibXML::CDATASectiUserpContributed Perl DocumXML::LibXML::CDATASection(3pm)
+
+
+
+NAME
+       XML::LibXML::CDATASection - XML::LibXML Class for CDATA Sections
+
+SYNOPSIS
+         use XML::LibXML;
+         # Only methods specific to CDATA nodes are listed here,
+         # see XML::LibXML::Node manpage for other methods
+
+         $node = XML::LibXML::CDATASection-&gt;new( $content );
+
+DESCRIPTION
+       This class provides all functions of XML::LibXML::Text, but for CDATA
+       nodes.
+
+METHODS
+       The class inherits from XML::LibXML::Node. The documentation for
+       Inherited methods is not listed here.
+
+       Many functions listed here are extensively documented in the DOM Level 3
+       specification (http://www.w3.org/TR/DOM-Level-3-Core/
+       &lt;http://www.w3.org/TR/DOM-Level-3-Core/&gt;). Please refer to the
+       specification for extensive documentation.
+
+       new
+             $node = XML::LibXML::CDATASection-&gt;new( $content );
+
+           The constructor is the only provided function for this package. It is
+           required, because libxml2 treats the different text node types
+           slightly differently.
+
+AUTHORS
+       Matt Sergeant, Christian Glahn, Petr Pajas
+
+VERSION
+       2.0001
+
+COPYRIGHT
+       2001-2007, AxKit.com Ltd.
+
+       2002-2006, Christian Glahn.
+
+       2006-2009, Petr Pajas.
+
+
+
+perl v5.14.2                       2012-06-20     XML::LibXML::CDATASection(3pm)
+
+</pre></body></html>

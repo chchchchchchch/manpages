@@ -1,0 +1,106 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ggInit, ggExit - Initialize and uninitialize LibGG</title></head>
+<body><pre>
+
+ggInit(3)                              GGI                             ggInit(3)
+
+
+
+NAME
+       ggInit, ggExit - Initialize and uninitialize LibGG
+
+SYNOPSIS
+       #include &lt;ggi/gg.h&gt;
+
+       int ggInit();
+
+       int ggExit();
+
+
+DESCRIPTION
+       ggInit  initializes LibGG for use, allocates resources, examines the run&#8208;
+       time environment for options, and performs initializations  necessary  to
+       provide  the  LibGG API.  This function must be called by the application
+       (or by proxy by another library used by the application) and must  return
+       successfully before using any other LibGG function; otherwise the results
+       of invoking LibGG API functions will be undefined.
+
+       ggInit allows multiple invocations.  Unless ggExit is called as described
+       below,  subsequent calls to ggInit will do nothing other than increment a
+       reference counter which LibGG uses to keep track of how many times it has
+       been initialized.  This allows using multiple libraries which call ggInit
+       together without conflict.
+
+       ggExit decrements the reference counter which ggInit  increments.   Until
+       this  counter  indicates  that  ggExit  has  been called as many times as
+       ggInit it will do nothing else.
+
+       That is, to free resources used by LibGG, ggExit must be called  as  many
+       times  as  ggInit has been called beforehand (including any calls made by
+       libraries that depend on LibGG.)   After  ggExit  returns  0,  indicating
+       LibGG is deinitialized, ggInit may be called again to reinitialize LibGG.
+
+       When ggExit determines that it has been called as many times as ggInit it
+       performs the following actions (order  is  not  guaranteed.)   Any  tasks
+       scheduled with ggAddTask(3) are canceled (no task handlers will be called
+       after ggExit returns.)  Any cleanup handlers registered with  ggRegister&#8208;
+       Cleanup(3)  are  invoked (no cleanup handlers will be called after ggExit
+       returns.)  If any cleanup  handlers  invoked  ggCleanupForceExit(3),  the
+       current process will be terminated before ggExit returns.  Otherwise, all
+       resources used by LibGG are released for use by the application or  oper&#8208;
+       ating  system  before  ggExit  returns.   After  the  &quot;last&quot; ggExit is so
+       invoked, any GG functions (including  ggExit  and  ggInit)  invoked  will
+       result  in  undefined,  and probably undesirable, behavior.  After ggExit
+       returns 0, it is again safe to invoke ggInit.
+
+       ggInit and ggExit are threadsafe functions with a few  small  exceptions.
+       First,  do not call ggInit at the same time from two threads unless LibGG
+       is already initialized.  This is easily avoided by  calling  ggInit  once
+       before  threads  that might call it are started.  Secondly, it is illegal
+       to call ggExit after the &quot;last&quot; ggExit  is  invoked  (note  specifically,
+       &quot;invoked,&quot;  not &quot;has returned&quot;).  Naturally you must prevent threads from
+       doing so, which is easy if you never call ggExit more times than  ggInit.
+       Finally,  it is not safe to cancel a thread while it is calling either of
+       the two functions.
+
+       ggInit and ggExit are not guaranteed to be safe to call  in  any  special
+       context,  such  as  a signal handler or asyncronous procedure call.  They
+       are not safe to use in LibGG task handlers.
+
+       Note that, if ggInit is used in a library (like LibGII or LibGGI) and the
+       application  also  calls  ggInit  itself,  cleanup  handlers installed by
+       ggRegisterCleanup(3) may not execute when expected.  See the  ggRegister&#8208;
+       Cleanup(3)  manpage for more detail on this subject.  The same applies to
+       cancelation of tasks scheduled with ggAddTask(3).  See  the  ggAddTask(3)
+       manpage for more detail on that subject.
+
+RETURN VALUE
+       ggInit returns:
+
+       &#183;   GGI_OK on success;
+
+       &#183;   GGI_EARGINVAL  if  the  GG_OPTS  variable  is defined but the options
+           could not be parsed correctly;
+
+       &#183;   GGI_EUNKNOWN if the global libgg lock could not be created.
+
+       ggExit returns:
+
+       &#183;   GGI_OK when LibGG has been completely, successfully, deinitialized;
+
+       &#183;   &gt;0 the number of open ggInit calls, if there has been more  than  one
+           call to ggInit.  As ggInit and ggExit must be used in properly nested
+           pairs, for example, the  first  ggExit  after  two  giiInit(3)s  will
+           return 1;
+
+       &#183;   GGI_ENOTALLOC if ggExit has been invoked more times than ggInit has.
+
+SEE ALSO
+       gg-error(3)
+
+
+
+libgg-1.0.x                        2005-08-26                          ggInit(3)
+
+</pre></body></html>

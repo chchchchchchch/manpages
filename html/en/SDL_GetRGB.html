@@ -1,0 +1,35 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_GetRGB - Get RGB values from a pixel in the specified pixel format.</title></head>
+<body><pre>
+
+SDL_GetRGB(3)                   SDL API Reference                  SDL_GetRGB(3)
+
+
+
+NAME
+       SDL_GetRGB - Get RGB values from a pixel in the specified pixel format.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       void  SDL_GetRGB(Uint32  pixel, SDL_PixelFormat *fmt, Uint8 *r, Uint8 *g,
+       Uint8 *b);
+
+DESCRIPTION
+       Get RGB component values from a pixel stored in the specified pixel  for&#8208;
+       mat.
+
+       This  function uses the entire 8-bit [0..255] range when converting color
+       components from pixel formats with less than  8-bits  per  RGB  component
+       (e.g.,  a  completely  white  pixel  in 16-bit RGB565 format would return
+       [0xff, 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+
+SEE ALSO
+       SDL_GetRGBA, SDL_MapRGB, SDL_MapRGBA, SDL_PixelFormat
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01                SDL_GetRGB(3)
+
+</pre></body></html>

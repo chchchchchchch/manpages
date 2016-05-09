@@ -1,0 +1,29 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcCharSetDestroy - Destroy a character set</title></head>
+<body><pre>
+
+FcCharSetDestroy(3)                                          FcCharSetDestroy(3)
+
+
+
+NAME
+       FcCharSetDestroy - Destroy a character set
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       void FcCharSetDestroy (FcCharSet *fcs);
+
+DESCRIPTION
+       FcCharSetDestroy  decrements  the  reference count fcs.  If the reference
+       count becomes zero, all memory referenced is freed.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012              FcCharSetDestroy(3)
+
+</pre></body></html>

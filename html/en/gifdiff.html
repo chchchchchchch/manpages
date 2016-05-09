@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gifdiff - compares GIF images</title></head>
+<body><pre>
+
+GIFDIFF(1)                                                            GIFDIFF(1)
+
+
+
+NAME
+       gifdiff - compares GIF images
+
+SYNOPSIS
+       gifdiff [options] GIF-file-1 GIF-file-2
+
+DESCRIPTION
+       gifdiff  compares  two GIF files and determines if they appear identical.
+       Differences that don&apos;t affect appearance (like colormap ordering  or  how
+       much an animation is optimized) are not reported.
+
+       gifdiff  prints  details of any differences it finds. If the GIFs are the
+       same, it prints nothing. It exits with status 0 if there were no  differ&#8208;
+       ences, 1 if there were some differences, and 2 if there was trouble.
+
+OPTIONS
+       --brief, -q
+            Report  only whether the GIFs differ, not the details of the differ&#8208;
+            ences.
+
+       --ignore-redundancy, -w
+            Do not report differences in the numbers of redundant frames (frames
+            which do not change the displayed image).
+
+       --help
+            Print usage information and exit.
+
+       --version
+            Print  the  version number and some quickie warranty information and
+            exit.
+
+SEE ALSO
+       gifsicle(1)
+
+BUGS
+       Please   email   suggestions,   additions,   patches    and    bugs    to
+       ekohler@gmail.com.
+
+AUTHORS
+       Eddie Kohler, ekohler@gmail.com
+       http://www.read.seas.harvard.edu/~kohler/
+
+       http://www.lcdf.org/gifsicle/
+       The gifsicle home page.
+
+
+
+Version 1.67                     31 August 1998                       GIFDIFF(1)
+
+</pre></body></html>

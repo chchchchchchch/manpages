@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtDisplay, XtDisplayOfObject, XtScreen, XtScreenOfObject, XtWindow, XtWindowOfObject - obtain window information about a widget</title></head>
+<body><pre>
+
+XtDisplay(3)                      XT FUNCTIONS                      XtDisplay(3)
+
+
+
+NAME
+       XtDisplay, XtDisplayOfObject, XtScreen, XtScreenOfObject, XtWindow,
+       XtWindowOfObject - obtain window information about a widget
+
+SYNTAX
+       Display *XtDisplay(Widget w);
+
+       Display *XtDisplayOfObject(Widget object);
+
+       Screen *XtScreen(Widget w);
+
+       Screen *XtScreenOfObject(Widget object);
+
+       Window XtWindow(Widget w);
+
+       Window XtWindowOfObject(Widget object);
+
+ARGUMENTS
+       w         Specifies the widget.
+
+       object    Specifies the widget.
+
+DESCRIPTION
+       XtDisplay returns the display pointer for the specified widget.
+
+       XtDisplayOfObject returns the display pointer for the specified object.
+
+       XtScreen returns the screen pointer for the specified widget.
+
+       XtScreenOfObject returns the screen pointer for the specified object.
+
+       XtWindow returns the window of the specified widget.
+
+       XtWindowOfObject returns the window of the specified object.
+
+SEE ALSO
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                      XtDisplay(3)
+
+</pre></body></html>

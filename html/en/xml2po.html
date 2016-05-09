@@ -1,0 +1,139 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xml2po - program to create a PO-template file from a DocBook XML file and merge it back into a (translated) XML file</title></head>
+<body><pre>
+
+XML2PO(1)                        [FIXME: manual]                       XML2PO(1)
+
+
+
+NAME
+       xml2po - program to create a PO-template file from a DocBook XML file and
+       merge it back into a (translated) XML file
+
+SYNOPSIS
+       xml2po [OPTIONS] [XMLFILE]
+
+DESCRIPTION
+       This manual page documents briefly the xml2po command.
+
+       xml2po is a simple Python program which extracts translatable content
+       from free-form XML documents and outputs gettext compatible POT files.
+       Translated PO files can be turned into XML output again.
+
+       It can work it&#180;s magic with most &quot;simple&quot; tags, and for complicated tags
+       one has to provide a list of all tags which are &quot;final&quot; (that will be put
+       into one &quot;message&quot; in PO file), &quot;ignored&quot; (skipped over) and &quot;space
+       preserving&quot;.
+
+OPTIONS
+       The program follows the usual GNU command line syntax, with long options
+       starting with two dashes (`-&#180;). A summary of options is included below.
+
+       -a, --automatic-tags
+           Automatically decide if tags are to be considered &quot;final&quot; or not.
+
+       -k, --keep-entities
+           Don&#180;t expand entities (default). See also the -e option.
+
+       -e, --expand-all-entities
+           Expand all entities (including SYSTEM ones).
+
+       -m, --mode=TYPE
+           Treat tags as type TYPE (default: docbook).
+
+       -o, --output=FILE
+           Print resulting text (XML while merging translations with &quot;-p&quot; or
+           &quot;-t&quot; options, POT template file while extracting strings, and
+           translated PO file with &quot;-r&quot; option) to the given FILE.
+
+       -p, --po-file=FILE
+           Specify a PO FILE containing translation and output XML document with
+           translations merged in.
+
+       -r, --reuse=FILE
+           Specify a translated XML document in FILE with the same structure to
+           generate translated PO file for XML document given on command line.
+
+       -t, --translation=FILE
+           Specify a MO file containing translation and output XML document with
+           translations merged in.
+
+       -u, --update-translation=LANG.po
+           Update a PO file using msgmerge.
+
+       -l, --language=LANG
+           Explicitly set language of the translation.
+
+       -h, --help
+           Show summary of options.
+
+       -v, --version
+           Show version of program.
+
+EXAMPLES
+   Creating POT template files
+       To create a POT template book.pot from an input file book.xml, which
+       consists of chapter1.xml and chapter2.xml (external entities), run:
+
+                               /usr/bin/xml2po -o book.pot book.xml chapter1.xml chapter2.xml
+
+
+       To expand entities use the -e option:
+
+                               /usr/bin/xml2po -e -o book.pot book.xml
+
+
+   Creating translated XML files (merging back PO files)
+       After translating book.pot into LANG.po, merge the translations back by
+       using -p option for each XML file:
+
+                               /usr/bin/xml2po -p LANG.po -o book.LANG.xml book.xml
+                               /usr/bin/xml2po -p LANG.po -o chapter1.LANG.xml chapter1.xml
+                               /usr/bin/xml2po -p LANG.po -o chapter2.LANG.xml chapter2.xml
+
+
+       If you used the -e option to expand entities, you should use it again to
+       merge back the translation into an XML file:
+
+                               /usr/bin/xml2po -e -p LANG.po -o book.LANG.xml book.xml
+
+
+   Updating PO files
+       When base XML file changes, the real advantages of PO files come to
+       surface. There are 2 ways to merge the translation. The first is to
+       produce a new POT template file (additionally use the -e if you decided
+       earlier to expand entities). Afterwards run msgmerge to merge the
+       translation with the new POT file:
+
+                               /usr/bin/msgmerge -o tmp.po LANG.po book.pot
+
+
+       Now rename tmp.po to LANG.po and update your translation. Alternatively,
+       xml2po provides the -u option, which does exactly these two steps for
+       you. The advantage is, that it also runs msgfmt to give you a statistical
+       output of translation status (count of translated, untranslated and fuzzy
+       messages). Additionally use the -e if you decided earlier to expand
+       entities:
+
+                               /usr/bin/xml2po -u LANG.po book.xml
+
+
+SEE ALSO
+       msgmerge (1), msgfmt (1)
+
+AUTHOR
+       This manual page was written by Daniel Leidert daniel.leidert@wgdd.de for
+       the Debian system (but may be used by others). Permission is granted to
+       copy, distribute and/or modify this document under the terms of the GNU
+       General Public License, Version 2 any later version published by the Free
+       Software Foundation.
+
+COPYRIGHT
+       Copyright &#169; 2005 Daniel Leidert
+
+
+
+[FIXME: source]                    2005/02/10                          XML2PO(1)
+
+</pre></body></html>

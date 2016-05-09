@@ -1,0 +1,149 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dpkg-maintscript-helper - works around known dpkg limitations in maintainer scripts</title></head>
+<body><pre>
+
+dpkg-maintscript-helper(1)         dpkg suite         dpkg-maintscript-helper(1)
+
+
+
+NAME
+       dpkg-maintscript-helper  -  works  around known dpkg limitations in main&#8208;
+       tainer scripts
+
+SYNOPSIS
+       dpkg-maintscript-helper command  [parameter...]  --  maint-script-parame&#8208;
+       ter...
+
+COMMANDS AND PARAMETERS
+       rm_conffile conffile [prior-version [package]]
+
+       mv_conffile old-conffile new-conffile [prior-version [package]]
+
+DESCRIPTION
+       This  program  is designed to be run within maintainer scripts to achieve
+       some tasks that dpkg can&apos;t (yet) handle natively either because of design
+       decisions or due to current limitations.
+
+       Many  of  those tasks require coordinated actions from several maintainer
+       scripts (preinst, postinst, prerm, postrm). To avoid  mistakes  the  same
+       call simply needs to be put in all scripts and the program will automati&#8208;
+       cally  adapt  its   behaviour   based   on   the   environment   variable
+       DPKG_MAINTSCRIPT_NAME  and  on  the maintainer scripts arguments that you
+       have to forward after a double dash.
+
+CONFFILE RELATED TASKS
+       When upgrading a package, dpkg will not automatically remove  a  conffile
+       (a  configuration file for which dpkg should preserve user changes) if it
+       is not present in the newer version. There are two principal reasons  for
+       this;  the  first  is that the conffile could&apos;ve been dropped by accident
+       and the next version could restore it, users wouldn&apos;t want their  changes
+       thrown  away.  The second is to allow packages to transition files from a
+       dpkg-maintained conffile to a file maintained by the package&apos;s maintainer
+       scripts, usually with a tool like debconf or ucf.
+
+       This  means that if a package is intended to rename or remove a conffile,
+       it must explicitly do so  and  dpkg-maintscript-helper  can  be  used  to
+       implement  graceful  deletion  and  moving of conffiles within maintainer
+       scripts.
+
+   REMOVING A CONFFILE
+       If a conffile is completely removed, it  should  be  removed  from  disk,
+       unless  the  user has modified it. If there are local modifications, they
+       should be preserved. If the package upgrades aborts, the  newly  obsolete
+       conffile should not disappear.
+
+       All  of this is implemented by putting the following shell snippet in the
+       preinst, postinst and postrm maintainer scripts:
+
+           dpkg-maintscript-helper rm_conffile \
+               conffile prior-version package -- &quot;$@&quot;
+
+       conffile is the filename of the conffile to remove.
+
+       prior-version defines the latest version of  the  package  whose  upgrade
+       should  trigger  the  removal. It is important to calculate prior-version
+       correctly so that conffiles  are  correctly  removed  even  if  the  user
+       rebuilt  the  package  with  a local version. For example, for a conffile
+       removed in version 2.0-1 of a package, prior-version  should  be  set  to
+       2.0-1~.  This  will  cause  the  conffile  to be removed even if the user
+       rebuilt the previous version 1.0-1 as 1.0-1local1.
+&#12;       If the conffile has not been shipped for several versions,  and  you  are
+       now  modifying  the  maintainer  scripts  to  clean up the obsolete file,
+       prior-version should be based on the version of the package that you  are
+       now preparing, not the first version of the package that lacked the conf&#8208;
+       file.
+
+       package   is   the   package   name.   If   empty   or    omitted,    the
+       DPKG_MAINTSCRIPT_PACKAGE  environment  variable  (as set by dpkg) will be
+       used.
+
+       All the parameters of the maintainer scripts have to be forwarded to  the
+       program after &quot;--&quot;.
+
+       Current  implementation:  in  the  preinst, it checks if the conffile was
+       modified and renames it either to conffile.dpkg-remove (if not  modified)
+       or  to  conffile.dpkg-backup  (if  modified). In the postinst, the latter
+       file is renamed to conffile.dpkg-bak and kept for reference  as  it  con&#8208;
+       tains  user  modifications but the former will be removed. If the package
+       upgrade aborts, the  postrm  reinstalls  the  original  conffile.  During
+       purge, the postrm will also delete the .dpkg-bak file kept up to now.
+
+   RENAMING A CONFFILE
+       If  a  conffile  is  moved from one location to another, you need to make
+       sure you move across any changes the user has made. This may seem a  sim&#8208;
+       ple  change  to  the preinst script at first, however that will result in
+       the user being prompted by dpkg to approve the conffile edits even though
+       they are not responsible of them.
+
+       Graceful renaming can be implemented by putting the following shell snip&#8208;
+       pet in the preinst, postinst and postrm maintainer scripts:
+
+           dpkg-maintscript-helper mv_conffile \
+               old-conffile new-conffile prior-version package -- &quot;$@&quot;
+
+       old-conffile and new-conffile are the old and new name of the conffile to
+       rename.
+
+       prior-version  defines  the  latest  version of the package whose upgrade
+       should trigger the rename of the conffile (see the notes for  rm_conffile
+       above  concerning  the correct value). If prior-version is empty or omit&#8208;
+       ted, then the operation is tried on every upgrade (note:  it&apos;s  safer  to
+       give the version and have the operation tried only once).
+
+       package    is    the   package   name.   If   empty   or   omitted,   the
+       DPKG_MAINTSCRIPT_PACKAGE environment variable (as set by  dpkg)  will  be
+       used.
+
+       All  the parameters of the maintainer scripts have to be forwarded to the
+       program after &quot;--&quot;.
+
+       Current implementation: the preinst checks if the conffile has been modi&#8208;
+       fied,  if  yes  it&apos;s  left  on  place otherwise it&apos;s renamed to old-conf&#8208;
+       file.dpkg-remove.  On  configuration,  the  postinst  removes   old-conf&#8208;
+       file.dpkg-remove and renames old-conffile to new-conffile if old-conffile
+       is still available. On abort-upgrade/abort-install,  the  postrm  renames
+       old-conffile.dpkg-remove back to old-conffile if required.
+
+INTEGRATION IN PACKAGES
+       Given  that  dpkg-maintscript-helper  is  used  in  the preinst, using it
+       unconditionally requires a pre-dependency to  ensure  that  the  required
+       version of dpkg has been unpacked before. The required version depends on
+       the command used, for rm_conffile and mv_conffile it is 1.15.7.2:
+
+           Pre-Depends: dpkg (&gt;= 1.15.7.2)
+
+       But in many cases the operation done by the program is not  critical  for
+       the  package,  and instead of using a pre-dependency we can call the pro&#8208;
+       gram only if we know that the required command is supported by  the  cur&#8208;
+       rently installed dpkg:
+
+           if dpkg-maintscript-helper supports command; then
+               dpkg-maintscript-helper command ...
+           fi
+
+
+
+Debian Project                     2012-05-04         dpkg-maintscript-helper(1)
+
+</pre></body></html>

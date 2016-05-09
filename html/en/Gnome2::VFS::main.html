@@ -1,0 +1,409 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::VFS::main - Filesystem Abstraction library</title></head>
+<body><pre>
+
+Gnome2::VFS::main(3pm) User Contributed Perl DocumentationGnome2::VFS::main(3pm)
+
+
+
+NAME
+       Gnome2::VFS::main - Filesystem Abstraction library
+
+METHODS
+   boolean = Gnome2::VFS-&gt;CHECK_VERSION ($major, $minor, $micro)
+       &#183;   $major (integer)
+
+       &#183;   $minor (integer)
+
+       &#183;   $micro (integer)
+
+   list = Gnome2::VFS-&gt;GET_VERSION_INFO
+       Returns the major, minor and micro version numbers of GnomeVFS.
+
+   list = Gnome2::VFS-&gt;check_same_fs ($source, $target)
+       &#183;   $source (string)
+
+       &#183;   $target (string)
+
+       Returns a GnomeVFSResult and a boolean.
+
+   list = Gnome2::VFS-&gt;create ($text_uri, $open_mode, $exclusive, $perm)
+       &#183;   $text_uri (string)
+
+       &#183;   $open_mode (Gnome2::VFS::OpenMode)
+
+       &#183;   $exclusive (boolean)
+
+       &#183;   $perm (integer)
+
+       Returns a GnomeVFSResult and a GnomeVFSHandle.
+
+   result = Gnome2::VFS-&gt;create_symbolic_link ($uri, $target_reference)
+       &#183;   $uri (Gnome2::VFS::URI)
+
+       &#183;   $target_reference (string)
+
+   string = Gnome2::VFS-&gt;escape_host_and_path_string ($path)
+       &#183;   $path (string)
+
+   string = Gnome2::VFS-&gt;escape_path_string ($path)
+       &#183;   $path (string)
+
+   string = Gnome2::VFS-&gt;escape_set ($string, $match_set)
+       &#183;   $string (string)
+
+       &#183;   $match_set (string)
+
+   string = Gnome2::VFS-&gt;escape_slashes ($string)
+       &#183;   $string (string)
+
+   string = Gnome2::VFS-&gt;escape_string ($string)
+       &#183;   $string (string)
+
+       Since: vfs 2.2
+
+   string = Gnome2::VFS-&gt;expand_initial_tilde ($path)
+       &#183;   $path (string)
+
+   list = Gnome2::VFS-&gt;get_file_info ($text_uri, $options)
+       &#183;   $text_uri (string)
+&#12;       &#183;   $options (Gnome2::VFS::FileInfoOptions)
+
+       Returns a GnomeVFSResult and a GnomeVFSFileInfo.
+
+   result = Gnome2::VFS-&gt;set_file_info ($text_uri, $info, $mask)
+       &#183;   $text_uri (string)
+
+       &#183;   $info (Gnome2::VFS::FileInfo)
+
+       &#183;   $mask (Gnome2::VFS::SetFileInfoMask)
+
+   list = Gnome2::VFS-&gt;find_directory ($near_uri, $kind, $create_if_needed,
+       $find_if_needed, $permissions)
+       &#183;   $near_uri (Gnome2::VFS::URI)
+
+       &#183;   $kind (Gnome2::VFS::FindDirectoryKind)
+
+       &#183;   $create_if_needed (boolean)
+
+       &#183;   $find_if_needed (boolean)
+
+       &#183;   $permissions (integer)
+
+       Returns a GnomeVFSResult and a GnomeVFSURI.
+
+   string = Gnome2::VFS-&gt;format_file_size_for_display ($size)
+       &#183;   $size (unsigned)
+
+   string = Gnome2::VFS-&gt;format_uri_for_display ($uri)
+       &#183;   $uri (string)
+
+       Since: vfs 2.2
+
+   string = Gnome2::VFS-&gt;icon_path_from_filename ($filename)
+       &#183;   $filename (string)
+
+   boolean = Gnome2::VFS-&gt;init
+   boolean = Gnome2::VFS-&gt;initialized
+   boolean = Gnome2::VFS-&gt;is_executable_command_string ($command_string)
+       &#183;   $command_string (string)
+
+   boolean = Gnome2::VFS-&gt;is_primary_thread
+   string = Gnome2::VFS-&gt;get_local_path_from_uri ($uri)
+       &#183;   $uri (string)
+
+   result = Gnome2::VFS-&gt;make_directory ($text_uri, $perm)
+       &#183;   $text_uri (string)
+
+       &#183;   $perm (integer)
+
+   string = Gnome2::VFS-&gt;make_path_name_canonical ($path)
+       &#183;   $path (string)
+
+   string = Gnome2::VFS-&gt;make_uri_canonical ($uri)
+       &#183;   $uri (string)
+
+   string = Gnome2::VFS-&gt;make_uri_canonical_strip_fragment ($uri)
+       &#183;   $uri (string)
+
+       Since: vfs 2.2
+
+   string = Gnome2::VFS-&gt;make_uri_from_input ($uri)
+       &#183;   $uri (string)
+
+       Since: vfs 2.2
+&#12;   string = Gnome2::VFS-&gt;make_uri_from_input_with_dirs ($uri, $dirs)
+       &#183;   $uri (string)
+
+       &#183;   $dirs (Gnome2::VFS::MakeURIDirs)
+
+       Since: vfs 2.4
+
+   string = Gnome2::VFS-&gt;make_uri_from_input_with_trailing_ws ($location)
+       &#183;   $location (string)
+
+       Since: vfs 2.12
+
+   string = Gnome2::VFS-&gt;make_uri_from_shell_arg ($uri)
+       &#183;   $uri (string)
+
+       Since: vfs 2.2
+
+   result = Gnome2::VFS-&gt;move ($old_text_uri, $new_text_uri, $force_replace)
+       &#183;   $old_text_uri (string)
+
+       &#183;   $new_text_uri (string)
+
+       &#183;   $force_replace (boolean)
+
+   list = Gnome2::VFS-&gt;open ($text_uri, $open_mode)
+       &#183;   $text_uri (string)
+
+       &#183;   $open_mode (Gnome2::VFS::OpenMode)
+
+       Returns a GnomeVFSResult and a GnomeVFSHandle.
+
+   list = Gnome2::VFS-&gt;read_entire_file ($uri)
+       &#183;   $uri (string)
+
+       Returns a GnomeVFSResult, the file size and the file content.
+
+       Since: vfs 2.2
+
+   result = Gnome2::VFS-&gt;remove_directory ($text_uri)
+       &#183;   $text_uri (string)
+
+   string = Gnome2::VFS-&gt;result_to_string ($result)
+       &#183;   $result (Gnome2::VFS::Result)
+
+   Gnome2::VFS-&gt;shutdown
+   result = Gnome2::VFS-&gt;truncate ($text_uri, $length)
+       &#183;   $text_uri (string)
+
+       &#183;   $length (unsigned)
+
+   string = Gnome2::VFS-&gt;unescape_string ($escaped_string,
+       $illegal_characters=undef)
+       &#183;   $escaped_string (string)
+
+       &#183;   $illegal_characters (string)
+
+   string = Gnome2::VFS-&gt;unescape_string_for_display ($escaped)
+       &#183;   $escaped (string)
+
+   result = Gnome2::VFS-&gt;unlink ($text_uri)
+       &#183;   $text_uri (string)
+
+   string = Gnome2::VFS-&gt;get_uri_from_local_path ($local_full_path)
+       &#183;   $local_full_path (string)
+
+   string = Gnome2::VFS-&gt;get_uri_scheme ($uri)
+       &#183;   $uri (string)
+&#12;       Since: vfs 2.2
+
+   boolean = Gnome2::VFS-&gt;uris_match ($uri_1, $uri_2)
+       &#183;   $uri_1 (string)
+
+       &#183;   $uri_2 (string)
+
+       Since: vfs 2.2
+
+   result = Gnome2::VFS-&gt;url_show ($url)
+       &#183;   $url (string)
+
+       Since: vfs 2.4
+
+   result = Gnome2::VFS-&gt;url_show_with_env ($url, $env_ref)
+       &#183;   $url (string)
+
+       &#183;   $env_ref (scalar)
+
+       Since: vfs 2.4
+
+   list = Gnome2::VFS-&gt;get_volume_free_space ($vfs_uri)
+       &#183;   $vfs_uri (Gnome2::VFS::URI)
+
+       Returns a GnomeVFSResult and a GnomeVFSFileSize.
+
+ENUMS AND FLAGS
+   flags Gnome2::VFS::FileInfoOptions
+       &#183;   &apos;default&apos; / &apos;GNOME_VFS_FILE_INFO_DEFAULT&apos;
+
+       &#183;   &apos;get-mime-type&apos; / &apos;GNOME_VFS_FILE_INFO_GET_MIME_TYPE&apos;
+
+       &#183;   &apos;force-fast-mime-type&apos; / &apos;GNOME_VFS_FILE_INFO_FORCE_FAST_MIME_TYPE&apos;
+
+       &#183;   &apos;force-slow-mime-type&apos; / &apos;GNOME_VFS_FILE_INFO_FORCE_SLOW_MIME_TYPE&apos;
+
+       &#183;   &apos;follow-links&apos; / &apos;GNOME_VFS_FILE_INFO_FOLLOW_LINKS&apos;
+
+       &#183;   &apos;get-access-rights&apos; / &apos;GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS&apos;
+
+       &#183;   &apos;name-only&apos; / &apos;GNOME_VFS_FILE_INFO_NAME_ONLY&apos;
+
+       &#183;   &apos;get-acl&apos; / &apos;GNOME_VFS_FILE_INFO_GET_ACL&apos;
+
+       &#183;   &apos;get-selinux-context&apos; / &apos;GNOME_VFS_FILE_INFO_GET_SELINUX_CONTEXT&apos;
+
+   enum Gnome2::VFS::FindDirectoryKind
+       &#183;   &apos;desktop&apos; / &apos;GNOME_VFS_DIRECTORY_KIND_DESKTOP&apos;
+
+       &#183;   &apos;trash&apos; / &apos;GNOME_VFS_DIRECTORY_KIND_TRASH&apos;
+
+   flags Gnome2::VFS::MakeURIDirs
+       &#183;   &apos;none&apos; / &apos;GNOME_VFS_MAKE_URI_DIR_NONE&apos;
+
+       &#183;   &apos;homedir&apos; / &apos;GNOME_VFS_MAKE_URI_DIR_HOMEDIR&apos;
+
+       &#183;   &apos;current&apos; / &apos;GNOME_VFS_MAKE_URI_DIR_CURRENT&apos;
+
+   flags Gnome2::VFS::OpenMode
+       &#183;   &apos;none&apos; / &apos;GNOME_VFS_OPEN_NONE&apos;
+
+       &#183;   &apos;read&apos; / &apos;GNOME_VFS_OPEN_READ&apos;
+
+       &#183;   &apos;write&apos; / &apos;GNOME_VFS_OPEN_WRITE&apos;
+
+       &#183;   &apos;random&apos; / &apos;GNOME_VFS_OPEN_RANDOM&apos;
+
+       &#183;   &apos;truncate&apos; / &apos;GNOME_VFS_OPEN_TRUNCATE&apos;
+&#12;   enum Gnome2::VFS::Result
+       &#183;   &apos;ok&apos; / &apos;GNOME_VFS_OK&apos;
+
+       &#183;   &apos;error-not-found&apos; / &apos;GNOME_VFS_ERROR_NOT_FOUND&apos;
+
+       &#183;   &apos;error-generic&apos; / &apos;GNOME_VFS_ERROR_GENERIC&apos;
+
+       &#183;   &apos;error-internal&apos; / &apos;GNOME_VFS_ERROR_INTERNAL&apos;
+
+       &#183;   &apos;error-bad-parameters&apos; / &apos;GNOME_VFS_ERROR_BAD_PARAMETERS&apos;
+
+       &#183;   &apos;error-not-supported&apos; / &apos;GNOME_VFS_ERROR_NOT_SUPPORTED&apos;
+
+       &#183;   &apos;error-io&apos; / &apos;GNOME_VFS_ERROR_IO&apos;
+
+       &#183;   &apos;error-corrupted-data&apos; / &apos;GNOME_VFS_ERROR_CORRUPTED_DATA&apos;
+
+       &#183;   &apos;error-wrong-format&apos; / &apos;GNOME_VFS_ERROR_WRONG_FORMAT&apos;
+
+       &#183;   &apos;error-bad-file&apos; / &apos;GNOME_VFS_ERROR_BAD_FILE&apos;
+
+       &#183;   &apos;error-too-big&apos; / &apos;GNOME_VFS_ERROR_TOO_BIG&apos;
+
+       &#183;   &apos;error-no-space&apos; / &apos;GNOME_VFS_ERROR_NO_SPACE&apos;
+
+       &#183;   &apos;error-read-only&apos; / &apos;GNOME_VFS_ERROR_READ_ONLY&apos;
+
+       &#183;   &apos;error-invalid-uri&apos; / &apos;GNOME_VFS_ERROR_INVALID_URI&apos;
+
+       &#183;   &apos;error-not-open&apos; / &apos;GNOME_VFS_ERROR_NOT_OPEN&apos;
+
+       &#183;   &apos;error-invalid-open-mode&apos; / &apos;GNOME_VFS_ERROR_INVALID_OPEN_MODE&apos;
+
+       &#183;   &apos;error-access-denied&apos; / &apos;GNOME_VFS_ERROR_ACCESS_DENIED&apos;
+
+       &#183;   &apos;error-too-many-open-files&apos; / &apos;GNOME_VFS_ERROR_TOO_MANY_OPEN_FILES&apos;
+
+       &#183;   &apos;error-eof&apos; / &apos;GNOME_VFS_ERROR_EOF&apos;
+
+       &#183;   &apos;error-not-a-directory&apos; / &apos;GNOME_VFS_ERROR_NOT_A_DIRECTORY&apos;
+
+       &#183;   &apos;error-in-progress&apos; / &apos;GNOME_VFS_ERROR_IN_PROGRESS&apos;
+
+       &#183;   &apos;error-interrupted&apos; / &apos;GNOME_VFS_ERROR_INTERRUPTED&apos;
+
+       &#183;   &apos;error-file-exists&apos; / &apos;GNOME_VFS_ERROR_FILE_EXISTS&apos;
+
+       &#183;   &apos;error-loop&apos; / &apos;GNOME_VFS_ERROR_LOOP&apos;
+
+       &#183;   &apos;error-not-permitted&apos; / &apos;GNOME_VFS_ERROR_NOT_PERMITTED&apos;
+
+       &#183;   &apos;error-is-directory&apos; / &apos;GNOME_VFS_ERROR_IS_DIRECTORY&apos;
+
+       &#183;   &apos;error-no-memory&apos; / &apos;GNOME_VFS_ERROR_NO_MEMORY&apos;
+
+       &#183;   &apos;error-host-not-found&apos; / &apos;GNOME_VFS_ERROR_HOST_NOT_FOUND&apos;
+
+       &#183;   &apos;error-invalid-host-name&apos; / &apos;GNOME_VFS_ERROR_INVALID_HOST_NAME&apos;
+
+       &#183;   &apos;error-host-has-no-address&apos; / &apos;GNOME_VFS_ERROR_HOST_HAS_NO_ADDRESS&apos;
+
+       &#183;   &apos;error-login-failed&apos; / &apos;GNOME_VFS_ERROR_LOGIN_FAILED&apos;
+
+       &#183;   &apos;error-cancelled&apos; / &apos;GNOME_VFS_ERROR_CANCELLED&apos;
+
+       &#183;   &apos;error-directory-busy&apos; / &apos;GNOME_VFS_ERROR_DIRECTORY_BUSY&apos;
+
+       &#183;   &apos;error-directory-not-empty&apos; / &apos;GNOME_VFS_ERROR_DIRECTORY_NOT_EMPTY&apos;
+&#12;       &#183;   &apos;error-too-many-links&apos; / &apos;GNOME_VFS_ERROR_TOO_MANY_LINKS&apos;
+
+       &#183;   &apos;error-read-only-file-system&apos; /
+           &apos;GNOME_VFS_ERROR_READ_ONLY_FILE_SYSTEM&apos;
+
+       &#183;   &apos;error-not-same-file-system&apos; / &apos;GNOME_VFS_ERROR_NOT_SAME_FILE_SYSTEM&apos;
+
+       &#183;   &apos;error-name-too-long&apos; / &apos;GNOME_VFS_ERROR_NAME_TOO_LONG&apos;
+
+       &#183;   &apos;error-service-not-available&apos; /
+           &apos;GNOME_VFS_ERROR_SERVICE_NOT_AVAILABLE&apos;
+
+       &#183;   &apos;error-service-obsolete&apos; / &apos;GNOME_VFS_ERROR_SERVICE_OBSOLETE&apos;
+
+       &#183;   &apos;error-protocol-error&apos; / &apos;GNOME_VFS_ERROR_PROTOCOL_ERROR&apos;
+
+       &#183;   &apos;error-no-master-browser&apos; / &apos;GNOME_VFS_ERROR_NO_MASTER_BROWSER&apos;
+
+       &#183;   &apos;error-no-default&apos; / &apos;GNOME_VFS_ERROR_NO_DEFAULT&apos;
+
+       &#183;   &apos;error-no-handler&apos; / &apos;GNOME_VFS_ERROR_NO_HANDLER&apos;
+
+       &#183;   &apos;error-parse&apos; / &apos;GNOME_VFS_ERROR_PARSE&apos;
+
+       &#183;   &apos;error-launch&apos; / &apos;GNOME_VFS_ERROR_LAUNCH&apos;
+
+       &#183;   &apos;error-timeout&apos; / &apos;GNOME_VFS_ERROR_TIMEOUT&apos;
+
+       &#183;   &apos;error-nameserver&apos; / &apos;GNOME_VFS_ERROR_NAMESERVER&apos;
+
+       &#183;   &apos;error-locked&apos; / &apos;GNOME_VFS_ERROR_LOCKED&apos;
+
+       &#183;   &apos;error-deprecated-function&apos; / &apos;GNOME_VFS_ERROR_DEPRECATED_FUNCTION&apos;
+
+       &#183;   &apos;error-invalid-filename&apos; / &apos;GNOME_VFS_ERROR_INVALID_FILENAME&apos;
+
+       &#183;   &apos;error-not-a-symbolic-link&apos; / &apos;GNOME_VFS_ERROR_NOT_A_SYMBOLIC_LINK&apos;
+
+       &#183;   &apos;num-errors&apos; / &apos;GNOME_VFS_NUM_ERRORS&apos;
+
+   flags Gnome2::VFS::SetFileInfoMask
+       &#183;   &apos;none&apos; / &apos;GNOME_VFS_SET_FILE_INFO_NONE&apos;
+
+       &#183;   &apos;name&apos; / &apos;GNOME_VFS_SET_FILE_INFO_NAME&apos;
+
+       &#183;   &apos;permissions&apos; / &apos;GNOME_VFS_SET_FILE_INFO_PERMISSIONS&apos;
+
+       &#183;   &apos;owner&apos; / &apos;GNOME_VFS_SET_FILE_INFO_OWNER&apos;
+
+       &#183;   &apos;time&apos; / &apos;GNOME_VFS_SET_FILE_INFO_TIME&apos;
+
+       &#183;   &apos;acl&apos; / &apos;GNOME_VFS_SET_FILE_INFO_ACL&apos;
+
+       &#183;   &apos;selinux-context&apos; / &apos;GNOME_VFS_SET_FILE_INFO_SELINUX_CONTEXT&apos;
+
+       &#183;   &apos;symlink-name&apos; / &apos;GNOME_VFS_SET_FILE_INFO_SYMLINK_NAME&apos;
+
+SEE ALSO
+       Gnome2::VFS
+
+COPYRIGHT
+       Copyright (C) 2003-2007 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2::VFS for a full
+       notice.
+
+
+
+perl v5.14.2                       2011-11-15             Gnome2::VFS::main(3pm)
+
+</pre></body></html>

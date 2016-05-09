@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>permview - Viewer for declarative security permission sets inside assemblies.</title></head>
+<body><pre>
+
+Mono(permview)                                                    Mono(permview)
+
+
+
+NAME
+       permview  - Viewer for declarative security permission sets inside assem&#8208;
+       blies.
+
+SYNOPSIS
+       permview [options] assembly
+
+DESCRIPTION
+       This tools allow to list the declarative security attributes  present  in
+       an  assembly.  The  security  attributes are either found on the assembly
+       level, on the classes and the methods. This tool is  useful  to  diagnose
+       why an assembly won&apos;t load or why some class/method throws SecurityExcep&#8208;
+       tion.
+
+OPTIONS
+       -output filename
+              Output all declarative security  attributes  related  informations
+              into the specified file.
+
+       -xml | --xml | /XML
+              Output all declarative security attributes in an XML format.
+
+       -decl | --decl | /DECL
+              Show  declarative  security attributes on classes and methods. The
+              default, without the -decl option, is to show  only  the  assembly
+              level permission sets.
+
+       -? | /? | -h[elp] | /h[elp]
+              Display help informations about the permview tool.
+
+
+EXAMPLES
+       permview mscorlib.dll
+              This  will show the minimum, optional and refused permissions sets
+              (i.e. the assembly  level  security  actions)  that  are  compiled
+              inside the mscorlib assembly.
+
+       permview -decl permview.exe
+              This  will  show all (assembly, class or method level) declarative
+              security attributes present in the permview.exe assembly.
+
+
+AUTHOR
+       Written by Sebastien Pouliot
+
+COPYRIGHT
+       Copyright (C) 2004-2005 Novell, Inc (http://www.novell.com)
+
+MAILING LISTS
+       Visit    http://lists.ximian.com/mailman/listinfo/mono-devel-list     for
+       details.
+
+WEB SITE
+       Visit http://www.mono-project.com for details
+
+
+
+                                                                  Mono(permview)
+
+</pre></body></html>

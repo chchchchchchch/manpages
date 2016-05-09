@@ -1,0 +1,160 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wavemon - a wireless network monitor</title></head>
+<body><pre>
+
+wavemon(1)                        User Manuals                        wavemon(1)
+
+
+
+NAME
+       wavemon - a wireless network monitor
+
+SYNOPSIS
+       wavemon [-h] [-i ifname ] [-l] [-r] [-v]
+
+DESCRIPTION
+       wavemon  is  a  ncurses-based monitoring application for wireless network
+       devices. It plots levels in real-time as well  as  showing  wireless  and
+       network  related device information. Currently, wavemon is still based on
+       the wireless extensions by Jean Tourrilhes &lt;jt@hpl.hp.com&gt;.
+
+       The wavemon interface  splits  into  different  &quot;screens&quot;.   Each  screen
+       presents information in a specific manner. For example, the &quot;info&quot; screen
+       shows current levels as bargraphs, whereas the &quot;level&quot; screen  represents
+       the same levels as a moving histogram.
+
+       On  startup, you&apos;ll see (depending on configuration) one of the different
+       monitor screens. At the  bottom,  you&apos;ll  find  a  menu-bar  listing  the
+       screens and their activating keys. Each screen is activated by either the
+       corresponding function key or the key corresponding to the first  charac&#8208;
+       ter of the screen name. The following screens can be selected:
+
+       Info (F1 or &apos;i&apos;)
+              This  is  the  most  comprehensive screen. It displays a condensed
+              overview of wireless-specific parameters and  network  statistics,
+              as  well  as bar graphs.  The layout is arranged into several sub-
+              sections.
+
+              The Interface section at the top shows information about the moni&#8208;
+              toring  interface,  including  interface  name,  type,  ESSID, and
+              available encryption formats.
+
+              Below, in the Levels section, you can see  up  to  four  bargraphs
+              showing  (1)  relative signal quality and (2) signal level in dBm.
+              If the wireless driver  also  supports  noise  level  information,
+              additionally  (3)  noise  level  in dBm and (4) Signal-Noise-Ratio
+              (SNR) in dB are shown.  The colour of the  signal  level  bargraph
+              changes  from  red to yellow and green at fixed levels. If thresh&#8208;
+              olds have been set, two arrows on the signal level graph will show
+              the positions of the current thresholds.
+
+              The Statistics section displays packet and byte counters and a few
+              other packet-related statistics.
+
+              The subsequent Info subsection lists the current operational  mode
+              and  configuration  of the wireless interface. What parameters are
+              actually shown depends on the capabilities and  selected  mode  of
+              your network device.
+
+              Lastly,  the  Network  section shows network-level parameters. The
+              MAC-address is resolved from ethers(5). The IPv4 address is  shown
+              in CIDR notation (RFC 4632 address/prefix_len format). Since often
+              those two values also determine the broadcast address (last  32  -
+              prefix_len  bits  set to 1), that address is shown only if it does
+              not derive from the interface address and prefix length. Likewise,
+              the  interface  MTU  is  shown only if it differs from the default
+              Ethernet MTU of 1500 bytes.
+
+       Level histogram (F2 or &apos;l&apos;)
+              This is a full-screen histogram plot showing the evolution of lev&#8208;
+              els  with  time.   The screen is partitioned into a grid, with dBm
+              levels shown in green at the right hand side (depending on config&#8208;
+              uration).   At the very minimum, the evolution of the signal-level
+              is shown. If the wireless driver also supports noise-level  infor&#8208;
+              mation,  additionally  a  noise  graph  and  associated  SNR graph
+              appear.
+
+       Scan window (F3 or &apos;s&apos;)
+              A periodically updated network scan,  showing  access  points  and
+              other  wireless  clients, ordered by frequency and then descending
+              order of signal quality. Each entry starts with  the  ESSID,  fol&#8208;
+              lowed  by  the  colour-coded  MAC  address  and the signal/channel
+              information. A green/red MAC address indicates  an  (un-)encrypted
+              access  point,  the colour changes to yellow for non-access points
+              (in this case the mode is shown at  the  end  of  the  line).  The
+              uncoloured  information  following  the MAC address lists relative
+              and absolute signal strengths, channel, frequency, and the mode if
+              the  node  is  not  an  access point.  A status line at the bottom
+              informs about the most (least) crowded channels, depending on  how
+              sort_order is set (reverse channel or other); see wavemonrc(5).
+
+              Please  note  that gathering meaningful scan data can take several
+              seconds. Partly for this reason,  the  Scan  window  is  the  only
+              screen that can not be suspended (CTRL-Z).
+
+       Preferences (F7 or &apos;p&apos;)
+              This  screen  allows  you  to  change  all program options such as
+              interface and level scale parameters, and to save the new settings
+              to  the  configuration  file.  Select  a  parameter  with &lt;up&gt; and
+              &lt;down&gt;, then change the value  with  &lt;left&gt;  and  &lt;right&gt;.  Please
+              refer  to  wavemonrc(5)  for an in-depth description of applicable
+              settings.
+
+       Help (F8 or &apos;h&apos;)
+              This page might show an online-help.
+
+       About (F9 or &apos;a&apos;)
+              Release information and contact URLs.
+
+       Quit (F10 or &apos;q&apos;)
+              Exit wavemon.
+
+       Note: some operations, such as displaying encryption information or  per&#8208;
+       forming  scans,  require  CAP_NET_ADMIN privileges (see capabilities(7)).
+       For non-root users, these can be enabled by  installing  wavemon  setuid-
+       root.
+
+OPTIONS
+       -i interface
+              override autodetection and use the specified interface.
+
+       -d     dump interface parameters to stdout and exit.
+
+       -g     check  screen geometry: a minimum size is required for proper dis&#8208;
+              play; this flag adds a check to ensure it is  sufficiently  large.
+              Enable this if window does not display properly.
+
+       -r     generate random levels (for testing purposes).
+
+       -h     print help and exit.
+
+       -v     print version information and exit.
+
+
+ENVIRONMENT VARIABLES
+       LC_NUMERIC
+              Influences the grouping of numbers if set. See also locale(1).
+&#12;FILES
+       $HOME/.wavemonrc
+              The local per-user configuration file.
+
+AUTHOR
+       Written by Jan Morgenstern &lt;jan@jm-music.de&gt;.
+
+REPORTING BUGS
+       Send   bug   reports   and/or   suggestions   to   Gerrit   Renker  &lt;ger&#8208;
+       rit@erg.abdn.ac.uk&gt;.
+
+COPYRIGHT
+       This is free software with ABSOLUTELY NO WARRANTY. See file  COPYING  for
+       details.
+
+SEE ALSO
+       wavemonrc(5), wireless(7), ethers(5), locale(1), capabilities(7)
+
+
+
+Linux                              March 2012                         wavemon(1)
+
+</pre></body></html>

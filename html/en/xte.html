@@ -1,0 +1,114 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xte - Generates fake input using the XTest extension</title></head>
+<body><pre>
+
+XTE(1)                                                                    XTE(1)
+
+
+
+NAME
+       xte - Generates fake input using the XTest extension
+
+SYNOPSIS
+       xte [options] commands...
+
+DESCRIPTION
+       xte  is  a  program  that generates fake input using the XTest extension,
+       more reliable than xse.
+
+
+OPTIONS
+       A summary of options is included below.
+
+       -x display
+              Send commands to remote X server. Note that some commands may  not
+              work correctly unless the display is on the console, e.g. the dis&#8208;
+              play is currently controlled by the keyboard and mouse and not  in
+              the  background. This seems to be a limitation of the XTest exten&#8208;
+              sion.
+
+       --help, -h
+              Show summary of options.
+
+COMMANDS
+       key k  Press and release key k
+
+       keydown  k
+              Press key k down
+
+       keyup k
+              Release key k
+
+       str string
+              Do a bunch of key X events for each char in string
+
+       mouseclick i
+              Click mouse button i
+
+       mousemove x y
+              Move mouse to screen position x, y
+
+       mousermove x y
+              Move mouse relative from current location by x, y
+
+       mousedown i
+              Press mouse button i down
+
+       mouseup i
+              Release mouse button i
+
+       sleep x
+              Sleep x seconds
+
+       usleep x
+              Usleep x microseconds
+
+
+SOME USEFUL KEYS
+       This keys are case sensitive.
+
+       Home
+       Left
+       Up
+       Right
+       Down
+       Page_Up
+       Page_Down
+       End
+       Return
+       BackSpace
+       Tab
+       Escape
+       Delete
+       Shift_L
+       Shift_R
+       Control_L
+       Control_R
+       Meta_L
+       Meta_R
+       Alt_L
+       Alt_R
+       Multi_key
+
+
+SEE ALSO
+       pat2ppm(1), patextract(1), png2pat(1), rgb2pat(1), visgrep(1).
+
+
+AUTHOR
+       xte was written by Steve Slaven &lt;bpk@hoopajoo.net&gt;.
+
+
+LIMITATIONS
+       The str command doesn&apos;t support Unicode characters  with  more  than  two
+       bytes.  Further,  character composing sequences to generate special char&#8208;
+       actes are limited to Multi_key plus two characters. The set of  supported
+       characters depends on the current keyboard layout.
+
+
+
+
+                                October 18, 2003                          XTE(1)
+
+</pre></body></html>

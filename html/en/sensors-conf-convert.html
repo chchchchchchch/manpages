@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sensors-conf-convert - convert sensors.conf from lm-sensors 2 format to lm-sensors 3 format</title></head>
+<body><pre>
+
+sensors-conf-convert(1)        Linux User&apos;s Manual       sensors-conf-convert(1)
+
+
+
+NAME
+       sensors-conf-convert  -  convert sensors.conf from lm-sensors 2 format to
+       lm-sensors 3 format
+
+SYNOPSIS
+       sensors-conf-convert &lt; /etc/sensors.conf &gt; /etc/sensors3.conf
+
+DESCRIPTION
+       sensors-conf-convert converts a sensors.conf file  from  the  old  (Linux
+       2.4, lm-sensors 2) symbol names to the new (Linux 2.6, lm-sensors 3) sym&#8208;
+       bol names.
+
+       Implemented conversions:
+
+       - The &quot;algorithm name&quot; part of bus statements is removed.
+
+       - Bus statements for the ISA bus are removed.
+
+       - Chip names containing dashes are removed.
+
+       - Label, ignore, set and compute statements referencing features
+              which are not part of the new interface are removed.
+
+       - Label, ignore, set and compute statements referencing features
+              which have been renamed are updated. This  includes  both  general
+              feature name changes and chip-specific feature name changes.
+
+SEE ALSO
+       sensors.conf(5)
+
+AUTHOR
+       Jean Delvare.
+
+
+
+
+lm-sensors 3                       March 2008            sensors-conf-convert(1)
+
+</pre></body></html>

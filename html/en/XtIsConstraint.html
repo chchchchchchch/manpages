@@ -1,0 +1,106 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtClass, XtSuperclass, XtIsSubclass, XtCheckSubclass, XtIsObject, XtIsRectObj, XtIsWidget, XtIsComposite, XtIsConstraint, XtIsShell, XtIsOverrideShell, XtIsWMShell, XtIsVendorShell, XtIsTransientShell, XtIsTopLevelShell, XtIsApplicationShell, XtIsSessionShell - obtain and verify a widget's class</title></head>
+<body><pre>
+
+XtClass(3)                        XT FUNCTIONS                        XtClass(3)
+
+
+
+NAME
+       XtClass, XtSuperclass, XtIsSubclass, XtCheckSubclass, XtIsObject, XtIs&#8208;
+       RectObj, XtIsWidget, XtIsComposite, XtIsConstraint, XtIsShell, XtIs&#8208;
+       OverrideShell, XtIsWMShell, XtIsVendorShell, XtIsTransientShell, XtIsTop&#8208;
+       LevelShell, XtIsApplicationShell, XtIsSessionShell - obtain and verify a
+       widget&apos;s class
+
+SYNTAX
+       WidgetClass XtClass(Widget w);
+
+       WidgetClass XtSuperclass(Widget w);
+
+       Boolean XtIsSubclass(Widget w, WidgetClass widget_class);
+
+       void XtCheckSubclass(Widget widget, WidgetClass widget_class, String mes&#8208;
+              sage);
+
+       Boolean XtIsObject(Widget w);
+
+       Boolean XtIsRectObj(Widget w);
+
+       Boolean XtIsWidget(Widget w);
+
+       Boolean XtIsComposite(Widget w);
+
+       Boolean XtIsConstraint(Widget w,
+
+       Boolean XtIsShell(Widget w);
+
+       Boolean XtIsOverrideShell(Widget w);
+
+       Boolean XtIsWMShell(Widget w);
+
+       Boolean XtIsVendorShell(Widget w);
+
+       Boolean XtIsTransientShell(Widget w);
+
+       Boolean XtIsTopLevelShell(Widget w);
+
+       Boolean XtIsApplicationShell(Widget w);
+
+       Boolean XtIsSessionShell(Widget w);
+
+ARGUMENTS
+       w         Specifies the widget.
+
+       widget_class
+                 Specifies the widget class.
+
+       message   Specifies the message that is to be used.
+
+DESCRIPTION
+       The XtClass function returns a pointer to the widget&apos;s class structure.
+
+       The XtSuperclass function returns a pointer to the widget&apos;s superclass
+       class structure.
+
+       The XtIsSubclass function returns True if the class of the specified wid&#8208;
+       get is equal to or is a subclass of the specified class. The widget&apos;s
+       class can be any number of subclasses down the chain and need not be an
+       immediate subclass of the specified class. Composite widgets that need to
+       restrict the class of the items they contain can use XtIsSubclass to find
+       out if a widget belongs to the desired class of objects.
+
+       The XtCheckSubclass macro determines if the class of the specified widget
+       is equal to or is a subclass of the specified widget class.  The widget
+       can be any number of subclasses down the chain and need not be an immedi&#8208;
+       ate subclass of the specified widget class.  If the specified widget is
+       not a subclass, XtCheckSubclass constructs an error message from the sup&#8208;
+       plied message, the widget&apos;s actual class, and the expected class and
+       calls XtErrorMsg.  XtCheckSubclass should be used at the entry point of
+       exported routines to ensure that the client has passed in a valid widget
+       class for the exported operation.
+
+       XtCheckSubclass is only executed when the widget has been compiled with
+       the compiler symbol DEBUG defined; otherwise, it is defined as the empty
+       string and generates no code.
+
+       To test if a given widget belongs to a subclass of an Intrinsics-defined
+       class, the Intrinsics defines macros or functions equivalent to XtIsSub&#8208;
+       class for each of the built-in classes. These procedures are XtIsObject,
+       XtIsRectObj, XtIsWidget, XtIsComposite, XtIsConstraint, XtIsShell, XtIs&#8208;
+       OverrideShell, XtIsWMShell, XtIsVendorShell, XtIsTransientShell, XtIsTop&#8208;
+       LevelShell, XtIsApplicationShell, and XtIsSessionShell.
+
+       The
+
+SEE ALSO
+       XtAppErrorMsg(3), XtDisplay(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                        XtClass(3)
+
+</pre></body></html>

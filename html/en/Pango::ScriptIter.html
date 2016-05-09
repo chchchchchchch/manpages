@@ -1,0 +1,43 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::ScriptIter - used to break a string of Unicode into runs by text</title></head>
+<body><pre>
+
+Pango::ScriptIter(3pm) User Contributed Perl DocumentationPango::ScriptIter(3pm)
+
+
+
+NAME
+       Pango::ScriptIter - used to break a string of Unicode into runs by text
+
+HIERARCHY
+         Glib::Boxed
+         +----Pango::ScriptIter
+
+METHODS
+   scriptiter = Pango::ScriptIter-&gt;new ($text)
+       &#183;   $text (string)
+
+       Since: pango 1.4
+
+   boolean = $iter-&gt;next
+       Since: pango 1.4
+
+   list = $iter-&gt;get_range
+       Returns the bounds and the script for the region pointed to by $iter.
+
+       Since: pango 1.4
+
+SEE ALSO
+       Pango, Glib::Boxed
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15             Pango::ScriptIter(3pm)
+
+</pre></body></html>

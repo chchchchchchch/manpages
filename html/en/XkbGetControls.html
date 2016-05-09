@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetControls - Finds the current state of Xkb server controls</title></head>
+<body><pre>
+
+XkbGetControls(3)                 XKB FUNCTIONS                XkbGetControls(3)
+
+
+
+NAME
+       XkbGetControls - Finds the current state of Xkb server controls
+
+SYNOPSIS
+       Status  XkbGetControls (Display *display, unsigned long which, XkbDescPtr
+              xkb);
+
+ARGUMENTS
+       - display
+              connection to X server
+
+       - which
+              mask of controls requested
+
+       - xkb  keyboard description for controls information
+
+DESCRIPTION
+       XkbGetControls queries the server for the requested control  information,
+       waits  for a reply, and then copies the server&apos;s values for the requested
+       information into the ctrls structure of the xkb argument. Only those com&#8208;
+       ponents  specified  by  the  which parameter are copied. Valid values for
+       which are any combination of the masks listed in Table 1 that  have  &quot;ok&quot;
+       in the which column.
+
+       Table  1  shows  the  actual  values for the individual mask bits used to
+       select controls for modification and to enable and disable  the  control.
+       Note  that  the same mask bit is used to specify general modifications to
+       the parameters used to configure the control (which), and to  enable  and
+       disable the control (enabled_ctrls). The anomalies in Table 1 (no &quot;ok&quot; in
+       column) are for controls that have no configurable  attributes;  and  for
+       controls that are not boolean controls and therefore cannot be enabled or
+       disabled.
+
+
+       c s s s l l l l l l l l l l l l.  Table  1  Controls  Mask  Bits  _  Mask
+       Bit  which   or  enabled   Value        changed_ctrls  _ctrls   _  XkbRe&#8208;
+       peatKeysMask   ok   ok   (1L&lt;&lt;0)    XkbSlowKeysMask     ok   ok   (1L&lt;&lt;1)
+       XkbBounceKeysMask   ok   ok   (1L&lt;&lt;2)                           XkbStick&#8208;
+       yKeysMask   ok   ok   (1L&lt;&lt;3) XkbMouseKeysMask    ok   ok   (1L&lt;&lt;4)  Xkb&#8208;
+       MouseKeysAccelMask    ok   ok   (1L&lt;&lt;5)                            XkbAc&#8208;
+       cessXKeysMask  ok   ok   (1L&lt;&lt;6)                       XkbAccessXTimeout&#8208;
+       Mask    ok   ok   (1L&lt;&lt;7)      XkbAccessXFeedbackMask   ok   ok   (1L&lt;&lt;8)
+       XkbAudibleBellMask       ok   (1L&lt;&lt;9)                            XkbOver&#8208;
+       lay1Mask          ok   (1L&lt;&lt;10)    XkbOverlay2Mask          ok   (1L&lt;&lt;11)
+       XkbIgnoreGroupLockMask        ok   (1L&lt;&lt;12)                XkbGroupsWrap&#8208;
+       Mask   ok        (1L&lt;&lt;27)  XkbInternalModsMask ok        (1L&lt;&lt;28)  XkbIg&#8208;
+       noreLockModsMask    ok        (1L&lt;&lt;29)                   XkbPerKeyRepeat&#8208;
+       Mask ok        (1L&lt;&lt;30)       XkbControlsEnabledMask   ok        (1L&lt;&lt;31)
+       XkbAccessXOptionsMask    ok   ok   (XkbStickyKeysMask                   |
+                      XkbAccessXFeedbackMask)                XkbAllBooleanCtrls&#8208;
+       Mask        ok   (0x00001FFF) XkbAllControlsMask  ok        (0xF8001FFF)
+
+
+       If xkb-&gt;ctrls is NULL, XkbGetControls allocates and initializes it before
+       obtaining  the  values  specified  by  which.  If xkb-&gt;ctrls is not NULL,
+       XkbGetControls modifies only those portions of  xkb-&gt;ctrls  corresponding
+       to the values specified by which.
+
+       XkbGetControls  returns  Success  if  successful;  otherwise,  it returns
+       BadAlloc if it cannot obtain sufficient storage, BadMatch if xkb is  NULL
+       or which is empty, or BadImplementation.
+&#12;       To free the ctrls member of a keyboard description, use XkbFreeControls.
+
+       The  num_groups  field  in  the  ctrls  structure  is always filled in by
+       XkbGetControls, regardless of which bits are selected by which.
+
+RETURN VALUES
+       Success        The XkbGetControls function returns Success if successful.
+
+DIAGNOSTICS
+       BadAlloc       Unable to allocate storage
+
+       BadImplementation
+                      Invalid reply from server
+
+       BadMatch       A compatible version of  Xkb  was  not  available  in  the
+                      server  or  an argument has correct type and range, but is
+                      otherwise invalid
+
+
+SEE ALSO
+       XkbFreeControls(3)
+
+
+
+X Version 11                      libX11 1.5.0                 XkbGetControls(3)
+
+</pre></body></html>

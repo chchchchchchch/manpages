@@ -1,0 +1,94 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetStickyKeysOptions - Queries the current StickyKeys attributes for a keyboard device</title></head>
+<body><pre>
+
+XkbGetStickyKeysOptions(3)        XKB FUNCTIONS       XkbGetStickyKeysOptions(3)
+
+
+
+NAME
+       XkbGetStickyKeysOptions - Queries the current StickyKeys attributes for a
+       keyboard device
+
+SYNOPSIS
+       Bool XkbGetStickyKeysOptions (Display *display, unsigned int device_spec,
+              unsigned int *options_rtrn);
+
+ARGUMENTS
+       - display
+              connection to X server
+
+       - device_spec
+              device ID, or XkbUseCoreKbd
+
+       - options_rtrn
+              backfilled with StickyKeys option mask
+
+DESCRIPTION
+       The  StickyKeys  control  has  two  options  that can be accessed via the
+       ax_options of an XkbControlsRec structure.  The  first  option,  TwoKeys,
+       specifies  whether StickyKeys should automatically turn off when two keys
+       are pressed at the same time. This feature is useful for shared computers
+       so  people  who  do not want them do not need to turn StickyKeys off if a
+       previous user left StickyKeys on. The second option, LatchToLock,  speci&#8208;
+       fies  whether  or not StickyKeys locks a modifier when pressed twice in a
+       row.
+
+       XkbGetStickyKeysOptions requests the attributes of the StickyKeys control
+       from  the  server,  waits  for a reply, and backfills options_rtrn with a
+       mask indicating whether the individual StickyKeys options are on or  off.
+       Valid bits in options_rtrn are:
+
+            XkbAX_TwoKeysMask
+            XkbAX_LatchToLockMask
+
+       XkbGetStickyKeysOptions  returns True if successful; if a compatible ver&#8208;
+       sion of the Xkb extension is not available  in  the  server  XkbGetStick&#8208;
+       yKeysOptions returns False.
+
+RETURN VALUES
+       True           The  XkbGetStickyKeysOptions  function returns True if the
+                      request for the attributes of the StickyKeys control  from
+                      the server was successful.
+
+       False          The  XkbGetStickyKeysOptions  function  returns False if a
+                      compatible version of the Xkb extension is  not  available
+                      in the server.
+
+STRUCTURES
+       The XkbControlsRec structure is defined as follows:
+
+           #define XkbMaxLegalKeyCode     255
+           #define XkbPerKeyBitArraySize  ((XkbMaxLegalKeyCode+1)/8)
+
+           typedef struct {
+               unsigned char   mk_dflt_btn;      /&#8727; default button for keyboard driven mouse */
+               unsigned char   num_groups;       /&#8727; number of keyboard groups */
+               unsigned char   groups_wrap;      /&#8727; how to wrap out-of-bounds groups */
+               XkbModsRec      internal;         /&#8727; defines server internal modifiers */
+               XkbModsRec      ignore_lock;      /&#8727; modifiers to ignore when checking for grab */
+               unsigned int    enabled_ctrls;    /&#8727; 1 bit =&gt; corresponding boolean control enabled */
+               unsigned short  repeat_delay;     /&#8727; ms delay until first repeat */
+               unsigned short  repeat_interval;  /&#8727; ms delay between repeats */
+               unsigned short  slow_keys_delay;  /&#8727; ms minimum time key must be down to be ok */
+               unsigned short  debounce_delay;   /&#8727; ms delay before key reactivated */
+               unsigned short  mk_delay;         /&#8727; ms delay to second mouse motion event */
+               unsigned short  mk_interval;      /&#8727; ms delay between repeat mouse events */
+               unsigned short  mk_time_to_max;   /&#8727; # intervals until constant mouse move */
+               unsigned short  mk_max_speed;     /&#8727; multiplier for maximum mouse speed */
+               short           mk_curve;         /&#8727; determines mouse move curve type */
+               unsigned short  ax_options;       /&#8727; 1 bit =&gt; Access X option enabled */
+               unsigned short  ax_timeout;       /&#8727; seconds until Access X disabled */
+               unsigned short  axt_opts_mask;    /&#8727; 1 bit =&gt; options to reset on Access X timeout */
+               unsigned short  axt_opts_values;  /&#8727; 1 bit =&gt; turn option on, 0=&gt; off */
+               unsigned int    axt_ctrls_mask;   /&#8727; which bits in enabled_ctrls to modify */
+               unsigned int    axt_ctrls_values; /&#8727; values for new bits in enabled_ctrls */
+               unsigned char   per_key_repeat[XkbPerKeyBitArraySize];  /&#8727; per key auto repeat */
+            } XkbControlsRec, *XkbControlsPtr;
+
+
+
+X Version 11                      libX11 1.5.0        XkbGetStickyKeysOptions(3)
+
+</pre></body></html>

@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>unlockpt - unlock a pseudoterminal master/slave pair</title></head>
+<body><pre>
+
+UNLOCKPT(3)                 Linux Programmer&apos;s Manual                UNLOCKPT(3)
+
+
+
+NAME
+       unlockpt - unlock a pseudoterminal master/slave pair
+
+SYNOPSIS
+       #define _XOPEN_SOURCE       /* See feature_test_macros(7) */
+       #include &lt;stdlib.h&gt;
+
+       int unlockpt(int fd);
+
+DESCRIPTION
+       The  unlockpt()  function  unlocks the slave pseudoterminal device corre&#8208;
+       sponding to the master pseudoterminal referred to by fd.
+
+       unlockpt() should be called before opening the slave side of a pseudoter&#8208;
+       minal.
+
+RETURN VALUE
+       When successful, unlockpt() returns 0.  Otherwise, it returns -1 and sets
+       errno appropriately.
+
+ERRORS
+       EBADF  The fd argument is not a file descriptor open for writing.
+
+       EINVAL The fd argument is not associated with a master pseudoterminal.
+
+VERSIONS
+       unlockpt() is provided in glibc since version 2.1.
+
+CONFORMING TO
+       POSIX.1-2001.
+
+SEE ALSO
+       grantpt(3), posix_openpt(3), ptsname(3), pts(4), pty(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2008-06-14                        UNLOCKPT(3)
+
+</pre></body></html>

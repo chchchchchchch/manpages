@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>tiffdump - print verbatim information about TIFF files</title></head>
+<body><pre>
+
+TIFFDUMP(1)                                                          TIFFDUMP(1)
+
+
+
+NAME
+       tiffdump - print verbatim information about TIFF files
+
+SYNOPSIS
+       tiffdump [ options ] name ...
+
+DESCRIPTION
+       tiffdump  displays  directory information from files created according to
+       the Tag Image File Format, Revision 6.0.  The header of  each  TIFF  file
+       (magic  number,  version,  and first directory offset) is displayed, fol&#8208;
+       lowed by the tag contents of each directory in the file.  For  each  tag,
+       the name, data type, count, and value(s) is displayed.  When the symbolic
+       name for a tag or data type is known, the symbolic name is displayed fol&#8208;
+       lowed by it&apos;s numeric (decimal) value.  Tag values are displayed enclosed
+       in ``&lt;&gt;&apos;&apos; characters immediately preceded  by  the  value  of  the  count
+       field.  For example, an ImageWidth tag might be displayed as ``ImageWidth
+       (256) SHORT (3) 1&lt;800&gt;&apos;&apos;.
+
+       tiffdump is particularly useful for investigating the  contents  of  TIFF
+       files that libtiff does not understand.
+
+OPTIONS
+       -h     Force  numeric  data  to be printed in hexadecimal rather than the
+              default decimal.
+
+       -m items
+              Change the number of indirect data  items  that  are  printed.  By
+              default, this will be 24.
+
+       -o offset
+              Dump the contents of the IFD at the a particular file offset.  The
+              file offset may be specified using the usual C-style syntax;  i.e.
+              a leading ``0x&apos;&apos; for hexadecimal and a leading ``0&apos;&apos; for octal.
+
+SEE ALSO
+       tiffinfo(1), libtiff(3TIFF)
+
+       Libtiff library home page: http://www.remotesensing.org/libtiff/
+
+
+
+libtiff                         October 23, 2005                     TIFFDUMP(1)
+
+</pre></body></html>

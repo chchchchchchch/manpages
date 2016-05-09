@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wcscspn - search a wide-character string for any of a set of wide characters</title></head>
+<body><pre>
+
+WCSCSPN(3)                  Linux Programmer&apos;s Manual                 WCSCSPN(3)
+
+
+
+NAME
+       wcscspn - search a wide-character string for any of a set of wide charac&#8208;
+       ters
+
+SYNOPSIS
+       #include &lt;wchar.h&gt;
+
+       size_t wcscspn(const wchar_t *wcs, const wchar_t *reject);
+
+DESCRIPTION
+       The wcscspn() function is the wide-character equivalent of the strcspn(3)
+       function.  It determines the length of the longest initial segment of wcs
+       which consists entirely of wide-characters  not  listed  in  reject.   In
+       other  words,  it searches for the first occurrence in the wide-character
+       string wcs of any of the characters in the wide-character string reject.
+
+RETURN VALUE
+       The wcscspn() function returns the number of wide characters in the long&#8208;
+       est initial segment of wcs which consists entirely of wide-characters not
+       listed in reject.  In other words, it returns the position of  the  first
+       occurrence  in  the wide-character string wcs of any of the characters in
+       the wide-character string reject, or wcslen(wcs) if there is none.
+
+CONFORMING TO
+       C99.
+
+SEE ALSO
+       strcspn(3), wcspbrk(3), wcsspn(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1999-07-25                         WCSCSPN(3)
+
+</pre></body></html>

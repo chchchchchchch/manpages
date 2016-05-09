@@ -1,0 +1,172 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ssh-vulnkey — check blacklist of compromised keys</title></head>
+<body><pre>
+
+SSH-VULNKEY(1)            BSD General Commands Manual           SSH-VULNKEY(1)
+
+NAME
+     ssh-vulnkey &#8212; check blacklist of compromised keys
+
+SYNOPSIS
+     ssh-vulnkey [-q | -v] file ...
+     ssh-vulnkey -a
+
+DESCRIPTION
+     ssh-vulnkey checks a key against a blacklist of compromised keys.
+
+     A substantial number of keys are known to have been generated using a bro&#8208;
+     ken version of OpenSSL distributed by Debian which failed to seed its ran&#8208;
+     dom number generator correctly.  Keys generated using these OpenSSL ver&#8208;
+     sions should be assumed to be compromised.  This tool may be useful in
+     checking for such keys.
+
+     Keys that are compromised cannot be repaired; replacements must be gener&#8208;
+     ated using ssh-keygen(1).  Make sure to update authorized_keys files on all
+     systems where compromised keys were permitted to authenticate.
+
+     The argument list will be interpreted as a list of paths to public key
+     files or authorized_keys files.  If no suitable file is found at a given
+     path, ssh-vulnkey will append .pub and retry, in case it was given a pri&#8208;
+     vate key file.  If no files are given as arguments, ssh-vulnkey will check
+     ~/.ssh/id_rsa, ~/.ssh/id_dsa, ~/.ssh/identity, ~/.ssh/authorized_keys and
+     ~/.ssh/authorized_keys2, as well as the system&apos;s host keys if readable.
+
+     If &#8220;-&#8221; is given as an argument, ssh-vulnkey will read from standard input.
+     This can be used to process output from ssh-keyscan(1), for example:
+
+           $ ssh-keyscan -t rsa remote.example.org | ssh-vulnkey -
+
+     Unless the PermitBlacklistedKeys option is used, sshd(8) will reject
+     attempts to authenticate with keys in the compromised list.
+
+     The output from ssh-vulnkey looks like this:
+
+           /etc/ssh/ssh_host_key:1: COMPROMISED: RSA1 2048 xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx root@host
+           /home/user/.ssh/id_dsa:1: Not blacklisted: DSA 1024 xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx /home/user/.ssh/id_dsa.pub
+           /home/user/.ssh/authorized_keys:3: Unknown (blacklist file not installed): RSA 1024 xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx user@host
+
+     Each line is of the following format (any lines beginning with &#8220;#&#8221; should
+     be ignored by scripts):
+
+           filename:line: status: type size fingerprint comment
+
+     It is important to distinguish between the possible values of status:
+
+     COMPROMISED
+             These keys are listed in a blacklist file, normally because their
+             corresponding private keys are well-known.  Replacements must be
+             generated using ssh-keygen(1).
+
+     Not blacklisted
+             A blacklist file exists for this key type and size, but this key is
+             not listed in it.  Unless there is some particular reason to
+             believe otherwise, this key may be used safely.  (Note that DSA
+             keys used with the broken version of OpenSSL distributed by Debian
+             may be compromised in the event that anyone captured a network
+             trace, even if they were generated with a secure version of
+             OpenSSL.)
+
+     Unknown (blacklist file not installed)
+             No blacklist file exists for this key type and size.  You should
+             find a suitable published blacklist and install it before deciding
+             whether this key is safe to use.
+
+     The options are as follows:
+
+     -a      Check keys of all users on the system.  You will typically need to
+             run ssh-vulnkey as root to use this option.  For each user,
+             ssh-vulnkey will check ~/.ssh/id_rsa, ~/.ssh/id_dsa,
+             ~/.ssh/identity, ~/.ssh/authorized_keys and
+             ~/.ssh/authorized_keys2.  It will also check the system&apos;s host
+             keys.
+
+     -q      Quiet mode.  Normally, ssh-vulnkey outputs the fingerprint of each
+             key scanned, with a description of its status.  This option sup&#8208;
+             presses that output.
+
+     -v      Verbose mode.  Normally, ssh-vulnkey does not output anything for
+             keys that are not listed in their corresponding blacklist file
+             (although it still produces output for keys for which there is no
+             blacklist file, since their status is unknown).  This option causes
+             ssh-vulnkey to produce output for all keys.
+
+EXIT STATUS
+     ssh-vulnkey will exit zero if any of the given keys were in the compromised
+     list, otherwise non-zero.
+
+BLACKLIST FILE FORMAT
+     The blacklist file may start with comments, on lines starting with &#8220;#&#8221;.
+     After these initial comments, it must follow a strict format:
+
+           &#183;   All the lines must be exactly the same length (20 characters fol&#8208;
+               lowed by a newline) and must be in sorted order.
+           &#183;   Each line must consist of the lower-case hexadecimal MD5 key fin&#8208;
+               gerprint, without colons, and with the first 12 characters
+               removed (that is, the least significant 80 bits of the finger&#8208;
+               print).
+
+     The key fingerprint may be generated using ssh-keygen(1):
+
+           $ ssh-keygen -l -f /path/to/key
+
+     This strict format is necessary to allow the blacklist file to be checked
+     quickly, using a binary-search algorithm.
+
+FILES
+     ~/.ssh/id_rsa
+             If present, contains the protocol version 2 RSA authentication
+             identity of the user.
+
+     ~/.ssh/id_dsa
+             If present, contains the protocol version 2 DSA authentication
+             identity of the user.
+
+     ~/.ssh/identity
+             If present, contains the protocol version 1 RSA authentication
+             identity of the user.
+
+     ~/.ssh/authorized_keys
+             If present, lists the public keys (RSA/DSA) that can be used for
+             logging in as this user.
+
+     ~/.ssh/authorized_keys2
+             Obsolete name for ~/.ssh/authorized_keys.  This file may still be
+             present on some old systems, but should not be created if it is
+             missing.
+&#12;     /etc/ssh/ssh_host_rsa_key
+             If present, contains the protocol version 2 RSA identity of the
+             system.
+
+     /etc/ssh/ssh_host_dsa_key
+             If present, contains the protocol version 2 DSA identity of the
+             system.
+
+     /etc/ssh/ssh_host_key
+             If present, contains the protocol version 1 RSA identity of the
+             system.
+
+     /usr/share/ssh/blacklist.TYPE-LENGTH
+             If present, lists the blacklisted keys of type TYPE (&#8220;RSA&#8221; or
+             &#8220;DSA&#8221;) and bit length LENGTH.  The format of this file is described
+             above.  RSA1 keys are converted to RSA before being checked in the
+             blacklist.  Note that the fingerprints of RSA1 keys are computed
+             differently, so you will not be able to find them in the blacklist
+             by hand.
+
+     /etc/ssh/blacklist.TYPE-LENGTH
+             Same as /usr/share/ssh/blacklist.TYPE-LENGTH, but may be edited by
+             the system administrator to add new blacklist entries.
+
+SEE ALSO
+     ssh-keygen(1), sshd(8)
+
+AUTHORS
+     Colin Watson &#10216;cjwatson@ubuntu.com&#10217;
+
+     Florian Weimer suggested the option to check keys of all users, and the
+     idea of processing ssh-keyscan(1) output.
+
+BSD                               May 8, 2016                              BSD
+
+</pre></body></html>

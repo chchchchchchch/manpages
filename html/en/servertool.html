@@ -1,0 +1,142 @@
+<html>
+<head><meta charset=utf-8/>
+<title>servertool - The Java(TM) IDL Server Tool</title></head>
+<body><pre>
+
+servertool(1)                                                      servertool(1)
+
+
+
+Name
+       servertool - The Java(TM) IDL Server Tool
+
+       servertool  provides a command-line interface for application programmers
+       to register, unregister, startup, and shutdown a persistent server.
+
+SYNOPSIS
+       servertool -ORBInitialPort nameserverport options [ commands ]
+
+
+       If you did not enter a command when starting servertool, the command-line
+       tool  displays  with a servertool &gt; prompt. Enter commands at the server&#8208;
+       tool &gt; prompt.
+
+       If you enter a command when starting servertool, the Java IDL Server Tool
+       starts, runs the command, and exits.
+
+       The  -ORBInitialPort  nameserverport  option  is  required. The value for
+       nameserverport must specify the port on which orbd is running and listen&#8208;
+       ing  for  incoming requests. When using Solaris software, you must become
+       root to start a process on a port under 1024. For this reason, we  recom&#8208;
+       mend  that  you  use  a port number greater than or equal to 1024 for the
+       nameserverport.
+
+DESCRIPTION
+       The servertool provides the command-line interface  for  the  application
+       programmers  to  register, unregister, startup, and shutdown a persistent
+       server. Other commands are provided to obtain various statistical  infor&#8208;
+       mation about the server.
+
+OPTIONS
+          -ORBInitialHost nameserverhost
+             Specifies  the host machine on which the name server is running and
+             listening for incoming requests.  The  nameserverhost  defaults  to
+             localhost  if  this option is not specified. If orbd and servertool
+             are running on different machines, you must specify the name or  IP
+             address of the host on which orbd is running.
+
+          -Joption
+             Pass option to the Java virtual machine, where option is one of the
+             options described on the reference page for java(1).  For  example,
+             -J-Xms48m  sets  the startup memory to 48 megabytes. It is a common
+             convention for  -J  to  pass  options  to  the  underlying  virtual
+             machine.
+
+
+COMMANDS
+          register -server &lt;server class name&gt;  -classpath &lt;classpath to server&gt;
+          [ -applicationName &lt;application name&gt;           -args &lt;args to server&gt;
+          -vmargs &lt;flags to be passed to Java VM&gt;  ]
+             Register  a  new  persistent  server with the Object Request Broker
+             Daemon (ORBD). If the server is not already registered, it is  reg&#8208;
+             istered  and activated. This command causes an install method to be
+             invoked in the main class of the server identified by  the  -server
+             option.   The   install   method   must   be   public  static  void
+             install(org.omg.CORBA.ORB). The  install  method  is  optional  and
+             enables  the  developer  to  provide  their own server installation
+             behavior (for example, creating database schema).
+
+          unregister     -serverid &lt;server id &gt; |     -applicationName &lt;applica&#8208;
+          tion name&gt;
+             Unregister  a server from the ORBD by using either its server id or
+             its application name. This command causes an uninstall method to be
+             invoked  in  the main class of the server identified by the -server
+             option. The uninstall method  must  be  public  static  void  unin&#8208;
+             stall(org.omg.CORBA.ORB).  The  uninstall  method  is  optional and
+             enables the developer to provide their own server uninstall  behav&#8208;
+             ior (for example, undoing the behavior of the install method).
+
+          getserverid -applicationName &lt;application name&gt;
+             Return the server id that corresponds with an application.
+
+          list
+             List  information  about all persistent servers registered with the
+             ORBD.
+
+          listappnames
+             List the application names for  all  servers  currently  registered
+             with the ORBD.
+
+          listactive
+             List  information  about  all  persistent  servers  that  have been
+             launched by the ORBD and are currently running.
+
+          locate  -serverid &lt;server id &gt; |   -applicationName &lt;application name&gt;
+          [-endpointType &lt;endpointType&gt; ]
+             Locate  the  endpoints (ports) of a specific type for all ORBs cre&#8208;
+             ated by a registered server. If a server is not already running, it
+             is  activated.  If  an  endpoint  type  is  not specified, then the
+             plain/non-protected endpoint associated with each ORB in  a  server
+             is returned.
+
+          locateperorb    -serverid &lt;server id &gt; |    -applicationName &lt;applica&#8208;
+          tion name&gt; [-orbid &lt;ORB name&gt; ]
+             Locate all the endpoints (ports) registered by a  specific  ORB  of
+             registered  server.  If a server is not already running, then it is
+             activated. If an orbid is not specified, the default value of &quot;&quot; is
+             assigned  to  the  orbid.  If any ORBs are created with an orbid of
+             empty string, all ports registered by it are returned.
+
+          orblist -serverid &lt;server id &gt; | -applicationName &lt;application name&gt;
+             Lists the ORBId of the ORBs defined on a server. An  ORBId  is  the
+             string name for the ORB created by the server. If the server is not
+             already running, it is activated.
+
+          shutdown -serverid &lt;server id &gt; | -applicationName &lt;application name&gt;
+             Shutdown an active server that is registered with ORBD. During exe&#8208;
+             cution  of this command, the shutdown() method defined in the class
+             specified by either the -serverid or -applicationName parameter  is
+             also invoked to shutdown the server process appropriately.
+
+          startup -serverid &lt;server id &gt; | -applicationName &lt;application name&gt;
+             Startup  or  activate a server that is registered with ORBD. If the
+             server is not running, this command launches  the  server.  If  the
+             server  is  already  running,  an  error message is returned to the
+             user.
+
+          help
+             List all the commands available to the server  through  the  server
+             tool.
+
+          quit
+             Exit the server tool.
+
+
+SEE ALSO
+       orbd(1)
+
+
+
+                                   16 Mar 2012                     servertool(1)
+
+</pre></body></html>

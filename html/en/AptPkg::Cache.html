@@ -1,0 +1,262 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AptPkg::Cache - APT package cache interface</title></head>
+<body><pre>
+
+AptPkg::Cache(3pm)     User Contributed Perl Documentation    AptPkg::Cache(3pm)
+
+
+
+NAME
+       AptPkg::Cache - APT package cache interface
+
+SYNOPSIS
+       use AptPkg::Cache;
+
+DESCRIPTION
+       The AptPkg::Cache module provides an interface to APT&apos;s package cache.
+
+   AptPkg::Cache
+       The AptPkg::Cache package implements the APT pkgCacheFile class as a hash
+       reference (inherits from AptPkg::hash).  The hash keys are the names of
+       packages in the cache, and the values are AptPkg::Cache::Package objects
+       (which in turn appear as hash references, see below).
+
+       Constructor
+
+       new([LOCK])
+           Instantiation of the object uses configuration from the
+           $AptPkg::Config::_config and $AptPkg::System::_system objects
+           (automatically initialised if not done explicitly).
+
+           The cache initialisation can be quite verbose--controlled by the
+           value of $_config-&gt;{quiet}, which is set to &quot;2&quot; (quiet) if the
+           $_config object is auto-initialised.
+
+           The cache directory is locked if LOCK is true.
+
+           It is important to note that the structure of the returned object
+           contains self-referential elements, so some care must be taken if
+           attempting to traverse it recursively.
+
+       Methods
+
+       files
+           Return a list of AptPkg::Cache::PkgFile objects describing the
+           package files.
+
+       packages
+           Return an AptPkg::PkgRecords object which may be used to retrieve
+           additional information about packages.
+
+       get, exists, keys
+           These methods are used to implement the hashref abstraction:
+           $obj-&gt;get($pack) and $obj-&gt;{$pack} are equivalent.
+
+   AptPkg::Cache::Package
+       Implements the APT pkgCache::PkgIterator class as a hash reference.
+
+       Keys
+
+       Name
+       Section
+           Package name and section.
+
+       SelectedState
+       InstState
+       CurrentState
+           Package state from the status file.
+
+           SelectedState may be &quot;Unknown&quot;, &quot;Install&quot;, &quot;Hold&quot;, &quot;DeInstall&quot; or
+           &quot;Purge&quot;.
+
+           InstState may be &quot;Ok&quot;, &quot;ReInstReq&quot;, &quot;HoldInst&quot; or &quot;HoldReInstReq&quot;.
+
+           CurrentState may be &quot;NotInstalled&quot;, &quot;UnPacked&quot;, &quot;HalfConfigured&quot;,
+           &quot;HalfInstalled&quot;, &quot;ConfigFiles&quot; or &quot;Installed&quot;.
+
+           In a numeric context, SelectedState, InstState and CurrentState
+           evaluate to an AptPkg::State:: constant.
+
+       VersionList
+           A reference to an array of AptPkg::Cache::Version objects describing
+           available versions of the package.
+
+       CurrentVer
+           An AptPkg::Cache::Version object describing the currently installed
+           version (if any) of the package.
+
+       RevDependsList
+           A reference to an array of AptPkg::Cache::Depends objects describing
+           packages which depend upon the current package.
+
+       ProvidesList
+           For virtual packages, this is a reference to an array of
+           AptPkg::Cache::Provides objects describing packages which provide the
+           current package.
+
+       Flags
+           A comma separated list if flags:  &quot;Auto&quot;, &quot;Essential&quot; or &quot;Important&quot;.
+
+           In a numeric context, evaluates to a combination of AptPkg::Flag::
+           constants.
+
+           [Note:  the only one of these you need worry about is &quot;Essential&quot;,
+           which is set based on the package&apos;s header of the same name.  &quot;Auto&quot;
+           seems to be used internally by APT, and &quot;Important&quot; seems to only be
+           set on the apt package.]
+
+       Index
+           Internal APT unique reference for the package record.
+
+   AptPkg::Cache::Version
+       Implements the APT pkgCache::VerIterator class as a hash reference.
+
+       Keys
+
+       VerStr
+       Section
+       Arch
+           The package version, section and architecture.
+
+       ParentPkg
+           An AptPkg::Cache::Package objct describing the package providing this
+           version.
+
+       DependsList
+           A reference to an array of AptPkg::Cache::Depends objects describing
+           packages which the current package depends upon.
+
+       ProvidesList
+           A reference to an array of AptPkg::Cache::Provides objects describing
+           virtual packages provided by this version.
+
+       FileList
+           A reference to an array of AptPkg::Cache::VerFile objects describing
+           the packages files which include the current version.
+&#12;       Size
+           The .deb file size, in bytes.
+
+       InstalledSize
+           The disk space used when installed, in bytes.
+
+       Index
+           Internal APT unique reference for the version record.
+
+       Priority
+           Package priority:  &quot;important&quot;, &quot;required&quot;, &quot;standard&quot;, &quot;optional&quot; or
+           &quot;extra&quot;.
+
+           In a numeric context, evaluates to an AptPkg::VerPriority:: constant.
+
+   AptPkg::Cache::Depends
+       Implements the APT pkgCache::DepIterator class as a hash reference.
+
+       Keys
+
+       DepType
+           Type of dependency:  &quot;Depends&quot;, &quot;PreDepends&quot;, &quot;Suggests&quot;,
+           &quot;Recommends&quot;, &quot;Conflicts&quot;, &quot;Replaces&quot; or &quot;Obsoletes&quot;.
+
+           In a numeric context, evaluates to an AptPkg::Dep:: constant.
+
+       ParentPkg
+       ParentVer
+           AptPkg::Cache::Package and AptPkg::Cache::Version objects describing
+           the package declaring the dependency.
+
+       TargetPkg
+           AptPkg::Cache::Package object describing the depended package.
+
+       TargetVer
+           For versioned dependencies, TargetVer is a string giving the version
+           of the target package required.
+
+       CompType
+       CompTypeDeb
+           CompType gives a normalised comparison operator (&gt;, &gt;=, etc)
+           describing the relationship to TargetVer (&quot;&quot; if none).
+
+           CompTypeDeb returns Debian-style operators (&gt;&gt; rather than &gt;).
+
+           In a numeric context, both CompType and CompTypeDeb evaluate to an
+           AptPkg::Dep:: constant.
+
+           Alternative dependencies (Depends: a | b) are identified by all but
+           the last having the AptPkg::Dep::Or bit set in the numeric
+           representation of CompType (and CompTypeDeb).
+
+       Index
+           Internal APT unique reference for the dependency record.
+
+   AptPkg::Cache::Provides
+       Implements the APT pkgCache::PrvIterator class as a hash reference.
+
+       Keys
+
+       Name
+           Name of virtual package.
+
+       OwnerPkg
+       OwnerVer
+           AptPkg::Cache::Package and AptPkg::Cache::Version objects describing
+           the providing package.
+
+       ProvideVersion
+           Version of the virtual package.  [Not currently supported by dpkg]
+
+       Index
+           Internal APT unique reference for the provides record.
+
+   AptPkg::Cache::VerFile
+       Implements the APT pkgCache::VerFileIterator class as a hash reference.
+
+       Keys
+
+       File
+           An AptPkg::Cache::PkgFile object describing the packages file.
+
+       Offset
+       Size
+           The byte offset and length of the entry in the file.
+
+       Index
+           Internal APT unique reference for the version file record.
+
+   AptPkg::Cache::PkgFile
+       Implements the APT pkgCache::PkgFileIterator class as a hash reference.
+
+       Keys
+
+       FileName
+           Packages file path.
+
+       IndexType
+           File type: &quot;Debian Package Index&quot;, &quot;Debian dpkg status file&quot;.
+
+       Archive
+       Component
+       Version
+       Origin
+       Label
+       Site
+           Fields from the Release file.
+
+       IsOk
+           True if the cache is in sync with this file.
+
+       Index
+           Internal APT unique reference for the package file record.
+
+SEE ALSO
+       AptPkg::Config(3pm), AptPkg::System(3pm), AptPkg(3pm), AptPkg::hash(3pm),
+       AptPkg::PkgRecords(3pm), AptPkg::Policy(3pm).
+
+AUTHOR
+       Brendan O&apos;Dea &lt;bod@debian.org&gt;
+
+
+
+perl v5.14.2                       2012-03-27                 AptPkg::Cache(3pm)
+
+</pre></body></html>

@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dpkg-name - rename Debian packages to full package names</title></head>
+<body><pre>
+
+dpkg-name(1)                     dpkg utilities                     dpkg-name(1)
+
+
+
+NAME
+       dpkg-name - rename Debian packages to full package names
+
+SYNOPSIS
+       dpkg-name [option...]  [--] file...
+
+DESCRIPTION
+       This  manual  page documents the dpkg-name program which provides an easy
+       way to rename Debian packages into their full package names. A full pack&#8208;
+       age  name consists of package_version_architecture.package-type as speci&#8208;
+       fied in the control file of the package. The version part of the filename
+       consists  of  the  upstream  version information optionally followed by a
+       hyphen and the revision information. The  package-type  part  comes  from
+       that field if present or fallbacks to deb.
+
+OPTIONS
+       -a, --no-architecture
+              The  destination  filename will not have the architecture informa&#8208;
+              tion.
+
+       -k, --symlink
+              Create a symlink, instead of moving.
+
+       -o, --overwrite
+              Existing files will be overwritten if they have the same  name  as
+              the destination filename.
+
+       -s, --subdir [dir]
+              Files will be moved into a subdirectory. If the directory given as
+              argument exists the files will be moved into that directory other&#8208;
+              wise  the  name of the target directory is extracted from the sec&#8208;
+              tion field in the control part of the package. The  target  direc&#8208;
+              tory  will  be `unstable/binary-architecture/section&apos;. If the sec&#8208;
+              tion is not found in the control, then  `no-section&apos;  is  assumed,
+              and in this case, as well as for sections `non-free&apos; and `contrib&apos;
+              the target directory is `section/binary-architecture&apos;. The section
+              field  isn&apos;t  required so a lot of packages will find their way to
+              the `no-section&apos; area. Use this option with care, it&apos;s messy.
+
+       -c, --create-dir
+              This option can used together with the  -s  option.  If  a  target
+              directory  isn&apos;t found it will be created automatically.  Use this
+              option with care.
+
+       -?, --help
+              Show the usage message and exit.
+
+       -v, --version
+              Show the version and exit.
+
+EXAMPLES
+       dpkg-name bar-foo.deb
+              The file `bar-foo.deb&apos; will be renamed  to  bar-foo_1.0-2_i386.deb
+              or  something similar (depending on whatever information is in the
+              control part of `bar-foo.deb&apos;).
+
+       find /root/debian/ -name &apos;*.deb&apos; | xargs -n 1 dpkg-name -a
+              All files with the extension `deb&apos; in the  directory  /root/debian
+              and  its  subdirectory&apos;s  will be renamed by dpkg-name if required
+              into names with no architecture information.
+
+       find -name &apos;*.deb&apos; | xargs -n 1 dpkg-name -a -o -s -c
+              Don&apos;t do this.  Your archive will be messed up completely  because
+              a  lot  of packages don&apos;t come with section information.  Don&apos;t do
+              this.
+
+       dpkg-deb --build debian-tmp &amp;&amp; dpkg-name -o -s .. debian-tmp.deb
+              This can be used when building new packages.
+
+BUGS
+       Some packages don&apos;t follow the name  structure  package_version_architec&#8208;
+       ture.deb.  Packages renamed by dpkg-name will follow this structure. Gen&#8208;
+       erally this will have no impact on how packages  are  installed  by  dse&#8208;
+       lect(1)/dpkg(1), but other installation tools might depend on this naming
+       structure.
+
+SEE ALSO
+       deb(5), deb-control(5), dpkg(1), dpkg-deb(1), find(1), xargs(1).
+
+
+
+Debian Project                     2012-04-15                       dpkg-name(1)
+
+</pre></body></html>

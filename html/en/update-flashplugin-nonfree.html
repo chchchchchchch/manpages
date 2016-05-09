@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-flashplugin-nonfree - program to get the newest Adobe Flash Player</title></head>
+<body><pre>
+
+UPDATE-FLASHPLUGIN-NONFREE(8)                      UPDATE-FLASHPLUGIN-NONFREE(8)
+
+
+
+NAME
+       update-flashplugin-nonfree - program to get the newest Adobe Flash Player
+
+
+SYNOPSIS
+       update-flashplugin-nonfree --install
+       update-flashplugin-nonfree --uninstall
+
+
+DESCRIPTION
+       The  program  update-flashplugin-nonfree  takes  care of downloading last
+       minute information from Debian  about  suitable  versions,  removing  the
+       installed  Adobe Flash Plugin if it has been reported as insecure, or, if
+       a newer suitable version is available, downloading a  newer  Adobe  Flash
+       Player and its installer from the Adobe download site, run the downloaded
+       installer to install the Adobe Flash Player on the local system, and then
+       move the installed files to where they fit on a Debian system.
+
+       A  copy of the downloaded .tar.gz is saved in /var/cache/flashplugin-non&#8208;
+       free for later reuse.
+
+       The program update-flashplugin-nonfree is used in the postinst and  prerm
+       scripts  of the Debian package, but this program can also be run manually
+       by root.
+
+
+OPTIONS
+       --install
+              To install, update or remove the Adobe Flash Player  depending  on
+              downloaded last minute information from Debian about suitable ver&#8208;
+              sions.
+
+       --uninstall
+              To remove the Adobe Flash Player.
+
+       --verbose
+              Produce detailed information about what&apos;s happening.
+
+       --quiet
+              Produce no informational output.
+
+
+SEE ALSO
+       http://wiki.debian.org/FlashPlayer
+              If you subscribe to this wiki page, then you will receive  updates
+              via e-mail.
+
+       http://www.adobe.com/
+              The Adobe homepage.
+
+
+
+                                 August 15, 2007   UPDATE-FLASHPLUGIN-NONFREE(8)
+
+</pre></body></html>

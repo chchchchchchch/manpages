@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>directfb-config - script to get information about the installed version of directfb</title></head>
+<body><pre>
+
+directfb-config(1)           DirectFB User&apos;s Manual           directfb-config(1)
+
+
+
+NAME
+       directfb-config  -  script to get information about the installed version
+       of directfb
+
+SYNOPSIS
+       directfb-config   [--prefix[=DIR]]   [--exec-prefix[=DIR]]    [--version]
+       [--libs]     [--cflags]    [--input=&lt;driver&gt;[,&lt;driver&gt;]...]     [--graph&#8208;
+       ics=&lt;driver&gt;[,&lt;driver&gt;]...]    [--fonts=&lt;impl&gt;[,&lt;impl&gt;]...]     [--image&#8208;
+       provider=&lt;impl&gt;[,&lt;impl&gt;]...]  [--videoprovider=&lt;impl&gt;[,&lt;impl&gt;]...]
+
+DESCRIPTION
+       directfb-config is a tool that is used to configure to determine the com&#8208;
+       piler and linker flags that should be used to compile and  link  programs
+       that  use  directfb. It is also used internally to the .m4 macros for GNU
+       autoconf that are included with directfb.
+
+OPTIONS
+       directfb-config accepts the following options:
+
+       --version
+               Print the currently installed version of directfb on the standard
+               output.
+
+       --libs  Print the linker flags that are necessary to link a directfb pro&#8208;
+               gram.
+
+       --cflags
+               Print the compiler flags that are necessary to compile a directfb
+               program.
+
+       --prefix[=DIR]
+               If  specified, use PREFIX instead of the installation prefix that
+               directfb was  built  with  when  computing  the  output  for  the
+               --cflags  and  --libs  options.  This option is also used for the
+               exec prefix if --exec-prefix was not specified. This option  must
+               be specified before any --libs or --cflags options.
+
+       --exec-prefix[=DIR]
+               If  specified, use PREFIX instead of the installation exec prefix
+               that directfb was built with when computing the  output  for  the
+               --cflags and --libs options. This option must be specified before
+               any --libs or --cflags options.
+
+       --input=&lt;driver&gt;[,&lt;driver&gt;]...
+               Print the linker flags necessary to statically  link  the  listed
+               input drivers into the object.
+
+       --graphics=&lt;driver&gt;[,&lt;driver&gt;]...
+               Print  the  linker  flags necessary to statically link the listed
+               graphic drivers into the object.
+
+       --fonts=&lt;impl&gt;[,&lt;impl&gt;]...
+               Print the linker flags necessary to statically  link  the  listed
+               font implementations into the object.
+
+       --imageprovider=&lt;impl&gt;[,&lt;impl&gt;]...
+               Print  the  linker  flags necessary to statically link the listed
+               imageprovider implementations into the object.
+
+       --videoprovider=&lt;impl&gt;[,&lt;impl&gt;]...
+               Print the linker flags necessary to statically  link  the  listed
+               videoprovider implementations into the object.
+
+COPYRIGHT
+       Copyright &#169;  1998 Owen Taylor
+
+       Permission  to  use,  copy,  modify, and distribute this software and its
+       documentation for any purpose and without fee is hereby granted, provided
+       that  the  above copyright notice appear in all copies and that both that
+       copyright notice and this permission notice appear in supporting documen&#8208;
+       tation.
+
+       Adapted to directfb by Guillem Jover &lt;guillem@debian.org&gt;.
+
+
+
+
+0.9.25.1                           2006-06-14                 directfb-config(1)
+
+</pre></body></html>

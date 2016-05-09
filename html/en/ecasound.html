@@ -1,0 +1,1110 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ecasound - sample editor, multitrack recorder, fx-processor, etc.</title></head>
+<body><pre>
+
+ecasound(1)                    Multimedia software                   ecasound(1)
+
+
+
+NAME
+       ecasound - sample editor, multitrack recorder, fx-processor, etc.
+
+SYNOPSIS
+       ecasound  [  general_options  ]  {  [  chain_setup  ]  [ effect_setup ] [
+       input_setup ] [ output_setup ] }
+
+DESCRIPTION
+       Ecasound is a software package designed for multitrack audio  processing.
+       It can be used for simple tasks like audio playback, recording and format
+       conversions, as well as for multitrack effect processing, mixing, record&#8208;
+       ing and signal recycling. Ecasound supports a wide range of audio inputs,
+       outputs and effect algorithms.  Effects and audio objects can be combined
+       in  various  ways,  and  their  parameters  can be controlled by operator
+       objects  like  oscillators  and  MIDI-CCs.  A  versatile   console   mode
+       user-interface is included in the package.
+
+OPTIONS
+       Note!  All  options except those mentioned in ecasound options and Global
+       options, can be used in ecasound chainsetup files (.ecs).
+
+       ECASOUND OPTIONS
+
+              These options are parsed and  handled  by  the  ecasound  frontend
+              binary  and  are  not  passed  to backend library. This means that
+              these options may not work in other applications that use ecasound
+              libraries for their functionality.
+
+       -c     Starts  ecasound  in interactive mode. In interactive mode you can
+              control ecasound with simple commands (&quot;start&quot;,  &quot;stop&quot;,  &quot;pause&quot;,
+              etc.). See ecasound-iam .
+
+       -C     Disables ecasound&#8217;s interactive mode (see &#8217;-c&#8217; and &#8217;-K&#8217;).
+
+
+       -D     Print  all  debug  information to stderr (unbuffered, plain output
+              without ncurses).
+
+       -s[:]chainsetup-file
+              Create a new chainsetup from file &#8217;chainsetup-file&#8217; and add it  to
+              the  current  session.  Chainsetup  files commonly have a filename
+              ending to the &#8217;.ecs&#8217; extension. A chainsetup can  contain  inputs,
+              outputs,  chains,  effects,  controllers  -- i.e.  objects one one
+              specific configuration of audio processing elements. A session, on
+              the  other  hand, is a collection of one or more chainsetups. Only
+              one of the chainsetups may be connected (i.e. it can  be  run/pro&#8208;
+              cessed).  But  it  is  possible  to have another chainsetup select
+              (i.e. can be configured) while  other  one  is  current  connteced
+              (i.e. running).
+
+       -E &quot;cmd1 [[args] ; cmd2 args ; ... ; cmdN]&quot;
+              Execute  a  set  of  Ecasound  Interactive mode (EIAM) commands at
+              launch. These commands are executed immediately after ecasound  is
+              started. If the command line contains sufficient options to create
+              a valid chainsetup that will be executed, the launch commands  are
+              executed  after  the  other  command  line options are parsed, but
+              before the processing engine is started. Note that this command is
+              a feature of the ecasound frontend binary and not supported by the
+              library backend. This means that other clients may not support the
+              &#8217;-E&#8217;  option,  and  also that the launch commands are not saved as
+              part of chainsetup or session state.
+&#12;       --server
+              Enables the so called NetECI mode, in which ecasound can  be  con&#8208;
+              trolled remotely over a socket connection. When activated, clients
+              can connect to the running ecasound session, and  use  interactive
+              mode commands to control and observe ecasound processing.
+
+              The NetECI protocol is defined in Ecasound&#8217;s Programmer Guide
+
+              One example client using this feature is ecamonitor(1). This util&#8208;
+              ity is included in the Ecasound distribution package  (requires  a
+              working Python environment).
+
+              Warning! If the machine running ecasound, is connected to a public
+              network, be sure to block ecasound&#8217;s port  in  your  firewall!  As
+              there  is  no access control implemented for incoming connections,
+              anyone can otherwise connect, control and  observe  your  ecasound
+              sessions.  This option replaces &#8217;--daemon&#8217; (deprecated in 2.6.0).
+
+       --server-tcp-port=NNN
+              Set the TCP port used by the daemon mode. By default ecasound will
+              use port number 2868.  This option replaces &#8217;--daemon-port&#8217;  (dep&#8208;
+              recated in 2.6.0).
+
+       --no-server
+              Disable  ecasound&#8217;s daemon mode. This is the default.  This option
+              replaces &#8217;--nodaemon&#8217; (deprecated in 2.6.0).
+
+       --osc-udp-port=NNN
+              Enables support for Open Source Control (OSC). Ecasound will  lis&#8208;
+              ten  for  incoming  OSC  messages  on UDP port NNN. Ecasound&#8217;s OSC
+              interface   is   documented    at:    &lt;http://ecasound.git.source&#8208;
+              forge.net/git/gitweb.cgi?p=ecasound/ecasound;a=blob;f=Documenta&#8208;
+              tion/ecasound_osc_interface.txt;hb=HEAD&gt;
+
+              Note that OSC support is  still  experimental  and  the  interface
+              might change in later versions of Ecasound.
+
+              This option was added to ecasound 2.7.0.
+
+       --keep-running,-K
+              Do  not  exit  when  processing  is finished/stopped. Only affects
+              non-interactive operating mode (see -c/-C).  Option added to  eca&#8208;
+              sound 2.4.2.
+
+       --help,-h
+              Show this help.
+
+       --version
+              Print version info.
+
+              GLOBAL OPTIONS
+
+       -d, -dd, -ddd
+              Increase  the  amount of printed debug messages. -d adds some ver&#8208;
+              bosity, while -ddd results in very detailed output.
+
+       -d:debug_level
+              Set the debug level mask to &#8217;debug_level&#8217;. This a bitmasked  value
+              with  the following classes: errors (1), info (2), subsystems (4),
+              module_names (8), user_objects (16), system_objects 32,  functions
+              (64),  continuous  (128)  and eiam_return_values (256). Default is
+              271 (1+2+4+8+256). See sourcode documentation for  the  ECA_LOGGER
+              class for more detailed information.
+
+       -R[:]path-to-file
+              Use   ecasound   resource   file   (see   ecasoundrc   man   page)
+              &#8217;path-to-file&#8217; as the only source of setting resource value. Spec&#8208;
+              ifying this option will disable the normal policy of querying both
+              global and user (if exists) resource files.
+
+       -q     Quiet mode, no output. Same as -d:0.
+
+              GENERAL CHAINSETUP OPTIONS
+
+
+       -a:chainname1, chainname2, ...
+              Selects active signal chains. All  inputs  and  outputs  following
+              this  &#8217;-a&#8217;  option are assigned to selected chains (until a new -a
+              option is specified). When adding effects, controllers  and  other
+              chain  operators,  only one chain can be selected at a time. If no
+              -a option has been given, chain &#8217;default&#8217;  is  used  instead  when
+              adding  objects.  Chain name &#8217;all&#8217; is also reserved. It will cause
+              all existing chains to be selected. By giving multiple -a options,
+              you  can  control  to which chains effects, inputs and outputs are
+              assigned to. Look at the EXAMPLES section for more  detailed  info
+              about the usage of this option.
+
+       -n:name
+              Sets  the name of chainsetup to &#8217;name&#8217;. If not specified, defaults
+              either to &quot;command-line-setup&quot; or to  the  file  name  from  which
+              chainsetup was loaded. Whitespaces are not allowed.
+
+       -x     Truncate  outputs. All output object are opened in overwrite mode.
+              Any existing files will be truncated.
+
+       -X     Open outputs for updating. Ecasound opens all outputs - if  target
+              format allows it - in readwrite mode.
+
+       -z:feature
+              Enables  &#8217;feature&#8217;.  Most  features can be disabled using notation
+              -z:nofeature. &#8217;-z:db,dbsize&#8217; enables  double-buffering  for  audio
+              objects  that  support  it (dbsize=0 for default, otherwise buffer
+              size  in  sample  frames).  &#8217;-z:nodb&#8217;  disables  double-buffering.
+              &#8217;-z:intbuf&#8217;  and  &#8217;-z:nointbuf&#8217;  control  whether  extra  internal
+              buffering is allowed for  realtime  devices.  Disabling  this  can
+              reduce latency times in some situations. With &#8217;-z:xruns&#8217;, process&#8208;
+              ing will be halted if an under/overrun occurs. &#8217;-z:multitrack&#8217; and
+              &#8217;z:nomultitrack&#8217;  can  be used to force ecasound to enable or dis&#8208;
+              able multitrack-mode. In rare cases you  may  want  to  explicitly
+              specify  the  recording  offset with &#8217;-z:multitrack,offset-in-sam&#8208;
+              ples&#8217;. The offset is the amount of samples skipped when  recording
+              from  real-time  inputs. &#8217;-z:psr&#8217; enables the precise-sample-rates
+              mode for OSS-devices. &#8217;-z:mixmode,sum&#8217; enables mixing  mode  where
+              channels  are  mixed  by  summing  all  channels.  The  default is
+              &#8217;-z:mixmode,avg&#8217;, in which channels are mixed by  averaging.  Mix&#8208;
+              mode  selection was first added to ecasound 2.4.0.  See ecasoundrc
+              man page.
+
+              CHAINSETUP BUFFERING AND PERFORMANCE OPTIONS
+
+
+       -B:buffering_mode
+              Selects the  default  buffering  mode.  Mode  is  one  of:  &#8217;auto&#8217;
+              (default), &#8217;nonrt&#8217;, &#8217;rt&#8217;, &#8217;rtlowlatency&#8217;.
+
+       -b:buffer size
+              Sets  the  size  of  buffer in samples (must be an exponent of 2).
+              This is quite an important option. For real-time  processing,  you
+              should set this as low as possible to reduce the processing delay.
+              Some machines can handle buffer values as low as 64  and  128.  In
+              some  circumstances (for instance when using oscillator envelopes)
+              small buffer sizes will make envelopes act more smoothly. When not
+              processing in real-time (all inputs and outputs are normal files),
+              values between 512 - 4096 often give better  results.  Default  is
+              1024.
+
+       -r:sched_priority
+              Use realtime scheduling policy (SCHED_FIFO). This is impossible if
+              ecasound doesn&#8217;t have root priviledges. Beware! This gives  better
+              performance, but can cause total lock-ups if something goes wrong.
+              The &#8217;sched_priority&#8217; can be omitted (0=omitted). If given, this is
+              the  static  priority  to  the  highest  priority ecasound thread.
+              Other ecasound threads run with  priority  &#8217;sched_priority-1...n&#8217;.
+              Value &#8217;-1&#8217; can be used to disable raised-priority mode.
+
+       -z:feature
+              Relevant features are -z:db,xxx (-z:nodb) and -z:intbuf (-z:noint&#8208;
+              buf).  See section General chainsetup options for details.
+
+              PROCESSING CONTROL
+
+       -t:seconds
+              Sets processing time in seconds (doesn&#8217;t have  to  be  an  integer
+              value).   If  processing  time  isn&#8217;t  set,  engine stops when all
+              inputs  are  finished.  This   option   is   equivalent   to   the
+              &#8217;cs-set-length&#8217;  EIAM  command.  A special-case value of &#8217;-1&#8217; will
+              set the chainsetup length according to the longest input object.
+
+       -tl    Enables looping. When processing is finished,  engine  will  start
+              again  from  beginning. This option is equivalent to the &#8217;cs-loop&#8217;
+              EIAM command.
+
+              INPUT/OUTPUT SETUP
+
+       See ecasound user&#8217;s guide for more detailed documentation.
+
+       -G:mgrtype,optstring
+              Sets options for audio object manager type &#8217;mgrtype&#8217;.  For  avail&#8208;
+              able options, see &quot;OBJECT TYPE SPECIFIC NOTES&quot; below.
+
+       -f:sample_format,channel,sample-rate,interleaving
+              Sets the audio stream parameters for subsequent audio objects.  To
+              set different parameters for  different  audio  objects,  multiple
+              &#8217;-f&#8217;  options  have  to  be specified (note the ordering, the &#8217;-f&#8217;
+              options should precede the audio objects  for  them  to  have  any
+              effect). See documentation for &#8217;-i&#8217; and &#8217;-o&#8217; options.
+
+              When  an  audio  object  is opened (e.g. a file or sound device is
+              opened, or connection is made to a sound server), the audio stream
+              parameters  are  passed to the object. It should be noted that not
+              all audio objects allow to set any or all of the parameters.   For
+              instance when opening existing audio files, many file formats have
+              a header describing the file audio parameters. In these cases  the
+              audio  file  header  overrides  the  parameters  passed  with &#8217;-f&#8217;
+              option. Similarly when creating JACK inputs and outputs, the  JACK
+              server mandates the sampling rate and sample format.
+
+              If no &#8217;-f&#8217; option is specified, or some of the argument fields are
+              left empty (e.g. &#8217;-f:,2,44100&#8217;), ecasound will use default values.
+              These default values are defined in ecasoundrc configuration file.
+              See ecasoundrc(5) manual page.
+
+              Note that ecasound opens out files  by  default  in  update  mode.
+              Unless  option  &#8217;-x&#8217;  (overwrite  outputs)  option is given, audio
+              parameters of an existing audio  file  take  preference  over  the
+              params set with &#8217;-f&#8217;.
+
+              Sample  format is given as a formatted string. The first letter is
+              either &quot;u&quot;, &quot;s&quot; and &quot;f&quot; (unsigned, signed,  floating  point).  The
+              following  number specifies sample size in bits. If sample is lit&#8208;
+              tle endian, &quot;_le&quot; is added to the end. Similarly  if  big  endian,
+              &quot;_be&quot; is added. If endianness is not specified, host byte-order is
+              used.   Currently  supported  formats  are  &quot;u8&quot;  (same  as  &quot;8&quot;),
+              &quot;s16_le&quot;  (same  as &quot;16&quot;), &quot;s16_be&quot;, &quot;s24_le&quot;, &quot;s24_be&quot;, &quot;s32_le&quot;,
+              &quot;s32_be&quot;, &quot;f32_le&quot; and &quot;f32_be&quot;. An empty string &quot;&quot; picks the sys&#8208;
+              tem default sample format.
+
+              The  4th  parameter  defines  the  channel  layout.  The available
+              options are &#8217;i&#8217; (interleaved&#8217; and &#8217;n&#8217; (noninterleaved).  With  the
+              noninterleaved  setting, ecasound will process samples one channel
+              at a time, and the blocksize is set with &#8217;-b&#8217;.  The  default  set&#8208;
+              ting is &#8217;i&#8217;.
+
+       -y:seconds
+              Sets  starting  position  for  last specified input/output. If you
+              need more flexible control over audio objects, you should use  the
+              .ewf format.
+
+       -i[:]input-file-or-device[,params]
+              Specifies  a  new  input  source that is connected to all selected
+              chains (chains are selected with  &#8217;-a:...&#8217;).  Connecting  multiple
+              inputs  to  the  same  chain is not possible, but one input can be
+              connected to multiple chains. Input can be a  a  file,  device  or
+              some  other  audio object (see below). If the input is a file, its
+              type is determined using the file name extension.  If  the  object
+              name  contains any commas, the name must be enclosed in backquotes
+              to avoid confusing the parser.  Currently  supported  formats  are
+              RIFF WAVE files (.wav), audio-cd tracks (.cdr), ecasound EWF files
+              (.ewf), RAW audio data (.raw) and MPEG  audio  files  (.mp2,.mp3).
+              More  audio  formats are supported via libaudiofile and libsndfile
+              libraries (see documentation  below).  MikMod  is  also  supported
+              (.xm, .mod, .s3m, .it, etc). MIDI files (.mid) are supported using
+              Timidity++.  Similarly Ogg Vorbis (.ogg) can be read, and  written
+              if ogg123 and vorbize tools are installed; FLAC files (.flac) with
+              flac  command-line  tools  or  using  libsndfile;  and  AAC  files
+              (.aac/.m4a/.mp4) with faad2/faac tools. Supported realtime devices
+              are OSS audio devices (/dev/dsp*), ALSA audio and loopback devices
+              and  JACK  audio  subsystem. If no inputs are specified, the first
+              non-option (doesn&#8217;t start with &#8217;-&#8217;) command line argument is  con&#8208;
+              sidered to be an input.
+
+       -o[:]output-file-or-device[,params]
+              Works  in  the same way as the -i option. If no outputs are speci&#8208;
+              fied, the default output device is used  (see  ~/.ecasoundrc).  If
+              the  object name contains any commas, the name must be enclosed in
+              backquotes to avoid confusing the parser. Note, many object  types
+              do not support output (e.g. MikMod, MIDI and many others).
+
+              OBJECT TYPE SPECIFIC NOTES
+
+       ALSA devices - &#8217;alsa&#8217;
+              When using ALSA drivers, instead of a device filename, you need to
+              use the following option syntax: -i[:]alsa,pcm_device_name.
+
+       ALSA direct-hw and plugin access - &#8217;alsahw&#8217;, &#8217;alsaplugin&#8217;
+              It&#8217;s also possible to use a specific card and  device  combination
+              using  the following notation: -i[:]alsahw,card_number,device_num&#8208;
+              ber,subdevice_number.  Another  option  is  the  ALSA  PCM  plugin
+              layer.  It  works  just like the normal ALSA pcm-devices, but with
+              automatic channel count and sample format conversions. Option syn&#8208;
+              tax is -i[:]alsaplugin,card_number,device_number,subdevice_number.
+
+       aRts input/output - &#8217;arts&#8217;
+              If enabled at compile-time, ecasound supports audio input and out&#8208;
+              put using aRts audio server. Option syntax is -i:arts, -o:arts.
+
+       Audio file sequencing - &#8217;audioloop&#8217;, &#8217;select&#8217;, &#8217;playat&#8217;
+              Ecasound provides a set of special audio object types that can  be
+              used  for temporal sequencing of audio files - i.e. looping, play&#8208;
+              ing only a select portion of a file, playing file  at  a  spefific
+              time, and other such operation.
+
+              Looping  is  possible  with -i:audioloop,file.ext,params. The file
+              name (or any object type understood by Ecasound) given as the sec&#8208;
+              ond  parameter  is  played  back  continuously looping back to the
+              beginning when the end of file is reached. Any additional  parame&#8208;
+              ters  given  are  passed unaltered to the file object.  Parameters
+              3...N are passed as is  to  the  child  object  (i.e.   &quot;-i  audi&#8208;
+              oloop,foo.wav,bar1,bar2&quot;  will  pass parameters &quot;bar1,bar2&quot; to the
+              &quot;foo.wav&quot; object.
+
+              To select and use only a specific segment of an audio object,  the
+              -i:select,start-time,duration,file.ext,params  can  be  used. This
+              will play &quot;duration&quot; of &quot;file.ext&quot;, starting at &quot;start-time&quot;.  The
+              time  values  should be given as seconds (e.g.  &quot;2.25&quot;, or as sam&#8208;
+              ples (e.g. &quot;25000sa&quot;). Parameters 4...N are passed as  is  to  the
+              child object.
+
+              To   play  an  audio  object  at  a  given  moment  in  time,  the
+              -i:playat,play-at-time,file.ext,params can be used. This will play
+              &quot;file.ext&quot;  after position reaches &quot;play-at-time&quot;. The time values
+              should be given as seconds (e.g.   &quot;2.25&quot;,  or  as  samples  (e.g.
+              &quot;25000sa&quot;). Parameters 2...N are passed as is to the child object.
+
+       Ecasound Wave Files (EWF) - &#8217;*.ewf&#8217;
+              A  special  file format that allows one to slice and loop full (or
+              segments) of audio files. This format  is  specific  to  Ecasound.
+              See ecasound user&#8217;s guide for more detailed information.
+
+              See also audio object types &#8217;audioloop&#8217;, &#8217;select&#8217; and &#8217;playat&#8217;.
+
+       JACK input/outputs - Overview
+              JACK  is  a  low-latency  audio server that can be used to connect
+              multiple independent audio application to each other.  It is  dif&#8208;
+              ferent  from  other  audio  server  efforts  in  that  it has been
+              designed from the ground up to be suitable for low-latency profes&#8208;
+              sional audio work.
+
+       JACK input/outputs - &#8217;jack&#8217;
+              Ecasound  provides multiple ways to communicate with JACK servers.
+              To create a JACK input or output object, one should  use  -i  jack
+              and  -o  jack.  These create JACK client ports &quot;ecasound:in_N&quot; and
+              &quot;ecasound:out_n&quot; respectively (&#8217;N&#8217; is replaced by the channel num&#8208;
+              ber).  Ecasound automatically creates one JACK port for each chan&#8208;
+              nel (number of channels is set with -f:bits,channels,rate option).
+
+              It is important to note that by default JACK ports  are  not  con&#8208;
+              nected  anywhere  (e.g.  to  soundcard  input/outputs, or to other
+              apps). One thus has to connect the ports with an external  program
+              (e.g. &quot;QJackCtl&quot; or &quot;jack_connect&quot;).
+
+       JACK input/outputs - &#8217;jack,clientname,portprefix&#8217;
+              &quot;jack,clientname&quot;  For  simple  use scanerios, ecasound provides a
+              way to autoconnect the ecasound ports. This can be  done  with  by
+              giving  the peer client name as the second parameter to the &quot;jack&quot;
+              object, e.g. -o jack,clientname.  As an  example,  -o  jack,system
+              will  create  an output that is automatically connected to outputs
+              of the default system soundcard.   The  client  parameter  can  be
+              omitted, in which case no automatic connections are made.
+
+              If  one  needs to change the port prefix (e.g. &quot;in&quot; in client name
+              &quot;ecasound:in_N&quot;), the prefix can be specified as the third parame&#8208;
+              ter  to &quot;jack&quot; object, e.g. -o jack,,fxout. Also the third parame&#8208;
+              ter can be omitted, in which case the default  prefixes  &quot;in&quot;  and
+              &quot;out&quot; are used.
+
+       JACK input/outputs - &#8217;jack_multi&#8217;
+              A  variant  of &#8217;jack&#8217; object type is &#8217;jack_multi&#8217;. The full object
+              syntax is jack_multi,destport1,...,destportN. When a  &#8217;jack_multi&#8217;
+              object  is connected to a JACK server, first channel of the object
+              is connected to JACK port &#8217;destport1&#8217;, second to  &#8217;destport2&#8217;  and
+              so forth. For instance &quot;-f:32,2,44100 -o jack_multi,foo:in,bar:in&quot;
+              creates a stereo ecasound output object, with its left  and  right
+              channels  routed  to  two difference JACK clients. The destination
+              ports must be active when the ecasound engine is launched, or oth&#8208;
+              erwise the connections cannot be established. If destination ports
+              are not specified for all channels, or  zero  length  strings  are
+              given, those ports are not connected at launch by ecasound.
+
+       JACK  input/outputs  - &#8217;jack_alsa&#8217;, &#8217;jack_auto&#8217;, &#8217;jack_generic&#8217; (**depre&#8208;
+       cated since 2.6.0**)
+              Ecasound 2.5 and  older  supported  &quot;jack_alsa&quot;,  &quot;jack_auto&quot;  and
+              &quot;jack_generic&quot;  object types, but these are now replaced by a more
+              generic &quot;jack&quot; interface, and thus are now deprecated  (they  work
+              but are no longer documented).
+
+       JACK input/outputs - client options
+              Additionally    global    JACK    options   can   be   set   using
+              -G:jack,client_name,operation_mode option.  &#8217;client_name&#8217;  is  the
+              name used when registering ecasound to the JACK system.  If &#8217;oper&#8208;
+              ation_mode&#8217; is &quot;notransport&quot;,  ecasound will ignore any  transport
+              state  changes in the JACK-system; in mode &quot;send&quot; it will send all
+              start, stop and position-change events to other JACK  clients;  in
+              mode  &quot;recv&quot;  ecasound  will  follow  JACK  start,  stop and posi&#8208;
+              tion-change events; and mode &quot;sendrecv&quot; which is a combination  of
+              the two previous modes.
+
+              If  not  explicitly  set,  in  interactive mode (&#8217;-c&#8217; option), the
+              default  mode  is  &quot;sendrecv&quot;,  while  in  batchmode  default   is
+              &quot;notransport&quot;.  In  both  cases  the  mode  can be changed with -G
+              option as described above.
+
+              More details about ecasound&#8217;s JACK support can be found from  Eca&#8208;
+              sound User&#8217;s Guide.
+
+       Libaudiofile - &#8217;audiofile&#8217;
+              If  libaudiofile  support was enabled at compile-time, this option
+              allows you to force Ecasound to use libaudiofile for reading/writ&#8208;
+              ing a certain audio file. Option syntax is -i:audiofile,foobar.ext
+              (same for -o).
+
+       Libsndfile - &#8217;sndfile&#8217;
+              If libsndfile support was enabled  at  compile-time,  this  option
+              allows you to force Ecasound to use libsndfile for reading/writing
+              a  certain  audio   file.   Option   syntax   is   -i:sndfile,foo&#8208;
+              bar.ext[,.format-ext] (same for -o).  The optional third parameter
+              &quot;format&quot; can be used to override the audio format (for example you
+              can create an AIFF file with filename &quot;foo.wav&quot;).
+
+       Loop device - &#8217;loop&#8217;
+              Loop  devices  make  it possible to route (loop back) data between
+              chains. Option syntax is -[io][:]loop,tag. If you add a loop  out&#8208;
+              put with tag &#8217;1&#8217;, all data written to this output is routed to any
+              loop input with tag &#8217;1&#8217;. The tag can  be  either  numerical  (e.g.
+              &#8217;-i:loop,1&#8217;)  or a string (e.g. &quot;-i:loop,vocals&quot;). Like with other
+              input/output objects, you can attach the same loop device to  mul&#8208;
+              tiple chains and this way split/mix the signal.
+
+              Note:  this  &#8217;loop&#8217;  device  is different from &#8217;audioloop&#8217; (latter
+              added to ecasound v2.5.0).
+
+       Mikmod - &#8217;mikmod&#8217;
+              If mikmod support was enabled at compile-time, this option  allows
+              you  to force Ecasound to use Mikmod for reading/writing a certain
+              module file. Option syntax is -i:mikmod,foobar.ext.
+
+       Null inputs/outputs - &#8217;null&#8217;
+              If you specify &quot;null&quot; or &quot;/dev/null&quot; as the  input  or  output,  a
+              null  audio  device is created. This is useful if you just want to
+              analyze sample data without writing it to a file. There&#8217;s  also  a
+              realtime   variant,  &quot;rtnull&quot;,  which  behaves  just  like  &quot;null&quot;
+              objects, except all i/o is done at realtime speed.
+
+       Resample - &#8217;resample&#8217;
+              Object type &#8217;resample&#8217; can be  used  to  resample  audio  object&#8217;s
+              audio  data  to  match the sampling rate used in the active chain&#8208;
+              setup.   For   example,   ecasound   -f:16,2,44100    -i    resam&#8208;
+              ple,22050,foo.wav -o /dev/dsp, will resample file from 22.05kHz to
+              44.1kHz and write the result to the soundcard device.  Child  sam&#8208;
+              pling  rate can be replaced with keyword &#8217;auto&#8217;. In this case eca&#8208;
+              sound will try to query the child object for  its  sampling  rate.
+              This works with files formats such as .wav which store meta infor&#8208;
+              mation about the audio file format. To use &#8217;auto&#8217; in the  previous
+              example,   ecasound   -f:16,2,44100  -i  resample,auto,foo.wav  -o
+              /dev/dsp.
+
+              Parameters 4...N are passed as is to the child object  (i.e.   &quot;-i
+              resample,22050,foo.wav,bar1,bar2&quot; will pass parameters &quot;bar1,bar2&quot;
+              to the &quot;foo.wav&quot; object.
+
+              If ecasound was compiled with support for libsamplerate,  you  can
+              use  &#8217;resample-hq&#8217; to use the highest quality resampling algorithm
+              available. To  force  ecasound  to  use  the  internal  resampler,
+              &#8217;resampler-lq&#8217; (low-quality) can be used.
+
+       Reverse - &#8217;reverse&#8217;
+              Object  type  &#8217;reverse&#8217;  can  be used to reverse audio data coming
+              from an audio object. As an example, ecasound  -i  reverse,foo.wav
+              -o  /dev/dsp  will  play  &#8217;foo.wav&#8217;  backwards.  Reversing  output
+              objects is not supported. Note! Trying  to  reverse  audio  object
+              types  with really slow seek operation (like mp3), works extremely
+              badly.  Try converting to an  uncompressed  format  (wav  or  raw)
+              first, and then do reversation.
+
+              Parameters  3...N  are passed as is to the child object (i.e.  &quot;-i
+              reverse,foo.wav,bar1,bar2&quot; will pass parameters &quot;bar1,bar2&quot; to the
+              &quot;foo.wav&quot; object.
+
+       System standard streams and named pipes - &#8217;stdin&#8217;, &#8217;stdout&#8217;
+              You can use standard streams (stdin and stdout) by giving stdin or
+              stdout as the file name. Audio data is assumed to be in  raw/head&#8208;
+              erless  (.raw) format. If you want to use named pipes, create them
+              with the proper file name extension before use.
+
+       Tone generator - &#8217;tone&#8217;
+              To generate a test tone, input -i:tone,type,freq,duration-secs can
+              be  used. Parameter &#8217;type&#8217; specifies the tone type: currently only
+              &#8217;sine&#8217; is supported. The &#8217;freq&#8217; parameter sets  the  frequency  of
+              the generated tone and &#8217;duration-secs&#8217; the length of the generated
+              stream. Specifying zero, or a negative value, as the duration will
+              produce  an  infinite stream. This feature was first added to Eca&#8208;
+              sound 2.4.7.
+
+       Typeselect - &#8217;typeselect&#8217;
+              The special &#8217;typeselect&#8217; object type can be used to  override  how
+              ecasound  maps  filename extensions and object types. For instance
+              ecasound -i typeselect,.mp3,an_mp3_file.wav  -o  /dev/dsp.   would
+              play  the  file  &#8217;an_mp3_file.wav&#8217;  as  an  mp3-file and not as an
+              wav-file as would happen without typeselect.
+
+              Parameters 4...N are passed as is to the child object  (i.e.   &quot;-i
+              typeselect,.au,foo.wav,bar1,bar2&quot; will pass parameters &quot;bar1,bar2&quot;
+              to the &quot;foo.wav&quot; object.
+
+              MIDI SETUP
+
+       MIDI I/O devices - general
+              If no MIDI-device is specified, the default  MIDI-device  is  used
+              (see ecasoundrc(5)).
+
+       -Md:rawmidi,device_name
+              Add  a  rawmidi MIDI I/O device to the setup. &#8217;device_name&#8217; can be
+              anything that can be accessed using the normal  UNIX  file  opera&#8208;
+              tions  and  produces raw MIDI bytes. Valid devices are for example
+              OSS  rawmidi   devices   (/dev/midi00),   ALSA   rawmidi   devices
+              (/dev/snd/midiC2D0), named pipes (see mkfifo man page), and normal
+              files.
+
+       -Md:alsaseq,sequencer-port
+              Adds a ALSA MIDI sequencer port  to  the  setup.  &#8217;sequencer-port&#8217;
+              identifies a port to connect to. It can be numerical (e.g. 128:1),
+              or a client name (e.g. &quot;KMidimon&quot;).
+
+       -Mms:device_id
+              Sends MMC start (&quot;Deferred Play&quot;) and stop (&quot;Stop&quot;) with device ID
+              &#8217;device_id&#8217;.
+
+              While  Ecasound  does not directly support syncing transport state
+              to incoming MMC messages, this can be achieved by connecting  Eca&#8208;
+              sound  to JACK input/outputs, and using a tool such as JackMMC and
+              JackCtlMMC ( see &lt;http://jackctlmmc.sourceforge.net/&gt;) to  convert
+              MMC messages into JACK transport change events.
+
+       -Mss   Sends MIDI-sync (i.e. &quot;MIDI Start&quot; and &quot;MIDI Stop&quot; system realtime
+              messages) .to the selected MIDI-device. Notice  that  as  Ecasound
+              will not send MIDI-clock, but only the start and stop messages.
+
+              EFFECT SETUP
+
+       PRESETS
+
+       Ecasound  has  a powerful effect preset system that allows you create new
+       effects by combining basic effects and controllers. See  ecasound  user&#8217;s
+       guide for more detailed information.
+
+       -pf:preset_file.eep
+              Uses the first preset found from file &#8217;preset_file.eep&#8217; as a chain
+              operator.
+
+       -pn:preset_name
+              Find preset &#8217;preset_name&#8217; from global preset database and  use  it
+              as  a  chain  operator. See ecasoundrc man page for info about the
+              preset database.
+
+              SIGNAL ANALYSIS
+
+       -ev    Analyzes sample data to find out how much the signal can be ampli&#8208;
+              fied  without clipping. The resulting percent value can be used as
+              a parameter to &#8217;-ea&#8217; (amplify). A statistical summary,  containing
+              info  about the stereo-image and distribution of sample values, is
+              printed out at the end of processing.
+
+       -evp   Peak amplitude watcher. Maintains peak information for  each  pro&#8208;
+              cessed channels. Peak information is resetted on every read.
+
+       -ezf   Finds  the  optimal value for DC-adjusting. You can use the result
+              as a parameter to -ezx effect.
+
+              GENERAL SIGNAL PROCESSING ALGORITHMS
+
+       -eS:stamp-id
+              Audio stamp. Takes a snapshot of passing audio data and stores  it
+              using  id &#8217;stamp-id&#8217; (integer number). This data can later be used
+              by controllers and other operators.
+
+       -ea:amplify%
+              Adjusts the signal amplitude to &#8217;amplify%&#8217; percent (linear  scale,
+              i.e.   individual  samples  are multiplied by &#8217;amplify%/100&#8217;). See
+              also &#8217;-eadb&#8217;.
+
+       -eac:amplify%,channel
+              Amplifies signal of channel &#8217;channel&#8217; by amplify-% percent (linear
+              scale,  i.e. individual samples are multiplied by &#8217;amplify%/100&#8217;).
+              &#8217;channel&#8217; ranges from 1...n where n is the total number  of  chan&#8208;
+              nels.  See also &#8217;-eadb&#8217;.
+
+       -eadb:gain-dB[,channel]
+              Adjusts  signal  level  by &#8217;gain-dB&#8217;, with a gain of 0dB having no
+              effect to the signal, negative gains attenuating  the  signal  and
+              positive  gain  values  amplifying  it.  The  &#8217;channel&#8217;  parameter
+              (1...n) is optional.  If &#8217;channel&#8217; parameter is specified, and its
+              value  is  nonzero,  gain  is  only  applied  to the given channel
+              (1...n).
+
+       -eaw:amplify%,max-clipped-samples
+              Amplifies signal by amplify-% percent (linear scale, i.e. individ&#8208;
+              ual  samples  are multiplied by &#8217;amplify%/100&#8217;). If number of con&#8208;
+              secutive clipped samples (resulting sample value  is  outside  the
+              nominal [-1,1] range), a warning will be issued.
+
+       -eal:limit-%
+              Limiter  effect.  Limits  audio  level to &#8217;limit-%&#8217; (linear scale)
+              with values equal or greater than 100% resulting in no  change  to
+              the signal.
+
+       -ec:rate,threshold-%
+              Compressor (a simple one). &#8217;rate&#8217; is the compression rate in deci&#8208;
+              bels (&#8217;rate&#8217; dB change in input signal causes 1dB change  in  out&#8208;
+              put). &#8217;threshold&#8217; varies between 0.0 (silence) and 1.0 (max ampli&#8208;
+              tude).
+
+       -eca:peak-level-%, release-time-sec, fast-crate, crate
+              A more advanced compressor (original algorithm by John S.  Dyson).
+              If  you  give  a value of 0 to any parameter, the default is used.
+              &#8217;peak-level-%&#8217; essentially specifies how hard the peak limiter  is
+              pushed.   The  default  of 69% is good. &#8217;release_time&#8217; is given in
+              seconds. This compressor is very sophisticated, and  actually  the
+              release time is complex.  This is one of the dominant release time
+              controls, but the actual release time is dependent  on  a  lot  of
+              factors  regarding the dynamics of the audio in. &#8217;fastrate&#8217; is the
+              compression ratio for the fast compressor.  This is not really the
+              compression  ratio.   Value  of  1.0 is infinity to one, while the
+              default 0.50 is 2:1.  Another really good value is  special  cased
+              in  the  code:  0.25  is  somewhat less than 2:1, and sounds super
+              smooth.  &#8217;rate&#8217; is the compression ratio for the entire compressor
+              chain.   The  default  is  1.0, and holds the volume very constant
+              without many nasty side effects.  However the  dynamics  in  music
+              are  severely  restricted, and a value of 0.5 might keep the music
+              more intact.
+
+       -enm:thresh&#8208;
+       old-level-%,pre-hold-time-msec,attack-time-msec,post-hold-time-msec,release-time-msec
+              Noise gate. Supports multichannel processing  (each  channel  pro&#8208;
+              cessed  separately).  When  signal  amplitude falls below &#8217;thresh&#8208;
+              old_level_%&#8217; percent (100% means maximum amplitude), gate is acti&#8208;
+              vated.  If  the signal stays below the threshold for &#8217;th_time&#8217; ms,
+              it&#8217;s faded out during the attack phase of &#8217;attack&#8217; ms. If the sig&#8208;
+              nal raises above the &#8217;threshold_level&#8217; and stays there over &#8217;hold&#8217;
+              ms the gate is released during &#8217;release&#8217; ms.
+
+       -ei:pitch-shift-%
+              Pitch shifter. Modifies audio pitch by altering its length.
+
+       -epp:right-%
+              Stereo panner. Changes the relative balance between the first  two
+              channels. When &#8217;right-%&#8217; is 0, only signal on the left (1st) chan&#8208;
+              nel is passed through. Similarly if it is &#8217;100&#8217;, only right  (2nd)
+              channel is let through.
+&#12;       -ezx:channel-count,delta-ch1,...,delta-chN
+              Adjusts  the signal DC by &#8217;delta-chX&#8217;, where X is the channel num&#8208;
+              ber. Use -ezf to find the optimal delta values.
+
+              ENVELOPE MODULATION
+
+
+       -eemb:bpm,on-time-%
+              Pulse gate (pulse frequency given as beats-per-minute).
+
+       -eemp:freq-Hz,on-time-%
+              Pulse gate.
+
+       -eemt:bpm,depth-%
+              Tremolo effect (tremolo speed given as beats-per-minute).
+
+              FILTER EFFECTS
+
+       -ef1:center_freq, width
+              Resonant bandpass filter. &#8217;center_freq&#8217; is the  center  frequency.
+              Width is specified in Hz.
+
+       -ef3:cutoff_freq, reso, gain
+              Resonant  lowpass filter. &#8217;cutoffr_freq&#8217; is the filter cutoff fre&#8208;
+              quency. &#8217;reso&#8217; means resonance. Usually the best values for  reso&#8208;
+              nance are between 1.0 and 2.0, but you can use even bigger values.
+              &#8217;gain&#8217; is the overall gain-factor. It&#8217;s a simple  multiplier  (1.0
+              is  the normal level). With high resonance values it often is use&#8208;
+              ful to reduce the gain value.
+
+       -ef4:cutoff, resonance
+              Resonant lowpass filter (3rd-order, 36dB,  original  algorithm  by
+              Stefan  M.  Fendt).  Simulates an analog active RC-lowpass design.
+              Cutoff is a  value  between  [0,1],  while  resonance  is  between
+              [0,infinity).
+
+       -efa:delay-samples,feedback-%
+              Allpass  filter.  Passes  all frequencies with no change in ampli&#8208;
+              tude.  However, at the same time it imposes a  frequency-dependent
+              phase-shift.
+
+       -efc:delay-samples,radius
+              Comb filter. Allows the spikes of the comb to pass through.  Value
+              of &#8217;radius&#8217; should be between [0, 1.0).
+
+       -efb:center-freq,width
+              Bandpass filter. &#8217;center_freq&#8217; is the center frequency.  Width  is
+              specified in Hz.
+
+       -efh:cutoff-freq
+              Highpass  filter.  Only frequencies above &#8217;cutoff_freq&#8217; are passed
+              through.
+
+       -efi:delay-samples,radius
+              Inverse comb filter. Filters out the spikes of the comb. There are
+              &#8217;delay_in_samples-2&#8217;  spikes.  Value of &#8217;radius&#8217; should be between
+              [0, 1.0). The closer it is to the maximum value,  the  deeper  the
+              dips of the comb are.
+
+       -efl:cutoff-freq
+              Lowpass  filter.  Only  frequencies below &#8217;cutoff_freq&#8217; are passed
+              through.
+
+       -efr:center-freq,width
+              Bandreject filter. &#8217;center_freq&#8217; is the center frequency. Width is
+              specified in Hz.
+
+       -efs:center-freq,width
+              Resonator.  &#8217;center_freq&#8217; is the center frequency. Width is speci&#8208;
+              fied in Hz. Basicly just another resonating bandpass filter.
+
+              CHANNEL MIXING / ROUTING
+
+
+       -chcopy:from-channel, to-channel
+              Copy  channel  &#8217;from_channel&#8217;  to  &#8217;to_channel&#8217;.  If  &#8217;to_channel&#8217;
+              doesn&#8217;t  exist,  it  is  created.  Channel indexing starts from 1.
+              Option added to ecasound 2.4.5.
+
+       -chmove:from-channel, to-channel
+              Copy channel &#8217;from_channel&#8217; to &#8217;to_channel&#8217;, and mutes the  source
+              channel  &#8217;from_channel&#8217;.  Channel  indexing starts from 1.  Option
+              added to ecasound 2.4.5.
+
+       -chorder:ch1,...,chN
+              Reorder, omit and/r duplicate chain channels. The resulting  audio
+              stream  has  total  of  &#8217;N&#8217; channels. Each parameter specifies the
+              source channel to use for given output  channel.  As  an  example,
+              &#8217;-chorder:2,1&#8217;  would  reverse  the  channels  of  a stereo stream
+              (&#8217;out1,out2&#8217; = &#8217;in2,in1&#8217;). Specifying the same source channel mul&#8208;
+              tiple  times  is  allowed. For example, &#8217;-chorder:2,2&#8217; would route
+              the second channel to both  two  output  channels  (&#8217;out1,out2&#8217;  =
+              &#8217;in2,in2&#8217;).  If &#8217;chX&#8217; is zero, the given channel &#8217;X&#8217; will be muted
+              in the output stream. Option added to ecasound 2.7.0.
+
+       -chmix:to-channel
+              Mix all source channels to channel &#8217;to_channel&#8217;.  If  &#8217;to_channel&#8217;
+              doesn&#8217;t  exist,  it  is  created.  Channel indexing starts from 1.
+              Option added to ecasound 2.4.5.
+
+       -chmute:channel
+              Mutes the channel  &#8217;channel&#8217;.  Channel  indexing  starts  from  1.
+              Option added to ecasound 2.4.5.
+
+       -erc:from-channel,to-channel
+              Deprecated, see -chcopy.
+
+       -erm:to-channel
+              Deprecated, see -chmix.
+
+              TIME-BASED EFFECTS
+
+
+       -etc:delay-time-msec,variance-time-samples,feedback-%,lfo-freq
+              Chorus.
+
+       -etd:delay-time-msec,surround-mode,number-of-delays,mix-%,feedback-%
+              Delay  effect.  &#8217;delay  time&#8217;  is  the delay time in milliseconds.
+              &#8217;surround-mode&#8217; is a integer with following meanings: 0 =  normal,
+              1  =  surround,  2  =  stereo-spread. &#8217;number_of_delays&#8217; should be
+              obvious. Beware that large number of delays and huge  delay  times
+              need a lot of CPU power. &#8217;mix-%&#8217; expresses the mix balance between
+              the original and delayed signal, with 0 meaning no delayed signal,
+              100  meaning no original signal, and 50 (the default) achieving an
+              equal balance.  &#8217;feedback-%&#8217; represents how much of the signal  is
+              recycled  in  each  delay  or,  if  you  prefer,  at what rate the
+              repeated snippet of delayed audio fades.  Note  that  sufficiently
+              low  feedback values may result in a number of audible repetitions
+              lesser than what you have specified for &#8217;number_of_delays&#8217;,  espe&#8208;
+              cially  if  you  have  set a low value for &#8217;mix-%&#8217;. By default the
+              value for this parameter is 100% (No signal loss.).
+
+       -ete:room_size,feedback-%,wet-%
+              A more advanced reverb effect (original  algorithm  by  Stefan  M.
+              Fendt).  &#8217;room_size&#8217; is given in meters, &#8217;feedback-%&#8217; is the feed&#8208;
+              back level given in percents and &#8217;wet-%&#8217; is the amount of reverbed
+              signal added to the original signal.
+
+       -etf:delay-time-msec
+              Fake-stereo effect. The input signal is summed to mono. The origi&#8208;
+              nal signal goes to the left channels while a delayed version (with
+              delay  of  &#8217;delay time&#8217; milliseconds) is goes to the right. With a
+              delay time  of  1-40  milliseconds  this  adds  a  stereo-feel  to
+              mono-signals.
+
+       -etl:delay-time-msec,variance-time-samples,feedback-%,lfo-freq
+              Flanger.
+
+       -etm:delay-time-msec,number-of-delays,mix-%
+              Multitap  delay.  &#8217;delay  time&#8217; is the delay time in milliseconds.
+              &#8217;number_of_delays&#8217; should be obvious. &#8217;mix-%&#8217; determines how  much
+              effected (wet) signal is mixed to the original.
+
+       -etp:delay-time-msec,variance-time-samples,feedback-%,lfo-freq
+              Phaser.
+
+       -etr:delay-time,surround-mode,feedback-%
+              Reverb effect. &#8217;delay time&#8217; is the delay time in milliseconds.  If
+              &#8217;surround-mode&#8217; is &#8217;surround&#8217;, reverbed signal  moves  around  the
+              stereo image. &#8217;feedback-%&#8217; determines how much effected (wet) sig&#8208;
+              nal is fed back to the reverb.
+
+              LADSPA-PLUGINS
+
+       -el:plugin_unique_name,param-1,...,param-N
+              Ecasound supports LADSPA-effect plugins (Linux  Audio  Developer&#8217;s
+              Simple Plugin API). Parameters 1..N are set as values of the plug&#8208;
+              in&#8217;s control ports.
+
+              If plugin has more than one audio input and/or output  port,  only
+              one  plugin is instance is created, and the chain channels are fed
+              to the same plugin instance. If plugin has at most one  input  and
+              at  most one output audio port, a separate plugin instance is cre&#8208;
+              ated for each channel of the ecasound chain  (e.g.  for  a  stereo
+              audio  channel,  two LADSPA plugins of same type are created, with
+              one per channel).
+
+              Plugins are located in shared library (.so) files. Ecasound  looks
+              for plugins in @prefix@/lib/ladspa (e.g. &quot;/usr/local/lib/ladspa&quot;),
+              directories listed in  environment  variable  LADSPA_PATH.  Plugin
+              search  path  can  be  configured  also  via  ecasoundrc, see eca&#8208;
+              soundrc(5) man page. One shared library file can contain  multiple
+              plugin  objects,  but  every plugin has a unique plugin name. This
+              name is used for selecting plugins.
+
+              See LAD mailing list web site for more info  about  LADSPA.  Other
+              useful sites are LADSPA home page and LADSPA documentation.
+
+       -eli:plugin_unique_number,param-1,...,param-N
+              Same  as  above (-el) expect plugin&#8217;s unique id-number is used. It
+              is guaranteed that these id-numbers are unique  among  all  LADSPA
+              plugins.
+
+              LV2 PLUGINS
+
+       -elv2:plugin-id-uri,param-1,...,param-N
+              Ecasound  also supports LV2 audio plugins. LV2 plugins are identi&#8208;
+              fied by a globally unique, case-sensitive identifier.
+
+              If plugin has more than one audio input and/or output  port,  only
+              one  plugin is instance is created, and the chain channels are fed
+              to the same plugin instance. If plugin has at most one  input  and
+              at  most one output audio port, a separate plugin instance is cre&#8208;
+              ated for each channel of the ecasound chain  (e.g.  for  a  stereo
+              audio  channel, two LV2 plugins of same type are created, with one
+              per channel).
+
+              LV2 is a plugin standard for audio systems.
+
+
+       GATE SETUP
+&#12;       -gc:start-time,len
+              Time crop gate. Initially gate is closed. After &#8217;start-time&#8217;  sec&#8208;
+              onds  has  elapsed, gate opens and remains open for &#8217;len&#8217; seconds.
+              When closed, passing audio buffers are trucated to zero length.
+
+       -ge:open-threshold-%,close-thold-%,volume-mode,reopen-count
+              Threshold gate. Initially gate is closed. It is opened when volume
+              goes  over &#8217;othreshold&#8217; percent. After this, if volume drops below
+              &#8217;cthold&#8217; percent, gate is closed and won&#8217;t be opened again, unless
+              the  &#8217;reopen-count&#8217;  is  set  to  anything  other  than  zero.  If
+              &#8217;value_mode&#8217; is &#8217;rms&#8217;, average RMS volume is used. Otherwise  peak
+              average  is used.  When closed, passing audio buffers are trucated
+              to zero length.  If the &#8217;reopen-count&#8217; is set to a  positive  num&#8208;
+              ber,  then the gate will restart its operation that many times. So
+              for example, a reopen count of 1 will cause up to  2  openings  of
+              the  gate.  A negative value for &#8217;reopen-count&#8217; will result in the
+              gate reopening indefinitely. The &#8217;reopen-count&#8217; is  invaluable  in
+              recording  vinyl  and  tapes, where you can set things up and then
+              recording starts whenever the needle is on the  vinyl,  and  stops
+              when  it&#8217;s  off.  As many sides as you like can be recorded in one
+              session.  You will need to  experiment  with  buffer  lengths  and
+              start/stop levels to get reliable settings for your equipment.
+
+       -gm:state
+              Manual  gate.  If  &#8217;state&#8217;  is 1, gate is open and all samples are
+              passed through. If &#8217;state&#8217; is zero, gate is closed an  no  samples
+              are  let through. This chain operator is useful when writing to an
+              output needs to be stopped dynamically (without stopping the whole
+              engine).
+
+              CONTROL ENVELOPE SETUP
+
+
+              Controllers  can  be  used to dynamically change effect parameters
+              during processing. All controllers are attached  to  the  selected
+              (=usually  the last specified effect/controller) effect. The first
+              three parameters are common for all controllers. &#8217;fx_param&#8217; speci&#8208;
+              fies  the  parameter  to  be controlled. Value &#8217;1&#8217; means the first
+              parameter, &#8217;2&#8217; the second and so on. &#8217;start_value&#8217; and &#8217;end_value&#8217;
+              set  the  value range. For examples, look at the the EXAMPLES sec&#8208;
+              tion.
+
+       -kos:fx-param,start-value,end-value,freq,i-phase
+              Sine oscillator with frequency of &#8217;freq&#8217; Hz and initial  phase  of
+              &#8217;i_phase&#8217; times pi.
+
+       -kog:fx-param,start-value,end-value,freq,mode,point-pairs,first-value,last-value,pos1,value1,...
+              Generic oscillator. Frequency  &#8217;freq&#8217;  Hz,  mode  either  &#8217;0&#8217;  for
+              static values or &#8217;1&#8217; for linear interpolation. &#8217;point-pairs&#8217; spec&#8208;
+              ifies  the  number  of  &#8217;posN&#8217;  -  &#8217;valueN&#8217;  pairs   to   include.
+              &#8217;first-value&#8217;  and  &#8217;last-value&#8217; are used as border values (values
+              for position 0.0/first and position  1.0/last).   All  &#8217;posN&#8217;  and
+              &#8217;valueN&#8217;  must be between 0.0 and 1.0. Also, for all &#8217;posN&#8217; values
+              &#8217;pos1 &lt; pos2 &lt; ... &lt; posN&#8217; must be true.
+
+       -kf:fx-param,start-value,end-value,freq,mode,genosc-number
+              Generic oscillator. &#8217;genosc_number&#8217; is the number of the  oscilla&#8208;
+              tor  preset  to be loaded. Mode is either &#8217;0&#8217; for static values or
+              &#8217;1&#8217; for linear interpolation. The location for the preset file  is
+              taken from ./ecasoundrc (see ecasoundrc man page).
+
+       -kl:fx-param,start-value,end-value,time-seconds
+              Linear  envelope  that  starts  from  &#8217;start_value&#8217;  and  linearly
+              changes to &#8217;end_value&#8217; during &#8217;time_in_seconds&#8217;. Can be  used  for
+              fadeins and fadeouts.
+
+       -kl2:fx-param,start-value,end-value,1st-stage-length-sec,2nd-stage-length-sec
+              Two-stage  linear  envelope,  a  more  versatile  tool  for  doing
+              fade-ins    and    fade-outs.    Stays    at   &#8217;start_value&#8217;   for
+              &#8217;1st_stage_length&#8217;  seconds  and  then  linearly  changes  towards
+              &#8217;end_value&#8217; during &#8217;2nd_stage_length&#8217; seconds.
+
+       -klg:fx-param,low-value,high-value,point_count,pos1,value1,...,posN,val&#8208;
+       ueN
+              Generic linear envelope. This controller source can be used to map
+              custom  envelopes to chain operator parameters. Number of envelope
+              points is specified in &#8217;point_count&#8217;. Each envelope point consists
+              of  a  position  and  a matching value. Number of pairs must match
+              &#8217;point_count&#8217; (i.e. &#8217;N==point_count&#8217;). The &#8217;posX&#8217;  parameters  are
+              given  as  seconds (from start of the stream). The envelope points
+              are specified as float values in range  &#8217;[0,1]&#8217;.  Before  envelope
+              values  are  mapped to operator parameters, they are mapped to the
+              target range of &#8217;[low-value,high-value]&#8217;. E.g.   a  value  of  &#8217;0&#8217;
+              will set operator parameter to &#8217;low-value&#8217; and a value of &#8217;1&#8217; will
+              set it to &#8217;high-value&#8217;. For the initial  segment  &#8217;[0,pos1]&#8217;,  the
+              envelope will output value of &#8217;value1&#8217; (e.g. &#8217;low-value&#8217;).
+
+       -km:fx-param,start-value,end-value,controller,channel
+              MIDI continuous controller (control change messages).  Messages on
+              the MIDI-channel &#8217;channel&#8217; that are coming from controller  number
+              &#8217;controller&#8217;  are used as the controller source. As recommended by
+              the MIDI-specification, channel numbering goes from 1 to 16.  Pos&#8208;
+              sible controller numbers are values from 0 to 127. The MIDI-device
+              where bytes are read from can be specified using -Md option.  Oth&#8208;
+              erwise  the  default  MIDI-device  is  used  as specified in ~eca&#8208;
+              sound/ecasoundrc  (see  ecasoundrc   man   page).    Defaults   to
+              /dev/midi.
+
+       -ksv:fx-param,start-value,end-value,stamp-id,rms-toggle
+              Volume  analyze  controller.  Analyzes  the  audio stored in stamp
+              &#8217;stamp-id&#8217; (see &#8217;-eS:id&#8217; docs), and creates control data based  on
+              the  results.  If  &#8217;rms-toggle&#8217; is non-zero, RMS-volume is used to
+              calculate the control value. Otherwise average  peak-amplitude  is
+              used.
+
+       -kx    This is a special switch that can be used when you need to control
+              controller parameters with another controller.  When  you  specify
+              -kx, the last specified controller will be set as the control tar&#8208;
+              get. Then you just add another controller as usual.
+
+
+       INTERACTIVE MODE
+
+       See ecasound-iam(1) man page.
+
+ENVIRONMENT
+       ECASOUND
+              If defined, some utility programs and scripts will  use  the  ECA&#8208;
+              SOUND environment as the default path to ecasound executable.
+
+       ECASOUND_LOGFILE
+              Output  all debugging messages to a separate log file. If defined,
+              ECASOUND_LOGFILE defines the logfile path. This is a good tool for
+              debugging ECI/EIAM scripts and applications.
+
+       ECASOUND_LOGLEVEL
+              Select  which  messages are written to the logfile defined by ECA&#8208;
+              SOUND_LOGFILE. The syntax for -d:level is used.  If  not  defined,
+              all  messages are written. Defaults to -d:319 (everything else but
+              &#8217;functions (64)&#8217; and &#8217;continuous (128)&#8217; class messages).
+
+       COLUMNS
+              Ecasound honors the COLUMNS environment variable  when  formatting
+              printed  trace messages. If COLUMNS is not set, a default of 74 is
+              used.
+
+       TMPDIR Some functions of Ecasound (e.g.  &quot;cs-edit&quot;  interactive  command)
+              require  creation  of temporary files. By default, these files are
+              created under &quot;/tmp&quot;, but this can be overridden  by  setting  the
+              TMPDIR environment variable.
+&#12;RETURN VALUES
+              In interactive mode, ecasound always returns zero.
+
+              In  non-interactive (batch) mode, a non-zero value is returned for
+              the following errors:
+
+       1      Unable to create a valid chainsetup with the given parameters. Can
+              be caused by invalid option syntax, etc.
+
+       2      Unable  to  start  processing.  This can be caused by insufficient
+              file permissions, inability to access some system resources, etc.
+
+       3      Error during processing. Possible causes: output  object  has  run
+              out of free disk space, etc.
+
+       4      Error  during  process  termination and/or cleanup. See section on
+              &#8217;SIGNALS&#8217; for further details.
+
+SIGNALS
+       When ecasound receives any of the POSIX signals SIGINT (ctrl-c),  SIGHUP,
+       SIGTERM  or SIGQUIT, normal cleanup and exit procedure is initiated. Here
+       normal exit means that e.g. file  headers  are  updated  before  closing,
+       helper processes are terminated in normal way, and so forth.
+
+       If,  while  doing  the cleanup described above, ecasound receives another
+       signal (of the same set of POSIX signals), ecasound will skip the  normal
+       cleanup procedure, and terminate immediately. Any remaining cleanup tasks
+       will be skipped.  Depending on the runtime state and configuration,  this
+       brute  force  exit  may have some side-effects. Ecasound will return exit
+       code of &#8217;4&#8217; if normal cleanup was skipped.
+
+       Special case handling is applied to the SIGINT  (ctrl-c)  signal.   If  a
+       SIGINT  signal  is  received  during the cleanup procedure, ecasound will
+       ignore the signal once, and emit a notice to  &#8217;stderr&#8217;  that  cleanup  is
+       already  in  progress.  Any  subsequent SIGINT signals will no longer get
+       special handling, and instead process  will  terminate  immediately  (and
+       possibly without proper cleanup).
+
+FILES
+       ~/.ecasound  The default directory for ecasound user resource files.  See
+       the ecasoundrc (5) man page man page.
+
+       *.ecs Ecasound Chainsetup files. Syntax is more or less the same as  with
+       command-line arguments.
+
+       *.ecp  Ecasound  Chain  Preset  files.  Used for storing effect and chain
+       operator presets. See ecasound user&#8217;s guide for  more  better  documenta&#8208;
+       tion.
+
+       *.ews Ecasound Wave Stats. These files are used to cache waveform data.
+
+EXAMPLES
+       Examples  of  how  to  perform common tasks with ecasound can be found at
+       http://eca.cx/ecasound/Documentation/examples.html.
+
+SEE ALSO
+       ecatools (1) man page, ecasound-iam (1) man page ecasoundrc (5) man page,
+       &quot;HTML docs in the Documentation subdirectory&quot;
+
+BUGS
+       See  file  BUGS.  If  ecasound behaves weirdly, try to increase the debug
+       level to see what&#8217;s going on.
+
+AUTHOR
+       Kai Vehmanen, &lt;kvehmanen -at- eca -dot- cx &lt;kvehmanen -at- eca -dot- cx&gt;&gt;
+
+
+
+                                   05.05.2011                        ecasound(1)
+
+</pre></body></html>

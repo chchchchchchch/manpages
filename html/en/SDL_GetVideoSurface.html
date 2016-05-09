@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_GetVideoSurface - returns a pointer to the current display surface</title></head>
+<body><pre>
+
+SDL_GetVideoSurface(3)          SDL API Reference         SDL_GetVideoSurface(3)
+
+
+
+NAME
+       SDL_GetVideoSurface - returns a pointer to the current display surface
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDL_Surface *SDL_GetVideoSurface(void);
+
+DESCRIPTION
+       This function returns a pointer to the current display surface. If SDL is
+       doing format conversion on the display surface, this function returns the
+       publicly visible surface, not the real video surface.
+
+SEE ALSO
+       SDL_Surface
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01       SDL_GetVideoSurface(3)
+
+</pre></body></html>

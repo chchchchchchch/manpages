@@ -1,0 +1,534 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::gv - DateTime locale package for "gv"</title></head>
+<body><pre>
+
+DateTime::Locale::gv(3pUser Contributed Perl DocumentatDateTime::Locale::gv(3pm)
+
+
+
+NAME
+       DateTime::Locale::gv - DateTime locale package for &quot;gv&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;gv&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Manx.
+
+DATA
+       This locale inherits from the DateTime::Locale::root locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         Jelhein
+         Jemayrt
+         Jercean
+         Jerdein
+         Jeheiney
+         Jesarn
+         Jedoonee
+
+       Abbreviated (format)
+
+         Jel
+         Jem
+         Jerc
+         Jerd
+         Jeh
+         Jes
+         Jed
+
+       Narrow (format)
+
+         2
+         3
+         4
+         5
+         6
+         7
+         1
+
+       Wide (stand-alone)
+
+         Jelhein
+         Jemayrt
+         Jercean
+         Jerdein
+         Jeheiney
+         Jesarn
+         Jedoonee
+
+       Abbreviated (stand-alone)
+
+         Jel
+         Jem
+         Jerc
+         Jerd
+         Jeh
+         Jes
+         Jed
+&#12;       Narrow (stand-alone)
+
+         2
+         3
+         4
+         5
+         6
+         7
+         1
+
+   Months
+       Wide (format)
+
+         Jerrey-geuree
+         Toshiaght-arree
+         Mayrnt
+         Averil
+         Boaldyn
+         Mean-souree
+         Jerrey-souree
+         Luanistyn
+         Mean-fouyir
+         Jerrey-fouyir
+         Mee Houney
+         Mee ny Nollick
+
+       Abbreviated (format)
+
+         J-guer
+         T-arree
+         Mayrnt
+         Avrril
+         Boaldyn
+         M-souree
+         J-souree
+         Luanistyn
+         M-fouyir
+         J-fouyir
+         M.Houney
+         M.Nollick
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+         10
+         11
+         12
+
+       Wide (stand-alone)
+
+         Jerrey-geuree
+         Toshiaght-arree
+         Mayrnt
+         Averil
+         Boaldyn
+         Mean-souree
+         Jerrey-souree
+         Luanistyn
+         Mean-fouyir
+         Jerrey-fouyir
+         Mee Houney
+         Mee ny Nollick
+
+       Abbreviated (stand-alone)
+
+         J-guer
+         T-arree
+         Mayrnt
+         Avrril
+         Boaldyn
+         M-souree
+         J-souree
+         Luanistyn
+         M-fouyir
+         J-fouyir
+         M.Houney
+         M.Nollick
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+         10
+         11
+         12
+
+   Quarters
+       Wide (format)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Abbreviated (format)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Abbreviated (stand-alone)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         BCE
+         CE
+
+       Abbreviated
+
+         RC
+         AD
+
+       Narrow
+
+         RC
+         AD
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = Jemayrt 05 Toshiaght-arree 2008
+          1995-12-22T09:05:02 = Jeheiney 22 Mee ny Nollick 1995
+         -0010-09-15T04:44:23 = Jesarn 15 Mean-fouyir -10
+
+       Long
+
+          2008-02-05T18:30:30 = 05 Toshiaght-arree 2008
+          1995-12-22T09:05:02 = 22 Mee ny Nollick 1995
+         -0010-09-15T04:44:23 = 15 Mean-fouyir -10
+
+       Medium
+
+          2008-02-05T18:30:30 = T-arree 05, 2008
+          1995-12-22T09:05:02 = M.Nollick 22, 1995
+         -0010-09-15T04:44:23 = M-fouyir 15, -10
+
+       Short
+
+          2008-02-05T18:30:30 = 05/02/08
+          1995-12-22T09:05:02 = 22/12/95
+         -0010-09-15T04:44:23 = 15/09/-10
+
+       Default
+
+          2008-02-05T18:30:30 = T-arree 05, 2008
+          1995-12-22T09:05:02 = M.Nollick 22, 1995
+         -0010-09-15T04:44:23 = M-fouyir 15, -10
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = Jemayrt 05 Toshiaght-arree 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = Jeheiney 22 Mee ny Nollick 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = Jesarn 15 Mean-fouyir -10 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 05 Toshiaght-arree 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = 22 Mee ny Nollick 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = 15 Mean-fouyir -10 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = T-arree 05, 2008 18:30:30
+          1995-12-22T09:05:02 = M.Nollick 22, 1995 09:05:02
+         -0010-09-15T04:44:23 = M-fouyir 15, -10 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 05/02/08 18:30
+          1995-12-22T09:05:02 = 22/12/95 09:05
+         -0010-09-15T04:44:23 = 15/09/-10 04:44
+
+       Default
+
+          2008-02-05T18:30:30 = T-arree 05, 2008 18:30:30
+          1995-12-22T09:05:02 = M.Nollick 22, 1995 09:05:02
+         -0010-09-15T04:44:23 = M-fouyir 15, -10 04:44:23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (d EEE)
+
+          2008-02-05T18:30:30 = 5 Jem
+          1995-12-22T09:05:02 = 22 Jeh
+         -0010-09-15T04:44:23 = 15 Jes
+
+       HHmm (HH:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+
+       Hm (H:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+
+       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 p.m.
+          1995-12-22T09:05:02 = 9:05 a.m.
+         -0010-09-15T04:44:23 = 4:44 a.m.
+
+       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+&#12;       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 p.m.
+          1995-12-22T09:05:02 = 9:05:02 a.m.
+         -0010-09-15T04:44:23 = 4:44:23 a.m.
+
+       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (M-d)
+
+          2008-02-05T18:30:30 = 2-5
+          1995-12-22T09:05:02 = 12-22
+         -0010-09-15T04:44:23 = 9-15
+
+       MEd (E, M-d)
+
+          2008-02-05T18:30:30 = Jem, 2-5
+          1995-12-22T09:05:02 = Jeh, 12-22
+         -0010-09-15T04:44:23 = Jes, 9-15
+
+       MMdd (dd/MM)
+
+          2008-02-05T18:30:30 = 05/02
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/09
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = T-arree
+          1995-12-22T09:05:02 = M.Nollick
+         -0010-09-15T04:44:23 = M-fouyir
+
+       MMMd (MMM d)
+
+          2008-02-05T18:30:30 = T-arree 5
+          1995-12-22T09:05:02 = M.Nollick 22
+         -0010-09-15T04:44:23 = M-fouyir 15
+
+       MMMEd (E MMM d)
+
+          2008-02-05T18:30:30 = Jem T-arree 5
+          1995-12-22T09:05:02 = Jeh M.Nollick 22
+         -0010-09-15T04:44:23 = Jes M-fouyir 15
+
+       MMMMd (MMMM d)
+
+          2008-02-05T18:30:30 = Toshiaght-arree 5
+          1995-12-22T09:05:02 = Mee ny Nollick 22
+         -0010-09-15T04:44:23 = Mean-fouyir 15
+
+       MMMMdd (dd MMMM)
+
+          2008-02-05T18:30:30 = 05 Toshiaght-arree
+          1995-12-22T09:05:02 = 22 Mee ny Nollick
+         -0010-09-15T04:44:23 = 15 Mean-fouyir
+
+       MMMMEd (E MMMM d)
+
+          2008-02-05T18:30:30 = Jem Toshiaght-arree 5
+          1995-12-22T09:05:02 = Jeh Mee ny Nollick 22
+         -0010-09-15T04:44:23 = Jes Mean-fouyir 15
+
+       mmss (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       ms (mm:ss)
+&#12;          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       y (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (y-M)
+
+          2008-02-05T18:30:30 = 2008-2
+          1995-12-22T09:05:02 = 1995-12
+         -0010-09-15T04:44:23 = -10-9
+
+       yMEd (EEE, y-M-d)
+
+          2008-02-05T18:30:30 = Jem, 2008-2-5
+          1995-12-22T09:05:02 = Jeh, 1995-12-22
+         -0010-09-15T04:44:23 = Jes, -10-9-15
+
+       yMMM (y MMM)
+
+          2008-02-05T18:30:30 = 2008 T-arree
+          1995-12-22T09:05:02 = 1995 M.Nollick
+         -0010-09-15T04:44:23 = -10 M-fouyir
+
+       yMMMEd (EEE, y MMM d)
+
+          2008-02-05T18:30:30 = Jem, 2008 T-arree 5
+          1995-12-22T09:05:02 = Jeh, 1995 M.Nollick 22
+         -0010-09-15T04:44:23 = Jes, -10 M-fouyir 15
+
+       yMMMM (y MMMM)
+
+          2008-02-05T18:30:30 = 2008 Toshiaght-arree
+          1995-12-22T09:05:02 = 1995 Mee ny Nollick
+         -0010-09-15T04:44:23 = -10 Mean-fouyir
+
+       yQ (y Q)
+
+          2008-02-05T18:30:30 = 2008 1
+          1995-12-22T09:05:02 = 1995 4
+         -0010-09-15T04:44:23 = -10 3
+
+       yQQQ (y QQQ)
+
+          2008-02-05T18:30:30 = 2008 Q1
+          1995-12-22T09:05:02 = 1995 Q4
+         -0010-09-15T04:44:23 = -10 Q3
+
+       yyMM (MM/yy)
+
+          2008-02-05T18:30:30 = 02/08
+          1995-12-22T09:05:02 = 12/95
+         -0010-09-15T04:44:23 = 09/-10
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+       yyyyMMMM (MMMM y)
+
+          2008-02-05T18:30:30 = Toshiaght-arree 2008
+          1995-12-22T09:05:02 = Mee ny Nollick 1995
+         -0010-09-15T04:44:23 = Mean-fouyir -10
+
+   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       Jelhein
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19          DateTime::Locale::gv(3pm)
+
+</pre></body></html>

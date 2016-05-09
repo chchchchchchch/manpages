@@ -1,0 +1,34 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcStrCopyFilename - create a complete path from a filename</title></head>
+<body><pre>
+
+FcStrCopyFilename(3)                                        FcStrCopyFilename(3)
+
+
+
+NAME
+       FcStrCopyFilename - create a complete path from a filename
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcChar8 * FcStrCopyFilename (const FcChar8 *s);
+
+DESCRIPTION
+       FcStrCopyFilename constructs an absolute pathname from s. It converts any
+       leading &apos;~&apos; characters in to the value of the HOME environment  variable,
+       and  any relative paths are converted to absolute paths using the current
+       working directory. Sequences of &apos;/&apos; characters are converted to a  single
+       &apos;/&apos;,  and  names containing the current directory &apos;.&apos; or parent directory
+       &apos;..&apos; are correctly reconstructed.  Returns NULL if  &apos;~&apos;  is  the  leading
+       character and HOME is unset or disabled (see FcConfigEnableHome).
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012             FcStrCopyFilename(3)
+
+</pre></body></html>

@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>what-patch - detect which patch system a Debian package uses</title></head>
+<body><pre>
+
+WHAT-PATCH(1)                                                      WHAT-PATCH(1)
+
+
+
+NAME
+       what-patch - detect which patch system a Debian package uses
+
+
+SYNOPSIS
+       what-patch [options]
+
+
+DESCRIPTION
+       what-patch examines the debian/rules file to determine which patch system
+       the Debian package is using.
+
+       what-patch should be run from the root directory  of  the  Debian  source
+       package.
+
+
+OPTIONS
+       Listed below are the command line options for what-patch:
+
+       -h, --help
+              Display a help message and exit.
+
+       -v     Enable  verbose  mode.  This will include the listing of any files
+              modified outside or the debian/ directory  and  report  any  addi&#8208;
+              tional details about the patch system if available.
+
+
+AUTHORS
+       what-patch  was  written  by  Kees  Cook  &lt;kees@ubuntu.com&gt;, Siegfried-A.
+       Gevatter  &lt;rainct@ubuntu.com&gt;,  and  Daniel  Hahler  &lt;ubuntu@thequod.de&gt;,
+       among  others.   This  manual page was written by Jonathan Patrick Davies
+       &lt;jpds@ubuntu.com&gt;.
+
+       Both are released under the GNU General  Public  License,  version  3  or
+       later.
+
+
+SEE ALSO
+       The  Ubuntu  MOTU  team has some documentation about patch systems at the
+       Ubuntu wiki: https://wiki.ubuntu.com/PackagingGuide/PatchSystems
+
+
+       cdbs-edit-patch(1), dbs-edit-patch(1), dpatch-edit-patch(1)
+
+
+
+DEBIAN                          Debian Utilities                   WHAT-PATCH(1)
+
+</pre></body></html>

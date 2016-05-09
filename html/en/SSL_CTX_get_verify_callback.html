@@ -1,0 +1,57 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SSL_CTX_get_verify_mode, SSL_get_verify_mode, SSL_CTX_get_verify_depth, SSL_get_verify_depth, SSL_get_verify_callback, SSL_CTX_get_verify_callback - get currently set verification parameters</title></head>
+<body><pre>
+
+SSL_CTX_get_verify_mode(3SSL)        OpenSSL       SSL_CTX_get_verify_mode(3SSL)
+
+
+
+NAME
+       SSL_CTX_get_verify_mode, SSL_get_verify_mode, SSL_CTX_get_verify_depth,
+       SSL_get_verify_depth, SSL_get_verify_callback,
+       SSL_CTX_get_verify_callback - get currently set verification parameters
+
+SYNOPSIS
+        #include &lt;openssl/ssl.h&gt;
+
+        int SSL_CTX_get_verify_mode(const SSL_CTX *ctx);
+        int SSL_get_verify_mode(const SSL *ssl);
+        int SSL_CTX_get_verify_depth(const SSL_CTX *ctx);
+        int SSL_get_verify_depth(const SSL *ssl);
+        int (*SSL_CTX_get_verify_callback(const SSL_CTX *ctx))(int, X509_STORE_CTX *);
+        int (*SSL_get_verify_callback(const SSL *ssl))(int, X509_STORE_CTX *);
+
+DESCRIPTION
+       SSL_CTX_get_verify_mode() returns the verification mode currently set in
+       ctx.
+
+       SSL_get_verify_mode() returns the verification mode currently set in ssl.
+
+       SSL_CTX_get_verify_depth() returns the verification depth limit currently
+       set in ctx. If no limit has been explicitly set, -1 is returned and the
+       default value will be used.
+
+       SSL_get_verify_depth() returns the verification depth limit currently set
+       in ssl. If no limit has been explicitly set, -1 is returned and the
+       default value will be used.
+
+       SSL_CTX_get_verify_callback() returns a function pointer to the
+       verification callback currently set in ctx. If no callback was explicitly
+       set, the NULL pointer is returned and the default callback will be used.
+
+       SSL_get_verify_callback() returns a function pointer to the verification
+       callback currently set in ssl. If no callback was explicitly set, the
+       NULL pointer is returned and the default callback will be used.
+
+RETURN VALUES
+       See DESCRIPTION
+
+SEE ALSO
+       ssl(3), SSL_CTX_set_verify(3)
+
+
+
+1.0.1e                             2013-02-11      SSL_CTX_get_verify_mode(3SSL)
+
+</pre></body></html>

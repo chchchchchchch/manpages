@@ -1,0 +1,418 @@
+<html>
+<head><meta charset=utf-8/>
+<title>git-show - Show various types of objects</title></head>
+<body><pre>
+
+GIT-SHOW(1)                        Git Manual                        GIT-SHOW(1)
+
+
+
+NAME
+       git-show - Show various types of objects
+
+SYNOPSIS
+       git show [options] &lt;object&gt;...
+
+
+DESCRIPTION
+       Shows one or more objects (blobs, trees, tags and commits).
+
+       For commits it shows the log message and textual diff. It also presents
+       the merge commit in a special format as produced by git diff-tree --cc.
+
+       For tags, it shows the tag message and the referenced objects.
+
+       For trees, it shows the names (equivalent to git ls-tree with
+       --name-only).
+
+       For plain blobs, it shows the plain contents.
+
+       The command takes options applicable to the git diff-tree command to
+       control how the changes the commit introduces are shown.
+
+       This manual page describes only the most frequently used options.
+
+OPTIONS
+       &lt;object&gt;...
+           The names of objects to show. For a more complete list of ways to
+           spell object names, see &quot;SPECIFYING REVISIONS&quot; section in
+           gitrevisions(7).
+
+       --pretty[=&lt;format&gt;], --format=&lt;format&gt;
+           Pretty-print the contents of the commit logs in a given format, where
+           &lt;format&gt; can be one of oneline, short, medium, full, fuller, email,
+           raw and format:&lt;string&gt;. See the &quot;PRETTY FORMATS&quot; section for some
+           additional details for each format. When omitted, the format defaults
+           to medium.
+
+           Note: you can specify the default pretty format in the repository
+           configuration (see git-config(1)).
+
+       --abbrev-commit
+           Instead of showing the full 40-byte hexadecimal commit object name,
+           show only a partial prefix. Non default number of digits can be
+           specified with &quot;--abbrev=&lt;n&gt;&quot; (which also modifies diff output, if it
+           is displayed).
+
+           This should make &quot;--pretty=oneline&quot; a whole lot more readable for
+           people using 80-column terminals.
+
+       --no-abbrev-commit
+           Show the full 40-byte hexadecimal commit object name. This negates
+           --abbrev-commit and those options which imply it such as &quot;--oneline&quot;.
+           It also overrides the log.abbrevCommit variable.
+
+       --oneline
+           This is a shorthand for &quot;--pretty=oneline --abbrev-commit&quot; used
+           together.
+
+       --encoding[=&lt;encoding&gt;]
+           The commit objects record the encoding used for the log message in
+           their encoding header; this option can be used to tell the command to
+           re-code the commit log message in the encoding preferred by the user.
+           For non plumbing commands this defaults to UTF-8.
+
+       --notes[=&lt;ref&gt;]
+           Show the notes (see git-notes(1)) that annotate the commit, when
+           showing the commit log message. This is the default for git log, git
+           show and git whatchanged commands when there is no --pretty, --format
+           nor --oneline option given on the command line.
+
+           By default, the notes shown are from the notes refs listed in the
+           core.notesRef and notes.displayRef variables (or corresponding
+           environment overrides). See git-config(1) for more details.
+
+           With an optional &lt;ref&gt; argument, show this notes ref instead of the
+           default notes ref(s). The ref is taken to be in refs/notes/ if it is
+           not qualified.
+
+           Multiple --notes options can be combined to control which notes are
+           being displayed. Examples: &quot;--notes=foo&quot; will show only notes from
+           &quot;refs/notes/foo&quot;; &quot;--notes=foo --notes&quot; will show both notes from
+           &quot;refs/notes/foo&quot; and from the default notes ref(s).
+
+       --no-notes
+           Do not show notes. This negates the above --notes option, by
+           resetting the list of notes refs from which notes are shown. Options
+           are parsed in the order given on the command line, so e.g. &quot;--notes
+           --notes=foo --no-notes --notes=bar&quot; will only show notes from
+           &quot;refs/notes/bar&quot;.
+
+       --show-notes[=&lt;ref&gt;], --[no-]standard-notes
+           These options are deprecated. Use the above --notes/--no-notes
+           options instead.
+
+PRETTY FORMATS
+       If the commit is a merge, and if the pretty-format is not oneline, email
+       or raw, an additional line is inserted before the Author: line. This line
+       begins with &quot;Merge: &quot; and the sha1s of ancestral commits are printed,
+       separated by spaces. Note that the listed commits may not necessarily be
+       the list of the direct parent commits if you have limited your view of
+       history: for example, if you are only interested in changes related to a
+       certain directory or file.
+
+       There are several built-in formats, and you can define additional formats
+       by setting a pretty.&lt;name&gt; config option to either another format name,
+       or a format: string, as described below (see git-config(1)). Here are the
+       details of the built-in formats:
+
+       &#183;    oneline
+
+               &lt;sha1&gt; &lt;title line&gt;
+
+           This is designed to be as compact as possible.
+
+       &#183;    short
+
+               commit &lt;sha1&gt;
+               Author: &lt;author&gt;
+
+               &lt;title line&gt;
+
+       &#183;    medium
+
+               commit &lt;sha1&gt;
+               Author: &lt;author&gt;
+               Date:   &lt;author date&gt;
+&#12;               &lt;title line&gt;
+
+               &lt;full commit message&gt;
+
+       &#183;    full
+
+               commit &lt;sha1&gt;
+               Author: &lt;author&gt;
+               Commit: &lt;committer&gt;
+
+               &lt;title line&gt;
+
+               &lt;full commit message&gt;
+
+       &#183;    fuller
+
+               commit &lt;sha1&gt;
+               Author:     &lt;author&gt;
+               AuthorDate: &lt;author date&gt;
+               Commit:     &lt;committer&gt;
+               CommitDate: &lt;committer date&gt;
+
+               &lt;title line&gt;
+
+               &lt;full commit message&gt;
+
+       &#183;    email
+
+               From &lt;sha1&gt; &lt;date&gt;
+               From: &lt;author&gt;
+               Date: &lt;author date&gt;
+               Subject: [PATCH] &lt;title line&gt;
+
+               &lt;full commit message&gt;
+
+       &#183;    raw
+
+           The raw format shows the entire commit exactly as stored in the
+           commit object. Notably, the SHA1s are displayed in full, regardless
+           of whether --abbrev or --no-abbrev are used, and parents information
+           show the true parent commits, without taking grafts nor history
+           simplification into account.
+
+       &#183;    format:&lt;string&gt;
+
+           The format:&lt;string&gt; format allows you to specify which information
+           you want to show. It works a little bit like printf format, with the
+           notable exception that you get a newline with %n instead of \n.
+
+           E.g, format:&quot;The author of %h was %an, %ar%nThe title was &gt;&gt;%s&lt;&lt;%n&quot;
+           would show something like this:
+
+               The author of fe6e0ee was Junio C Hamano, 23 hours ago
+               The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff input.&lt;&lt;
+
+           The placeholders are:
+
+           &#183;    %H: commit hash
+
+           &#183;    %h: abbreviated commit hash
+
+           &#183;    %T: tree hash
+
+           &#183;    %t: abbreviated tree hash
+
+           &#183;    %P: parent hashes
+
+           &#183;    %p: abbreviated parent hashes
+
+           &#183;    %an: author name
+
+           &#183;    %aN: author name (respecting .mailmap, see git-shortlog(1) or
+               git-blame(1))
+
+           &#183;    %ae: author email
+
+           &#183;    %aE: author email (respecting .mailmap, see git-shortlog(1) or
+               git-blame(1))
+
+           &#183;    %ad: author date (format respects --date= option)
+
+           &#183;    %aD: author date, RFC2822 style
+
+           &#183;    %ar: author date, relative
+
+           &#183;    %at: author date, UNIX timestamp
+
+           &#183;    %ai: author date, ISO 8601 format
+
+           &#183;    %cn: committer name
+
+           &#183;    %cN: committer name (respecting .mailmap, see git-shortlog(1) or
+               git-blame(1))
+
+           &#183;    %ce: committer email
+
+           &#183;    %cE: committer email (respecting .mailmap, see git-shortlog(1)
+               or git-blame(1))
+
+           &#183;    %cd: committer date
+
+           &#183;    %cD: committer date, RFC2822 style
+
+           &#183;    %cr: committer date, relative
+
+           &#183;    %ct: committer date, UNIX timestamp
+
+           &#183;    %ci: committer date, ISO 8601 format
+
+           &#183;    %d: ref names, like the --decorate option of git-log(1)
+
+           &#183;    %e: encoding
+
+           &#183;    %s: subject
+
+           &#183;    %f: sanitized subject line, suitable for a filename
+
+           &#183;    %b: body
+
+           &#183;    %B: raw body (unwrapped subject and body)
+
+           &#183;    %N: commit notes
+
+           &#183;    %gD: reflog selector, e.g., refs/stash@{1}
+
+           &#183;    %gd: shortened reflog selector, e.g., stash@{1}
+
+           &#183;    %gn: reflog identity name
+
+           &#183;    %gN: reflog identity name (respecting .mailmap, see git-
+               shortlog(1) or git-blame(1))
+&#12;           &#183;    %ge: reflog identity email
+
+           &#183;    %gE: reflog identity email (respecting .mailmap, see git-
+               shortlog(1) or git-blame(1))
+
+           &#183;    %gs: reflog subject
+
+           &#183;    %Cred: switch color to red
+
+           &#183;    %Cgreen: switch color to green
+
+           &#183;    %Cblue: switch color to blue
+
+           &#183;    %Creset: reset color
+
+           &#183;    %C(...): color specification, as described in color.branch.*
+               config option
+
+           &#183;    %m: left, right or boundary mark
+
+           &#183;    %n: newline
+
+           &#183;    %%: a raw %
+
+           &#183;    %x00: print a byte from a hex code
+
+           &#183;    %w([&lt;w&gt;[,&lt;i1&gt;[,&lt;i2&gt;]]]): switch line wrapping, like the -w
+               option of git-shortlog(1).
+
+           Note
+           Some placeholders may depend on other options given to the revision
+           traversal engine. For example, the %g* reflog options will insert an
+           empty string unless we are traversing reflog entries (e.g., by git
+           log -g). The %d placeholder will use the &quot;short&quot; decoration format if
+           --decorate was not already provided on the command line.
+
+       If you add a + (plus sign) after % of a placeholder, a line-feed is
+       inserted immediately before the expansion if and only if the placeholder
+       expands to a non-empty string.
+
+       If you add a - (minus sign) after % of a placeholder, line-feeds that
+       immediately precede the expansion are deleted if and only if the
+       placeholder expands to an empty string.
+
+       If you add a ` ` (space) after % of a placeholder, a space is inserted
+       immediately before the expansion if and only if the placeholder expands
+       to a non-empty string.
+
+       &#183;    tformat:
+
+           The tformat: format works exactly like format:, except that it
+           provides &quot;terminator&quot; semantics instead of &quot;separator&quot; semantics. In
+           other words, each commit has the message terminator character
+           (usually a newline) appended, rather than a separator placed between
+           entries. This means that the final entry of a single-line format will
+           be properly terminated with a new line, just as the &quot;oneline&quot; format
+           does. For example:
+
+               $ git log -2 --pretty=format:%h 4da45bef \
+                 | perl -pe &apos;$_ .= &quot; -- NO NEWLINE\n&quot; unless /\n/&apos;
+               4da45be
+               7134973 -- NO NEWLINE
+
+               $ git log -2 --pretty=tformat:%h 4da45bef \
+                 | perl -pe &apos;$_ .= &quot; -- NO NEWLINE\n&quot; unless /\n/&apos;
+               4da45be
+               7134973
+
+           In addition, any unrecognized string that has a % in it is
+           interpreted as if it has tformat: in front of it. For example, these
+           two are equivalent:
+
+               $ git log -2 --pretty=tformat:%h 4da45bef
+               $ git log -2 --pretty=%h 4da45bef
+
+
+EXAMPLES
+       git show v1.0.0
+           Shows the tag v1.0.0, along with the object the tags points at.
+
+       git show v1.0.0^{tree}
+           Shows the tree pointed to by the tag v1.0.0.
+
+       git show -s --format=%s v1.0.0^{commit}
+           Shows the subject of the commit pointed to by the tag v1.0.0.
+
+       git show next~10:Documentation/README
+           Shows the contents of the file Documentation/README as they were
+           current in the 10th last commit of the branch next.
+
+       git show master:Makefile master:t/Makefile
+           Concatenates the contents of said Makefiles in the head of the branch
+           master.
+
+DISCUSSION
+       At the core level, git is character encoding agnostic.
+
+       &#183;   The pathnames recorded in the index and in the tree objects are
+           treated as uninterpreted sequences of non-NUL bytes. What readdir(2)
+           returns are what are recorded and compared with the data git keeps
+           track of, which in turn are expected to be what lstat(2) and creat(2)
+           accepts. There is no such thing as pathname encoding translation.
+
+       &#183;   The contents of the blob objects are uninterpreted sequences of
+           bytes. There is no encoding translation at the core level.
+
+       &#183;   The commit log messages are uninterpreted sequences of non-NUL bytes.
+
+       Although we encourage that the commit log messages are encoded in UTF-8,
+       both the core and git Porcelain are designed not to force UTF-8 on
+       projects. If all participants of a particular project find it more
+       convenient to use legacy encodings, git does not forbid it. However,
+       there are a few things to keep in mind.
+
+        1.  git commit and git commit-tree issues a warning if the commit log
+           message given to it does not look like a valid UTF-8 string, unless
+           you explicitly say your project uses a legacy encoding. The way to
+           say this is to have i18n.commitencoding in .git/config file, like
+           this:
+
+               [i18n]
+                       commitencoding = ISO-8859-1
+
+           Commit objects created with the above setting record the value of
+           i18n.commitencoding in its encoding header. This is to help other
+           people who look at them later. Lack of this header implies that the
+           commit log message is encoded in UTF-8.
+
+        2.  git log, git show, git blame and friends look at the encoding header
+           of a commit object, and try to re-code the log message into UTF-8
+           unless otherwise specified. You can specify the desired output
+           encoding with i18n.logoutputencoding in .git/config file, like this:
+
+               [i18n]
+                       logoutputencoding = ISO-8859-1
+
+           If you do not have this configuration variable, the value of
+           i18n.commitencoding is used instead.
+
+       Note that we deliberately chose not to re-code the commit log message
+       when a commit is made to force UTF-8 at the commit object level, because
+       re-coding to UTF-8 is not necessarily a reversible operation.
+
+GIT
+       Part of the git(1) suite
+
+
+
+Git 1.7.10.4                       11/24/2012                        GIT-SHOW(1)
+
+</pre></body></html>

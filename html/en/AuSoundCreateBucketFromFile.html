@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSoundCreateBucketFromFile - create a bucket and initialize its contents.</title></head>
+<body><pre>
+
+AuSoundCreateBucketFromFile(3)                    AuSoundCreateBucketFromFile(3)
+
+
+
+Name
+       AuSoundCreateBucketFromFile  -  create  a  bucket and initialize its con&#8208;
+       tents.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+       #include &lt;audio/soundlib.h&gt;
+
+       AuBucketID    AuSoundCreateBucketFromFile(server,    filename,    access,
+       attributes, status)
+           AuServer *server;
+           char *filename;
+           AuUint32 access;
+           AuBucketAttributes **attributes; /* RETURN */
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       filename  Specifies the name of the file.
+
+       access    Specifies the access restrictions the bucket should have.
+
+       attributes
+                 If non-NUll, returns the attributes of the created bucket.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSoundCreateBucketFromFile creates a bucket, initializing  the  contents
+       with the audio data from filename, and returns the bucket ID or AuNone if
+       there was error.
+
+Errors
+       AuBadValue, AuBadLength, AuBadAlloc.
+
+See Also
+       AuSoundCreateBucketFromData.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+soundlib                              1.9.3       AuSoundCreateBucketFromFile(3)
+
+</pre></body></html>

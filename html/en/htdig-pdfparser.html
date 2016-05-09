@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htdig-pdfparser - parse a PDF document (wrapper script for htdig)</title></head>
+<body><pre>
+
+htdig-pdfparser(1)                                            htdig-pdfparser(1)
+
+
+
+NAME
+       htdig-pdfparser - parse a PDF document (wrapper script for htdig)
+
+SYNOPSIS
+       htdig-pdfparser
+
+DESCRIPTION
+       This  script  acts  as  a wrapper script for the htdig program. The exact
+       program that htdig uses to search in pdf documents for index  words,  can
+       be  set  in  the  htdig  config  file.  Set  the  program  by  using  the
+       debian_pdf_parser directive.
+
+OPTIONS
+       acrobat
+              Use the acroread utility to parse PDF documents
+
+       xpdf   Use the pstotext utility, part of the xpdf package, to  parse  PDF
+              documents
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+SEE ALSO
+       Please   refer   to   the   HTML   pages   (in   the  htdig-doc  package)
+       /usr/share/doc/htdig-doc/html/index.html and the  manual  pages  htdig(1)
+       for a detailed description of ht://Dig and its commands.
+
+AUTHOR
+       Stijn de Bekker &lt;stijn@debian.org&gt;
+
+
+
+                                17 February 2002              htdig-pdfparser(1)
+
+</pre></body></html>

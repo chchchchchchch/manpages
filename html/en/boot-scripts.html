@@ -1,0 +1,161 @@
+<html>
+<head><meta charset=utf-8/>
+<title>boot-scripts - general description of boot sequence</title></head>
+<body><pre>
+
+BOOT(7)                     Linux Programmer&apos;s Manual                    BOOT(7)
+
+
+
+NAME
+       boot-scripts - general description of boot sequence
+
+DESCRIPTION
+       The  boot  sequence  varies  in  details among systems but can be roughly
+       divided to the following steps: (i) hardware boot, (ii) operating  system
+       (OS)  loader,  (iii)  kernel  startup,  (iv)  init  and inittab, (v) boot
+       scripts.  We will describe each of these in more detail below.
+
+   Hardware-boot
+       After power-on or hard reset, control is given to  a  program  stored  on
+       read-only memory (normally PROM).  In PC we usually call this program the
+       BIOS.
+
+       This program normally makes a basic self-test of the machine and accesses
+       nonvolatile  memory to read further parameters.  This memory in the PC is
+       battery-backed CMOS memory, so most people  refer  to  it  as  the  CMOS,
+       although outside of the PC world, it is usually called nvram (nonvolatile
+       ram).
+
+       The parameters stored in the nvram vary between systems, but as  a  mini&#8208;
+       mum,  the  hardware  boot program should know what is the boot device, or
+       which devices to probe as possible boot devices.
+
+       Then the hardware boot stage accesses  the  boot  device,  loads  the  OS
+       Loader,  which  is  located  on  a fixed position on the boot device, and
+       transfers control to it.
+
+       Note:  We do not cover here booting from  network.   Those  who  want  to
+              investigate  this  subject  may want to research: DHCP, TFTP, PXE,
+              Etherboot.
+
+   OS Loader
+       In PC, the OS Loader is located in the first sector of the boot device  -
+       this is the MBR (Master Boot Record).
+
+       In  most systems, this primary loader is very limited due to various con&#8208;
+       straints.  Even on non-PC systems there are some limitations to the  size
+       and complexity of this loader, but the size limitation of the PC MBR (512
+       bytes including the  partition  table)  makes  it  almost  impossible  to
+       squeeze a full OS Loader into it.
+
+       Therefore,  most  operating  systems  make the primary loader call a sec&#8208;
+       ondary OS loader which may be located on a specified disk partition.
+
+       In Linux the OS loader is normally lilo(8) or grub(8).  Both of them  may
+       install  either  as secondary loaders (where the DOS installed MBR points
+       to them), or as a two part loader where they provide special MBR contain&#8208;
+       ing  the  bootstrap  code  to load the second part of the loader from the
+       root partition.
+
+       The main job of the OS Loader is to locate the kernel on the  disk,  load
+       it and run it.  Most OS loaders allow interactive use, to enable specifi&#8208;
+       cation of alternative kernel (maybe a backup in case  the  last  compiled
+       one isn&apos;t functioning) and to pass optional parameters to the kernel.
+
+   Kernel Startup
+       When  the  kernel  is loaded, it initializes the devices (via their driv&#8208;
+       ers), starts the swapper (it is a &quot;kernel process&quot;, called kswapd in mod&#8208;
+       ern Linux kernels), and mounts the root file system (/).
+
+       Some  of  the parameters that may be passed to the kernel relate to these
+       activities (e.g: You can override the default  root  file  system).   For
+       further information on Linux kernel parameters read bootparam(7).
+
+       Only  then the kernel creates the first (user land) process which is num&#8208;
+       bered 1.  This process  executes  the  program  /sbin/init,  passing  any
+       parameters that weren&apos;t handled by the kernel already.
+
+   init and inittab
+       When  init  starts  it reads /etc/inittab for further instructions.  This
+       file defines what should be run in different run-levels.
+
+       This gives the system administrator an easy management scheme, where each
+       run-level is associated with a set of services (e.g, S is single-user, on
+       2 most network services start).  The administrator may change the current
+       run-level via init(8) and query the current run-level via runlevel(8).
+
+       However,  since  it  is  not  convenient to manage individual services by
+       editing this file, inittab only bootstraps a set of scripts that actually
+       start/stop the individual services.
+
+   Boot Scripts
+       Note:  The following description applies to System V release 4-based sys&#8208;
+              tems,  which  currently  covers  most  commercial   UNIX   systems
+              (Solaris, HP-UX, Irix, Tru64) as well as the major Linux distribu&#8208;
+              tions (Red Hat, Debian, Mandriva,  SUSE,  Ubuntu).   Some  systems
+              (Slackware  Linux,  FreeBSD,  OpenBSD)  have  a somewhat different
+              scheme of boot scripts.
+
+       For each managed service (mail, nfs server, cron, etc.) there is a single
+       startup  script located in a specific directory (/etc/init.d in most ver&#8208;
+       sions of Linux).  Each of these scripts accepts as a single argument  the
+       word  &quot;start&quot;  --  causing it to start the service, or the word &quot;stop&quot; --
+       causing it to stop the service.  The script may optionally  accept  other
+       &quot;convenience&quot;  parameters  (e.g: &quot;restart&quot;, to stop and then start, &quot;sta&#8208;
+       tus&quot; do display the service status).  Running the script without  parame&#8208;
+       ters displays the possible arguments.
+
+   Sequencing Directories
+       To  make  specific  scripts start/stop at specific run-levels and in spe&#8208;
+       cific order, there are sequencing directories.   These  are  normally  in
+       /etc/rc[0-6S].d.   In  each of these directories there are links (usually
+       symbolic) to the scripts in the /etc/init.d directory.
+
+       A primary script (usually /etc/rc) is called from  inittab(5)  and  calls
+       the  services  scripts  via the links in the sequencing directories.  All
+       links with names that begin with &apos;S&apos; are being called with  the  argument
+       &quot;start&quot;  (thereby starting the service).  All links with names that begin
+       with &apos;K&apos; are being called with the argument &quot;stop&quot; (thereby stopping  the
+       service).
+
+       To  define  the starting or stopping order within the same run-level, the
+       names of the links  contain  order-numbers.   Also,  to  make  the  names
+       clearer,  they  usually  end  with the name of the service they refer to.
+       Example: the link /etc/rc2.d/S80sendmail starts the sendmail  service  on
+       runlevel  2.   This  happens after /etc/rc2.d/S12syslog is run but before
+       /etc/rc2.d/S90xfs is run.
+
+       To manage the boot order and run-levels, we have to manage  these  links.
+       However,  on  many  versions  of Linux, there are tools to help with this
+       task (e.g: chkconfig(8)).
+
+   Boot Configuration
+       Usually the daemons started may optionally receive  command-line  options
+       and  parameters.   To allow system administrators to change these parame&#8208;
+       ters without editing the boot scripts themselves, configuration files are
+       used.   These  are located in a specific directory (/etc/sysconfig on Red
+       Hat systems) and are used by the boot scripts.
+
+       In older UNIX systems, these files  contained  the  actual  command  line
+       options for the daemons, but in modern Linux systems (and also in HP-UX),
+       these  files  just  contain  shell  variables.   The  boot   scripts   in
+       /etc/init.d  source  the  configuration  files, and then use the variable
+       values.
+
+FILES
+       /etc/init.d/, /etc/rc[S0-6].d/, /etc/sysconfig/
+
+SEE ALSO
+       inittab(5), bootparam(7), init(8), runlevel(8), shutdown(8)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-09-19                            BOOT(7)
+
+</pre></body></html>

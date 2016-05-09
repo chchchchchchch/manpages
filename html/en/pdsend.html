@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdsend - send messages to pd on this or a remote machine</title></head>
+<body><pre>
+
+pdsend(1)                                                              pdsend(1)
+
+
+
+NAME
+       pdsend - send messages to pd on this or a remote machine
+
+SYNOPSIS
+       pdsend port-number [hostname] [udp|tcp]
+
+DESCRIPTION
+       Pdsend  sends  messages  to  pd(1), via a socket conection, from pdsend&apos;s
+       standard input.  This input can be any stream of Pd messages separated by
+       semicolons.   This is probably the easiest way to control pd from another
+       application.  The protocol used is easy to implement and is called FUDI.
+
+       The port number should agree with  the  port  number  of  a  &quot;netreceive&quot;
+       object  within  pd.   The hostname is &quot;localhost&quot; by default and can be a
+       domain name or an IP address.  The protocol is  &quot;tcp&quot;  by  default;  this
+       does  a  handshake  to guarantee that all messages arrive complete and in
+       their correct order; if you are sending  messages  locally  or  point-to-
+       point you can often get away with the faster udp protocol instead.
+
+       You can also use this to talk to a Max &quot;pdnetreceive&quot; object or even just
+       a &quot;pdreceive&quot; in another shell.  If you&apos;re writing another program you&apos;re
+       welcome  to  just grab the sources for pdsend/pdreceive and adapt them to
+       your own ends; they&apos;re part of the Pd distribution.
+
+SEE ALSO
+       pd(1), pdreceive(1)
+
+
+
+GNU                                1996 Mar 20                         pdsend(1)
+
+</pre></body></html>

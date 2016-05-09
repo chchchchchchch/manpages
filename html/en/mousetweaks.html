@@ -1,0 +1,85 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mousetweaks - Accessibility enhancements for pointing devices</title></head>
+<body><pre>
+
+mousetweaks(1)                                                    mousetweaks(1)
+
+
+
+NAME
+       mousetweaks - Accessibility enhancements for pointing devices
+
+SYNOPSIS
+       mousetweaks  [--dwell]  [--ssc]  [--dwell-time=FLOAT]  [--ssc-time=FLOAT]
+       [-m|--dwell-mode=STRING] [-c|--show-ctw] [-t|--threshold=INT] [-g|--geom&#8208;
+       etry] [-s|--shutdown] [--daemonize] [-?|--help]
+
+DESCRIPTION
+       mousetweaks  is  a  collection of accessibility enhancements for pointing
+       devices. This manual page describes the mousetweaks daemon.
+
+OPTIONS
+       --dwell
+              Automatically perform mouse clicks without using a  physical  but&#8208;
+              ton.
+
+       --ssc  Trigger  the  secondary mouse button when the primary mouse button
+              is held down for a specified amount of time.
+
+       --dwell-time=FLOAT
+              Time to keep the pointer motionless before a dwell click  is  per&#8208;
+              formed.  Range: 0.2 - 3.0 seconds.
+
+       --ssc-time=FLOAT
+              Time to hold the primary mouse button before a simulated secondary
+              click is performed. Range: 0.5 - 3.0 seconds.
+
+       -m, --dwell-mode=STRING
+              Select a dwell mode. Available options: window - Select the  click
+              type from a window or a panel applet.  gesture - Perform different
+              clicks by moving in different directions.
+
+       -c, --show-ctw
+              Show the  click-type  window.  Only  useful  in  combination  with
+              --dwell-mode=window.
+
+       -t, --threshold=INT
+              Ignore small pointer movements. Range: 0 - 30 pixels.
+
+       -g, --geometry
+              Size  and  position of the click-type window. Expects a standard X
+              Window System geometry string. ie. WIDTHxHEIGHT+X+Y
+
+       -s, --shutdown
+              Stop the mousetweaks daemon.
+
+       --daemonize
+              Start mousetweaks in the background, ie. spawn a child process.
+
+       --login
+              Start mousetweaks in login mode. Login  mode  enables  workarounds
+              specific to GDM. Currently unused.
+
+FILES
+       ~/.mousetweaks.pid
+              The daemon creates a lock file in the users home directory to keep
+              track of its status.
+
+BUGS
+       Report bugs to &lt;http://bugzilla.gnome.org/&gt; &#10216;http://bugzilla.gnome.org/&#10217;
+&#12;AUTHORS
+       mousetweaks was written by Gerd Kohlberger. This manual page was  written
+       by Francesco Fumanti.
+
+LICENSE
+       Licenced under the GNU General Public License v3 or later.
+
+SEE ALSO
+       dwell-click-applet(1), pointer-capture-applet(1)
+
+
+
+                                                                  mousetweaks(1)
+
+</pre></body></html>

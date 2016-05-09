@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cjet - converts HP PCL to Canon CaPSL format</title></head>
+<body><pre>
+
+CJET(1)                                                                  CJET(1)
+
+
+
+NAME
+       cjet - converts HP PCL to Canon CaPSL format
+
+SYNOPSIS
+       cjet [options]&lt;input.pcl&gt;output
+
+DESCRIPTION
+       This  manual  page  documents briefly the cjet command.  This manual page
+       was written for the Debian distribution because the original program does
+       not have a manual page.
+
+       cjet  converts  the  common  HP  PCL page description language to Canon&apos;s
+       CaPSL, which was used in the mid-1990s by some Canon laser printers.   It
+       is  normally  used  as part of a printer filter script, like the Foomatic
+       system.
+
+OPTIONS
+       -h     Show summary of options.
+
+       -f     Use full paint mode instead of partial paint mode.  This  requires
+              the printer to have at least 1.5 MB of memory to work correctly.
+
+       -p     Ignore  paper  size commands.  Useful for printing files formatted
+              for paper size X on printers with paper size Y.
+
+       -q     Quiet mode. Suppresses all warning messages.
+
+       -x X   Shift output on paper by X dots horizontally. Positive values of X
+              shift  to  the right; negative values to the left.  Dots are 1/300
+              inch (0.085 mm).
+
+       -y Y   Shift output on paper by Y dots vertically. Positive values  of  Y
+              shift downwards; negative values shift upwards.
+
+SEE ALSO
+       /usr/share/doc/printer-driver-cjet/README
+
+AUTHOR
+       This  manual  page  was  written  by Chris Lawrence &lt;lawrencc@debian.org&gt;
+       based on the original README file by Michael  Huijsmans  for  the  Debian
+       project (but may be used by others).
+
+
+
+                                  July 2, 2003                           CJET(1)
+
+</pre></body></html>

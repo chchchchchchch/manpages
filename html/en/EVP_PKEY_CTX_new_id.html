@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>EVP_PKEY_CTX_new, EVP_PKEY_CTX_new_id, EVP_PKEY_CTX_dup, EVP_PKEY_CTX_free - public key algorithm context functions.</title></head>
+<body><pre>
+
+EVP_PKEY_CTX_new(3SSL)               OpenSSL              EVP_PKEY_CTX_new(3SSL)
+
+
+
+NAME
+       EVP_PKEY_CTX_new, EVP_PKEY_CTX_new_id, EVP_PKEY_CTX_dup,
+       EVP_PKEY_CTX_free - public key algorithm context functions.
+
+SYNOPSIS
+        #include &lt;openssl/evp.h&gt;
+
+        EVP_PKEY_CTX *EVP_PKEY_CTX_new(EVP_PKEY *pkey, ENGINE *e);
+        EVP_PKEY_CTX *EVP_PKEY_CTX_new_id(int id, ENGINE *e);
+        EVP_PKEY_CTX *EVP_PKEY_CTX_dup(EVP_PKEY_CTX *ctx);
+        void EVP_PKEY_CTX_free(EVP_PKEY_CTX *ctx);
+
+DESCRIPTION
+       The EVP_PKEY_CTX_new() function allocates public key algorithm context
+       using the algorithm specified in pkey and ENGINE e.
+
+       The EVP_PKEY_CTX_new_id() function allocates public key algorithm context
+       using the algorithm specified by id and ENGINE e. It is normally used
+       when no EVP_PKEY structure is associated with the operations, for example
+       during parameter generation of key genration for some algorithms.
+
+       EVP_PKEY_CTX_dup() duplicates the context ctx.
+
+       EVP_PKEY_CTX_free() frees up the context ctx.
+
+NOTES
+       The EVP_PKEY_CTX structure is an opaque public key algorithm context used
+       by the OpenSSL high level public key API. Contexts MUST NOT be shared
+       between threads: that is it is not permissible to use the same context
+       simultaneously in two threads.
+
+RETURN VALUES
+       EVP_PKEY_CTX_new(), EVP_PKEY_CTX_new_id(), EVP_PKEY_CTX_dup() returns
+       either the newly allocated EVP_PKEY_CTX structure of NULL if an error
+       occurred.
+
+       EVP_PKEY_CTX_free() does not return a value.
+
+SEE ALSO
+       EVP_PKEY_new(3)
+
+HISTORY
+       These functions were first added to OpenSSL 1.0.0.
+
+
+
+1.0.1e                             2013-02-11             EVP_PKEY_CTX_new(3SSL)
+
+</pre></body></html>

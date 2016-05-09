@@ -1,0 +1,226 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-genesys - SANE backend for GL646, GL841, GL843, GL847 and GL124 based USB flatbed scanners</title></head>
+<body><pre>
+
+sane-genesys(5)           SANE Scanner Access Now Easy           sane-genesys(5)
+
+
+
+NAME
+       sane-genesys  -  SANE  backend  for  GL646, GL841, GL843, GL847 and GL124
+       based USB flatbed scanners
+
+DESCRIPTION
+       The sane-genesys library implements a  SANE  (Scanner  Access  Now  Easy)
+       backend that provides access to USB flatbed scanners based on the Genesys
+       GL646, GL841 and GL847 chips.  At present,  the  following  scanners  are
+       known to work with this backend:
+
+              Canon LiDE 35/40/50/60/100/110/200/210
+              Hewlett-Packard HP2300C/HP3670/HP3690
+              Medion MD5345/MD6228/MD6274
+              Panasonic KV-SS080
+              Plustek OpticBook 3600
+              Pentax DSmobile 600
+              Syscan/Ambir DocketPORT 467/485/487/665/685
+              Visioneer  OneTouch  7100/Strobe XP100 (rev3)/XP200/XP300/Roadwar&#8208;
+              rior
+              Xerox Travel Scanner 100
+
+
+       This is stable software for supported models. But  if  you  test  new  or
+       untested scanners, keep your hand at the scanner&apos;s plug and unplug it, if
+       the head bumps at the end of the scan area.
+
+       If you own a scanner other than the ones listed  above  that  works  with
+       this  backend,  please  let  me  know this by sending the scanner&apos;s exact
+       model  name  and   the   USB   vendor   and   device   ids   (e.g.   from
+       /proc/bus/usb/devices,  sane-find-scanner  or  syslog)  to the sane-devel
+       mailing list. Even if the scanner&apos;s name is only slightly different  from
+       the models mentioned above, please let me know.
+
+       If you own a scanner that isn&apos;t detected by the genesys backend but has a
+       GL646, GL841, GL843 or GL847 chipset, you can try to add it to the  back&#8208;
+       end.
+
+CALIBRATION
+       To  give  correct image quality, sheet fed scanners need to be calibrated
+       using the calibration sheet sold with the scanner. To do calibration, you
+       must  insert  this  target in the feeder then start calibration either by
+       passing the --calibrate option to scanimage or by clicking on the  avail&#8208;
+       able  &apos;calibrate&apos;  button  in the &apos;advanced options&apos; in a graphical fron&#8208;
+       tend. The result of the calibration is stored  in  a  file  in  the  home
+       directory  of  the  user  doing  it.   If you plug the scanner in another
+       machine or use it with another  account,  calibration  will  have  to  be
+       redone.
+
+
+EXTRAS SCAN OPTIONS
+       --lamp-off-time number
+                      The  lamp will be turned off after the given time (in min&#8208;
+              utes). A value of 0 means that the lamp won&apos;t be turned off.
+
+       --threshold percent
+                   0..100% (in steps of 1). Select minimum brightness to  get  a
+              white  point.  Pixels  whith  brightness  below that value will be
+              scanned as black.
+
+       --disable-interpolation yes|no
+                      When using high resolutions where the  horizontal  resolu&#8208;
+              tion  is  smaller  than  vertical  resolution, data is expanded by
+              software to preserve picture geometry. This can be disbled by this
+              option to get real scanned data.
+
+       --color-filter None|Red|Green|Blue
+                      When  using  gray  or lineart this option selects the used
+              color. Using a color filter will give a monochrome scan. CIS based
+              scanners can to true gray when no filter (None value) is selected.
+
+
+       Additionally,  several  &apos;software&apos;  options  are  exposed by the backend.
+       These are reimplementations of features provided natively by larger scan&#8208;
+       ners,  but running on the host computer. This enables smaller machines to
+       have similar capabilites. Please note that these  features  are  somewhat
+       simplistic,  and  may  not perform as well as the native implementations.
+       Note also that these features all  require  that  the  driver  cache  the
+       entire  image in memory. This will almost certainly result in a reduction
+       of scanning speed.
+
+       --swcrop
+                   Requests the driver to detect the extremities  of  the  paper
+              within the larger image, and crop the empty edges.
+
+       --swdeskew
+                   Requests  the  driver  to  detect  the  rotation of the paper
+              within the larger image, and counter the rotation.
+
+       --swdespeck --despeck X
+                   Requests the driver to find and remove dots of X diameter  or
+              smaller  from  the image, and fill the space with the average sur&#8208;
+              rounding color.
+
+
+SYSTEM ISSUES
+       This backend needs libusb-0.1.6 or later installed, and hasn&apos;t tested  in
+       other  configuration  than  a  linux  kernel 2.6.9 or higher. However, it
+       should work any system with libusb where the SANE  package  can  be  com&#8208;
+       piled.  For  setting  permissions  and  general  USB  information look at
+       sane-usb(5).
+
+
+
+CONFIGURATION
+       The contents of the genesys.conf file is a list of usb  lines  containing
+       vendor and product ids that correspond to USB scanners. The file can also
+       contain option lines.  Empty lines and lines starting with  a  hash  mark
+       (#)  are  ignored.   The scanners are autodetected by usb vendor_id prod&#8208;
+       uct_id statements which are already included  into  genesys.conf.   &quot;ven&#8208;
+       dor_id&quot;  and &quot;product_id&quot; are hexadecimal numbers that identify the scan&#8208;
+       ner.
+
+FILES
+       /etc/sane.d/genesys.conf
+              The backend configuration file (see also description of  SANE_CON&#8208;
+              FIG_DIR below).
+
+       /usr/lib/arch_triplet/sane/libsane-genesys.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-genesys.so
+              The  shared  library implementing this backend (present on systems
+              that support dynamic loading).
+
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This environment variable specifies the list of  directories  that
+              may  contain  the configuration file.  Under UNIX, the directories
+              are separated by a colon (`:&apos;), under OS/2, they are separated  by
+              a  semi-colon  (`;&apos;).  If this variable is not set, the configura&#8208;
+              tion file is searched in two default directories: first, the  cur&#8208;
+              rent  working  directory  (&quot;.&quot;)  and  then in /etc/sane.d.  If the
+              value of the environment variable ends with the directory  separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly specified directories.  For example, setting  SANE_CON&#8208;
+              FIG_DIR  to  &quot;/tmp/config:&quot;  would result in directories &quot;tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_GENESYS
+              If the library was compiled with debug support enabled, this envi&#8208;
+              ronment  variable  controls  the  debug  level  for  this backend.
+              Higher debug levels increase the verbosity of the output.  If  the
+              debug  level  is  set  to  1  or higher, some debug options become
+              available that are normally hidden. Handle them  with  care.  This
+              will print messages related to core genesys functions.
+
+       SANE_DEBUG_GENESYS_LOW
+              This  environment  variable controls the debug level for low level
+              functions common to all genesys ASICs.
+
+       SANE_DEBUG_GENESYS_GL646
+              This environment variable controls the debug level  for  the  spe&#8208;
+              cific GL646 code part.
+
+       SANE_DEBUG_GENESYS_GL841
+              This  environment  variable  controls the debug level for the spe&#8208;
+              cific GL841 code part.
+
+       SANE_DEBUG_GENESYS_GL843
+              This environment variable controls the debug level  for  the  spe&#8208;
+              cific GL843 code part.
+
+       SANE_DEBUG_GENESYS_GL847
+              This  environment  variable  controls the debug level for the spe&#8208;
+              cific GL847 code part.
+
+       SANE_DEBUG_GENESYS_GL124
+              This environment variable controls the debug level  for  the  spe&#8208;
+              cific GL124 code part.
+
+
+              Example (full and highly verbose output for gl646):
+              export SANE_DEBUG_GENESYS=255
+              export SANE_DEBUG_GENESYS_LOW=255
+              export SANE_DEBUG_GENESYS_GL646=255
+
+
+CREDITS
+       Jack  McGill  for  donating  several sheetfed and flatbed scanners, which
+       made possible to add support for them in the genesys backend:
+              Hewlett-Packard HP3670
+              Visioneer Strobe XP100 (rev3)/XP200/XP300/Roadwarrior
+              Canon LiDE 200
+              Pentax DSmobile 600
+              Syscan/Ambir DocketPORT 467/485/487/665/685
+              Xerox Travel Scanner 100
+
+       cncsolutions (http://www.cncsolutions.com.br) sponsored and supported the
+       work on the Panasonic KV-SS080.
+
+
+SEE ALSO
+       sane(7), sane-usb(5)
+&#12;
+
+AUTHOR
+       Oliver Rauch
+       Henning Meier-Geinitz &lt;henning@meier-geinitz.de&gt;
+       Gerhard Jaeger &lt;gerhard@gjaeger.de&gt;
+       St&#233;phane Voltz &lt;stef.dev@free.fr&gt;
+       Philipp Schmid &lt;philipp8288@web.de&gt;
+       Pierre Willenbrock &lt;pierre@pirsoft.dnsalias.org&gt;
+
+
+LIMITATIONS
+       Powersaving isn&apos;t implemented for gl646 based scanner.
+
+       This backend will be much slower if not using libusb-1.0. So be sure that
+       sane-backends is built with the --enable-libusb_1_0 option.
+
+
+BUGS
+       Currently no known bug.
+
+                                   26 Dec 2010                   sane-genesys(5)
+
+</pre></body></html>

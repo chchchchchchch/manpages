@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::URI::tv -- Returns a pattern for tv URIs.</title></head>
+<body><pre>
+
+Regexp::Common::URI::tvUser)Contributed Perl DocumenRegexp::Common::URI::tv(3pm)
+
+
+
+NAME
+       Regexp::Common::URI::tv -- Returns a pattern for tv URIs.
+
+SYNOPSIS
+           use Regexp::Common qw /URI/;
+
+           while (&lt;&gt;) {
+               /$RE{URI}{tv}/       and  print &quot;Contains a tv URI.\n&quot;;
+           }
+
+DESCRIPTION
+   $RE{URI}{tv}
+       Returns a pattern that recognizes TV uris as per an Internet draft
+       [DRAFT-URI-TV].
+
+       Under &quot;{-keep}&quot;, the following are returned:
+
+       $1  The entire URI.
+
+       $2  The scheme.
+
+       $3  The host.
+
+REFERENCES
+       [DRAFT-URI-TV]
+           Zigmond, D. and Vickers, M: Uniform Resource Identifiers for
+           Television Broadcasts. December 2000.
+
+       [RFC 2396]
+           Berners-Lee, Tim, Fielding, R., and Masinter, L.: Uniform Resource
+           Identifiers (URI): Generic Syntax. August 1998.
+
+SEE ALSO
+       Regexp::Common::URI for other supported URIs.
+
+AUTHOR
+       Damian Conway (damian@conway.org)
+
+MAINTAINANCE
+       This package is maintained by Abigail (regexp-common@abigail.be).
+
+BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2010-02-23       Regexp::Common::URI::tv(3pm)
+
+</pre></body></html>

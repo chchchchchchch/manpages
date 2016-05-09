@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AptPkg::Policy - APT package version policy class</title></head>
+<body><pre>
+
+AptPkg::Policy(3pm)    User Contributed Perl Documentation   AptPkg::Policy(3pm)
+
+
+
+NAME
+       AptPkg::Policy - APT package version policy class
+
+SYNOPSIS
+       use AptPkg::Policy;
+
+DESCRIPTION
+       The AptPkg::Policy module provides an interface to APT&apos;s package version
+       policy.
+
+   AptPkg::Policy
+       The AptPkg::Policy package implements the APT pkgPolicy class.
+
+       An instance of the AptPkg::Policy class may be fetched using the &quot;policy&quot;
+       method from an AptPkg::Cache object.
+
+       The following methods are implemented:
+
+       priority(PKG|FILE)
+           Return the pin priority for the given PKG (AptPkg::Cache::Package) or
+           FILE (AptPkg::Cache::PkgFile) object.
+
+       match(PKG)
+           Find the pinned version of PKG.  Returns an AptPkg::Cache::Version
+           object.
+
+       candidate(PKG)
+           Returns the installation candidate version for PKG.
+
+SEE ALSO
+       AptPkg::Cache(3pm), AptPkg(3pm).
+
+AUTHOR
+       Brendan O&apos;Dea &lt;bod@debian.org&gt;
+
+
+
+perl v5.14.2                       2012-03-16                AptPkg::Policy(3pm)
+
+</pre></body></html>

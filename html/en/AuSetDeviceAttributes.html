@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSetDeviceAttributes - set device attributes</title></head>
+<body><pre>
+
+AuSetDeviceAttributes(3)                                AuSetDeviceAttributes(3)
+
+
+
+Name
+       AuSetDeviceAttributes - set device attributes
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       void AuSetDeviceAttributes(server, device, valuemask, attributes, status)
+           AuServer *server;
+           AuDeviceID device;
+           AuMask valuemask;
+           AuDeviceAttributes *attributes;
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       device    Specifies the ID of the device.
+
+       valuemask Specifies  which  values in attributes to used.  This must be a
+                 bitwise inclusive OR of one or more of these constants: AuComp&#8208;
+                 CommonIDMask, AuCompCommonKindMask, AuCompCommonUseMask, AuCom&#8208;
+                 monFormatMask,    AuCommonNumTracksMask,    AuCommonAccessMask,
+                 AuCommonDescriptionMask, AuCompDeviceGainMask, or AuCompDevice&#8208;
+                 LineModeMask.
+
+       attributes
+                 Specifies the structure from which the values (as specified  by
+                 the value mask) are to be taken.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSetDeviceAttributes sets the attributes of device using only those val&#8208;
+       ues   in   attributes  specified  by  valuemask.   Attempting  to  change
+       attributes not marked as changable will fail with a AuBadValue error.
+
+Errors
+       AuBadDevice, AuBadLength, AuBadValue.
+
+See Also
+       AuGetDeviceAttributes.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - device attributes          1.9.3             AuSetDeviceAttributes(3)
+
+</pre></body></html>

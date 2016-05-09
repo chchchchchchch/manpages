@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gnome-screenshot - capture the screen, a window, or an user-defined area and save the snapshot image to a file.</title></head>
+<body><pre>
+
+GNOME-SCREENSHOT(1)                                          GNOME-SCREENSHOT(1)
+
+
+
+NAME
+       gnome-screenshot  - capture the screen, a window, or an user-defined area
+       and save the snapshot image to a file.
+
+SYNOPSIS
+       gnome-screenshot [ -w ]  [ -a ]  [ -b ]  [ -B ]  [ -d SECONDS   ]   [  -e
+       EFFECT  ]  [ -i ]  [ --display DISPLAY  ]
+
+DESCRIPTION
+       gnome-screenshot  is a GNOME utility for taking screenshots of the entire
+       screen, a window or an user-defined area of  the  screen,  with  optional
+       beautifying border effects.
+
+OPTIONS
+       -w, --window
+              Grab the current active window instead of the entire screen.
+
+       -a, --area
+              Grab an area of the screen instead of the entire screen.
+
+       -b, --include-border
+              Include the window border within the screenshot.
+
+       -B, --remove-border
+              Remove the window border from the screenshot.
+
+       -d, --delay=SECONDS,
+              Take the screenshot after the specified delay [in seconds].
+
+       -e, --effect=EFFECT,
+              Add an effect to the outside of the screenshot border.  EFFECT can
+              be ``shadow&apos;&apos; (adding drop shadow), ``border&apos;&apos; (adding rectangular
+              space  around the screenshot) or ``none&apos;&apos; (no effect).  Default is
+              ``none&apos;&apos;.
+
+       -i, --interactive
+              Interactively set options in a dialog.
+
+       --display=DISPLAY
+              X display to use.
+
+       -?, -h, --help
+              Show a summary of the available options.
+
+       In addition, the usual GTK+ and GNOME command line  options  apply.   See
+       the output of --help for details.
+
+SEE ALSO
+       gnome-options(7), gtk-options(7)
+
+AUTHOR
+       This  manual page was written by Christian Marillat &lt;marillat@debian.org&gt;
+       for the Debian GNU/Linux system (but may be used by others).
+
+       Updated by Theppitak Karoonboonyanan  &lt;thep@linux.thai.net&gt;,  Tom  Feiner
+       &lt;feiner.tom@gmail.com&gt; and Cosimo Cecchi &lt;cosimoc@gnome.org&gt;
+
+
+
+                                  June 28, 2009              GNOME-SCREENSHOT(1)
+
+</pre></body></html>

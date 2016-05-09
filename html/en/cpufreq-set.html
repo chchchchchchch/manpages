@@ -1,0 +1,72 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cpufreq-set - A small tool which allows to modify cpufreq settings.</title></head>
+<body><pre>
+
+cpufreq-set(1)                                                    cpufreq-set(1)
+
+
+
+NAME
+       cpufreq-set - A small tool which allows to modify cpufreq settings.
+
+SYNTAX
+       cpufreq-set [options]
+
+DESCRIPTION
+       cpufreq-set  allows you to modify cpufreq settings without having to type
+       e.g.  &quot;/sys/devices/system/cpu/cpu0/cpufreq/scaling_set_speed&quot;  all   the
+       time.
+
+OPTIONS
+       -c --cpu &lt;CPU&gt;
+              number of CPU where cpufreq settings shall be modified.
+
+       -d --min &lt;FREQ&gt;
+              new minimum CPU frequency the governor may select.
+
+       -u --max &lt;FREQ&gt;
+              new maximum CPU frequency the governor may select.
+
+       -g --governor &lt;GOV&gt;
+              new cpufreq governor.
+
+       -f --freq &lt;FREQ&gt;
+              specific  frequency  to  be set. Requires userspace governor to be
+              available and loaded.
+
+       -r --related
+              modify all hardware-related CPUs at the same time
+
+       -h --help
+              Prints out the help screen.
+
+REMARKS
+       Omitting the -c or --cpu argument is equivalent to setting it to zero.
+
+       The -f FREQ, --freq FREQ parameter cannot  be  combined  with  any  other
+       parameter except the -c CPU, --cpu CPU parameter.
+
+       FREQuencies can be passed in Hz, kHz (default), MHz, GHz, or THz by post&#8208;
+       fixing the value with the wanted unit name, without any space  (frequency
+       in kHz =^ Hz * 0.001 =^ MHz * 1000 =^ GHz * 1000000).
+
+       On Linux kernels up to 2.6.29, the -r or --related parameter is ignored.
+
+FILES
+       /sys/devices/system/cpu/cpu*/cpufreq/
+       /proc/cpufreq (deprecated)
+       /proc/sys/cpu/ (deprecated)
+
+AUTHORS
+       Dominik Brodowski &lt;linux@brodo.de&gt; - author
+       Mattia Dongili&lt;malattia@gmail.com&gt; - first autolibtoolization
+
+SEE ALSO
+       cpufreq-info(1), cpufreq-aperf(1)
+
+
+
+Mattia Dongili                         0.1                        cpufreq-set(1)
+
+</pre></body></html>

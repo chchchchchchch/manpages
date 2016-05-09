@@ -1,0 +1,120 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::Context - Pango object that stores global information used to control the itemization process</title></head>
+<body><pre>
+
+Pango::Context(3pm)    User Contributed Perl Documentation   Pango::Context(3pm)
+
+
+
+NAME
+       Pango::Context - Pango object that stores global information used to
+       control the itemization process
+
+HIERARCHY
+         Glib::Object
+         +----Pango::Context
+
+METHODS
+   direction = $context-&gt;get_base_dir
+   $context-&gt;set_base_dir ($direction)
+       &#183;   $direction (Pango::Direction)
+
+   gravity = $context-&gt;get_base_gravity
+       Since: pango 1.16
+
+   $context-&gt;set_base_gravity ($gravity)
+       &#183;   $gravity (Pango::Gravity)
+
+       Since: pango 1.16
+
+   fontdescription = $context-&gt;get_font_description
+   $context-&gt;set_font_description ($desc)
+       &#183;   $desc (Pango::FontDescription)
+
+   fontmap = $context-&gt;get_font_map
+       Since: pango 1.6
+
+   gravity = $context-&gt;get_gravity
+       Since: pango 1.16
+
+   gravityhint = $context-&gt;get_gravity_hint
+       Since: pango 1.16
+
+   $context-&gt;set_gravity_hint ($hint)
+       &#183;   $hint (Pango::GravityHint)
+
+       Since: pango 1.16
+
+   language = $context-&gt;get_language
+   $context-&gt;set_language ($language)
+       &#183;   $language (Pango::Language)
+
+   @families = $context-&gt;list_families
+   font = $context-&gt;load_font ($desc)
+       &#183;   $desc (Pango::FontDescription or undef)
+
+   fontset = $context-&gt;load_fontset ($desc, $language)
+       &#183;   $desc (Pango::FontDescription)
+
+       &#183;   $language (Pango::Language or undef)
+
+   matrix or undef = $context-&gt;get_matrix
+       Since: pango 1.6
+
+   $context-&gt;set_matrix ($matrix)
+       &#183;   $matrix (Pango::Matrix or undef)
+
+       Since: pango 1.6
+
+   fontmetrics = $context-&gt;get_metrics ($desc, $language)
+       &#183;   $desc (Pango::FontDescription)
+&#12;       &#183;   $language (Pango::Language or undef)
+
+ENUMS AND FLAGS
+   enum Pango::Direction
+       &#183;   &apos;ltr&apos; / &apos;PANGO_DIRECTION_LTR&apos;
+
+       &#183;   &apos;rtl&apos; / &apos;PANGO_DIRECTION_RTL&apos;
+
+       &#183;   &apos;ttb-ltr&apos; / &apos;PANGO_DIRECTION_TTB_LTR&apos;
+
+       &#183;   &apos;ttb-rtl&apos; / &apos;PANGO_DIRECTION_TTB_RTL&apos;
+
+       &#183;   &apos;weak-ltr&apos; / &apos;PANGO_DIRECTION_WEAK_LTR&apos;
+
+       &#183;   &apos;weak-rtl&apos; / &apos;PANGO_DIRECTION_WEAK_RTL&apos;
+
+       &#183;   &apos;neutral&apos; / &apos;PANGO_DIRECTION_NEUTRAL&apos;
+
+   enum Pango::Gravity
+       &#183;   &apos;south&apos; / &apos;PANGO_GRAVITY_SOUTH&apos;
+
+       &#183;   &apos;east&apos; / &apos;PANGO_GRAVITY_EAST&apos;
+
+       &#183;   &apos;north&apos; / &apos;PANGO_GRAVITY_NORTH&apos;
+
+       &#183;   &apos;west&apos; / &apos;PANGO_GRAVITY_WEST&apos;
+
+       &#183;   &apos;auto&apos; / &apos;PANGO_GRAVITY_AUTO&apos;
+
+   enum Pango::GravityHint
+       &#183;   &apos;natural&apos; / &apos;PANGO_GRAVITY_HINT_NATURAL&apos;
+
+       &#183;   &apos;strong&apos; / &apos;PANGO_GRAVITY_HINT_STRONG&apos;
+
+       &#183;   &apos;line&apos; / &apos;PANGO_GRAVITY_HINT_LINE&apos;
+
+SEE ALSO
+       Pango, Glib::Object
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15                Pango::Context(3pm)
+
+</pre></body></html>

@@ -1,0 +1,311 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pulse-daemon.conf - PulseAudio daemon configuration file</title></head>
+<body><pre>
+
+pulse-daemon.conf(5)                                        pulse-daemon.conf(5)
+
+
+
+NAME
+       pulse-daemon.conf - PulseAudio daemon configuration file
+
+SYNOPSIS
+       ~/.pulse/daemon.conf
+
+       /etc/pulse/daemon.conf
+
+DESCRIPTION
+       The  PulseAudio  sound  server reads configuration directives from a file
+       ~/.pulse/daemon.conf on startup and when that  file  doesn&apos;t  exist  from
+       /etc/pulse/daemon.conf. Please note that the server also reads a configu&#8208;
+       ration script on startup default.pa which also contains runtime  configu&#8208;
+       ration directives.
+
+       The  configuration  file is a simple collection of variable declarations.
+       If the configuration file parser encounters either ; or # it ignores  the
+       rest of the line until its end.
+
+       For  the  settings  that take a boolean argument the values true, yes, on
+       and 1 are equivalent, resp. false, no, off, 0.
+
+GENERAL DIRECTIVES
+       daemonize=  Daemonize after startup. Takes a boolean value,  defaults  to
+       no. The --daemonize command line option takes precedence.
+
+       fail=  Fail  to  start  up  if any of the directives in the configuration
+       script default.pa fail. Takes a boolean argument, defaults  to  yes.  The
+       --fail command line option takes precedence.
+
+       allow-module-loading=  Allow/disallow  module loading after startup. This
+       is a security feature that if dsabled makes sure that no further  modules
+       may  be  loaded into the PulseAudio server after startup completed. It is
+       recommended to disable this when system-instance is enabled. Please  note
+       that  certain  features  like automatic hot-plug support will not work if
+       this option is enabled. Takes a boolean argument, defaults  to  yes.  The
+       --disallow-module-loading command line option takes precedence.
+
+       allow-exit= Allow/disallow exit on user request. Defaults to yes.
+
+       resample-method=  The  resampling  algorithm to use. Use one of src-sinc-
+       best-quality, src-sinc-medium-quality, src-sinc-fastest,  src-zero-order-
+       hold,  src-linear, trivial, speex-float-N, speex-fixed-N, ffmpeg. See the
+       documentation of libsamplerate and speex for explanations of the  differ&#8208;
+       ent src- and speex- methods, respectively. The method trivial is the most
+       basic algorithm implemented. If you&apos;re tight on CPU consider using  this.
+       On  the other hand it has the worst quality of them all. The Speex resam&#8208;
+       plers take an integer quality setting in the  range  0..10  (bad...good).
+       They  exist in two flavours: fixed and float. The former uses fixed point
+       numbers, the latter relies on floating point  numbers.  On  most  desktop
+       CPUs  the  float  point  resampler  is  a  lot faster, and it also offers
+       slightly better quality. See the output of  dump-resample-methods  for  a
+       complete list of all available resamplers. Defaults to speex-float-3. The
+       --resample-method command line option takes precedence.  Note  that  some
+       modules overwrite or allow overwriting of the resampler to use.
+
+       enable-remixing= If disabled never upmix or downmix channels to different
+       channel maps. Instead, do a simple name-based matching only. Defaults  to
+       yes.
+
+       enable-lfe-remixing=  if  disabeld when upmixing or downmixing ignore LFE
+       channels. When this option is dsabled the output LFE  channel  will  only
+       get  a signal when an input LFE channel is available as well. If no input
+       LFE channel is available the output LFE channel will always be 0.  If  no
+       output  LFE channel is available the signal on the input LFE channel will
+       be ignored. Defaults to no.
+
+       use-pid-file=   Create   a   PID   file   in   the   runtime    directory
+       ($HOME/.pulse/*-runtime/pid).  If  this  is  enabled you may use commands
+       like --kill or --check. If you  are  planning  to  start  more  than  one
+       PulseAudio  process  per  user,  you  better disable this option since it
+       effectively  disables  multiple  instances.  Takes  a  boolean  argument,
+       defaults to yes. The --use-pid-file command line option takes precedence.
+
+       cpu-limit= If disabled do not install the CPU load limiter, even on plat&#8208;
+       forms where it is supported. This option is useful when debugging/profil&#8208;
+       ing  PulseAudio  to  disable  disturbing SIGXCPU signals. Takes a boolean
+       argument, defaults to no. The --no-cpu-limit command line argument  takes
+       precedence.
+
+       system-instance=  Run  the  daemon as system-wide instance, requires root
+       priviliges. Takes a boolean argument, defaults to no. The  --system  com&#8208;
+       mand line argument takes precedence.
+
+       local-server-type=  Please  don&apos;t  use  this option if you don&apos;t have to!
+       This option is currently only useful when you want D-Bus clients to use a
+       remote server. This option may be removed in future versions. If you only
+       want to run PulseAudio  in  the  system  mode,  use  the  system-instance
+       option.  This  option  takes one of user, system or none as the argument.
+       This is essentially a duplicate for the system-instance option. The  dif&#8208;
+       ference is the none option, which is useful when you want to use a remote
+       server with D-Bus clients. If both this and system-instance are  defined,
+       this option takes precedence. Defaults to whatever the system-instance is
+       set.
+
+       enable-shm= Enable data transfer via POSIX shared memory. Takes a boolean
+       argument,  defaults to yes. The --disable-shm command line argument takes
+       precedence.
+
+       shm-size-bytes= Sets the shared memory segment size for  the  daemon,  in
+       bytes. If left unspecified or is set to 0 it will default to some system-
+       specific default, usually 64 MiB. Please note that usually  there  is  no
+       need  to change this value, unless you are running an OS kernel that does
+       not do memory overcommit.
+
+       lock-memory= Locks the entire PulseAudio process into memory. While  this
+       might  increase  drop-out  safety when used in conjunction with real-time
+       scheduling this takes away a lot of memory from other processes and might
+       hence considerably slow down your system. Defaults to no.
+
+       flat-volumes=  Enable  &apos;flat&apos;  volumes,  i.e. where possible let the sink
+       volume equal the maximum of the volumes of the inputs  connected  to  it.
+       Takes a boolean argument, defaults to yes.
+
+SCHEDULING
+       high-priority=  Renice the daemon after startup to become a high-priority
+       process. This a good idea if you experience  drop-outs  during  playback.
+       However,  this  is  a  certain security issue, since it works when called
+       SUID root only, or RLIMIT_NICE is used. root is dropped immediately after
+       gaining  the  nice  level  on  startup,  thus  it is presumably safe. See
+       pulseaudio(1) for more information. Takes a boolean argument, defaults to
+       yes. The --high-priority command line option takes precedence.
+
+       realtime-scheduling=  Try  to  acquire  SCHED_FIFO  scheduling for the IO
+       threads. The same security concerns as mentioned above apply. However, if
+       PA  enters  an  endless loop, realtime scheduling causes a system lockup.
+       Thus, realtime scheduling should only be enabled on trusted machines  for
+       now.  Please  not  that  only the IO threads of PulseAudio are made real-
+       time. The controlling thread is left a normally  scheduled  thread.  Thus
+       enabling  the  high-priority  option is orthogonal. See pulseaudio(1) for
+       more information. Takes a boolean argument, defaults to yes. The  --real&#8208;
+       time command line option takes precedence.
+
+       realtime-priority= The realtime priority to acquire, if realtime-schedul&#8208;
+       ing is enabled. Note: JACK uses 10 by default, 9 for clients. Thus it  is
+       recommended  to  choose  the  PulseAudio real-time priorities lower. Some
+       PulseAudio threads might choose a priority a little lower or higher  than
+       the specified value. Defaults to 5.
+
+       nice-level= The nice level to acquire for the daemon, if high-priority is
+       enabled. Note: on some distributions X11 uses -10 by default. Defaults to
+       -11.
+
+IDLE TIMES
+       exit-idle-time=  Terminate the daemon after the last client quit and this
+       time in seconds passed. Use a negative value  to  disable  this  feature.
+       Defaults  to  20.  The  --exit-idle-time command line option takes prece&#8208;
+       dence.
+
+       scache-idle-time= Unload autoloaded sample cache entries after being idle
+       for  this time in seconds. Defaults to 20. The --scache-idle-time command
+       line option takes precedence.
+
+PATHS
+       dl-search-path=  The  path  were  to  look  for  dynamic  shared  objects
+       (DSOs/plugins).  You  may specify more than one path separated by colons.
+       The default path depends on compile time settings.  The  --dl-search-path
+       command line option takes precedence.
+
+       default-script-file= The default configuration script file to load. Spec&#8208;
+       ify an empty string for not loading a default script  file.  The  default
+       behaviour is to load ~/.pulse/default.pa, and if that file does not exist
+       fall back to the system wide installed version /etc/pulse/default.pa.  If
+       run in system-wide mode the file /etc/pulse/system.pa is used instead. If
+       -n is passed on the command line or default-script-file= is disabled  the
+       default configuration script is ignored.
+
+       load-default-script-file=  Load  the default configuration script file as
+       specified in default-script-file=. Defaults to yes.
+
+LOGGING
+       log-target= The default log target. Use either stderr,  syslog  or  auto.
+       The latter is equivalent to sylog in case daemonize is enabled, otherwise
+       to stderr. Defaults to auto. The --log-target command line  option  takes
+       precedence.
+
+       log-level=  Log  level,  one  of debug, info, notice, warning, error. Log
+       messages with a lower log level  than  specified  here  are  not  logged.
+       Defaults to notice. The --log-level command line option takes precedence.
+       The -v command line option might alter this setting.
+
+       log-meta= With each logged message log the code location the message  was
+       generated from. Defaults to no.
+
+       log-time=  With each logged messages log the relative time since startup.
+       Defaults to no.
+
+       log-backtrace= When greater than 0, with each logged message log  a  code
+       stack trace up the specified number of stack frames. Defaults to 0.
+
+RESOURCE LIMITS
+       See  getrlimit(2) for more information. Set to -1 if PulseAudio shall not
+       touch the resource limit. Not all resource limits are  available  on  all
+       operating systems.
+
+       rlimit-as Defaults to -1.
+
+       rlimit-rss Defaults to -1.
+
+       rlimit-core Defaults to -1.
+
+       rlimit-data Defaults to -1.
+
+       rlimit-fsize Defaults to -1.
+
+       rlimit-nofile Defaults to 256.
+
+       rlimit-stack Defaults to -1.
+
+       rlimit-nproc Defaults to -1.
+
+       rlimit-locks Defaults to -1.
+
+       rlimit-sigpending Defaults to -1.
+
+       rlimit-msgqueue Defaults to -1.
+
+       rlimit-memlock  Defaults  to  16  KiB.  Please  note that the JACK client
+       libraries may require more locked memory.
+&#12;       rlimit-nice Defaults to 31. Please make sure that the default nice  level
+       as configured with nice-level fits in this resource limit, if high-prior&#8208;
+       ity is enabled.
+
+       rlimit-rtprio Defaults to 9. Please make sure that the default  real-time
+       priority  level  as  configured  with  realtime-priority=  fits  in  this
+       resource limit,  if  realtime-scheduling  is  enabled.  The  JACK  client
+       libraries require a real-time prority of 9 by default.
+
+       rlimit-rttime Defaults to 1000000.
+
+DEFAULT DEVICE SETTINGS
+       Most  drivers  try  to open the audio device with these settings and then
+       fall back to lower settings. The default settings are CD  quality:  16bit
+       native endian, 2 channels, 44100 Hz sampling.
+
+       default-sample-format=  The  default  sampling format. Specify one of u8,
+       s16le, s16be, s24le, s24be, s24-32le, s24-32be, s32le,  s32be  float32le,
+       float32be, ulaw, alaw. Depending on the endianness of the CPU the formats
+       s16ne, s16re, s24ne, s24re, s24-32ne, s24-32re, s32ne, s32re,  float32ne,
+       float32re (for native, resp. reverse endian) are available as aliases.
+
+       default-sample-rate= The default sample frequency.
+
+       default-sample-channels The default number of channels.
+
+       default-channel-map The default channel map.
+
+       alternate-sample-rate  The  alternate sample frequency. Sinks and sources
+       will use either the default-rate-rate value or this alternate value, typ&#8208;
+       ically  44.1  or 48kHz. Switching between default and alternate values is
+       enabled only when the sinks/sources are suspended. This option is ignored
+       in  passthrough  mode where the stream rate will be used. If set to zero,
+       this feature is disabled.
+
+DEFAULT FRAGMENT SETTINGS
+       Some hardware drivers require the hardware playback buffer to  be  subdi&#8208;
+       vided  into several fragments. It is possible to change these buffer met&#8208;
+       rics for machines with high scheduling latencies. Not all possible values
+       that  may  be  configured  here are available in all hardware. The driver
+       will to find the nearest setting supported. Modern drivers  that  support
+       timer-based scheduling ignore these options.
+
+       default-fragments= The default number of fragments. Defaults to 4.
+
+       default-fragment-size-msec=The duration of a single fragment. Defaults to
+       25ms (i.e. the total buffer is thus 100ms long).
+
+DEFAULT DEFERRED VOLUME SETTINGS
+       With the flat volume feature enabled, the sink HW volume is  set  to  the
+       same  level  as  the highest volume input stream. Any other streams (with
+       lower volumes) have the appropriate adjustment applied  in  SW  to  bring
+       them  to the correct overall level. Sadly hadware mixer changes cannot be
+       timed accurately and thus this change of volumes can somtimes  cause  the
+       resulting  output  sound  to  be  momentarily too loud or too soft. So to
+       ensure SW and HW volumes are applied concurrently without  any  glitches,
+       their application needs to be synchronized. The sink implementation needs
+       to support deferred volumes. The following  parameters  can  be  used  to
+       refine the process.
+
+       enable-deferred-volume= Enable deferred volume for the sinks that support
+       it. This feature is enabled by default.
+
+       deferred-volume-safety-margin-usec= The amount of time (in usec) by which
+       the HW volume increases are delayed and HW volume decreases are advanced.
+       Defaults to 8000 usec.
+
+       deferred-volume-extra-delay-usec= The amount of time (in usec)  by  which
+       HW volume changes are delayed. Negative values are also allowed. Defaults
+       to 0.
+
+AUTHORS
+       The PulseAudio Developers &lt;pulseaudio-discuss (at) lists (dot)  freedesk&#8208;
+       top (dot) org&gt;; PulseAudio is available from http://pulseaudio.org/
+
+SEE ALSO
+       pulse-client.conf(5), default.pa(5), pulseaudio(1), pacmd(1)
+
+
+
+Manuals                               User                  pulse-daemon.conf(5)
+
+</pre></body></html>

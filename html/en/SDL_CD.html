@@ -1,0 +1,63 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CD - CDROM Drive Information</title></head>
+<body><pre>
+
+SDL_CD(3)                       SDL API Reference                      SDL_CD(3)
+
+
+
+NAME
+       SDL_CD - CDROM Drive Information
+
+STRUCTURE DEFINITION
+       typedef struct{
+         int id;
+         CDstatus status;
+         int numtracks;
+         int cur_track;
+         int cur_frame;
+         SDL_CDtrack track[SDL_MAX_TRACKS+1];
+       } SDL_CD;
+
+STRUCTURE DATA
+       id                  Private drive identifier
+
+       status              Drive status
+
+       numtracks           Number of tracks on the CD
+
+       cur_track           Current track
+
+       cur_frame           Current frame offset within the track
+
+       track[SDL_MAX_TRACKS+1]
+                           Array of track descriptions. (see SDL_CDtrack)
+
+DESCRIPTION
+       An  SDL_CD  structure  is returned by SDL_CDOpen. It represents an opened
+       CDROM device and stores information on the layout of the  tracks  on  the
+       disc.
+
+       A frame is the base data unit of a CD. CD_FPS frames is equal to 1 second
+       of music. SDL provides two macros for converting between time and frames:
+       FRAMES_TO_MSF(f, M,S,F) and MSF_TO_FRAMES.
+
+EXAMPLES
+       int min, sec, frame;
+       int frame_offset;
+
+       FRAMES_TO_MSF(cdrom-&gt;cur_frame, &amp;min, &amp;sec, &amp;frame);
+       printf(&quot;Current Position: %d minutes, %d seconds, %d frames
+       &quot;, min, sec, frame);
+
+       frame_offset=MSF_TO_FRAMES(min, sec, frame);
+
+SEE ALSO
+       SDL_CDOpen, SDL_CDtrack
+
+
+
+SDL                          Tue 11 Sep 2001, 22:58                    SDL_CD(3)
+
+</pre></body></html>

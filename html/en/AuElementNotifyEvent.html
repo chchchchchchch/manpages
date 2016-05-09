@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuElementNotifyEvent - element notify event structure</title></head>
+<body><pre>
+
+AuElementNotifyEvent(3)                                  AuElementNotifyEvent(3)
+
+
+
+Name
+       AuElementNotifyEvent - element notify event structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef union _AuEvent
+       {
+           . . .
+           AuElementNotifyEvent auelementnotify;
+           . . .
+       }AuEvent;
+
+       typedef struct _AuElementNotifyEvent
+       {
+           int type;
+           AuUint32 serial;
+           AuBool send_event;
+           AuServer *server;
+           AuTime time;
+           AuFlowID flow;
+           unsigned char element_num;
+           unsigned char kind;
+           unsigned char prev_state;
+           unsigned char cur_state;
+           unsigned char reason;
+           AuUint32 num_bytes;
+       }AuElementNotifyEvent;
+
+Members
+       type      The  event type.  ElementNotify events are type AuEventTypeEle&#8208;
+                 mentNotify.
+
+       serial    The serial ID of the event expanded from the 16 bit value  sent
+                 by the server.
+
+       send_event
+                 AuTrue if the event came from a SendEvent protocol request.
+
+       server    The  connection  to  the  audio  server that the event was read
+                 from.
+
+       time      The server time in milliseconds when the event was generated.
+
+       flow      The ID of the flow that caused the event.
+
+       element_num
+                 The index of the element that caused the event or  AuElementAll
+                 to indicate the flow.
+
+       kind      The kind of notify event.  This will be one of these constants:
+                 AuElementNotifyKindLowWater,  AuElementNotifyKindHighWater,  or
+                 AuElementNotifyKindState.
+
+       prev_state
+                 The previous state of the element indexed by element_num.  This
+                 will be one of these constants: AuStateStop,  AuStateStart,  or
+                 AuStatePause.
+
+       cur_state The  current state of the element indexed by element_num.  This
+                 will be one of these constants: AuStateStop,  AuStateStart,  or
+                 AuStatePause.
+
+       reason    The  reason  for  the  notify event.  This will be one of these
+                 constants:  AuReasonUser,  AuReasonUnderrun,   AuReasonOverrun,
+                 AuReasonEOF, AuReasonWatermark, or AuReasonHardware.
+
+       num_bytes The  number of bytes to send or receive.  Only valid if the the
+                 element indexed by element_num is an  ImportClient  or  Export&#8208;
+                 Client.
+
+Description
+       ElementNotify  events are sent to client applications to notify them of a
+       watermark condition or state change.   If  kind  is  AuElementNotifyKind&#8208;
+       LowWater,  the  ImportClient  element  indexed  by element_num in flow is
+       ready to receive num_bytes of audio data from the client application.  If
+       kind is AuElementNotifyKindHighWater, the ExportClient element indexed by
+       element_num in flow is ready to send  num_bytes  of  audio  data  to  the
+       client  application.   If  kind  is AuElementNotifyKindState, the element
+       indexed by element_num (or flow if element_num is AuElementAll) has  made
+       a  state  transition  from  prev_state to cur_state triggering the event.
+       Reguardless of kind, prev_state and cur_state contain  the  old  and  new
+       states and reason contains the reason for the event.
+
+See Also
+       AuAnyEvent,   AuErrorEvent,   AuGrabNotifyEvent,  AuMakeSendNotifyAction,
+       AuMonitorNotifyEvent.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - events                     1.9.3              AuElementNotifyEvent(3)
+
+</pre></body></html>

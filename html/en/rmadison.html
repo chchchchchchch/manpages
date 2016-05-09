@@ -1,0 +1,120 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rmadison -- Remotely query the Debian archive database about packages</title></head>
+<body><pre>
+
+RMADISON(1)                                                          RMADISON(1)
+
+
+
+NAME
+       rmadison -- Remotely query the Debian archive database about packages
+
+SYNOPSIS
+       rmadison [OPTIONS] PACKAGE ...
+
+DESCRIPTION
+       dak ls queries the Debian archive database (&quot;projectb&quot;) and displays
+       which package version is registered per architecture/component/suite.
+       The CGI at http://qa.debian.org/madison.php provides that service without
+       requiring SSH access to ftp-master.debian.org or the mirror on
+       ries.debian.org. This script, rmadison, is a command line frontend to
+       this CGI.
+
+OPTIONS
+       -a, --architecture=ARCH
+           only show info for ARCH(s)
+
+       -b, --binary-type=TYPE
+           only show info for binary TYPE
+
+       -c, --component=COMPONENT
+           only show info for COMPONENT(s)
+
+       -g, --greaterorequal
+           show buildd &apos;dep-wait pkg &gt;= {highest version}&apos; info
+
+       -G, --greaterthan
+           show buildd &apos;dep-wait pkg &gt;&gt; {highest version}&apos; info
+
+       -h, --help
+           show this help and exit
+
+       -s, --suite=SUITE
+           only show info for this suite
+
+       -S, --source-and-binary
+           show info for the binary children of source pkgs
+
+       -t, --time
+           show projectb snapshot and reload time (not supported by all
+           archives)
+
+       -u, --url=URL[,URL ...]
+           use URL for the query. Supported shorthands are
+            debian or qa http://qa.debian.org/madison.php
+            bpo http://backports.debian.org/cgi-bin/madison.cgi
+            debug http://debug.debian.net/cgi-bin/madison.cgi
+            ubuntu http://people.canonical.com/~ubuntu-archive/madison.cgi
+            udd http://qa.debian.org/cgi-bin/madison.cgi
+
+           See the RMADISON_URL_MAP_ variable below for a method to add new
+           shorthands.
+
+       --version
+           show version and exit
+
+       --no-conf, --noconf
+           don&apos;t read the devscripts configuration files
+
+       ARCH, COMPONENT and SUITE can be comma (or space) separated lists, e.g.
+       --architecture=m68k,i386
+
+CONFIGURATION VARIABLES
+       The two configuration files /etc/devscripts.conf and ~/.devscripts are
+       sourced by a shell in that order to set configuration variables. Command
+       line options can be used to override configuration file settings.
+       Environment variable settings are ignored for this purpose. The currently
+       recognised variables are:
+
+       RMADISON_URL_MAP_SHORTHAND=URL
+           Add an entry to the set of shorthand URLs listed above. SHORTHAND
+           should be replaced with the shorthand form to be used to refer to
+           URL.
+
+           Multiple shorthand entries may be specified by using multiple
+           RMADISON_URL_MAP_* variables.
+
+       RMADISON_DEFAULT_URL=URL
+           Set the default URL to use unless overridden by a command line
+           option.
+
+       RMADISON_ARCHITECTURE=ARCH
+           Set the default architecture to use unless overridden by a command
+           line option.  To run an unrestricted query when RMADISON_ARCHITECTURE
+           is set, use --architecture=&apos;*&apos;.
+
+NOTES
+       dak ls also supports -r, --regex to treat PACKAGE as a regex. Since that
+       can easily DoS the database (&quot;-r .&quot;), this option is not supported by the
+       CGI and rmadison.
+
+       dak ls was formerly called madison.
+
+       The protocol used by rmadison is fairly simple, the CGI accepts query the
+       parameters a, b, c, g, G, s, S, t, and package. The parameter text is
+       passed to enable plain-text output.
+
+SEE ALSO
+       madison-lite(1), dak(1).
+
+AUTHOR
+       rmadison and http://qa.debian.org/madison.php were written by Christoph
+       Berg &lt;myon@debian.org&gt;. dak was written by James Troup
+       &lt;james@nocrew.org&gt;, Anthony Towns &lt;ajt@debian.org&gt;, and others.
+
+
+
+Debian Utilities                   2013-12-23                        RMADISON(1)
+
+</pre></body></html>

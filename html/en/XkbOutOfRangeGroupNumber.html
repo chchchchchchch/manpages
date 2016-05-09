@@ -1,0 +1,144 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbOutOfRangeGroupNumber - Returns the out-of-range group number, represented as a group index, from the group_info field of an XkbSymMapRec structure</title></head>
+<body><pre>
+
+XkbOutOfRangeGroupNumber(3)       XKB FUNCTIONS      XkbOutOfRangeGroupNumber(3)
+
+
+
+NAME
+       XkbOutOfRangeGroupNumber  - Returns the out-of-range group number, repre&#8208;
+       sented as a group index, from the group_info  field  of  an  XkbSymMapRec
+       structure
+
+SYNOPSIS
+       unsigned char XkbOutOfRangeGroupNumber (unsigned char grp_inf);
+
+ARGUMENTS
+       - grp_inf
+              Xkb description of interest
+
+DESCRIPTION
+       XkbOutOfRangeGroupNumber  returns  the  out-of-range group number, repre&#8208;
+       sented as a group index, from the group_info  field  of  an  XkbSymMapRec
+       structure.
+
+       The  group_info  field  of an XkbSymMapRec is an encoded value containing
+       the number of groups of symbols bound to the key as well as the  specifi&#8208;
+       cation  of the treatment of out-of-range groups. It is legal for a key to
+       have zero groups, in which case it also has zero symbols and  all  events
+       from  that key yield NoSymbol.  To obtain the number of groups of symbols
+       bound to the key, use XkbKeyNumGroups.  To change the  number  of  groups
+       bound  to  a  key, use XkbChangeTypesOfKey.  To obtain a mask that deter&#8208;
+       mines the treatment  of  out-of-range  groups,  use  XkbKeyGroupInfo  and
+       XkbOutOfRangeGroupInfo.
+
+       The keyboard controls contain a groups_wrap field specifying the handling
+       of illegal groups on a global basis. That is, when the user  performs  an
+       action  causing  the  effective  group  to go out of the legal range, the
+       groups_wrap field specifies how to normalize the effective keyboard group
+       to  a  group  that  is legal for the keyboard as a whole, but there is no
+       guarantee that the normalized group will be within  the  range  of  legal
+       groups for any individual key. The per-key group_info field specifies how
+       a key treats a legal effective group if the key  does  not  have  a  type
+       specified  for  the  group of concern. For example, the Enter key usually
+       has just one group defined. If the user performs an  action  causing  the
+       global  keyboard  group to change to Group2, the group_info field for the
+       Enter key describes how to handle this situation.
+
+       Out-of-range groups for individual keys are mapped to a legal group using
+       the same options as are used for the overall keyboard group. The particu&#8208;
+       lar type of mapping used is controlled by the bits set in the  group_info
+       flag, as shown in Table 1.
+
+
+
+       c  s  l  l  l  l.   Table  1 group_info Range Normalization _ Bits set in
+       group_info   Normalization method _ XkbRedirectIntoRange     XkbRedirect&#8208;
+       IntoRange  XkbClampIntoRange   XkbClampIntoRange none of the above   Xkb&#8208;
+       WrapIntoRange
+
+STRUCTURES
+       The KeySymMapRec structure is defined as follows:
+
+           #define XkbNumKbdGroups             4
+           #define XkbMaxKbdGroup              (XkbNumKbdGroups-1)
+
+           typedef struct {                    /&#8727; map to keysyms for a single keycode */
+               unsigned char       kt_index[XkbNumKbdGroups];  /&#8727; key type index for each group */
+               unsigned char       group_info; /&#8727; # of groups and out of range group handling */
+               unsigned char       width;      /&#8727; max # of shift levels for key */
+               unsigned short      offset;     /&#8727; index to keysym table in syms array */
+       } XkbSymMapRec, *XkbSymMapPtr;
+
+
+       The XkbControlsRec structure is defined as follows:
+
+           #define XkbMaxLegalKeyCode     255
+           #define XkbPerKeyBitArraySize  ((XkbMaxLegalKeyCode+1)/8)
+
+
+           typedef struct {
+               unsigned char   mk_dflt_btn;      /&#8727; default button for keyboard driven mouse */
+               unsigned char   num_groups;       /&#8727; number of keyboard groups */
+               unsigned char   groups_wrap;      /&#8727; how to wrap out-of-bounds groups */
+               XkbModsRec      internal;         /&#8727; defines server internal modifiers */
+               XkbModsRec      ignore_lock;      /&#8727; modifiers to ignore when checking for grab */
+               unsigned int    enabled_ctrls;    /&#8727; 1 bit =&gt; corresponding boolean control enabled */
+               unsigned short  repeat_delay;     /&#8727; ms delay until first repeat */
+               unsigned short  repeat_interval;  /&#8727; ms delay between repeats */
+               unsigned short  slow_keys_delay;  /&#8727; ms minimum time key must be down to be ok */
+               unsigned short  debounce_delay;   /&#8727; ms delay before key reactivated */
+               unsigned short  mk_delay;         /&#8727; ms delay to second mouse motion event */
+               unsigned short  mk_interval;      /&#8727; ms delay between repeat mouse events */
+               unsigned short  mk_time_to_max;   /&#8727; # intervals until constant mouse move */
+               unsigned short  mk_max_speed;     /&#8727; multiplier for maximum mouse speed */
+               short           mk_curve;         /&#8727; determines mouse move curve type */
+               unsigned short  ax_options;       /&#8727; 1 bit =&gt; Access X option enabled */
+               unsigned short  ax_timeout;       /&#8727; seconds until Access X disabled */
+               unsigned short  axt_opts_mask;    /&#8727; 1 bit =&gt; options to reset on Access X timeout */
+               unsigned short  axt_opts_values;  /&#8727; 1 bit =&gt; turn option on, 0=&gt; off */
+               unsigned int    axt_ctrls_mask;   /&#8727; which bits in enabled_ctrls to modify */
+               unsigned int    axt_ctrls_values; /&#8727; values for new bits in enabled_ctrls */
+               unsigned char   per_key_repeat[XkbPerKeyBitArraySize];  /&#8727; per key auto repeat */
+            } XkbControlsRec, *XkbControlsPtr;
+
+       The XkbControlsRec structure is defined as follows:
+
+           #define XkbMaxLegalKeyCode     255
+           #define XkbPerKeyBitArraySize  ((XkbMaxLegalKeyCode+1)/8)
+
+
+           typedef struct {
+               unsigned char   mk_dflt_btn;      /&#8727; default button for keyboard driven mouse */
+               unsigned char   num_groups;       /&#8727; number of keyboard groups */
+               unsigned char   groups_wrap;      /&#8727; how to wrap out-of-bounds groups */
+               XkbModsRec      internal;         /&#8727; defines server internal modifiers */
+               XkbModsRec      ignore_lock;      /&#8727; modifiers to ignore when checking for grab */
+               unsigned int    enabled_ctrls;    /&#8727; 1 bit =&gt; corresponding boolean control enabled */
+               unsigned short  repeat_delay;     /&#8727; ms delay until first repeat */
+               unsigned short  repeat_interval;  /&#8727; ms delay between repeats */
+               unsigned short  slow_keys_delay;  /&#8727; ms minimum time key must be down to be ok */
+               unsigned short  debounce_delay;   /&#8727; ms delay before key reactivated */
+               unsigned short  mk_delay;         /&#8727; ms delay to second mouse motion event */
+               unsigned short  mk_interval;      /&#8727; ms delay between repeat mouse events */
+               unsigned short  mk_time_to_max;   /&#8727; # intervals until constant mouse move */
+               unsigned short  mk_max_speed;     /&#8727; multiplier for maximum mouse speed */
+               short           mk_curve;         /&#8727; determines mouse move curve type */
+               unsigned short  ax_options;       /&#8727; 1 bit =&gt; Access X option enabled */
+               unsigned short  ax_timeout;       /&#8727; seconds until Access X disabled */
+               unsigned short  axt_opts_mask;    /&#8727; 1 bit =&gt; options to reset on Access X timeout */
+               unsigned short  axt_opts_values;  /&#8727; 1 bit =&gt; turn option on, 0=&gt; off */
+               unsigned int    axt_ctrls_mask;   /&#8727; which bits in enabled_ctrls to modify */
+               unsigned int    axt_ctrls_values; /&#8727; values for new bits in enabled_ctrls */
+               unsigned char   per_key_repeat[XkbPerKeyBitArraySize];  /&#8727; per key auto repeat */
+            } XkbControlsRec, *XkbControlsPtr;
+&#12;SEE ALSO
+       XkbChangeTypesOfKey(3), XkbKeyGroupInfo(3), XkbOutOfRangeGroupInfo(3)
+
+
+
+X Version 11                      libX11 1.5.0       XkbOutOfRangeGroupNumber(3)
+
+</pre></body></html>

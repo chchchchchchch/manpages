@@ -1,0 +1,117 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jmap - Memory Map</title></head>
+<body><pre>
+
+jmap(1)                                                                  jmap(1)
+
+
+
+Name
+       jmap - Memory Map
+
+SYNOPSIS
+       jmap [ option ] pid
+       jmap [ option ] executable core
+       jmap [ option ] [server-id@]remote-hostname-or-IP
+
+
+PARAMETERS
+          option
+             Options  are  mutually  exclusive.  Option,  if used, should follow
+             immediately after the command name.
+
+          pid
+             process id for which the memory map is to be printed.  The  process
+             must  be a Java process. To get a list of Java processes running on
+             a machine, jps(1) may be used.
+
+          executable
+             Java executable from which the core dump was produced.
+
+          core
+             core file for which the memory map is to be printed.
+
+          remote-hostname-or-IP
+             remote debug server&apos;s (see jsadebugd(1)) hostname or IP address.
+
+          server-id
+             optional unique id, if multiple debug servers are  running  on  the
+             same remote host.
+
+
+DESCRIPTION
+       jmap  prints  shared object memory maps or heap memory details of a given
+       process or core file or a remote debug server. If the  given  process  is
+       running on a 64-bit VM, you may need to specify the -J-d64 option, e.g.:
+
+       jmap -J-d64 -heap pid
+
+
+       NOTE:  This  utility  is  unsupported  and may or may not be available in
+       future versions of the JDK. In Windows Systems where  dbgeng.dll  is  not
+       present,  &apos;Debugging  Tools  For  Windows&apos;  needs to be installed to have
+       these tools working. Also, PATH environment variable should  contain  the
+       location of jvm.dll used by the target process or the location from which
+       the Crash Dump file was produced.
+
+       For example, set PATH=&lt;jdk&gt;\jre\bin\client;%PATH%
+
+OPTIONS
+          &lt;no option&gt;
+             When no option is used jmap prints shared object mappings. For each
+             shared  object  loaded in the target VM, start address, the size of
+             the mapping, and the full  path  of  the  shared  object  file  are
+             printed. This is similar to the Solaris pmap utility.
+
+          -dump:[live,]format=b,file=&lt;filename&gt;
+             Dumps  the  Java  heap in hprof binary format to filename. The live
+             suboption is optional. If specified, only the live objects  in  the
+             heap are dumped. To browse the heap dump, you can use jhat(1) (Java
+             Heap Analysis Tool) to read the generated file.
+
+          -finalizerinfo
+             Prints information on objects awaiting finalization.
+
+          -heap
+             Prints a heap summary. GC algorithm used,  heap  configuration  and
+             generation wise heap usage are printed.
+
+          -histo[:live]
+             Prints  a  histogram  of  the  heap. For each Java class, number of
+             objects, memory size in bytes, and fully qualified class names  are
+             printed.  VM  internal  class names are printed with &apos;*&apos; prefix. If
+             the live suboption is specified, only live objects are counted.
+
+          -permstat
+             Prints class loader wise statistics of permanent generation of Java
+             heap.  For  each  class loader, its name, liveness, address, parent
+             class loader, and the number and size of classes it has loaded  are
+             printed.  In  addition, the number and size of interned Strings are
+             printed.
+
+          -F Force. Use with jmap -dump or jmap -histo option if  the  pid  does
+             not respond. The live suboption is not supported in this mode.
+
+          -h Prints a help message.
+
+          -help
+             Prints a help message.
+
+          -J&lt;flag&gt;
+             Passes &lt;flag&gt; to the Java virtual machine on which jmap is run.
+
+
+SEE ALSO
+          o pmap(1)
+
+          o jhat(1)
+
+          o jps(1)
+
+          o jsadebugd(1)
+
+
+                                   16 Mar 2012                           jmap(1)
+
+</pre></body></html>

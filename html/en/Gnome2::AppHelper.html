@@ -1,0 +1,115 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::AppHelper</title></head>
+<body><pre>
+
+Gnome2::AppHelper(3pm) User Contributed Perl DocumentationGnome2::AppHelper(3pm)
+
+
+
+NAME
+       Gnome2::AppHelper
+
+GnomeUIInfo
+       In Gnome2 GnomeUIInfo&apos;s are often used as a convenient way to create
+       GUI&apos;s.  In Perl, GnomeUIInfo&apos;s are always references to arrays of items.
+       Items can either be references to hashs or references to arrays:
+
+       Hash Reference
+           When using hash references, items are specified by giving key-value
+           pairs.  A typical example:
+
+             { type =&gt; &quot;item&quot;, label =&gt; &quot;Quit&quot;, callback =&gt; sub { exit(0); } }
+
+           For the list of valid keys, see below.
+
+       Array References
+           When using array references, items are a list of the following keys,
+           in this order:
+
+             type,
+             label,
+             hint,
+             moreinfo,
+             pixmap_type,
+             pixmap_info,
+             accelerator_key and
+             modifiers.
+
+           The example from above would become:
+
+             [ &quot;item&quot;, &quot;Item&quot;, undef, sub { exit(0); },
+               undef, undef, undef, undef ]
+
+       To create multi-level structures, you use the &quot;subtree&quot; type and the
+       &quot;subtree&quot; key, as in the following example:
+
+         {
+           type =&gt; &quot;subtree&quot;,
+           label =&gt; &quot;Radio Items&quot;,
+           subtree =&gt; [
+             {
+               type =&gt; &quot;radioitems&quot;,
+               moreinfo =&gt; [
+                 {
+                   type =&gt; &quot;item&quot;,
+                   label =&gt; &quot;A&quot;
+                 },
+                 {
+                   type =&gt; &quot;item&quot;,
+                   label =&gt; &quot;B&quot;
+                 },
+                 {
+                   type =&gt; &quot;item&quot;,
+                   label =&gt; &quot;C&quot;
+                 },
+                 {
+                   type =&gt; &quot;item&quot;,
+                   label =&gt; &quot;D&quot;
+                 },
+                 {
+                   type =&gt; &quot;item&quot;,
+                   label =&gt; &quot;E&quot;
+                 }
+               ]
+             }
+           ]
+         }
+
+METHODS
+   Gnome2-&gt;accelerators_sync
+   $menu_shell-&gt;fill_menu ($uiinfo, $accel_group, $uline_accels, $pos)
+       &#183;   $uiinfo (Gnome2::UIInfo)
+
+       &#183;   $accel_group (Gtk2::AccelGroup)
+
+       &#183;   $uline_accels (boolean)
+
+       &#183;   $pos (integer)
+
+   $toolbar-&gt;fill_toolbar ($uiinfo, $accel_group)
+       &#183;   $uiinfo (Gnome2::UIInfo)
+
+       &#183;   $accel_group (Gtk2::AccelGroup)
+
+   list = $parent-&gt;find_menu_pos ($path)
+       &#183;   $path (string)
+
+       Returns the GtkWidget and the position associated with the path.
+
+   $bar-&gt;install_menu_hints ($uiinfo)
+       &#183;   $uiinfo (Gnome2::UIInfo)
+
+SEE ALSO
+       Gnome2
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16             Gnome2::AppHelper(3pm)
+
+</pre></body></html>

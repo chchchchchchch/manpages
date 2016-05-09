@@ -1,0 +1,336 @@
+<html>
+<head><meta charset=utf-8/>
+<title>alsaplayer - plays various sound files</title></head>
+<body><pre>
+
+ALSAPLAYER(1)                                                      ALSAPLAYER(1)
+
+
+
+NAME
+       alsaplayer - plays various sound files
+
+SYNOPSIS
+       alsaplayer [options] [ filename ...]
+
+DESCRIPTION
+       This  manual  page documents briefly the alsaplayer command.  This manual
+       page was written for the Debian GNU/Linux distribution because the origi&#8208;
+       nal program does not have a manual page.
+
+       alsaplayer is a generic music player that can play back a large amount of
+       file formats.
+
+       If files are specified on the command line, these files are played.  Oth&#8208;
+       erwise alsaplayer plays its playlist from its last run, if any.
+
+FILENAME
+       Play the specified file(s). Can be a file or an URL.
+
+       CD.cdda
+              Special  filename.  Play a CD. /dev/cdrom will be used by default.
+              Otherwise, AlsaPlayer will use the device specified in your config
+              file (usually ~/.alsaplayer/config).
+
+OPTIONS
+       These  programs  follow  the  usual  GNU  command  line syntax, with long
+       options starting with two dashes (`-&apos;).  A summary of options is included
+       below.
+
+       -c, --config &lt;file&gt;
+              Use the given config file for this session.
+
+       -h, --help
+              Print this help message.
+
+       -i, --interface &lt;interface&gt;
+              Use the specified interface instead of the default one.
+
+       -I, --script &lt;file&gt;
+              Specify the script to pass to the interface plugin.
+
+       -l, --startvolume &lt;vol&gt;
+              Start with this volume [default=1.0].
+
+       -p, --path &lt;path&gt;
+              Set the path alsaplayer looks for add-ons.
+
+       -q, --quiet
+              Quiet operation, no output.
+
+       -s, --session-name name
+              Name this session &quot;name&quot;
+
+       -v, --version
+              Print version of this program.
+
+       --verbose
+              Be verbose about the output.
+
+       --nosave
+              Do not save playlist content at exit.
+&#12;   Player control:
+       -n, --session #
+              Select session # [default=0]
+
+       -e, --enqueue file(s)
+              Enqueue file(s) in a running alsaplayer.
+
+       -E, --replace file(s)
+              Clears and queues file(s) in a running alsaplayer.
+
+       --status
+              Get some information about the session.
+
+       --volume #
+              Set software volume [0.0-1.0].
+
+       --start
+              Start playing.
+
+       --stop Stop playing.
+
+       --pause
+              Pause/unpause playing.
+
+       --prev Jump to the previous track.
+
+       --next Jump to the next track.
+
+       --seek &lt;second&gt;
+              Jump to the specified second in the current track.
+
+       --relative &lt;second&gt;
+              Jump &lt;second&gt; seconds from current position.
+
+       --speed #
+              Set  the  playback speed.  1.0 = normal speed, -1.0 = normal speed
+              backwards
+
+       --jump #
+              Jump to the specified playlist track.
+
+       --clear
+              Clear the whole playlist
+
+       --quit Quit the session.
+
+   Sound driver options:
+       -d, --device string
+              Select the specific device for the output plugin.   For  the  ALSA
+              plugin,  the  default  is  &quot;default&quot;.   For  the  JACK plugin, the
+              default is &quot;alsa_pcm:playback_1,alsa_pcm:playback_2&quot;.
+
+       -f, --fragsize #
+              Set fragment size in bytes [default=4096].
+
+       -F, --frequency #
+              Set the output frequency [default=44100].
+
+       -g, --fragcount #
+              Fragment count [default=8].
+
+       -r, --realtime
+              Enable realtime  scheduling.   To  use  this  as  a  normal  user,
+              alsaplayer must be SUID root.
+
+       -o, --output [alsa|esound|jack|nas|null|oss|sgi|sparc]
+              Use the specified output driver.
+&#12;   Experimental options:
+       -S,--loopsong
+              Loop the file.
+
+       -P,--looplist
+              Loop the playlist.
+
+       -x,--crossfade
+              Crossfade playlist entries.
+
+JACK OUTPUT PLUGIN
+       For  use  with  JACK, -F &lt;sample_rate&gt; is mandatory for best results. The
+       value of sample rate must be the same as the one used by jackd.
+
+       If you forget the -F parameter, the sound can be very bad. The only  rem&#8208;
+       edy at that time is to restart both jackd and AlsaPlayer.
+
+DAEMON INTERFACE
+       With  the  daemon  interface,  it is mandatory to add the -s option.  You
+       must process in two steps to get sound with it. First launch the daemon:
+
+       alsaplayer -i daemon -s &lt;name&gt;
+
+       and then add some song:
+
+       alsaplayer -e &lt;some.song&gt;
+
+GTK INTERFACE
+       The gtk interface provide some basic keyboard controls:
+
+       v      Stop
+
+       x      Play
+
+       c      Pause
+
+       b      Next Song
+
+       z      Previous Song
+
+       g      Seek Forward
+
+       a      Seek Backward
+
+       f      Forward Play
+
+       s      Reverse Play
+
+       t      Speed Up one musical semitone. (handy for  changing  the  key  the
+              song is played back in)
+
+       q      Speed Down one musical semitone.
+
+       h      Speed  Up one comma. (handy to tune the song instead of the guitar
+              when playing at the same time as listening)
+
+       i      Speed Down one comma.
+
+       r      Volume Up
+
+       w      Volume Down
+
+       l      Loop
+
+PREFERENCES
+       AlsaPlayer have a preferences file located  in  ~/.alsaplayer/config.  To
+       modify  the  preferences  setting by hand, you must exit from the running
+       program and edit this file. The default value is put in  the  description
+       below when appropriate:
+
+   General settings
+       main.default_interface=gtk2
+              Specify the default interface.
+
+       main.default_output=alsa
+              Specify the default sound server.
+
+       main.multiopen=true
+              Specify if it is possible to run multiple AlsaPlayer instances.
+
+       main.period_count=8
+              Number of periods in the sound buffer
+
+       main.period_size=4096
+              Frames per period in the sound buffer
+
+   Output settings
+       jack.output1=alsa_pcm:playback_1
+              Output device 1 when using JACK sound server
+
+       jack.output2=alsa_pcm:playback_2
+              Output device 2 when using JACK sound server
+
+   Input settings
+       cdda.cddb_servername=freedb.freedb.org
+              Server used by the cdda input module to retrieve the cddb informa&#8208;
+              tion.
+
+       cdda.cddb_serverport=80
+              Port used by the cdda input module to retrieve the  cddb  informa&#8208;
+              tion.
+
+       cdda.device=/dev/cdrom
+              Device used by the cdda input module to retrieve the CD.
+
+       cdda.do_cddb_lookup=true
+              Must AlsaPlayer retrieve or not the cddb information.
+
+       http.buffer_size=1048576
+              Size of the input buffer when &lt;filename&gt; is an URL.
+
+       mad.parse_id3=true
+              Parse or not the Id3 tags.
+
+   GTK interface settings
+       gtk_interface.default_play_path=~/
+              Default path used by the Add file function
+
+       gtk_interface.default_playlist_add_path=/
+              Default path used by the Add file function in the Playlist window
+
+       gtk_interface.default_playlist_load_path=/
+              Default path used by the Load playlist function
+
+       gtk_interface.default_playlist_save_path=/
+              Default path used by the Save playlist function
+
+       gtk_interface.playlist_active=false
+              Launch or not the playlist window at start up.
+
+       gtk_interface.sopeswindow_active=false
+              Launch or not the scopes selector window at start up.
+
+       gtk_interface.smooth_transition=false
+              Will functions such as pause use a smooth speed transition.
+&#12;   GTK2 interface settings
+       It  use  the same options as the GTK interface but with &quot;gtk2_&quot; as prefix
+       instead of &quot;gtk_&quot;.
+
+   XOSD interface settings
+       xosd_interface.color=#55ff55
+              Colour used by the XOSD interface.
+
+       xosd_interface.font=-adobe-helvetica-medium-r-normal-*-24-*-*-*-*-*-*-*
+
+       xosd_interface.h_offset=20
+              Display horizontal offset from the left of the screen
+
+       xosd_interface.timeout=5
+              Set the display time.
+
+       xosd_interface.v_offset=20
+              Display vertical offset from the top of the screen
+
+   Scopes settings
+       blurscope.active=false
+              Launch or not the blurscope plugin at start up.
+
+       fftscope.active=false
+              Launch or not the fftscope plugin at start up.
+
+       levelmeter.active=false
+              Launch or not the levelmeter scope plugin at start up.
+
+       logbarfft.active=false
+              Launch or not the logbar scope plugin at start up.
+
+       opengl_spectrum.active=false
+              Launch or not the spectrumgl scope plugin at start up.
+
+       opengl_spectrum.height=480
+              Height of the spectrumgl scope plugin
+
+       opengl_spectrum.width=640
+              Width of the spectrumgl scope plugin
+
+       opengl_spectrum.active=false
+
+       spacescope.active=false
+              Launch or not the spacescope plugin at start up.
+
+       synaescope.active=false
+              Launch or not the synaescope plugin at start up.
+
+SEE ALSO
+       mikmod(1), mpg123(1).
+
+AUTHOR
+       This manual page was written by Ivo Timmermans &lt;ivo@debian.org&gt;, for  the
+       Debian GNU/Linux system (but may be used by others).  FILENAME, GTK, DAE&#8208;
+       MON  INTERFACE  and  PREFERENCES  sections  added  by  Dominique   Michel
+       &lt;dominique_libre@sourceforge.net&gt; from the Alsaplayer team.
+
+
+
+                                8 September 2007                   ALSAPLAYER(1)
+
+</pre></body></html>

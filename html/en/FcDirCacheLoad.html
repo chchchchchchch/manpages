@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcDirCacheLoad - load a directory cache</title></head>
+<body><pre>
+
+FcDirCacheLoad(3)                                              FcDirCacheLoad(3)
+
+
+
+NAME
+       FcDirCacheLoad - load a directory cache
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcCache  *  FcDirCacheLoad (const FcChar8 *dir, FcConfig *config, FcChar8
+       **cache_file);
+
+DESCRIPTION
+       Loads the cache related to dir. If no cache file  exists,  returns  NULL.
+       The  name  of  the  cache  file is returned in cache_file, unless that is
+       NULL. See also FcDirCacheRead.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                FcDirCacheLoad(3)
+
+</pre></body></html>

@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Ocrad - command line text recognition tool</title></head>
+<body><pre>
+
+OCRAD(1)                          User Commands                         OCRAD(1)
+
+
+
+NAME
+       Ocrad - command line text recognition tool
+
+SYNOPSIS
+       ocrad [options] [files]
+
+DESCRIPTION
+       GNU  Ocrad  is  an OCR (Optical Character Recognition) program based on a
+       feature  extraction  method.  It  reads  images  in  pbm  (bitmap),   pgm
+       (greyscale)  or  ppm (color) formats and produces text in byte (8-bit) or
+       UTF-8 formats. The pbm, pgm and ppm formats  are  collectively  known  as
+       pnm.  If  no  files  are  specified,  ocrad reads the image from standard
+       input.  If the -o option is not specified, ocrad sends text  to  standard
+       output.
+
+       Ocrad  includes  a layout analyser able to separate the columns or blocks
+       of text normally found on printed pages.
+
+OPTIONS
+       -h, --help
+              display this help and exit
+
+       -V, --version
+              output version information and exit
+
+       -a, --append
+              append text to output file
+
+       -c, --charset=&lt;name&gt;
+              try &apos;--charset=help&apos; for a list of names
+
+       -e, --filter=&lt;name&gt;
+              try &apos;--filter=help&apos; for a list of names
+
+       -f, --force
+              force overwrite of output file
+
+       -F, --format=&lt;fmt&gt;
+              output format (byte, utf8)
+
+       -i, --invert
+              invert image levels (white on black)
+
+       -l, --layout
+              perform layout analysis
+
+       -o, --output=&lt;file&gt;
+              place the output into &lt;file&gt;
+
+       -q, --quiet
+              suppress all messages
+
+       -s, --scale=[-]&lt;n&gt;
+              scale input image by [1/]&lt;n&gt;
+
+       -t, --transform=&lt;name&gt;
+              try &apos;--transform=help&apos; for a list of names
+
+       -T, --threshold=&lt;n%&gt;
+              threshold for binarization (0-100%)
+
+       -u, --cut=&lt;l,t,w,h&gt;
+              cut input image by given rectangle
+&#12;       -v, --verbose
+              be verbose
+
+       -x, --export=&lt;file&gt;
+              export results in ORF format to &lt;file&gt;
+
+REPORTING BUGS
+       Report bugs to bug-ocrad@gnu.org
+       Ocrad home page: http://www.gnu.org/software/ocrad/ocrad.html
+       General help using GNU software: http://www.gnu.org/gethelp
+
+COPYRIGHT
+       Copyright &#169; 2012 Antonio Diaz Diaz.  License GPLv3+: GNU GPL version 3 or
+       later &lt;http://gnu.org/licenses/gpl.html&gt;
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The full documentation for Ocrad is maintained as a Texinfo  manual.   If
+       the info and Ocrad programs are properly installed at your site, the com&#8208;
+       mand
+
+              info Ocrad
+
+       should give you access to the complete manual.
+
+
+
+Ocrad 0.22-rc1                    January 2012                          OCRAD(1)
+
+</pre></body></html>

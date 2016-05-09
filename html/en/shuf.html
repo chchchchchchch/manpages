@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>shuf - generate random permutations</title></head>
+<body><pre>
+
+SHUF(1)                           User Commands                          SHUF(1)
+
+
+
+NAME
+       shuf - generate random permutations
+
+SYNOPSIS
+       shuf [OPTION]... [FILE]
+       shuf -e [OPTION]... [ARG]...
+       shuf -i LO-HI [OPTION]...
+
+DESCRIPTION
+       Write a random permutation of the input lines to standard output.
+
+       Mandatory arguments to long options are mandatory for short options too.
+
+       -e, --echo
+              treat each ARG as an input line
+
+       -i, --input-range=LO-HI
+              treat each number LO through HI as an input line
+
+       -n, --head-count=COUNT
+              output at most COUNT lines
+
+       -o, --output=FILE
+              write result to FILE instead of standard output
+
+       --random-source=FILE
+              get random bytes from FILE
+
+       -z, --zero-terminated
+              end lines with 0 byte, not newline
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       With no FILE, or when FILE is -, read standard input.
+
+AUTHOR
+       Written by Paul Eggert.
+
+REPORTING BUGS
+       Report shuf bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report shuf translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The  full  documentation  for shuf is maintained as a Texinfo manual.  If
+       the info and shuf programs are properly installed at your site, the  com&#8208;
+       mand
+
+              info coreutils &apos;shuf invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                          SHUF(1)
+
+</pre></body></html>

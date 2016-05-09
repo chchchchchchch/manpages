@@ -1,0 +1,118 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Mail::Address - Parse mail addresses</title></head>
+<body><pre>
+
+Mail::Address(3pm)     User Contributed Perl Documentation    Mail::Address(3pm)
+
+
+
+NAME
+       Mail::Address - Parse mail addresses
+
+SYNOPSIS
+        use Mail::Address;
+        my @addrs = Mail::Address-&gt;parse($line);
+
+        foreach $addr (@addrs) {
+            print $addr-&gt;format,&quot;\n&quot;;
+        }
+
+DESCRIPTION
+       &quot;Mail::Address&quot; extracts and manipulates email addresses from a message
+       header.  It cannot be used to extract addresses from some random text.
+       You can use this module to create RFC822 compliant fields.
+
+       Although &quot;Mail::Address&quot; is a very popular subject for books, and is used
+       in many applications, it does a very poor job on the more complex message
+       fields.  It does only handle simple address formats (which covers about
+       95% of what can be found). Problems are with
+
+       &#183;   no support for address groups, even not with the semi-colon as
+           separator between addresses;
+
+       &#183;   limitted support for escapes in phrases and comments.  There are
+           cases where it can get wrong; and
+
+       &#183;   you have to take care of most escaping when you create an address
+           yourself: &quot;Mail::Address&quot; does not do that for you.
+
+       Often requests are made to the maintainers of this code improve this
+       situation, but this is not a good idea, where it will break zillions of
+       existing applications.  If you wish for a fully RFC2822 compliant
+       implementation you may take a look at Mail::Message::Field::Full, part of
+       MailBox.
+
+METHODS
+   Constructors
+       Mail::Address-&gt;new(PHRASE, ADDRESS, [ COMMENT ])
+           Create a new &quot;Mail::Address&quot; object which represents an address with
+           the elements given. In a message these 3 elements would be seen like:
+
+            PHRASE &lt;ADDRESS&gt; (COMMENT)
+            ADDRESS (COMMENT)
+
+           example:
+
+            Mail::Address-&gt;new(&quot;Perl5 Porters&quot;, &quot;perl5-porters@africa.nicoh.com&quot;);
+
+       $obj-&gt;parse(LINE)
+           Parse the given line a return a list of extracted &quot;Mail::Address&quot;
+           objects.  The line would normally be one taken from a To,Cc or Bcc
+           line in a message
+
+           example:
+
+            my @addr = Mail::Address-&gt;parse($line);
+
+   Accessors
+       $obj-&gt;address()
+           Return the address part of the object.
+&#12;       $obj-&gt;comment()
+           Return the comment part of the object
+
+       $obj-&gt;format([ADDRESSes])
+           Return a string representing the address in a suitable form to be
+           placed on a &quot;To&quot;, &quot;Cc&quot;, or &quot;Bcc&quot; line of a message.  This method is
+           called on the first ADDRESS to be used; other specified ADDRESSes
+           will be appended, separated with commas.
+
+       $obj-&gt;phrase()
+           Return the phrase part of the object.
+
+   Smart accessors
+       $obj-&gt;host()
+           Return the address excluding the user id and &apos;@&apos;
+
+       $obj-&gt;name()
+           Using the information contained within the object attempt to identify
+           what the person or groups name is.
+
+       $obj-&gt;user()
+           Return the address excluding the &apos;@&apos; and the mail domain
+
+SEE ALSO
+       This module is part of the MailTools distribution,
+       http://perl.overmeer.net/mailtools/.
+
+AUTHORS
+       The MailTools bundle was developed by Graham Barr.  Later, Mark Overmeer
+       took over maintenance without commitment to further development.
+
+       Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;.  Mail::Field::AddrList by Peter
+       Orbaek &lt;poe@cit.dk&gt;.  Mail::Mailer and Mail::Send by Tim Bunce
+       &lt;Tim.Bunce@ig.co.uk&gt;.  For other contributors see ChangeLog.
+
+LICENSE
+       Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and 2001-2007 Mark
+       Overmeer &lt;perl@overmeer.net&gt;.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.  See
+       http://www.perl.com/perl/misc/Artistic.html
+
+
+
+perl v5.14.2                       2012-02-25                 Mail::Address(3pm)
+
+</pre></body></html>

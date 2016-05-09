@@ -1,0 +1,170 @@
+<html>
+<head><meta charset=utf-8/>
+<title>foomatic-configure - the main configuration program of the foomatic printing system.</title></head>
+<body><pre>
+
+FOOMATIC-CONFIGURE(1)                                      FOOMATIC-CONFIGURE(1)
+
+
+
+NAME
+       foomatic-configure  -  the  main  configuration  program  of the foomatic
+       printing system.
+
+SYNOPSIS
+       foomatic-configure [OPTION]...
+
+       foomatic-configure -n queuename [ -N description ] [ -L loca&#8208;
+       tion ] [ -c con&#8208;
+       nect ] [ -d driver ] [ -p printer ] [ --ppd ppdfile ] [ -s spooler ] [ -C [ source&#8208;
+       spooler ] sourcequeue ] [ -o option1=value1 -o option2 ... ] [ -q ]
+       foomatic-configure -D -n queuename [ -s spooler ] [ -q ]
+
+       foomatic-configure -R -n queuename [ -s spooler ] [ -q ]
+
+       foomatic-configure -Q  [ -s spooler ] [ -n queuename ] [ -r ]
+
+       foomatic-configure -P  [ -s spooler ] [ -n queue&#8208;
+       name ] [ -d driver ] [ -p printer ] [ --ppd ppdfile ] [ index ]
+
+       foomatic-configure -X -p printer | -d driver | -p printer -d driver
+
+       foomatic-configure -O
+
+       foomatic-configure -h
+
+       foomatic-configure --help
+
+
+DESCRIPTION
+       foomatic-configure  is a program to set up and configure print queues for
+       every known spooler (CUPS, LPRng, LPD, GNUlpr, PPR, PDQ. CPS, no spooler)
+       and  every  valid  printer/driver combo in the Foomatic database or every
+       PPD file coming with PostScript printers. As  RIP  filter  (Raster  Image
+       Processor,  translation  from  PostScript  to  the native language of the
+       printer) always foomatic-rip(1) will be used, except  for  PPD  files  of
+       PostScript printers under CUPS or PPR, they will be used without RIP fil&#8208;
+       ter.
+
+       It also comprises half of a programatic API for user tools: you can learn
+       and  control everything about the static properties of print queues here.
+       With the sister  program  foomatic-printjob(1),  you  can  do  everything
+       related  to the print queue&apos;s dynamic state: submit jobs, and query, can&#8208;
+       cel, reorder, and redirect them.
+
+
+   Options
+       -n queuename
+                 Configure this print queue
+
+       -N Name/Description
+                 Use this proper human-readable name/description
+
+       -L Location
+                 Short phrase describing this printer&apos;s location
+
+       -c connection
+                 Printer is connected thusly (ex file:/dev/lp0)
+
+       -d driver Foomatic database name for desired printer driver
+
+       -p printer
+                 Foomatic id for printer
+&#12;       --ppd ppdfile
+                 PPD file, for example the one supplied by the manufacturer of a
+                 PostScript printer
+
+       -s spooler
+                 Explicit spooler type (cups, lpd, lprng, pdq, ppr, direct)
+
+       -o option=value
+                 Set the default of option to value
+
+       -o option Turn on option by default
+
+       -D        Set this queue as the default queue (just give -n queuename)
+
+       -R        Remove this whole queue entirely (just give -n queuename)
+
+       -C [ sourcespooler ] sourcequeue
+                 Copy  sourcequeue  from  sourcespooler  (or  the current one if
+                 sourcespooler is not given) into the queue given by  -n  queue&#8208;
+                 name (of the current spooler).
+
+       -Q        Query existing configuration (gives XML summary)
+
+       -r        List also remotely defined queues (CUPS only)
+
+       -P [ index ]
+                 Get  Perl  dump of current configuration (as a Perl array named
+                 QUEUES, the first index is index,  or  zero  if  index  is  not
+                 given)
+
+       -O        Print  XML  Overview  of  all known printer/drivers (this shows
+                 also the Foomatic IDs of the printers)
+
+       -X        Print XML data for -p printer and/or -d driver object
+
+       -q        Run quietly
+
+
+
+   Commands
+       No commands, just options
+
+
+
+SEE ALSO
+       foomatic-printjob(1), foomatic-rip(1)
+
+
+EXIT STATUS
+       foomatic-configure returns 0 if no errors occurred.
+
+
+AUTHOR
+       Manfred Wassmann &lt;manolo@NCC-1701.B.Shuttle.de&gt; for the foomatic  project
+       using comments from the source.
+
+
+BUGS
+       foomatic-configure  currently  cannot  handle printcap files in the lprng
+       style.  As lprng can use BSD style printcaps this is not much of a  prob&#8208;
+       lem,  as  long as the GUI based print manager lprngtool is not used.  The
+       difference between those formats is, that BSD style requires continuation
+       lines  in  printer  definitions  to be ended with a colon and the newline
+       character to be escaped with a backslash.  Lprng has no such restriction.
+
+       To use a printcap file generated or edited with lprngtool with  foomatic-
+       configure  it  is necessary to add :\ to the end of all but the last line
+       of every printer definition, just as shown below:
+
+       #comment
+       # primary printer name
+       lp
+       #alternate names
+        |lp2|lp3
+        |Example of a printer
+        :sd=/usr/spool/LPD/lp
+        :rw:lp=/dev/lp:mx#100
+        :
+
+
+       must be converted to:
+
+       #comment
+       # primary printer name
+       lp\
+        |lp2|lp3\
+        |Example of a printer\
+        :sd=/usr/spool/LPD/lp:\
+        :rw:lp=/dev/lp:mx#100:
+
+
+       This manpage may be out of date.
+
+
+
+Foomatic Project                   2002-01-06              FOOMATIC-CONFIGURE(1)
+
+</pre></body></html>

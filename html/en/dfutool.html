@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dfutool - Device Firmware Upgrade utility</title></head>
+<body><pre>
+
+DFUTOOL(1)                                                            DFUTOOL(1)
+
+
+
+NAME
+       dfutool - Device Firmware Upgrade utility
+
+SYNOPSIS
+       dfutool [ options ] &lt; command &gt;
+
+DESCRIPTION
+       dfutool is used to verify, archive and upgrade firmware files.
+
+OPTIONS
+       -h     Gives a list of possible commands.
+
+       -d &lt;device&gt;
+              The command specifies the device to use.
+
+COMMANDS
+       verify &lt;dfu-file&gt;
+              Display information about the firmware file.
+
+       modify &lt;dfu-file&gt;
+              Change DFU specific values in the firmware file.
+
+       upgrade &lt;dfu-file&gt;
+              Upgrade the device with a new firmware.
+
+       archive &lt;dfu-file&gt;
+              Archive the current firmware of the device.
+
+AUTHOR
+       Written by Marcel Holtmann &lt;marcel@holtmann.org&gt;.
+
+
+
+                                 APRIL 21, 2005                       DFUTOOL(1)
+
+</pre></body></html>

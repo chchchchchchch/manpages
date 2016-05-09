@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>localeconv - get numeric formatting information</title></head>
+<body><pre>
+
+LOCALECONV(3)               Linux Programmer&apos;s Manual              LOCALECONV(3)
+
+
+
+NAME
+       localeconv - get numeric formatting information
+
+SYNOPSIS
+       #include &lt;locale.h&gt;
+
+       struct lconv *localeconv(void);
+
+DESCRIPTION
+       The  localeconv()  function  returns  a pointer to a struct lconv for the
+       current locale.  This structure is shown in locale(7), and  contains  all
+       values  associated with the locale categories LC_NUMERIC and LC_MONETARY.
+       Programs may also use  the  functions  printf(3)  and  strfmon(3),  which
+       behave according to the actual locale in use.
+
+CONFORMING TO
+       C89, C99.
+
+BUGS
+       The  printf(3)  family  of  functions  may  or  may not honor the current
+       locale.
+
+SEE ALSO
+       locale(1), localedef(1), isalpha(3), nl_langinfo(3),  setlocale(3),  str&#8208;
+       coll(3), strftime(3), locale(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1993-04-25                      LOCALECONV(3)
+
+</pre></body></html>

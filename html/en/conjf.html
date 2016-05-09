@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>conj, conjf, conjl - calculate the complex conjugate</title></head>
+<body><pre>
+
+CONJ(3)                     Linux Programmer&apos;s Manual                    CONJ(3)
+
+
+
+NAME
+       conj, conjf, conjl - calculate the complex conjugate
+
+SYNOPSIS
+       #include &lt;complex.h&gt;
+
+       double complex conj(double complex z);
+       float complex conjf(float complex z);
+       long double complex conjl(long double complex z);
+
+       Link with -lm.
+
+DESCRIPTION
+       The  conj()  function  returns the complex conjugate value of z.  That is
+       the value obtained by changing the sign of the imaginary part.
+
+       One has:
+
+           cabs(z) = csqrt(z * conj(z))
+
+VERSIONS
+       These functions first appeared in glibc in version 2.1.
+
+CONFORMING TO
+       C99.
+
+SEE ALSO
+       cabs(3), csqrt(3), complex(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2008-08-11                            CONJ(3)
+
+</pre></body></html>

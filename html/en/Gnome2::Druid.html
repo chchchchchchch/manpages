@@ -1,0 +1,94 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::Druid - wrapper for GnomeDruid</title></head>
+<body><pre>
+
+Gnome2::Druid(3pm)     User Contributed Perl Documentation    Gnome2::Druid(3pm)
+
+
+
+NAME
+       Gnome2::Druid - wrapper for GnomeDruid
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gnome2::Druid
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+
+METHODS
+   widget = Gnome2::Druid-&gt;new
+   list = Gnome2::Druid-&gt;new_with_window ($title, $parent, $close_on_cancel)
+       &#183;   $title (string)
+
+       &#183;   $parent (Gtk2::Window or undef)
+
+       &#183;   $close_on_cancel (boolean)
+
+       Returns a GnomeDruid and a GtkWindow.
+
+   $druid-&gt;append_page ($page)
+       &#183;   $page (Gnome2::DruidPage)
+
+   widget = $druid-&gt;back
+   $druid-&gt;set_buttons_sensitive ($back_sensitive, $next_sensitive,
+       $cancel_sensitive, $help_sensitive)
+       &#183;   $back_sensitive (boolean)
+
+       &#183;   $next_sensitive (boolean)
+
+       &#183;   $cancel_sensitive (boolean)
+
+       &#183;   $help_sensitive (boolean)
+
+   widget = $druid-&gt;cancel
+   widget = $druid-&gt;finish
+   widget = $druid-&gt;help
+   $druid-&gt;insert_page ($back_page, $page)
+       &#183;   $back_page (Gnome2::DruidPage or undef)
+
+       &#183;   $page (Gnome2::DruidPage)
+
+   widget = $druid-&gt;next
+   $druid-&gt;set_page ($page)
+       &#183;   $page (Gnome2::DruidPage)
+
+   $druid-&gt;prepend_page ($page)
+       &#183;   $page (Gnome2::DruidPage)
+
+   $druid-&gt;set_show_finish ($show_finish)
+       &#183;   $show_finish (boolean)
+
+   $druid-&gt;set_show_help ($show_help)
+       &#183;   $show_help (boolean)
+
+PROPERTIES
+       &apos;show-finish&apos; (boolean : default false : readable / writable)
+           Show the &apos;Finish&apos; button instead of the &apos;Next&apos; button
+&#12;       &apos;show-help&apos; (boolean : default false : readable / writable)
+           Show the &apos;Help&apos; button
+
+SIGNALS
+       cancel (Gnome2::Druid)
+       help (Gnome2::Druid)
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16                 Gnome2::Druid(3pm)
+
+</pre></body></html>

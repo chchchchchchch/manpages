@@ -1,0 +1,180 @@
+<html>
+<head><meta charset=utf-8/>
+<title>find2perl - translate find command lines to Perl code</title></head>
+<body><pre>
+
+FIND2PERL(1)            Perl Programmers Reference Guide            FIND2PERL(1)
+
+
+
+NAME
+       find2perl - translate find command lines to Perl code
+
+SYNOPSIS
+               find2perl [paths] [predicates] | perl
+
+DESCRIPTION
+       find2perl is a little translator to convert find command lines to
+       equivalent Perl code.  The resulting code is typically faster than
+       running find itself.
+
+       &quot;paths&quot; are a set of paths where find2perl will start its searches and
+       &quot;predicates&quot; are taken from the following list.
+
+       &quot;! PREDICATE&quot;
+           Negate the sense of the following predicate.  The &quot;!&quot; must be passed
+           as a distinct argument, so it may need to be surrounded by whitespace
+           and/or quoted from interpretation by the shell using a backslash
+           (just as with using find(1)).
+
+       &quot;( PREDICATES )&quot;
+           Group the given PREDICATES.  The parentheses must be passed as
+           distinct arguments, so they may need to be surrounded by whitespace
+           and/or quoted from interpretation by the shell using a backslash
+           (just as with using find(1)).
+
+       &quot;PREDICATE1 PREDICATE2&quot;
+           True if _both_ PREDICATE1 and PREDICATE2 are true; PREDICATE2 is not
+           evaluated if PREDICATE1 is false.
+
+       &quot;PREDICATE1 -o PREDICATE2&quot;
+           True if either one of PREDICATE1 or PREDICATE2 is true; PREDICATE2 is
+           not evaluated if PREDICATE1 is true.
+
+       &quot;-follow&quot;
+           Follow (dereference) symlinks.  The checking of file attributes
+           depends on the position of the &quot;-follow&quot; option. If it precedes the
+           file check option, an &quot;stat&quot; is done which means the file check
+           applies to the file the symbolic link is pointing to. If &quot;-follow&quot;
+           option follows the file check option, this now applies to the
+           symbolic link itself, i.e.  an &quot;lstat&quot; is done.
+
+       &quot;-depth&quot;
+           Change directory traversal algorithm from breadth-first to depth-
+           first.
+
+       &quot;-prune&quot;
+           Do not descend into the directory currently matched.
+
+       &quot;-xdev&quot;
+           Do not traverse mount points (prunes search at mount-point
+           directories).
+
+       &quot;-name GLOB&quot;
+           File name matches specified GLOB wildcard pattern.  GLOB may need to
+           be quoted to avoid interpretation by the shell (just as with using
+           find(1)).
+
+       &quot;-iname GLOB&quot;
+           Like &quot;-name&quot;, but the match is case insensitive.
+
+       &quot;-path GLOB&quot;
+           Path name matches specified GLOB wildcard pattern.
+&#12;       &quot;-ipath GLOB&quot;
+           Like &quot;-path&quot;, but the match is case insensitive.
+
+       &quot;-perm PERM&quot;
+           Low-order 9 bits of permission match octal value PERM.
+
+       &quot;-perm -PERM&quot;
+           The bits specified in PERM are all set in file&apos;s permissions.
+
+       &quot;-type X&quot;
+           The file&apos;s type matches perl&apos;s &quot;-X&quot; operator.
+
+       &quot;-fstype TYPE&quot;
+           Filesystem of current path is of type TYPE (only NFS/non-NFS
+           distinction is implemented).
+
+       &quot;-user USER&quot;
+           True if USER is owner of file.
+
+       &quot;-group GROUP&quot;
+           True if file&apos;s group is GROUP.
+
+       &quot;-nouser&quot;
+           True if file&apos;s owner is not in password database.
+
+       &quot;-nogroup&quot;
+           True if file&apos;s group is not in group database.
+
+       &quot;-inum INUM&quot;
+           True file&apos;s inode number is INUM.
+
+       &quot;-links N&quot;
+           True if (hard) link count of file matches N (see below).
+
+       &quot;-size N&quot;
+           True if file&apos;s size matches N (see below) N is normally counted in
+           512-byte blocks, but a suffix of &quot;c&quot; specifies that size should be
+           counted in characters (bytes) and a suffix of &quot;k&quot; specifies that size
+           should be counted in 1024-byte blocks.
+
+       &quot;-atime N&quot;
+           True if last-access time of file matches N (measured in days) (see
+           below).
+
+       &quot;-ctime N&quot;
+           True if last-changed time of file&apos;s inode matches N (measured in
+           days, see below).
+
+       &quot;-mtime N&quot;
+           True if last-modified time of file matches N (measured in days, see
+           below).
+
+       &quot;-newer FILE&quot;
+           True if last-modified time of file matches N.
+
+       &quot;-print&quot;
+           Print out path of file (always true). If none of &quot;-exec&quot;, &quot;-ls&quot;,
+           &quot;-print0&quot;, or &quot;-ok&quot; is specified, then &quot;-print&quot; will be added
+           implicitly.
+
+       &quot;-print0&quot;
+           Like -print, but terminates with \0 instead of \n.
+
+       &quot;-exec OPTIONS ;&quot;
+           exec() the arguments in OPTIONS in a subprocess; any occurrence of {}
+           in OPTIONS will first be substituted with the path of the current
+           file.  Note that the command &quot;rm&quot; has been special-cased to use
+           perl&apos;s unlink() function instead (as an optimization).  The &quot;;&quot; must
+           be passed as a distinct argument, so it may need to be surrounded by
+           whitespace and/or quoted from interpretation by the shell using a
+           backslash (just as with using find(1)).
+
+       &quot;-ok OPTIONS ;&quot;
+           Like -exec, but first prompts user; if user&apos;s response does not begin
+           with a y, skip the exec.  The &quot;;&quot; must be passed as a distinct
+           argument, so it may need to be surrounded by whitespace and/or quoted
+           from interpretation by the shell using a backslash (just as with
+           using find(1)).
+
+       &quot;-eval EXPR&quot;
+           Has the perl script eval() the EXPR.
+
+       &quot;-ls&quot;
+           Simulates &quot;-exec ls -dils {} ;&quot;
+
+       &quot;-tar FILE&quot;
+           Adds current output to tar-format FILE.
+
+       &quot;-cpio FILE&quot;
+           Adds current output to old-style cpio-format FILE.
+
+       &quot;-ncpio FILE&quot;
+           Adds current output to &quot;new&quot;-style cpio-format FILE.
+
+       Predicates which take a numeric argument N can come in three forms:
+
+          * N is prefixed with a +: match values greater than N
+          * N is prefixed with a -: match values less than N
+          * N is not prefixed with either + or -: match only values equal to N
+
+SEE ALSO
+       find, File::Find.
+
+
+
+perl v5.14.2                       2014-09-30                       FIND2PERL(1)
+
+</pre></body></html>

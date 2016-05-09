@@ -1,0 +1,128 @@
+<html>
+<head><meta charset=utf-8/>
+<title>encodedv - encode a series of images to a digital video stream</title></head>
+<body><pre>
+
+ENCODE(1)                                                              ENCODE(1)
+
+
+
+NAME
+       encodedv - encode a series of images to a digital video stream
+
+SYNOPSIS
+       encodedv [ options ] video_pattern [ audio_input ]
+
+DESCRIPTION
+       encodedv  takes a series of images in PPM/PGM/video format and optionally
+       an audio stream and compiles them into a DV-encoded video stream. pattern
+       specifies  where the input data is located and may be either - for stdin,
+       or a printf-style pattern taking one numeric argument that gets  replaced
+       by  the current frame number.  Like image%03d.ppm, which gets expanded to
+       image000.ppm, image001.ppm, etc.
+
+       --version
+              show encodedv version number.
+
+       -s, --start-frame=count
+              start encoding at frame number count (defaults to 0).
+
+       -e, --end-frame=count
+              end encoding at frame number count (defaults to unlimited).
+
+       -l, --wrong-interlace
+              flip lines to compensate for wrong interlacing in the input  data.
+              Happened with mpeg2dec generated data.
+
+       -p, --vlc-passes
+              vlc code distribution passes (1-3) greater values = better quality
+              but not necessarily slower encoding! This defaults for best  qual&#8208;
+              ity = 3.
+
+       -v, --verbose
+              show encoder statistics / status information
+
+       -i, --input=filter-name
+              Choose  input-filter: [&gt;ppm&lt;, pgm, video] The ppm-filter only sup&#8208;
+              ports raw rgb ppm files.  The pgm file format is the one generated
+              by  mpeg2dec  of the livid project. ( http://linuxvideo.org ) This
+              means: Y-data appended by U and V data which are scaled down by  2
+              and  placed side by side. This option defaults to PPM. Some things
+              you want to keep in mind:
+
+              1) If you want to stream video frames (using video_pattern =  &quot;-&quot;)
+              you have to make sure that there is no trailing garbage at the end
+              of the pictures. This is ignored by most image  manipulation  pro&#8208;
+              grams!
+
+              2) If you are one of the poor persons with a buggy PCI bus-master&#8208;
+              ing board be sure to have a backup handy if you want to use  video
+              support.  Some  versions  of  the  VIA  board  chipsets crash your
+              machine and even your harddisk. Since encodedv uses  full  resolu&#8208;
+              tion  capturing it is more likely to trigger these bugs than other
+              programs. If you have a VIA board you definitely want  to  upgrade
+              to Linux 2.4.3 or higher.
+
+              3)  The encoded pictures must have the correct resolution. If they
+              don&apos;t, you may want to try ppmqscale. The  used  video  format  is
+              chosen  by picture resolution. Use 720x576 for PAL and 720x480 for
+              NTSC.
+
+              4) If you want to speed up things a little bit and you are  gener&#8208;
+              ating  the  input pictures automatically you may want to try pgm&apos;s
+              instead of ppm&apos;s since they are encoded somewhat faster. But  keep
+              in  mind,  that this pgm format is only optimal for PAL since NTSC
+              averages the U and V values somewhat differently.
+
+       -a, --audio-input=filter-name
+              Choose audio-input-filter: [&gt;none&lt;, wav, dsp]
+
+       -o, --output=filter-name
+              Choose output-filter: [&gt;raw&lt;]
+
+       -q, --static-qno=table-no
+              Static qno tables for quantisation on 2  VLC  passes.   For  turbo
+              (but  somewhat  lossy  encoding) try -q [1,2] -p [2,3].  There are
+              only two static qno tables registered right now:
+
+              1 : for sharp DV pictures
+
+              2 : for somewhat noisy satelite television signal
+
+              If you want to add some more, go ahead ;-)
+
+       -f, --fps=fps-number
+              Set frames per second (default: use all frames)
+
+       -d, --force-dct=dct-mode
+              Force dct mode (88 or 248) for whole picture
+
+       Help Options
+
+       -?, --help
+              Show help message.
+
+       --usage
+              Display brief usage message.
+
+SEE ALSO
+       playdv(1),dvconnect(1),dubdv(1),encodedv(1).
+
+AVAILABILITY
+       See http://libdv.sourceforge.net/ for the latest version.
+
+AUTHORS
+       encodedv was written by  James  Bowman  &lt;jamesb@excamera.com&gt;  and  Peter
+       Schlaile &lt;udbz@rz.uni-karlsruhe.de&gt;.
+
+       This  manual  page is based on encodedv&apos;s help message and was written by
+       Daniel Kobras &lt;kobras@debian.org&gt; for the Debian  GNU/Linux  system  (but
+       may  be  used  by others). It was updated by Peter Schlaile &lt;udbz@rz.uni-
+       karlsruhe.de&gt;.
+
+
+
+
+                                   April 2001                          ENCODE(1)
+
+</pre></body></html>

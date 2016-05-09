@@ -1,0 +1,498 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::kcg - DateTime locale package for "kcg"</title></head>
+<body><pre>
+
+DateTime::Locale::kcg(3User Contributed Perl DocumentaDateTime::Locale::kcg(3pm)
+
+
+
+NAME
+       DateTime::Locale::kcg - DateTime locale package for &quot;kcg&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;kcg&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Tyap.
+
+DATA
+       This locale inherits from the DateTime::Locale::root locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         Tanii
+         Talata
+         Larba
+         Lamit
+         Juma
+         Asabat
+         Ladi
+
+       Abbreviated (format)
+
+         Tan
+         Tal
+         Lar
+         Lam
+         Jum
+         Asa
+         Lad
+
+       Narrow (format)
+
+         2
+         3
+         4
+         5
+         6
+         7
+         1
+
+       Wide (stand-alone)
+
+         Tanii
+         Talata
+         Larba
+         Lamit
+         Juma
+         Asabat
+         Ladi
+
+       Abbreviated (stand-alone)
+
+         Tan
+         Tal
+         Lar
+         Lam
+         Jum
+         Asa
+         Lad
+&#12;       Narrow (stand-alone)
+
+         2
+         3
+         4
+         5
+         6
+         7
+         1
+
+   Months
+       Wide (format)
+
+         Zwat Juwung
+         Zwat Swiyang
+         Zwat Tsat
+         Zwat Nyai
+         Zwat Tswon
+         Zwat Ataah
+         Zwat Anatat
+         Zwat Arinai
+         Zwat Akubunyung
+         Zwat Swag
+         Zwat Mangjuwang
+         Zwat Swag-Ma-Suyang
+
+       Abbreviated (format)
+
+         Juw
+         Swi
+         Tsa
+         Nya
+         Tsw
+         Ata
+         Ana
+         Ari
+         Aku
+         Swa
+         Man
+         Mas
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+         10
+         11
+         12
+
+       Wide (stand-alone)
+
+         Zwat Juwung
+         Zwat Swiyang
+         Zwat Tsat
+         Zwat Nyai
+         Zwat Tswon
+         Zwat Ataah
+         Zwat Anatat
+         Zwat Arinai
+         Zwat Akubunyung
+         Zwat Swag
+         Zwat Mangjuwang
+         Zwat Swag-Ma-Suyang
+
+       Abbreviated (stand-alone)
+
+         Juw
+         Swi
+         Tsa
+         Nya
+         Tsw
+         Ata
+         Ana
+         Ari
+         Aku
+         Swa
+         Man
+         Mas
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+         10
+         11
+         12
+
+   Quarters
+       Wide (format)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Abbreviated (format)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Abbreviated (stand-alone)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         Gabanin Miladi
+         Miladi
+
+       Abbreviated
+
+         GM
+         M
+
+       Narrow
+
+         GM
+         M
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = Talata, 2008 Zwat Swiyang 05
+          1995-12-22T09:05:02 = Juma, 1995 Zwat Swag-Ma-Suyang 22
+         -0010-09-15T04:44:23 = Asabat, -10 Zwat Akubunyung 15
+
+       Long
+
+          2008-02-05T18:30:30 = 2008 Zwat Swiyang 5
+          1995-12-22T09:05:02 = 1995 Zwat Swag-Ma-Suyang 22
+         -0010-09-15T04:44:23 = -10 Zwat Akubunyung 15
+
+       Medium
+
+          2008-02-05T18:30:30 = 2008 Swi 5
+          1995-12-22T09:05:02 = 1995 Mas 22
+         -0010-09-15T04:44:23 = -10 Aku 15
+
+       Short
+
+          2008-02-05T18:30:30 = 08/02/05
+          1995-12-22T09:05:02 = 95/12/22
+         -0010-09-15T04:44:23 = -10/09/15
+
+       Default
+
+          2008-02-05T18:30:30 = 2008 Swi 5
+          1995-12-22T09:05:02 = 1995 Mas 22
+         -0010-09-15T04:44:23 = -10 Aku 15
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = Talata, 2008 Zwat Swiyang 05 18:30:30 UTC
+          1995-12-22T09:05:02 = Juma, 1995 Zwat Swag-Ma-Suyang 22 09:05:02 UTC
+         -0010-09-15T04:44:23 = Asabat, -10 Zwat Akubunyung 15 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 2008 Zwat Swiyang 5 18:30:30 UTC
+          1995-12-22T09:05:02 = 1995 Zwat Swag-Ma-Suyang 22 09:05:02 UTC
+         -0010-09-15T04:44:23 = -10 Zwat Akubunyung 15 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 2008 Swi 5 18:30:30
+          1995-12-22T09:05:02 = 1995 Mas 22 09:05:02
+         -0010-09-15T04:44:23 = -10 Aku 15 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 08/02/05 18:30
+          1995-12-22T09:05:02 = 95/12/22 09:05
+         -0010-09-15T04:44:23 = -10/09/15 04:44
+
+       Default
+
+          2008-02-05T18:30:30 = 2008 Swi 5 18:30:30
+          1995-12-22T09:05:02 = 1995 Mas 22 09:05:02
+         -0010-09-15T04:44:23 = -10 Aku 15 04:44:23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (d EEE)
+
+          2008-02-05T18:30:30 = 5 Tal
+          1995-12-22T09:05:02 = 22 Jum
+         -0010-09-15T04:44:23 = 15 Asa
+
+       Hm (H:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+
+       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 PM
+          1995-12-22T09:05:02 = 9:05 AM
+         -0010-09-15T04:44:23 = 4:44 AM
+
+       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 PM
+          1995-12-22T09:05:02 = 9:05:02 AM
+         -0010-09-15T04:44:23 = 4:44:23 AM
+&#12;       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (M-d)
+
+          2008-02-05T18:30:30 = 2-5
+          1995-12-22T09:05:02 = 12-22
+         -0010-09-15T04:44:23 = 9-15
+
+       MEd (E, M-d)
+
+          2008-02-05T18:30:30 = Tal, 2-5
+          1995-12-22T09:05:02 = Jum, 12-22
+         -0010-09-15T04:44:23 = Asa, 9-15
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = Swi
+          1995-12-22T09:05:02 = Mas
+         -0010-09-15T04:44:23 = Aku
+
+       MMMd (MMM d)
+
+          2008-02-05T18:30:30 = Swi 5
+          1995-12-22T09:05:02 = Mas 22
+         -0010-09-15T04:44:23 = Aku 15
+
+       MMMEd (E MMM d)
+
+          2008-02-05T18:30:30 = Tal Swi 5
+          1995-12-22T09:05:02 = Jum Mas 22
+         -0010-09-15T04:44:23 = Asa Aku 15
+
+       MMMMd (MMMM d)
+
+          2008-02-05T18:30:30 = Zwat Swiyang 5
+          1995-12-22T09:05:02 = Zwat Swag-Ma-Suyang 22
+         -0010-09-15T04:44:23 = Zwat Akubunyung 15
+
+       MMMMEd (E MMMM d)
+
+          2008-02-05T18:30:30 = Tal Zwat Swiyang 5
+          1995-12-22T09:05:02 = Jum Zwat Swag-Ma-Suyang 22
+         -0010-09-15T04:44:23 = Asa Zwat Akubunyung 15
+
+       ms (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       y (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (y-M)
+
+          2008-02-05T18:30:30 = 2008-2
+          1995-12-22T09:05:02 = 1995-12
+         -0010-09-15T04:44:23 = -10-9
+
+       yMEd (EEE, y-M-d)
+
+          2008-02-05T18:30:30 = Tal, 2008-2-5
+          1995-12-22T09:05:02 = Jum, 1995-12-22
+         -0010-09-15T04:44:23 = Asa, -10-9-15
+
+       yMMM (y MMM)
+&#12;          2008-02-05T18:30:30 = 2008 Swi
+          1995-12-22T09:05:02 = 1995 Mas
+         -0010-09-15T04:44:23 = -10 Aku
+
+       yMMMEd (EEE, y MMM d)
+
+          2008-02-05T18:30:30 = Tal, 2008 Swi 5
+          1995-12-22T09:05:02 = Jum, 1995 Mas 22
+         -0010-09-15T04:44:23 = Asa, -10 Aku 15
+
+       yMMMM (y MMMM)
+
+          2008-02-05T18:30:30 = 2008 Zwat Swiyang
+          1995-12-22T09:05:02 = 1995 Zwat Swag-Ma-Suyang
+         -0010-09-15T04:44:23 = -10 Zwat Akubunyung
+
+       yQ (y Q)
+
+          2008-02-05T18:30:30 = 2008 1
+          1995-12-22T09:05:02 = 1995 4
+         -0010-09-15T04:44:23 = -10 3
+
+       yQQQ (y QQQ)
+
+          2008-02-05T18:30:30 = 2008 Q1
+          1995-12-22T09:05:02 = 1995 Q4
+         -0010-09-15T04:44:23 = -10 Q3
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       Tanii
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19         DateTime::Locale::kcg(3pm)
+
+</pre></body></html>

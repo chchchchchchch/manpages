@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>iswctype - wide-character classification</title></head>
+<body><pre>
+
+ISWCTYPE(3)                 Linux Programmer&apos;s Manual                ISWCTYPE(3)
+
+
+
+NAME
+       iswctype - wide-character classification
+
+SYNOPSIS
+       #include &lt;wctype.h&gt;
+
+       int iswctype(wint_t wc, wctype_t desc);
+
+DESCRIPTION
+       If  wc  is  a  wide character having the character property designated by
+       desc (or in other words: belongs to the  character  class  designated  by
+       desc),  the  iswctype()  function  returns nonzero.  Otherwise it returns
+       zero.  If wc is WEOF, zero is returned.
+
+       desc must be a character property descriptor returned  by  the  wctype(3)
+       function.
+
+RETURN VALUE
+       The  iswctype()  function  returns  nonzero  if the wc has the designated
+       property.  Otherwise it returns 0.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The behavior of iswctype() depends on the LC_CTYPE category of  the  cur&#8208;
+       rent locale.
+
+SEE ALSO
+       iswalnum(3),  iswalpha(3),  iswblank(3),  iswcntrl(3),  iswdigit(3), isw&#8208;
+       graph(3),  iswlower(3),  iswprint(3),  iswpunct(3),  iswspace(3),  iswup&#8208;
+       per(3), iswxdigit(3), wctype(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1999-07-25                        ISWCTYPE(3)
+
+</pre></body></html>

@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>fdim, fdimf, fdiml - positive difference</title></head>
+<body><pre>
+
+FDIM(3)                     Linux Programmer&apos;s Manual                    FDIM(3)
+
+
+
+NAME
+       fdim, fdimf, fdiml - positive difference
+
+SYNOPSIS
+       #include &lt;math.h&gt;
+
+       double fdim(double x, double y);
+       float fdimf(float x, float y);
+       long double fdiml(long double x, long double y);
+
+       Link with -lm.
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       fdimf(), fdiml():
+           _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
+
+DESCRIPTION
+       These functions return the positive difference, max(x-y,0), between their
+       arguments.
+
+RETURN VALUE
+       On success, these functions return the positive difference.
+
+       If x or y is a NaN, a NaN is returned.
+
+       If the result overflows, a range error occurs, and the  functions  return
+       HUGE_VAL, HUGE_VALF, or HUGE_VALL, respectively.
+
+ERRORS
+       See  math_error(7)  for  information on how to determine whether an error
+       has occurred when calling these functions.
+
+       The following errors can occur:
+
+       Range error: result overflow
+              An overflow floating-point exception (FE_OVERFLOW) is raised.
+
+       These functions do not set errno.
+
+VERSIONS
+       These functions first appeared in glibc in version 2.1.
+
+CONFORMING TO
+       C99, POSIX.1-2001.
+
+SEE ALSO
+       fmax(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2010-09-20                            FDIM(3)
+
+</pre></body></html>

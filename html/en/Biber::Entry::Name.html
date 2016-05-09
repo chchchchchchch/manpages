@@ -1,0 +1,159 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Biber::Entry::Name - Biber::Entry::Name objects</title></head>
+<body><pre>
+
+Biber::Entry::Name(3pm)User Contributed Perl DocumentatioBiber::Entry::Name(3pm)
+
+
+
+NAME
+       Biber::Entry::Name - Biber::Entry::Name objects
+
+   new
+           Initialize a Biber::Entry::Name object, optionally with key=&gt;value arguments.
+
+           Ex: Biber::Entry::Name-&gt;new( lastname=&gt;&quot;Bolzmann&quot;, firstname=&gt;&quot;Anna Maria&quot;, prefix =&gt; &quot;von&quot; )
+
+   TO_JSON
+          Serialiser for JSON::XS::encode
+
+   notnull
+           Test for an empty object
+
+   was_stripped
+           Return boolean to tell if the passed field had braces stripped from the original
+
+   set_hash
+           Set a hash for the name
+
+   get_hash
+           Get a hash for the name
+
+   set_index
+           Set a field telling what position in the name list the name is
+
+   get_index
+           Get the index of a Biber::Entry::Name object
+
+   set_uniquename
+           Set uniquename for a visible Biber::Entry::Name object
+           Sets global flag to say that some uniquename value has changed
+
+   set_uniquename_all
+           Set uniquename for a Biber::Entry::Name object
+
+   get_uniquename
+           Get uniquename for a visible Biber::Entry::Name object
+
+   get_uniquename_all
+           Get uniquename for a Biber::Entry::Name object
+
+   reset_uniquename
+           Reset uniquename for a Biber::Entry::Name object
+
+   set_minimal_info
+           Set the string of lastnames and string of fullnames
+           Used to track uniquename=5 or 6
+
+   get_minimal_info
+           Get the name context used to track uniquename=5 or 6
+
+   get_namepart
+           Get a namepart by passed name
+
+   set_firstname
+           Set firstname for a Biber::Entry::Name object
+
+   get_firstname
+           Get firstname for a Biber::Entry::Name object
+
+   get_firstname_i
+           Get firstname initials for a Biber::Entry::Name object
+&#12;   set_middlename
+           Set middlename for a Biber::Entry::Name object
+
+   get_middlename
+           Get middlename for a Biber::Entry::Name object
+
+   get_middlename_i
+           Get middlename initials for a Biber::Entry::Name object
+
+   set_lastname
+           Set lastname for a Biber::Entry::Name object
+
+   get_lastname
+           Get lastname for a Biber::Entry::Name object
+
+   get_lastname_i
+           Get lastname initials for a Biber::Entry::Name object
+
+   set_suffix
+           Set suffix for a Biber::Entry::Name object
+
+   get_suffix
+           Get suffix for a Biber::Entry::Name object
+
+   get_suffix_i
+           Get suffix initials for a Biber::Entry::Name object
+
+   set_prefix
+           Set prefix for a Biber::Entry::Name object
+
+   get_prefix
+           Get prefix for a Biber::Entry::Name object
+
+   get_prefix_i
+           Get prefix initials for a Biber::Entry::Name object
+
+   set_gender
+           Set gender for a Biber::Entry::Name object
+
+   get_gender
+           Get gender for a Biber::Entry::Name object
+
+   set_namestring
+           Set namestring for a Biber::Entry::Name object
+
+   get_namestring
+           Get namestring for a Biber::Entry::Name object
+
+   set_nameinitstring
+           Set nameinitstring for a Biber::Entry::Name object
+
+   get_nameinitstring
+           Get nameinitstring for a Biber::Entry::Name object
+
+   name_to_bbl {
+           Return bbl data for a name
+
+   name_to_bltxml {
+           Add BibLaTeXML for the name to an XML::Writer object
+
+   dump
+           Dump Biber::Entry::Name object
+
+AUTHORS
+       Francois Charette, &quot;&lt;firmicus at ankabut.net&gt;&quot; Philip Kime &quot;&lt;philip at
+       kime.org.uk&gt;&quot;
+
+BUGS
+       Please report any bugs or feature requests on our sourceforge tracker at
+       &lt;https://sourceforge.net/tracker2/?func=browse&amp;group_id=228270&gt;.
+
+COPYRIGHT &amp; LICENSE
+       Copyright 2009-2012 Francois Charette and Philip Kime, all rights
+       reserved.
+
+       This module is free software.  You can redistribute it and/or modify it
+       under the terms of the Artistic License 2.0.
+
+       This program is distributed in the hope that it will be useful, but
+       without any warranty; without even the implied warranty of
+       merchantability or fitness for a particular purpose.
+
+
+
+perl v5.14.2                       2012-06-17            Biber::Entry::Name(3pm)
+
+</pre></body></html>

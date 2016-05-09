@@ -1,0 +1,43 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MIME::Parser::Reader - a line-oriented reader for a MIME::Parser</title></head>
+<body><pre>
+
+MIME::Parser::Reader(3pUser Contributed Perl DocumentatMIME::Parser::Reader(3pm)
+
+
+
+NAME
+       MIME::Parser::Reader - a line-oriented reader for a MIME::Parser
+
+SYNOPSIS
+       This module is used internally by MIME::Parser; you probably don&apos;t need
+       to be looking at it at all.  But just in case...
+
+           ### Create a top-level reader, where chunks end at EOF:
+           $rdr = MIME::Parser::Reader-&gt;new();
+
+           ### Spawn a child reader, where chunks also end at a boundary:
+           $subrdr = $rdr-&gt;spawn-&gt;add_boundary($bound);
+
+           ### Spawn a child reader, where chunks also end at a given string:
+           $subrdr = $rdr-&gt;spawn-&gt;add_terminator($string);
+
+           ### Read until boundary or terminator:
+           $subrdr-&gt;read_chunk($in, $out);
+
+DESCRIPTION
+       A line-oriented reader which can deal with virtual end-of-stream defined
+       by a collection of boundaries.
+
+       Warning: this is a private class solely for use by MIME::Parser.  This
+       class has no official public interface
+
+SEE ALSO
+       MIME::Tools, MIME::Parser
+
+
+
+perl v5.14.2                       2011-11-21          MIME::Parser::Reader(3pm)
+
+</pre></body></html>

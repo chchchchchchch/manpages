@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoyHatEvent - Joystick hat position change event structure</title></head>
+<body><pre>
+
+SDL_JoyHatEvent(3)              SDL API Reference             SDL_JoyHatEvent(3)
+
+
+
+NAME
+       SDL_JoyHatEvent - Joystick hat position change event structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 type;
+         Uint8 which;
+         Uint8 hat;
+         Uint8 value;
+       } SDL_JoyHatEvent;
+
+STRUCTURE DATA
+       type                SDL_JOY
+
+       which               Joystick device index
+
+       hat                 Joystick hat index
+
+       value               Hat position
+
+DESCRIPTION
+       SDL_JoyHatEvent  is  a  member of the SDL_Event union and is used when an
+       event of type SDL_JOYHATMOTION is reported.
+
+       A SDL_JOYHATMOTION event occurs when ever a user moves a hat on the  joy&#8208;
+       stick.  The  field  which  is the index of the joystick that reported the
+       event and hat is the index of the hat (for a  more  detailed  exlaination
+       see  the  Joystick section). value is the current position of the hat. It
+       is a logically OR&apos;d combination of the following values  (whose  meanings
+       should be pretty obvious:) :
+
+                 SDL_HAT_CENTERED
+
+                 SDL_HAT_UP
+
+                 SDL_HAT_RIGHT
+
+                 SDL_HAT_DOWN
+
+                 SDL_HAT_LEFT
+
+       The following defines are also provided:
+
+                 SDL_HAT_RIGHTUP
+
+                 SDL_HAT_RIGHTDOWN
+
+                 SDL_HAT_LEFTUP
+
+                 SDL_HAT_LEFTDOWN
+
+SEE ALSO
+       SDL_Event, Joystick Functions, SDL_JoystickEventState, SDL_JoystickGetHat
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59           SDL_JoyHatEvent(3)
+
+</pre></body></html>

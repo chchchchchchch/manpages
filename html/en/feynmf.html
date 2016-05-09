@@ -1,0 +1,85 @@
+<html>
+<head><meta charset=utf-8/>
+<title>feynmf - Process LaTeX files using FeynMF</title></head>
+<body><pre>
+
+FEYNMF(1)                  Contributed LaTeX Utilities                 FEYNMF(1)
+
+
+
+NAME
+       feynmf - Process LaTeX files using FeynMF
+
+SYNOPSIS
+       feynmf [-hvqncfT] [-t tfm [-t tfm ...]] [-m mode]
+              file [file ...]
+
+       feynmf [--help] [--version] [--quiet] [--noexec] [--clean]
+              [--force] [--notfm] [--tfm tfm [--tfm tfm ...]]
+              [--mode mode] file [file ...]
+
+DESCRIPTION
+       The most complicated part of using the FeynMF style appears to be the
+       proper invocation of Metafont.  The feynmf script provides a convenient
+       front end and will automagically invoke Metafont with the proper mode and
+       magnification.  It will also avoid cluttering system font directories and
+       offers an option to clean them.
+
+OPTIONS
+       -h, --help
+           Print a short help text.
+
+       -v, --version
+           Print the version of feynmf.
+
+       -q, --quiet
+           Don&apos;t echo the commands being executed.
+
+       -n, --noexec
+           Don&apos;t execute LaTeX or Metafont.
+
+       -c, --clean
+           Offer to delete font files that have accidentally been placed in a
+           system directory by the MakeTeXTFM and MakeTeXPK scripts (these
+           scripts are run by tex (and latex) in the background).  This option
+           has only been tested with recent versions of UNIX TeX.
+
+       -f, --force
+           Don&apos;t ask any questions.
+
+       -T, --notfm
+           Don&apos;t try to prepare fake &quot;.tfm&quot; files for the first run.
+
+       -t, --tfm tfm
+           Don&apos;t try guess the names of the &quot;.tfm&quot; files to fake for the first
+           run and use the given name(s) instead.  This option can be useful if
+           our incomplete parsing of the LaTeX input files fails.
+
+       -m mode, --mode mode
+           Select the METAFONT mode mode.  The default is guessed or &quot;localfont&quot;
+           if the guess fails.
+
+       file
+           Main LaTeX input files.
+
+       file ...
+           Other LaTeX input files that are included by the main file.
+
+AUTHOR
+       Thorsten Ohl &lt;Thorsten.Ohl@Physik.TH-Darmstadt.de&gt;
+
+BUGS
+       The preparation of &quot;.tfm&quot; files is not foolproof yet, because we can
+       parse TeX files only superficially.
+
+       This script has only been tested for recent teTeX distributions of UNIX
+       TeX, though it will probably work with other versions of UNIX TeX.  The
+       author will be grateful for portability suggestions, even concerning Borg
+       operating systems, for the benefit of those users that are forced to live
+       with DOS or Windows.
+
+
+
+FeynMF Version 1.08                2012-01-06                          FEYNMF(1)
+
+</pre></body></html>

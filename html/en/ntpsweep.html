@@ -1,0 +1,47 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ntpsweep - Sweep NTP Servers and Report Relationships</title></head>
+<body><pre>
+
+NTPSWEEP(1)                                                          NTPSWEEP(1)
+
+
+
+NAME
+       ntpsweep - Sweep NTP Servers and Report Relationships
+
+SYNOPSIS
+       ntpsweep [ --help|--peers|--strip &lt;string&gt;] &lt;file&gt;|[--host &lt;hostname&gt; ]
+
+
+DESCRIPTION
+       ntpsweep prints per host given in &lt;file&gt; the NTP stratum level, the clock
+       offset in seconds, the daemon version, the operating system and the  pro&#8208;
+       cessor.
+
+
+OPTIONS
+       --help Print this short help text and exit.
+
+       &lt;file&gt; Specify  the  hosts file. File format is one hostname or ip number
+              per line. Lines beginning with # are considered as comment.
+
+       --host &lt;hostname&gt;
+              Speficy a single host, bypassing the need for a hosts file.
+
+       --peers
+              List all peers a host synchronizes to.
+
+       --strip &lt;string&gt;
+              Strip &lt;string&gt; from hostnames.
+
+
+AUTHOR
+       Hans Lambermont.  Manpage by Bdale Garbee &lt;bdale@gag.com&gt; for the  Debian
+       GNU/Linux distribution.
+
+
+
+                                                                     NTPSWEEP(1)
+
+</pre></body></html>

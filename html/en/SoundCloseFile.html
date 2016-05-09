@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SoundCloseFile - close an audio file description.</title></head>
+<body><pre>
+
+SoundCloseFile(3)                                              SoundCloseFile(3)
+
+
+
+Name
+       SoundCloseFile - close an audio file description.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       int SoundCloseFile(sound)
+           Sound sound;
+
+Arguments
+       sound     Specifies the audio file description.
+
+Description
+       SoundCloseFile  closes the audio file described by sound and returns 0 if
+       successfull or -1 if there was an error.  Any unwritten data  is  written
+       and the storage associated with sound is deallocated.
+
+See Also
+       SoundOpenFileForReading, SoundOpenFileForWriting.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+                                      1.9.3                    SoundCloseFile(3)
+
+</pre></body></html>

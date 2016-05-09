@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SetGamma - Sets the color gamma function for the display</title></head>
+<body><pre>
+
+SDL_SetGamma(3)                 SDL API Reference                SDL_SetGamma(3)
+
+
+
+NAME
+       SDL_SetGamma - Sets the color gamma function for the display
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       int SDL_SetGamma(float redgamma, float greengamma, float bluegamma);
+
+DESCRIPTION
+       Sets  the &quot;gamma function&quot; for the display of each color component. Gamma
+       controls the brightness/contrast of colors displayed  on  the  screen.  A
+       gamma value of 1.0 is identity (i.e., no adjustment is made).
+
+       This  function adjusts the gamma based on the &quot;gamma function&quot; parameter,
+       you  can  directly  specify  lookup  tables  for  gamma  adjustment  with
+       SDL_SetGammaRamp.
+
+       Not all display hardware is able to change gamma.
+
+RETURN VALUE
+       Returns -1 on error (or if gamma adjustment is not supported).
+
+SEE ALSO
+       SDL_GetGammaRamp SDL_SetGammaRamp
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01              SDL_SetGamma(3)
+
+</pre></body></html>

@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xwdtopnm - convert a X11 or X10 window dump file into a portable anymap</title></head>
+<body><pre>
+
+xwdtopnm(1)                                                          xwdtopnm(1)
+
+
+
+NAME
+       xwdtopnm - convert a X11 or X10 window dump file into a portable anymap
+
+SYNOPSIS
+       xwdtopnm [xwdfile]
+
+DESCRIPTION
+       Reads a X11 or X10 window dump file as input.  Produces a portable anymap
+       as output.  The type of the output file depends on the input  file  -  if
+       it&apos;s  black  &amp; white, a pbm file is written, else if it&apos;s grayscale a pgm
+       file, else a ppm file.  The program tells you which type it is writing.
+
+       Using this program, you can convert anything on an X workstation&apos;s screen
+       into  an  anymap.  Just display whatever you&apos;re interested in, do an xwd,
+       run it through xwdtopnm, and then use pnmcut to select the part you want.
+
+BUGS
+       I haven&apos;t tested this tool with very many configurations,  so  there  are
+       probably bugs.  Please let me know if you find any.
+
+SEE ALSO
+       pnmtoxwd(1), pnm(5), xwd(1)
+
+AUTHOR
+       Copyright (C) 1989, 1991 by Jef Poskanzer.
+
+
+
+                                 11 January 1991                     xwdtopnm(1)
+
+</pre></body></html>

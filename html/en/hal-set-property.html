@@ -1,0 +1,94 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hal-set-property - set a property on a device object</title></head>
+<body><pre>
+
+HAL-SET-PROPERTY(1)                                          HAL-SET-PROPERTY(1)
+
+
+
+NAME
+       hal-set-property - set a property on a device object
+
+SYNOPSIS
+       hal-set-property [options]
+
+
+DESCRIPTION
+       hal-set-property  sets  a  property  on a device object in the HAL device
+       database. For more information about both the big  picture  and  specific
+       HAL   properties,   refer   to  the  HAL  spec  which  can  be  found  in
+       /usr/share/doc/hal-doc/spec/hal-spec.html depending on the distribution.
+
+
+OPTIONS
+       The following options are supported:
+
+       --udi  The UDI (Unique Device Identifier) of the device object.
+
+       --key  The name of the property.
+
+       --int  Set value property of the property to a 32-bit signed integer. The
+              value passed is assumed to be decimal unless it&apos;s prefixed with 0x
+              or x for hexadecimal values.
+
+       --uint64
+              Set value property of the property to a 64-bit  unsigned  integer.
+              The  value  passed  is  assumed to be decimal unless it&apos;s prefixed
+              with 0x or x for hexadecimal values.
+
+       --string
+              Set value property of the property to a string.
+
+       --double
+              Set value property of the property to a floating point number.
+
+       --bool Set value property of the  property  to  boolean,  e.g.   true  or
+              false.
+
+       --strlist-pre
+              Prepend an item to a string list.
+
+       --strlist-post
+              Append an item to a string list.
+
+       --strlist-rem
+              Remove an item from a string list.
+
+       --remove
+              Remove a property.
+
+       --help Print out usage.
+
+       --version
+              Print the version.
+
+
+RETURN VALUE
+       If  setting  the property succeeds, this program will exit with exit code
+       0. On errors a non-zero the program will exit with a non-zero exit  code.
+       Note  that setting properties on the HAL device database usually requires
+       super user privileges.
+
+
+BUGS
+       Please send bug reports to either the distribution  or  the  HAL  mailing
+       list,  see  http://lists.freedesktop.org/mailman/listinfo/hal  on  how to
+       subscribe.
+
+
+SEE ALSO
+       hald(8),  lshal(1),  hal-get-property(1),  hal-find-by-property(1),  hal-
+       find-by-capability(1)
+
+
+AUTHOR
+       Written  by  David  Zeuthen &lt;david@fubar.dk&gt; with a lot of help from many
+       others.
+
+
+
+
+                                                             HAL-SET-PROPERTY(1)
+
+</pre></body></html>

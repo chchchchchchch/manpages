@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>getwchar - read a wide character from standard input</title></head>
+<body><pre>
+
+GETWCHAR(3)                 Linux Programmer&apos;s Manual                GETWCHAR(3)
+
+
+
+NAME
+       getwchar - read a wide character from standard input
+
+SYNOPSIS
+       #include &lt;wchar.h&gt;
+
+       wint_t getwchar(void);
+
+DESCRIPTION
+       The   getwchar()   function  is  the  wide-character  equivalent  of  the
+       getchar(3) function.  It reads a wide character from  stdin  and  returns
+       it.   If  the end of stream is reached, or if ferror(stdin) becomes true,
+       it returns WEOF.  If a wide-character conversion error  occurs,  it  sets
+       errno to EILSEQ and returns WEOF.
+
+       For a nonlocking counterpart, see unlocked_stdio(3).
+
+RETURN VALUE
+       The  getwchar()  function  returns  the next wide-character from standard
+       input, or WEOF.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The behavior of getwchar() depends on the LC_CTYPE category of  the  cur&#8208;
+       rent locale.
+
+       It is reasonable to expect that getwchar() will actually read a multibyte
+       sequence from standard input and then convert it to a wide character.
+
+SEE ALSO
+       fgetwc(3), unlocked_stdio(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1999-07-25                        GETWCHAR(3)
+
+</pre></body></html>

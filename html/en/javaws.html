@@ -1,0 +1,117 @@
+<html>
+<head><meta charset=utf-8/>
+<title>javaws - a Java Web Start client</title></head>
+<body><pre>
+
+javaws(1)                                                              javaws(1)
+
+
+
+NAME
+       javaws - a Java Web Start client
+
+SYNOPSYS
+       javaws [-run-options] jnlp-file
+       javaws [-control-option]
+
+DESCRIPTION
+       javaws  is an implementation of a JNLP  client. It uses a JNLP (Java Net&#8208;
+       work Launch Protocol) file to securely run a remote Java application or a
+       Java  applet.   This implementation of javaws is from the IcedTea project
+       and is based on the NetX project.
+
+       A JNLP file is an xml file that describes how to securely  run  a  remote
+       Java application or a Java applet.
+
+
+OPTIONS
+       When specifying options, the name of the jnlp file must be the last argu&#8208;
+       ment to javaws - all the options must preceede it.
+
+       The jnlp-file can either be a url or a local path.
+
+       Control Options
+
+       By default javaws will launch the jnlp  file  specified  on  the  command
+       line. The control options can be used to change this behaviour.
+
+       -about      Shows a sample application that can be used to test the basic
+                   functionality of this implementation.
+
+       -viewer     Shows the trusted certificate viewer. This allows a  user  to
+                   list,  examine,  remove  or export trusted certificates. Note
+                   that this only reflects the certificates  trusted  by  javaws
+                   and not any other certificates or programs.
+
+
+       Run Options
+
+       In the default mode, the following run-options can be used:
+
+       -basedir dir
+                   Directory  where  the  cache  and certificates to be used are
+                   stored.
+
+       -arg arg    Adds an application argument before launching.
+
+       -param name=value
+                   Adds an applet parameter before launching.
+
+       -property name=value
+                   Sets a system property before launching.
+
+       -update seconds
+                   Update check if seconds since last checked.
+
+       -license    Display the GPL license and exit.
+
+       -verbose    Enable verbose output. Very useful in debugging.
+
+       -nosecurity Disables the secure runtime environment.
+&#12;       -noupdate   Disables checking for updates.
+
+       -headless   Disables download window, other UIs.
+
+       -strict     Enables strict checking of JNLP file format.  Any  deviations
+                   from the JNLP DTD will cause javaws to abort.
+
+       -umask=value
+                   Sets the umask for files created by an application.
+
+       -Xnofork    Do  not  create  another  JVM, even if the JNLP file asks for
+                   running in a separate JVM. This is useful for debugging.
+
+       -Jjava-option
+                   This passes along java-option to the java binary that is run&#8208;
+                   ning  javaws. For example, to make javaws run with a max heap
+                   size of 80m, use -J-Xmx80m.
+
+       -help       Print a help message and exit.
+
+
+FILES
+       ~/.icedtea/deployment.properties specifies the settings used by javaws
+
+
+BUGS
+       There arent any known bugs. If you come across one, please file it at
+           http://icedtea.classpath.org/bugzilla/
+       Please run javaws in verbose mode and include that output along with  the
+       jnlp file when filing out the bug report.
+
+
+AUTHOR
+       Originally written by Jon. A. Maxwell.
+       Currently maintained by the IcedTea contributors.
+
+
+SEE ALSO
+       java(1)
+       http://icedtea.classpath.org/
+       http://jnlp.sourceforge.net/netx/
+
+
+
+                                   9 Sep 2010                          javaws(1)
+
+</pre></body></html>

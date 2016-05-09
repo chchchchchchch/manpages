@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbFreeGeometry - Free an entire geometry</title></head>
+<body><pre>
+
+XkbFreeGeometry(3)                XKB FUNCTIONS               XkbFreeGeometry(3)
+
+
+
+NAME
+       XkbFreeGeometry - Free an entire geometry
+
+SYNOPSIS
+       void  XkbFreeGeometry  (XkbGeometryPtr  geom,  unsigned  int  which, Bool
+              free_all);
+
+ARGUMENTS
+       - geom geometry to be freed
+
+       - which
+              mask of geometry components to be freed
+
+       - free_all
+              True =&gt; the entire geometry is freed
+
+DESCRIPTION
+       Xkb provides a number of functions to allocate and free subcomponents  of
+       a  keyboard  geometry.  Use  these functions to create or modify keyboard
+       geometries.  Note that these functions merely allocate space for the  new
+       element(s),  and it is up to you to fill in the values explicitly in your
+       code. These allocation functions increase  sz_*  but  never  touch  num_*
+       (unless  there  is  an  allocation failure, in which case they reset both
+       sz_* and num_* to zero). These functions return Success if they  succeed,
+       BadAlloc if they are not able to allocate space, or BadValue if a parame&#8208;
+       ter is not as expected.
+
+       The values of which and free_all determine  how  much  of  the  specified
+       geometry is freed. The valid values for which are:
+
+           #define   XkbGeomPropertiesMask      (1&lt;&lt;0)
+           #define   XkbGeomColorsMask          (1&lt;&lt;1)
+           #define   XkbGeomShapesMask          (1&lt;&lt;2)
+           #define   XkbGeomSectionsMask        (1&lt;&lt;3)
+           #define   XkbGeomDoodadsMask         (1&lt;&lt;4)
+           #define   XkbGeomKeyAliasesMask      (1&lt;&lt;5)
+           #define   XkbGeomAllMask             (0x3f)
+
+       If free_all is True, the entire geometry is freed regardless of the value
+       of which.  Otherwise, the portions of the geometry specified by which are
+       freed.
+
+DIAGNOSTICS
+       BadAlloc       Unable to allocate storage
+
+       BadValue       An argument is out of range
+
+
+
+X Version 11                      libX11 1.5.0                XkbFreeGeometry(3)
+
+</pre></body></html>

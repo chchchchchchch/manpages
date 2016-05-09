@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Appender::TestArrayBuffer - Subclass of Appender::TestBuffer</title></head>
+<body><pre>
+
+Appender::TestArrayBuffUserpContributed Perl DocumAppender::TestArrayBuffer(3pm)
+
+
+
+NAME
+       Log::Log4perl::Appender::TestArrayBuffer - Subclass of
+       Appender::TestBuffer
+
+SYNOPSIS
+         use Log::Log4perl::Appender::TestArrayBuffer;
+
+         my $appender = Log::Log4perl::Appender::TestArrayBuffer-&gt;new(
+             name      =&gt; &apos;buffer&apos;,
+         );
+
+             # Append to the buffer
+         $appender-&gt;log(
+             level =  &gt; &apos;alert&apos;,
+             message =&gt; [&apos;first&apos;, &apos;second&apos;, &apos;third&apos;],
+         );
+
+             # Retrieve the result
+         my $result = $appender-&gt;buffer();
+
+             # Reset the buffer to the empty string
+         $appender-&gt;reset();
+
+DESCRIPTION
+       This class is a subclass of Log::Log4perl::Appender::TestBuffer and just
+       provides message array refs as an additional feature.
+
+       Just like Log::Log4perl::Appender::TestBuffer,
+       Log::Log4perl::Appender::TestArrayBuffer is used for internal
+       Log::Log4perl testing only.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21     Appender::TestArrayBuffer(3pm)
+
+</pre></body></html>

@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mktunes - convert GNUtunesDB's XML into iTunesDB format</title></head>
+<body><pre>
+
+MKTUNES(1)                        User Commands                       MKTUNES(1)
+
+
+
+NAME
+       mktunes - convert GNUtunesDB&apos;s XML into iTunesDB format
+
+SYNOPSIS
+       mktunes [OPTION]...
+
+DESCRIPTION
+       Convert GNUtunesDB.xml into iTunesDB format
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       -m, --mount=DIRECTORY
+              iPod mountpoint. Default is $IPOD_MOUNTPOINT
+
+       -n, --ipod-name=NAME
+              iPod  Name  (For  unlabeled iPods). iTunes displays this name, not
+              the label.
+
+       -v, --volume=VALUE
+              Adjust volume +-VALUE% (example: --volume +5)
+
+       -e, --energy
+              Save energy (= Disable scrolling title)
+
+       -g, --fwguid=HEXVAL
+              Enforce iPod serial/firewire-guid. Late  2007  iPod  models  (3gen
+              Nano,  Classic, Touch) refuse to work unless the iTunesDB has been
+              signed with a sha1 hash. This hash helps to detect corrupted data&#8208;
+              bases,  prevents  sharing  an  iTunesDB between multiple iPods and
+              locks out non-apple  software.   GNUpod  is  able  to  create  the
+              required hash value if it knows the iPods serial number, this is a
+              16 chars long hex value such as: &apos;000ba3100310abcf&apos; and should  be
+              autodetected  on GNU/Linux (via /proc/bus/usb/devices) and Solaris
+              (via prtconf -v). Use this switch to set the serial if the autode&#8208;
+              tection  somehow  fails  to find the correct serial number of your
+              iPod.  You can also specify  the value in your configuration  file
+              (gnupodrc) as &apos;mktunes.fwguid = 000ba3100310abcf&apos;.
+
+AUTHOR
+       Written by Adrian Ulrich
+
+REPORTING BUGS
+       Report bugs to &lt;bug-gnupod@nongnu.org&gt;
+
+COPYRIGHT
+       Copyright &#169; Adrian Ulrich
+       This  is  free software; see the source for copying conditions.  There is
+       NO warranty; not even for MERCHANTABILITY or  FITNESS  FOR  A  PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       The  full documentation for gnupod is maintained as a Texinfo manual.  If
+       the info program and GNUpod are properly installed at your site, the com&#8208;
+       mand
+
+              info gnupod
+
+       should give you access to the complete manual.
+
+
+
+mktunes 1.00                        June 2005                         MKTUNES(1)
+
+</pre></body></html>

@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>otp - One-Time Passwords</title></head>
+<body><pre>
+
+otp(3tcl)              RFC 2289 A One-Time Password System             otp(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       otp - One-Time Passwords
+
+SYNOPSIS
+       package require Tcl  8.2
+
+       package require otp  ?1.0.0?
+
+       ::otp::otp-md4 ?-hex? ?-words? -seed seed -count count data
+
+       ::otp::otp-md5 ?-hex? ?-words? -seed seed -count count data
+
+       ::otp::otp-sha1 ?-hex? ?-words? -seed seed -count count data
+
+       ::otp::otp-rmd160 ?-hex? ?-words? -seed seed -count count data
+
+_________________________________________________________________
+
+DESCRIPTION
+       This  package is an implementation in Tcl of the One-Time Password system
+       as described in RFC 2289 (1). This system uses message-digest  algorithms
+       to  sequentially  hash  a  passphrase to create single-use passwords. The
+       resulting data is then provided to the user as either hexadecimal  digits
+       or encoded using a dictionary of 2048 words. This system is used by Open&#8208;
+       BSD for secure login and can be used as a SASL mechanism for authenticat&#8208;
+       ing users.
+
+       In  this  implementation  we provide support for four algorithms that are
+       included in the tcllib distribution: MD5 (2), MD4 (3), RIPE-MD160 (4) and
+       SHA-1 (5).
+
+COMMANDS
+       ::otp::otp-md4 ?-hex? ?-words? -seed seed -count count data
+
+       ::otp::otp-md5 ?-hex? ?-words? -seed seed -count count data
+
+       ::otp::otp-sha1 ?-hex? ?-words? -seed seed -count count data
+
+       ::otp::otp-rmd160 ?-hex? ?-words? -seed seed -count count data
+
+EXAMPLES
+              % otp::otp-md5 -count 99 -seed host67821 &quot;My Secret Pass Phrase&quot;
+              (binary gibberish)
+              % otp::otp-md5 -words -count 99 -seed host67821 &quot;My Secret Pass Phrase&quot;
+              SOON ARAB BURG LIMB FILE WAD
+              % otp::otp-md5 -hex -count 99 -seed host67821 &quot;My Secret Pass Phrase&quot;
+              e249b58257c80087
+
+
+REFERENCES
+       [1]    Haller,  N. et al., &quot;A One-Time Password System&quot;, RFC 2289, Febru&#8208;
+              ary 1998.  http://www.rfc-editor.org/rfc/rfc2289.txt
+
+       [2]    Rivest, R., &quot;The MD5 Message-Digest Algorithm&quot;, RFC 1321, MIT  and
+              RSA   Data   Security,   Inc,  April  1992.   (http://www.rfc-edi&#8208;
+              tor.org/rfc/rfc1321.txt)
+
+       [3]    Rivest, R., &quot;The MD4 Message Digest  Algorithm&quot;,  RFC  1320,  MIT,
+              April 1992. (http://www.rfc-editor.org/rfc/rfc1320.txt)
+&#12;       [4]    H.  Dobbertin, A. Bosselaers, B. Preneel, &quot;RIPEMD-160, a strength&#8208;
+              ened  version  of  RIPEMD&quot;   http://www.esat.kuleuven.ac.be/~cosi&#8208;
+              cart/pdf/AB-9601/AB-9601.pdf
+
+       [5]    &quot;Secure  Hash Standard&quot;, National Institute of Standards and Tech&#8208;
+              nology,    U.S.    Department    Of    Commerce,    April    1995.
+              (http://www.itl.nist.gov/fipspubs/fip180-1.htm)
+
+BUGS, IDEAS, FEEDBACK
+       This  document,  and  the  package it describes, will undoubtedly contain
+       bugs and other problems.  Please report such in the category otp  of  the
+       Tcllib   SF   Trackers  [http://sourceforge.net/tracker/?group_id=12883].
+       Please also report any ideas for enhancements you  may  have  for  either
+       package and/or documentation.
+
+SEE ALSO
+       SASL, md4, md5, ripemd160, sha1
+
+KEYWORDS
+       hashing, message-digest, password, rfc 2289, security
+
+CATEGORY
+       Hashes, checksums, and encryption
+
+COPYRIGHT
+       Copyright (c) 2006, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+
+
+
+
+otp                                   1.0.0                            otp(3tcl)
+
+</pre></body></html>

@@ -1,0 +1,121 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-epjitsu - SANE backend for Epson-based Fujitsu USB scanners.</title></head>
+<body><pre>
+
+sane-epjitsu(5)           SANE Scanner Access Now Easy           sane-epjitsu(5)
+
+
+
+NAME
+       sane-epjitsu - SANE backend for Epson-based Fujitsu USB scanners.
+
+
+DESCRIPTION
+       The  sane-epjitsu  library  implements  a  SANE (Scanner Access Now Easy)
+       backend which provides basic  access  the  Fujitsu  fi-60F  and  ScanSnap
+       S300/S1300 scanners.
+
+
+HARDWARE SUPPORT
+       These  scanners are fairly limited, only supporting a couple of modes and
+       resolutions, and always scanning full width. The backend supports missing
+       modes  (binary,  grayscale)  in  software,  but  makes no effort to offer
+       intermediate resolutions or scan area controls. See KNOWN ISSUES.
+
+       This backend may support other scanners. If physical  inspection  reveals
+       an  Epson chipset, please contact the author for instructions on collect&#8208;
+       ing a USB trace under Windows to verify.
+
+
+OPTIONS
+       A limited effort has been made to expose the standard options to the API.
+       This  allows a frontend to set resolution, color mode, and choose the ADF
+       setting. The epjitsu backend supports the  following  basic  options  for
+       most scanners:
+
+       source s
+              Selects  the  source  for the scan. Options may include &quot;Flatbed&quot;,
+              &quot;ADF Front&quot;, &quot;ADF Back&quot;, &quot;ADF Duplex&quot;.
+
+       mode m
+              Selects the mode for the  scan.  Options  may  include  &quot;Lineart&quot;,
+              &quot;Gray&quot;, &quot;Color&quot;.
+
+       resolution, y-resolution
+              Controls scan resolution. Setting --resolution also sets --y-reso&#8208;
+              lution, though this behavior is overridden by some frontends.
+
+       Other options will be available based on the capabilities of the scanner.
+       Use  &apos;scanimage  --help&apos;  to  get  a list. Be aware that some options may
+       appear only when another option has been set, and that  advanced  options
+       may be hidden by the frontend.
+
+CONFIGURATION FILE
+       The  configuration  file  &quot;/etc/sane.d/epjitsu.conf&quot;  is used to tell the
+       backend how to look for scanners, and  provide  options  controlling  the
+       operation  of  the backend. This file is read each time the frontend asks
+       the backend for a list of scanners,  generally  only  when  the  frontend
+       starts. If the configuration file is missing, the backend will not work.
+
+       Scanners can be specified in the configuration file in two ways:
+
+       &quot;usb 0x04c5 0x10c7&quot; (or other vendor/product ids)
+              Requests  backend  to  search  all  usb busses in the system for a
+              device which uses that vendor and product id. The device will then
+              be queried to determine if it is a supported scanner.
+
+       &quot;usb /dev/usb/scanner0&quot; (or other device file)
+              Some  systems  use  a  kernel  driver to access usb scanners. This
+              method is untested.
+&#12;       The only configuration  option  supported  is  &quot;firmware  /PATH/TO/FILE&quot;,
+       allowing  you to set the location of the firmware file you have extracted
+       from the Windows driver.
+
+       Note: This firmware is a copyrighted work of Fujitsu, so cannot  be  pro&#8208;
+       vided by the backend or the author. Please do not ask.
+
+       Note:  These  scanners  REQUIRE a firmware file to function. See the sup&#8208;
+       plied configuration file for more detail.
+
+       Note: This option may appear multiple times in the configuration file. It
+       only  applies  to  scanners  discovered  by  &apos;usb&apos; lines that follow this
+       option.
+
+ENVIRONMENT
+       The backend uses a single environment variable, SANE_DEBUG_EPJITSU, which
+       enables debugging output to stderr. Valid values are:
+
+              5  Errors
+              10 Function trace
+              15 Function detail
+              20 Option commands
+              25 USB trace
+              30 USB detail
+              35 Useless noise
+
+
+KNOWN ISSUES
+              No scan area options are exposed.
+              fi-60F hardware grayscale mode is not used.
+
+
+CREDITS
+       S300 support funded by Microdea, Inc. and Archivista, GmbH.
+       fi-60F support funded by TrueCheck, Inc.
+       Improved calibration code provided by Richard Goedeken.
+
+
+SEE ALSO
+       sane(7), sane-usb(5)
+
+
+AUTHOR
+       m. allan noah: &lt;kitno455 a t gmail d o t com&gt;
+
+
+
+
+                                   09 Feb 2010                   sane-epjitsu(5)
+
+</pre></body></html>

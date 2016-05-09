@@ -1,0 +1,117 @@
+<html>
+<head><meta charset=utf-8/>
+<title>git-check-attr - Display gitattributes information</title></head>
+<body><pre>
+
+GIT-CHECK-ATTR(1)                  Git Manual                  GIT-CHECK-ATTR(1)
+
+
+
+NAME
+       git-check-attr - Display gitattributes information
+
+SYNOPSIS
+       git check-attr [-a | --all | attr...] [--] pathname...
+       git check-attr --stdin [-z] [-a | --all | attr...] &lt; &lt;list-of-paths&gt;
+
+
+DESCRIPTION
+       For every pathname, this command will list if each attribute is
+       unspecified, set, or unset as a gitattribute on that pathname.
+
+OPTIONS
+       -a, --all
+           List all attributes that are associated with the specified paths. If
+           this option is used, then unspecified attributes will not be included
+           in the output.
+
+       --cached
+           Consider .gitattributes in the index only, ignoring the working tree.
+
+       --stdin
+           Read file names from stdin instead of from the command-line.
+
+       -z
+           Only meaningful with --stdin; paths are separated with a NUL
+           character instead of a linefeed character.
+
+       --
+           Interpret all preceding arguments as attributes and all following
+           arguments as path names.
+
+       If none of --stdin, --all, or -- is used, the first argument will be
+       treated as an attribute and the rest of the arguments as pathnames.
+
+OUTPUT
+       The output is of the form: &lt;path&gt; COLON SP &lt;attribute&gt; COLON SP &lt;info&gt; LF
+
+       &lt;path&gt; is the path of a file being queried, &lt;attribute&gt; is an attribute
+       being queried and &lt;info&gt; can be either:
+
+       unspecified
+           when the attribute is not defined for the path.
+
+       unset
+           when the attribute is defined as false.
+
+       set
+           when the attribute is defined as true.
+
+       &lt;value&gt;
+           when a value has been assigned to the attribute.
+
+EXAMPLES
+       In the examples, the following .gitattributes file is used:
+
+           *.java diff=java -crlf myAttr
+           NoMyAttr.java !myAttr
+           README caveat=unspecified
+&#12;       &#183;   Listing a single attribute:
+
+           $ git check-attr diff org/example/MyClass.java
+           org/example/MyClass.java: diff: java
+
+
+
+       &#183;   Listing multiple attributes for a file:
+
+           $ git check-attr crlf diff myAttr -- org/example/MyClass.java
+           org/example/MyClass.java: crlf: unset
+           org/example/MyClass.java: diff: java
+           org/example/MyClass.java: myAttr: set
+
+
+
+       &#183;   Listing all attributes for a file:
+
+           $ git check-attr --all -- org/example/MyClass.java
+           org/example/MyClass.java: diff: java
+           org/example/MyClass.java: myAttr: set
+
+
+
+       &#183;   Listing an attribute for multiple files:
+
+           $ git check-attr myAttr -- org/example/MyClass.java org/example/NoMyAttr.java
+           org/example/MyClass.java: myAttr: set
+           org/example/NoMyAttr.java: myAttr: unspecified
+
+
+
+       &#183;   Not all values are equally unambiguous:
+
+           $ git check-attr caveat README
+           README: caveat: unspecified
+
+
+SEE ALSO
+       gitattributes(5).
+
+GIT
+       Part of the git(1) suite
+
+
+
+Git 1.7.10.4                       11/24/2012                  GIT-CHECK-ATTR(1)
+
+</pre></body></html>

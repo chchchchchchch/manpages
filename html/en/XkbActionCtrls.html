@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbActionCtrls - Returns the ctrls fields of act converted to an unsigned int</title></head>
+<body><pre>
+
+XkbActionCtrls(3)                 XKB FUNCTIONS                XkbActionCtrls(3)
+
+
+
+NAME
+       XkbActionCtrls - Returns the ctrls fields of act converted to an unsigned
+       int
+
+SYNOPSIS
+       unsigned int XkbActionCtrls (XkbCtrlsAction act);
+
+ARGUMENTS
+       - act  action from which to extract controls
+
+DESCRIPTION
+       Actions associated with the XkbCtrlsAction structure change the state  of
+       the boolean controls.
+
+       The type field can have any one of the values shown in Table 1.
+
+
+       c  s  l  l  l  lw(4i).   Table  1  Controls  Action Types _ Type Effect _
+       XkbSA_SetControls   T{ A key press enables any boolean controls specified
+       in  the ctrls fields that were not already enabled at the time of the key
+       press.  A key release disables any controls enabled  by  the  key  press.
+       This  action  can  cause  XkbControlsNotify  events.   T}  XkbSA_LockCon&#8208;
+       trols  T{ If the XkbSA_LockNoLock bit is not set in the  flags  field,  a
+       key  press  enables  any controls specified in the ctrls fields that were
+       not already enabled at the time of the key press.
+       If the XkbSA_LockNoUnlock bit is not  set  in  the  flags  field,  a  key
+       release disables any controls specified in the ctrls fields that were not
+       already disabled at the time of the key press.
+       This action can cause XkbControlsNotify events.  T}
+
+       The flags field is composed of the bitwise  inclusive  OR  of  the  masks
+       shown in Table 2.
+
+
+       c  s  l  l  l  lw(4i).   Table  2  Control  Action Flags _ Flag Meaning _
+       XkbSA_LockNoLock    T{ If set, and the action type is XkbSA_LockControls,
+       the server only disables controls.  T} XkbSA_LockNoUnlock  T{ If set, and
+       the action type is XkbSA_LockControls, the server only enables  controls.
+       T}
+
+       The XkbSA_SetControls action implements a key that enables a boolean con&#8208;
+       trol when pressed and disables it when released.  The  XkbSA_LockControls
+       action  is  used  to  implement a key that toggles the state of a boolean
+       control each time it is pressed and released.  The  XkbSA_LockNoLock  and
+       XkbSA_LockNoUnlock  flags  allow  modifying the toggling behavior to only
+       unlock or only lock the boolean control.
+
+       The ctrls0, ctrls1, ctrls2, and ctrls3 fields represent the boolean  con&#8208;
+       trols  in  the enabled_ctrls field of the controls structure. Xkb macros,
+       to convert between the two formats.
+
+       XkbActionCtrls returns the ctrls fields of act converted to  an  unsigned
+       int.
+
+STRUCTURES
+           typedef struct _XkbCtrlsAction {
+               unsigned char    type;    /&#8727; XkbSA_SetControls, XkbSA_LockControls */
+               unsigned char    flags;   /&#8727; with type, controls enabling and disabling
+       of controls */
+               unsigned char    ctrls3;  /&#8727; ctrls0 through ctrls3 represent the boolean
+       controls */
+               unsigned char    ctrls2;  /&#8727; ctrls0 through ctrls3 represent the boolean
+       controls */
+               unsigned char    ctrls1;  /&#8727; ctrls0 through ctrls3 represent the boolean
+       controls */
+               unsigned char    ctrls0;  /&#8727; ctrls0 through ctrls3 represent the boolean
+       controls */
+           } XkbCtrlsAction;
+
+
+
+X Version 11                      libX11 1.5.0                 XkbActionCtrls(3)
+
+</pre></body></html>

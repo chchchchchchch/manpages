@@ -1,0 +1,123 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Alien::Package::Deb - an object that represents a deb package</title></head>
+<body><pre>
+
+Alien::Package::Deb(3pmUser Contributed Perl DocumentatiAlien::Package::Deb(3pm)
+
+
+
+NAME
+       Alien::Package::Deb - an object that represents a deb package
+
+DESCRIPTION
+       This is an object class that represents a deb package. It is derived from
+       Alien::Package.
+
+FIELDS
+       have_dpkg_deb
+           Set to a true value if dpkg-deb is available.
+
+       dirtrans
+           After the build stage, set to a hash reference of the directories we
+           moved files from and to, so these moves can be reverted in the
+           cleantree stage.
+
+       fixperms
+           If this is set to true, the generated debian/rules will run
+           dh_fixperms.
+
+METHODS
+       init
+           Sets have_dpkg_deb if dpkg-deb is in the path. I prefer to use dpkg-
+           deb, if it is available since it is a lot more future-proof.
+
+       checkfile
+           Detect deb files by their extention.
+
+       install
+           Install a deb with dpkg. Pass in the filename of the deb to install.
+
+       test
+           Test a deb with lintian. Pass in the filename of the deb to test.
+
+       getcontrolfile
+           Helper method. Pass it the name of a control file, and it will pull
+           it out of the deb and return it.
+
+       scan
+           Implement the scan method to read a deb file.
+
+       unpack
+           Implement the unpack method to unpack a deb file.
+
+       getpatch
+           This method tries to find a patch file to use in the prep stage. If
+           it finds one, it returns it. Pass in a list of directories to search
+           for patches in.
+
+       prep
+           Adds a populated debian directory the unpacked package tree, making
+           it ready for building. This can either be done automatically, or via
+           a patch file.
+
+       build
+           Build a deb.
+
+       cleantree
+           Delete the entire debian/ directory.
+
+       package
+           Set/get package name.
+&#12;           Always returns the packge name in lowercase with all invalid
+           characters rmoved. The name is however, stored unchanged.
+
+       version
+           Set/get package version.
+
+           When the version is set, it will be stripped of any epoch. If there
+           is a release, the release will be stripped away and used to set the
+           release field as a side effect. Otherwise, the release will be set to
+           1.
+
+           More sanitization of the version is done when the field is retrieved,
+           to make sure it is a valid debian version field.
+
+       release
+           Set/get package release.
+
+           Always returns a sanitized release version. The release is however,
+           stored unchanged.
+
+       description
+           Set/get description
+
+           Although the description is stored internally unchanged, this will
+           always return a sanitized form of it that is compliant with Debian
+           standards.
+
+       date
+           Returns the date, in rfc822 format.
+
+       email
+           Returns an email address for the current user.
+
+       username
+           Returns the user name of the real uid.
+
+       savescript
+           Saves script to debian directory.
+
+       gen_postinst
+           Modifies or creates a postinst. This may include generated shell code
+           to set owners and groups from the owninfo field, and update modes
+           from the modeinfo field.
+
+AUTHOR
+       Joey Hess &lt;joey@kitenet.net&gt;
+
+
+
+perl v5.14.2                       2012-04-05           Alien::Package::Deb(3pm)
+
+</pre></body></html>

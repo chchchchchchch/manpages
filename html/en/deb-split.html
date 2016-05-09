@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>deb-split - Debian multi-part binary package format</title></head>
+<body><pre>
+
+deb-split(5)                         Debian                         deb-split(5)
+
+
+
+NAME
+       deb-split - Debian multi-part binary package format
+
+SYNOPSIS
+       filename.deb
+
+DESCRIPTION
+       The  multi-part  .deb  format  is used to split big packages into smaller
+       pieces to ease transport in small media.
+
+FORMAT
+       The file is an ar archive with a magic value of !&lt;arch&gt;.  The file  names
+       might contain a trailing slash (since dpkg 1.15.6).
+
+       The  first  member  is named debian-split and contains a series of lines,
+       separated by newlines. Currently eight lines are present:
+
+       &#183;   The format version number, 2.1 at the time this manual page was writ&#8208;
+           ten.
+
+       &#183;   The package name.
+
+       &#183;   The package version.
+
+       &#183;   The md5sum of the package.
+
+       &#183;   The total size of the package.
+
+       &#183;   The maximum part size.
+
+       &#183;   The  current part number, followed by a slash and the total amount of
+           parts (as in &#8216;1/10&#8217;).
+
+       &#183;   The package architecture (since dpkg 1.16.1).
+
+       Programs which read multi-part archives should be prepared for the  minor
+       format version number to be increased and additional lines to be present,
+       and should ignore these if this is the case.
+
+       If the major format version number has changed,  an  incompatible  change
+       has  been  made and the program should stop. If it has not, then the pro&#8208;
+       gram should be able to safely continue, unless  it  encounters  an  unex&#8208;
+       pected member in the archive (except at the end), as described below.
+
+       The  second,  last  required  member is named data.N, where N denotes the
+       part number. It contains the raw part data.
+
+       These members must occur in this  exact  order.  Current  implementations
+       should  ignore  any additional members after data.N.  Further members may
+       be defined in the future, and (if possible) will be  placed  after  these
+       two.
+
+SEE ALSO
+       deb(5), dpkg-split(1).
+
+
+
+Debian Project                     2012-04-09                       deb-split(5)
+
+</pre></body></html>

@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cutbuffer - Manipulate X cut buffer properties</title></head>
+<body><pre>
+
+cutbuffer(n)                  BLT Built-In Commands                 cutbuffer(n)
+
+
+
+________________________________________________________________________________
+
+NAME
+       cutbuffer - Manipulate X cut buffer properties
+
+SYNOPSIS
+       cutbuffer get ?number?
+       cutbuffer rotate ?count?
+       cutbuffer set value ?number?
+_________________________________________________________________
+
+DESCRIPTION
+       The cutbuffer command allows you to read or modify the eight X cut buffer
+       properties. You can also rotate the buffers properties.
+
+OPERATIONS
+       The following operations are available for the cutbuffer command:
+
+       cutbuffer get ?number?
+              Returns the value of a cutbuffer number.  Number must be a  number
+              between  0  and  7.   The default is 0.  The cutbuffer is returned
+              exactly, except that NUL bytes are converted  to  &apos;@&apos;  characters.
+              If a cut buffer number does not exist, then &quot;&quot; is returned.
+
+       cutbuffer rotate ?count?
+              Rotates  the  cut buffers by count. Count must be a number between
+              -7 and 7. The default is 1.
+
+       cutbuffer set value ?number?
+              Sets the cutbuffer number to  value.   Number  must  be  a  number
+              between 0 and 7.  The default is 0.
+
+KEYWORDS
+       cut buffer, property
+
+
+
+BLT                                    2.4                          cutbuffer(n)
+
+</pre></body></html>

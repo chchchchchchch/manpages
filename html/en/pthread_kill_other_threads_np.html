@@ -1,0 +1,54 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pthread_kill_other_threads_np - terminate all other threads in process</title></head>
+<body><pre>
+
+PTHREAD_KILL_OTHER_THREADS_NLinux Programmer&apos;s MPTHREAD_KILL_OTHER_THREADS_NP(3)
+
+
+
+NAME
+       pthread_kill_other_threads_np - terminate all other threads in process
+
+SYNOPSIS
+       #include &lt;pthread.h&gt;
+
+       void pthread_kill_other_threads_np(void);
+
+DESCRIPTION
+       pthread_kill_other_threads_np()  only  has  an effect in the LinuxThreads
+       threading implementation.  On that implementation, calling this  function
+       causes  the  immediate  termination  of  all  threads in the application,
+       except the calling thread.  The cancellation state and cancellation  type
+       of the to-be-terminated threads are ignored, and the cleanup handlers are
+       not called in those threads.
+
+CONFORMING TO
+       This function is a nonstandard GNU  extension;  hence  the  suffix  &quot;_np&quot;
+       (nonportable) in the name.
+
+NOTES
+       pthread_kill_other_threads_np()  is  intended  to be called just before a
+       thread calls execve(2) or a similar function.  This function is  designed
+       to  address  a  limitation  in  the  obsolete LinuxThreads implementation
+       whereby the other threads of an application are not automatically  termi&#8208;
+       nated (as POSIX.1-2001 requires) during execve(2).
+
+       In  the  NPTL  threading  implementation, pthread_kill_other_threads_np()
+       exists, but does nothing.  (Nothing needs to be done, because the  imple&#8208;
+       mentation does the right thing during an execve(2).)
+
+SEE ALSO
+       execve(2),   pthread_cancel(3),  pthread_setcancelstate(3),  pthread_set&#8208;
+       canceltype(3), pthreads(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-09-09   PTHREAD_KILL_OTHER_THREADS_NP(3)
+
+</pre></body></html>

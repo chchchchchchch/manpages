@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mem, kmem, port - system memory, kernel memory and system ports</title></head>
+<body><pre>
+
+MEM(4)                      Linux Programmer&apos;s Manual                     MEM(4)
+
+
+
+NAME
+       mem, kmem, port - system memory, kernel memory and system ports
+
+DESCRIPTION
+       mem is a character device file that is an image of the main memory of the
+       computer.  It may be used, for example, to examine (and even  patch)  the
+       system.
+
+       Byte addresses in mem are interpreted as physical memory addresses.  Ref&#8208;
+       erences to nonexistent locations cause errors to be returned.
+
+       Examining and patching is likely to lead to unexpected results when read-
+       only or write-only bits are present.
+
+       It is typically created by:
+
+              mknod -m 660 /dev/mem c 1 1
+              chown root:kmem /dev/mem
+
+       The  file  kmem is the same as mem, except that the kernel virtual memory
+       rather than physical memory is accessed.
+
+       It is typically created by:
+
+              mknod -m 640 /dev/kmem c 1 2
+              chown root:kmem /dev/kmem
+
+       port is similar to mem, but the I/O ports are accessed.
+
+       It is typically created by:
+
+              mknod -m 660 /dev/port c 1 4
+              chown root:mem /dev/port
+
+FILES
+       /dev/mem
+       /dev/kmem
+       /dev/port
+
+SEE ALSO
+       chown(1), mknod(1), ioperm(2)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              1992-11-21                             MEM(4)
+
+</pre></body></html>

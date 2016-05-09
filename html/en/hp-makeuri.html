@@ -1,0 +1,113 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hp-makeuri - Device URI Creation Utility</title></head>
+<body><pre>
+
+hp-makeuri(1)                     User Manuals                     hp-makeuri(1)
+
+
+
+NAME
+       hp-makeuri - Device URI Creation Utility
+
+DESCRIPTION
+       Creates device URIs for local and network connected printers for use with
+       CUPS.
+
+SYNOPSIS
+       hp-makeuri [OPTIONS] [SERIAL NO.|USB ID|IP|DEVNODE]
+
+SERIAL NO.|USB ID|IP|DEVNODE
+       USB IDs (usb only):
+              &quot;xxx:yyy&quot; where xxx is the USB bus ID and yyy is  the  USB  device
+              ID.  The  &apos;:&apos;  and  all  leading zeroes must be present.  (Use the
+              &apos;lsusb&apos; command to obtain this information. See Note 1.)
+
+       IPs (network only):
+              IPv4 address &quot;a.b.c.d&quot; or &quot;hostname&quot;
+
+       DEVNODE (parallel only):
+              &quot;/dev/parportX&quot;, X=0,1,2,...
+
+       SERIAL NO. (usb and parallel only):
+              &quot;serial no.&quot;
+
+OPTIONS
+       To specify the port on a multi-port JetDirect:
+              -p&lt;port&gt;  or  --port=&lt;port&gt;  (Valid  values  are  1*,  2,  and  3.
+              *default)
+
+       Show the CUPS URI only (quiet mode):
+              -c or --cups
+
+       Show the SANE URI only (quiet mode):
+              -s or --sane
+
+       Show the HP Fax URI only (quiet mode):
+              -f or --fax
+
+       Set the logging level:
+              -l&lt;level&gt;  or --logging=&lt;level&gt; &lt;level&gt;: none, info*, error, warn,
+              debug (*default)
+
+       Run in debug mode:
+              -g (same as option: -ldebug)
+
+       This help information:
+              -h or --help
+
+EXAMPLES
+       USB:   $ hp-makeuri 001:002
+
+       Network:
+              $ hp-makeuri 66.35.250.209
+
+       Parallel:
+              $ hp-makeuri /dev/parport0
+
+       USB or parallel (using serial number):
+              $ hp-makeuri US123456789
+
+NOTES
+       1. Example using &apos;lsusb&apos; to obtain USB bus ID and USB device ID  (example
+       only, the values you obtain will differ) :
+&#12;
+          $ lsusb
+
+
+          Bus 003 Device 011: ID 03f0:c202 Hewlett-Packard
+
+
+          $ hp-makeuri 003:011
+
+
+          (Note: You may have to run &apos;lsusb&apos; from /sbin or another location. Use
+       &apos;$ locate lsusb&apos; to determine this.)
+
+
+SEE ALSO
+       hp-setup
+
+AUTHOR
+       HPLIP (Hewlett-Packard Linux Imaging and Printing)  is  an  HP  developed
+       solution  for  printing,  scanning,  and  faxing with HP inkjet and laser
+       based printers in Linux.
+
+REPORTING BUGS
+       The HPLIP Launchpad.net site https://launchpad.net/hplip is available  to
+       get  help,  report  bugs,  make suggestions, discuss the HPLIP project or
+       otherwise contact the HPLIP Team.
+
+COPYRIGHT
+       Copyright (c) 2001-14 Hewlett-Packard Development Company, L.P.
+
+       This software comes with ABSOLUTELY NO WARRANTY.  This is free  software,
+       and  you are welcome to distribute it under certain conditions. See COPY&#8208;
+       ING file for more details.
+
+
+
+
+Linux                                  5.0                         hp-makeuri(1)
+
+</pre></body></html>

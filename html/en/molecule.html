@@ -1,0 +1,153 @@
+<html>
+<head><meta charset=utf-8/>
+<title>molecule - draws 3D molecular structures</title></head>
+<body><pre>
+
+molecule(6x)                   XScreenSaver manual                  molecule(6x)
+
+
+
+NAME
+       molecule - draws 3D molecular structures
+
+SYNOPSIS
+       molecule  [-display  host:display.screen] [-window] [-root] [-visual vis&#8208;
+       ual] [-delay microseconds] [-wander] [-no-wander] [-spin axes] [-no-spin]
+       [-timeout seconds] [-labels] [-no-labels] [-titles] [-no-titles] [-atoms]
+       [-no-atoms] [-bonds] [-no-bonds] [-shells] [-no-shells] [-molecule  file-
+       or-directory] [-verbose] [-wireframe] [-fps]
+
+DESCRIPTION
+       The  molecule  program  draws  several different representations of mole&#8208;
+       cules.  Some common molecules are built in, and it can read PDB  (Protein
+       Data Base) files as input.
+
+OPTIONS
+       molecule accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the id number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+       -verbose
+               Print debugging info on stderr about files being loaded, etc.
+
+       -wander Move the molecules around the screen.
+
+       -no-wander
+               Keep the molecule centered on the screen.  This is the default.
+
+       -spin   Which axes around which the molecule should spin.  The default is
+               &quot;XYZ&quot;, meaning rotate it freely in space.  &quot;-spin Z&quot; would rotate
+               the  molecule  in  the  plane of the screen while not rotating it
+               into or out of the screen; etc.
+
+       -no-spin
+               Don&apos;t spin it at all: the same as -spin &quot;&quot;.
+
+       -labels Draw labels on the atoms (or the spot where the atoms would  be.)
+               This is the default.
+
+       -no-labels
+               Do not draw labels on the atoms.
+
+       -titles Print  the  name  of the molecule and its chemical formula at the
+               top of the screen.
+
+       -no-titles
+               Do not print the molecule name.
+
+       -atoms  Represent the atoms as shaded spheres of appropriate sizes.  This
+               is the default.
+
+       -no-atoms
+               Do not draw spheres for the atoms: only draw bond lines.
+
+       -bonds  Represent  the  atomic bonds as solid tubes of appropriate thick&#8208;
+               nesses.  This is the default.
+
+       -no-bonds
+               Do not draw the bonds: instead, make the spheres for the atoms be
+               larger, for a &quot;space-filling&quot; representation of the molecule.
+
+       -shells Draw  transparent  electron  shells  around the atoms.  This only
+               works if bonds are also being drawn.
+
+       -no-shells
+               Do not draw electron shells.  This is the default.
+
+       -shell-alpha
+               When drawing shells, how transparent to make them.  Default 0.4.
+
+       -wireframe
+               Draw a wireframe rendition of the  molecule:  this  will  consist
+               only  of  single-pixel lines for the bonds, and text labels where
+               the atoms go.  This will be very fast.
+
+       -timeout seconds
+               When using the built-in data set, change to a new molecule  every
+               this-many seconds.  Default is 20 seconds.
+
+       -molecule file-or-directory
+               Instead  of using the built-in molecules, read one from the given
+               file.  This file must be  in  PDB  (Protein  Data  Base)  format.
+               (Note  that  it&apos;s  not uncommon for PDB files to contain only the
+               atoms, with no (or little) information about the atomic bonds.)
+
+               This can also be a directory, in which  case,  all  of  the  .pdb
+               files  in  that directory will be loaded.  A new one will be dis&#8208;
+               played at random every few seconds (as per the -timeout option.)
+
+       When the molecule is too large (bigger than about 30 angstroms from  side
+       to  side),  the  -label  option will be automatically turned off, because
+       otherwise, the labels would overlap and completely obscure the display.
+
+       When the molecule is around 150 angstroms from side  to  side,  wireframe
+       mode will be turned on (because otherwise it would be too slow.)
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to  get  the  name  of  a resource file that overrides the global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+       Documentation on the PDB file format:
+
+           http://www.wwpdb.org/docs.html
+           http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html
+
+       A good source of PDB files:
+
+           http://www.umass.edu/microbio/rasmol/whereget.htm
+           http://www.wwpdb.org/docs.html
+&#12;COPYRIGHT
+       Copyright &#169; 2001-2005 by Jamie Zawinski.  Permission to use,  copy,  mod&#8208;
+       ify,  distribute,  and  sell  this software and its documentation for any
+       purpose is hereby granted without fee, provided that the above  copyright
+       notice  appear in all copies and that both that copyright notice and this
+       permission notice appear in supporting documentation.  No representations
+       are  made  about the suitability of this software for any purpose.  It is
+       provided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Jamie Zawinski &lt;jwz@jwz.org&gt;
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                   molecule(6x)
+
+</pre></body></html>

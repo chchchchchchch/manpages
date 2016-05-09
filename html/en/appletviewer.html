@@ -1,0 +1,54 @@
+<html>
+<head><meta charset=utf-8/>
+<title>appletviewer - The Java Applet Viewer.</title></head>
+<body><pre>
+
+appletviewer(1)                                                  appletviewer(1)
+
+
+
+Name
+       appletviewer - The Java Applet Viewer.
+
+       The  appletviewer  command  allows  you  to  run applets outside of a web
+       browser.
+
+SYNOPSIS
+       appletviewer [ options ] urls ...
+
+DESCRIPTION
+       The appletviewer command connects to the documents  or  resources  desig&#8208;
+       nated by urls and displays each applet referenced by the documents in its
+       own window. Note: if the documents referred to by urls do  not  reference
+       any applets with the OBJECT, EMBED, or APPLET tag, then appletviewer does
+       nothing. For details on the HTML tags that appletviewer supports, see
+       AppletViewer Tags @
+       http://docs.oracle.com/javase/7/docs/technotes/tools/appletview&#8208;
+       ertags.html.
+
+       Note: The appletviewer is intended for development purposes only. See
+       About Sample / Test Applications and Code for more information.
+
+       Note: The appletviewer requires encoded URLs according to the escaping
+       mechanism defined in RFC2396. Only encoded URLs are supported. However,
+       file names must be unencoded, as specified in RFC2396.
+
+OPTIONS
+          -debug
+             Starts the applet viewer in the Java debugger, jdb(1), thus allow&#8208;
+             ing you to debug the applets in the document.
+
+          -encoding    encoding name
+             Specify the input HTML file encoding name.
+
+          -Jjavaoption
+             Passes through the string javaoption as a single argument to the
+             Java interpreter which runs the appletviewer. The argument should
+             not contain spaces. Multiple argument words must all begin with the
+             prefix -J, which is stripped. This is useful for adjusting the com&#8208;
+             piler&apos;s execution environment or memory usage.
+
+
+                                   16 Mar 2012                   appletviewer(1)
+
+</pre></body></html>

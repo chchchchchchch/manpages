@@ -1,0 +1,87 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sendmmsg - send multiple messages on a socket</title></head>
+<body><pre>
+
+SENDMMSG(2)                 Linux Programmer&apos;s Manual                SENDMMSG(2)
+
+
+
+NAME
+       sendmmsg - send multiple messages on a socket
+
+SYNOPSIS
+       #define _GNU_SOURCE
+       #include &lt;sys/socket.h&gt;
+
+       int sendmmsg(int sockfd, struct mmsghdr *msgvec, unsigned int vlen,
+                    unsigned int flags);
+
+DESCRIPTION
+       The  sendmmsg() system call is an extension of sendmsg(2) that allows the
+       caller to transmit multiple messages on a socket using  a  single  system
+       call.  (This has performance benefits for some applications.)
+
+       The sockfd argument is the file descriptor of the socket on which data is
+       to be transmitted.
+
+       The msgvec argument is a pointer to an array of mmsghdr structures.   The
+       size of this array is specified in vlen.
+
+       The mmsghdr structure is defined in &lt;sys/socket.h&gt; as:
+
+           struct mmsghdr {
+               struct msghdr msg_hdr;  /* Message header */
+               unsigned int  msg_len;  /* Number of bytes transmitted */
+           };
+
+       The msg_hdr field is a msghdr structure, as described in sendmsg(2).  The
+       msg_len field is used to return the number of bytes sent from the message
+       in  msg_hdr  (i.e., the same as the return value from a single sendmsg(2)
+       call).
+
+       The flags argument contains flags ORed together.  The flags are the  same
+       as for sendmsg(2).
+
+       A  blocking sendmmsg() call blocks until vlen messages have been sent.  A
+       nonblocking call sends as many messages as  possible  (up  to  the  limit
+       specified by vlen) and returns immediately.
+
+       On  return  from sendmmsg(), the msg_len fields of successive elements of
+       msgvec are updated to contain the number of bytes  transmitted  from  the
+       corresponding msg_hdr.  The return value of the call indicates the number
+       of elements of msgvec that have been updated.
+
+RETURN VALUE
+       On success, sendmmsg() returns the number of messages sent  from  msgvec;
+       if this is less than vlen, the caller can retry with a further sendmmsg()
+       call to send the remaining messages.
+
+       On error, -1 is returned, and errno is set to indicate the error.
+
+ERRORS
+       Errors are as for sendmsg(2).  An error is returned only if no  datagrams
+       could be sent.
+
+VERSIONS
+       The  sendmmsg() system call was added in Linux 3.0.  Support in glibc was
+       added in version 2.14.
+
+CONFORMING TO
+       sendmmsg() is Linux-specific.
+&#12;NOTES
+       The value specified in vlen is capped to UIO_MAXIOV (1024).
+
+SEE ALSO
+       recvmmsg(2), sendmsg(2), socket(2), socket(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-02-27                        SENDMMSG(2)
+
+</pre></body></html>

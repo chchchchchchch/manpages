@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lcf - Determine which of the historical versions of a config is installed</title></head>
+<body><pre>
+
+LCF(1)                       Debian GNU/Linux manual                      LCF(1)
+
+
+
+NAME
+       lcf - Determine which of the historical versions of a config is installed
+
+SYNOPSIS
+       lcf  [options]  &lt;Destination  File Name&gt; &lt;Historical MD5SUM source direc&#8208;
+       tory&gt;
+
+DESCRIPTION
+       This script, given a destination file name, and  a  directory  containing
+       md5sums  of historical versions of the file, attempts to determine if the
+       installed version corresponds to a historical version. lcf uses the  same
+       algorithm that ucf uses, and should exhibit the same behaviour.
+
+       The  source  directory is the place where historical md5sums are expected
+       to live. Specifically, the historical md5sums are looked  for  in  either
+       the file ${filename}.md5sum, or the subdirectory ${filename}.md5sum.d/
+
+OPTIONS
+       -h, --help
+              Print a short usage message
+
+       -n, --no-action
+              Dry  run.  Print  the actions that would be taken if the script is
+              invoked, but take no action.
+
+       -d [n], --debug [n]
+              Set the debug level to the (optional) level n (n defaults  to  1).
+              This turns on copious debugging information.
+
+       -v,  --verbose
+              Make the script be very verbose about setting internal variables.
+
+FILES
+       /var/lib/ucf/hashfile, /etc/ucf.conf
+
+SEE ALSO
+       ucf(1) ucf.conf(5).
+
+BUGS
+       There are no bugs.  Any resemblance thereof is delirium. Really.
+
+AUTHOR
+       This  manual page was written Manoj Srivastava &lt;srivasta@debian.org&gt;, for
+       the Debian GNU/Linux system.
+
+
+
+Debian                             Feb 1 2002                             LCF(1)
+
+</pre></body></html>

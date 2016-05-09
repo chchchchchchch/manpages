@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sleep - sleep for the specified number of seconds</title></head>
+<body><pre>
+
+SLEEP(3)                    Linux Programmer&apos;s Manual                   SLEEP(3)
+
+
+
+NAME
+       sleep - sleep for the specified number of seconds
+
+SYNOPSIS
+       #include &lt;unistd.h&gt;
+
+       unsigned int sleep(unsigned int seconds);
+
+DESCRIPTION
+       sleep() makes the calling thread sleep until seconds seconds have elapsed
+       or a signal arrives which is not ignored.
+
+RETURN VALUE
+       Zero if the requested time has elapsed, or the number of seconds left  to
+       sleep, if the call was interrupted by a signal handler.
+
+CONFORMING TO
+       POSIX.1-2001.
+
+BUGS
+       sleep()  may  be  implemented using SIGALRM; mixing calls to alarm(2) and
+       sleep() is a bad idea.
+
+       Using longjmp(3) from a signal  handler  or  modifying  the  handling  of
+       SIGALRM while sleeping will cause undefined results.
+
+SEE ALSO
+       alarm(2), nanosleep(2), signal(2), signal(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2010-02-03                           SLEEP(3)
+
+</pre></body></html>

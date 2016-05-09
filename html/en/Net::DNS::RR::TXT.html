@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::TXT - DNS TXT resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::TXT(3pm) User Contributed Perl DocumentationNet::DNS::RR::TXT(3pm)
+
+
+
+NAME
+       Net::DNS::RR::TXT - DNS TXT resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for DNS Text (TXT) resource records.
+
+METHODS
+   txtdata
+           print &quot;txtdata = &quot;, $rr-&gt;txtdata, &quot;\n&quot;;
+
+       Returns the descriptive text as a single string, regardless of actual
+       number of &lt;character-string&gt; elements.  Of questionable value.  Should be
+       deprecated.
+
+       Use &quot;$txt-&gt;rdatastr()&quot; or &quot;$txt-&gt;char_str_list()&quot; instead.
+
+   char_str_list
+        print &quot;Individual &lt;character-string&gt; list: \n\t&quot;,
+              join(&quot;\n\t&quot;, $rr-&gt;char_str_list());
+
+       Returns a list of the individual &lt;character-string&gt; elements, as unquoted
+       strings.  Used by TXT-&gt;rdatastr and TXT-&gt;rr_rdata.
+
+       NB: rdatastr will return quoted strings.
+
+FEATURES
+       The RR.pm module accepts semi-colons as a start of a comment. This is to
+       allow the RR.pm to deal with RFC1035 specified zonefile format.
+
+       For some applications of the TXT RR the semicolon is relevant, you will
+       need to escape it on input.
+
+       Also note that you should specify the several character strings
+       separately. The easiest way to do so is to include the whole argument in
+       single quotes and the several character strings in double quotes. Double
+       quotes inside the character strings will need to be escaped.
+
+       my $TXTrr=Net::DNS::RR-&gt;new(&apos;txt2.t.net-dns.org.  60   IN      TXT
+       &quot;Test1 \&quot; \; more stuff&quot;  &quot;Test2&quot;&apos;);
+
+       would result in $TXTrr-&gt;char_str_list())[0] containing &apos;Test1 &quot; ; more
+       stuff&apos; and $TXTrr-&gt;char_str_list())[1] containing &apos;Test2&apos;
+
+       Note that the rdatastr method (and therefore the print, and string
+       method) returns the escaped format.
+
+COPYRIGHT
+       Copyright (c) 1997-2002 Michael Fuhr.
+
+       Portions Copyright (c) 2002-2004 Chris Reinhardt.  Portions Copyright (c)
+       2005 Olaf Kolkman (NLnet Labs)
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 1035 Section
+       3.3.14
+
+
+
+perl v5.14.2                       2009-12-30             Net::DNS::RR::TXT(3pm)
+
+</pre></body></html>

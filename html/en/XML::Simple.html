@@ -1,0 +1,1345 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::Simple - Easily read/write XML (esp config files)</title></head>
+<body><pre>
+
+XML::Simple(3pm)       User Contributed Perl Documentation      XML::Simple(3pm)
+
+
+
+NAME
+       XML::Simple - Easily read/write XML (esp config files)
+
+SYNOPSIS
+           use XML::Simple qw(:strict);
+
+           my $ref = XMLin([&lt;xml file or string&gt;] [, &lt;options&gt;]);
+
+           my $xml = XMLout($hashref [, &lt;options&gt;]);
+
+       Or the object oriented way:
+
+           require XML::Simple qw(:strict);
+
+           my $xs = XML::Simple-&gt;new([&lt;options&gt;]);
+
+           my $ref = $xs-&gt;XMLin([&lt;xml file or string&gt;] [, &lt;options&gt;]);
+
+           my $xml = $xs-&gt;XMLout($hashref [, &lt;options&gt;]);
+
+       (or see &quot;SAX SUPPORT&quot; for &apos;the SAX way&apos;).
+
+       Note, in these examples, the square brackets are used to denote optional
+       items not to imply items should be supplied in arrayrefs.
+
+STATUS OF THIS MODULE
+       The use of this module in new code is discouraged.  Other modules are
+       available which provide more straightforward and consistent interfaces.
+       In particular, XML::LibXML is highly recommended.
+
+       The major problems with this module are the large number of options and
+       the arbitrary ways in which these options interact - often with
+       unexpected results.
+
+       Patches with bug fixes and documentation fixes are welcome, but new
+       features are unlikely to be added.
+
+QUICK START
+       Say you have a script called foo and a file of configuration options
+       called foo.xml containing the following:
+
+         &lt;config logdir=&quot;/var/log/foo/&quot; debugfile=&quot;/tmp/foo.debug&quot;&gt;
+           &lt;server name=&quot;sahara&quot; osname=&quot;solaris&quot; osversion=&quot;2.6&quot;&gt;
+             &lt;address&gt;10.0.0.101&lt;/address&gt;
+             &lt;address&gt;10.0.1.101&lt;/address&gt;
+           &lt;/server&gt;
+           &lt;server name=&quot;gobi&quot; osname=&quot;irix&quot; osversion=&quot;6.5&quot;&gt;
+             &lt;address&gt;10.0.0.102&lt;/address&gt;
+           &lt;/server&gt;
+           &lt;server name=&quot;kalahari&quot; osname=&quot;linux&quot; osversion=&quot;2.0.34&quot;&gt;
+             &lt;address&gt;10.0.0.103&lt;/address&gt;
+             &lt;address&gt;10.0.1.103&lt;/address&gt;
+           &lt;/server&gt;
+         &lt;/config&gt;
+
+       The following lines of code in foo:
+
+         use XML::Simple qw(:strict);
+
+         my $config = XMLin(undef, KeyAttr =&gt; { server =&gt; &apos;name&apos; }, ForceArray =&gt; [ &apos;server&apos;, &apos;address&apos; ]);
+
+       will &apos;slurp&apos; the configuration options into the hashref $config (because
+       no filename or XML string was passed as the first argument to &quot;XMLin()&quot;
+       the name and location of the XML file will be inferred from name and
+       location of the script).  You can dump out the contents of the hashref
+       using Data::Dumper:
+
+         use Data::Dumper;
+
+         print Dumper($config);
+
+       which will produce something like this (formatting has been adjusted for
+       brevity):
+
+         {
+             &apos;logdir&apos;        =&gt; &apos;/var/log/foo/&apos;,
+             &apos;debugfile&apos;     =&gt; &apos;/tmp/foo.debug&apos;,
+             &apos;server&apos;        =&gt; {
+                 &apos;sahara&apos;        =&gt; {
+                     &apos;osversion&apos;     =&gt; &apos;2.6&apos;,
+                     &apos;osname&apos;        =&gt; &apos;solaris&apos;,
+                     &apos;address&apos;       =&gt; [ &apos;10.0.0.101&apos;, &apos;10.0.1.101&apos; ]
+                 },
+                 &apos;gobi&apos;          =&gt; {
+                     &apos;osversion&apos;     =&gt; &apos;6.5&apos;,
+                     &apos;osname&apos;        =&gt; &apos;irix&apos;,
+                     &apos;address&apos;       =&gt; [ &apos;10.0.0.102&apos; ]
+                 },
+                 &apos;kalahari&apos;      =&gt; {
+                     &apos;osversion&apos;     =&gt; &apos;2.0.34&apos;,
+                     &apos;osname&apos;        =&gt; &apos;linux&apos;,
+                     &apos;address&apos;       =&gt; [ &apos;10.0.0.103&apos;, &apos;10.0.1.103&apos; ]
+                 }
+             }
+         }
+
+       Your script could then access the name of the log directory like this:
+
+         print $config-&gt;{logdir};
+
+       similarly, the second address on the server &apos;kalahari&apos; could be
+       referenced as:
+
+         print $config-&gt;{server}-&gt;{kalahari}-&gt;{address}-&gt;[1];
+
+       Note: If the mapping between the output of Data::Dumper and the print
+       statements above is not obvious to you, then please refer to the
+       &apos;references&apos; tutorial (AKA: &quot;Mark&apos;s very short tutorial about
+       references&quot;) at perlreftut.
+
+       In this example, the &quot;ForceArray&quot; option was used to list elements that
+       might occur multiple times and should therefore be represented as
+       arrayrefs (even when only one element is present).
+
+       The &quot;KeyAttr&quot; option was used to indicate that each &quot;&lt;server&gt;&quot; element
+       has a unique identifier in the &quot;name&quot; attribute.  This allows you to
+       index directly to a particular server record using the name as a hash key
+       (as shown above).
+
+       For simple requirements, that&apos;s really all there is to it.  If you want
+       to store your XML in a different directory or file, or pass it in as a
+       string or even pass it in via some derivative of an IO::Handle, you&apos;ll
+       need to check out &quot;OPTIONS&quot;.  If you want to turn off or tweak the array
+       folding feature (that neat little transformation that produced
+       $config-&gt;{server}) you&apos;ll find options for that as well.
+
+       If you want to generate XML (for example to write a modified version of
+       $config back out as XML), check out &quot;XMLout()&quot;.
+
+       If your needs are not so simple, this may not be the module for you.  In
+       that case, you might want to read &quot;WHERE TO FROM HERE?&quot;.
+
+DESCRIPTION
+       The XML::Simple module provides a simple API layer on top of an
+       underlying XML parsing module (either XML::Parser or one of the SAX2
+       parser modules).  Two functions are exported: &quot;XMLin()&quot; and &quot;XMLout()&quot;.
+       Note: you can explicity request the lower case versions of the function
+       names: &quot;xml_in()&quot; and &quot;xml_out()&quot;.
+
+       The simplest approach is to call these two functions directly, but an
+       optional object oriented interface (see &quot;OPTIONAL OO INTERFACE&quot; below)
+       allows them to be called as methods of an XML::Simple object.  The object
+       interface can also be used at either end of a SAX pipeline.
+
+   XMLin()
+       Parses XML formatted data and returns a reference to a data structure
+       which contains the same information in a more readily accessible form.
+       (Skip down to &quot;EXAMPLES&quot; below, for more sample code).
+
+       &quot;XMLin()&quot; accepts an optional XML specifier followed by zero or more
+       &apos;name =&gt; value&apos; option pairs.  The XML specifier can be one of the
+       following:
+
+       A filename
+           If the filename contains no directory components &quot;XMLin()&quot; will look
+           for the file in each directory in the SearchPath (see &quot;OPTIONS&quot;
+           below) or in the current directory if the SearchPath option is not
+           defined.  eg:
+
+             $ref = XMLin(&apos;/etc/params.xml&apos;);
+
+           Note, the filename &apos;-&apos; can be used to parse from STDIN.
+
+       undef
+           If there is no XML specifier, &quot;XMLin()&quot; will check the script
+           directory and each of the SearchPath directories for a file with the
+           same name as the script but with the extension &apos;.xml&apos;.  Note: if you
+           wish to specify options, you must specify the value &apos;undef&apos;.  eg:
+
+             $ref = XMLin(undef, ForceArray =&gt; 1);
+
+       A string of XML
+           A string containing XML (recognised by the presence of &apos;&lt;&apos; and &apos;&gt;&apos;
+           characters) will be parsed directly.  eg:
+
+             $ref = XMLin(&apos;&lt;opt username=&quot;bob&quot; password=&quot;flurp&quot; /&gt;&apos;);
+
+       An IO::Handle object
+           An IO::Handle object will be read to EOF and its contents parsed. eg:
+
+             $fh = IO::File-&gt;new(&apos;/etc/params.xml&apos;);
+             $ref = XMLin($fh);
+
+   XMLout()
+       Takes a data structure (generally a hashref) and returns an XML encoding
+       of that structure.  If the resulting XML is parsed using &quot;XMLin()&quot;, it
+       should return a data structure equivalent to the original (see caveats
+       below).
+
+       The &quot;XMLout()&quot; function can also be used to output the XML as SAX events
+       see the &quot;Handler&quot; option and &quot;SAX SUPPORT&quot; for more details).
+
+       When translating hashes to XML, hash keys which have a leading &apos;-&apos; will
+       be silently skipped.  This is the approved method for marking elements of
+       a data structure which should be ignored by &quot;XMLout&quot;.  (Note: If these
+       items were not skipped the key names would be emitted as element or
+       attribute names with a leading &apos;-&apos; which would not be valid XML).
+
+   Caveats
+       Some care is required in creating data structures which will be passed to
+       &quot;XMLout()&quot;.  Hash keys from the data structure will be encoded as either
+       XML element names or attribute names.  Therefore, you should use hash key
+       names which conform to the relatively strict XML naming rules:
+
+       Names in XML must begin with a letter.  The remaining characters may be
+       letters, digits, hyphens (-), underscores (_) or full stops (.).  It is
+       also allowable to include one colon (:) in an element name but this
+       should only be used when working with namespaces (XML::Simple can only
+       usefully work with namespaces when teamed with a SAX Parser).
+
+       You can use other punctuation characters in hash values (just not in hash
+       keys) however XML::Simple does not support dumping binary data.
+
+       If you break these rules, the current implementation of &quot;XMLout()&quot; will
+       simply emit non-compliant XML which will be rejected if you try to read
+       it back in.  (A later version of XML::Simple might take a more proactive
+       approach).
+
+       Note also that although you can nest hashes and arrays to arbitrary
+       levels, circular data structures are not supported and will cause
+       &quot;XMLout()&quot; to die.
+
+       If you wish to &apos;round-trip&apos; arbitrary data structures from Perl to XML
+       and back to Perl, then you should probably disable array folding (using
+       the KeyAttr option) both with &quot;XMLout()&quot; and with &quot;XMLin()&quot;.  If you
+       still don&apos;t get the expected results, you may prefer to use XML::Dumper
+       which is designed for exactly that purpose.
+
+       Refer to &quot;WHERE TO FROM HERE?&quot; if &quot;XMLout()&quot; is too simple for your
+       needs.
+
+OPTIONS
+       XML::Simple supports a number of options (in fact as each release of
+       XML::Simple adds more options, the module&apos;s claim to the name &apos;Simple&apos;
+       becomes increasingly tenuous).  If you find yourself repeatedly having to
+       specify the same options, you might like to investigate &quot;OPTIONAL OO
+       INTERFACE&quot; below.
+
+       If you can&apos;t be bothered reading the documentation, refer to &quot;STRICT
+       MODE&quot; to automatically catch common mistakes.
+
+       Because there are so many options, it&apos;s hard for new users to know which
+       ones are important, so here are the two you really need to know about:
+
+       &#183;   check out &quot;ForceArray&quot; because you&apos;ll almost certainly want to turn
+           it on
+
+       &#183;   make sure you know what the &quot;KeyAttr&quot; option does and what its
+           default value is because it may surprise you otherwise (note in
+           particular that &apos;KeyAttr&apos; affects both &quot;XMLin&quot; and &quot;XMLout&quot;)
+
+       The option name headings below have a trailing &apos;comment&apos; - a hash
+       followed by two pieces of metadata:
+
+       &#183;   Options are marked with &apos;in&apos; if they are recognised by &quot;XMLin()&quot; and
+           &apos;out&apos; if they are recognised by &quot;XMLout()&quot;.
+
+       &#183;   Each option is also flagged to indicate whether it is:
+
+            &apos;important&apos;   - don&apos;t use the module until you understand this one
+            &apos;handy&apos;       - you can skip this on the first time through
+            &apos;advanced&apos;    - you can skip this on the second time through
+            &apos;SAX only&apos;    - don&apos;t worry about this unless you&apos;re using SAX (or
+                            alternatively if you need this, you also need SAX)
+            &apos;seldom used&apos; - you&apos;ll probably never use this unless you were the
+                            person that requested the feature
+&#12;       The options are listed alphabetically:
+
+       Note: option names are no longer case sensitive so you can use the mixed
+       case versions shown here; all lower case as required by versions 2.03 and
+       earlier; or you can add underscores between the words (eg: key_attr).
+
+   AttrIndent =&gt; 1 # out - handy
+       When you are using &quot;XMLout()&quot;, enable this option to have attributes
+       printed one-per-line with sensible indentation rather than all on one
+       line.
+
+   Cache =&gt; [ cache schemes ] # in - advanced
+       Because loading the XML::Parser module and parsing an XML file can
+       consume a significant number of CPU cycles, it is often desirable to
+       cache the output of &quot;XMLin()&quot; for later reuse.
+
+       When parsing from a named file, XML::Simple supports a number of caching
+       schemes.  The &apos;Cache&apos; option may be used to specify one or more schemes
+       (using an anonymous array).  Each scheme will be tried in turn in the
+       hope of finding a cached pre-parsed representation of the XML file.  If
+       no cached copy is found, the file will be parsed and the first cache
+       scheme in the list will be used to save a copy of the results.  The
+       following cache schemes have been implemented:
+
+       storable
+           Utilises Storable.pm to read/write a cache file with the same name as
+           the XML file but with the extension .stor
+
+       memshare
+           When a file is first parsed, a copy of the resulting data structure
+           is retained in memory in the XML::Simple module&apos;s namespace.
+           Subsequent calls to parse the same file will return a reference to
+           this structure.  This cached version will persist only for the life
+           of the Perl interpreter (which in the case of mod_perl for example,
+           may be some significant time).
+
+           Because each caller receives a reference to the same data structure,
+           a change made by one caller will be visible to all.  For this reason,
+           the reference returned should be treated as read-only.
+
+       memcopy
+           This scheme works identically to &apos;memshare&apos; (above) except that each
+           caller receives a reference to a new data structure which is a copy
+           of the cached version.  Copying the data structure will add a little
+           processing overhead, therefore this scheme should only be used where
+           the caller intends to modify the data structure (or wishes to protect
+           itself from others who might).  This scheme uses Storable.pm to
+           perform the copy.
+
+       Warning! The memory-based caching schemes compare the timestamp on the
+       file to the time when it was last parsed.  If the file is stored on an
+       NFS filesystem (or other network share) and the clock on the file server
+       is not exactly synchronised with the clock where your script is run,
+       updates to the source XML file may appear to be ignored.
+
+   ContentKey =&gt; &apos;keyname&apos; # in+out - seldom used
+       When text content is parsed to a hash value, this option let&apos;s you
+       specify a name for the hash key to override the default &apos;content&apos;.  So
+       for example:
+
+         XMLin(&apos;&lt;opt one=&quot;1&quot;&gt;Text&lt;/opt&gt;&apos;, ContentKey =&gt; &apos;text&apos;)
+
+       will parse to:
+
+         { &apos;one&apos; =&gt; 1, &apos;text&apos; =&gt; &apos;Text&apos; }
+
+       instead of:
+
+         { &apos;one&apos; =&gt; 1, &apos;content&apos; =&gt; &apos;Text&apos; }
+
+       &quot;XMLout()&quot; will also honour the value of this option when converting a
+       hashref to XML.
+&#12;       You can also prefix your selected key name with a &apos;-&apos; character to have
+       &quot;XMLin()&quot; try a little harder to eliminate unnecessary &apos;content&apos; keys
+       after array folding.  For example:
+
+         XMLin(
+           &apos;&lt;opt&gt;&lt;item name=&quot;one&quot;&gt;First&lt;/item&gt;&lt;item name=&quot;two&quot;&gt;Second&lt;/item&gt;&lt;/opt&gt;&apos;,
+           KeyAttr =&gt; {item =&gt; &apos;name&apos;},
+           ForceArray =&gt; [ &apos;item&apos; ],
+           ContentKey =&gt; &apos;-content&apos;
+         )
+
+       will parse to:
+
+         {
+           &apos;item&apos; =&gt; {
+             &apos;one&apos; =&gt;  &apos;First&apos;
+             &apos;two&apos; =&gt;  &apos;Second&apos;
+           }
+         }
+
+       rather than this (without the &apos;-&apos;):
+
+         {
+           &apos;item&apos; =&gt; {
+             &apos;one&apos; =&gt; { &apos;content&apos; =&gt; &apos;First&apos; }
+             &apos;two&apos; =&gt; { &apos;content&apos; =&gt; &apos;Second&apos; }
+           }
+         }
+
+   DataHandler =&gt; code_ref # in - SAX only
+       When you use an XML::Simple object as a SAX handler, it will return a
+       &apos;simple tree&apos; data structure in the same format as &quot;XMLin()&quot; would
+       return.  If this option is set (to a subroutine reference), then when the
+       tree is built the subroutine will be called and passed two arguments: a
+       reference to the XML::Simple object and a reference to the data tree.
+       The return value from the subroutine will be returned to the SAX driver.
+       (See &quot;SAX SUPPORT&quot; for more details).
+
+   ForceArray =&gt; 1 # in - important
+       This option should be set to &apos;1&apos; to force nested elements to be
+       represented as arrays even when there is only one.  Eg, with ForceArray
+       enabled, this XML:
+
+           &lt;opt&gt;
+             &lt;name&gt;value&lt;/name&gt;
+           &lt;/opt&gt;
+
+       would parse to this:
+
+           {
+             &apos;name&apos; =&gt; [
+                         &apos;value&apos;
+                       ]
+           }
+
+       instead of this (the default):
+
+           {
+             &apos;name&apos; =&gt; &apos;value&apos;
+           }
+
+       This option is especially useful if the data structure is likely to be
+       written back out as XML and the default behaviour of rolling single
+       nested elements up into attributes is not desirable.
+
+       If you are using the array folding feature, you should almost certainly
+       enable this option.  If you do not, single nested elements will not be
+       parsed to arrays and therefore will not be candidates for folding to a
+       hash.  (Given that the default value of &apos;KeyAttr&apos; enables array folding,
+       the default value of this option should probably also have been enabled
+       too - sorry).
+
+   ForceArray =&gt; [ names ] # in - important
+       This alternative (and preferred) form of the &apos;ForceArray&apos; option allows
+       you to specify a list of element names which should always be forced into
+       an array representation, rather than the &apos;all or nothing&apos; approach above.
+
+       It is also possible (since version 2.05) to include compiled regular
+       expressions in the list - any element names which match the pattern will
+       be forced to arrays.  If the list contains only a single regex, then it
+       is not necessary to enclose it in an arrayref.  Eg:
+
+         ForceArray =&gt; qr/_list$/
+
+   ForceContent =&gt; 1 # in - seldom used
+       When &quot;XMLin()&quot; parses elements which have text content as well as
+       attributes, the text content must be represented as a hash value rather
+       than a simple scalar.  This option allows you to force text content to
+       always parse to a hash value even when there are no attributes.  So for
+       example:
+
+         XMLin(&apos;&lt;opt&gt;&lt;x&gt;text1&lt;/x&gt;&lt;y a=&quot;2&quot;&gt;text2&lt;/y&gt;&lt;/opt&gt;&apos;, ForceContent =&gt; 1)
+
+       will parse to:
+
+         {
+           &apos;x&apos; =&gt; {           &apos;content&apos; =&gt; &apos;text1&apos; },
+           &apos;y&apos; =&gt; { &apos;a&apos; =&gt; 2, &apos;content&apos; =&gt; &apos;text2&apos; }
+         }
+
+       instead of:
+
+         {
+           &apos;x&apos; =&gt; &apos;text1&apos;,
+           &apos;y&apos; =&gt; { &apos;a&apos; =&gt; 2, &apos;content&apos; =&gt; &apos;text2&apos; }
+         }
+
+   GroupTags =&gt; { grouping tag =&gt; grouped tag } # in+out - handy
+       You can use this option to eliminate extra levels of indirection in your
+       Perl data structure.  For example this XML:
+
+         &lt;opt&gt;
+          &lt;searchpath&gt;
+            &lt;dir&gt;/usr/bin&lt;/dir&gt;
+            &lt;dir&gt;/usr/local/bin&lt;/dir&gt;
+            &lt;dir&gt;/usr/X11/bin&lt;/dir&gt;
+          &lt;/searchpath&gt;
+        &lt;/opt&gt;
+
+       Would normally be read into a structure like this:
+
+         {
+           searchpath =&gt; {
+                           dir =&gt; [ &apos;/usr/bin&apos;, &apos;/usr/local/bin&apos;, &apos;/usr/X11/bin&apos; ]
+                         }
+         }
+
+       But when read in with the appropriate value for &apos;GroupTags&apos;:
+
+         my $opt = XMLin($xml, GroupTags =&gt; { searchpath =&gt; &apos;dir&apos; });
+
+       It will return this simpler structure:
+
+         {
+           searchpath =&gt; [ &apos;/usr/bin&apos;, &apos;/usr/local/bin&apos;, &apos;/usr/X11/bin&apos; ]
+         }
+
+       The grouping element (&quot;&lt;searchpath&gt;&quot; in the example) must not contain any
+       attributes or elements other than the grouped element.
+
+       You can specify multiple &apos;grouping element&apos; to &apos;grouped element&apos; mappings
+       in the same hashref.  If this option is combined with &quot;KeyAttr&quot;, the
+       array folding will occur first and then the grouped element names will be
+       eliminated.
+
+       &quot;XMLout&quot; will also use the grouptag mappings to re-introduce the tags
+       around the grouped elements.  Beware though that this will occur in all
+       places that the &apos;grouping tag&apos; name occurs - you probably don&apos;t want to
+       use the same name for elements as well as attributes.
+&#12;   Handler =&gt; object_ref # out - SAX only
+       Use the &apos;Handler&apos; option to have &quot;XMLout()&quot; generate SAX events rather
+       than returning a string of XML.  For more details see &quot;SAX SUPPORT&quot;
+       below.
+
+       Note: the current implementation of this option generates a string of XML
+       and uses a SAX parser to translate it into SAX events.  The normal
+       encoding rules apply here - your data must be UTF8 encoded unless you
+       specify an alternative encoding via the &apos;XMLDecl&apos; option; and by the time
+       the data reaches the handler object, it will be in UTF8 form regardless
+       of the encoding you supply.  A future implementation of this option may
+       generate the events directly.
+
+   KeepRoot =&gt; 1 # in+out - handy
+       In its attempt to return a data structure free of superfluous detail and
+       unnecessary levels of indirection, &quot;XMLin()&quot; normally discards the root
+       element name.  Setting the &apos;KeepRoot&apos; option to &apos;1&apos; will cause the root
+       element name to be retained.  So after executing this code:
+
+         $config = XMLin(&apos;&lt;config tempdir=&quot;/tmp&quot; /&gt;&apos;, KeepRoot =&gt; 1)
+
+       You&apos;ll be able to reference the tempdir as &quot;$config-&gt;{config}-&gt;{tempdir}&quot;
+       instead of the default &quot;$config-&gt;{tempdir}&quot;.
+
+       Similarly, setting the &apos;KeepRoot&apos; option to &apos;1&apos; will tell &quot;XMLout()&quot; that
+       the data structure already contains a root element name and it is not
+       necessary to add another.
+
+   KeyAttr =&gt; [ list ] # in+out - important
+       This option controls the &apos;array folding&apos; feature which translates nested
+       elements from an array to a hash.  It also controls the &apos;unfolding&apos; of
+       hashes to arrays.
+
+       For example, this XML:
+
+           &lt;opt&gt;
+             &lt;user login=&quot;grep&quot; fullname=&quot;Gary R Epstein&quot; /&gt;
+             &lt;user login=&quot;stty&quot; fullname=&quot;Simon T Tyson&quot; /&gt;
+           &lt;/opt&gt;
+
+       would, by default, parse to this:
+
+           {
+             &apos;user&apos; =&gt; [
+                         {
+                           &apos;login&apos; =&gt; &apos;grep&apos;,
+                           &apos;fullname&apos; =&gt; &apos;Gary R Epstein&apos;
+                         },
+                         {
+                           &apos;login&apos; =&gt; &apos;stty&apos;,
+                           &apos;fullname&apos; =&gt; &apos;Simon T Tyson&apos;
+                         }
+                       ]
+           }
+
+       If the option &apos;KeyAttr =&gt; &quot;login&quot;&apos; were used to specify that the &apos;login&apos;
+       attribute is a key, the same XML would parse to:
+
+           {
+             &apos;user&apos; =&gt; {
+                         &apos;stty&apos; =&gt; {
+                                     &apos;fullname&apos; =&gt; &apos;Simon T Tyson&apos;
+                                   },
+                         &apos;grep&apos; =&gt; {
+                                     &apos;fullname&apos; =&gt; &apos;Gary R Epstein&apos;
+                                   }
+                       }
+           }
+
+       The key attribute names should be supplied in an arrayref if there is
+       more than one.  &quot;XMLin()&quot; will attempt to match attribute names in the
+       order supplied.  &quot;XMLout()&quot; will use the first attribute name supplied
+       when &apos;unfolding&apos; a hash into an array.
+
+       Note 1: The default value for &apos;KeyAttr&apos; is [&apos;name&apos;, &apos;key&apos;, &apos;id&apos;].  If you
+       do not want folding on input or unfolding on output you must set this
+       option to an empty list to disable the feature.
+
+       Note 2: If you wish to use this option, you should also enable the
+       &quot;ForceArray&quot; option.  Without &apos;ForceArray&apos;, a single nested element will
+       be rolled up into a scalar rather than an array and therefore will not be
+       folded (since only arrays get folded).
+
+   KeyAttr =&gt; { list } # in+out - important
+       This alternative (and preferred) method of specifiying the key attributes
+       allows more fine grained control over which elements are folded and on
+       which attributes.  For example the option &apos;KeyAttr =&gt; { package =&gt; &apos;id&apos; }
+       will cause any package elements to be folded on the &apos;id&apos; attribute.  No
+       other elements which have an &apos;id&apos; attribute will be folded at all.
+
+       Note: &quot;XMLin()&quot; will generate a warning (or a fatal error in &quot;STRICT
+       MODE&quot;) if this syntax is used and an element which does not have the
+       specified key attribute is encountered (eg: a &apos;package&apos; element without
+       an &apos;id&apos; attribute, to use the example above).  Warnings will only be
+       generated if -w is in force.
+
+       Two further variations are made possible by prefixing a &apos;+&apos; or a &apos;-&apos;
+       character to the attribute name:
+
+       The option &apos;KeyAttr =&gt; { user =&gt; &quot;+login&quot; }&apos; will cause this XML:
+
+           &lt;opt&gt;
+             &lt;user login=&quot;grep&quot; fullname=&quot;Gary R Epstein&quot; /&gt;
+             &lt;user login=&quot;stty&quot; fullname=&quot;Simon T Tyson&quot; /&gt;
+           &lt;/opt&gt;
+
+       to parse to this data structure:
+
+           {
+             &apos;user&apos; =&gt; {
+                         &apos;stty&apos; =&gt; {
+                                     &apos;fullname&apos; =&gt; &apos;Simon T Tyson&apos;,
+                                     &apos;login&apos;    =&gt; &apos;stty&apos;
+                                   },
+                         &apos;grep&apos; =&gt; {
+                                     &apos;fullname&apos; =&gt; &apos;Gary R Epstein&apos;,
+                                     &apos;login&apos;    =&gt; &apos;grep&apos;
+                                   }
+                       }
+           }
+
+       The &apos;+&apos; indicates that the value of the key attribute should be copied
+       rather than moved to the folded hash key.
+
+       A &apos;-&apos; prefix would produce this result:
+
+           {
+             &apos;user&apos; =&gt; {
+                         &apos;stty&apos; =&gt; {
+                                     &apos;fullname&apos; =&gt; &apos;Simon T Tyson&apos;,
+                                     &apos;-login&apos;    =&gt; &apos;stty&apos;
+                                   },
+                         &apos;grep&apos; =&gt; {
+                                     &apos;fullname&apos; =&gt; &apos;Gary R Epstein&apos;,
+                                     &apos;-login&apos;    =&gt; &apos;grep&apos;
+                                   }
+                       }
+           }
+
+       As described earlier, &quot;XMLout&quot; will ignore hash keys starting with a &apos;-&apos;.
+
+   NoAttr =&gt; 1 # in+out - handy
+       When used with &quot;XMLout()&quot;, the generated XML will contain no attributes.
+       All hash key/values will be represented as nested elements instead.
+
+       When used with &quot;XMLin()&quot;, any attributes in the XML will be ignored.
+
+   NoEscape =&gt; 1 # out - seldom used
+       By default, &quot;XMLout()&quot; will translate the characters &apos;&lt;&apos;, &apos;&gt;&apos;, &apos;&amp;&apos; and
+       &apos;&quot;&apos; to &apos;&amp;lt;&apos;, &apos;&amp;gt;&apos;, &apos;&amp;amp;&apos; and &apos;&amp;quot&apos; respectively.  Use this option
+       to suppress escaping (presumably because you&apos;ve already escaped the data
+       in some more sophisticated manner).
+
+   NoIndent =&gt; 1 # out - seldom used
+       Set this option to 1 to disable &quot;XMLout()&quot;&apos;s default &apos;pretty printing&apos;
+       mode.  With this option enabled, the XML output will all be on one line
+       (unless there are newlines in the data) - this may be easier for
+       downstream processing.
+
+   NoSort =&gt; 1 # out - seldom used
+       Newer versions of XML::Simple sort elements and attributes alphabetically
+       (*), by default.  Enable this option to suppress the sorting - possibly
+       for backwards compatibility.
+
+       * Actually, sorting is alphabetical but &apos;key&apos; attribute or element names
+       (as in &apos;KeyAttr&apos;) sort first.  Also, when a hash of hashes is &apos;unfolded&apos;,
+       the elements are sorted alphabetically by the value of the key field.
+
+   NormaliseSpace =&gt; 0 | 1 | 2 # in - handy
+       This option controls how whitespace in text content is handled.
+       Recognised values for the option are:
+
+       &#183;   0 = (default) whitespace is passed through unaltered (except of
+           course for the normalisation of whitespace in attribute values which
+           is mandated by the XML recommendation)
+
+       &#183;   1 = whitespace is normalised in any value used as a hash key
+           (normalising means removing leading and trailing whitespace and
+           collapsing sequences of whitespace characters to a single space)
+
+       &#183;   2 = whitespace is normalised in all text content
+
+       Note: you can spell this option with a &apos;z&apos; if that is more natural for
+       you.
+
+   NSExpand =&gt; 1 # in+out handy - SAX only
+       This option controls namespace expansion - the translation of element and
+       attribute names of the form &apos;prefix:name&apos; to &apos;{uri}name&apos;.  For example
+       the element name &apos;xsl:template&apos; might be expanded to:
+       &apos;{http://www.w3.org/1999/XSL/Transform}template&apos;.
+
+       By default, &quot;XMLin()&quot; will return element names and attribute names
+       exactly as they appear in the XML.  Setting this option to 1 will cause
+       all element and attribute names to be expanded to include their namespace
+       prefix.
+
+       Note: You must be using a SAX parser for this option to work (ie: it does
+       not work with XML::Parser).
+
+       This option also controls whether &quot;XMLout()&quot; performs the reverse
+       translation from &apos;{uri}name&apos; back to &apos;prefix:name&apos;.  The default is no
+       translation.  If your data contains expanded names, you should set this
+       option to 1 otherwise &quot;XMLout&quot; will emit XML which is not well formed.
+
+       Note: You must have the XML::NamespaceSupport module installed if you
+       want &quot;XMLout()&quot; to translate URIs back to prefixes.
+
+   NumericEscape =&gt; 0 | 1 | 2 # out - handy
+       Use this option to have &apos;high&apos; (non-ASCII) characters in your Perl data
+       structure converted to numeric entities (eg: &amp;#8364;) in the XML output.
+       Three levels are possible:
+
+       0 - default: no numeric escaping (OK if you&apos;re writing out UTF8)
+
+       1 - only characters above 0xFF are escaped (ie: characters in the 0x80-FF
+       range are not escaped), possibly useful with ISO8859-1 output
+
+       2 - all characters above 0x7F are escaped (good for plain ASCII output)
+
+   OutputFile =&gt; &lt;file specifier&gt; # out - handy
+       The default behaviour of &quot;XMLout()&quot; is to return the XML as a string.  If
+       you wish to write the XML to a file, simply supply the filename using the
+       &apos;OutputFile&apos; option.
+
+       This option also accepts an IO handle object - especially useful in Perl
+       5.8.0 and later for output using an encoding other than UTF-8, eg:
+
+         open my $fh, &apos;&gt;:encoding(iso-8859-1)&apos;, $path or die &quot;open($path): $!&quot;;
+         XMLout($ref, OutputFile =&gt; $fh);
+
+       Note, XML::Simple does not require that the object you pass in to the
+       OutputFile option inherits from IO::Handle - it simply assumes the object
+       supports a &quot;print&quot; method.
+
+   ParserOpts =&gt; [ XML::Parser Options ] # in - don&apos;t use this
+       Note: This option is now officially deprecated.  If you find it useful,
+       email the author with an example of what you use it for.  Do not use this
+       option to set the ProtocolEncoding, that&apos;s just plain wrong - fix the
+       XML.
+
+       This option allows you to pass parameters to the constructor of the
+       underlying XML::Parser object (which of course assumes you&apos;re not using
+       SAX).
+
+   RootName =&gt; &apos;string&apos; # out - handy
+       By default, when &quot;XMLout()&quot; generates XML, the root element will be named
+       &apos;opt&apos;.  This option allows you to specify an alternative name.
+
+       Specifying either undef or the empty string for the RootName option will
+       produce XML with no root elements.  In most cases the resulting XML
+       fragment will not be &apos;well formed&apos; and therefore could not be read back
+       in by &quot;XMLin()&quot;.  Nevertheless, the option has been found to be useful in
+       certain circumstances.
+
+   SearchPath =&gt; [ list ] # in - handy
+       If you pass &quot;XMLin()&quot; a filename, but the filename include no directory
+       component, you can use this option to specify which directories should be
+       searched to locate the file.  You might use this option to search first
+       in the user&apos;s home directory, then in a global directory such as /etc.
+
+       If a filename is provided to &quot;XMLin()&quot; but SearchPath is not defined, the
+       file is assumed to be in the current directory.
+
+       If the first parameter to &quot;XMLin()&quot; is undefined, the default SearchPath
+       will contain only the directory in which the script itself is located.
+       Otherwise the default SearchPath will be empty.
+
+   StrictMode =&gt; 1 | 0  # in+out seldom used
+       This option allows you to turn &quot;STRICT MODE&quot; on or off for a particular
+       call, regardless of whether it was enabled at the time XML::Simple was
+       loaded.
+
+   SuppressEmpty =&gt; 1 | &apos;&apos; | undef # in+out - handy
+       This option controls what &quot;XMLin()&quot; should do with empty elements (no
+       attributes and no content).  The default behaviour is to represent them
+       as empty hashes.  Setting this option to a true value (eg: 1) will cause
+       empty elements to be skipped altogether.  Setting the option to &apos;undef&apos;
+       or the empty string will cause empty elements to be represented as the
+       undefined value or the empty string respectively.  The latter two
+       alternatives are a little easier to test for in your code than a hash
+       with no keys.
+
+       The option also controls what &quot;XMLout()&quot; does with undefined values.
+       Setting the option to undef causes undefined values to be output as empty
+       elements (rather than empty attributes), it also suppresses the
+       generation of warnings about undefined values.  Setting the option to a
+       true value (eg: 1) causes undefined values to be skipped altogether on
+       output.
+
+   ValueAttr =&gt; [ names ] # in - handy
+       Use this option to deal elements which always have a single attribute and
+       no content.  Eg:
+
+         &lt;opt&gt;
+           &lt;colour value=&quot;red&quot; /&gt;
+           &lt;size   value=&quot;XXL&quot; /&gt;
+         &lt;/opt&gt;
+
+       Setting &quot;ValueAttr =&gt; [ &apos;value&apos; ]&quot; will cause the above XML to parse to:
+&#12;         {
+           colour =&gt; &apos;red&apos;,
+           size   =&gt; &apos;XXL&apos;
+         }
+
+       instead of this (the default):
+
+         {
+           colour =&gt; { value =&gt; &apos;red&apos; },
+           size   =&gt; { value =&gt; &apos;XXL&apos; }
+         }
+
+       Note: This form of the ValueAttr option is not compatible with &quot;XMLout()&quot;
+       - since the attribute name is discarded at parse time, the original XML
+       cannot be reconstructed.
+
+   ValueAttr =&gt; { element =&gt; attribute, ... } # in+out - handy
+       This (preferred) form of the ValueAttr option requires you to specify
+       both the element and the attribute names.  This is not only safer, it
+       also allows the original XML to be reconstructed by &quot;XMLout()&quot;.
+
+       Note: You probably don&apos;t want to use this option and the NoAttr option at
+       the same time.
+
+   Variables =&gt; { name =&gt; value } # in - handy
+       This option allows variables in the XML to be expanded when the file is
+       read.  (there is no facility for putting the variable names back if you
+       regenerate XML using &quot;XMLout&quot;).
+
+       A &apos;variable&apos; is any text of the form &quot;${name}&quot; which occurs in an
+       attribute value or in the text content of an element.  If &apos;name&apos; matches
+       a key in the supplied hashref, &quot;${name}&quot; will be replaced with the
+       corresponding value from the hashref.  If no matching key is found, the
+       variable will not be replaced.  Names must match the regex: &quot;[\w.]+&quot; (ie:
+       only &apos;word&apos; characters and dots are allowed).
+
+   VarAttr =&gt; &apos;attr_name&apos; # in - handy
+       In addition to the variables defined using &quot;Variables&quot;, this option
+       allows variables to be defined in the XML.  A variable definition
+       consists of an element with an attribute called &apos;attr_name&apos; (the value of
+       the &quot;VarAttr&quot; option).  The value of the attribute will be used as the
+       variable name and the text content of the element will be used as the
+       value.  A variable defined in this way will override a variable defined
+       using the &quot;Variables&quot; option.  For example:
+
+         XMLin( &apos;&lt;opt&gt;
+                   &lt;dir name=&quot;prefix&quot;&gt;/usr/local/apache&lt;/dir&gt;
+                   &lt;dir name=&quot;exec_prefix&quot;&gt;${prefix}&lt;/dir&gt;
+                   &lt;dir name=&quot;bindir&quot;&gt;${exec_prefix}/bin&lt;/dir&gt;
+                 &lt;/opt&gt;&apos;,
+                VarAttr =&gt; &apos;name&apos;, ContentKey =&gt; &apos;-content&apos;
+               );
+
+       produces the following data structure:
+
+         {
+           dir =&gt; {
+                    prefix      =&gt; &apos;/usr/local/apache&apos;,
+                    exec_prefix =&gt; &apos;/usr/local/apache&apos;,
+                    bindir      =&gt; &apos;/usr/local/apache/bin&apos;,
+                  }
+         }
+
+   XMLDecl =&gt; 1  or  XMLDecl =&gt; &apos;string&apos;  # out - handy
+       If you want the output from &quot;XMLout()&quot; to start with the optional XML
+       declaration, simply set the option to &apos;1&apos;.  The default XML declaration
+       is:
+
+               &lt;?xml version=&apos;1.0&apos; standalone=&apos;yes&apos;?&gt;
+
+       If you want some other string (for example to declare an encoding value),
+       set the value of this option to the complete string you require.
+
+OPTIONAL OO INTERFACE
+       The procedural interface is both simple and convenient however there are
+       a couple of reasons why you might prefer to use the object oriented (OO)
+       interface:
+
+       &#183;   to define a set of default values which should be used on all
+           subsequent calls to &quot;XMLin()&quot; or &quot;XMLout()&quot;
+
+       &#183;   to override methods in XML::Simple to provide customised behaviour
+
+       The default values for the options described above are unlikely to suit
+       everyone.  The OO interface allows you to effectively override
+       XML::Simple&apos;s defaults with your preferred values.  It works like this:
+
+       First create an XML::Simple parser object with your preferred defaults:
+
+         my $xs = XML::Simple-&gt;new(ForceArray =&gt; 1, KeepRoot =&gt; 1);
+
+       then call &quot;XMLin()&quot; or &quot;XMLout()&quot; as a method of that object:
+
+         my $ref = $xs-&gt;XMLin($xml);
+         my $xml = $xs-&gt;XMLout($ref);
+
+       You can also specify options when you make the method calls and these
+       values will be merged with the values specified when the object was
+       created.  Values specified in a method call take precedence.
+
+       Note: when called as methods, the &quot;XMLin()&quot; and &quot;XMLout()&quot; routines may
+       be called as &quot;xml_in()&quot; or &quot;xml_out()&quot;.  The method names are aliased so
+       the only difference is the aesthetics.
+
+   Parsing Methods
+       You can explicitly call one of the following methods rather than rely on
+       the &quot;xml_in()&quot; method automatically determining whether the target to be
+       parsed is a string, a file or a filehandle:
+
+       parse_string(text)
+           Works exactly like the &quot;xml_in()&quot; method but assumes the first
+           argument is a string of XML (or a reference to a scalar containing a
+           string of XML).
+
+       parse_file(filename)
+           Works exactly like the &quot;xml_in()&quot; method but assumes the first
+           argument is the name of a file containing XML.
+
+       parse_fh(file_handle)
+           Works exactly like the &quot;xml_in()&quot; method but assumes the first
+           argument is a filehandle which can be read to get XML.
+
+   Hook Methods
+       You can make your own class which inherits from XML::Simple and overrides
+       certain behaviours.  The following methods may provide useful &apos;hooks&apos;
+       upon which to hang your modified behaviour.  You may find other
+       undocumented methods by examining the source, but those may be subject to
+       change in future releases.
+
+       handle_options(direction, name =&gt; value ...)
+           This method will be called when one of the parsing methods or the
+           &quot;XMLout()&quot; method is called.  The initial argument will be a string
+           (either &apos;in&apos; or &apos;out&apos;) and the remaining arguments will be name value
+           pairs.
+
+       default_config_file()
+           Calculates and returns the name of the file which should be parsed if
+           no filename is passed to &quot;XMLin()&quot; (default: &quot;$0.xml&quot;).
+
+       build_simple_tree(filename, string)
+           Called from &quot;XMLin()&quot; or any of the parsing methods.  Takes either a
+           file name as the first argument or &quot;undef&quot; followed by a &apos;string&apos; as
+           the second argument.  Returns a simple tree data structure.  You
+           could override this method to apply your own transformations before
+           the data structure is returned to the caller.
+
+       new_hashref()
+           When the &apos;simple tree&apos; data structure is being built, this method
+           will be called to create any required anonymous hashrefs.
+
+       sorted_keys(name, hashref)
+           Called when &quot;XMLout()&quot; is translating a hashref to XML.  This routine
+           returns a list of hash keys in the order that the corresponding
+           attributes/elements should appear in the output.
+
+       escape_value(string)
+           Called from &quot;XMLout()&quot;, takes a string and returns a copy of the
+           string with XML character escaping rules applied.
+
+       numeric_escape(string)
+           Called from &quot;escape_value()&quot;, to handle non-ASCII characters
+           (depending on the value of the NumericEscape option).
+
+       copy_hash(hashref, extra_key =&gt; value, ...)
+           Called from &quot;XMLout()&quot;, when &apos;unfolding&apos; a hash of hashes into an
+           array of hashes.  You might wish to override this method if you&apos;re
+           using tied hashes and don&apos;t want them to get untied.
+
+   Cache Methods
+       XML::Simple implements three caching schemes (&apos;storable&apos;, &apos;memshare&apos; and
+       &apos;memcopy&apos;).  You can implement a custom caching scheme by implementing
+       two methods - one for reading from the cache and one for writing to it.
+
+       For example, you might implement a new &apos;dbm&apos; scheme that stores cached
+       data structures using the MLDBM module.  First, you would add a
+       &quot;cache_read_dbm()&quot; method which accepted a filename for use as a lookup
+       key and returned a data structure on success, or undef on failure.  Then,
+       you would implement a &quot;cache_read_dbm()&quot; method which accepted a data
+       structure and a filename.
+
+       You would use this caching scheme by specifying the option:
+
+         Cache =&gt; [ &apos;dbm&apos; ]
+
+STRICT MODE
+       If you import the XML::Simple routines like this:
+
+         use XML::Simple qw(:strict);
+
+       the following common mistakes will be detected and treated as fatal
+       errors
+
+       &#183;   Failing to explicitly set the &quot;KeyAttr&quot; option - if you can&apos;t be
+           bothered reading about this option, turn it off with: KeyAttr =&gt; [ ]
+
+       &#183;   Failing to explicitly set the &quot;ForceArray&quot; option - if you can&apos;t be
+           bothered reading about this option, set it to the safest mode with:
+           ForceArray =&gt; 1
+
+       &#183;   Setting ForceArray to an array, but failing to list all the elements
+           from the KeyAttr hash.
+
+       &#183;   Data error - KeyAttr is set to say { part =&gt; &apos;partnum&apos; } but the XML
+           contains one or more &lt;part&gt; elements without a &apos;partnum&apos; attribute
+           (or nested element).  Note: if strict mode is not set but -w is, this
+           condition triggers a warning.
+
+       &#183;   Data error - as above, but non-unique values are present in the key
+           attribute (eg: more than one &lt;part&gt; element with the same partnum).
+           This will also trigger a warning if strict mode is not enabled.
+
+       &#183;   Data error - as above, but value of key attribute (eg: partnum) is
+           not a scalar string (due to nested elements etc).  This will also
+           trigger a warning if strict mode is not enabled.
+
+SAX SUPPORT
+       From version 1.08_01, XML::Simple includes support for SAX (the Simple
+       API for XML) - specifically SAX2.
+
+       In a typical SAX application, an XML parser (or SAX &apos;driver&apos;) module
+       generates SAX events (start of element, character data, end of element,
+       etc) as it parses an XML document and a &apos;handler&apos; module processes the
+       events to extract the required data.  This simple model allows for some
+       interesting and powerful possibilities:
+
+       &#183;   Applications written to the SAX API can extract data from huge XML
+           documents without the memory overheads of a DOM or tree API.
+
+       &#183;   The SAX API allows for plug and play interchange of parser modules
+           without having to change your code to fit a new module&apos;s API.  A
+           number of SAX parsers are available with capabilities ranging from
+           extreme portability to blazing performance.
+
+       &#183;   A SAX &apos;filter&apos; module can implement both a handler interface for
+           receiving data and a generator interface for passing modified data on
+           to a downstream handler.  Filters can be chained together in
+           &apos;pipelines&apos;.
+
+       &#183;   One filter module might split a data stream to direct data to two or
+           more downstream handlers.
+
+       &#183;   Generating SAX events is not the exclusive preserve of XML parsing
+           modules.  For example, a module might extract data from a relational
+           database using DBI and pass it on to a SAX pipeline for filtering and
+           formatting.
+
+       XML::Simple can operate at either end of a SAX pipeline.  For example,
+       you can take a data structure in the form of a hashref and pass it into a
+       SAX pipeline using the &apos;Handler&apos; option on &quot;XMLout()&quot;:
+
+         use XML::Simple;
+         use Some::SAX::Filter;
+         use XML::SAX::Writer;
+
+         my $ref = {
+                      ....   # your data here
+                   };
+
+         my $writer = XML::SAX::Writer-&gt;new();
+         my $filter = Some::SAX::Filter-&gt;new(Handler =&gt; $writer);
+         my $simple = XML::Simple-&gt;new(Handler =&gt; $filter);
+         $simple-&gt;XMLout($ref);
+
+       You can also put XML::Simple at the opposite end of the pipeline to take
+       advantage of the simple &apos;tree&apos; data structure once the relevant data has
+       been isolated through filtering:
+
+         use XML::SAX;
+         use Some::SAX::Filter;
+         use XML::Simple;
+
+         my $simple = XML::Simple-&gt;new(ForceArray =&gt; 1, KeyAttr =&gt; [&apos;partnum&apos;]);
+         my $filter = Some::SAX::Filter-&gt;new(Handler =&gt; $simple);
+         my $parser = XML::SAX::ParserFactory-&gt;parser(Handler =&gt; $filter);
+
+         my $ref = $parser-&gt;parse_uri(&apos;some_huge_file.xml&apos;);
+
+         print $ref-&gt;{part}-&gt;{&apos;555-1234&apos;};
+
+       You can build a filter by using an XML::Simple object as a handler and
+       setting its DataHandler option to point to a routine which takes the
+       resulting tree, modifies it and sends it off as SAX events to a
+       downstream handler:
+
+         my $writer = XML::SAX::Writer-&gt;new();
+         my $filter = XML::Simple-&gt;new(
+                        DataHandler =&gt; sub {
+                                         my $simple = shift;
+                                         my $data = shift;
+
+                                         # Modify $data here
+
+                                         $simple-&gt;XMLout($data, Handler =&gt; $writer);
+                                       }
+                      );
+         my $parser = XML::SAX::ParserFactory-&gt;parser(Handler =&gt; $filter);
+
+         $parser-&gt;parse_uri($filename);
+
+       Note: In this last example, the &apos;Handler&apos; option was specified in the
+       call to &quot;XMLout()&quot; but it could also have been specified in the
+       constructor.
+
+ENVIRONMENT
+       If you don&apos;t care which parser module XML::Simple uses then skip this
+       section entirely (it looks more complicated than it really is).
+&#12;       XML::Simple will default to using a SAX parser if one is available or
+       XML::Parser if SAX is not available.
+
+       You can dictate which parser module is used by setting either the
+       environment variable &apos;XML_SIMPLE_PREFERRED_PARSER&apos; or the package
+       variable $XML::Simple::PREFERRED_PARSER to contain the module name.  The
+       following rules are used:
+
+       &#183;   The package variable takes precedence over the environment variable
+           if both are defined.  To force XML::Simple to ignore the environment
+           settings and use its default rules, you can set the package variable
+           to an empty string.
+
+       &#183;   If the &apos;preferred parser&apos; is set to the string &apos;XML::Parser&apos;, then
+           XML::Parser will be used (or &quot;XMLin()&quot; will die if XML::Parser is not
+           installed).
+
+       &#183;   If the &apos;preferred parser&apos; is set to some other value, then it is
+           assumed to be the name of a SAX parser module and is passed to
+           XML::SAX::ParserFactory.  If XML::SAX is not installed, or the
+           requested parser module is not installed, then &quot;XMLin()&quot; will die.
+
+       &#183;   If the &apos;preferred parser&apos; is not defined at all (the normal default
+           state), an attempt will be made to load XML::SAX.  If XML::SAX is
+           installed, then a parser module will be selected according to
+           XML::SAX::ParserFactory&apos;s normal rules (which typically means the
+           last SAX parser installed).
+
+       &#183;   if the &apos;preferred parser&apos; is not defined and XML::SAX is not
+           installed, then XML::Parser will be used.  &quot;XMLin()&quot; will die if
+           XML::Parser is not installed.
+
+       Note: The XML::SAX distribution includes an XML parser written entirely
+       in Perl.  It is very portable but it is not very fast.  You should
+       consider installing XML::LibXML or XML::SAX::Expat if they are available
+       for your platform.
+
+ERROR HANDLING
+       The XML standard is very clear on the issue of non-compliant documents.
+       An error in parsing any single element (for example a missing end tag)
+       must cause the whole document to be rejected.  XML::Simple will die with
+       an appropriate message if it encounters a parsing error.
+
+       If dying is not appropriate for your application, you should arrange to
+       call &quot;XMLin()&quot; in an eval block and look for errors in $@.  eg:
+
+           my $config = eval { XMLin() };
+           PopUpMessage($@) if($@);
+
+       Note, there is a common misconception that use of eval will significantly
+       slow down a script.  While that may be true when the code being eval&apos;d is
+       in a string, it is not true of code like the sample above.
+
+EXAMPLES
+       When &quot;XMLin()&quot; reads the following very simple piece of XML:
+
+           &lt;opt username=&quot;testuser&quot; password=&quot;frodo&quot;&gt;&lt;/opt&gt;
+
+       it returns the following data structure:
+
+           {
+             &apos;username&apos; =&gt; &apos;testuser&apos;,
+             &apos;password&apos; =&gt; &apos;frodo&apos;
+           }
+
+       The identical result could have been produced with this alternative XML:
+
+           &lt;opt username=&quot;testuser&quot; password=&quot;frodo&quot; /&gt;
+
+       Or this (although see &apos;ForceArray&apos; option for variations):
+
+           &lt;opt&gt;
+             &lt;username&gt;testuser&lt;/username&gt;
+             &lt;password&gt;frodo&lt;/password&gt;
+           &lt;/opt&gt;
+
+       Repeated nested elements are represented as anonymous arrays:
+
+           &lt;opt&gt;
+             &lt;person firstname=&quot;Joe&quot; lastname=&quot;Smith&quot;&gt;
+               &lt;email&gt;joe@smith.com&lt;/email&gt;
+               &lt;email&gt;jsmith@yahoo.com&lt;/email&gt;
+             &lt;/person&gt;
+             &lt;person firstname=&quot;Bob&quot; lastname=&quot;Smith&quot;&gt;
+               &lt;email&gt;bob@smith.com&lt;/email&gt;
+             &lt;/person&gt;
+           &lt;/opt&gt;
+
+           {
+             &apos;person&apos; =&gt; [
+                           {
+                             &apos;email&apos; =&gt; [
+                                          &apos;joe@smith.com&apos;,
+                                          &apos;jsmith@yahoo.com&apos;
+                                        ],
+                             &apos;firstname&apos; =&gt; &apos;Joe&apos;,
+                             &apos;lastname&apos; =&gt; &apos;Smith&apos;
+                           },
+                           {
+                             &apos;email&apos; =&gt; &apos;bob@smith.com&apos;,
+                             &apos;firstname&apos; =&gt; &apos;Bob&apos;,
+                             &apos;lastname&apos; =&gt; &apos;Smith&apos;
+                           }
+                         ]
+           }
+
+       Nested elements with a recognised key attribute are transformed (folded)
+       from an array into a hash keyed on the value of that attribute (see the
+       &quot;KeyAttr&quot; option):
+
+           &lt;opt&gt;
+             &lt;person key=&quot;jsmith&quot; firstname=&quot;Joe&quot; lastname=&quot;Smith&quot; /&gt;
+             &lt;person key=&quot;tsmith&quot; firstname=&quot;Tom&quot; lastname=&quot;Smith&quot; /&gt;
+             &lt;person key=&quot;jbloggs&quot; firstname=&quot;Joe&quot; lastname=&quot;Bloggs&quot; /&gt;
+           &lt;/opt&gt;
+
+           {
+             &apos;person&apos; =&gt; {
+                           &apos;jbloggs&apos; =&gt; {
+                                          &apos;firstname&apos; =&gt; &apos;Joe&apos;,
+                                          &apos;lastname&apos; =&gt; &apos;Bloggs&apos;
+                                        },
+                           &apos;tsmith&apos; =&gt; {
+                                         &apos;firstname&apos; =&gt; &apos;Tom&apos;,
+                                         &apos;lastname&apos; =&gt; &apos;Smith&apos;
+                                       },
+                           &apos;jsmith&apos; =&gt; {
+                                         &apos;firstname&apos; =&gt; &apos;Joe&apos;,
+                                         &apos;lastname&apos; =&gt; &apos;Smith&apos;
+                                       }
+                         }
+           }
+
+       The &lt;anon&gt; tag can be used to form anonymous arrays:
+
+           &lt;opt&gt;
+             &lt;head&gt;&lt;anon&gt;Col 1&lt;/anon&gt;&lt;anon&gt;Col 2&lt;/anon&gt;&lt;anon&gt;Col 3&lt;/anon&gt;&lt;/head&gt;
+             &lt;data&gt;&lt;anon&gt;R1C1&lt;/anon&gt;&lt;anon&gt;R1C2&lt;/anon&gt;&lt;anon&gt;R1C3&lt;/anon&gt;&lt;/data&gt;
+             &lt;data&gt;&lt;anon&gt;R2C1&lt;/anon&gt;&lt;anon&gt;R2C2&lt;/anon&gt;&lt;anon&gt;R2C3&lt;/anon&gt;&lt;/data&gt;
+             &lt;data&gt;&lt;anon&gt;R3C1&lt;/anon&gt;&lt;anon&gt;R3C2&lt;/anon&gt;&lt;anon&gt;R3C3&lt;/anon&gt;&lt;/data&gt;
+           &lt;/opt&gt;
+
+           {
+             &apos;head&apos; =&gt; [
+                         [ &apos;Col 1&apos;, &apos;Col 2&apos;, &apos;Col 3&apos; ]
+                       ],
+             &apos;data&apos; =&gt; [
+                         [ &apos;R1C1&apos;, &apos;R1C2&apos;, &apos;R1C3&apos; ],
+                         [ &apos;R2C1&apos;, &apos;R2C2&apos;, &apos;R2C3&apos; ],
+                         [ &apos;R3C1&apos;, &apos;R3C2&apos;, &apos;R3C3&apos; ]
+                       ]
+           }
+
+       Anonymous arrays can be nested to arbirtrary levels and as a special
+       case, if the surrounding tags for an XML document contain only an
+       anonymous array the arrayref will be returned directly rather than the
+       usual hashref:
+
+           &lt;opt&gt;
+             &lt;anon&gt;&lt;anon&gt;Col 1&lt;/anon&gt;&lt;anon&gt;Col 2&lt;/anon&gt;&lt;/anon&gt;
+             &lt;anon&gt;&lt;anon&gt;R1C1&lt;/anon&gt;&lt;anon&gt;R1C2&lt;/anon&gt;&lt;/anon&gt;
+             &lt;anon&gt;&lt;anon&gt;R2C1&lt;/anon&gt;&lt;anon&gt;R2C2&lt;/anon&gt;&lt;/anon&gt;
+           &lt;/opt&gt;
+
+           [
+             [ &apos;Col 1&apos;, &apos;Col 2&apos; ],
+             [ &apos;R1C1&apos;, &apos;R1C2&apos; ],
+             [ &apos;R2C1&apos;, &apos;R2C2&apos; ]
+           ]
+
+       Elements which only contain text content will simply be represented as a
+       scalar.  Where an element has both attributes and text content, the
+       element will be represented as a hashref with the text content in the
+       &apos;content&apos; key (see the &quot;ContentKey&quot; option):
+
+         &lt;opt&gt;
+           &lt;one&gt;first&lt;/one&gt;
+           &lt;two attr=&quot;value&quot;&gt;second&lt;/two&gt;
+         &lt;/opt&gt;
+
+         {
+           &apos;one&apos; =&gt; &apos;first&apos;,
+           &apos;two&apos; =&gt; { &apos;attr&apos; =&gt; &apos;value&apos;, &apos;content&apos; =&gt; &apos;second&apos; }
+         }
+
+       Mixed content (elements which contain both text content and nested
+       elements) will be not be represented in a useful way - element order and
+       significant whitespace will be lost.  If you need to work with mixed
+       content, then XML::Simple is not the right tool for your job - check out
+       the next section.
+
+WHERE TO FROM HERE?
+       XML::Simple is able to present a simple API because it makes some
+       assumptions on your behalf.  These include:
+
+       &#183;   You&apos;re not interested in text content consisting only of whitespace
+
+       &#183;   You don&apos;t mind that when things get slurped into a hash the order is
+           lost
+
+       &#183;   You don&apos;t want fine-grained control of the formatting of generated
+           XML
+
+       &#183;   You would never use a hash key that was not a legal XML element name
+
+       &#183;   You don&apos;t need help converting between different encodings
+
+       In a serious XML project, you&apos;ll probably outgrow these assumptions
+       fairly quickly.  This section of the document used to offer some advice
+       on chosing a more powerful option.  That advice has now grown into the
+       &apos;Perl-XML FAQ&apos; document which you can find at:
+       http://perl-xml.sourceforge.net/faq/ &lt;http://perl-
+       xml.sourceforge.net/faq/&gt;
+
+       The advice in the FAQ boils down to a quick explanation of tree versus
+       event based parsers and then recommends:
+
+       For event based parsing, use SAX (do not set out to write any new code
+       for XML::Parser&apos;s handler API - it is obselete).
+
+       For tree-based parsing, you could choose between the &apos;Perlish&apos; approach
+       of XML::Twig and more standards based DOM implementations - preferably
+       one with XPath support such as XML::LibXML.
+
+SEE ALSO
+       XML::Simple requires either XML::Parser or XML::SAX.
+
+       To generate documents with namespaces, XML::NamespaceSupport is required.
+
+       The optional caching functions require Storable.
+&#12;       Answers to Frequently Asked Questions about XML::Simple are bundled with
+       this distribution as: XML::Simple::FAQ
+
+COPYRIGHT
+       Copyright 1999-2004 Grant McLean &lt;grantm@cpan.org&gt;
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-06-20                   XML::Simple(3pm)
+
+</pre></body></html>

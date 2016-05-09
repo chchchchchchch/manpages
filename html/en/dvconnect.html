@@ -1,0 +1,82 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dvconnect - receive or transmit raw DV using the video1394 device</title></head>
+<body><pre>
+
+ENCODE(1)                                                              ENCODE(1)
+
+
+
+NAME
+       dvconnect - receive or transmit raw DV using the video1394 device
+
+SYNOPSIS
+       dvconnect [ options ] raw dv files or &apos;-- -&apos; for stdin/stdout
+
+DESCRIPTION
+       dvconnect  captures  raw  DV  streams from or sends raw DV streams to the
+       Linux IEEE 1394 video1394 device.
+
+       --version
+              show dvconnect version number.
+
+       -s, --send
+              send data instead of capturing.
+
+       -v, --verbose
+              show status information while receiving / sending.
+
+       -c, --channel=number
+              channel to send / receive on (range: 0 - 63, default = 63).
+
+       -k, --kbuffers=number
+              number of kernel video1394 frame buffers to use. default = 8.
+
+       --start-frame=count
+              start at count frame (defaults to 0).
+
+       -e, --end-frame=count
+              end at count frame (defaults to unlimited).
+
+       --cip-n-ntsc=number
+              cip n ntsc timing counter (default: 2436).
+
+       --cip-d-ntsc=number
+              cip d ntsc timing counter (default: 38400).
+
+       --syt-offset=number
+              syt offset (default: 10000 range: 10000-26000).
+
+       -b, --buffers=number
+              max number of file io thread buffers to use. default = 250.
+
+       -u, --underrun-data=filename
+              file with the frame to send in case of underruns.
+
+       -d, --device=filename
+              Specify the video1394 device (default /dev/video1394/0).
+
+       Help Options
+
+       -?, --help
+              Show help message.
+
+       --usage
+              Display brief usage message.
+
+SEE ALSO
+       playdv(1),dubdv(1),encodedv(1).
+
+AVAILABILITY
+       See http://libdv.sourceforge.net/ for the latest version.
+&#12;AUTHORS
+       dvconnect was written by Peter Schlaile &lt;udbz@rz.uni-karlsruhe.de&gt;.
+
+       This manual page is based on dvconnect&apos;s help message and was written  by
+       Dan Dennedy &lt;dan@dennedy.org&gt;.
+
+
+
+                                  January 2004                         ENCODE(1)
+
+</pre></body></html>

@@ -1,0 +1,226 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rmic - The Java RMI Compiler</title></head>
+<body><pre>
+
+rmic(1)                                                                  rmic(1)
+
+
+
+Name
+       rmic - The Java RMI Compiler
+
+       rmic  generates  stub, skeleton, and tie classes for remote objects using
+       either the JRMP or IIOP protocols. Also generates OMG IDL.
+
+SYNOPSIS
+       rmic [ options ] package-qualified-class-name(s)
+
+
+DESCRIPTION
+       The rmic compiler generates stub and skeleton class files (JRMP protocol)
+       and  stub  and  tie class files (IIOP protocol) for remote objects. These
+       classes files are  generated  from  compiled  Java  programming  language
+       classes that are remote object implementation classes. A remote implemen&#8208;
+       tation class is a class that implements  the  interface  java.rmi.Remote.
+       The  class  names  in the rmic command must be for classes that have been
+       compiled successfully with the javac command and must  be  fully  package
+       qualified.  For example, running rmic on the class file name HelloImpl as
+       shown here:
+
+       rmic hello.HelloImpl
+
+
+       creates the HelloImpl_Stub.class file in the  hello  subdirectory  (named
+       for the class&apos;s package).
+
+       A skeleton for a remote object is a JRMP protocol server-side entity that
+       has a method that dispatches calls to the actual remote object  implemen&#8208;
+       tation.
+
+       A  tie for a remote object is a server-side entity similar to a skeleton,
+       but which communicates with the client using the IIOP protocol.
+
+       A stub is a client-side proxy for a remote object  which  is  responsible
+       for  communicating  method  invocations  on  remote objects to the server
+       where the actual remote object implementation resides. A client&apos;s  refer&#8208;
+       ence  to  a  remote object, therefore, is actually a reference to a local
+       stub.
+
+       By default, rmic generates stub classes that use the 1.2 JRMP stub proto&#8208;
+       col  version  only, as if the -v1.2 option had been specified. (Note that
+       the -vcompat option was the default in releases prior to  5.0.)  Use  the
+       -iiop option to generate stub and tie classes for the IIOP protocol.
+
+       A  stub  implements  only the remote interfaces, not any local interfaces
+       that the remote object also implements. Because a  JRMP  stub  implements
+       the  same  set of remote interfaces as the remote object itself, a client
+       can use the Java programming language&apos;s built-in  operators  for  casting
+       and  type checking. For IIOP, the PortableRemoteObject.narrow method must
+       be used.
+
+OPTIONS
+          -bootclasspath path
+             Overrides location of bootstrap class files
+
+          -classpath path
+             Specifies the path rmic uses to look up classes. This option  over&#8208;
+             rides  the  default  or the CLASSPATH environment variable if it is
+             set. Directories are separated by colons. Thus the  general  format
+             for path is:
+             For example:
+
+          -d directory
+             Specifies  the  root  destination directory for the generated class
+             hierarchy. You can use this option to specify a destination  direc&#8208;
+             tory  for  the stub, skeleton, and tie files. For example, the com&#8208;
+             mand
+             % rmic -d /java/classes foo.MyClass
+             would place the stub and skeleton classes derived from MyClass into
+             the directory /java/classes/foo. If the -d option is not specified,
+             the default behavior is as if &quot;-d .&quot; were  specified:  the  package
+             hierarchy  of the target class is created in the current directory,
+             and stub/tie/skeleton files are placed within  it.  (Note  that  in
+             some  previous  versions of rmic, if -d was not specified, then the
+             package hierarchy was not created, and all of the output files were
+             placed directly in the current directory.)
+
+
+          -extdirs path
+             Overrides location of installed extensions
+
+          -g Enables  generation  of  all debugging information, including local
+             variables. By default, only line number information is generated.
+
+          -idl
+             Causes rmic to generate OMG IDL for the classes specified  and  any
+             classes  referenced. IDL provides a purely declarative, programming
+             language-independent way of specifying an object&apos;s API. The IDL  is
+             used as a specification for methods and data that can be written in
+             and invoked from any language that provides  CORBA  bindings.  This
+             includes Java and C++ among others. See the Java Language to IDL
+             Mapping @
+             http://www.omg.org/technology/documents/formal/java_language_map&#8208;
+             ping_to_omg_idl.htm (OMG) document for a complete description.
+             When the -idl option is used, other options also include:
+
+             -always or -alwaysgenerate
+                Forces re-generation even when existing stubs/ties/IDL are newer
+                than the input class.
+
+             -factory
+                Uses factory keyword in generated IDL.
+
+             -idlModule  fromJavaPackage[.class]  toIDLModule
+                Specifies IDLEntity package mapping. For example:  -idlModule
+                foo.bar my::real::idlmod.
+
+             -idlFile  fromJavaPackage[.class]  toIDLFile
+                Specifies IDLEntity file mapping. For example:  -idlFile
+                test.pkg.X TEST16.idl.
+
+          -iiop
+             Causes rmic to generate IIOP stub and tie classes, rather than JRMP
+             stub and skeleton classes. A stub class is a local proxy for a
+             remote object and is used by clients to send calls to a server.
+             Each remote interface requires a stub class, which implements that
+             remote interface. A client&apos;s reference to a remote object is actu&#8208;
+             ally a reference to a stub. Tie classes are used on the server side
+             to process incoming calls, and dispatch the calls to the proper
+             implementation class. Each implementation class requires a tie
+             class.
+             Invoking rmic with the -iiop generates stubs and ties that conform
+             to this naming convention:
+             _&lt;implementationName&gt;_stub.class
+             _&lt;interfaceName&gt;_tie.class
+             When the -iiop option is used, other options also include:
+&#12;             -always or -alwaysgenerate
+                Forces re-generation even when existing stubs/ties/IDL are newer
+                than the input class.
+
+             -nolocalstubs
+                Do not create stubs optimized for same-process clients and
+                servers.
+
+             -noValueMethods
+                Must be used with the -idl option. Prevents addition of value&#8208;
+                type methods and initializers to emitted IDL. These methods and
+                initializers are optional for valuetypes, and are generated
+                unless the -noValueMethods option is specified when using the
+                -idl option.
+
+             -poa
+                Changes the inheritance from org.omg.CORBA_2_3.porta&#8208;
+                ble.ObjectImpl to org.omg.PortableServer.Servant. The Portable&#8208;
+                Server module for the Portable Object Adapter @
+                http://docs.oracle.com/javase/7/docs/tech&#8208;
+                notes/guides/idl/POA.html (POA) defines the native Servant type.
+                In the Java programming language, the Servant type is mapped to
+                the Java org.omg.PortableServer.Servant class. It serves as the
+                base class for all POA servant implementations and provides a
+                number of methods that may be invoked by the application pro&#8208;
+                grammer, as well as methods which are invoked by the POA itself
+                and may be overridden by the user to control aspects of servant
+                behavior. Based on the OMG IDL to Java Language Mapping Specifi&#8208;
+                cation, CORBA V 2.3.1 ptc/00-01-08.pdf.
+
+          -J Used in conjunction with any java option, it passes the option fol&#8208;
+             lowing the -J (no spaces between the -J and the option) on to the
+             java interpreter.
+
+          -keep or -keepgenerated
+             Retains the generated .java source files for the stub, skeleton,
+             and/or tie classes and writes them to the same directory as the
+             .class files.
+
+          -nowarn
+             Turns off warnings. If used the compiler does not print out any
+             warnings.
+
+          -nowrite
+             Does not write compiled classes to the file system.
+
+          -vcompat
+             Generates stub and skeleton classes compatible with both the 1.1
+             and 1.2 JRMP stub protocol versions. (This option was the default
+             in releases prior to 5.0.) The generated stub classes will use the
+             1.1 stub protocol version when loaded in a JDK 1.1 virtual machine
+             and will use the 1.2 stub protocol version when loaded into a 1.2
+             (or later) virtual machine. The generated skeleton classes will
+             support both 1.1 and 1.2 stub protocol versions. The generated
+             classes are relatively large in order to support both modes of
+             operation.
+
+          -verbose
+             Causes the compiler and linker to print out messages about what
+             classes are being compiled and what class files are being loaded.
+
+          -v1.1
+             Generates stub and skeleton classes for the 1.1 JRMP stub protocol
+             version only. Note that this option is only useful for generating
+             stub classes that are serialization-compatible with pre-existing,
+             statically-deployed stub classes that were generated by the rmic
+             tool from JDK 1.1 and that cannot be upgraded (and dynamic class
+             loading is not being used).
+
+          -v1.2
+             (default) Generates stub classes for the 1.2 JRMP stub protocol
+             version only. No skeleton classes are generated with this option
+             because skeleton classes are not used with the 1.2 stub protocol
+             version. The generated stub classes will not work if they are
+             loaded into a JDK 1.1 virtual machine.
+
+
+ENVIRONMENT VARIABLES
+          CLASSPATH
+             Used to provide the system a path to user-defined classes. Directo&#8208;
+             ries are separated by colons. For example,
+
+
+SEE ALSO
+       java(1), javac(1), CLASSPATH @
+       http://docs.oracle.com/javase/7/docs/technotes/tools/index.html#classpath
+
+                                   16 Mar 2012                           rmic(1)
+
+</pre></body></html>

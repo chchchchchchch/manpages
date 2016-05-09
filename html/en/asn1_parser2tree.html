@@ -1,0 +1,63 @@
+<html>
+<head><meta charset=utf-8/>
+<title>asn1_parser2tree - API function</title></head>
+<body><pre>
+
+asn1_parser2tree(3)                 libtasn1                 asn1_parser2tree(3)
+
+
+
+NAME
+       asn1_parser2tree - API function
+
+SYNOPSIS
+       #include &lt;libtasn1.h&gt;
+
+       asn1_retCode asn1_parser2tree(const char * file_name, ASN1_TYPE * defini&#8208;
+       tions, char * errorDescription);
+
+ARGUMENTS
+       const char * file_name
+                   specify the path and the name of  file  that  contains  ASN.1
+                   declarations.
+
+       ASN1_TYPE * definitions
+                   return  the pointer to the structure created from &quot;file_name&quot;
+                   ASN.1 declarations.
+
+       char * errorDescription
+                   return the error description or an empty string if success.
+
+DESCRIPTION
+       Function used to start  the  parse  algorithm.   Creates  the  structures
+       needed to manage the definitions included in file_name file.
+
+RETURNS
+       ASN1_SUCCESS  if  the  file  has a correct syntax and every identifier is
+       known,  ASN1_ELEMENT_NOT_EMPTY  if   definitions   not   ASN1_TYPE_EMPTY,
+       ASN1_FILE_NOT_FOUND   if   an  error  occured  while  opening  file_name,
+       ASN1_SYNTAX_ERROR if the syntax is not correct, ASN1_IDENTIFIER_NOT_FOUND
+       if   in   the   file   there  is  an  identifier  that  is  not  defined,
+       ASN1_NAME_TOO_LONG if in the file there is an identifier whith more  than
+       ASN1_MAX_NAME_SIZE characters.
+
+COPYRIGHT
+       Copyright &#169; 2006-2011 Free Software Foundation, Inc..
+       Copying  and distribution of this file, with or without modification, are
+       permitted in any medium without royalty provided the copyright notice and
+       this notice are preserved.
+
+SEE ALSO
+       The  full  documentation  for libtasn1 is maintained as a Texinfo manual.
+       If the info and libtasn1 programs are properly installed  at  your  site,
+       the command
+
+              info libtasn1
+
+       should give you access to the complete manual.
+
+
+
+libtasn1                              2.13                   asn1_parser2tree(3)
+
+</pre></body></html>

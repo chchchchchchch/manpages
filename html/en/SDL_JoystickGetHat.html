@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoystickGetHat - Get the current state of a joystick hat</title></head>
+<body><pre>
+
+SDL_JoystickGetHat(3)           SDL API Reference          SDL_JoystickGetHat(3)
+
+
+
+NAME
+       SDL_JoystickGetHat - Get the current state of a joystick hat
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       Uint8 SDL_JoystickGetHat(SDL_Joystick *joystick, int hat);
+
+DESCRIPTION
+       SDL_JoystickGetHat  returns  the  current  state  of the given hat on the
+       given joystick.
+
+RETURN VALUE
+       The current state is returned as a Uint8 which is defined as an OR&apos;d com&#8208;
+       bination of one or more of the following
+
+                 SDL_HAT_CENTERED
+
+                 SDL_HAT_UP
+
+                 SDL_HAT_RIGHT
+
+                 SDL_HAT_DOWN
+
+                 SDL_HAT_LEFT
+
+                 SDL_HAT_RIGHTUP
+
+                 SDL_HAT_RIGHTDOWN
+
+                 SDL_HAT_LEFTUP
+
+                 SDL_HAT_LEFTDOWN
+
+SEE ALSO
+       SDL_JoystickNumHats
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00        SDL_JoystickGetHat(3)
+
+</pre></body></html>

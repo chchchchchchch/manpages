@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcAtomicCreate - create an FcAtomic object</title></head>
+<body><pre>
+
+FcAtomicCreate(3)                                              FcAtomicCreate(3)
+
+
+
+NAME
+       FcAtomicCreate - create an FcAtomic object
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcAtomic * FcAtomicCreate (const FcChar8   *file);
+
+DESCRIPTION
+       Creates  a  data  structure  containing  data needed to control access to
+       file.  Writing is done to a separate file.  Once that file  is  complete,
+       the  original  configuration  file is atomically replaced so that reading
+       process always see a consistent and complete file  without  the  need  to
+       lock for reading.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                FcAtomicCreate(3)
+
+</pre></body></html>

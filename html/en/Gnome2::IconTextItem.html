@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::IconTextItem - wrapper for GnomeIconTextItem</title></head>
+<body><pre>
+
+Gnome2::IconTextItem(3pUser Contributed Perl DocumentatGnome2::IconTextItem(3pm)
+
+
+
+NAME
+       Gnome2::IconTextItem - wrapper for GnomeIconTextItem
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gnome2::Canvas::Item
+                        +----Gnome2::IconTextItem
+
+METHODS
+   $iti-&gt;configure ($x, $y, $width, $fontname, $text, $is_editable, $is_static)
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+       &#183;   $width (integer)
+
+       &#183;   $fontname (string)
+
+       &#183;   $text (string)
+
+       &#183;   $is_editable (boolean)
+
+       &#183;   $is_static (boolean)
+
+   editable = $iti-&gt;get_editable
+   $iti-&gt;focus ($focused)
+       &#183;   $focused (boolean)
+
+   $iti-&gt;select ($sel)
+       &#183;   $sel (boolean)
+
+   $iti-&gt;setxy ($x, $y)
+       &#183;   $x (integer)
+
+       &#183;   $y (integer)
+
+   $iti-&gt;start_editing
+   $iti-&gt;stop_editing ($accept)
+       &#183;   $accept (boolean)
+
+   string = $iti-&gt;get_text
+SIGNALS
+       boolean = text-changed (Gnome2::IconTextItem)
+       height-changed (Gnome2::IconTextItem)
+       width-changed (Gnome2::IconTextItem)
+       editing-started (Gnome2::IconTextItem)
+       editing-stopped (Gnome2::IconTextItem)
+       selection-started (Gnome2::IconTextItem)
+       selection-stopped (Gnome2::IconTextItem)
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object,
+       Gnome2::Canvas::Item
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16          Gnome2::IconTextItem(3pm)
+
+</pre></body></html>

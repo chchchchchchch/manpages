@@ -1,0 +1,548 @@
+<html>
+<head><meta charset=utf-8/>
+<title>uscan - scan/watch upstream sources for new releases of software</title></head>
+<body><pre>
+
+USCAN(1)                                                                USCAN(1)
+
+
+
+NAME
+       uscan - scan/watch upstream sources for new releases of software
+
+SYNOPSIS
+       uscan [options] [path-to-debian-source-packages ...]
+
+DESCRIPTION
+       uscan  scans  the given directories (or the current directory if none are
+       specified) and all of their subdirectories for packages containing a con&#8208;
+       trol  file  debian/watch.   Parameters  are  then read from those control
+       files and upstream ftp or http sites are inspected  for  newly  available
+       updates  (as compared with the upstream version number retrieved from the
+       debian/changelog file in the same directory).   The  newest  updates  are
+       retrieved  (as  determined  by their version numbers) and if specified in
+       the watch file, a program may then be executed on  the  newly  downloaded
+       source.
+
+       The  traditional  debian/watch  files  can still be used, but the current
+       format offers both  simpler  and  more  flexible  services.   We  do  not
+       describe  the  old  format  here; for their documentation, see the source
+       code for uscan.
+
+
+FORMAT of debian/watch files
+       The following demonstrates the type of entries  which  can  appear  in  a
+       debian/watch  file.  Obviously, not all of these would appear in one such
+       file; usually, one would have one line for the current package.
+
+
+       # format version number, currently 3; this line is compulsory!
+       version=3
+
+       # Line continuations are performed with \
+
+       # This is the format for an FTP site:
+       # Full-site-with-pattern  [Version  [Action]]
+       ftp://ftp.tex.ac.uk/tex-archive/web/c_cpp/cweb/cweb-(.+)\.tar\.gz \
+         debian  uupdate
+
+       # This is the format for an FTP site with regex special characters in
+       # the filename part
+       ftp://ftp.worldforge.org/pub/worldforge/libs/Atlas-C++/transitional/Atlas-C\+\+-(.+)\.tar\.gz
+
+       # This is the format for an FTP site with directory pattern matching
+       ftp://ftp.nessus.org/pub/nessus/nessus-([\d\.]+)/src/nessus-core-([\d\.]+)\.tar\.gz
+
+       # This can be used if you want to override the PASV setting
+       # for a specific site
+       # opts=pasv ftp://.../...
+
+       # This is one format for an HTTP site, which is the same
+       # as the FTP format.  uscan starts by downloading the homepage,
+       # obtained by removing the last component of the URL; in this case,
+       # http://www.cpan.org/modules/by-module/Text/
+       http://www.cpan.org/modules/by-module/Text/Text-CSV_XS-(.+)\.tar\.gz
+
+       # This is a variant HTTP format which allows direct specification of
+       # the homepage:
+       # Homepage  Pattern  [Version  [Action]]
+       http://www.dataway.ch/~lukasl/amph/amph.html \
+         files/amphetamine-([\d\.]*).tar.bz2
+&#12;       # This one shows that recursive directory scanning works, in either of
+       # two forms, as long as the website can handle requests of the form
+       # http://site/inter/mediate/dir/
+       http://tmrc.mit.edu/mirror/twisted/Twisted/(\d\.\d)/ \
+         Twisted-([\d\.]*)\.tar\.bz2
+       http://tmrc.mit.edu/mirror/twisted/Twisted/(\d\.\d)/Twisted-([\d\.]*)\.tar\.bz2
+
+       # qa.debian.org runs a redirector which allows a simpler form of URL
+       # for SourceForge based projects. The format below will automatically
+       # be rewritten to use the redirector.
+       http://sf.net/audacity/audacity-src-(.+)\.tar\.gz
+
+       # githubredir.debian.net is a redirector for GitHub projects
+       # It can be used as following:
+       http://githubredir.debian.net/github/&lt;user&gt;/&lt;project&gt; (.+).tar.gz
+
+       # This is the format for a site which has funny version numbers;
+       # the parenthesised groups will be joined with dots to make a
+       # sanitised version number
+       http://www.site.com/pub/foobar/foobar_v(\d+)_(\d+)\.tar\.gz
+
+       # This is another way of handling site with funny version numbers,
+       # this time using mangling.  (Note that multiple groups will be
+       # concatenated before mangling is performed, and that mangling will
+       # only be performed on the basename version number, not any path
+       # version numbers.)
+       opts=&quot;uversionmangle=s/^/0.0./&quot; \
+         ftp://ftp.ibiblio.org/pub/Linux/ALPHA/wine/development/Wine-(.+)\.tar\.gz
+
+       # Similarly, the upstream part of the Debian version number can be
+       # mangled:
+       opts=dversionmangle=s/\.dfsg\.\d+$// \
+         http://some.site.org/some/path/foobar-(.+)\.tar\.gz
+
+       # The filename is found by taking the last component of the URL and
+       # removing everything after any &apos;?&apos;.  If this would not make a usable
+       # filename, use filenamemangle.  For example,
+       # &lt;A href=&quot;http://foo.bar.org/download/?path=&amp;download=foo-0.1.1.tar.gz&quot;&gt;
+       # could be handled as:
+       # opts=filenamemangle=s/.*=(.*)/$1/ \
+       #     http://foo.bar.org/download/\?path=&amp;download=foo-(.+)\.tar\.gz
+       #
+       # &lt;A href=&quot;http://foo.bar.org/download/?path=&amp;download_version=0.1.1&quot;&gt;
+       # could be handled as:
+       # opts=filenamemangle=s/.*=(.*)/foo-$1\.tar\.gz/ \
+       #    http://foo.bar.org/download/\?path=&amp;download_version=(.+)
+
+       # The option downloadurlmangle can be used to mangle the URL of the file
+       # to download.  This can only be used with http:// URLs.  This may be
+       # necessary if the link given on the web page needs to be transformed in
+       # some way into one which will work automatically, for example:
+       # opts=downloadurlmangle=s/prdownload/download/ \
+       #   http://developer.berlios.de/project/showfiles.php?group_id=2051 \
+       #   http://prdownload.berlios.de/softdevice/vdr-softdevice-(.+).tgz
+
+
+       Comment lines may be introduced with a `#&apos; character.  Continuation lines
+       may be indicated by terminating a line with a backslash character.
+
+       The  first  (non-comment)  line of the file must begin `version=3&apos;.  This
+       allows for future extensions without having to change  the  name  of  the
+       file.
+
+       There  are  two  possibilities for the syntax of an HTTP watch file line,
+       and only one for an FTP line.  We begin with  the  common  (and  simpler)
+       format.   We describe the optional opts=... first field below, and ignore
+       it in what follows.
+
+       The first field gives the full pattern of URLs being  searched  for.   In
+       the  case  of an FTP site, the directory listing for the requested direc&#8208;
+       tory will be requested and this will be scanned for  files  matching  the
+       basename  (everything  after  the  trailing `/&apos;).  In the case of an HTTP
+       site, the URL obtained by stripping everything after the  trailing  slash
+       will  be  downloaded  and  searched  for  hrefs  (links  of  the  form &lt;a
+       href=...&gt;) to either the full URL pattern given, or to the absolute  part
+       (everything without the http://host.name/ part), or to the basename (just
+       the part after the final `/&apos;).  Everything up to the final slash is taken
+       as  a  verbatim URL, as long as there are no parentheses (`(&apos; and &apos;)&apos;) in
+       this part of the URL: if it does, the directory name will be  matched  in
+       the same way as the final component of the URL as described below.  (Note
+       that regex metacharacters such as `+&apos; are regarded literally unless  they
+       are in a path component containing parentheses; see the Atlas-C++ example
+       above.  Also, the parentheses must match within each path component.)
+
+       The pattern (after the final slash) is a Perl regexp (see  perlre(1)  for
+       details of these).  You need to make the pattern so tight that it matches
+       only the upstream software you are interested in and nothing else.  Also,
+       the  pattern will be anchored at the beginning and at the end, so it must
+       match the full filename.  (Note that for HTTP URLs, the href may  include
+       the absolute path or full site and path and still be accepted.)  The pat&#8208;
+       tern must contain at least one Perl group as explained in the next  para&#8208;
+       graph.
+
+       Having  got a list of `files&apos; matching the pattern, their version numbers
+       are extracted by treating the  part  matching  the  Perl  regexp  groups,
+       demarcated  by  `(...)&apos;,  joining them with `.&apos; as a separator, and using
+       the result as the version number of the file.  The  version  number  will
+       then be mangled if required by the uversionmangle option described below.
+       Finally, the file versions are then compared to find  the  one  with  the
+       greatest  version number, as determined by dpkg --compare-versions.  Note
+       that if you need Perl groups which are not to be used in the version num&#8208;
+       ber,  either  use  `(?:...)&apos; or use the uversionmangle option to clean up
+       the mess!
+
+       The current (upstream) version can be specified as the  second  parameter
+       in  the  watch  file line.  If this is debian or absent, then the current
+       Debian version (as determined by debian/changelog) is used  to  determine
+       the  current  upstream version.  The current upstream version may also be
+       specified by the command-line option --upstream-version, which  specifies
+       the upstream version number of the currently installed package (i.e., the
+       Debian version number without epoch and Debian revision).   The  upstream
+       version  number  will  then be mangled using the dversionmangle option if
+       one is specified, as described below.  If the newest version available is
+       newer  than  the  current  version, then it is downloaded into the parent
+       directory, unless the --report or --report-status option has  been  used.
+       Once  the  file  has  been downloaded, then a symlink to the file is made
+       from &lt;package&gt;_&lt;version&gt;.orig.tar.{gz|bz2|lzma|xz} as  described  by  the
+       help for the --symlink option.
+
+       Finally,  if  a  third  parameter  (an action) is given in the watch file
+       line, this is taken as the name of a command, and the command
+           command --upstream-version version filename
+       is executed, using either the original file or the symlink name.  A  com&#8208;
+       mon  such command would be uupdate(1).  (Note that the calling syntax was
+       slightly different when using watch file without  a  `version=...&apos;  line;
+       there  the command executed was `command filename version&apos;.)  If the com&#8208;
+       mand is uupdate, then the --no-symlink option is given to  uupdate  as  a
+       first  option,  since  any  requested  symlinking will already be done by
+       uscan.
+
+       The alternative version of the watch file syntax for HTTP URLs is as fol&#8208;
+       lows.   The first field is a homepage which should be downloaded and then
+       searched for hrefs matching  the  pattern  given  in  the  second  field.
+       (Again, this pattern will be anchored at the beginning and the end, so it
+       must match the whole href.  If you want to match just the basename of the
+       href, you can use a pattern like &quot;.*/name-(.+)\.tar\.gz&quot; if you know that
+       there is a full URL, or  better  still:  &quot;(?:.*/)?name-(.+)\.tar\.gz&quot;  if
+       there may or may not be.  Note the use of (?:...) to avoid making a back&#8208;
+       reference.)  If any  of  the  hrefs  in  the  homepage  which  match  the
+       (anchored)  pattern  are relative URLs, they will be taken as being rela&#8208;
+       tive to the base URL of the homepage (i.e.,  with  everything  after  the
+       trailing  slash  removed),  or  relative to the base URL specified in the
+       homepage itself with a &lt;base  href=&quot;...&quot;&gt;  tag.   The  third  and  fourth
+       fields are the version number and action fields as before.
+
+PER-SITE OPTIONS
+       A watch file line may be prefixed with `opts=options&apos;, where options is a
+       comma-separated list  of  options.   The  whole  options  string  may  be
+       enclosed  in  double  quotes,  which is necessary if options contains any
+       spaces.  The recognised options are as follows:
+
+       active and passive (or pasv)
+              If used on an FTP line, these override the choice  of  whether  to
+              use  PASV mode or not, and force the use of the specified mode for
+              this site.
+
+       uversionmangle=rules
+              This is used to mangle the upstream version number as  matched  by
+              the  ftp://...  or  http://  rules  as  follows.  First, the rules
+              string is split into  multiple  rules  at  every  `;&apos;.   Then  the
+              upstream  version  number  is mangled by applying rule to the ver&#8208;
+              sion, in a similar way to executing the Perl command:
+                  $version =~ rule;
+              for each rule.  Thus, suitable rules might be `s/^/0./&apos; to prepend
+              `0.&apos;  to  the  version  number and `s/_/./g&apos; to change underscores
+              into periods.  Note that the rules string may not contain  commas;
+              this should not be a problem.
+
+              rule  may only use the &apos;s&apos;, &apos;tr&apos; and &apos;y&apos; operations.  When the &apos;s&apos;
+              operation is used, only the &apos;g&apos;, &apos;i&apos; and &apos;x&apos; flags  are  available
+              and  rule may not contain any expressions which have the potential
+              to execute code (i.e. the (?{}) and (??{}) constructs are not sup&#8208;
+              ported).
+
+              If the &apos;s&apos; operation is used, the replacement can contain backref&#8208;
+              erences to expressions within parenthesis in the matching  regexp,
+              like `s/-alpha(\d*)/.a$1/&apos;. These backreferences must use the `$1&apos;
+              syntax, as the `\1&apos; syntax is not supported.
+
+       dversionmangle=rules
+              This is used to mangle the Debian version number of the  currently
+              installed  package  in  the same way as the uversionmangle option.
+              Thus, a suitable rule might  be  `s/\.dfsg\.\d+$//&apos;  to  remove  a
+              `.dfsg.1&apos;  suffix  from  the  Debian  version number, or to handle
+              `.pre6&apos; type version numbers.  Again, the  rules  string  may  not
+              contain commas; this should not be a problem.
+
+       versionmangle=rules
+              This  is  a syntactic shorthand for uversionmangle=rules,dversion&#8208;
+              mangle=rules, applying the same rules to  both  the  upstream  and
+              Debian version numbers.
+
+       filenamemangle=rules
+              This is used to mangle the filename with which the downloaded file
+              will be saved, and is parsed in the same way as the uversionmangle
+              option.   Examples  of  its  use are given in the examples section
+              above.
+&#12;       downloadurlmangle=rules
+              This is used to mangle the URL to be used for the  download.   The
+              URL  is  first  computed  based on the homepage downloaded and the
+              pattern matched, then the version number is determined  from  this
+              URL.   Finally,  any rules given by this option are applied before
+              the actual download attempt is made. An  example  of  its  use  is
+              given in the examples section above.
+
+Directory name checking
+       Similarly  to  several  other  scripts  in  the devscripts package, uscan
+       explores the requested directory trees looking for  debian/changelog  and
+       debian/watch files.  As a safeguard against stray files causing potential
+       problems, and in order to promote efficiency, it will examine the name of
+       the  parent  directory once it finds the debian/changelog file, and check
+       that the directory name corresponds to the package name.   It  will  only
+       attempt  to  download  newer versions of the package and then perform any
+       requested action if the directory name matches the  package  name.   Pre&#8208;
+       cisely how it does this is controlled by two configuration file variables
+       DEVSCRIPTS_CHECK_DIRNAME_LEVEL  and  DEVSCRIPTS_CHECK_DIRNAME_REGEX,  and
+       their   corresponding   command-line  options  --check-dirname-level  and
+       --check-dirname-regex.
+
+       DEVSCRIPTS_CHECK_DIRNAME_LEVEL can take the following values:
+
+       0      Never check the directory name.
+
+       1      Only check the directory name if we have had to  change  directory
+              in  our  search  for debian/changelog, that is, the directory con&#8208;
+              taining debian/changelog is not the directory from which uscan was
+              invoked.  This is the default behaviour.
+
+       2      Always check the directory name.
+
+       The  directory  name  is checked by testing whether the current directory
+       name (as determined by pwd(1)) matches the regex given by the  configura&#8208;
+       tion  file  option  DEVSCRIPTS_CHECK_DIRNAME_REGEX or by the command line
+       option --check-dirname-regex regex.  Here regex  is  a  Perl  regex  (see
+       perlre(3perl)),  which will be anchored at the beginning and the end.  If
+       regex contains a &apos;/&apos;, then it must match the  full  directory  path.   If
+       not,  then  it must match the full directory name.  If regex contains the
+       string &#180;PACKAGE&apos;, this will be replaced by the source  package  name,  as
+       determined  from  the  changelog.   The  default  value for the regex is:
+       &#180;PACKAGE(-.+)?&apos;, thus matching directory names such as PACKAGE and  PACK&#8208;
+       AGE-version.
+
+EXAMPLE
+       This script will perform a fully automatic upstream update.
+
+       #!/bin/sh -e
+       # called with &apos;--upstream-version&apos; &lt;version&gt; &lt;file&gt;
+       uupdate &quot;$@&quot;
+       package=`dpkg-parsechangelog | sed -n &apos;s/^Source: //p&apos;`
+       cd ../$package-$2
+       debuild
+
+       Note  that we don&apos;t call dupload or dput automatically, as the maintainer
+       should perform sanity checks on  the  software  before  uploading  it  to
+       Debian.
+
+OPTIONS
+       --report, --no-download
+              Only  report  about  available  newer versions but do not download
+              anything.
+
+       --report-status
+              Report on the status of all packages, even those which are  up-to-
+              date, but do not download anything.
+
+       --download
+              Report and download.  (This is the default behaviour.)
+
+       --destdir
+              Path  of directory to which to download.  If the specified path is
+              not absolute, it will be relative to one of the current  directory
+              or,  if directory scanning is enabled, the package&apos;s source direc&#8208;
+              tory.
+
+       --force-download
+              Download upstream even if up to date  (will  not  overwrite  local
+              files, however)
+
+       --pasv Force PASV mode for FTP connections.
+
+       --no-pasv
+              Do not use PASV mode for FTP connections.
+
+       --timeout N
+              Set timeout to N seconds (default 20 seconds).
+
+       --symlink
+              Make  orig.tar.gz symlinks to any downloaded files if their exten&#8208;
+              sions are .tar.gz or .tgz.  This is also handled for  orig.tar.bz2
+              (for  upstream  .tar.bz2,  .tbz,  and  .tbz2),  orig.tar.lzma (for
+              upstream .tar.lzma, .tlz, .tlzm, and .tlzma), and orig.tar.xz (for
+              upstream .tar.xz and .txz).  (This is the default behaviour.)
+
+       --rename
+              Instead of symlinking, rename the downloaded files to their Debian
+              orig.tar.gz, orig.tar.bz2, orig.tar.lzma, or orig.tar.xz names  as
+              described above.
+
+       --repack
+              After  having  downloaded an lzma tar, xz tar, bzip tar or zip ar&#8208;
+              chive, repack it to a gzip tar archive, which is  still  currently
+              required  as  a member of a Debian source package. Does nothing if
+              the downloaded archive is not an lzma tar archive, xz tar archive,
+              bzip  tar  archive or a zip archive (i.e. it doesn&apos;t match a .tlz,
+              .tlzm, .tlzma, .tar.lzma, .txz, .tar.xz, .tbz, .tbz2, .tar.bz2  or
+              .zip  extension).  The unzip package must be installed in order to
+              repack .zip archives, the xz-utils package must  be  installed  to
+              repack lzma or xz tar archives.
+
+       --no-symlink
+              Don&apos;t make these symlinks and don&apos;t rename the files.
+
+       --dehs Use an XML format for output, as required by the DEHS system.
+
+       --no-dehs
+              Use the traditional uscan output format.  (This is the default be&#8208;
+              haviour.)
+
+       --package package
+              Specify the name of the package to check for rather than examining
+              debian/changelog;  this  requires the --upstream-version (unless a
+              version is specified in the watch file) and --watchfile options as
+              well.  Furthermore, no directory scanning will be done and nothing
+              will be downloaded.  This option is probably most useful  in  con&#8208;
+              junction with the DEHS system (and --dehs).
+
+       --upstream-version upstream-version
+              Specify the current upstream version rather than examine the watch
+              file or changelog to determine it.  This is ignored if a directory
+              scan is being performed and more than one watch file is found.
+&#12;       --watchfile watchfile
+              Specify  the  watchfile  rather  than  perform a directory scan to
+              determine it.  If this option  is  used  without  --package,  then
+              uscan  must  be  called from within the Debian package source tree
+              (so that debian/changelog can  be  found  simply  by  stepping  up
+              through the tree).
+
+       --download-version version
+              Specify the version which the upstream release must match in order
+              to be considered, rather than using the release with  the  highest
+              version.
+
+       --download-current-version
+              Download the currently packaged version
+
+       --verbose
+              Give verbose output.
+
+       --no-verbose
+              Don&apos;t give verbose output.  (This is the default behaviour.)
+
+       --debug
+              Dump  the  downloaded web pages to stdout for debugging your watch
+              file.
+
+       --check-dirname-level N
+              See the above section Directory name checking for  an  explanation
+              of this option.
+
+       --check-dirname-regex regex
+              See  the  above section Directory name checking for an explanation
+              of this option.
+
+       --user-agent, --useragent
+              Override the default user agent header.
+
+       --no-conf, --noconf
+              Do not read any configuration files.  This can only be used as the
+              first option given on the command-line.
+
+       --help Give brief usage information.
+
+       --version
+              Display version information.
+
+CONFIGURATION VARIABLES
+       The  two  configuration  files /etc/devscripts.conf and ~/.devscripts are
+       sourced by a shell in that order to set configuration  variables.   These
+       may be overridden by command line options.  Environment variable settings
+       are ignored for this purpose.  If the first command line option given  is
+       --noconf,  then  these  files will not be read.  The currently recognised
+       variables are:
+
+       USCAN_DOWNLOAD
+              If this is set to no, then newer upstream files will not be  down&#8208;
+              loaded;  this  is  equivalent  to  the  --report  or --no-download
+              options.
+
+       USCAN_PASV
+              If this is set to yes or no, this will force  FTP  connections  to
+              use PASV mode or not to, respectively.  If this is set to default,
+              then Net::FTP(3) make the choice (primarily based on the  FTP_PAS&#8208;
+              SIVE environment variable).
+
+       USCAN_TIMEOUT
+              If  set to a number N, then set the timeout to N seconds.  This is
+              equivalent to the --timeout option.
+
+       USCAN_SYMLINK
+              If this is set to no, then a pkg_version.orig.tar.{gz|bz2|lzma|xz}
+              symlink  will not be made (equivalent to the --no-symlink option).
+              If it is set to yes or symlink, then the symlinks  will  be  made.
+              If  it is set to rename, then the files are renamed (equivalent to
+              the --rename option).
+
+       USCAN_DEHS_OUTPUT
+              If this is set to yes, then DEHS-style output will be used.   This
+              is equivalent to the --dehs option.
+
+       USCAN_VERBOSE
+              If this is set to yes, then verbose output will be given.  This is
+              equivalent to the --verbose option.
+
+       USCAN_USER_AGENT
+              If set, the specified user agent string will be used in  place  of
+              the default.  This is equivalent to the --user-agent option.
+
+       USCAN_DESTDIR
+              If  set,  the  downloaded  files will be placed in this directory.
+              This is equivalent to the --destdir option.
+
+       USCAN_REPACK
+              If this is set to yes, then after having downloaded  a  bzip  tar,
+              lzma  tar,  xz tar, or zip archive, uscan will repack it to a gzip
+              tar.  This is equivalent to the --repack option.
+
+EXIT STATUS
+       The exit status gives some indication of  whether  a  newer  version  was
+       found or not; one is advised to read the output to determine exactly what
+       happened and whether there were any warnings to be noted.
+
+       0      Either --help or --version was used, or for some watch file  which
+              was examined, a newer upstream version was located.
+
+       1      No newer upstream versions were located for any of the watch files
+              examined.
+
+HISTORY AND UPGRADING
+       This section briefly describes the backwards-incompatible watch file fea&#8208;
+       tures  which  have  been  added in each watch file version, and the first
+       version of the devscripts package which understood them.
+
+       Pre-version 2
+              The watch file syntax was significantly different in  those  days.
+              Don&apos;t  use  it.   If  you are upgrading from a pre-version 2 watch
+              file, you are advised to read  this  manpage  and  to  start  from
+              scratch.
+
+       Version 2
+              devscripts  version  2.6.90:  The first incarnation of the current
+              style of watch files.
+
+       Version 3
+              devscripts version 2.8.12: Introduced the following: correct  han&#8208;
+              dling of regex special characters in the path part, directory/path
+              pattern matching, version number in several parts, version  number
+              mangling.  Later versions have also introduced URL mangling.
+
+              If you are upgrading from version 2, the key incompatibility is if
+              you have multiple groups in the pattern  part;  whereas  only  the
+              first  one  would  be  used in version 2, they will all be used in
+              version 3.  To avoid this behaviour, change the non-version-number
+              groups to be (?:...) instead of a plain (...) group.
+&#12;SEE ALSO
+       dpkg(1), perlre(1), uupdate(1) and devscripts.conf(5).
+
+AUTHOR
+       The  original  version  of uscan was written by Christoph Lameter &lt;clame&#8208;
+       ter@debian.org&gt;.  Significant improvements,  changes  and  bugfixes  were
+       made  by Julian Gilbey &lt;jdg@debian.org&gt;.  HTTP support was added by Piotr
+       Roszatycki &lt;dexter@debian.org&gt;.  The program was  rewritten  in  Perl  by
+       Julian Gilbey.
+
+
+
+DEBIAN                          Debian Utilities                        USCAN(1)
+
+</pre></body></html>

@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>finger — user information lookup program</title></head>
+<body><pre>
+
+FINGER(1)                 BSD General Commands Manual                FINGER(1)
+
+NAME
+     finger &#8212; user information lookup program
+
+SYNOPSIS
+     finger [-lmsp] [user ...] [user@host ...]
+
+DESCRIPTION
+     The finger displays information about the system users.
+
+     Options are:
+
+     -s    Finger displays the user&apos;s login name, real name, terminal name and
+           write status (as a ``*&apos;&apos; after the terminal name if write permission
+           is denied), idle time, login time, office location and office phone
+           number.
+
+           Login time is displayed as month, day, hours and minutes, unless more
+           than six months ago, in which case the year is displayed rather than
+           the hours and minutes.
+
+           Unknown devices as well as nonexistent idle and login times are dis&#8208;
+           played as single asterisks.
+
+     -l    Produces a multi-line format displaying all of the information
+           described for the -s option as well as the user&apos;s home directory,
+           home phone number, login shell, mail status, and the contents of the
+           files &#8220;.plan&#8221;, &#8220;.project&#8221;, &#8220;.pgpkey&#8221; and &#8220;.forward&#8221; from the user&apos;s
+           home directory.
+
+           Phone numbers specified as eleven digits are printed as ``+N-NNN-NNN-
+           NNNN&apos;&apos;.  Numbers specified as ten or seven digits are printed as the
+           appropriate subset of that string.  Numbers specified as five digits
+           are printed as ``xN-NNNN&apos;&apos;.  Numbers specified as four digits are
+           printed as ``xNNNN&apos;&apos;.
+
+           If write permission is denied to the device, the phrase ``(messages
+           off)&apos;&apos; is appended to the line containing the device name.  One entry
+           per user is displayed with the -l option; if a user is logged on mul&#8208;
+           tiple times, terminal information is repeated once per login.
+
+           Mail status is shown as ``No Mail.&apos;&apos; if there is no mail at all,
+           ``Mail last read DDD MMM ## HH:MM YYYY (TZ)&apos;&apos; if the person has
+           looked at their mailbox since new mail arriving, or ``New mail
+           received ...&apos;&apos;, ``  Unread since ...&apos;&apos; if they have new mail.
+
+     -p    Prevents the -l option of finger from displaying the contents of the
+           &#8220;.plan&#8221;, &#8220;.project&#8221; and &#8220;.pgpkey&#8221; files.
+
+     -m    Prevent matching of user names.  User is usually a login name; how&#8208;
+           ever, matching will also be done on the users&apos; real names, unless the
+           -m option is supplied.  All name matching performed by finger is case
+           insensitive.
+
+     If no options are specified, finger defaults to the -l style output if op&#8208;
+     erands are provided, otherwise to the -s style.  Note that some fields may
+     be missing, in either format, if information is not available for them.
+
+     If no arguments are specified, finger will print an entry for each user
+     currently logged into the system.
+
+     Finger may be used to look up users on a remote machine.  The format is to
+     specify a user as &#8220;user@host&#8221;, or &#8220;@host&#8221;, where the default output format
+     for the former is the -l style, and the default output format for the lat&#8208;
+     ter is the -s style.  The -l option is the only option that may be passed
+     to a remote machine.
+
+     If standard output is a socket, finger will emit a carriage return (^M)
+     before every linefeed (^J). This is for processing remote finger requests
+     when invoked by fingerd(8).
+
+FILES
+     ~/.nofinger      If finger finds this file in a user&apos;s home directory, it
+                      will, for finger requests originating outside the local
+                      host, firmly deny the existence of that user.  For this to
+                      work, the finger program, as started by fingerd(8), must
+                      be able to see the .nofinger file. This generally means
+                      that the home directory containing the file must have the
+                      other-users-execute bit set (o+x). See chmod(1).  If you
+                      use this feature for privacy, please test it with ``finger
+                      @localhost&apos;&apos; before relying on it, just in case.
+
+     ~/.plan
+
+     ~/.project
+
+     ~/.pgpkey        These files are printed as part of a long-format request.
+                      The .plan file may be arbitrarily long.
+
+SEE ALSO
+     chfn(1), passwd(1), w(1), who(1)
+
+HISTORY
+     The finger command appeared in 3.0BSD.
+
+Linux NetKit (0.17)             August 15, 1999            Linux NetKit (0.17)
+
+</pre></body></html>

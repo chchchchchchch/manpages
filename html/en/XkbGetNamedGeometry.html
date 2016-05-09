@@ -1,0 +1,94 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetNamedGeometry - Loads a keyboard geometry description from this database by name</title></head>
+<body><pre>
+
+XkbGetNamedGeometry(3)            XKB FUNCTIONS           XkbGetNamedGeometry(3)
+
+
+
+NAME
+       XkbGetNamedGeometry  -  Loads  a  keyboard geometry description from this
+       database by name
+
+SYNTAX
+       Status XkbGetNamedGeometry (Display *dpy, XkbDescPtr xkb, Atom name);
+
+ARGUMENTS
+       - dpy  connection to the X server
+
+       - xkb  keyboard description into which the geometry should be loaded
+
+       - name name of the geometry to be loaded
+
+DESCRIPTION
+       It is also possible to load a keyboard geometry by  name.  The  X  server
+       maintains a database of keyboard components (see below).
+
+       XkbGetNamedGeometry can return BadName if the name cannot be found.
+
+       The  X  server maintains a database of keyboard components, identified by
+       component type.  The database contains all the information  necessary  to
+       build a complete keyboard description for a particular device, as well as
+       to assemble partial descriptions. Table 1 identifies the component  types
+       and the type of information they contain.
+
+
+       c s s l l l l l l l lw(2i) lw(2i).  Table 1 Server Database Keyboard Com&#8208;
+       ponents _ Component Component Primary Contents    May also contain Type _
+       Keymap    T{ Complete keyboard description
+       Normally  assembled  using  a  complete  component from each of the other
+       types T}
+
+       Keycodes  T{ Symbolic name for each key
+       Minimum and maximum legal keycodes T}   T{ Aliases for some keys
+       Symbolic names for indicators
+       Description of indicators physically present T}
+
+       Types     Key types T{ Real modifier bindings and symbolic names for some
+       virtual modifiers T}
+
+       Compatibility  T{  Rules  used  to assign actions to keysyms T}   T{ Maps
+       for some indicators
+       Real modifier bindings and symbolic names for some virtual modifiers T}
+
+       Symbols   T{ Symbol mapping for keyboard keys
+       Modifier mapping
+       Symbolic names for groups T}   T{ Explicit actions and behaviors for some
+       keys
+       Real modifier bindings and symbolic names for some virtual modifiers T}
+
+       Geometry  Layout  of  the  keyboard   T{ Aliases for some keys; overrides
+       keycodes component aliases
+       Symbolic names for some indicators
+       Description of indicators physically present T}
+
+       While a keymap is a database entry for a complete  keyboard  description,
+       and  therefore logically different from the individual component database
+       entries, the rules for processing keymap entries are identical  to  those
+       for  the individual components.  In the discussion that follows, the term
+       component is used to refer to either individual components or a keymap.
+&#12;       There may be multiple entries for each of the component types.  An  entry
+       may be either complete or partial.  Partial entries describe only a piece
+       of the corresponding keyboard component and are designed to  be  combined
+       with other entries of the same type to form a complete entry.
+
+       For example, a partial symbols map might describe the differences between
+       a common ASCII keyboard and some national layout. Such a partial  map  is
+       not  useful on its own because it does not include those symbols that are
+       the same on both the ASCII and national layouts (such as function  keys).
+       On  the  other  hand, this partial map can be used to configure any ASCII
+       keyboard to use a national layout.
+
+       When a keyboard description is built, the components are processed in the
+       order in which they appear in Table 1; later definitions override earlier
+       ones.
+
+DIAGNOSTICS
+       BadName        A font or color of the specified name does not exist.
+
+
+
+X Version 11                      libX11 1.5.0            XkbGetNamedGeometry(3)
+
+</pre></body></html>

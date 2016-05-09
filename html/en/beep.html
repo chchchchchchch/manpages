@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>beep - ring the bell</title></head>
+<body><pre>
+
+beep(n)                       BLT Built-In Commands                      beep(n)
+
+
+
+________________________________________________________________________________
+
+NAME
+       beep - ring the bell
+
+SYNOPSIS
+       beep ?percent?
+_________________________________________________________________
+
+DESCRIPTION
+       The  beep  command  rings  the keyboard bell.  Percent is relative to the
+       base volume of the keyboard bell and can range from -100  to  100  inclu&#8208;
+       sive.
+
+       If percent is nonnegative then the bell volume is:
+
+              base - [(base * percent) / 100] + percent
+
+       If percent is negative then the bell volume is:
+
+              base + [(base * percent) / 100]
+
+       The default percent is 50.
+
+EXAMPLE
+              beep
+
+
+KEYWORDS
+       bell, beep
+
+
+
+BLT                                    2.4                               beep(n)
+
+</pre></body></html>

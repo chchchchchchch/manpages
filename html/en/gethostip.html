@@ -1,0 +1,57 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gethostip — convert an IP address into various formats</title></head>
+<body><pre>
+
+GETHOSTIP(1)                                                        GETHOSTIP(1)
+
+
+
+NAME
+       gethostip &#8212; convert an IP address into various formats
+
+SYNOPSIS
+       gethostip [-dxnf]  [HOSTNAME|IP]
+
+DESCRIPTION
+       This manual page documents briefly the gethostip command.
+
+       The  gethostip  utility  converts the given hostname or IP address into a
+       variety formats.  It is provided by the syslinux package to make it  eas&#8208;
+       ier  to calculate the appropriate names for pxelinux configuration files.
+       These filenames can be the  complete  hexadecimal  representation  for  a
+       given  IP  address,  or  a  partial hexadecimal representation to match a
+       range of IP addresses.
+
+
+OPTIONS
+       A summary of options is included below.
+
+       -d        Output the IP address in decimal format.
+
+       -x        Output the IP address in hexadecimal format.
+
+       -n        Output the host&apos;s canonical name.
+
+       -f        Full output.  Outputs the IP address in all supported  formats.
+                 Same as -xdn.
+
+
+SEE ALSO
+       syslinux(1)
+
+
+       More  details  can  be  found in the pxelinux documentation, which can be
+       found in /usr/share/doc/syslinux/pxelinux.doc.gz on Debian GNU/Linux sys&#8208;
+       tems.
+
+
+AUTHOR
+       This  manual page was compiled by dann frazier &lt;dannf@debian.org&gt; for the
+       Debian GNU/Linux system (but may be used by others).
+
+
+
+                                                                    GETHOSTIP(1)
+
+</pre></body></html>

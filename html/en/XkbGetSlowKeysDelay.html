@@ -1,0 +1,133 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetSlowKeysDelay - Gets the SlowKeys acceptance delay for a keyboard device</title></head>
+<body><pre>
+
+XkbGetSlowKeysDelay(3)            XKB FUNCTIONS           XkbGetSlowKeysDelay(3)
+
+
+
+NAME
+       XkbGetSlowKeysDelay  -  Gets the SlowKeys acceptance delay for a keyboard
+       device
+
+SYNOPSIS
+       Bool XkbGetSlowKeysDelay (Display  *display,  unsigned  int  device_spec,
+              unsigned int *delay_rtrn);
+
+ARGUMENTS
+       - display
+              connection to X server
+
+       - device_spec
+              device ID, or XkbUseCoreKbd
+
+       - delay_rtrn
+              backfilled with SlowKeys delay, ms
+
+DESCRIPTION
+       Some users may accidentally bump keys while moving a hand or typing stick
+       toward the key they want. Usually, the keys that are accidentally  bumped
+       are  just hit for a very short period of time. The SlowKeys control helps
+       filter these accidental bumps by telling the server to wait  a  specified
+       period,  called  the  SlowKeys  acceptance  delay,  before delivering key
+       events. If the key is released before this period elapses, no key  events
+       are generated. Users can then bump any number of keys on their way to the
+       one they want without accidentally getting those  characters.  Once  they
+       have  reached  the key they want, they can then hold the desired key long
+       enough for the computer to accept it. SlowKeys is a boolean control  with
+       one configurable attribute.
+
+       When  the  SlowKeys control is active, the server reports the initial key
+       press, subsequent acceptance or rejection, and  release  of  any  key  to
+       interested  clients  by  sending  an appropriate AccessXNotify event (see
+       section 10.6.4).
+
+       The server can generate XkbAccessXNotify events for some  of  the  global
+       keyboard  controls.   The  detail field describes what AccessX event just
+       occurred and can be any of the values in Table 1.  The server can  gener&#8208;
+       ate  XkbAccessXNotify  events  for  some of the global keyboard controls.
+       The detail field describes what AccessX event just occurred  and  can  be
+       any of the values in Table 1.
+
+
+       c  s  l  l  l  lw(4i).  Table 1 AccessXNotify Events _ detail    Reason _
+       XkbAXN_SKPress T{ A key  was  pressed  when  SlowKeys  was  enabled.   T}
+       XkbAXN_SKAccept     T{  A key was accepted (held longer than the SlowKeys
+       delay).  T} XkbAXN_SKRelease    T{ An accepted SlowKeys key was released.
+       T}  XkbAXN_SKReject     T{  A  key  was  rejected  (released  before  the
+       SlowKeys delay expired).  T} XkbAXN_BKAccept     T{ A key was accepted by
+       BounceKeys.  T} XkbAXN_BKReject     T{ A key was rejected (pressed before
+       the BounceKeys delay expired).  T} XkbAXN_AXKWarning   T{ AccessXKeys  is
+       about to turn on/off StickyKeys or BounceKeys.  T}
+
+
+       The  keycode  field  reports  the  keycode of the key for which the event
+       occurred. If the action is related to SlowKeys, the  slowKeysDelay  field
+       contains  the current SlowKeys acceptance delay. If the action is related
+       to BounceKeys, the debounceDelay field contains  the  current  BounceKeys
+       debounce delay.
+
+       Selecting for AccessX Events
+
+       To  receive  XkbAccessXNotify  events  under all possible conditions, use
+       XkbSelectEvents and pass XkbAccesXNotifyMask in both  bits_to_change  and
+       values_for_bits.
+
+       To receive XkbStateNotify events only under certain conditions, use XkbS&#8208;
+       electEventDetails using XkbAccessXNotify as the event_type and specifying
+       the  desired  state  changes  in bits_to_change and values_for_bits using
+       mask bits from Table 2.
+
+
+       c s s l l l l l lw(3i).  Table 2 AccessXNotify  Event  Details  _  XkbAc&#8208;
+       cessXNotify  Event  Details     Value     Circumstances _ XkbAXN_SKPress&#8208;
+       Mask  (1&lt;&lt;0)    T{ Slow key press notification wanted T} XkbAXN_SKAccept&#8208;
+       Mask (1&lt;&lt;1)    T{ Slow key accept notification wanted T} XkbAXN_SKReject&#8208;
+       Mask (1&lt;&lt;2)    T{ Slow key reject  notification  wanted  T}  XkbAXN_SKRe&#8208;
+       leaseMask     (1&lt;&lt;3)    T{   Slow  key  release  notification  wanted  T}
+       XkbAXN_BKAcceptMask (1&lt;&lt;4)    T{ Bounce key accept notification wanted T}
+       XkbAXN_BKRejectMask (1&lt;&lt;5)    T{ Bounce key reject notification wanted T}
+       XkbAXN_AXKWarningMask    (1&lt;&lt;6)    T{ AccessX warning notification wanted
+       T}  XkbAllAccessXEventsMask  (0x7f)    T{  All AccessX features notifica&#8208;
+       tions wanted T}
+
+       XkbGetSlowKeysDelay requests the attributes of the SlowKeys control  from
+       the  server, waits for a reply and backfills delay_rtrn with the SlowKeys
+       delay attribute.   XkbGetSlowKeysDelay  returns  True  if  successful;  ,
+       XkbGetSlowKeysDelay returns False.
+
+RETURN VALUES
+       True           The  XkbGetSlowKeysDelay  function  returns  True  if  the
+                      request of the Slowkeys control from the server  was  suc&#8208;
+                      cessful.
+
+       False          The  XkbGetSlowKeysDelay  function returns False if a com&#8208;
+                      patible version of the Xkb extension is not  available  in
+                      the server.
+
+STRUCTURES
+       The structure for the XkbAccessXNotify event type is as follows:
+
+       typedef struct {
+           int            type;           /&#8727; Xkb extension base event code */
+           unsigned long  serial;         /&#8727; X server serial number for event */
+           Bool           send_event;     /&#8727; True =&gt; synthetically generated */
+           Display *      display;        /&#8727; server connection where event generated */
+           Time           time;           /&#8727; server time when event generated */
+           int            xkb_type;       /&#8727; XkbAccessXNotify */
+           int            device;         /&#8727; Xkb device ID, will not be XkbUseCoreKbd
+       */
+           int            detail;         /&#8727; XkbAXN_* */
+           KeyCode        keycode;        /&#8727; key of event */
+           int            slowKeysDelay;  /&#8727; current SlowKeys delay */
+           int            debounceDelay;  /&#8727; current debounce delay */
+       } XkbAccessXNotifyEvent;
+
+
+
+
+
+X Version 11                      libX11 1.5.0            XkbGetSlowKeysDelay(3)
+
+</pre></body></html>

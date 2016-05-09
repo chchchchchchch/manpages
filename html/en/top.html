@@ -1,0 +1,1386 @@
+<html>
+<head><meta charset=utf-8/>
+<title>top - display Linux processes</title></head>
+<body><pre>
+
+TOP(1)                            User Commands                           TOP(1)
+
+
+
+NAME
+       top - display Linux processes
+
+
+SYNOPSIS
+       top -hv|-bcHisS -d delay -n limit -u|U user -p pid -w [cols]
+
+       The traditional switches &apos;-&apos; and whitespace are optional.
+
+
+DESCRIPTION
+       The  top  program  provides a dynamic real-time view of a running system.
+       It can display system summary information as well as a list of  processes
+       or  threads  currently  being  managed by the Linux kernel.  The types of
+       system summary information shown and the types, order and size of  infor&#8208;
+       mation displayed for processes are all user configurable and that config&#8208;
+       uration can be made persistent across restarts.
+
+       The program provides a limited interactive interface for process  manipu&#8208;
+       lation as well as a much more extensive interface for personal configura&#8208;
+       tion  --  encompassing every aspect of its operation.  And while  top  is
+       referred  to  throughout  this document, you are free to name the program
+       anything you wish.  That new  name,  possibly  an  alias,  will  then  be
+       reflected on top&apos;s display and used when reading and writing a configura&#8208;
+       tion file.
+
+
+OVERVIEW
+   Documentation
+       The remaining Table of Contents
+
+           1. COMMAND-LINE Options
+           2. SUMMARY Display
+              a. UPTIME and LOAD Averages
+              b. TASK and CPU States
+              c. MEMORY Usage
+           3. FIELDS / Columns Display
+              a. DESCRIPTIONS of Fields
+              b. MANAGING Fields
+           4. INTERACTIVE Commands
+              a. GLOBAL Commands
+              b. SUMMARY AREA Commands
+              c. TASK AREA Commands
+                 1. Appearance
+                 2. Content
+                 3. Size
+                 4. Sorting
+              d. COLOR Mapping
+           5. ALTERNATE-DISPLAY Provisions
+              a. WINDOWS Overview
+              b. COMMANDS for Windows
+              c. SCROLLING a Window
+              d. SEARCHING in a Window
+           6. FILES
+              a. SYSTEM Configuration File
+              b. PERSONAL Configuration File
+           7. STUPID TRICKS Sampler
+              a. Kernel Magic
+              b. Bouncing Windows
+              c. The Big Bird Window
+           8. BUGS, 9. HISTORY Former top, 10. AUTHOR, 11. SEE Also
+&#12;
+   Operation
+       When operating top, the two most important keys are the help (&apos;h&apos; or &apos;?&apos;)
+       key  and  quit (&apos;q&apos;) key.  Alternatively, you could simply use the tradi&#8208;
+       tional interrupt key (&apos;^C&apos;) when you&apos;re done.
+
+       Some of top&apos;s screens or functions require the use of cursor motion  keys
+       like  the standard arrow keys plus the Home, End, PgUp and PgDn keys.  If
+       your terminal or emulator does not provide those keys, the following keys
+       are accepted for compatibility:
+              key      equivalents
+              Up       alt + \   or   alt + k
+              Down     alt + /   or   alt + j
+              Left     alt + &lt;   or   alt + h
+              Right    alt + &gt;   or   alt + l  (lower case L)
+              PgUp     alt + Up
+              PgDn     alt + Down
+              Home     alt + Left
+              End      alt + Right
+
+       When  you  start  top  for the first time, you&apos;ll be presented with these
+       traditional screen elements: 1) Summary Area; 2)  Fields/Columns  Header;
+       3)  Task Area.  These areas will be explored in the sections that follow.
+       There is also an Input/Message line between the Summary Area and  Columns
+       Header which needs no further explanation.
+
+       Note:  the width of top&apos;s display will be limited to 512 positions.  Dis&#8208;
+       playing all fields  requires  approximately  250  characters.   Remaining
+       screen width is usually allocated to any variable width columns currently
+       visible.  The variable width columns, such as COMMAND, are noted in topic
+       3a.  DESCRIPTIONS  of Fields.  Actual output width may also be influenced
+       by the -w switch, which is discussed in topic 1. COMMAND-LINE Options.
+
+
+   Startup Defaults
+       The following startup defaults assume no configuration file, thus no user
+       customizations.   Even  so,  items  shown with an asterisk (&#180;*&#180;) could be
+       overridden through the command-line.  All are explained in detail in  the
+       sections that follow.
+
+           Global-defaults
+              &apos;A&apos; - Alt display      Off (full-screen)
+            * &apos;d&apos; - Delay time       3.0 seconds
+            * &apos;H&apos; - Threads mode     Off (summarize as tasks)
+              &apos;I&apos; - Irix mode        On  (no, &apos;solaris&apos; smp)
+            * &apos;p&apos; - PID monitoring   Off (show all processes)
+            * &apos;s&apos; - Secure mode      Off (unsecured)
+              &apos;B&apos; - Bold enable      On  (yes, bold globally)
+           Summary-Area-defaults
+              &apos;l&apos; - Load Avg/Uptime  On  (thus program name)
+              &apos;t&apos; - Task/Cpu states  On  (1+1 lines, see &apos;1&apos;)
+              &apos;m&apos; - Mem/Swap usage   On  (2 lines worth)
+              &apos;1&apos; - Single Cpu       On  (thus 1 line if smp)
+           Task-Area-defaults
+              &apos;b&apos; - Bold hilite      On  (not &apos;reverse&apos;)
+            * &apos;c&apos; - Command line     Off (name, not cmdline)
+            * &apos;i&apos; - Idle tasks       On  (show all tasks)
+              &apos;R&apos; - Reverse sort     On  (pids high-to-low)
+            * &apos;S&apos; - Cumulative time  Off (no, dead children)
+            * &apos;u&apos; - User filter      Off (show euid only)
+            * &apos;U&apos; - User filter      Off (show any uid)
+              &apos;x&apos; - Column hilite    Off (no, sort field)
+              &apos;y&apos; - Row hilite       On  (yes, running tasks)
+              &apos;z&apos; - color/mono       Off (no, colors)
+&#12;1. COMMAND-LINE Options
+       The command-line syntax for top consists of:
+
+         -hv | -bcHisS -d delay -n limit -u|U user | -p pid -w [cols]
+
+       The typically mandatory switches (&apos;-&apos;) and even whitespace are completely
+       optional.
+
+
+       -h | -v : Help/Version
+            Show library version and the usage prompt, then quit.
+
+
+       -b : Batch-mode operation
+            Starts top in &apos;Batch&apos; mode, which could be useful for sending output
+            from top to other programs or to a file.  In this mode, top will not
+            accept input and runs until the iterations limit you&apos;ve set with the
+            &apos;-n&apos; command-line option or until killed.
+
+
+       -c : Command-line/Program-name toggle
+            Starts  top  with  the last remembered &apos;c&apos; state reversed.  Thus, if
+            top was displaying command lines, now that field will  show  program
+            names,  and  visa  versa.  See the &apos;c&apos; interactive command for addi&#8208;
+            tional information.
+
+
+       -d : Delay-time interval as:  -d ss.tt (secs.tenths)
+            Specifies the delay between screen updates, and overrides the corre&#8208;
+            sponding  value  in one&apos;s personal configuration file or the startup
+            default.  Later this can be changed with the &apos;d&apos; or &apos;s&apos;  interactive
+            commands.
+
+            Fractional  seconds  are  honored,  but  a  negative  number  is not
+            allowed.  In all cases, however, such changes are prohibited if  top
+            is  running  in  &apos;Secure mode&apos;, except for root (unless the &apos;s&apos; com&#8208;
+            mand-line option was used).  For additional information  on  &apos;Secure
+            mode&apos; see topic 6a. SYSTEM Configuration File.
+
+
+       -H : Threads-mode operation
+            Instructs  top  to  display  individual  threads.  Without this com&#8208;
+            mand-line option a summation of  all  threads  in  each  process  is
+            shown.  Later this can be changed with the &apos;H&apos; interactive command.
+
+
+       -i : Idle-process toggle
+            Starts  top  with the last remembered &apos;i&apos; state reversed.  When this
+            toggle is Off, tasks that have not  used  any  CPU  since  the  last
+            update  will not be displayed.  For additional information regarding
+            this toggle see topic 4c. TASK AREA Commands, SIZE.
+
+
+       -n : Number-of-iterations limit as:  -n number
+            Specifies the maximum number of iterations, or  frames,  top  should
+            produce before ending.
+
+
+       -p : Monitor-PIDs mode as:  -pN1 -pN2 ...  or  -pN1,N2,N3 ...
+            Monitor  only processes with specified process IDs.  This option can
+            be given up to 20 times, or you can provide a comma  delimited  list
+            with up to 20 pids.  Co-mingling both approaches is permitted.
+
+            A  pid  value  of  zero will be treated as the process id of the top
+            program itself once it is running.
+&#12;            This is a command-line option only and should you wish to return  to
+            normal  operation,  it  is not necessary to quit and and restart top
+             --  just issue any of these interactive commands: &apos;=&apos;, &apos;u&apos; or &apos;U&apos;.
+
+            The &apos;p&apos;, &apos;u&apos; and &apos;U&apos; command-line options are mutually exclusive.
+
+
+       -s : Secure-mode operation
+            Starts top with secure mode forced, even for root.  This mode is far
+            better  controlled  through the system configuration file (see topic
+            6. FILES).
+
+
+       -S : Cumulative-time toggle
+            Starts top with the last remembered &apos;S&apos; state reversed.  When &apos;Cumu&#8208;
+            lative  time&apos;  mode  is On, each process is listed with the cpu time
+            that it and its dead children have used.  See  the  &apos;S&apos;  interactive
+            command for additional information regarding this mode.
+
+
+       -u | -U : User-filter-mode as:  -u | -U number or name
+            Display  only  processes  with  a user id or user name matching that
+            given.  The &apos;-u&apos; option matches on  effective user whereas the  &apos;-U&apos;
+            option matches on any user (real, effective, saved, or filesystem).
+
+            The &apos;p&apos;, &apos;u&apos; and &apos;U&apos; command-line options are mutually exclusive.
+
+
+       -w : Output-width-override as:  -w [ number ]
+            In  &apos;Batch&apos; mode, when used without an argument top will format out&#8208;
+            put using the COLUMNS= and LINES=  environment  variables,  if  set.
+            Otherwise,  width will be fixed at the maximum 512 columns.  With an
+            argument, output width can be decreased or increased (up to 512) but
+            the number of rows is considered unlimited.
+
+            In  normal  display  mode,  when  used  without an argument top will
+            attempt to format output using the COLUMNS= and  LINES=  environment
+            variables,  if  set.   With  an  argument,  output width can only be
+            decreased, not increased.  Whether using environment variables or an
+            argument  with  -w,  when not in &apos;Batch&apos; mode actual terminal dimen&#8208;
+            sions can never be exceeded.
+
+            Note: Without the use of this command-line option, output  width  is
+            always based on the terminal at which top was invoked whether or not
+            in &apos;Batch&apos; mode.
+
+
+2. SUMMARY Display
+       Each of the following three areas are individually controlled through one
+       or  more  interactive  commands.  See topic 4b. SUMMARY AREA Commands for
+       additional information regarding these provisions.
+
+
+   2a. UPTIME and LOAD Averages
+       This portion consists of a single line containing:
+           program or window name, depending on display mode
+           current time and length of time since last boot
+           total number of users
+           system load avg over the last 1, 5 and 15 minutes
+
+
+   2b. TASK and CPU States
+       This portion consists of a minimum of two lines.  In an SMP  environment,
+       additional lines can reflect individual CPU state percentages.
+
+       Line  1  shows  total  tasks  or  threads,  depending on the state of the
+       Threads-mode toggle.  That total is further classified as:
+           running; sleeping; stopped; zombie
+
+       Line 2 shows CPU state percentages based on the interval since  the  last
+       refresh.   Where two labels are shown below, those for more recent kernel
+       versions are shown first.
+           us, user    : time running un-niced user processes
+           sy, system  : time running kernel processes
+           ni, nice    : time running niced user processes
+           wa, IO-wait : time waiting for I/O completion
+           hi : time spent servicing hardware interrupts
+           si : time spent servicing software interrupts
+           st : time stolen from this vm by the hypervisor
+
+
+   2c. MEMORY Usage
+       This portion consists of two lines which may express values in  kibibytes
+       (KiB), mebibytes (MiB) or gibibytes (GiB) depending on the amount of cur&#8208;
+       rently installed physical memory.
+
+       Line 1 reflects physical memory, classified as:
+           total, used, free, buffers
+
+       Line 2 reflects virtual memory, classified as:
+           total, used, free, cached
+
+
+3. FIELDS / Columns
+   3a. DESCRIPTIONS of Fields
+       Listed below are top&apos;s available  process  fields  (columns).   They  are
+       shown  in  alphabetical  order.   You  may  customize  their position and
+       whether or not they are displayable with the &apos;f&apos; or &apos;F&apos;  (Fields  Manage&#8208;
+       ment) interactive commands.
+
+       Any  field  is selectable as the sort field, and you control whether they
+       are sorted high-to-low or low-to-high.   For  additional  information  on
+       sort provisions see topic 4c. TASK AREA Commands, SORTING.
+
+
+        1. CGROUPS  --  Control Groups
+           The  names of the control group(s) to which a process belongs, or &apos;-&apos;
+           if not applicable for that process.
+
+           Control Groups provide for allocating resources (cpu, memory, network
+           bandwidth,  etc.)  among  installation-defined  groups  of processes.
+           They enable fine-grained control over allocating, denying, prioritiz&#8208;
+           ing, managing and monitoring those resources.
+
+           Many  different  hierarchies of cgroups can exist simultaneously on a
+           system and each hierarchy is attached to one or more  subsystems.   A
+           subsystem represents a single resource.
+
+           Note:  The  &apos;CGROUPS&apos; field, unlike most columns, is not fixed-width.
+           When displayed, it plus any other  variable  width  columns  will  be
+           allocated  all  remaining screen width (up to the maximum 512 charac&#8208;
+           ters).
+
+
+        2. CODE  --  Code Size (KiB)
+           The amount of physical memory devoted to executable code, also  known
+           as the &apos;text resident set&apos; size or TRS.
+
+
+        3. COMMAND  --  Command Name or Command Line
+           Display  the  command  line  used  to start a task or the name of the
+           associated program.  You toggle between command line  and  name  with
+           &apos;c&apos;, which is both a command-line option and an interactive command.
+
+           When you&apos;ve chosen to display command lines, processes without a com&#8208;
+           mand line (like kernel threads) will be shown with only  the  program
+           name in brackets, as in this example:
+               [ mdrecoveryd ]
+
+           Either form of display is subject to potential truncation if it&apos;s too
+           long to fit in this field&apos;s current width.  That width  depends  upon
+           other fields selected, their order and the current screen width.
+
+           This  field  may  also be impacted by the &apos;forest view&apos; display mode.
+           See the &apos;V&apos; interactive command for additional information  regarding
+           that mode.
+
+           Note:  The  &apos;COMMAND&apos; field, unlike most columns, is not fixed-width.
+           When displayed, it plus any other  variable  width  columns  will  be
+           allocated  all  remaining screen width (up to the maximum 512 charac&#8208;
+           ters).
+
+
+        4. %CPU  --  CPU Usage
+           The task&apos;s share of the  elapsed  CPU  time  since  the  last  screen
+           update,  expressed  as a percentage of total CPU time.  In a true SMP
+           environment, if &apos;Irix mode&apos; is Off,  top  will  operate  in  &apos;Solaris
+           mode&apos; where a task&apos;s cpu usage will be divided by the total number of
+           CPUs.  You toggle &apos;Irix/Solaris&apos; modes with the &apos;I&apos; interactive  com&#8208;
+           mand.
+
+
+        5. DATA  --  Data + Stack Size (KiB)
+           The  amount of physical memory devoted to other than executable code,
+           also known as the &apos;data resident set&apos; size or DRS.
+
+
+        6. Flags  --  Task Flags
+           This column represents the task&apos;s current scheduling flags which  are
+           expressed  in  hexadecimal notation and with zeros suppressed.  These
+           flags are officially documented in &lt;linux/sched.h&gt;.
+
+
+        7. GID  --  Group Id
+           The effective group ID.
+
+
+        8. GROUP  --  Group Name
+           The effective group name.
+
+
+        9. %MEM  --  Memory Usage (RES)
+           A task&apos;s currently used share of available physical memory.
+
+
+       10. NI  --  Nice Value
+           The nice value of the task.  A negative nice value means higher  pri&#8208;
+           ority,  whereas  a positive nice value means lower priority.  Zero in
+           this field simply means priority will not be adjusted in  determining
+           a task&apos;s dispatch-ability.
+
+
+       11. nDRT  --  Dirty Pages Count
+           The  number  of  pages  that  have been modified since they were last
+           written to auxiliary storage.  Dirty pages must be written to  auxil&#8208;
+           iary storage before the corresponding physical memory location can be
+           used for some other virtual page.
+&#12;
+       12. nMaj  --  Major Page Fault Count
+           The number of major page faults that have occurred  for  a  task.   A
+           page  fault occurs when a process attempts to read from or write to a
+           virtual page that is not currently present in its address  space.   A
+           major page fault is when auxiliary storage access is involved in mak&#8208;
+           ing that page available.
+
+
+       13. nMin  --  Minor Page Fault count
+           The number of minor page faults that have occurred  for  a  task.   A
+           page  fault occurs when a process attempts to read from or write to a
+           virtual page that is not currently present in its address  space.   A
+           minor  page fault does not involve auxiliary storage access in making
+           that page available.
+
+
+       14. nTH  --  Number of Threads
+           The number of threads associated with a process.
+
+
+       15. P  --  Last used CPU (SMP)
+           A number representing the last used processor.  In a true  SMP  envi&#8208;
+           ronment  this  will  likely change frequently since the kernel inten&#8208;
+           tionally uses weak affinity.  Also, the very act of running  top  may
+           break this weak affinity and cause more processes to change CPUs more
+           often (because of the extra demand for cpu time).
+
+
+       16. PGRP  --  Process Group Id
+           Every process is member of a unique process group which is  used  for
+           distribution  of  signals  and by terminals to arbitrate requests for
+           their input and output.  When  a  process  is  created  (forked),  it
+           becomes  a member of the process group of its parent.  By convention,
+           this value equals the process ID (see PID) of the first member  of  a
+           process group, called the process group leader.
+
+
+       17. PID  --  Process Id
+           The  task&apos;s unique process ID, which periodically wraps, though never
+           restarting at zero.  In kernel terms, it  is  a  dispatchable  entity
+           defined by a &apos;task_struct&apos;.
+
+           This value may also be used as: a process group ID (see PGRP); a ses&#8208;
+           sion ID for the session leader (see SID); a thread group ID  for  the
+           thread  group  leader  (see TGID); and a TTY process group ID for the
+           process group leader (see TPGID).
+
+
+       18. PPID  --  Parent Process Id
+           The process ID (pid) of a task&apos;s parent.
+
+
+       19. PR  --  Priority
+           The scheduling priority of the task.  If you see &apos;rt&apos; in this  field,
+           it means the task is running under &apos;real time&apos; scheduling priority.
+
+           Under  linux,  real time priority is somewhat misleading since tradi&#8208;
+           tionally the operating itself was not preemptable.  And while the 2.6
+           kernel can be made mostly preemptable, it is not always so.
+
+
+       20. RES  --  Resident Memory Size (KiB)
+           The non-swapped physical memory a task has used.
+&#12;       21. RUID  --  Real User Id
+           The real user ID.
+
+
+       22. RUSER  --  Real User Name
+           The real user name.
+
+
+       23. S  --  Process Status
+           The status of the task which can be one of:
+               &apos;D&apos; = uninterruptible sleep
+               &apos;R&apos; = running
+               &apos;S&apos; = sleeping
+               &apos;T&apos; = traced or stopped
+               &apos;Z&apos; = zombie
+
+           Tasks  shown  as running should be more properly thought of as &apos;ready
+           to run&apos;  --  their task_struct is simply  represented  on  the  Linux
+           run-queue.   Even  without  a  true SMP machine, you may see numerous
+           tasks in this state depending on top&apos;s delay interval and nice value.
+
+
+       24. SHR  --  Shared Memory Size (KiB)
+           The amount of shared memory available to a task, not all of which  is
+           typically  resident.   It simply reflects memory that could be poten&#8208;
+           tially shared with other processes.
+
+
+       25. SID  --  Session Id
+           A session is a collection  of  process  groups  (see  PGRP),  usually
+           established  by  the  login  shell.  A newly forked process joins the
+           session of its creator.  By convention, this value equals the process
+           ID  (see  PID) of the first member of the session, called the session
+           leader, which is usually the login shell.
+
+
+       26. SUID  --  Saved User Id
+           The saved user ID.
+
+
+       27. SUPGIDS  --  Supplementary Group IDs
+           The IDs of any supplementary group(s) established at login or  inher&#8208;
+           ited  from  a task&apos;s parent.  They are displayed in a comma delimited
+           list.
+
+           Note: The &apos;SUPGIDS&apos; field, unlike most columns, is  not  fixed-width.
+           When  displayed,  it  plus  any  other variable width columns will be
+           allocated all remaining screen width (up to the maximum  512  charac&#8208;
+           ters).
+
+
+       28. SUPGRPS  --  Supplementary Group Names
+           The  names  of  any  supplementary  group(s)  established at login or
+           inherited from a task&apos;s parent.  They are displayed in a comma delim&#8208;
+           ited list.
+
+           Note:  The  &apos;SUPGRPS&apos; field, unlike most columns, is not fixed-width.
+           When displayed, it plus any other  variable  width  columns  will  be
+           allocated  all  remaining screen width (up to the maximum 512 charac&#8208;
+           ters).
+
+
+       29. SUSER  --  Saved User Name
+           The saved user name.
+&#12;       30. SWAP  --  Swapped Size (KiB)
+           The non-resident portion of a task&apos;s address space.
+
+
+       31. TGID  --  Thread Group Id
+           The ID of the thread group to which a task belongs.  It is the PID of
+           the  thread group leader.  In kernel terms, it represents those tasks
+           that share an &apos;mm_struct&apos;.
+
+
+       32. TIME  --  CPU Time
+           Total CPU time the task has used since it started.  When  &apos;Cumulative
+           mode&apos; is On, each process is listed with the cpu time that it and its
+           dead children have used.  You  toggle  &apos;Cumulative  mode&apos;  with  &apos;S&apos;,
+           which  is both a command-line option and an interactive command.  See
+           the &apos;S&apos; interactive command for additional information regarding this
+           mode.
+
+
+       33. TIME+  --  CPU Time, hundredths
+           The  same  as  &apos;TIME&apos;,  but  reflecting more granularity through hun&#8208;
+           dredths of a second.
+
+
+       34. TPGID  --  Tty Process Group Id
+           The process group ID of the foreground process for the connected tty,
+           or  -1  if  a process is not connected to a terminal.  By convention,
+           this value equals the process ID (see PID) of the the  process  group
+           leader (see PGRP).
+
+
+       35. TTY  --  Controlling Tty
+           The  name  of  the  controlling terminal.  This is usually the device
+           (serial port, pty, etc.) from which  the  process  was  started,  and
+           which it uses for input or output.  However, a task need not be asso&#8208;
+           ciated with a terminal, in which case you&apos;ll see &apos;?&apos; displayed.
+
+
+       36. UID  --  User Id
+           The effective user ID of the task&apos;s owner.
+
+
+       37. USER  --  User Name
+           The effective user name of the task&apos;s owner.
+
+
+       38. VIRT  --  Virtual Memory Size (KiB)
+           The total amount of virtual memory used by the task.  It includes all
+           code, data and shared libraries plus pages that have been swapped out
+           and pages that have been mapped but not used.
+
+
+       39. WCHAN  --  Sleeping in Function
+           Depending on the availability of the kernel link map  (&apos;System.map&apos;),
+           this  field  will show the name or the address of the kernel function
+           in which the task is currently sleeping.  Running tasks will  display
+           a dash (&apos;-&apos;) in this column.
+
+           By displaying this field, top&apos;s own working set could be increased by
+           over 700Kb, depending on the kernel version.  Should that occur, your
+           only means of reducing that overhead will be to stop and restart top.
+
+           Note:  The  &apos;WCHAN&apos;  field,  unlike most columns, is not fixed-width.
+           When displayed, it plus any other  variable  width  columns  will  be
+           allocated  all  remaining screen width (up to the maximum 512 charac&#8208;
+           ters).
+
+
+   3b. MANAGING Fields
+       After pressing the interactive command &apos;f&apos; or &apos;F&apos; (Fields Management) you
+       will be presented with a screen showing: 1) the &#180;current&#180; window name; 2)
+       the designated sort field; 3) all fields in  their  current  order  along
+       with  descriptions.   Entries  marked  with an asterisk are the currently
+       displayed fields, screen width permitting.
+
+
+           o  As the on screen instructions indicate,  you  navigate  among  the
+              fields  with the Up and Down arrow keys.  The PgUp, PgDn, Home and
+              End keys can also be used to  quickly  reach  the  first  or  last
+              available field.
+
+
+           o  The Right arrow key selects a field for repositioning and the Left
+              arrow key or the &lt;Enter&gt; key commits that field&apos;s placement.
+
+
+           o  The &apos;d&apos; key or the &lt;Space&gt; bar toggles a field&apos;s  display  status,
+              and thus the presence or absence of the asterisk.
+
+
+           o  The  &apos;s&apos;  key designates a field as the sort field.  See topic 4c.
+              TASK AREA Commands, SORTING for additional  information  regarding
+              your selection of a sort field.
+
+
+           o  The  &apos;a&apos;  and  &apos;w&apos; keys can be used to cycle through all available
+              windows and the &apos;q&apos; or &lt;Esc&gt; keys exit Fields Management.
+
+
+       The Fields Management screen can also be used  to  change  the  &#180;current&#180;
+       window/field  group in either full-screen mode or alternate-display mode.
+       Whatever was targeted when &apos;q&apos; or &lt;Esc&gt; was pressed will be made  current
+       as  you return to the top display.  See topic 5. ALTERNATE-DISPLAY Provi&#8208;
+       sions and the &apos;g&apos; interactive command for insight into &#180;current&#180;  windows
+       and field groups.
+
+
+       Note: Any window that has been scrolled horizontally will be reset if any
+       field changes are made via the Fields Management  screen.   Any  vertical
+       scrolled  position,  however,  will  not  be  affected.   See  topic  5c.
+       SCROLLING a Window for additional information regarding vertical and hor&#8208;
+       izontal scrolling.
+
+
+4. INTERACTIVE Commands
+       Listed  below  is a brief index of commands within categories.  Some com&#8208;
+       mands appear more than once  --  their meaning or scope may vary  depend&#8208;
+       ing on the context in which they are issued.
+
+         4a. Global-Commands
+               &lt;Ent/Sp&gt; ?, =, A, B, d, g, h, H, I, k, q, r, s, W, Z
+         4b. Summary-Area-Commands
+               C, l, t, 1, m
+         4c. Task-Area-Commands
+               Appearance:  b, x, y, z
+               Content:     c, f, F, S, u, U, V
+               Size:        #, i, n
+               Sorting:     &lt;, &gt;, f, F, R
+         4d. Color-Mapping
+               &lt;Ret&gt;, a, B, b, H, M, q, S, T, w, z, 0 - 7
+         5b. Commands-for-Windows
+               -, _, =, +, A, a, g, G, w
+         5c. Scrolling-a-Window
+               C, Up, Dn, Left, Right, PgUp, PgDn, Home, End
+         5d. Searching-in-a-Window
+               L, &amp;
+
+
+   4a. GLOBAL Commands
+       The  global interactive commands are always available in both full-screen
+       mode and alternate-display mode.  However, some of these interactive com&#8208;
+       mands are not available when running in &apos;Secure mode&apos;.
+
+       If  you wish to know in advance whether or not your top has been secured,
+       simply ask for help and view the system summary on the second line.
+
+
+         &lt;Enter&gt; or &lt;Space&gt; :Refresh-Display
+              These commands awaken top and following receipt of any  input  the
+              entire  display  will  be repainted.  They also force an update of
+              any hotplugged cpu or physical memory changes.
+
+              Use either of these keys if you have a large  delay  interval  and
+              wish to see current status,
+
+
+         &#180;?&#180; | &#180;h&#180; :Help
+              There  are  two  help  levels available.  The first will provide a
+              reminder of  all  the  basic  interactive  commands.   If  top  is
+              secured, that screen will be abbreviated.
+
+              Typing  &apos;h&apos;  or  &apos;?&apos; on that help screen will take you to help for
+              those interactive commands applicable to alternate-display mode.
+
+
+         &#180;=&#180; :Exit-Task-Limits
+              Removes restrictions on which tasks are shown.  This command  will
+              reverse  any  &apos;i&apos;  (idle  tasks) and &apos;n&apos; (max tasks) commands that
+              might be active.  It also provides for an &apos;exit&apos; from pid monitor&#8208;
+              ing  and  user  filtering.  See the &apos;-p&apos; command-line option for a
+              discussion of PID monitoring and the &apos;U&apos; or &apos;u&apos;  interactive  com&#8208;
+              mands regarding user filtering.
+
+              Additionally, any window that has been scrolled will be reset with
+              this command.  See topic 5c. SCROLLING  a  Window  for  additional
+              information regarding vertical and horizontal scrolling.
+
+              When  operating  in  alternate-display  mode  this  command  has a
+              broader meaning.
+
+
+         &#180;A&#180; :Alternate-Display-Mode toggle
+              This command will  switch  between  full-screen  mode  and  alter&#8208;
+              nate-display  mode.  See topic 5. ALTERNATE-DISPLAY Provisions and
+              the &apos;g&apos; interactive command for insight into &#180;current&#180; windows and
+              field groups.
+
+
+         &#180;B&#180; :Bold-Disable/Enable toggle
+              This  command will influence use of the &apos;bold&apos; terminfo capability
+              and alters both the summary area and task area for  the  &#180;current&#180;
+              window.   While  it is intended primarily for use with dumb termi&#8208;
+              nals, it can be applied anytime.
+
+              Note: When this toggle is On and top is  operating  in  monochrome
+              mode, the entire display will appear as normal text.  Thus, unless
+              the &apos;x&apos; and/or &apos;y&apos; toggles are using reverse for  emphasis,  there
+              will be no visual confirmation that they are even on.
+
+
+       * &#180;d&#180; | &#180;s&#180; :Change-Delay-Time-interval
+              You  will be prompted to enter the delay time, in seconds, between
+              display updates.
+
+              Fractional seconds are honored,  but  a  negative  number  is  not
+              allowed.   Entering  0 causes (nearly) continuous updates, with an
+              unsatisfactory display as the system and tty driver try to keep up
+              with  top&apos;s demands.  The delay value is inversely proportional to
+              system loading, so set it with care.
+
+              If at any time you wish to know the current delay time, simply ask
+              for help and view the system summary on the second line.
+
+
+         &#180;g&#180; :Choose-Another-Window/Field-Group
+              You will be prompted to enter a number between 1 and 4 designating
+              the field group which should be made the  &#180;current&#180;  window.   You
+              will  soon grow comfortable with these 4 windows, especially after
+              experimenting with alternate-display mode.
+
+
+         &#180;H&#180; :Threads-mode toggle
+              When this toggle is On, individual threads will be  displayed  for
+              all  processes  in  all visible task windows.  Otherwise, top dis&#8208;
+              plays a summation of all threads in each process.
+
+
+         &#180;I&#180; :Irix/Solaris-Mode toggle
+              When operating in &apos;Solaris mode&apos; (&apos;I&apos; toggled Off), a  task&apos;s  cpu
+              usage  will be divided by the total number of CPUs.  After issuing
+              this command, you&apos;ll be told the new state of this toggle.
+
+
+       * &#180;k&#180; :Kill-a-task
+              You will be prompted for a PID and then the signal to  send.   The
+              default  signal, as reflected in the prompt, is SIGTERM.  However,
+              you can send any signal, via number or name.
+
+              If you wish to abort the kill process, do  one  of  the  following
+              depending on your progress:
+                  1) at the pid prompt, just press &lt;Enter&gt;
+                  2) at the signal prompt, type 0
+
+
+         &#180;q&#180; :Quit
+
+
+       * &#180;r&#180; :Renice-a-Task
+              You  will  be prompted for a PID and then the value to nice it to.
+              Entering a positive value will cause a process to  lose  priority.
+              Conversely,  a  negative  value  will cause a process to be viewed
+              more favorably by the kernel.
+
+
+         &#180;W&#180; :Write-the-Configuration-File
+              This will save all of your options and toggles  plus  the  current
+              display  mode and delay time.  By issuing this command just before
+              quitting top, you will be able restart later in exactly that  same
+              state.
+
+
+         &#180;Z&#180; :Change-Color-Mapping
+              This  key  will take you to a separate screen where you can change
+              the colors for the &#180;current&#180; window,  or  for  all  windows.   For
+              details  regarding  this  interactive  command see topic 4d. COLOR
+              Mapping.
+
+
+       *  The commands shown with an asterisk (&#180;*&#180;) are not available in &apos;Secure
+          mode&apos;, nor will they be shown on the level-1 help screen.
+
+
+   4b. SUMMARY AREA Commands
+       The  summary  area  interactive  commands  are  always  available in both
+       full-screen mode and alternate-display mode.  They affect  the  beginning
+       lines  of  your  display  and will determine the position of messages and
+       prompts.
+
+       These commands always impact just the &#180;current&#180; window/field group.   See
+       topic 5. ALTERNATE-DISPLAY Provisions and the &apos;g&apos; interactive command for
+       insight into &#180;current&#180; windows and field groups.
+
+
+         &#180;l&#180; :Load-Average/Uptime toggle
+              This is also the line containing the  program  name  (possibly  an
+              alias)  when operating in full-screen mode or the &#180;current&#180; window
+              name when operating in alternate-display mode.
+
+
+         &#180;t&#180; :Task/Cpu-States toggle
+              This command affects from 2 to many summary area lines,  depending
+              on  the  state of the &apos;1&apos; toggle and whether or not top is running
+              under true SMP.
+
+              This portion of the summary area is also  influenced  by  the  &apos;H&apos;
+              interactive  command toggle, as reflected in the total label which
+              shows either &apos;Tasks&apos; or &apos;Threads&apos;.
+
+
+         &#180;1&#180; :Single/Separate-Cpu-States toggle
+              This command affects how the &apos;t&apos; command&apos;s Cpu States  portion  is
+              shown.   Although this toggle exists primarily to serve massively-
+              parallel SMP machines, it is not restricted to solely SMP environ&#8208;
+              ments.
+
+              When  you see &apos;%Cpu(s):&apos; in the summary area, the &apos;1&apos; toggle is On
+              and all cpu information is gathered in a single line.   Otherwise,
+              each  cpu  is  displayed separately as: &apos;%Cpu0, %Cpu1, ...&apos;  up to
+              available screen height.
+
+
+         &#180;m&#180; :Memory/Swap-Usage toggle
+              This command affects the two summary area lines dealing with phys&#8208;
+              ical and virtual memory.
+
+
+       Note: If the entire summary area has been toggled Off for any window, you
+       would be left with just the message line.  In that  way,  you  will  have
+       maximized  available  task  rows but (temporarily) sacrificed the program
+       name in full-screen mode or the &#180;current&#180;  window  name  when  in  alter&#8208;
+       nate-display mode.
+
+
+   4c. TASK AREA Commands
+       The  task  area  interactive commands are always available in full-screen
+       mode.
+
+       The task area interactive commands are never available in  alternate-dis&#8208;
+       play  mode  if  the  &#180;current&#180; window&apos;s task display has been toggled Off
+       (see topic 5. ALTERNATE-DISPLAY Provisions).
+
+
+       APPEARANCE of task window
+         The following commands will also be influenced  by  the  state  of  the
+         global &apos;B&apos; (bold enable) toggle.
+
+
+         &#180;b&#180; :Bold/Reverse toggle
+              This  command  will  impact  how  the &apos;x&apos; and &apos;y&apos; toggles are dis&#8208;
+              played.  Further, it will only be available when at least  one  of
+              those toggles is On.
+
+
+         &#180;x&#180; :Column-Highlight toggle
+              Changes  highlighting  for  the current sort field.  If you forget
+              which field is being sorted this command can serve as a quick vis&#8208;
+              ual  reminder,  providing  the sort field is being displayed.  The
+              sort field might not be visible because:
+                  1) there is insufficient Screen Width
+                  2) the &apos;f&apos; interactive command turned it Off
+
+
+         &#180;y&#180; :Row-Highlight toggle
+              Changes highlighting for &quot;running&quot; tasks.  For additional  insight
+              into  this  task  state, see topic 3a. DESCRIPTIONS of Fields, the
+              &apos;S&apos; field (Process Status).
+
+              Use of this provision provides important insight  into  your  sys&#8208;
+              tem&apos;s  health.  The only costs will be a few additional tty escape
+              sequences.
+
+
+         &#180;z&#180; :Color/Monochrome toggle
+              Switches the &#180;current&#180; window between your last used color  scheme
+              and the older form of black-on-white or white-on-black.  This com&#8208;
+              mand will alter both the summary area and task area but  does  not
+              affect the state of the &apos;x&apos;, &apos;y&apos; or &apos;b&apos; toggles.
+
+
+       CONTENT of task window
+         &#180;c&#180; :Command-Line/Program-Name toggle
+              This  command  will be honored whether or not the &apos;COMMAND&apos; column
+              is currently visible.  Later, should that field  come  into  view,
+              the change you applied will be seen.
+
+         &#180;f&#180; | &#180;F&#180; :Fields-Management
+              These  keys  display  a separate screen where you can change which
+              fields are displayed, their order  and  also  designate  the  sort
+              field.   For  additional information on these interactive commands
+              see topic 3b. MANAGING Fields.
+
+         &#180;S&#180; :Cumulative-Time-Mode toggle
+              When &apos;Cumulative mode&apos; is On, each process is listed with the  cpu
+              time that it and its dead children have used.
+
+              When  Off, programs that fork into many separate tasks will appear
+              less demanding.  For programs like  &apos;init&apos;  or  a  shell  this  is
+              appropriate  but for others, like compilers, perhaps not.  Experi&#8208;
+              ment with two task windows sharing the same sort  field  but  with
+              different &apos;S&apos; states and see which representation you prefer.
+
+              After issuing this command, you&apos;ll be informed of the new state of
+              this toggle.  If you wish to know in advance whether or not &apos;Cumu&#8208;
+              lative mode&apos; is in effect, simply ask for help and view the window
+              summary on the second line.
+&#12;         &#180;u&apos; | &apos;U&apos; :Show-Specific-User-Only
+              You will be prompted for the uid or name of the user  to  display.
+              The &apos;-u&apos; option matches on  effective user whereas the &apos;-U&apos; option
+              matches on any user (real, effective, saved, or filesystem).
+
+              Thereafter, in that task window only matching users will be shown,
+              or  possibly  no  processes will be shown.  Different task windows
+              can can be used to filter different users.
+
+              Later, if you wish to monitor all tasks  again  in  the  &#180;current&#180;
+              window,  re-issue  this  command  but  just  press  &lt;Enter&gt; at the
+              prompt.
+
+         &#180;V&apos; :Forest-View-Mode toggle
+              In this mode, processes are reordered according to  their  parents
+              and the layout of the COMMAND column resembles that of a tree.  In
+              forest view mode it is still possible to  toggle  between  program
+              name and commamd line (see the &apos;c&apos; interactive command) or between
+              processes and threads (see the &apos;H&apos; interactive command).
+
+              Note: Typing any key affecting the sort  order  will  exit  forest
+              view  mode  in the &#180;current&#180; window.  See topic 4c. TASK AREA Com&#8208;
+              mands, SORTING for information on those keys.
+
+       SIZE of task window
+         &#180;i&#180; :Idle-Process toggle
+              Displays all tasks or just active tasks.  When this toggle is Off,
+              tasks that have not used any CPU since the last update will not be
+              displayed.  However, due to the granularity of the %CPU and  TIME+
+              fields,  some processes may still be displayed that appear to have
+              used no CPU.
+
+              If this command is applied to the last task display when in alter&#8208;
+              nate-display  mode,  then it will not affect the window&apos;s size, as
+              all prior task displays will have already been painted.
+
+         &#180;n&#180; | &#180;#&#180; :Set-Maximum-Tasks
+              You will be prompted to enter the number of tasks to display.  The
+              lessor of your number and available screen rows will be used.
+
+              When  used  in  alternate-display  mode,  this is the command that
+              gives you precise control over the size of each currently  visible
+              task  display,  except  for the very last.  It will not affect the
+              last window&apos;s size, as all prior task displays will  have  already
+              been painted.
+
+              Note:  If  you  wish to increase the size of the last visible task
+              display when in alternate-display mode, simply decrease  the  size
+              of the task display(s) above it.
+
+       SORTING of task window
+         For  compatibility, this top supports most of the former top sort keys.
+         Since this is primarily a service to former top users,  these  commands
+         do not appear on any help screen.
+            command   sorted-field                  supported
+              A         start time (non-display)      No
+              M         %MEM                          Yes
+              N         PID                           Yes
+              P         %CPU                          Yes
+              T         TIME+                         Yes
+
+         Before  using  any  of the following sort provisions, top suggests that
+         you temporarily turn on column highlighting using the  &apos;x&apos;  interactive
+         command.   That  will  help  ensure  that  the  actual sort environment
+         matches your intent.
+&#12;         The following interactive commands will only be honored when  the  cur&#8208;
+         rent  sort  field  is  visible.   The  sort  field might not be visible
+         because:
+              1) there is insufficient Screen Width
+              2) the &apos;f&apos; interactive command turned it Off
+
+         &#180;&lt;&#180; :Move-Sort-Field-Left
+              Moves the sort column to the left unless the current sort field is
+              the first field being displayed.
+
+         &#180;&gt;&#180; :Move-Sort-Field-Right
+              Moves  the  sort column to the right unless the current sort field
+              is the last field being displayed.
+
+         The following interactive commands will always be  honored  whether  or
+         not the current sort field is visible.
+
+         &#180;f&#180; | &#180;F&#180; :Fields-Management
+              These  keys  display  a separate screen where you can change which
+              field is used as the sort column, among other functions.  This can
+              be  a convenient way to simply verify the current sort field, when
+              running top with column highlighting turned Off.
+
+         &#180;R&#180; :Reverse/Normal-Sort-Field toggle
+              Using this interactive command you can alternate between  high-to-
+              low and low-to-high sorts.
+
+         Note:  Field sorting uses internal values, not those in column display.
+         Thus, the TTY and WCHAN fields  will  violate  strict  ASCII  collating
+         sequence.
+
+   4d. COLOR Mapping
+       When  you issue the &apos;Z&apos; interactive command, you will be presented with a
+       separate screen.  That screen can be used to change the  colors  in  just
+       the  &#180;current&#180;  window or in all four windows before returning to the top
+       display.
+
+       The following interactive commands are available.
+           4 upper case letters to select a target
+           8 numbers to select a color
+           normal toggles available
+               &apos;B&apos;       :bold disable/enable
+               &apos;b&apos;       :running tasks &quot;bold&quot;/reverse
+               &apos;z&apos;       :color/mono
+           other commands available
+               &apos;a&apos;/&apos;w&apos;   :apply, then go to next/prior
+               &lt;Enter&gt;   :apply and exit
+               &apos;q&apos;       :abandon current changes and exit
+
+       If you use &apos;a&apos; or &apos;w&apos; to cycle the targeted window, you will have applied
+       the  color scheme that was displayed when you left that window.  You can,
+       of course, easily return to any window and reapply  different  colors  or
+       turn colors Off completely with the &apos;z&apos; toggle.
+
+       The  Color  Mapping  screen can also be used to change the &#180;current&#180; win&#8208;
+       dow/field group in either full-screen  mode  or  alternate-display  mode.
+       Whatever  was  targeted when &apos;q&apos; or &lt;Enter&gt; was pressed will be made cur&#8208;
+       rent as you return to the top display.
+
+5. ALTERNATE-DISPLAY Provisions
+   5a. WINDOWS Overview
+       Field Groups/Windows:
+          In full-screen mode there is a single window represented by the entire
+          screen.   That  single  window  can still be changed to display 1 of 4
+          different field groups (see  the  &apos;g&apos;  interactive  command,  repeated
+          below).   Each  of  the 4 field groups has a unique separately config&#8208;
+          urable summary area and its own configurable task area.
+
+          In alternate-display mode, those 4 underlying field groups can now  be
+          made visible simultaneously, or can be turned Off individually at your
+          command.
+
+          The summary area will always exist, even  if  it&apos;s  only  the  message
+          line.  At any given time only one summary area can be displayed.  How&#8208;
+          ever, depending on your commands, there could be  from  zero  to  four
+          separate task displays currently showing on the screen.
+
+       Current Window:
+          The  &#180;current&#180;  window  is the window associated with the summary area
+          and the window to which task related  commands  are  always  directed.
+          Since  in  alternate-display mode you can toggle the task display Off,
+          some commands might be restricted for the &#180;current&#180; window.
+
+          A further complication arises when you have toggled the first  summary
+          area  line  Off.   With  the  loss of the window name (the &apos;l&apos; toggled
+          line), you&apos;ll not easily know what window is the &#180;current&#180; window.
+
+   5b. COMMANDS for Windows
+         &#180;-&#180; | &#180;_&#180; :Show/Hide-Window(s) toggles
+              The &apos;-&apos; key turns the &#180;current&#180; window&apos;s task display On and  Off.
+              When  On, that task area will show a minimum of the columns header
+              you&apos;ve established with the &apos;f&apos; interactive command.  It will also
+              reflect  any other task area options/toggles you&apos;ve applied yield&#8208;
+              ing zero or more tasks.
+
+              The &apos;_&apos; key does the same for all task displays.  In other  words,
+              it  switches between the currently visible task display(s) and any
+              task display(s) you had toggled Off.  If all 4 task  displays  are
+              currently visible, this interactive command will leave the summary
+              area as the only display element.
+
+       * &#180;=&#180; | &#180;+&#180; :Equalize-(re-balance)-Window(s)
+              The &apos;=&apos; key forces the &#180;current&#180; window&apos;s task display to be visi&#8208;
+              ble.   It  also reverses any &apos;i&apos; (idle tasks), &apos;n&apos; (max tasks) and
+              &apos;u&apos;/&apos;U&apos; (user filter) commands that might be active.  Also, if the
+              window had been scrolled, it will be reset with this command.  See
+              topic 5c. SCROLLING a Window for additional information  regarding
+              vertical and horizontal scrolling.
+
+              The &apos;+&apos; key does the same for all windows.  The four task displays
+              will reappear, evenly balanced.  They will also have retained  any
+              customizations  you  had  previously  applied,  except for the &apos;i&apos;
+              (idle tasks), &apos;n&apos; (max tasks), &apos;u&apos;/&apos;U&apos; (user filter) and scrolling
+              interactive commands.
+
+       * &#180;A&#180; :Alternate-Display-Mode toggle
+              This  command  will  switch  between  full-screen  mode and alter&#8208;
+              nate-display mode.
+
+              The first time you issue this command, all four task displays will
+              be shown.  Thereafter when you switch modes, you will see only the
+              task display(s) you&apos;ve chosen to make visible.
+
+       * &#180;a&#180; | &#180;w&#180; :Next-Window-Forward/Backward
+              This will change the &#180;current&#180; window, which in turn  changes  the
+              window to which commands are directed.  These keys act in a circu&#8208;
+              lar fashion so you can reach any desired  &#180;current&#180;  window  using
+              either key.
+
+              Assuming  the  window  name  is  visible (you have not toggled &apos;l&apos;
+              Off), whenever the &#180;current&#180; window name loses its emphasis/color,
+              that&apos;s  a  reminder the task display is Off and many commands will
+              be restricted.
+
+       * &#180;g&#180; :Choose-Another-Window/Field-Group
+              You will be prompted to enter a number between 1 and 4 designating
+              the field group which should be made the &#180;current&#180; window.
+
+              In  full-screen mode, this command is necessary to alter the &#180;cur&#8208;
+              rent&#180; window.  In alternate-display mode, it is simply a less con&#8208;
+              venient alternative to the &apos;a&apos; and &apos;w&apos; commands.
+
+         &#180;G&#180; :Change-Window/Field-Group-Name
+              You will be prompted for a new name to be applied to the &#180;current&#180;
+              window.  It does not require that the window name be visible  (the
+              &apos;l&apos; toggle to be On).
+
+       *  The  interactive commands shown with an asterisk (&#180;*&#180;) have use beyond
+          alternate-display mode.
+              &#180;=&apos;, &apos;A&apos;, &apos;g&apos;  are always available
+              &#180;a&apos;, &apos;w&apos;       act the same with color mapping
+                             and fields management
+
+   5c. SCROLLING a Window
+       Typically a task  window  is  a  partial  view  into  a  systems&apos;s  total
+       tasks/threads  which  shows  only  some  of the available fields/columns.
+       With these scrolling keys, you can move that view vertically or  horizon&#8208;
+       tally to reveal any desired task or column.
+
+       Up,PgUp :Scroll-Tasks
+           Move  the  view up toward the first task row, until the first task is
+           displayed at the top of the &#180;current&#180; window.  The Up arrow key moves
+           a single line while PgUp scrolls the entire window.
+
+       Down,PgDn :Scroll-Tasks
+           Move  the  view down toward the last task row, until the last task is
+           the only task displayed at the top of the &#180;current&#180; window.  The Down
+           arrow key moves a single line while PgDn scrolls the entire window.
+
+       Left,Right :Scroll-Columns
+           Move  the  view  of  displayable  fields horizontally one column at a
+           time.
+
+           Note: As a reminder, some  fields/columns  are  not  fixed-width  but
+           allocated  all  remaining  screen width when visible.  When scrolling
+           right or left, that feature may produce some unexpected results  ini&#8208;
+           tially.
+
+       Home :Jump-to-Home-Position
+           Reposition the display to the un-scrolled coordinates.
+
+       End :Jump-to-End-Position
+           Reposition the display so that the rightmost column reflects the last
+           displayable field and the bottom task row represents the last task.
+
+           Note: From this position it is still  possible  to  scroll  down  and
+           right using the arrow keys.  This is true until a single column and a
+           single task is left as the only display element.
+
+       &apos;C&apos; :Show-scroll-coordinates toggle
+           Toggle an informational message which is displayed whenever the  mes&#8208;
+           sage line is not otherwise being used.
+
+               &quot;scroll coordinates: y = n/n (tasks), x = n/n (fields)&quot;
+
+           The coordinates shown as n/n are relative to the upper left corner of
+           the &#180;current&#180; window.
+&#12;           y = n/n (tasks)
+               The first n represents the topmost visible task and is controlled
+               by  scrolling  keys.   The  second  n is updated automatically to
+               reflect total tasks.
+
+           x = n/n (fields)
+               The first n represents the leftmost displayed column and is  con&#8208;
+               trolled  by  scrolling keys.  The second n is the total number of
+               displayable fields and is established with  the  &apos;f&apos;  interactive
+               command.
+
+       The  above  interactive commands are always available in full-screen mode
+       but never available in alternate-display mode if the  &#180;current&#180;  window&apos;s
+       task display has been toggled Off.
+
+   5d. SEARCHING in a Window
+       You  can use these interactive commands to locate a task row containing a
+       particular value.
+
+       &apos;L&#180; :Locate-a-string
+           You will be prompted for the case-sensitive string to locate starting
+           from  the  current  window coordinates.  There are no restrictions on
+           search string content.
+
+           Searches are not limited to values from a  single  field  or  column.
+           All  of  the  values  displayed in a task row are allowed in a search
+           string.  You may include spaces, numbers,  symbols  and  even  forest
+           view artwork.
+
+           Keying  &lt;Enter&gt;  with  no  input will effectively disable the &apos;&amp;&apos; key
+           until a new search string is entered.
+
+       &apos;&amp;&#180; :Locate-next
+           Assuming a search string has been established, top  will  attempt  to
+           locate the next occurrence.
+
+       When  a  match is found, the current window is repositioned vertically so
+       the task row containing that string is  first.   The  scroll  coordinates
+       message  can provide confirmation of such vertical repositioning (see the
+       &apos;C&apos;  interactive  command).   Horizontal  scrolling,  however,  is  never
+       altered via searching.
+
+       The availability of a matching string will be influenced by the following
+       factors.
+          a. Which fields are displayable from the total available,
+             see topic 3b. MANAGING Fields.
+          b. Scrolling a window vertically and/or horizontally,
+             see topic 5c. SCROLLING a Window.
+          c. The state of the command/command-line toggle,
+             see the &apos;c&apos; interactive command.
+          d. The stability of the chosen sort column,
+             for example PID is good but %CPU bad.
+
+       If a search fails, restoring the &#180;current&#180; window home (unscrolled) posi&#8208;
+       tion, scrolling horizontally, displaying command-lines or choosing a more
+       stable sort field could yet produce a successful &apos;&amp;&apos; search.
+
+       The above interactive commands are always available in  full-screen  mode
+       but  never  available in alternate-display mode if the &#180;current&#180; window&apos;s
+       task display has been toggled Off.
+
+       Note: Whenever a search key is typed, top forces idle tasks On  and  user
+       filtering  Off to ensure that every task is encountered.  See the &apos;i&apos; and
+       &apos;u/U&apos; interactive commands for additional information  on  how  displayed
+       tasks might be filtered.
+&#12;6. FILES
+   6a. SYSTEM Configuration File
+       The  presence  of  this  file  will influence which version of the &apos;help&apos;
+       screen is shown to an ordinary user.  More  importantly,  it  will  limit
+       what ordinary users are allowed to do when top is running.  They will not
+       be able to issue the following commands.
+           k        Kill a task
+           r        Renice a task
+           d or s   Change delay/sleep interval
+
+       The system configuration file is not created by top.  Rather, you  create
+       this  file manually and place it in the /etc directory.  Its name must be
+       &apos;toprc&apos; and must have no leading &apos;.&apos; (period).  It  must  have  only  two
+       lines.
+
+       Here is an example of the contents of /etc/toprc:
+           s        # line 1: &apos;secure&apos; mode switch
+           5.0      # line 2: &apos;delay&apos;  interval in seconds
+
+   6b. PERSONAL Configuration File
+       This  file  is  written  as &apos;$HOME/.your-name-4-top&apos; + &apos;rc&apos;.  Use the &apos;W&apos;
+       interactive command to create it or update it.
+
+       Here is the general layout:
+           global   # line 1: the program name/alias notation
+             &quot;      # line 2: id,altscr,irixps,delay,curwin
+           per ea   # line a: winname,fieldscur
+           window   # line b: winflags,sortindx,maxtasks
+             &quot;      # line c: summclr,msgsclr,headclr,taskclr
+
+       If the $HOME variable is not present, top will try to write the  personal
+       configuration file to the current directory, subject to permissions.
+
+7. STUPID TRICKS Sampler
+       Many  of  these  &apos;tricks&apos; work best when you give top a scheduling boost.
+       So plan on starting him with a nice value of -10, assuming you&apos;ve got the
+       authority.
+
+   7a. Kernel Magic
+       For these stupid tricks, top needs full-screen mode.
+
+       o  The  user  interface,  through prompts and help, intentionally implies
+          that the delay interval is limited to tenths of  a  second.   However,
+          you&apos;re free to set any desired delay.  If you want to see Linux at his
+          scheduling best, try a delay of .09 seconds or less.
+
+          For this experiment, under x-windows open an xterm  and  maximize  it.
+          Then do the following:
+            . provide a scheduling boost and tiny delay via:
+                nice -n -10 top -d.09
+            . keep sorted column highlighting Off so as to
+              minimize path length
+            . turn On reverse row highlighting for emphasis
+            . try various sort columns (TIME/MEM work well),
+              and normal or reverse sorts to bring the most
+              active processes into view
+
+          What  you&apos;ll  see is a very busy Linux doing what he&apos;s always done for
+          you, but there was no program available to illustrate this.
+
+       o  Under an xterm using &apos;white-on-black&apos; colors, on top&apos;s  Color  Mapping
+          screen  set the task color to black and be sure that task highlighting
+          is set to bold, not reverse.  Then set the delay interval to around .3
+          seconds.
+
+          After  bringing  the  most active processes into view, what you&apos;ll see
+          are the ghostly images of just the currently running tasks.
+
+       o  Delete the existing rcfile, or create a new symlink.  Start  this  new
+          version then type &apos;T&apos; (a secret key, see topic 4c. Task Area Commands,
+          SORTING) followed by &apos;W&apos; and &apos;q&apos;.  Finally, restart the  program  with
+          -d0 (zero delay).
+
+          Your  display  will be refreshed at three times the rate of the former
+          top, a 300% speed advantage.  As top climbs the  TIME  ladder,  be  as
+          patient  as  you can while speculating on whether or not top will ever
+          reach the top.
+
+   7b. Bouncing Windows
+       For these stupid tricks, top needs alternate-display mode.
+
+       o  With 3 or 4 task displays visible, pick any window other than the last
+          and  turn  idle processes Off using the &apos;i&apos; command toggle.  Depending
+          on where you applied &apos;i&apos;, sometimes several task displays are bouncing
+          and  sometimes  it&apos;s like an accordion, as top tries his best to allo&#8208;
+          cate space.
+
+       o  Set each window&apos;s summary lines differently: one with no memory (&apos;m&apos;);
+          another  with no states (&apos;t&apos;); maybe one with nothing at all, just the
+          message line.  Then hold down &apos;a&apos; or &apos;w&apos;  and  watch  a  variation  on
+          bouncing windows  --  hopping windows.
+
+       o  Display all 4 windows and for each, in turn, set idle processes to Off
+          using the &apos;i&apos;  command  toggle.   You&apos;ve  just  entered  the  &quot;extreme
+          bounce&quot; zone.
+
+   7c. The Big Bird Window
+       This stupid trick also requires alternate-display mode.
+
+       o  Display  all  4 windows and make sure that 1:Def is the &#180;current&#180; win&#8208;
+          dow.  Then, keep increasing window size with the &apos;n&apos; interactive  com&#8208;
+          mand until all the other task displays are &quot;pushed out of the nest&quot;.
+
+          When  they&apos;ve all been displaced, toggle between all visible/invisible
+          windows using the &apos;_&apos; command toggle.  Then ponder this:
+             is top fibbing or telling honestly your imposed truth?
+8. BUGS
+       To report bugs, follow the instructions at:
+           http://www.debian.org/Bugs/Reporting
+
+9. HISTORY Former top
+       The original top was written by Roger Binns, based on Branko  Lankester&apos;s
+       &lt;lankeste@fwi.uva.nl&gt; ps program.
+
+       Robert  Nation  &lt;nation@rocket.sanders.lockheed.com&gt;  adapted  it for the
+       proc file system.
+
+       Helmut Geyer &lt;Helmut.Geyer@iwr.uni-heidelberg.de&gt; added support for  con&#8208;
+       figurable fields.
+
+       Plus many other individuals contributed over the years.
+
+10. AUTHOR
+       This entirely new and enhanced replacement was written by:
+           Jim Warner, &lt;james.warner@comcast.net&gt;
+
+       With invaluable help from:
+           Craig Small, &lt;csmall@enc.com.au&gt;
+           Albert Cahalan, &lt;albert@users.sf.net&gt;
+&#12;11. SEE Also
+       free(1), ps(1), uptime(1), atop(1), slabtop(1), vmstat(8), w(1).
+
+
+
+
+
+
+procps-ng                          April 2011                             TOP(1)
+
+</pre></body></html>

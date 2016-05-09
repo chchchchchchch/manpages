@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SetTimer - Set a callback to run after the specified number of milliseconds has elapsed.</title></head>
+<body><pre>
+
+SDL_SetTimer(3)                 SDL API Reference                SDL_SetTimer(3)
+
+
+
+NAME
+       SDL_SetTimer  -  Set a callback to run after the specified number of mil&#8208;
+       liseconds has elapsed.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       int SDL_SetTimer(Uint32 interval, SDL_TimerCallback callback);
+
+CALLBACK
+       /* Function prototype for the timer callback function */  typedef  Uint32
+       (*SDL_TimerCallback)(Uint32 interval);
+
+DESCRIPTION
+       Set  a  callback  to  run  after the specified number of milliseconds has
+       elapsed. The callback function is passed the current timer  interval  and
+       returns the next timer interval. If the returned value is the same as the
+       one passed in, the periodic alarm continues, otherwise  a  new  alarm  is
+       scheduled.
+
+       To cancel a currently running timer, call SDL_SetTimer(0, NULL);
+
+       The  timer callback function may run in a different thread than your main
+       constant, and so shouldn&apos;t call any functions from within itself.
+
+       The maximum resolution of this timer is 10 ms, which means  that  if  you
+       request  a  16 ms timer, your callback will run approximately 20 ms later
+       on an unloaded system. If you wanted to set  a  flag  signaling  a  frame
+       update  at  30 frames per second (every 33 ms), you might set a timer for
+       30 ms (see example below).
+
+       If you use this function, you need to pass SDL_INIT_TIMER to SDL_Init().
+
+              Note:
+
+              This function is kept for compatibility but has been superseded by
+              the  new  timer  functions  SDL_AddTimer and SDL_RemoveTimer which
+              support multiple timers.
+
+EXAMPLES
+       SDL_SetTimer((33/10)*10, my_callback);
+
+SEE ALSO
+       SDL_AddTimer
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01              SDL_SetTimer(3)
+
+</pre></body></html>

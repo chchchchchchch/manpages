@@ -1,0 +1,29 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CondBroadcast - Restart all threads waiting on a condition variable</title></head>
+<body><pre>
+
+SDL_CondBroadcast(3)            SDL API Reference           SDL_CondBroadcast(3)
+
+
+
+NAME
+       SDL_CondBroadcast - Restart all threads waiting on a condition variable
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_CondBroadcast(SDL_cond *cond);
+
+DESCRIPTION
+       Restarts  all  threads  that are waiting on the condition variable, cond.
+       Returns 0 on success, or -1 on an error.
+
+SEE ALSO
+       SDL_CondSignal, SDL_CondWait
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00         SDL_CondBroadcast(3)
+
+</pre></body></html>

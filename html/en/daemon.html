@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>daemon - run in the background</title></head>
+<body><pre>
+
+DAEMON(3)                   Linux Programmer&apos;s Manual                  DAEMON(3)
+
+
+
+NAME
+       daemon - run in the background
+
+SYNOPSIS
+       #include &lt;unistd.h&gt;
+
+       int daemon(int nochdir, int noclose);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       daemon(): _BSD_SOURCE || (_XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE &lt; 500)
+
+DESCRIPTION
+       The  daemon()  function is for programs wishing to detach themselves from
+       the controlling terminal and run in the background as system daemons.
+
+       If nochdir is zero, daemon() changes the calling process&apos;s current  work&#8208;
+       ing directory to the root directory (&quot;/&quot;); otherwise, the current working
+       directory is left unchanged.
+
+       If noclose is zero, daemon() redirects standard  input,  standard  output
+       and  standard error to /dev/null; otherwise, no changes are made to these
+       file descriptors.
+
+RETURN VALUE
+       (This function forks, and if  the  fork(2)  succeeds,  the  parent  calls
+       _exit(2), so that further errors are seen by the child only.)  On success
+       daemon() returns zero.  If an error occurs, daemon() returns -1 and  sets
+       errno to any of the errors specified for the fork(2) and setsid(2).
+
+CONFORMING TO
+       Not  in  POSIX.1-2001.  A similar function appears on the BSDs.  The dae&#8208;
+       mon() function first appeared in 4.4BSD.
+
+NOTES
+       The glibc implementation can also return -1 when /dev/null exists but  is
+       not  a  character  device  with the expected major and minor numbers.  In
+       this case errno need not be set.
+
+SEE ALSO
+       fork(2), setsid(2)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2009-12-05                          DAEMON(3)
+
+</pre></body></html>

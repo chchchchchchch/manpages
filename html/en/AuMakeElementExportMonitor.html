@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuMakeElementExportMonitor - initialize an ExportMonitor element</title></head>
+<body><pre>
+
+AuMakeElementExportMonitor(3)                      AuMakeElementExportMonitor(3)
+
+
+
+Name
+       AuMakeElementExportMonitor - initialize an ExportMonitor element
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuMakeElementExportMonitor(element,     input,     event_rate,    format,
+       num_tracks)
+           AuElement *element; /* RETURN */
+           unsigned short input;
+           unsigned short event_rate;
+           unsigned char format;
+           unsigned char num_tracks;
+
+Arguments
+       element   Returns the initialized element.
+
+       input     Specifies the index of the element to supply the audio data  to
+                 monitor.
+
+       event_rate
+                 Specifies the event rate for the monitor.
+
+       format    Specifies the format of the audio data.  Currently, the follow&#8208;
+                 ing  formats  are  defined:  AuFormatULAW8,   AuFormatLinearUn&#8208;
+                 signed8,    AuFormatLinearSigned8,   AuFormatLinearSigned16MSB,
+                 AuFormatLinearUnsigned16MSB,   AuFormatSignedLinear16LSB,   and
+                 AuFormatLinearUnsigned16LSB.
+
+       num_tracks
+                 Specifies the number of tracks in the audio data.
+
+Description
+       AuMakeElementExportMonitor  sets the type member of element to AuElement&#8208;
+       TypeExportMonitor and initializes the  exportmonitor  member  of  element
+       with the remaining arguments.
+
+       AuMakeElementExportMonitor is implemented as a macro.
+
+See Also
+       AuMakeElementAddConstant, AuMakeElementBundle, AuMakeElementExportBucket,
+       AuMakeElementExportClient,  AuMakeElementExportDevice,   AuMakeElementIm&#8208;
+       portBucket,  AuMakeElementImportClient,  AuMakeElementImportDevice, AuMa&#8208;
+       keElementImportWaveForm, AuMakeElementMultiplyConstant, AuMakeElementSum.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element initialization     1.9.3        AuMakeElementExportMonitor(3)
+
+</pre></body></html>

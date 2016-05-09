@@ -1,0 +1,131 @@
+<html>
+<head><meta charset=utf-8/>
+<title>semanage.conf - global configuration file for the SELinux Management library</title></head>
+<body><pre>
+
+semanage.conf(5)           Linux System Administration          semanage.conf(5)
+
+
+
+NAME
+       semanage.conf  -  global  configuration  file  for the SELinux Management
+       library
+
+DESCRIPTION
+       The  semanage.conf  file  is  usually   located   under   the   directory
+       /etc/selinux and it is used for run-time configuration of the behavior of
+       the SELinux Management library.
+
+
+       Each line should contain a configuration parameter followed by the  equal
+       sign  (&quot;=&quot;) and then followed by the configuration value for that parame&#8208;
+       ter. Anything after the &quot;#&quot; symbol is ignored similarly to empty lines.
+
+
+       The following parameters are allowed:
+
+
+              module-store
+                     Specify how the SELinux Management library should  interact
+                     with  the  SELinux  policy store. When set to &quot;direct&quot;, the
+                     SELinux Management library writes  to  the  SELinux  policy
+                     module  store directly (this is the default setting).  Oth&#8208;
+                     erwise a socket path or a server name can be used  for  the
+                     argument.    If   the  argument  begins  with  &quot;/&quot;  (as  in
+                     &quot;/foo/bar&quot;), it represents the path to a named socket  that
+                     should be used to connect the policy management server.  If
+                     the  argument  does  not  begin   with   a   &quot;/&quot;   (as   in
+                     &quot;foo.com:4242&quot;),  it should be interpreted as the name of a
+                     remote policy management server to be used  through  a  TCP
+                     connection  (default port is 4242 unless a different one is
+                     specified after the server name using the colon to separate
+                     the two fields).
+
+
+              policy-version
+                     When  generating  the  policy, by default semanage will set
+                     the policy version to POLICYDB_VERSION_MAX, as  defined  in
+                     &lt;sepol/policydb/policydb.h&gt;.  Change this setting if a dif&#8208;
+                     ferent version needs to be set for the policy.
+
+
+              expand-check
+                     Whether or not to check &quot;neverallow&quot; rules  when  executing
+                     all  semanage  command.  It  can be set to either &quot;0&quot; (dis&#8208;
+                     abled) or &quot;1&quot; (enabled) and by default it is enabled. There
+                     might  be  a large penalty in execution time if this option
+                     is enabled.
+
+
+              file-mode
+                     By default the permission  mode  for  the  run-time  policy
+                     files is set to 0644.
+
+
+              save-previous
+                     It  controls whether the previous module directory is saved
+                     after a successful commit to the policy store and it can be
+                     set  to  either  &quot;true&quot; or &quot;false&quot;. By default it is set to
+                     &quot;false&quot; (the previous version is deleted).
+&#12;              save-linked
+                     It controls whether the previously linked module  is  saved
+                     (with  name &quot;base.linked&quot;) after a successful commit to the
+                     policy store.  It can be set to either  &quot;true&quot;  or  &quot;false&quot;
+                     and by default it is set to &quot;false&quot; (the previous module is
+                     deleted).
+
+
+              ignoredirs
+                     List, separated by &quot;;&quot;,  of directories to ignore when set&#8208;
+                     ting  up  users  homedirs.   Some distributions use this to
+                     stop labeling /root as a homedir.
+
+
+              usepasswd
+                     Whether or not to enable the use  getpwent()  to  obtain  a
+                     list  of home directories to label. It can be set to either
+                     &quot;true&quot; or &quot;false&quot;.  By default it is set to &quot;true&quot;.
+
+
+              disable-genhomedircon
+                     It controls whether or not the  genhomedircon  function  is
+                     executed  when using the semanage command and it can be set
+                     to either &quot;false&quot; or &quot;true&quot;. By default  the  genhomedircon
+                     functionality  is enabled (equivalent to this option set to
+                     &quot;false&quot;).
+
+
+              handle-unknown
+                     This option controls the kernel behavior for handling  per&#8208;
+                     missions  defined in the kernel but missing from the actual
+                     policy.  It can be set to &quot;deny&quot;, &quot;reject&quot; or &quot;allow&quot;.
+
+
+              bzip-blocksize
+                     It should be in the range 0-9. A value of 0 means  no  com&#8208;
+                     pression.  By  default  the  bzip  block  size  is set to 9
+                     (actual block size value is obtained  after  multiplication
+                     by 100000).
+
+
+              bzip-small
+                     When  set to &quot;true&quot;, the bzip algorithm shall try to reduce
+                     its system memory usage. It can be set to either &quot;true&quot;  or
+                     &quot;false&quot; and by default it is set to &quot;false&quot;.
+
+
+SEE ALSO
+       semanage(8)
+
+AUTHOR
+       This  manual  page  was  written  by Guido Trentalancia &lt;guido@trentalan&#8208;
+       cia.com&gt;.
+
+       The SELinux management library was written by Tresys Technology  LLC  and
+       Red Hat Inc.
+
+
+
+semanage.conf                    September 2011                 semanage.conf(5)
+
+</pre></body></html>

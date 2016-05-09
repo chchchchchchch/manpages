@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>fixnt - Filter for the Windows NT postscript printer driver.</title></head>
+<body><pre>
+
+fixnt(1)                             Debian                             fixnt(1)
+
+
+
+NAME
+       fixnt - Filter for the Windows NT postscript printer driver.
+
+SYNOPSIS
+       fixnt &lt; BADFILE.ps &gt; GOODFILE.ps
+
+DESCRIPTION
+       The Windows NT postscript driver has a tendency to make broken postscript
+       files, that are incompatible with psutils.  fixnt is a filter that  fixes
+       these problems, allowing the use of psnup(1).
+
+       The filter takes the broken postscript file on stdin, and outputs a fixed
+       postscript file on stdout.  It has no other form for invocation and takes
+       no options on the command-line.
+
+OPTIONS
+       fixnt  takes no options.
+
+BUGS
+       fixnt  does not check for NTPSOct94.  For a workaround, use a sed(1) com&#8208;
+       mand to replace &apos;NTPSOct94&apos; with &apos;NTPSOct95&apos;, like so:
+              sed &apos;s/NTPSOct94/NTPSOct95/g&apos;
+       This is particularly important for Windows NT 3.5 users.
+
+AUTHOR
+       fixnt was written by Holger Bauer &lt;Holger.Bauer@topmail.de&gt;, Michael Rath
+       &lt;rath@itsm.uni-stuttgart.de&gt;, and Akim Demaille &lt;demaille@inf.enst.fr&gt;.
+
+REPORTING BUGS
+       Report bugs to the Authors, but avoid sending large postscript files.
+
+       Patches are always welcome; send to &lt;bauer@itsm.uni-stuttgart.de&gt;.
+
+SEE ALSO
+       psnup(1), sed(1)
+
+
+
+a2ps                              February 2003                         fixnt(1)
+
+</pre></body></html>

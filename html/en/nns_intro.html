@@ -1,0 +1,110 @@
+<html>
+<head><meta charset=utf-8/>
+<title>nns_intro - Name service facility, introduction</title></head>
+<body><pre>
+
+nns_intro(3tcl)               Name service facility              nns_intro(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       nns_intro - Name service facility, introduction
+
+DESCRIPTION
+       nns  (short  for  nano  nameservice)  is a facility built for the package
+       comm, adding a simple name service to it.  It is also  built  on  top  of
+       comm, using it for the exchange of messages between the client and server
+       parts.
+
+       This name service facility has nothing to do with the  Internet&apos;s  Domain
+       Name System, otherwise known as DNS. If the reader is looking for a pack&#8208;
+       age dealing with that please see either of the packages dns  and  resolv,
+       both found in Tcllib too.
+
+       Tcllib  provides 2 applications and 4 packages which are working together
+       and provide access to the facility at different levels.
+
+APPLICATIONS
+       The application nnsd provides a simple name server which can  be  run  by
+       anybody anywhere on their system, as they see fit.  It is also an example
+       on the use of the server-side package nameserv::server.
+
+       Complementing this server is the nns client application.  A possible, but
+       no  very  sensible use would be to enter name/port bindings into a server
+       from a shell script. Not sensible, as shell scripts normally do not  pro&#8208;
+       vide a comm-based service.
+
+       The  only  case  for  this  to make some sense would be in a shell script
+       wrapped around a Tcl script FOO which is using comm, to register the lis&#8208;
+       tening  port used by FOO.  However even there it would much more sensible
+       to extend FOO to use the nameservice directly. And in regard  on  how  to
+       that  nns  can  be used as both example and template.  Beyond that it may
+       also be useful to perform nameservice queries from shell scripts.
+
+       The third application, nnslog is a stripped down form of the  nns  client
+       application. It is reduced to perform a continuous search for all changes
+       and logs all received events to stdout.
+
+       Both clients use the nameserv::auto package to  automatically  hande  the
+       loss and restoration of the connection to the server.
+
+PACKAGES
+       The  two  main  packages  implementing the service are nameserv and name&#8208;
+       serv::server, i.e. client and server. The latter has not much of an  API,
+       just enough to start, stop, and configure it. See the application nnsd on
+       how to use it.
+
+       The basic client, in package nameserv, provides the main API  to  manipu&#8208;
+       late and query the service. An example of its use is the application nns.
+
+       The  second client package, nameserv::auto is API compatible to the basic
+       client, but provides the additional functionality that it will  automati&#8208;
+       cally  restore data like bound names when the connection to the name ser&#8208;
+       vice was lost and then reestablished. I.e. it automatically  detects  the
+       loss of the server and re-enters the data when the server comes back.
+
+       The  package nameserv::common is of no interest to users. It is an inter&#8208;
+       nal package containing code and definitions common to the packages  name&#8208;
+       serv and nameserv::server.
+&#12;       All  packages use the uevent package for the reporting of special circum&#8208;
+       stances via events, and reserve the uevent-tag nameserv for their  exclu&#8208;
+       sive use. All their events will be posted to that tag.
+
+INTERNALS
+       The  document Name service facility, client/server protocol specifies the
+       protocol used by the packages nameserv and nameserv::server  to  talk  to
+       each  other.  It  is  of  no  interest to users of either the packages or
+       applications.
+
+       Developers wishing to modify and/or extend  or  to  just  understand  the
+       internals  of  the  nameservice  facility however are strongly advised to
+       read it.
+
+BUGS, IDEAS, FEEDBACK
+       This document, will undoubtedly contain bugs and other problems.   Please
+       report   such  in  the  category  nameserv  of  the  Tcllib  SF  Trackers
+       [http://sourceforge.net/tracker/?group_id=12883].  Please also report any
+       ideas  for enhancements you may have for either package and/or documenta&#8208;
+       tion.  Please also report any ideas for enhancements you may have.
+
+SEE ALSO
+       nameserv(3tcl),   nameserv::auto(3tcl),   nameserv::common(3tcl),   name&#8208;
+       serv::protocol(3tcl), nameserv::server(3tcl), nnsd(3tcl), nss(3tcl)
+
+KEYWORDS
+       client, name service, server
+
+CATEGORY
+       Networking
+
+COPYRIGHT
+       Copyright (c) 2008 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+
+
+
+
+nns                                    1.0                       nns_intro(3tcl)
+
+</pre></body></html>

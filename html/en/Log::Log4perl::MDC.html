@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::MDC - Mapped Diagnostic Context</title></head>
+<body><pre>
+
+MDC(3pm)               User Contributed Perl Documentation              MDC(3pm)
+
+
+
+NAME
+       Log::Log4perl::MDC - Mapped Diagnostic Context
+
+DESCRIPTION
+       Log::Log4perl allows loggers to maintain global thread-specific data,
+       called the Nested Diagnostic Context (NDC) and Mapped Diagnostic Context
+       (MDC).
+
+       The MDC is a simple thread-specific hash table, in which the application
+       can stuff values under certain keys and retrieve them later via the
+       &quot;%X{key}&quot; placeholder in &quot;Log::Log4perl::Layout::PatternLayout&quot;s.
+
+       Log::Log4perl::MDC-&gt;put($key, $value);
+           Store a value $value under key $key in the map.
+
+       my $value = Log::Log4perl::MDC-&gt;get($key);
+           Retrieve the content of the map under the specified key.  Typically
+           done by %X{key} in &quot;Log::Log4perl::Layout::PatternLayout&quot;.  If no
+           value exists to the given key, &quot;undef&quot; is returned.
+
+       my $text = Log::Log4perl::MDC-&gt;remove();
+           Delete all entries from the map.
+
+       Log::Log4perl::MDC-&gt;get_context();
+           Returns a reference to the hash table.
+
+       Please note that all of the methods above are class methods, there&apos;s no
+       instances of this class. Since the thread model in perl 5.8.0 is &quot;no
+       shared data unless explicetly requested&quot; the data structures used are
+       just global (and therefore thread-specific).
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                           MDC(3pm)
+
+</pre></body></html>

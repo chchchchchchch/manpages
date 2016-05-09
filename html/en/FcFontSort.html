@@ -1,0 +1,43 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcFontSort - Return list of matching fonts</title></head>
+<body><pre>
+
+FcFontSort(3)                                                      FcFontSort(3)
+
+
+
+NAME
+       FcFontSort - Return list of matching fonts
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcFontSet  *  FcFontSort  (FcConfig  *config,  FcPattern *p, FcBool trim,
+       FcCharSet **csp, FcResult *result);
+
+DESCRIPTION
+       Returns the list of fonts sorted by closeness to p.  If trim  is  FcTrue,
+       elements in the list which don&apos;t include Unicode coverage not provided by
+       earlier elements in the list are elided.  The union of  Unicode  coverage
+       of  all  of the fonts is returned in csp, if csp is not NULL.  This func&#8208;
+       tion should be called only after FcConfigSubstitute and  FcDefaultSubsti&#8208;
+       tute have been called for p; otherwise the results will not be correct.
+
+       The  returned  FcFontSet  references  FcPattern  structures  which may be
+       shared by the return value from multiple FcFontSort  calls,  applications
+       must  not  modify  these patterns.  Instead, they should be passed, along
+       with p to FcFontRenderPrepare which combines them into  a  complete  pat&#8208;
+       tern.
+
+       The FcFontSet returned by FcFontSort is destroyed by calling FcFontSetDe&#8208;
+       stroy.  If config is NULL, the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                    FcFontSort(3)
+
+</pre></body></html>

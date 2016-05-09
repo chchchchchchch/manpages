@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Glib::Param::Int - Paramspecs for integer types</title></head>
+<body><pre>
+
+Glib::Param::Int(3pm)  User Contributed Perl Documentation Glib::Param::Int(3pm)
+
+
+
+NAME
+       Glib::Param::Int - Paramspecs for integer types
+
+HIERARCHY
+         Glib::ParamSpec
+         +----Glib::Param::Int
+
+         Glib::ParamSpec
+         +----Glib::Param::Char
+
+         Glib::ParamSpec
+         +----Glib::Param::Long
+
+DESCRIPTION
+       This page documents the extra accessors available for all of the integer
+       type paramspecs: Char, Int, and Long.  Perl really only supports full-
+       size integers, so all of these methods return IVs; the distinction of
+       integer size is important to the underlying C library and also determines
+       the data value range.
+
+METHODS
+   integer = $pspec-&gt;get_maximum
+   integer = $pspec-&gt;get_minimum
+SEE ALSO
+       Glib, Glib::ParamSpec, Glib::ParamSpec
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Glib for a full notice.
+
+
+
+perl v5.14.2                       2012-05-24              Glib::Param::Int(3pm)
+
+</pre></body></html>

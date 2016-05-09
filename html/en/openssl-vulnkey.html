@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>openssl-vulnkey — check blacklist of compromised certificates, requests and keys</title></head>
+<body><pre>
+
+OPENSSL-VULNKEY(1)        BSD General Commands Manual       OPENSSL-VULNKEY(1)
+
+NAME
+     openssl-vulnkey &#8212; check blacklist of compromised certificates, requests and
+     keys
+
+SYNOPSIS
+     openssl-vulnkey [-q] file ...
+     openssl-vulnkey [-q] -b BITS -m MODULUS
+
+DESCRIPTION
+     openssl-vulnkey checks a certificate, request or key against a blacklist of
+     compromised moduli.
+
+     A substantial number of certificates, requests and keys are known to have
+     been generated using a broken version of OpenSSL distributed by Debian
+     which failed to seed its random number generator correctly.  x509 certifi&#8208;
+     cates, certificate requests and RSA keys generated using these OpenSSL ver&#8208;
+     sions should be assumed to be compromised.  This tool may be useful in
+     checking for such OpenSSL x509 certificates, certificate requests and RSA
+     keys.
+
+     Certificates, requests and keys that are compromised cannot be repaired;
+     replacements must be generated using openssl(8).
+
+     If &#8220;-&#8221; is given as an argument, openssl-vulnkey will read from standard
+     input.  This can be used to process certificate output from s_client(1ssl),
+     for example:
+
+           $ echo | openssl s_client -connect remote.example.org:https |
+           openssl-vulnkey -
+
+     will test the certificate used by remote.example.org for HTTPS.
+
+     The options are as follows:
+
+     -q      Quiet mode.  Normally, openssl-vulnkey outputs the fingerprint of
+             each file scanned, with a description of its status.  This option
+             suppresses that output.
+
+     -b      Number of bits for the modulus specified.  Requires -m.
+
+     -m      Check modulus.  Requires -b.
+
+BLACKLIST SHA1SUM FORMAT
+     The blacklist file may start with comments, on lines starting with &#8220;#&#8221;.
+     After these initial comments, it must follow a strict format:
+
+           &#183;   Each line must consist of the lower-case hexadecimal SHA1 finger&#8208;
+               print of the certificate or key&apos;s modulus, and with the first 20
+               characters removed (that is, the least significant 80 bits of the
+               fingerprint).
+
+     The fingerprint of the modulus may be generated using
+
+           $ openssl x509 -noout -modulus -in file | sha1sum | cut -d &apos; &apos; -f 1
+           $ openssl rsa -noout -modulus -in file | sha1sum | cut -d &apos; &apos; -f 1
+           $ openssl req -noout -modulus -in file | sha1sum | cut -d &apos; &apos; -f 1
+
+     This strict format is necessary to allow the blacklist file to be checked
+     quickly.
+
+SEE ALSO
+     openssl(1)
+
+AUTHORS
+     Jamie Strandboge &#10216;jamie@ubuntu.com&#10217;
+
+     Much of this manpage is based on Colin Watson&apos;s ssh-vulnkey(1)
+
+BSD                               May 8, 2016                              BSD
+
+</pre></body></html>

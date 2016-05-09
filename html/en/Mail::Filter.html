@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Mail::Filter - Filter mail through multiple subroutines</title></head>
+<body><pre>
+
+Mail::Filter(3pm)      User Contributed Perl Documentation     Mail::Filter(3pm)
+
+
+
+NAME
+       Mail::Filter - Filter mail through multiple subroutines
+
+SYNOPSIS
+        use Mail::Filter;
+
+        my $filter = Mail::Filter-&gt;new( \&amp;filter1, \&amp;filter2 );
+
+        my $mail   = Mail::Internet-&gt;new( [&lt;&gt;] );
+        my $mail   = $filter-&gt;filter($mail);
+
+        my $folder = Mail::Folder-&gt;new( .... );
+        my $filter-&gt;filter($folder);
+
+DESCRIPTION
+       &quot;Mail::Filter&quot; provides an interface to filtering Email through multiple
+       subroutines.
+
+       &quot;Mail::Filter&quot; filters mail by calling each filter subroutine in turn.
+       Each filter subroutine is called with two arguments, the first is the
+       filter object and the second is the mail or folder object being filtered.
+
+       The result from each filter sub is passed to the next filter as the mail
+       object. If a filter subroutine returns undef, then &quot;Mail::Filter&quot; will
+       abort and return immediately.
+
+       The function returns the result from the last subroutine to operate on
+       the mail object.
+
+METHODS
+   Constructors
+       Mail::Filter-&gt;new([FILTER [, ... ]])
+           Create a new &quot;Mail::Filter&quot; object with the given filter subroutines.
+           Each filter may be either a code reference or the name of a method to
+           call on the &lt;Mail::Filter&gt; object.
+
+   Accessors
+       $obj-&gt;add(FILTER [, FILTER ...])
+           Add the given filters to the end of the fliter list.
+
+   Processing
+       $obj-&gt;filter(MAIL-OBJECT | MAIL-FOLDER)
+           If the first argument is a &quot;Mail::Internet&quot; object, then this object
+           will be passed through the filter list. If the first argument is a
+           &quot;Mail::Folder&quot; object, then each message in turn will be passed
+           through the filter list.
+
+       $obj-&gt;folder()
+           While the &quot;filter&quot; method is called with a &quot;Mail::Folder&quot; object,
+           these filter subroutines can call this method to obtain the folder
+           object that is being processed.
+
+       $obj-&gt;msgnum()
+           If the &quot;filter&quot; method is called with a &quot;Mail::Folder&quot; object, then
+           the filter subroutines may call this method to obtain the message
+           number of the message that is being processed.
+
+SEE ALSO
+       This module is part of the MailTools distribution,
+       http://perl.overmeer.net/mailtools/.
+
+AUTHORS
+       The MailTools bundle was developed by Graham Barr.  Later, Mark Overmeer
+       took over maintenance without commitment to further development.
+
+       Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;.  Mail::Field::AddrList by Peter
+       Orbaek &lt;poe@cit.dk&gt;.  Mail::Mailer and Mail::Send by Tim Bunce
+       &lt;Tim.Bunce@ig.co.uk&gt;.  For other contributors see ChangeLog.
+
+LICENSE
+       Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and 2001-2007 Mark
+       Overmeer &lt;perl@overmeer.net&gt;.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.  See
+       http://www.perl.com/perl/misc/Artistic.html
+
+
+
+perl v5.14.2                       2012-02-25                  Mail::Filter(3pm)
+
+</pre></body></html>

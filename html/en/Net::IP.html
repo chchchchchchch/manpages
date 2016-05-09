@@ -1,0 +1,522 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::IP - Perl extension for manipulating IPv4/IPv6 addresses</title></head>
+<body><pre>
+
+IP(3pm)                User Contributed Perl Documentation               IP(3pm)
+
+
+
+NAME
+       Net::IP - Perl extension for manipulating IPv4/IPv6 addresses
+
+SYNOPSIS
+         use Net::IP;
+
+         my $ip = new Net::IP (&apos;193.0.1/24&apos;) or die (Net::IP::Error());
+         print (&quot;IP  : &quot;.$ip-&gt;ip().&quot;\n&quot;);
+         print (&quot;Sho : &quot;.$ip-&gt;short().&quot;\n&quot;);
+         print (&quot;Bin : &quot;.$ip-&gt;binip().&quot;\n&quot;);
+         print (&quot;Int : &quot;.$ip-&gt;intip().&quot;\n&quot;);
+         print (&quot;Mask: &quot;.$ip-&gt;mask().&quot;\n&quot;);
+         print (&quot;Last: &quot;.$ip-&gt;last_ip().&quot;\n&quot;);
+         print (&quot;Len : &quot;.$ip-&gt;prefixlen().&quot;\n&quot;);
+         print (&quot;Size: &quot;.$ip-&gt;size().&quot;\n&quot;);
+         print (&quot;Type: &quot;.$ip-&gt;iptype().&quot;\n&quot;);
+         print (&quot;Rev:  &quot;.$ip-&gt;reverse_ip().&quot;\n&quot;);
+
+DESCRIPTION
+       This module provides functions to deal with IPv4/IPv6 addresses. The
+       module can be used as a class, allowing the user to instantiate IP
+       objects, which can be single IP addresses, prefixes, or ranges of
+       addresses. There is also a procedural way of accessing most of the
+       functions. Most subroutines can take either IPv4 or IPv6 addresses
+       transparently.
+
+OBJECT-ORIENTED INTERFACE
+   Object Creation
+       A Net::IP object can be created from a single IP address:
+
+         $ip = new Net::IP (&apos;193.0.1.46&apos;) || die ...
+
+       Or from a Classless Prefix (a /24 prefix is equivalent to a C class):
+
+         $ip = new Net::IP (&apos;195.114.80/24&apos;) || die ...
+
+       Or from a range of addresses:
+
+         $ip = new Net::IP (&apos;20.34.101.207 - 201.3.9.99&apos;) || die ...
+
+       Or from a address plus a number:
+
+         $ip = new Net::IP (&apos;20.34.10.0 + 255&apos;) || die ...
+
+       The new() function accepts IPv4 and IPv6 addresses:
+
+         $ip = new Net::IP (&apos;dead:beef::/32&apos;) || die ...
+
+       Optionnaly, the function can be passed the version of the IP. Otherwise,
+       it tries to guess what the version is (see _is_ipv4() and _is_ipv6()).
+
+         $ip = new Net::IP (&apos;195/8&apos;,4); # Class A
+
+OBJECT METHODS
+       Most of these methods are front-ends for the real functions, which use a
+       procedural interface. Most functions return undef on failure, and a true
+       value on success. A detailed description of the procedural interface is
+       provided below.
+
+   set
+       Set an IP address in an existing IP object. This method has the same
+       functionality as the new() method, except that it reuses an existing
+       object to store the new IP.
+
+       &quot;$ip-&gt;set(&apos;130.23.1/24&apos;,4);&quot;
+
+       Like new(), set() takes two arguments - a string used to build an IP
+       address, prefix, or range, and optionally, the IP version of the
+       considered address.
+
+       It returns an IP object on success, and undef on failure.
+
+   error
+       Return the current object error string. The error string is set whenever
+       one of the methods produces an error. Also, a global, class-wide Error()
+       function is available.
+
+       &quot;warn ($ip-&gt;error());&quot;
+
+   errno
+       Return the current object error number. The error number is set whenever
+       one of the methods produces an error. Also, a global $ERRNO variable is
+       set when an error is produced.
+
+       &quot;warn ($ip-&gt;errno());&quot;
+
+   ip
+       Return the IP address (or first IP of the prefix or range) in quad
+       format, as a string.
+
+       &quot;print ($ip-&gt;ip());&quot;
+
+   binip
+       Return the IP address as a binary string of 0s and 1s.
+
+       &quot;print ($ip-&gt;binip());&quot;
+
+   prefixlen
+       Return the length in bits of the current prefix.
+
+       &quot;print ($ip-&gt;prefixlen());&quot;
+
+   version
+       Return the version of the current IP object (4 or 6).
+
+       &quot;print ($ip-&gt;version());&quot;
+
+   size
+       Return the number of IP addresses in the current prefix or range.  Use of
+       this function requires Math::BigInt.
+
+       &quot;print ($ip-&gt;size());&quot;
+
+   binmask
+       Return the binary mask of the current prefix, if applicable.
+
+       &quot;print ($ip-&gt;binmask());&quot;
+
+   mask
+       Return the mask in quad format of the current prefix.
+
+       &quot;print ($ip-&gt;mask());&quot;
+
+   prefix
+       Return the full prefix (ip+prefix length) in quad (standard) format.
+
+       &quot;print ($ip-&gt;prefix());&quot;
+&#12;   print
+       Print the IP object (IP/Prefix or First - Last)
+
+       &quot;print ($ip-&gt;print());&quot;
+
+   intip
+       Convert the IP in integer format and return it as a Math::BigInt object.
+
+       &quot;print ($ip-&gt;intip());&quot;
+
+   hexip
+       Return the IP in hex format
+
+       &quot;print ($ip-&gt;hexip());&quot;
+
+   hexmask
+       Return the mask in hex format
+
+       &quot;print ($ip-&gt;hexmask());&quot;
+
+   short
+       Return the IP in short format:      IPv4 addresses: 194.5/16      IPv6
+       addresses: ab32:f000::
+
+       &quot;print ($ip-&gt;short());&quot;
+
+   iptype
+       Return the IP Type - this describes the type of an IP (Public, Private,
+       Reserved, etc.)
+
+       &quot;print ($ip-&gt;iptype());&quot;
+
+   reverse_ip
+       Return the reverse IP for a given IP address (in.addr. format).
+
+       &quot;print ($ip-&gt;reserve_ip());&quot;
+
+   last_ip
+       Return the last IP of a prefix/range in quad format.
+
+       &quot;print ($ip-&gt;last_ip());&quot;
+
+   last_bin
+       Return the last IP of a prefix/range in binary format.
+
+       &quot;print ($ip-&gt;last_bin());&quot;
+
+   last_int
+       Return the last IP of a prefix/range in integer format.
+
+       &quot;print ($ip-&gt;last_int());&quot;
+
+   find_prefixes
+       This function finds all the prefixes that can be found between the two
+       addresses of a range. The function returns a list of prefixes.
+
+       &quot;@list = $ip-&gt;find_prefixes($other_ip));&quot;
+
+   bincomp
+       Binary comparaison of two IP objects. The function takes an operation and
+       an IP object as arguments. It returns a boolean value.
+
+       The operation can be one of: lt: less than (smaller than) le: smaller or
+       equal to gt: greater than ge: greater or equal to
+
+       &quot;if ($ip-&gt;bincomp(&apos;lt&apos;,$ip2) {...}&quot;
+
+   binadd
+       Binary addition of two IP objects. The value returned is an IP object.
+
+       &quot;my $sum = $ip-&gt;binadd($ip2);&quot;
+
+   aggregate
+       Aggregate 2 IPs - Append one range/prefix of IPs to another. The last
+       address of the first range must be the one immediately preceding the
+       first address of the second range. A new IP object is returned.
+
+       &quot;my $total = $ip-&gt;aggregate($ip2);&quot;
+
+   overlaps
+       Check if two IP ranges/prefixes overlap each other. The value returned by
+       the function should be one of:      $IP_PARTIAL_OVERLAP (ranges overlap)
+            $IP_NO_OVERLAP      (no overlap)      $IP_A_IN_B_OVERLAP  (range2
+       contains range1)      $IP_B_IN_A_OVERLAP  (range1 contains range2)
+            $IP_IDENTICAL       (ranges are identical)      undef
+       (problem)
+
+       &quot;if ($ip-&gt;overlaps($ip2)==$IP_A_IN_B_OVERLAP) {...};&quot;
+
+   looping
+       The &quot;+&quot; operator is overloaded in order to allow looping though a whole
+       range of IP addresses:
+
+         my $ip = new Net::IP (&apos;195.45.6.7 - 195.45.6.19&apos;) || die;
+         # Loop
+         do {
+             print $ip-&gt;ip(), &quot;\n&quot;;
+         } while (++$ip);
+
+       The ++ operator returns undef when the last address of the range is
+       reached.
+
+   auth
+       Return IP authority information from the IP::Authority module
+
+       &quot;$auth = ip-&quot;auth ();&gt;
+
+       Note: IPv4 only
+
+PROCEDURAL INTERFACE
+       These functions do the real work in the module. Like the OO methods, most
+       of these return undef on failure. In order to access error codes and
+       strings, instead of using $ip-&gt;error() and $ip-&gt;errno(), use the global
+       functions &quot;Error()&quot; and &quot;Errno()&quot;.
+
+       The functions of the procedural interface are not exported by default. In
+       order to import these functions, you need to modify the use statement for
+       the module:
+
+       &quot;use Net::IP qw(:PROC);&quot;
+
+   Error
+       Returns the error string corresponding to the last error generated in the
+       module. This is also useful for the OO interface, as if the new()
+       function fails, we cannot call $ip-&gt;error() and so we have to use
+       Error().
+
+       warn Error();
+
+   Errno
+       Returns a numeric error code corresponding to the error string returned
+       by Error.
+
+   ip_iptobin
+       Transform an IP address into a bit string.
+
+           Params  : IP address, IP version
+           Returns : binary IP string on success, undef otherwise
+
+       &quot;$binip = ip_iptobin ($ip,6);&quot;
+
+   ip_bintoip
+       Transform a bit string into an IP address
+
+           Params  : binary IP, IP version
+           Returns : IP address on success, undef otherwise
+
+       &quot;$ip = ip_bintoip ($binip,6);&quot;
+
+   ip_bintoint
+       Transform a bit string into a BigInt.
+
+           Params  : binary IP
+           Returns : BigInt
+
+       &quot;$bigint = new Math::BigInt (ip_bintoint($binip));&quot;
+
+   ip_inttobin
+       Transform a BigInt into a bit string.  Warning: sets warnings (&quot;-w&quot;) off.
+       This is necessary because Math::BigInt is not compliant.
+
+           Params  : BigInt, IP version
+           Returns : binary IP
+
+       &quot;$binip = ip_inttobin ($bigint);&quot;
+
+   ip_get_version
+       Try to guess the IP version of an IP address.
+
+           Params  : IP address
+           Returns : 4, 6, undef(unable to determine)
+
+       &quot;$version = ip_get_version ($ip)&quot;
+
+   ip_is_ipv4
+       Check if an IP address is of type 4.
+
+           Params  : IP address
+           Returns : 1 (yes) or 0 (no)
+
+       &quot;ip_is_ipv4($ip) and print &quot;$ip is IPv4&quot;;&quot;
+
+   ip_is_ipv6
+       Check if an IP address is of type 6.
+
+           Params            : IP address
+           Returns           : 1 (yes) or 0 (no)
+
+       &quot;ip_is_ipv6($ip) and print &quot;$ip is IPv6&quot;;&quot;
+
+   ip_expand_address
+       Expand an IP address from compact notation.
+
+           Params  : IP address, IP version
+           Returns : expanded IP address or undef on failure
+
+       &quot;$ip = ip_expand_address ($ip,4);&quot;
+&#12;   ip_get_mask
+       Get IP mask from prefix length.
+
+           Params  : Prefix length, IP version
+           Returns : Binary Mask
+
+       &quot;$mask = ip_get_mask ($len,6);&quot;
+
+   ip_last_address_bin
+       Return the last binary address of a prefix.
+
+           Params  : First binary IP, prefix length, IP version
+           Returns : Binary IP
+
+       &quot;$lastbin = ip_last_address_bin ($ip,$len,6);&quot;
+
+   ip_splitprefix
+       Split a prefix into IP and prefix length.  If it was passed a simple IP,
+       it just returns it.
+
+           Params  : Prefix
+           Returns : IP, optionally length of prefix
+
+       &quot;($ip,$len) = ip_splitprefix ($prefix)&quot;
+
+   ip_prefix_to_range
+       Get a range of IPs from a prefix.
+
+           Params  : Prefix, IP version
+           Returns : First IP, last IP
+
+       &quot;($ip1,$ip2) = ip_prefix_to_range ($prefix,6);&quot;
+
+   ip_bincomp
+       Compare binary Ips with &lt;, &gt;, &lt;=, &gt;=.
+        Operators are lt(&lt;), le(&lt;=), gt(&gt;), and ge(&gt;=)
+
+           Params  : First binary IP, operator, Last binary IP
+           Returns : 1 (yes), 0 (no), or undef (problem)
+
+       &quot;ip_bincomp ($ip1,&apos;lt&apos;,$ip2) == 1 or do {}&quot;
+
+   ip_binadd
+       Add two binary IPs.
+
+           Params  : First binary IP, Last binary IP
+           Returns : Binary sum or undef (problem)
+
+       &quot;$binip = ip_binadd ($bin1,$bin2);&quot;
+
+   ip_get_prefix_length
+       Get the prefix length for a given range of 2 IPs.
+
+           Params  : First binary IP, Last binary IP
+           Returns : Length of prefix or undef (problem)
+
+       &quot;$len = ip_get_prefix_length ($ip1,$ip2);&quot;
+
+   ip_range_to_prefix
+       Return all prefixes between two IPs.
+
+           Params  : First IP, Last IP, IP version
+           Returns : List of Prefixes or undef (problem)
+
+       The prefixes returned have the form q.q.q.q/nn.
+&#12;       &quot;@prefix = ip_range_to_prefix ($ip1,$ip2,6);&quot;
+
+   ip_compress_v4_prefix
+       Compress an IPv4 Prefix.
+
+           Params  : IP, Prefix length
+           Returns : Compressed Prefix
+
+       &quot;$ip = ip_compress_v4_prefix ($ip, $len);&quot;
+
+   ip_compress_address
+       Compress an IPv6 address. Just returns the IP if it is an IPv4.
+
+           Params  : IP, IP version
+           Returns : Compressed IP or undef (problem)
+
+       &quot;$ip = ip_compress_adress ($ip, $version);&quot;
+
+   ip_is_overlap
+       Check if two ranges of IPs overlap.
+
+           Params  : Four binary IPs (begin of range 1,end1,begin2,end2), IP version
+               $IP_PARTIAL_OVERLAP (ranges overlap)
+               $IP_NO_OVERLAP      (no overlap)
+               $IP_A_IN_B_OVERLAP  (range2 contains range1)
+               $IP_B_IN_A_OVERLAP  (range1 contains range2)
+               $IP_IDENTICAL       (ranges are identical)
+               undef               (problem)
+
+       &quot;(ip_is_overlap($rb1,$re1,$rb2,$re2,4) eq $IP_A_IN_B_OVERLAP) and do {};&quot;
+
+   ip_get_embedded_ipv4
+       Get an IPv4 embedded in an IPv6 address
+
+           Params  : IPv6
+           Returns : IPv4 string or undef (not found)
+
+       &quot;$ip4 = ip_get_embedded($ip6);&quot;
+
+   ip_check_mask
+       Check the validity of a binary IP mask
+
+           Params  : Mask
+           Returns : 1 or undef (invalid)
+
+       &quot;ip_check_mask($binmask) or do {};&quot;
+
+       Checks if mask has only 1s followed by 0s.
+
+   ip_aggregate
+       Aggregate 2 ranges of binary IPs
+
+           Params  : 1st range (1st IP, Last IP), last range (1st IP, last IP), IP version
+           Returns : prefix or undef (invalid)
+
+       &quot;$prefix = ip_aggregate ($bip1,$eip1,$bip2,$eip2) || die ...&quot;
+
+   ip_iptype
+       Return the type of an IP (Public, Private, Reserved)
+
+           Params  : IP to test, IP version
+           Returns : type or undef (invalid)
+
+       &quot;$type = ip_iptype ($ip);&quot;
+
+   ip_check_prefix
+       Check the validity of a prefix
+&#12;           Params  : binary IP, length of prefix, IP version
+           Returns : 1 or undef (invalid)
+
+       Checks if the variant part of a prefix only has 0s, and the length is
+       correct.
+
+       &quot;ip_check_prefix ($ip,$len,$ipv) or do {};&quot;
+
+   ip_reverse
+       Get a reverse name from a prefix
+
+           Params  : IP, length of prefix, IP version
+           Returns : Reverse name or undef (error)
+
+       &quot;$reverse = ip_reverse ($ip);&quot;
+
+   ip_normalize
+       Normalize data to a range/prefix of IP addresses
+
+           Params  : Data String (Single IP, Range, Prefix)
+           Returns : ip1, ip2 (if range/prefix) or undef (error)
+
+       &quot;($ip1,$ip2) = ip_normalize ($data);&quot;
+
+   ip_auth
+       Return IP authority information from the IP::Authority module
+
+           Params  : IP, version
+           Returns : Auth info (RI for RIPE, AR for ARIN, etc)
+
+       &quot;$auth = ip_auth ($ip,4);&quot;
+
+       Note: IPv4 only
+
+BUGS
+       The Math::BigInt library is needed for functions that use integers. These
+       are ip_inttobin, ip_bintoint, and the size method. In a next version,
+       Math::BigInt will become optional.
+
+AUTHORS
+       Manuel Valente &lt;manuel.valente@gmail.com&gt;.
+
+       Original IPv4 code by Monica Cortes Sack &lt;mcortes@ripe.net&gt;.
+
+       Original IPv6 code by Lee Wilmot &lt;lee@ripe.net&gt;.
+
+BASED ON
+       ipv4pack.pm, iplib.pm, iplibncc.pm.
+
+SEE ALSO
+       perl(1), IP::Authority
+
+
+
+perl v5.12.3                       2011-05-12                            IP(3pm)
+
+</pre></body></html>

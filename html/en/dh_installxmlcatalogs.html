@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_installxmlcatalogs - install and register XML catalog files</title></head>
+<body><pre>
+
+DH_INSTALLXMLCATALOGS(1)            Debhelper           DH_INSTALLXMLCATALOGS(1)
+
+
+
+NAME
+       dh_installxmlcatalogs - install and register XML catalog files
+
+SYNOPSIS
+       dh_installxmlcatalogs [debhelper options] [-n]
+
+DESCRIPTION
+       dh_installxmlcatalogs is a debhelper program that installs and registers
+       XML catalog files.  It complies with the Debian XML/SGML policy.
+
+       The file debian/package.xmlcatalogs lists the local XML catalog files to
+       be installed per package as well as the XML entities in those local XML
+       catalog files that are to be registered in the XML catalog system.
+
+       The local XML catalog file entries in that file should be of the form
+       &quot;local;source;dest&quot;, where the verbatim &quot;local&quot; indicates this is an
+       entry for a local XML catalog file, &quot;source&quot; indicates where the local
+       XML catalog resides in the source tree, and &quot;dest&quot; indicates the
+       destination location for the local XML catalog under the package build
+       area.  &quot;dest&quot; should start with /usr/share/xml/.
+
+       The entries for the XML entities to be registered in the package XML
+       catalog file should be of the form &quot;package;type;id;catalog&quot;, where the
+       verbatim &quot;package&quot; indicates this is an entry for an XML entity to be
+       registered in the package XML catalog file, &quot;type&quot; indicates the XML
+       entity type (public, system, uri), &quot;id&quot; indicates the XML entity id, and
+       &quot;catalog&quot; indicates the local XML catalog file.
+
+       The entries for the XML entities to be registered in the root XML catalog
+       file should be of the form &quot;root;type;id&quot;, where the verbatim &quot;root&quot;
+       indicates this is an entry for an XML entity to be registered in the root
+       XML catalog file, &quot;type&quot; indicates the XML entity type (public, system,
+       uri), and &quot;id&quot; indicates the XML entity id.
+
+       If an entry for is to be registered identically in the root catalog and
+       the package catalog file, you can use the form
+       &quot;root-and-package;type;id;catalog&quot;, where the verbatim &quot;root-and-package&quot;
+       indicates this is an entry for an XML entity to be registered in both the
+       root and package XML catalog files, &quot;type&quot; indicates the XML entity type
+       (public, system, uri), &quot;id&quot; indicates the XML entity id, and &quot;catalog&quot;
+       indicates the local XML catalog file.
+
+       XML entity types are described in update-xmlcatalog(8).  Using the &quot;root&quot;
+       or &quot;package&quot; commands, a type of &quot;public&quot; will general &quot;delegatePublic&quot;
+       statements in the applicable catalog file. Generally you will want to use
+       the types &quot;public&quot; for any formal public identifiers, and &quot;system&quot; for
+       any files on the local filesystem or URLs.  &quot;uri&quot; is only used for non-
+       local files which are not part of the external document subset, e.g.,
+       they are not used for entities or DTDs.
+
+       dh_installxmlcatalogs automatically adds maintainer script snippets for
+       the registration and unregistration of the listed XML entities in the XML
+       catalog system (unless -n is used).   A dependency on the xml-core
+       package will be added to &quot;${misc:Depends}&quot;, so be sure to use that
+       variable in the file debian/control.  See dh_installdeb(1) for an
+       explanation of Debhelper maintainer script snippets.
+
+OPTIONS
+       -n, --noscripts
+           Do not modify postinst/postrm/prerm scripts.
+
+NOTES
+       Note that this command is not idempotent. &quot;dh_clean -k&quot; should be called
+       between invocations of this command. Otherwise, it may cause multiple
+       instances of the same text to be added to maintainer scripts.
+
+SEE ALSO
+       debhelper(7)
+
+       /usr/share/doc/xml-core/
+
+AUTHOR
+       Ardo van Rangelrooij &lt;ardo@debian.org&gt;
+
+       Adam Di Carlo &lt;aph@debian.org&gt;
+
+
+
+perl v5.14.2                       2012-09-10           DH_INSTALLXMLCATALOGS(1)
+
+</pre></body></html>

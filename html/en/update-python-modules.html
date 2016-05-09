@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>update-python-modules - byte-compile python modules</title></head>
+<body><pre>
+
+UPDATE-PYTHON-MODULES(8)                                UPDATE-PYTHON-MODULES(8)
+
+
+
+NAME
+       update-python-modules - byte-compile python modules
+
+SYNOPSIS
+       update-python-modules [options] [package.public [...]]
+
+DESCRIPTION
+       The update-python-modules command is part of the python-support bundle.
+
+       update-python-modules  is  responsible for the byte-compilation of python
+       modules. When used in byte-compilation mode, it will byte-compile modules
+       references in the files given on the command line. When used in installa&#8208;
+       tion mode, it will byte-compile them once for each installed python  ver&#8208;
+       sion, and will make them available for all of them.
+
+       At each invocation, with or without arguments, update-python-modules will
+       check for installed python versions, and will  build  or  remove  modules
+       according to new or removed versions since the last time it was run.
+
+ARGUMENTS
+       Arguments  must be files or directories located in the /usr/share/python-
+       support directory. Depending on their extension, they are treated differ&#8208;
+       ently.
+
+       package.public
+              A  file  listing public modules to install for each version. These
+              modules must lie in /usr/share/pyshared or /usr/lib/pyshared.
+
+       package.private
+              A file listing private modules to byte-compile for one Python ver&#8208;
+              sion.
+
+       package/
+              A  legacy  directory hierarchy of public modules. The C extensions
+              and portions that change with the Python version are to  be  found
+              in /usr/lib/python-support/pythonX.Y/package/.
+
+       package.dirs
+              A legacy file listing directories where to find private modules.
+
+OPTIONS
+       -h, --help
+              Show summary of options.
+
+       -v, --verbose
+              Detail all actions while they are performed.
+
+       -b, --bytecompile
+              Only  accept  to  work on private modules. When given this option,
+              update-python-modules will fail if  passed  references  to  public
+              modules.
+
+       -i, --install
+              Only  accept  to  work  on public modules. When given this option,
+              update-python-modules will fail if  passed  references  to  public
+              modules.
+
+       -c, --clean
+              Clean modules instead of installing them.
+
+       -a, --rebuild-all
+              Rebuild  all  private  modules. This is necessary when the default
+              python version was changed, for example.
+
+       -f, --force-rebuild-all
+              Clean all modules (public and private), and rebuild them.
+
+FILES
+       /usr/lib/pymodules/pythonX.Y/
+              These directories contain the byte-compiled  modules  for  version
+              pythonX.Y.
+
+SEE ALSO
+       /usr/share/doc/python-support/README.gz
+
+AUTHOR
+       Josselin Mouette &lt;joss@debian.org&gt;.
+
+
+
+                                   18 Feb 2009          UPDATE-PYTHON-MODULES(8)
+
+</pre></body></html>

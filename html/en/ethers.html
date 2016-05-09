@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ethers - Ethernet address to IP number database</title></head>
+<body><pre>
+
+ETHERS(5)                         File formats                         ETHERS(5)
+
+
+
+NAME
+       ethers - Ethernet address to IP number database
+
+DESCRIPTION
+       /etc/ethers contains 48 bit Ethernet addresses and their corresponding IP
+       numbers, one line for each IP number:
+
+              Ethernet-address  IP-number
+
+       The two items are separated by any number of SPACE and/or TAB characters.
+       A  # at the beginning of a line starts a comment which extends to the end
+       of the line.  The Ethernet-address is written as x:x:x:x:x:x, where x  is
+       a  hexadecimal  number  between 0 and ff which represents one byte of the
+       address, which is in network byte order (big-endian).  The IP-number  may
+       be a hostname which can be resolved by DNS or a dot separated number.
+
+EXAMPLES
+       08:00:20:00:61:CA  pal
+
+FILES
+       /etc/ethers
+
+SEE ALSO
+       rarp(8)
+
+
+
+                                 May 15th, 2005                        ETHERS(5)
+
+</pre></body></html>

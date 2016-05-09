@@ -1,0 +1,181 @@
+<html>
+<head><meta charset=utf-8/>
+<title>smtp - Client-side tcl implementation of the smtp protocol</title></head>
+<body><pre>
+
+smtp(3tcl)                         smtp client                        smtp(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       smtp - Client-side tcl implementation of the smtp protocol
+
+SYNOPSIS
+       package require Tcl
+
+       package require mime  ?1.5.4?
+
+       package require smtp  ?1.4.5?
+
+       ::smtp::sendmessage token option...
+
+_________________________________________________________________
+
+DESCRIPTION
+       The  smtp  library  package  provides  the client side of the Simple Mail
+       Transfer Protocol (SMTP) (1) (2).
+
+       ::smtp::sendmessage token option...
+              This command sends the MIME part (see package mime) represented by
+              token  to  an  SMTP server. options is a list of options and their
+              associated values.  The recognized options are:
+
+              -servers
+                     A list of SMTP servers. The default is localhost.
+
+              -ports A list of SMTP ports. The default is 25.
+
+              -client
+                     The name to use as our  hostname  when  connecting  to  the
+                     server.  By  default this is either localhost if one of the
+                     servers is localhost, or is set to the string  returned  by
+                     info hostname.
+
+              -queue Indicates that the SMTP server should be asked to queue the
+                     message for later processing. A boolean value.
+
+              -atleastone
+                     Indicates that the SMTP  server  must  find  at  least  one
+                     recipient  acceptable for the message to be sent. A boolean
+                     value.
+
+              -originator
+                     A string containing an 822-style address specification.  If
+                     present   the  header  isn&apos;t  examined  for  an  originator
+                     address.
+
+              -recipients
+                     A string containing one or more 822-style address  specifi&#8208;
+                     cations. If present the header isn&apos;t examined for recipient
+                     addresses). If the string contains more  than  one  address
+                     they will be separated by commas.
+
+              -header
+                     A  list  containing  two  elements,  an smtp header and its
+                     associated value (the -header option may occur zero or more
+                     times).
+
+              -usetls
+                     This  package  supports  the  RFC 3207 TLS extension (3) by
+                     default provided the tls package is available. You can turn
+                     this off with this boolean option.
+
+              -tlspolicy
+                     This  option  lets you specify a command to be called if an
+                     error occurs during TLS setup. The command is  called  with
+                     the  SMTP code and diagnostic message appended. The command
+                     should return &apos;secure&apos; or &apos;insecure&apos;  where  insecure  will
+                     cause  the  package to continue on the unencrypted channel.
+                     Returning &apos;secure&apos; will cause the socket to be  closed  and
+                     the next server in the -servers list to be tried.
+
+              -username
+
+              -password
+                     If  your SMTP server requires authentication (RFC 2554 (4))
+                     before accepting mail you can use -username  and  -password
+                     to  provide your authentication details to the server. Cur&#8208;
+                     rently this package supports  DIGEST-MD5,  CRAM-MD5,  LOGIN
+                     and  PLAIN  authentication  methods. The most secure method
+                     will be tried first and each method tried in turn until  we
+                     are  either  authorized or we run out of methods. Note that
+                     if the server permits a TLS connection, then the authoriza&#8208;
+                     tion will occur after we begin using the secure channel.
+
+                     Please  also read the section on Authentication, it details
+                     the necessary prequisites, i.e. packages needed to  support
+                     these options and authentication.
+
+       If the -originator option is not present, the originator address is taken
+       from From (or Resent-From); similarly, if the -recipients option  is  not
+       present,  recipient  addresses are taken from To, cc, and Bcc (or Resent-
+       To, and so on). Note that the header key/values supplied by  the  -header
+       option  (not  those  present in the MIME part) are consulted. Regardless,
+       header key/values are added to  the  outgoing  message  as  necessary  to
+       ensure that a valid 822-style message is sent.
+
+       The  command returns a list indicating which recipients were unacceptable
+       to the SMTP server. Each element of the list is another list,  containing
+       the  address,  an SMTP error code, and a textual diagnostic. Depending on
+       the -atleastone option and the intended recipients, a non-empty list  may
+       still indicate that the message was accepted by the server.
+
+AUTHENTICATION
+       Beware.  SMTP authentication uses SASL. I.e. if the user has to authenti&#8208;
+       cate a connection, i.e. use the options -user and -password  (see  above)
+       it  is necessary to have the sasl package available so that smtp can load
+       it.
+
+       This is a soft dependency because not everybody requires  authentication,
+       and  sasl depends on a lot of the cryptographic (secure) hashes, i.e. all
+       of md5, otp, md4, sha1, and ripemd160.
+
+EXAMPLE
+              proc send_simple_message {recipient email_server subject body} {
+                  package require smtp
+                  package require mime
+
+                  set token [mime::initialize -canonical text/plain \\
+                -string $body]
+                  mime::setheader $token Subject $subject
+                  smtp::sendmessage $token \\
+                -recipients $recipient -servers $email_server
+                  mime::finalize $token
+              }
+
+              send_simple_message someone@somewhere.com localhost \\
+                  &quot;This is the subject.&quot; &quot;This is the message.&quot;
+
+
+REFERENCES
+       [1]    Jonathan B. Postel, &quot;SIMPLE  MAIL  TRANSFER  PROTOCOL&quot;,  RFC  821,
+              August 1982.  (http://www.rfc-editor.org/rfc/rfc821.txt)
+
+       [2]    J. Klensin, &quot;Simple Mail Transfer Protocol&quot;, RFC 2821, April 2001.
+              (http://www.rfc-editor.org/rfc/rfc2821.txt)
+
+       [3]    P. Hoffman, &quot;SMTP Service Extension for Secure SMTP over Transport
+              Layer  Security&quot;,  RFC  3207, February 2002.  (http://www.rfc-edi&#8208;
+              tor.org/rfc/rfc3207.txt)
+
+       [4]    J. Myers, &quot;SMTP Service Extension for Authentication&quot;,  RFC  2554,
+              March 1999.  (http://www.rfc-editor.org/rfc/rfc2554.txt)
+
+BUGS, IDEAS, FEEDBACK
+       This  document,  and  the  package it describes, will undoubtedly contain
+       bugs and other problems.  Please report such in the category smtp of  the
+       Tcllib   SF   Trackers  [http://sourceforge.net/tracker/?group_id=12883].
+       Please also report any ideas for enhancements you  may  have  for  either
+       package and/or documentation.
+
+SEE ALSO
+       ftp, http, mime, pop3
+
+KEYWORDS
+       email,  internet, mail, mime, net, rfc 2554, rfc 2821, rfc 3207, rfc 821,
+       rfc 822, smtp, tls
+
+CATEGORY
+       Networking
+
+COPYRIGHT
+       Copyright (c) 1999-2000 Marshall T. Rose and others
+
+
+
+
+mime                                  1.4.5                           smtp(3tcl)
+
+</pre></body></html>

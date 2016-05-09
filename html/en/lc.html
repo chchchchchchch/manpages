@@ -1,0 +1,95 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lc - Mono License Compiler</title></head>
+<body><pre>
+
+lc(Mono 2.6)                                                        lc(Mono 2.6)
+
+
+
+NAME
+       lc - Mono License Compiler
+
+SYNOPSIS
+       lc  -c  filename -t targetassembly [-i reference...] [-v] [-o outputpath]
+       [-nologo]
+
+DESCRIPTION
+       lc tool  is  a  license  compiler  for  Mono.  It&apos;s  used  to  convert  a
+       licenses.licx file to a resource that can be embedded into an executable.
+
+       When  using  commercial  components for .NET they often require a license
+       resource at runtime to make sure the developer was licensed to  use  this
+       control.  The  most  common way of making sure the component was properly
+       licensed is by using license resources. At  compile  time  the  developer
+       uses  the  lc  tool  to  convert  a  licenses.licx  file  to  a  program&#8208;
+       name.exe.licenses file and embed that as a managed resource during compi&#8208;
+       lation.
+
+RUNTIME OPTIONS
+       The following options are available:
+
+       --complist=filename, -c filename
+              This  option  is used to specify the input file, the licenses.licx
+              file to create a license reesource for. This option  is  required.
+              The  license  compiler will read each line in this file and try to
+              load the types specified on that line.
+
+       --target=assemblyname, -t targetassembly
+              full assembly name with file extension for  the  target  assembly.
+              The  license  compiler  uses  this  as  a  key  when compiling the
+              licenses. It has to match the assembly the resource will be embed&#8208;
+              ded in. This option is required.
+
+       --load=reference, -i reference
+              Assembly  reference  to  load  before trying to compile a license.
+              This option is needed for assemblies where the references are  not
+              in  the  gac.  Compilers should pass all references to the license
+              compiler.
+
+       --verbose,, -v
+              Gives more verbose output about the license compiling process.
+
+       --help, -h
+              Displays usage instructions.
+
+       --outdir=path, -o path
+              Target path file the licenses resource.  By  default  the  license
+              compiler emits the resource in the current directory. The filename
+              will always match the target  assembly  passed  to  --target  with
+              .licenses added.
+
+       --nologo
+              Do not emit the &quot;Mono License Compiler&quot; logo  on stdout while com&#8208;
+              pilng.
+
+
+LICENSE FILES
+       The format for the license files (licenses.licx) is the following:
+            # comment
+            namespace.type, assemblyname
+            namespace.type, full-assemblyname
+
+       All lines starting with a # are ignored. the first form requires that the
+       assembly was loaded through the --load,-i option but does not require the
+       full assembly name, only the first part.
+
+       The second form requires the full assembly name including locale, version
+       and publickeytoken.
+
+
+MAILING LISTS
+       Mailing lists are listed at the http://www.mono-project.com/Mailing_Lists
+
+WEB SITE
+       http://www.mono-project.com
+
+SEE ALSO
+       mono(1), mcs(1)
+
+
+
+
+                                                                    lc(Mono 2.6)
+
+</pre></body></html>

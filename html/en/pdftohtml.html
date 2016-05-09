@@ -1,0 +1,99 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdftohtml - program to convert PDF files into HTML, XML and PNG images</title></head>
+<body><pre>
+
+PDFTOHTML(1)                                                        PDFTOHTML(1)
+
+
+
+NAME
+       pdftohtml - program to convert PDF files into HTML, XML and PNG images
+
+SYNOPSIS
+       pdftohtml [options] &lt;PDF-file&gt; [&lt;HTML-file&gt; &lt;XML-file&gt;]
+
+DESCRIPTION
+       This  manual  page  documents briefly the pdftohtml command.  This manual
+       page was written for the Debian GNU/Linux distribution because the origi&#8208;
+       nal program does not have a manual page.
+
+       pdftohtml  is  a program that converts PDF documents into HTML. It gener&#8208;
+       ates its output in the current working directory.
+
+OPTIONS
+       A summary of options are included below.
+
+       -h, -help
+              Show summary of options.
+
+       -f &lt;int&gt;
+              first page to print
+
+       -l &lt;int&gt;
+              last page to print
+
+       -q     do not print any messages or errors
+
+       -v     print copyright and version info
+
+       -p     exchange .pdf links with .html
+
+       -c     generate complex output
+
+       -s     generate single HTML that includes all pages
+
+       -i     ignore images
+
+       -noframes
+              generate no frames. Not supported in complex output mode.
+
+       -stdout
+              use standard output
+
+       -zoom &lt;fp&gt;
+              zoom the PDF document (default 1.5)
+
+       -xml   output for XML post-processing
+
+       -enc &lt;string&gt;
+              output text encoding name
+
+       -opw &lt;string&gt;
+              owner password (for encrypted files)
+
+       -upw &lt;string&gt;
+              user password (for encrypted files)
+
+       -hidden
+              force hidden text extraction
+
+       -dev   output device name for Ghostscript  (png16m,  jpeg  etc).   Unless
+              this option is specified, Splash will be used
+
+       -fmt   image  file  format for Splash output (png or jpg).  If complex is
+              selected, but neither -fmt or -dev are specified, -fmt png will be
+              assumed
+
+       -nomerge
+              do not merge paragraphs
+
+       -nodrm override document DRM settings
+
+
+AUTHOR
+       Pdftohtml  was  developed  by Gueorgui Ovtcharov and Rainer Dorsch. It is
+       based and benefits a lot from Derek Noonburg&apos;s xpdf package.
+
+       This manual page was written by S&#195;&#184;ren Boll Overgaard  &lt;boll@debian.org&gt;,
+       for the Debian GNU/Linux system (but may be used by others).
+
+SEE ALSO
+       pdffonts(1),   pdfimages(1),   pdfinfo(1),   pdftocairo(1),  pdftoppm(1),
+       pdftops(1), pdftotext(1)
+
+
+
+                                                                    PDFTOHTML(1)
+
+</pre></body></html>

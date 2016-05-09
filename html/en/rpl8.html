@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rpl8 - Firmware loader for DVD drives</title></head>
+<body><pre>
+
+rpl8(8)                                                                  rpl8(8)
+
+
+
+NAME
+       rpl8 - Firmware loader for DVD drives
+
+SYNOPSIS
+       rpl8 /dev/cdrom [-[dump-only]|firmwarefile]
+
+DESCRIPTION
+       rpl8  is a program for Linux 2.4 and upwards that uploads firmware to DVD
+       drives (mostly DVD+RW).
+
+       rpl8 stands for RICOH Program Loader 8, though it also  supports  Program
+       Loader 9.
+
+       The  program  never updates Program Loader code so that you should always
+       be able to downgrade your firmware in case something goes wrong.
+
+       So far rpl8 has been tested with the following:
+       * HP dvd100i
+       * Ricoh MP5120A
+       * Philips DVDRW208
+       * HP dvd200i
+
+       To run rpl8 correctly, make sure you have no media in drive.   Optionally
+       go to single user mode and reboot after uploading the new firmware.
+
+OPTIONS
+       -[dump-only]
+              Only  backs  up  the firmware.  Note that you might have to reboot
+              even after this.
+
+BUGS
+       Getting messages like this is &quot;normal&quot;
+
+              ide-scsi: Strange, packet command initiated yet DRQ isn&apos;t asserted
+
+AUTHOR
+       rpl8 is in public domain.
+
+       This manual page was written by  Elias  Kunnas  &lt;elias_kunnas@welho.com&gt;,
+       for the Debian project (but may be used by others).
+
+
+
+                                15 September 2005                        rpl8(8)
+
+</pre></body></html>

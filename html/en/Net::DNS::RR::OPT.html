@@ -1,0 +1,99 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::OPT - DNS OPT</title></head>
+<body><pre>
+
+Net::DNS::RR::OPT(3pm) User Contributed Perl DocumentationNet::DNS::RR::OPT(3pm)
+
+
+
+NAME
+       Net::DNS::RR::OPT - DNS OPT
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for EDNS pseudo resource record OPT.
+
+METHODS
+       This object should only be used inside the Net::DNS classes itself.
+
+   new
+       Since &quot;OPT&quot; is a pseudo record and should not be stored in masterfiles;
+       Therefore we have not implemented a method to create this RR from string.
+
+       One may create the object from a hash. See RFC 2671 for details for the
+       meaning of the hash keys.
+
+        $rr= Net::DNS::RR-&gt;new (
+           name =&gt; &quot;&quot;,                # Ignored and set to &quot;&quot;
+           type =&gt; &quot;OPT&quot;,
+           class =&gt; 1024,             # sets UDP payload size
+           extendedrcode =&gt;  0x00,    # sets the extended RCODE 1 octets
+           ednsflags     =&gt;  0x0000,  # sets the ednsflags (2octets)
+           optioncode   =&gt;   0x0,     # 2 octets
+           optiondata   =&gt;   0x0      # optionlength octets
+        );
+
+       The ednsversion is set to 0 for now. The ttl value is determined from the
+       extendedrcode, the ednsversion and the ednsflag.  The rdata is
+       constructed from the optioncode and optiondata see section 4.4 of RFC
+       2671
+
+       If optioncode is left undefined then we do not expect any RDATA.
+
+       The defaults are no rdata.
+
+   do, set_do, clear_do
+           $opt-&gt;set_do;
+
+       Reads, sets and clears the do flag. (first bit in the ednssflags);
+
+   size
+           $opt-&gt;size(1498);
+           print &quot;Packet size:&quot;. $opt-&gt;size() ;
+
+       Sets or gets the packet size.
+
+TODO
+       - This class is tailored to use with dnssec.
+
+       - Do some range checking on the input.
+
+       - This class probably needs subclasses once OPTION codes start to be
+       defined.
+
+       - look at use of extended labels
+
+COPYRIGHT
+       Copyright (c) 2001, 2002  RIPE NCC.  Author Olaf M. Kolkman
+&#12;       All Rights Reserved
+
+       Permission to use, copy, modify, and distribute this software and its
+       documentation for any purpose and without fee is hereby granted, provided
+       that the above copyright notice appear in all copies and that both that
+       copyright notice and this permission notice appear in supporting
+       documentation, and that the name of the author not be used in advertising
+       or publicity pertaining to distribution of the software without specific,
+       written prior permission.
+
+       THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+       INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS; IN NO
+       EVENT SHALL AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL
+       DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+       PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+       ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+       THIS SOFTWARE.
+
+       Based on, and contains, code by Copyright (c) 1997-2002 Michael Fuhr.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 2435 Section 3
+
+
+
+perl v5.14.2                       2009-12-30             Net::DNS::RR::OPT(3pm)
+
+</pre></body></html>

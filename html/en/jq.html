@@ -1,0 +1,1760 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jq - Command-line JSON processor</title></head>
+<body><pre>
+
+JQ(1)                                                                      JQ(1)
+
+
+
+NAME
+       jq - Command-line JSON processor
+
+SYNOPSIS
+       jq [options...] filter [files...]
+
+       jq  can transform JSON in various ways, by selecting, iterating, reducing
+       and otherwise mangling JSON documents. For instance, running the  command
+       jq  &#180;map(.price)  |  add&#180; will take an array of JSON objects as input and
+       return the sum of their &quot;price&quot; fields.
+
+       By default, jq reads a stream of JSON objects (whitespace separated) from
+       stdin.  One  or  more  files may be specified, in which case jq will read
+       input from those instead.
+
+       The options are described in the INVOKING JQ section, they mostly concern
+       input and output formatting. The filter is written in the jq language and
+       specifies how to transform the input document.
+
+FILTERS
+       A jq program is a &quot;filter&quot;: it takes an input, and  produces  an  output.
+       There  are  a lot of builtin filters for extracting a particular field of
+       an object, or converting a number to a string, or various other  standard
+       tasks.
+
+       Filters  can be combined in various ways - you can pipe the output of one
+       filter into another filter, or collect the output of  a  filter  into  an
+       array.
+
+       Some filters produce multiple results, for instance there&#180;s one that pro&#8208;
+       duces all the elements of its input array. Piping that filter into a sec&#8208;
+       ond  runs  the  second  filter  for each element of the array. Generally,
+       things that would be done with loops and iteration in other languages are
+       just done by gluing filters together in jq.
+
+       It&#180;s  important to remember that every filter has an input and an output.
+       Even literals like &quot;hello&quot; or 42 are filters - they  take  an  input  but
+       always  produce  the  same literal as output. Operations that combine two
+       filters, like addition, generally feed the same input to both and combine
+       the  results. So, you can implement an averaging filter as add / length -
+       feeding the input array both to the add filter and the length filter  and
+       dividing the results.
+
+       But that&#180;s getting ahead of ourselves. :) Let&#180;s start with something sim&#8208;
+       pler:
+
+INVOKING JQ
+       jq filters run on a stream of JSON data. The input to jq is parsed  as  a
+       sequence of whitespace-separated JSON values which are passed through the
+       provided filter one at a time. The output(s) of the filter are written to
+       standard out, again as a sequence of whitespace-separated JSON data.
+
+       Note:  it  is  important  to mind the shell&#180;s quoting rules. As a general
+       rule it&#180;s best to always quote (with single-quote characters) the jq pro&#8208;
+       gram,  as  too  many characters with special meaning to jq are also shell
+       meta-characters. For example, jq &quot;foo&quot; will  fail  on  most  Unix  shells
+       because  that  will  be  the  same  as  jq foo, which will generally fail
+       because foo  is  not  defined.  When  using  the  Windows  command  shell
+       (cmd.exe)  it&#180;s  best  to  use  double quotes around your jq program when
+       given on the command-line (instead of the -f  program-file  option),  but
+       then double-quotes in the jq program need backslash escaping.
+&#12;       You  can  affect  how jq reads and writes its input and output using some
+       command-line options:
+
+       &#183;   --version:
+
+           Output the jq version and exit with zero.
+
+       &#183;   --slurp/-s:
+
+           Instead of running the filter for each JSON object in the input, read
+           the  entire  input  stream into a large array and run the filter just
+           once.
+
+       &#183;   --online-input/-I:
+
+           When the top-level input value  is  an  array  produce  its  elements
+           instead  of  the array. This allows on-line processing of potentially
+           very large top-level arrays&#180; elements.
+
+       &#183;   --raw-input/-R:
+
+           Don&#180;t parse the input as JSON. Instead, each line of text  is  passed
+           to  the filter as a string. If combined with --slurp, then the entire
+           input is passed to the filter as a single long string.
+
+       &#183;   --null-input/-n:
+
+           Don&#180;t read any input at all! Instead, the filter is  run  once  using
+           null  as the input. This is useful when using jq as a simple calcula&#8208;
+           tor or to construct JSON data from scratch.
+
+       &#183;   --compact-output / -c:
+
+           By default, jq pretty-prints JSON  output.  Using  this  option  will
+           result  in more compact output by instead putting each JSON object on
+           a single line.
+
+       &#183;   --colour-output / -C and --monochrome-output / -M:
+
+           By default, jq outputs colored JSON if writing to a terminal. You can
+           force  it  to produce color even if writing to a pipe or a file using
+           -C, and disable color with -M.
+
+       &#183;   --ascii-output / -a:
+
+           jq usually outputs non-ASCII Unicode codepoints as UTF-8, even if the
+           input  specified them as escape sequences (like &quot;\u03bc&quot;). Using this
+           option, you can force jq to produce  pure  ASCII  output  with  every
+           non-ASCII character replaced with the equivalent escape sequence.
+
+       &#183;   --unbuffered
+
+           Flush  the output after each JSON object is printed (useful if you&#180;re
+           piping a slow data source into jq and piping jq&#180;s output elsewhere).
+
+       &#183;   --sort-keys / -S:
+
+           Output the fields of each object with the keys in sorted order.
+
+       &#183;   --raw-output / -r:
+
+           With this option, if the filter&#180;s result is a string then it will  be
+           written  directly to standard output rather than being formatted as a
+           JSON string with quotes. This can be useful  for  making  jq  filters
+           talk to non-JSON-based systems.
+&#12;       &#183;   -f filename / --from-file filename:
+
+           Read filter from the file rather than from a command line, like awk&#180;s
+           -f option. You can also use &#180;#&#180; to make comments.
+
+       &#183;   -e / --exit-status:
+
+           Sets the exit status of jq to 0 if the last output values was neither
+           false  nor null, 1 if the last output value was either false or null,
+           or 4 if no valid result was ever produced. Normally jq exits  with  2
+           if  there  was any usage problem or system error, 3 if there was a jq
+           program compile error, or 0 if the jq program ran.
+
+       &#183;   --arg name value:
+
+           This option passes a value to the jq program as  a  predefined  vari&#8208;
+           able. If you run jq with --arg foo bar, then $foo is available in the
+           program and has the value &quot;bar&quot;.
+
+       &#183;   --argfile name filename:
+
+           This option passes the first value from the named file as a value  to
+           the jq program as a predefined variable. If you run jq with --argfile
+           foo bar, then $foo is available in the  program  and  has  the  value
+           resulting from parsing the content of the file named bar.
+
+
+
+BASIC FILTERS
+   .
+       The absolute simplest (and least interesting) filter is .. This is a fil&#8208;
+       ter that takes its input and produces it unchanged as output.
+
+       Since jq by default pretty-prints all output, this trivial program can be
+       a useful way of formatting JSON output from, say, curl.
+
+
+
+           jq &#180;.&#180;
+              &quot;Hello, world!&quot;
+           =&gt; &quot;Hello, world!&quot;
+
+
+
+   .foo, .foo.bar
+       The simplest useful filter is .foo. When given a JSON object (aka dictio&#8208;
+       nary or hash) as input, it produces the value at the key &quot;foo&quot;,  or  null
+       if there&#180;s none present.
+
+       If the key contains special characters, you need to surround it with dou&#8208;
+       ble quotes like this: .&quot;foo$&quot;.
+
+       A filter of the form .foo.bar is equivalent to .foo|.bar.
+
+
+
+           jq &#180;.foo&#180;
+              {&quot;foo&quot;: 42, &quot;bar&quot;: &quot;less interesting data&quot;}
+           =&gt; 42
+
+           jq &#180;.foo&#180;
+              {&quot;notfoo&quot;: true, &quot;alsonotfoo&quot;: false}
+           =&gt; null
+
+           jq &#180;.[&quot;foo&quot;]&#180;
+              {&quot;foo&quot;: 42}
+           =&gt; 42
+
+
+
+   .foo?
+       Just like .foo, but does not output even an error when . is not an  array
+       or an object.
+
+
+
+           jq &#180;.foo?&#180;
+              {&quot;foo&quot;: 42, &quot;bar&quot;: &quot;less interesting data&quot;}
+           =&gt; 42
+
+           jq &#180;.foo?&#180;
+              {&quot;notfoo&quot;: true, &quot;alsonotfoo&quot;: false}
+           =&gt; null
+
+           jq &#180;.[&quot;foo&quot;]?&#180;
+              {&quot;foo&quot;: 42}
+           =&gt; 42
+
+           jq &#180;[.foo?]&#180;
+              [1,2]
+           =&gt; []
+
+
+
+   .[&lt;string&gt;], .[2], .[10:15]
+       You can also look up fields of an object using syntax like .[&quot;foo&quot;] (.foo
+       above is a shorthand version of this). This one works for arrays as well,
+       if  the  key  is  an integer. Arrays are zero-based (like javascript), so
+       .[2] returns the third element of the array.
+
+       The .[10:15] syntax can be used to return a subarray of an array or  sub&#8208;
+       string  of  a string. The array returned by .[10:15] will be of length 5,
+       containing the elements from index 10 (inclusive)  to  index  15  (exclu&#8208;
+       sive).  Either  index  may be negative (in which case it counts backwards
+       from the end of the array), or omitted (in which case it  refers  to  the
+       start or end of the array).
+
+       The  ?  &quot;operator&quot;  can  also  be  used  with  the  slice operator, as in
+       .[10:15]?, which outputs values where the inputs are slice-able.
+
+
+
+           jq &#180;.[0]&#180;
+              [{&quot;name&quot;:&quot;JSON&quot;, &quot;good&quot;:true}, {&quot;name&quot;:&quot;XML&quot;, &quot;good&quot;:false}]
+           =&gt; {&quot;name&quot;:&quot;JSON&quot;, &quot;good&quot;:true}
+
+           jq &#180;.[2]&#180;
+              [{&quot;name&quot;:&quot;JSON&quot;, &quot;good&quot;:true}, {&quot;name&quot;:&quot;XML&quot;, &quot;good&quot;:false}]
+           =&gt; null
+
+           jq &#180;.[2:4]&#180;
+              [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;]
+           =&gt; [&quot;c&quot;, &quot;d&quot;]
+
+           jq &#180;.[2:4]&#180;
+              &quot;abcdefghi&quot;
+           =&gt; &quot;cd&quot;
+
+           jq &#180;.[:3]&#180;
+              [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;]
+           =&gt; [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+&#12;           jq &#180;.[-2:]&#180;
+              [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;]
+           =&gt; [&quot;d&quot;, &quot;e&quot;]
+
+
+
+   .[]
+       If you use the .[index] syntax, but omit  the  index  entirely,  it  will
+       return  all  of  the  elements  of  an  array. Running .[] with the input
+       [1,2,3] will produce the numbers as three separate results,  rather  than
+       as a single array.
+
+       You  can also use this on an object, and it will return all the values of
+       the object.
+
+
+
+           jq &#180;.[]&#180;
+              [{&quot;name&quot;:&quot;JSON&quot;, &quot;good&quot;:true}, {&quot;name&quot;:&quot;XML&quot;, &quot;good&quot;:false}]
+           =&gt; {&quot;name&quot;:&quot;JSON&quot;, &quot;good&quot;:true}, {&quot;name&quot;:&quot;XML&quot;, &quot;good&quot;:false}
+
+           jq &#180;.[]&#180;
+              []
+           =&gt;
+
+           jq &#180;.[]&#180;
+              {&quot;a&quot;: 1, &quot;b&quot;: 1}
+           =&gt; 1, 1
+
+
+
+   .[]?
+       Like .[], but no errors will be output if . is not an array or object.
+
+   ,
+       If two filters are separated by a comma, then the input will be fed  into
+       both  and  there will be multiple outputs: first, all of the outputs pro&#8208;
+       duced by the left expression, and then all of the outputs produced by the
+       right.  For  instance,  filter .foo, .bar, produces both the &quot;foo&quot; fields
+       and &quot;bar&quot; fields as separate outputs.
+
+
+
+           jq &#180;.foo, .bar&#180;
+              {&quot;foo&quot;: 42, &quot;bar&quot;: &quot;something else&quot;, &quot;baz&quot;: true}
+           =&gt; 42, &quot;something else&quot;
+
+           jq &#180;.user, .projects[]&#180;
+              {&quot;user&quot;:&quot;stedolan&quot;, &quot;projects&quot;: [&quot;jq&quot;, &quot;wikiflow&quot;]}
+           =&gt; &quot;stedolan&quot;, &quot;jq&quot;, &quot;wikiflow&quot;
+
+           jq &#180;.[4,2]&#180;
+              [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;]
+           =&gt; &quot;e&quot;, &quot;c&quot;
+
+
+
+   |
+       The | operator combines two filters by feeding the output(s) of  the  one
+       on  the left into the input of the one on the right. It&#180;s pretty much the
+       same as the Unix shell&#180;s pipe, if you&#180;re used to that.
+
+       If the one on the left produces multiple results, the one  on  the  right
+       will  be  run  for  each  of those results. So, the expression .[] | .foo
+       retrieves the &quot;foo&quot; field of each element of the input array.
+&#12;
+
+           jq &#180;.[] | .name&#180;
+              [{&quot;name&quot;:&quot;JSON&quot;, &quot;good&quot;:true}, {&quot;name&quot;:&quot;XML&quot;, &quot;good&quot;:false}]
+           =&gt; &quot;JSON&quot;, &quot;XML&quot;
+
+
+
+TYPES AND VALUES
+       jq supports the same set of datatypes as JSON - numbers,  strings,  bool&#8208;
+       eans,  arrays,  objects  (which in JSON-speak are hashes with only string
+       keys), and &quot;null&quot;.
+
+       Booleans, null, strings and numbers  are  written  the  same  way  as  in
+       javascript.  Just like everything else in jq, these simple values take an
+       input and produce an output - 42 is a valid jq expression that  takes  an
+       input, ignores it, and returns 42 instead.
+
+   Array construction - []
+       As  in  JSON, [] is used to construct arrays, as in [1,2,3]. The elements
+       of the arrays can be any jq expression. All of the  results  produced  by
+       all  of  the expressions are collected into one big array. You can use it
+       to construct an array out of a known quantity of  values  (as  in  [.foo,
+       .bar,  .baz])  or  to &quot;collect&quot; all the results of a filter into an array
+       (as in [.items[].name])
+
+       Once you understand the &quot;,&quot; operator, you can look at jq&#180;s  array  syntax
+       in a different light: the expression [1,2,3] is not using a built-in syn&#8208;
+       tax for comma-separated arrays, but is instead applying the  []  operator
+       (collect results) to the expression 1,2,3 (which produces three different
+       results).
+
+       If you have a filter X that produces four results,  then  the  expression
+       [X] will produce a single result, an array of four elements.
+
+
+
+           jq &#180;[.user, .projects[]]&#180;
+              {&quot;user&quot;:&quot;stedolan&quot;, &quot;projects&quot;: [&quot;jq&quot;, &quot;wikiflow&quot;]}
+           =&gt; [&quot;stedolan&quot;, &quot;jq&quot;, &quot;wikiflow&quot;]
+
+
+
+   Objects - {}
+       Like  JSON,  {} is for constructing objects (aka dictionaries or hashes),
+       as in: {&quot;a&quot;: 42, &quot;b&quot;: 17}.
+
+       If the keys are &quot;sensible&quot; (all alphabetic characters), then  the  quotes
+       can  be  left off. The value can be any expression (although you may need
+       to wrap it in parentheses if it&#180;s a complicated one), which gets  applied
+       to  the {} expression&#180;s input (remember, all filters have an input and an
+       output).
+
+
+
+           {foo: .bar}
+
+
+
+       will produce the JSON  object  {&quot;foo&quot;:  42}  if  given  the  JSON  object
+       {&quot;bar&quot;:42,  &quot;baz&quot;:43}. You can use this to select particular fields of an
+       object: if the input is an object with &quot;user&quot;, &quot;title&quot;, &quot;id&quot;,  and  &quot;con&#8208;
+       tent&quot; fields and you just want &quot;user&quot; and &quot;title&quot;, you can write
+&#12;           {user: .user, title: .title}
+
+
+
+       Because that&#180;s so common, there&#180;s a shortcut syntax: {user, title}.
+
+       If  one of the expressions produces multiple results, multiple dictionar&#8208;
+       ies will be produced. If the input&#180;s
+
+
+
+           {&quot;user&quot;:&quot;stedolan&quot;,&quot;titles&quot;:[&quot;JQ Primer&quot;, &quot;More JQ&quot;]}
+
+
+
+       then the expression
+
+
+
+           {user, title: .titles[]}
+
+
+
+       will produce two outputs:
+
+
+
+           {&quot;user&quot;:&quot;stedolan&quot;, &quot;title&quot;: &quot;JQ Primer&quot;}
+           {&quot;user&quot;:&quot;stedolan&quot;, &quot;title&quot;: &quot;More JQ&quot;}
+
+
+
+       Putting parentheses around the key means  it  will  be  evaluated  as  an
+       expression. With the same input as above,
+
+
+
+           {(.user): .titles}
+
+
+
+       produces
+
+
+
+           {&quot;stedolan&quot;: [&quot;JQ Primer&quot;, &quot;More JQ&quot;]}
+
+           jq &#180;{user, title: .titles[]}&#180;
+              {&quot;user&quot;:&quot;stedolan&quot;,&quot;titles&quot;:[&quot;JQ Primer&quot;, &quot;More JQ&quot;]}
+           =&gt; {&quot;user&quot;:&quot;stedolan&quot;, &quot;title&quot;: &quot;JQ Primer&quot;}, {&quot;user&quot;:&quot;stedolan&quot;, &quot;title&quot;: &quot;More JQ&quot;}
+
+           jq &#180;{(.user): .titles}&#180;
+              {&quot;user&quot;:&quot;stedolan&quot;,&quot;titles&quot;:[&quot;JQ Primer&quot;, &quot;More JQ&quot;]}
+           =&gt; {&quot;stedolan&quot;: [&quot;JQ Primer&quot;, &quot;More JQ&quot;]}
+
+
+
+BUILTIN OPERATORS AND FUNCTIONS
+       Some  jq  operator (for instance, +) do different things depending on the
+       type of their arguments (arrays, numbers, etc.). However, jq  never  does
+       implicit type conversions. If you try to add a string to an object you&#180;ll
+       get an error message and no result.
+
+   Addition - +
+       The operator + takes two filters, applies them both to  the  same  input,
+       and  adds  the results together. What &quot;adding&quot; means depends on the types
+       involved:
+
+       &#183;   Numbers are added by normal arithmetic.
+
+       &#183;   Arrays are added by being concatenated into a larger array.
+
+       &#183;   Strings are added by being joined into a larger string.
+
+       &#183;   Objects are added by merging, that is, inserting  all  the  key-value
+           pairs  from  both  objects  into  a  single  combined object. If both
+           objects contain a value for the same key, the object on the right  of
+           the + wins. (For recursive merge use the * operator.)
+
+
+
+       null can be added to any value, and returns the other value unchanged.
+
+
+
+           jq &#180;.a + 1&#180;
+              {&quot;a&quot;: 7}
+           =&gt; 8
+
+           jq &#180;.a + .b&#180;
+              {&quot;a&quot;: [1,2], &quot;b&quot;: [3,4]}
+           =&gt; [1,2,3,4]
+
+           jq &#180;.a + null&#180;
+              {&quot;a&quot;: 1}
+           =&gt; 1
+
+           jq &#180;.a + 1&#180;
+              {}
+           =&gt; 1
+
+           jq &#180;{a: 1} + {b: 2} + {c: 3} + {a: 42}&#180;
+              null
+           =&gt; {&quot;a&quot;: 42, &quot;b&quot;: 2, &quot;c&quot;: 3}
+
+
+
+   Subtraction - -
+       As  well  as normal arithmetic subtraction on numbers, the - operator can
+       be used on arrays to remove all occurences of the second array&#180;s elements
+       from the first array.
+
+
+
+           jq &#180;4 - .a&#180;
+              {&quot;a&quot;:3}
+           =&gt; 1
+
+           jq &#180;. - [&quot;xml&quot;, &quot;yaml&quot;]&#180;
+              [&quot;xml&quot;, &quot;yaml&quot;, &quot;json&quot;]
+           =&gt; [&quot;json&quot;]
+
+
+
+   Multiplication, division, modulo - *, /, and %
+       These operators only work on numbers, and do the expected.
+
+       Multiplying  a  string  by  a  number  produces the concatenation of that
+       string that many times.
+
+       Dividing a string by another splits the first using the second as separa&#8208;
+       tors.
+
+       Multiplying  two  objects  will  merge  them recursively: this works like
+       addition but if both objects contain a value for the same  key,  and  the
+       values are objects, the two are merged with the same strategy.
+
+
+
+           jq &#180;10 / . * 3&#180;
+              5
+           =&gt; 6
+
+           jq &#180;. / &quot;, &quot;&#180;
+              &quot;a, b,c,d, e&quot;
+           =&gt; [&quot;a&quot;,&quot;b,c,d&quot;,&quot;e&quot;]
+
+           jq &#180;{&quot;k&quot;: {&quot;a&quot;: 1, &quot;b&quot;: 2}} * {&quot;k&quot;: {&quot;a&quot;: 0,&quot;c&quot;: 3}}&#180;
+              null
+           =&gt; {&quot;k&quot;: {&quot;a&quot;: 0, &quot;b&quot;: 2, &quot;c&quot;: 3}}
+
+
+
+   length
+       The builtin function length gets the length of various different types of
+       value:
+
+       &#183;   The length of a string is the number of Unicode  codepoints  it  con&#8208;
+           tains  (which will be the same as its JSON-encoded length in bytes if
+           it&#180;s pure ASCII).
+
+       &#183;   The length of an array is the number of elements.
+
+       &#183;   The length of an object is the number of key-value pairs.
+
+       &#183;   The length of null is zero.
+
+           jq &#180;.[] | length&#180;
+
+
+
+            [[1,2], &quot;string&quot;, {&quot;a&quot;:2}, null]
+
+
+
+       =&gt; 2, 6, 1, 0
+
+
+
+   keys
+       The builtin function keys, when given an object, returns its keys  in  an
+       array.
+
+       The keys are sorted &quot;alphabetically&quot;, by unicode codepoint order. This is
+       not an order that makes particular sense in any particular language,  but
+       you  can count on it being the same for any two objects with the same set
+       of keys, regardless of locale settings.
+
+       When keys is given an array, it returns the valid indices for that array:
+       the integers from 0 to length-1.
+
+
+
+           jq &#180;keys&#180;
+              {&quot;abc&quot;: 1, &quot;abcd&quot;: 2, &quot;Foo&quot;: 3}
+           =&gt; [&quot;Foo&quot;, &quot;abc&quot;, &quot;abcd&quot;]
+
+           jq &#180;keys&#180;
+              [42,3,35]
+           =&gt; [0,1,2]
+
+
+
+   has
+       The  builtin  function has returns whether the input object has the given
+       key, or the input array has an element at the given index.
+
+       has($key) has the same effect as checking whether $key is a member of the
+       array returned by keys, although has will be faster.
+
+
+
+           jq &#180;map(has(&quot;foo&quot;))&#180;
+              [{&quot;foo&quot;: 42}, {}]
+           =&gt; [true, false]
+
+           jq &#180;map(has(2))&#180;
+              [[0,1], [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]]
+           =&gt; [false, true]
+
+
+
+   del
+       The  builtin  function del removes a key and its corresponding value from
+       an object.
+
+
+
+           jq &#180;del(.foo)&#180;
+              [{&quot;foo&quot;: 42, &quot;bar&quot;: 9001, &quot;baz&quot;: 42}]
+           =&gt; {&quot;bar&quot;: 9001, &quot;baz&quot;: 42}
+
+           jq &#180;del(.[1, 2])&#180;
+              [[&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;]]
+           =&gt; [&quot;foo&quot;]
+
+
+
+   to_entries, from_entries, with_entries
+       These functions convert between an  object  and  an  array  of  key-value
+       pairs. If to_entries is passed an object, then for each k: v entry in the
+       input, the output array includes {&quot;key&quot;: k, &quot;value&quot;: v}.
+
+       from_entries does the opposite conversion,  and  with_entries(foo)  is  a
+       shorthand for to_entries | map(foo) | from_entries, useful for doing some
+       operation to all keys and values of an object.
+
+
+
+           jq &#180;to_entries&#180;
+              {&quot;a&quot;: 1, &quot;b&quot;: 2}
+           =&gt; [{&quot;key&quot;:&quot;a&quot;, &quot;value&quot;:1}, {&quot;key&quot;:&quot;b&quot;, &quot;value&quot;:2}]
+
+           jq &#180;from_entries&#180;
+              [{&quot;key&quot;:&quot;a&quot;, &quot;value&quot;:1}, {&quot;key&quot;:&quot;b&quot;, &quot;value&quot;:2}]
+           =&gt; {&quot;a&quot;: 1, &quot;b&quot;: 2}
+
+           jq &#180;with_entries(.key |= &quot;KEY_&quot; + .)&#180;
+              {&quot;a&quot;: 1, &quot;b&quot;: 2}
+           =&gt; {&quot;KEY_a&quot;: 1, &quot;KEY_b&quot;: 2}
+
+
+
+   select
+       The function select(foo) produces its input unchanged if foo returns true
+       for that input, and produces no output otherwise.
+
+       It&#180;s  useful for filtering lists: [1,2,3] | map(select(. &gt;= 2)) will give
+       you [2,3].
+
+
+
+           jq &#180;map(select(. &gt;= 2))&#180;
+              [1,5,3,0,7]
+           =&gt; [5,3,7]
+
+
+
+   arrays,  objects,  iterables,  booleans,  numbers,  strings,  nulls,  values,
+       scalars
+       These  built-ins  select  only inputs that are arrays, objects, iterables
+       (arrays or objects), booleans, numbers, strings, null,  non-null  values,
+       and non-iterables, respectively.
+
+
+
+           jq &#180;.[]|numbers&#180;
+              [[],{},1,&quot;foo&quot;,null,true,false]
+           =&gt; 1
+
+
+
+   empty
+       empty returns no results. None at all. Not even null.
+
+       It&#180;s useful on occasion. You&#180;ll know if you need it :)
+
+
+
+           jq &#180;1, empty, 2&#180;
+              null
+           =&gt; 1, 2
+
+           jq &#180;[1,2,empty,3]&#180;
+              null
+           =&gt; [1,2,3]
+
+
+
+   map(x)
+       For  any  filter  x,  map(x) will run that filter for each element of the
+       input array, and produce the outputs a new array. map(.+1) will increment
+       each element of an array of numbers.
+
+       map(x) is equivalent to [.[] | x]. In fact, this is how it&#180;s defined.
+
+
+
+           jq &#180;map(.+1)&#180;
+              [1,2,3]
+           =&gt; [2,3,4]
+
+
+
+   paths
+       Outputs  the  paths  to all the elements in its input (except it does not
+       output the empty list, representing . itself).
+
+       paths is equivalent to
+
+
+
+           def paths: path(recurse(if (type|. == &quot;array&quot; or . == &quot;object&quot;) then .[] else empty end))|select(length &gt; 0);
+&#12;           jq &#180;[paths]&#180;
+              [1,[[],{&quot;a&quot;:2}]]
+           =&gt; [[0],[1],[1,0],[1,1],[1,1,&quot;a&quot;]]
+
+
+
+   leaf_paths
+       Outputs the paths to all the leaves (non-array, non-object  elements)  in
+       its input.
+
+
+
+           jq &#180;[leaf_paths]&#180;
+              [1,[[],{&quot;a&quot;:2}]]
+           =&gt; [[0],[1,1,&quot;a&quot;]]
+
+
+
+   add
+       The  filter  add takes as input an array, and produces as output the ele&#8208;
+       ments of the array added together. This might mean  summed,  concatenated
+       or merged depending on the types of the elements of the input array - the
+       rules are the same as those for the + operator (described above).
+
+       If the input is an empty array, add returns null.
+
+
+
+           jq &#180;add&#180;
+              [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]
+           =&gt; &quot;abc&quot;
+
+           jq &#180;add&#180;
+              [1, 2, 3]
+           =&gt; 6
+
+           jq &#180;add&#180;
+              []
+           =&gt; null
+
+
+
+   any
+       The filter any takes as input an array of boolean  values,  and  produces
+       true as output if any of the the elements of the array is true.
+
+       If the input is an empty array, any returns false.
+
+
+
+           jq &#180;any&#180;
+              [true, false]
+           =&gt; true
+
+           jq &#180;any&#180;
+              [false, false]
+           =&gt; false
+
+           jq &#180;any&#180;
+              []
+           =&gt; false
+
+
+
+   all
+       The  filter  all  takes as input an array of boolean values, and produces
+       true as output if all of the the elements of the array are true.
+&#12;       If the input is an empty array, all returns true.
+
+
+
+           jq &#180;all&#180;
+              [true, false]
+           =&gt; false
+
+           jq &#180;all&#180;
+              [true, true]
+           =&gt; true
+
+           jq &#180;all&#180;
+              []
+           =&gt; true
+
+
+
+   range
+       The range function produces a range of numbers.  range(4;10)  produces  6
+       numbers,  from  4 (inclusive) to 10 (exclusive). The numbers are produced
+       as separate outputs. Use [range(4;10)] to get a range as an array.
+
+
+
+           jq &#180;range(2;4)&#180;
+              null
+           =&gt; 2, 3
+
+           jq &#180;[range(2;4)]&#180;
+              null
+           =&gt; [2,3]
+
+
+
+   floor
+       The floor function returns the floor of its numeric input.
+
+
+
+           jq &#180;floor&#180;
+              3.14159
+           =&gt; 3
+
+
+
+   sqrt
+       The sqrt function returns the square root of its numeric input.
+
+
+
+           jq &#180;sqrt&#180;
+              9
+           =&gt; 3
+
+
+
+   tonumber
+       The tonumber function parses its input as a number. It will convert  cor&#8208;
+       rectly-formatted  strings  to  their  numeric  equivalent,  leave numbers
+       alone, and give an error on all other input.
+
+
+
+           jq &#180;.[] | tonumber&#180;
+              [1, &quot;1&quot;]
+           =&gt; 1, 1
+&#12;
+
+   tostring
+       The tostring function prints its input as  a  string.  Strings  are  left
+       unchanged, and all other values are JSON-encoded.
+
+
+
+           jq &#180;.[] | tostring&#180;
+              [1, &quot;1&quot;, [1]]
+           =&gt; &quot;1&quot;, &quot;1&quot;, &quot;[1]&quot;
+
+
+
+   type
+       The  type function returns the type of its argument as a string, which is
+       one of null, boolean, number, string, array or object.
+
+
+
+           jq &#180;map(type)&#180;
+              [0, false, [], {}, null, &quot;hello&quot;]
+           =&gt; [&quot;number&quot;, &quot;boolean&quot;, &quot;array&quot;, &quot;object&quot;, &quot;null&quot;, &quot;string&quot;]
+
+
+
+   sort, sort_by
+       The sort functions sorts its input, which must be an  array.  Values  are
+       sorted in the following order:
+
+       &#183;   null
+
+       &#183;   false
+
+       &#183;   true
+
+       &#183;   numbers
+
+       &#183;   strings, in alphabetical order (by unicode codepoint value)
+
+       &#183;   arrays, in lexical order
+
+       &#183;   objects
+
+
+
+       The  ordering  for objects is a little complex: first they&#180;re compared by
+       comparing their sets of keys (as arrays in sorted order),  and  if  their
+       keys are equal then the values are compared key by key.
+
+       sort_by  may  be  used  to sort by a particular field of an object, or by
+       applying any jq filter. sort_by(foo) compares two elements  by  comparing
+       the result of foo on each element.
+
+
+
+           jq &#180;sort&#180;
+              [8,3,null,6]
+           =&gt; [null,3,6,8]
+
+           jq &#180;sort_by(.foo)&#180;
+              [{&quot;foo&quot;:4, &quot;bar&quot;:10}, {&quot;foo&quot;:3, &quot;bar&quot;:100}, {&quot;foo&quot;:2, &quot;bar&quot;:1}]
+           =&gt; [{&quot;foo&quot;:2, &quot;bar&quot;:1}, {&quot;foo&quot;:3, &quot;bar&quot;:100}, {&quot;foo&quot;:4, &quot;bar&quot;:10}]
+
+
+
+   group_by
+       group_by(.foo)  takes  as  input an array, groups the elements having the
+       same .foo field into separate arrays, and produces all of these arrays as
+       elements of a larger array, sorted by the value of the .foo field.
+
+       Any jq expression, not just a field access, may be used in place of .foo.
+       The sorting order is the same as described in the sort function above.
+
+
+
+           jq &#180;group_by(.foo)&#180;
+              [{&quot;foo&quot;:1, &quot;bar&quot;:10}, {&quot;foo&quot;:3, &quot;bar&quot;:100}, {&quot;foo&quot;:1, &quot;bar&quot;:1}]
+           =&gt; [[{&quot;foo&quot;:1, &quot;bar&quot;:10}, {&quot;foo&quot;:1, &quot;bar&quot;:1}], [{&quot;foo&quot;:3, &quot;bar&quot;:100}]]
+
+
+
+   min, max, min_by, max_by
+       Find the minimum or maximum element of the input array. The _by  versions
+       allow  you  to  specify  a  particular field or property to examine, e.g.
+       min_by(.foo) finds the object with the smallest foo field.
+
+
+
+           jq &#180;min&#180;
+              [5,4,2,7]
+           =&gt; 2
+
+           jq &#180;max_by(.foo)&#180;
+              [{&quot;foo&quot;:1, &quot;bar&quot;:14}, {&quot;foo&quot;:2, &quot;bar&quot;:3}]
+           =&gt; {&quot;foo&quot;:2, &quot;bar&quot;:3}
+
+
+
+   unique
+       The unique function takes as input an array and produces an array of  the
+       same elements, in sorted order, with duplicates removed.
+
+
+
+           jq &#180;unique&#180;
+              [1,2,5,3,5,3,1,3]
+           =&gt; [1,2,3,5]
+
+
+
+   unique_by
+       The  unique_by(.foo)  function  takes  as  input an array and produces an
+       array of the same elements, in sorted order, with elqements with a dupli&#8208;
+       cate  .foo  field  removed.  Think of it as making an array by taking one
+       element out of every group produced by group_by.
+
+
+
+           jq &#180;unique_by(.foo)&#180;
+              [{&quot;foo&quot;: 1, &quot;bar&quot;: 2}, {&quot;foo&quot;: 1, &quot;bar&quot;: 3}, {&quot;foo&quot;: 4, &quot;bar&quot;: 5}]
+           =&gt; [{&quot;foo&quot;: 1, &quot;bar&quot;: 2}, {&quot;foo&quot;: 4, &quot;bar&quot;: 5}]
+
+           jq &#180;unique_by(length)&#180;
+              [&quot;chunky&quot;, &quot;bacon&quot;, &quot;kitten&quot;, &quot;cicada&quot;, &quot;asparagus&quot;]
+           =&gt; [&quot;chunky&quot;, &quot;bacon&quot;, &quot;asparagus&quot;]
+
+
+
+   reverse
+       This function reverses an array.
+
+
+
+           jq &#180;reverse&#180;
+              [1,2,3,4]
+           =&gt; [4,3,2,1]
+&#12;
+
+   contains
+       The filter contains(b) will produce true if  b  is  completely  contained
+       within  the  input.  A string B is contained in a string A if B is a sub&#8208;
+       string of A. An array B is contained in an array A is all elements  in  B
+       are  contained  in any element in A. An object B is contained in object A
+       if all of the values in B are contained in the value in A with  the  same
+       key.  All  other  types are assumed to be contained in each other if they
+       are equal.
+
+
+
+           jq &#180;contains(&quot;bar&quot;)&#180;
+              &quot;foobar&quot;
+           =&gt; true
+
+           jq &#180;contains([&quot;baz&quot;, &quot;bar&quot;])&#180;
+              [&quot;foobar&quot;, &quot;foobaz&quot;, &quot;blarp&quot;]
+           =&gt; true
+
+           jq &#180;contains([&quot;bazzzzz&quot;, &quot;bar&quot;])&#180;
+              [&quot;foobar&quot;, &quot;foobaz&quot;, &quot;blarp&quot;]
+           =&gt; false
+
+           jq &#180;contains({foo: 12, bar: [{barp: 12}]})&#180;
+              {&quot;foo&quot;: 12, &quot;bar&quot;:[1,2,{&quot;barp&quot;:12, &quot;blip&quot;:13}]}
+           =&gt; true
+
+           jq &#180;contains({foo: 12, bar: [{barp: 15}]})&#180;
+              {&quot;foo&quot;: 12, &quot;bar&quot;:[1,2,{&quot;barp&quot;:12, &quot;blip&quot;:13}]}
+           =&gt; false
+
+
+
+   indices(s)
+       Outputs an array containing the indices in . where s  occurs.  The  input
+       may  be  an array, in which case if s is an array then the indices output
+       will be those where all elements in . match those of s.
+
+
+
+           jq &#180;indices(&quot;, &quot;)&#180;
+              &quot;a,b, cd, efg, hijk&quot;
+           =&gt; [3,7,12]
+
+           jq &#180;indices(1)&#180;
+              [0,1,2,1,3,1,4]
+           =&gt; [1,3,5]
+
+           jq &#180;indices([1,2])&#180;
+              [0,1,2,3,1,4,2,5,1,2,6,7]
+           =&gt; [1,8]
+
+
+
+   index(s), rindex(s)
+       Outputs the index of the first (index) or last (rindex) occurrence  of  s
+       in the input.
+
+
+
+           jq &#180;index(&quot;, &quot;)&#180;
+              &quot;a,b, cd, efg, hijk&quot;
+           =&gt; 3
+
+           jq &#180;rindex(&quot;, &quot;)]&#180;
+              &quot;a,b, cd, efg, hijk&quot;
+           =&gt; 12
+
+
+
+   startswith
+       Outputs true if . starts with the given string argument.
+
+
+
+           jq &#180;[.[]|startswith(&quot;foo&quot;)]&#180;
+              [&quot;fo&quot;, &quot;foo&quot;, &quot;barfoo&quot;, &quot;foobar&quot;, &quot;barfoob&quot;]
+           =&gt; [false, true, false, true, false]
+
+
+
+   endswith
+       Outputs true if . ends with the given string argument.
+
+
+
+           jq &#180;[.[]|endswith(&quot;foo&quot;)]&#180;
+              [&quot;foobar&quot;, &quot;barfoo&quot;]
+           =&gt; [false, true, true, false, false]
+
+
+
+   ltrimstr
+       Outputs its input with the given prefix string removed, if it starts with
+       it.
+
+
+
+           jq &#180;[.[]|ltrimstr(&quot;foo&quot;)]&#180;
+              [&quot;fo&quot;, &quot;foo&quot;, &quot;barfoo&quot;, &quot;foobar&quot;, &quot;afoo&quot;]
+           =&gt; [&quot;fo&quot;,&quot;&quot;,&quot;barfoo&quot;,&quot;bar&quot;,&quot;afoo&quot;]
+
+
+
+   rtrimstr
+       Outputs its input with the given suffix string removed, if it starts with
+       it.
+
+
+
+           jq &#180;[.[]|rtrimstr(&quot;foo&quot;)]&#180;
+              [&quot;fo&quot;, &quot;foo&quot;, &quot;barfoo&quot;, &quot;foobar&quot;, &quot;foob&quot;]
+           =&gt; [&quot;fo&quot;,&quot;&quot;,&quot;bar&quot;,&quot;foobar&quot;,&quot;foob&quot;]
+
+
+
+   explode
+       Converts an input string into an array of the string&#180;s codepoint numbers.
+
+
+
+           jq &#180;explode&#180;
+              &quot;foobar&quot;
+           =&gt; [102,111,111,98,97,114]
+
+
+
+   implode
+       The inverse of explode.
+
+
+
+           jq &#180;implode&#180;
+              [65, 66, 67]
+           =&gt; &quot;ABC&quot;
+&#12;
+
+   split
+       Splits an input string on the separator argument.
+
+
+
+           jq &#180;split(&quot;, &quot;)&#180;
+              &quot;a, b,c,d, e&quot;
+           =&gt; [&quot;a&quot;,&quot;b,c,d&quot;,&quot;e&quot;]
+
+
+
+   join
+       Joins the array of elements given as input, using the argument as separa&#8208;
+       tor. It is  the  inverse  of  split:  that  is,  running  split(&quot;foo&quot;)  |
+       join(&quot;foo&quot;) over any input string returns said input string.
+
+
+
+           jq &#180;join(&quot;, &quot;)&#180;
+              [&quot;a&quot;,&quot;b,c,d&quot;,&quot;e&quot;]
+           =&gt; &quot;a, b,c,d, e&quot;
+
+
+
+   recurse
+       The  recurse function allows you to search through a recursive structure,
+       and extract interesting data from all levels. Suppose your  input  repre&#8208;
+       sents a filesystem:
+
+
+
+           {&quot;name&quot;: &quot;/&quot;, &quot;children&quot;: [
+             {&quot;name&quot;: &quot;/bin&quot;, &quot;children&quot;: [
+               {&quot;name&quot;: &quot;/bin/ls&quot;, &quot;children&quot;: []},
+               {&quot;name&quot;: &quot;/bin/sh&quot;, &quot;children&quot;: []}]},
+             {&quot;name&quot;: &quot;/home&quot;, &quot;children&quot;: [
+               {&quot;name&quot;: &quot;/home/stephen&quot;, &quot;children&quot;: [
+                 {&quot;name&quot;: &quot;/home/stephen/jq&quot;, &quot;children&quot;: []}]}]}]}
+
+
+
+       Now suppose you want to extract all of the filenames present. You need to
+       retrieve .name, .children[].name, .children[].children[].name, and so on.
+       You can do this with:
+
+
+
+           recurse(.children[]) | .name
+
+           jq &#180;recurse(.foo[])&#180;
+              {&quot;foo&quot;:[{&quot;foo&quot;: []}, {&quot;foo&quot;:[{&quot;foo&quot;:[]}]}]}
+           =&gt; {&quot;foo&quot;:[{&quot;foo&quot;:[]},{&quot;foo&quot;:[{&quot;foo&quot;:[]}]}]}, {&quot;foo&quot;:[]}, {&quot;foo&quot;:[{&quot;foo&quot;:[]}]}, {&quot;foo&quot;:[]}
+
+
+
+   recurse_down
+       A quieter version of recurse(.[]), equivalent to:
+
+
+
+           def recurse_down: recurse(.[]?);
+
+
+
+   ..
+       Short-hand  for  recurse_down.  This is intended to resemble the XPath //
+       operator. Note that ..a does not work; use ..|a instead.
+
+
+
+           jq &#180;..|.a?&#180;
+              [[{&quot;a&quot;:1}]]
+           =&gt; 1
+
+
+
+   String interpolation - \(foo)
+       Inside a string, you can put an expression inside parens  after  a  back&#8208;
+       slash.  Whatever  the  expression  returns  will be interpolated into the
+       string.
+
+
+
+           jq &#180;&quot;The input was \(.), which is one less than \(.+1)&quot;&#180;
+              42
+           =&gt; &quot;The input was 42, which is one less than 43&quot;
+
+
+
+   Convert to/from JSON
+       The tojson and fromjson builtins dump values as JSON texts or parse  JSON
+       texts into values, respectively. The tojson builtin differs from tostring
+       in that tostring returns strings unmodified, while tojson encodes strings
+       as JSON strings.
+
+
+
+           jq &#180;[.[]|tostring]&#180;
+              [1, &quot;foo&quot;, [&quot;foo&quot;]]
+           =&gt; [&quot;1&quot;,&quot;foo&quot;,&quot;[\&quot;foo\&quot;]&quot;]
+
+           jq &#180;[.[]|tojson]&#180;
+              [1, &quot;foo&quot;, [&quot;foo&quot;]]
+           =&gt; [&quot;1&quot;,&quot;\&quot;foo\&quot;&quot;,&quot;[\&quot;foo\&quot;]&quot;]
+
+           jq &#180;[.[]|tojson|fromjson]&#180;
+              [1, &quot;foo&quot;, [&quot;foo&quot;]]
+           =&gt; [1,&quot;foo&quot;,[&quot;foo&quot;]]
+
+
+
+   Format strings and escaping
+       The @foo syntax is used to format and escape strings, which is useful for
+       building URLs, documents in a language like HTML or XML,  and  so  forth.
+       @foo can be used as a filter on its own, the possible escapings are:
+
+       @text:
+
+              Calls tostring, see that function for details.
+
+       @json:
+
+              Serialises the input as JSON.
+
+       @html:
+
+              Applies  HTML/XML  escaping,  by  mapping  the characters &lt;&gt;&amp;&#180;&quot; to
+              their entity equivalents &amp;lt;, &amp;gt;, &amp;amp;, &amp;apos;, &amp;quot;.
+
+       @uri:
+
+              Applies percent-encoding, by mapping all reserved  URI  characters
+              to a %xx sequence.
+
+       @csv:
+&#12;              The  input must be an array, and it is rendered as CSV with double
+              quotes for strings, and quotes escaped by repetition.
+
+       @sh:
+
+              The input is escaped suitable for use  in  a  command-line  for  a
+              POSIX shell. If the input is an array, the output will be a series
+              of space-separated strings.
+
+       @base64:
+
+              The input is converted to base64 as specified by RFC 4648.
+
+       This syntax can be combined with string interpolation in  a  useful  way.
+       You  can  follow  a @foo token with a string literal. The contents of the
+       string literal will not be  escaped.  However,  all  interpolations  made
+       inside that string literal will be escaped. For instance,
+
+
+
+           @uri &quot;http://www.google.com/search?q=\(.search)&quot;
+
+
+
+       will produce the following output for the input {&quot;search&quot;:&quot;what is jq?&quot;}:
+
+
+
+           &quot;http://www.google.com/search?q=what%20is%20jq%3f&quot;
+
+
+
+       Note that the slashes, question mark, etc. in the URL are not escaped, as
+       they were part of the string literal.
+
+
+
+           jq &#180;@html&#180;
+              &quot;This works if x &lt; y&quot;
+           =&gt; &quot;This works if x &amp;lt; y&quot;
+
+           jq &#180;@sh &quot;echo \(.)&quot;&#180;
+              &quot;O&#180;Hara&#180;s Ale&quot;
+           =&gt; &quot;echo &#180;O&#180;\\&#180;&#180;Hara&#180;\\&#180;&#180;s Ale&#180;&quot;
+
+
+
+CONDITIONALS AND COMPARISONS
+   ==, !=
+       The expression &#180;a == b&#180; will produce &#180;true&#180; if the result of a and b  are
+       equal  (that is, if they represent equivalent JSON documents) and &#180;false&#180;
+       otherwise. In particular, strings are never considered equal to  numbers.
+       If you&#180;re coming from Javascript, jq&#180;s == is like Javascript&#180;s === - con&#8208;
+       sidering values equal only when they have the same type as  well  as  the
+       same value.
+
+       != is &quot;not equal&quot;, and &#180;a != b&#180; returns the opposite value of &#180;a == b&#180;
+
+
+
+           jq &#180;.[] == 1&#180;
+              [1, 1.0, &quot;1&quot;, &quot;banana&quot;]
+           =&gt; true, true, false, false
+
+
+
+   if-then-else
+       if A then B else C end will act the same as B if A produces a value other
+       than false or null, but act the same as C otherwise.
+
+       Checking for false or null is a simpler notion of  &quot;truthiness&quot;  than  is
+       found in Javascript or Python, but it means that you&#180;ll sometimes have to
+       be more explicit about the condition you want: you  can&#180;t  test  whether,
+       e.g.  a  string  is  empty  using if .name then A else B end, you&#180;ll need
+       something more like if (.name | length) &gt; 0 then A else B end instead.
+
+       If the condition A produces multiple results, it is considered &quot;true&quot;  if
+       any  of  those results is not false or null. If it produces zero results,
+       it&#180;s considered false.
+
+       More cases can be added to an if using elif A then B syntax.
+
+
+
+           jq &#180;if . == 0 then
+
+
+
+       &quot;zero&quot; elif . == 1 then &quot;one&quot; else &quot;many&quot; end&#180;
+
+
+
+              2
+           =&gt; &quot;many&quot;
+
+
+
+   &gt;, &gt;=, &lt;=, &lt;
+       The comparison operators &gt;, &gt;=, &lt;=, &lt; return whether their left  argument
+       is  greater than, greater than or equal to, less than or equal to or less
+       than their right argument (respectively).
+
+       The ordering is the same as that described for sort, above.
+
+
+
+           jq &#180;. &lt; 5&#180;
+              2
+           =&gt; true
+
+
+
+   and/or/not
+       jq supports the normal Boolean operators and/or/not. They have  the  same
+       standard  of  truth  as  if  expressions  - false and null are considered
+       &quot;false values&quot;, and anything else is a &quot;true value&quot;.
+
+       If an operand of one of these operators produces  multiple  results,  the
+       operator itself will produce a result for each input.
+
+       not  is  in  fact  a  builtin  function rather than an operator, so it is
+       called as a filter to which things can be piped rather than with  special
+       syntax, as in .foo and .bar | not.
+
+       These  three  only produce the values &quot;true&quot; and &quot;false&quot;, and so are only
+       useful  for  genuine  Boolean  operations,   rather   than   the   common
+       Perl/Python/Ruby  idiom  of  &quot;value_that_may_be_null  or default&quot;. If you
+       want to use this form of &quot;or&quot;, picking between  two  values  rather  than
+       evaluating a condition, see the &quot;//&quot; operator below.
+
+
+
+           jq &#180;42 and &quot;a string&quot;&#180;
+              null
+           =&gt; true
+
+           jq &#180;(true, false) or false&#180;
+              null
+           =&gt; true, false
+
+           jq &#180;(true, true) and (true, false)&#180;
+              null
+           =&gt; true, false, true, false
+
+           jq &#180;[true, false | not]&#180;
+              null
+           =&gt; [false, true]
+
+
+
+   Alternative operator - //
+       A filter of the form a // b produces the same results as a, if a produces
+       results other than false and null. Otherwise, a // b  produces  the  same
+       results as b.
+
+       This  is  useful  for providing defaults: .foo // 1 will evaluate to 1 if
+       there&#180;s no .foo element in the input. It&#180;s similar to how or is sometimes
+       used  in Python (jq&#180;s or operator is reserved for strictly Boolean opera&#8208;
+       tions).
+
+
+
+           jq &#180;.foo // 42&#180;
+              {&quot;foo&quot;: 19}
+           =&gt; 19
+
+           jq &#180;.foo // 42&#180;
+              {}
+           =&gt; 42
+
+
+
+ADVANCED FEATURES
+       Variables are an absolute necessity in most  programming  languages,  but
+       they&#180;re relegated to an &quot;advanced feature&quot; in jq.
+
+       In  most  languages, variables are the only means of passing around data.
+       If you calculate a value, and you want to use it more than  once,  you&#180;ll
+       need  to  store  it in a variable. To pass a value to another part of the
+       program, you&#180;ll need that part of the program to define a variable (as  a
+       function  parameter,  object  member,  or whatever) in which to place the
+       data.
+
+       It is also possible to define functions in jq, although this is is a fea&#8208;
+       ture  whose  biggest use is defining jq&#180;s standard library (many jq func&#8208;
+       tions such as map and find are in fact written in jq).
+
+       Finally, jq has a reduce operation, which is  very  powerful  but  a  bit
+       tricky. Again, it&#180;s mostly used internally, to define some useful bits of
+       jq&#180;s standard library.
+
+   Variables
+       In jq, all filters have an input and an output, so manual plumbing is not
+       necessary  to  pass  a value from one part of a program to the next. Many
+       expressions, for instance a + b, pass their input to two distinct  subex&#8208;
+       pressions  (here  a  and  b are both passed the same input), so variables
+       aren&#180;t usually necessary in order to use a value twice.
+
+       For instance, calculating the  average  value  of  an  array  of  numbers
+       requires  a  few  variables  in most languages - at least one to hold the
+       array, perhaps one for each element or for a loop counter.  In  jq,  it&#180;s
+       simply  add / length - the add expression is given the array and produces
+       its sum, and the length expression is given the array  and  produces  its
+       length.
+
+       So,  there&#180;s  generally  a  cleaner way to solve most problems in jq than
+       defining variables. Still, sometimes they do make things  easier,  so  jq
+       lets  you  define  variables  using expression as $variable. All variable
+       names start with $. Here&#180;s a slightly uglier version of the array-averag&#8208;
+       ing example:
+
+
+
+           length as $array_length | add / $array_length
+
+
+
+       We&#180;ll  need  a  more  complicated problem to find a situation where using
+       variables actually makes our lives easier.
+
+       Suppose we have an array of blog posts, with &quot;author&quot; and &quot;title&quot; fields,
+       and  another  object which is used to map author usernames to real names.
+       Our input looks like:
+
+
+
+           {&quot;posts&quot;: [{&quot;title&quot;: &quot;Frist psot&quot;, &quot;author&quot;: &quot;anon&quot;},
+                      {&quot;title&quot;: &quot;A well-written article&quot;, &quot;author&quot;: &quot;person1&quot;}],
+            &quot;realnames&quot;: {&quot;anon&quot;: &quot;Anonymous Coward&quot;,
+                          &quot;person1&quot;: &quot;Person McPherson&quot;}}
+
+
+
+       We want to produce the posts with the  author  field  containing  a  real
+       name, as in:
+
+
+
+           {&quot;title&quot;: &quot;Frist psot&quot;, &quot;author&quot;: &quot;Anonymous Coward&quot;}
+           {&quot;title&quot;: &quot;A well-written article&quot;, &quot;author&quot;: &quot;Person McPherson&quot;}
+
+
+
+       We  use a variable, $names, to store the realnames object, so that we can
+       refer to it later when looking up author usernames:
+
+
+
+           .realnames as $names | .posts[] | {title, author: $names[.author]}
+
+
+
+       The expression exp as $x | ... means: for each value of  expression  exp,
+       run  the rest of the pipeline with the entire original input, and with $x
+       set to that value. Thus as functions as something of a foreach loop.
+
+       Variables are scoped over the rest of the expression that  defines  them,
+       so
+
+
+
+           .realnames as $names | (.posts[] | {title, author: $names[.author]})
+
+
+
+       will work, but
+
+
+
+           (.realnames as $names | .posts[]) | {title, author: $names[.author]}
+
+
+
+       won&#180;t.
+&#12;           jq &#180;.bar as $x | .foo | . + $x&#180;
+              {&quot;foo&quot;:10, &quot;bar&quot;:200}
+           =&gt; 210
+
+
+
+   Defining Functions
+       You can give a filter a name using &quot;def&quot; syntax:
+
+
+
+           def increment: . + 1;
+
+
+
+       From  then  on, increment is usable as a filter just like a builtin func&#8208;
+       tion (in fact, this is how some of the builtins are defined). A  function
+       may take arguments:
+
+
+
+           def map(f): [.[] | f];
+
+
+
+       Arguments  are passed as filters, not as values. The same argument may be
+       referenced multiple times with different inputs (here f is run  for  each
+       element of the input array). Arguments to a function work more like call&#8208;
+       backs than like value arguments.
+
+       If you want the value-argument behaviour for defining  simple  functions,
+       you can just use a variable:
+
+
+
+           def addvalue(f): f as $value | map(. + $value);
+
+
+
+       With  that  definition,  addvalue(.foo) will add the current input&#180;s .foo
+       field to each element of the array.
+
+
+
+           jq &#180;def addvalue(f): . + [f]; map(addvalue(.[0]))&#180;
+              [[1,2],[10,20]]
+           =&gt; [[1,2,1], [10,20,10]]
+
+           jq &#180;def addvalue(f): f as $x | map(. + $x); addvalue(.[0])&#180;
+              [[1,2],[10,20]]
+           =&gt; [[1,2,1,2], [10,20,1,2]]
+
+
+
+   Reduce
+       The reduce syntax in jq allows you to combine all of the  results  of  an
+       expression  by  accumulating  them  into  a single answer. As an example,
+       we&#180;ll pass [3,2,1] to this expression:
+
+
+
+           reduce .[] as $item (0; . + $item)
+
+
+
+       For each result that .[] produces, . + $item is run to accumulate a  run&#8208;
+       ning total, starting from 0. In this example, .[] produces the results 3,
+       2, and 1, so the effect is similar to running something like this:
+&#12;           0 | (3 as $item | . + $item) |
+               (2 as $item | . + $item) |
+               (1 as $item | . + $item)
+
+           jq &#180;reduce .[] as $item (0; . + $item)&#180;
+              [10,2,5,3]
+           =&gt; 20
+
+
+
+ASSIGNMENT
+       Assignment works a little differently in jq than in most programming lan&#8208;
+       guages.  jq doesn&#180;t distinguish between references to and copies of some&#8208;
+       thing - two objects or arrays are either equal or not equal, without  any
+       further notion of being &quot;the same object&quot; or &quot;not the same object&quot;.
+
+       If  an  object  has  two  fields which are arrays, .foo and .bar, and you
+       append something to .foo, then .bar will not get bigger. Even  if  you&#180;ve
+       just  set  .bar  =  .foo. If you&#180;re used to programming in languages like
+       Python, Java, Ruby, Javascript, etc. then you can think of it  as  though
+       jq  does  a  full deep copy of every object before it does the assignment
+       (for performance, it doesn&#180;t actually do that,  but  that&#180;s  the  general
+       idea).
+
+   =
+       The filter .foo = 1 will take as input an object and produce as output an
+       object with the &quot;foo&quot; field set to 1. There is no notion  of  &quot;modifying&quot;
+       or  &quot;changing&quot;  something  in  jq  -  all  jq  values  are immutable. For
+       instance,
+
+       .foo = .bar | .foo.baz = 1
+
+       will not have the side-effect of setting .bar.baz to be set to 1, as  the
+       similar-looking  program  in  Javascript, Python, Ruby or other languages
+       would. Unlike these languages (but like Haskell and some other functional
+       languages),  there  is no notion of two arrays or objects being &quot;the same
+       array&quot; or &quot;the same object&quot;. They can be equal, or not equal, but  if  we
+       change  one  of them in no circumstances will the other change behind our
+       backs.
+
+       This means that it&#180;s impossible to build circular values in jq  (such  as
+       an  array  whose first element is itself). This is quite intentional, and
+       ensures that anything a jq program can  produce  can  be  represented  in
+       JSON.
+
+   |=
+       As well as the assignment operator &#180;=&#180;, jq provides the &quot;update&quot; operator
+       &#180;|=&#180;, which takes a filter on the right-hand side and works out  the  new
+       value for the property being assigned to by running the old value through
+       this expression. For instance, .foo |= .+1 will build an object with  the
+       &quot;foo&quot; field set to the input&#180;s &quot;foo&quot; plus 1.
+
+       This example should show the difference between &#180;=&#180; and &#180;|=&#180;:
+
+       Provide input &#180;{&quot;a&quot;: {&quot;b&quot;: 10}, &quot;b&quot;: 20}&#180; to the programs:
+
+       .a = .b .a |= .b
+
+       The  former  will  set the &quot;a&quot; field of the input to the &quot;b&quot; field of the
+       input, and produce the output {&quot;a&quot;: 20}. The  latter  will  set  the  &quot;a&quot;
+       field of the input to the &quot;a&quot; field&#180;s &quot;b&quot; field, producing {&quot;a&quot;: 10}.
+
+   +=, -=, *=, /=, %=, //=
+       jq has a few operators of the form a op= b, which are all equivalent to a
+       |= . op b. So, += 1 can be used to increment values.
+
+
+
+           jq &#180;.foo += 1&#180;
+              {&quot;foo&quot;: 42}
+           =&gt; {&quot;foo&quot;: 43}
+
+
+
+   Complex assignments
+       Lots more things are allowed on the left-hand side  of  a  jq  assignment
+       than  in  most langauges. We&#180;ve already seen simple field accesses on the
+       left hand side, and it&#180;s no surprise that array  accesses  work  just  as
+       well:
+
+
+
+           .posts[0].title = &quot;JQ Manual&quot;
+
+
+
+       What  may  come as a surprise is that the expression on the left may pro&#8208;
+       duce multiple results, referring to different points in the  input  docu&#8208;
+       ment:
+
+
+
+           .posts[].comments |= . + [&quot;this is great&quot;]
+
+
+
+       That  example  appends the string &quot;this is great&quot; to the &quot;comments&quot; array
+       of each post in the input (where the input is  an  object  with  a  field
+       &quot;posts&quot; which is an array of posts).
+
+       When  jq  encounters  an  assignment  like &#180;a = b&#180;, it records the &quot;path&quot;
+       taken to select a part of the input document while executing a. This path
+       is  then  used  to find which part of the input to change while executing
+       the assignment. Any filter may be used on the left-hand side of an equals
+       -  whichever paths it selects from the input will be where the assignment
+       is performed.
+
+       This is a very powerful operation. Suppose we wanted to add a comment  to
+       blog posts, using the same &quot;blog&quot; input above. This time, we only want to
+       comment on the posts written by &quot;stedolan&quot;. We can find those posts using
+       the &quot;select&quot; function described earlier:
+
+
+
+           .posts[] | select(.author == &quot;stedolan&quot;)
+
+
+
+       The  paths  provided  by  this  operation point to each of the posts that
+       &quot;stedolan&quot; wrote, and we can comment on each of them in the same way that
+       we did before:
+
+
+
+           (.posts[] | select(.author == &quot;stedolan&quot;) | .comments) |=
+               . + [&quot;terrible.&quot;]
+
+
+
+BUGS
+       Presumably. Report them or discuss them at:
+
+
+
+           https://github.com/stedolan/jq/issues
+
+
+
+AUTHOR
+       Stephen Dolan &lt;mu@netsoc.tcd.ie&gt;
+
+
+
+                                    July 2014                              JQ(1)
+
+</pre></body></html>

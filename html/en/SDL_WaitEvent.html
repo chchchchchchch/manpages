@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_WaitEvent - Waits indefinitely for the next available event.</title></head>
+<body><pre>
+
+SDL_WaitEvent(3)                SDL API Reference               SDL_WaitEvent(3)
+
+
+
+NAME
+       SDL_WaitEvent - Waits indefinitely for the next available event.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       int SDL_WaitEvent(SDL_Event *event);
+
+DESCRIPTION
+       Waits  indefinitely  for  the  next available event, returning 1, or 0 if
+       there was an error while waiting for events.
+
+       If event is not NULL, the next event is removed from the queue and stored
+       in that area.
+
+SEE ALSO
+       SDL_Event, SDL_PollEvent
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00             SDL_WaitEvent(3)
+
+</pre></body></html>

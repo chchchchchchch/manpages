@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ppmtolss16 — Convert a PPM to an LSS16 image</title></head>
+<body><pre>
+
+PPMTOLSS16(1)                                                      PPMTOLSS16(1)
+
+
+
+NAME
+       ppmtolss16 &#8212; Convert a PPM to an LSS16 image
+
+SYNOPSIS
+       ppmtolss16  [                #rrggbb=i            ...]  [&lt; input.ppm]  [&gt;
+       output.rle]
+
+DESCRIPTION
+       This manual page documents briefly the ppmtolss16 command.
+
+
+       The ppmtolss16 program converts a &quot;raw&quot; PPM file with max 16 colors to  a
+       simple RLE-based format:
+
+
+       simple RLE-based format
+
+       tab(&#7;);  l  l.  unint32 0x1413f3d&#7;magic (littleendian) unint16 xsize&#7;lit&#8208;
+       tleendian unint15 ysize&#7;littleendian 16 x unint8 r,g,b&#7;color map
+
+       Color map is in 6-bit format (each byte is 0..63)
+
+       Then, a sequence of nybbles:
+
+       N   ... if N is != previous pixel, one pixel of color  N,  otherwise  run
+       sequence follows ...
+
+
+       M    ...  if  M  &gt;  0  then  run length is M+1, otherwise run sequence is
+       encoded in two nybbles, littleendian, +17
+
+
+       The nybble sequences are on a per-row basis, runs may not  extend  across
+       rows and odd-nybble rows are zero-padded.
+
+
+       At the start of a row, the &quot;previous pixel&quot; is assumed to be zero.
+
+
+OPTIONS
+       A summary of options is included below.
+
+       #rrggbb=i Specify that the color #rrggbb (hex) should be assigned index i
+                 (decimal).
+
+
+BUG
+       This program cannot handle comments in the header, nor &quot;plain&quot;  ppm  for&#8208;
+       mat.
+
+
+SEE ALSO
+       ppmtolss16(1)
+
+
+AUTHOR
+       This  manual page was compiled by dann frazier &lt;dannf@debian.org&gt; for the
+       Debian GNU/Linux system (but may be used by others).  Most of the content
+       was written by H. Peter Anvin.
+
+
+
+                                                                   PPMTOLSS16(1)
+
+</pre></body></html>

@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hman - browse the on-line manual pages</title></head>
+<body><pre>
+
+hman(1)                                                                  hman(1)
+
+
+
+NAME
+       hman - browse the on-line manual pages
+
+SYNOPSIS
+       hman [ -P browser ] [ -H host ] [ section ] name
+       hman [ -P browser ] [ -H host ] [ section ] [ index ]
+
+DESCRIPTION
+       The  hman  script is an interface to man2html(1) that allows you to enter
+       man page requests at the  command  line  and  view  the  output  in  your
+       favourite  browser.  The behaviour reminds of that of man(1) so that many
+       people will be able to alias hman to man.  If the browser  used  is  net&#8208;
+       scape,  and an incarnation of netscape is running already, hman will pass
+       the request to the existing browser.
+
+
+OPTIONS
+       -P  browser
+              Specify which browser (like lynx, xmosaic,  arena,  chimera,  net&#8208;
+              scape, amaya, ...) to use.  This option overrides the MANHTMLPAGER
+              environment variable.  The default is  the  non-httpd  version  of
+              lynx, or sensible-browser if lynx cannot be found.
+
+       -H  host
+              Specify  from  what  host to get the man pages.  This option over&#8208;
+              rides the MANHTMLHOST environment variable.  The default is local&#8208;
+              host.
+
+
+ENVIRONMENT
+       MANHTMLPAGER
+              The  default  browser  to  use  is selected using this environment
+              variable.
+
+       MANHTMLHOST
+              The default host to use is selected using this  environment  vari&#8208;
+              able.
+
+
+SEE ALSO
+       man(1), man2html(1), arena(1), lynx(1), sensible-browser(1), netscape(1),
+       xmosaic(1), glimpse(1)
+
+       http://www.mcom.com/newsref/std/x-remote.html
+
+
+
+                                 19 January 1998                         hman(1)
+
+</pre></body></html>

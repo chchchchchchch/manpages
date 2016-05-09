@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MIME::Decoder::Base64 - encode/decode a "base64" stream</title></head>
+<body><pre>
+
+MIME::Decoder::Base64(3User Contributed Perl DocumentaMIME::Decoder::Base64(3pm)
+
+
+
+NAME
+       MIME::Decoder::Base64 - encode/decode a &quot;base64&quot; stream
+
+SYNOPSIS
+       A generic decoder object; see MIME::Decoder for usage.
+
+DESCRIPTION
+       A MIME::Decoder subclass for the &quot;base64&quot; encoding.  The name was chosen
+       to jibe with the pre-existing MIME::Base64 utility package, which this
+       class actually uses to translate each chunk.
+
+       &#183;   When decoding, the input is read one line at a time.  The input
+           accumulates in an internal buffer, which is decoded in
+           multiple-of-4-sized chunks (plus a possible &quot;leftover&quot; input chunk,
+           of course).
+
+       &#183;   When encoding, the input is read 45 bytes at a time: this ensures
+           that the output lines are not too long.   We chose 45 since it is a
+           multiple of 3 and produces lines under 76 characters, as RFC 2045
+           specifies:
+               The encoded output stream must be represented in lines of no more
+               than 76 characters each.
+
+SEE ALSO
+       MIME::Decoder
+
+AUTHOR
+       Eryq (eryq@zeegee.com), ZeeGee Software Inc (http://www.zeegee.com).
+
+       All rights reserved.  This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-06-08         MIME::Decoder::Base64(3pm)
+
+</pre></body></html>

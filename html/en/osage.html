@@ -1,0 +1,412 @@
+<html>
+<head><meta charset=utf-8/>
+<title>osage - filter for drawing clustered graphs</title></head>
+<body><pre>
+
+OSAGE(1)                                                                OSAGE(1)
+
+
+
+NAME
+       osage - filter for drawing clustered graphs
+
+SYNOPSIS
+       osage  [-(G|N|E)name=value]  [-Tlang]  [-llibfile]  [-ooutfile] [-O] [-P]
+       [-v] [-V] [files]
+
+DESCRIPTION
+       osage draws clustered graphs. As input, it takes any  graph  in  the  dot
+       format.  It  draws  the graph recursively. At each level, there will be a
+       collection of nodes and a collection of cluster subgraphs.  The internals
+       of  each  cluster  subgraph  are laid out, then the cluster subgraphs and
+       nodes at the current level are positioned relative to each other,  treat&#8208;
+       ing each cluster subgraph as a node.
+
+       At  each  level, the nodes and cluster subgraphs are viewed as rectangles
+       to be packed together. At present,  edges  are  ignored  during  packing.
+       Packing  is done using the standard packing functions. In particular, the
+       graph attributes pack and packmode control the layout.   Each  graph  and
+       cluster  can  specify its own values for these attributes.  Remember also
+       that a cluster inherits its attribute values from its parent graph.
+
+       After all nodes and clusters, edges are routed based on the value of  the
+       splines attribute.
+
+OUTPUT FORMATS
+       Osage uses an extensible plugin mechanism for its output renderers, so to
+       see what output formats your installation of osage supports you  can  use
+       ``osage  -Txxx&apos;&apos;  (where xxx is an unlikely format) and check the warning
+       message.  Also, The plugin mechanism supports multiple implementations of
+       the  output  formats.  To see what variants are available, use, for exam&#8208;
+       ple: ``osage -Tpng:&apos;&apos; and to force a particular variant, use,  for  exam&#8208;
+       ple: ``osage -Tpng:gd&apos;&apos;
+
+       Traditionally,  osage  supports  the  following: -Tps (PostScript), -Tsvg
+       -Tsvgz  (Structured  Vector  Graphics),  -Tfig  (XFIG  graphics),   -Tmif
+       (FrameMaker  graphics),  -Thpgl  (HP  pen  plotters), and -Tpcl (Laserjet
+       printers), -Tpng -Tgif (bitmap graphics), -Tdia  (GTK+  based  diagrams),
+       -Timap (imagemap files for httpd servers for each node or edge that has a
+       non&#8208;null &quot;href&quot; attribute.), -Tcmapx (client&#8208;side  imagemap  for  use  in
+       html  and  xhtml).  Additional less common or more special&#8208;purpose output
+       formats  can  be   found   at   http://www.graphviz.org/cvs/doc/info/out&#8208;
+       put.html.)
+
+       Alternative  plugins  providing  support for a given output format can be
+       found from the error message resulting from appending a &apos;:&apos; to  the  for&#8208;
+       mat. e.g. -Tpng: The first plugin listed is always the default.
+
+GRAPH FILE LANGUAGE
+       Here  is  a  synopsis of the graph file language, traditionally using the
+       extension .gv or .dot, for graphs:
+
+       [strict] (graph|digraph) name { statement&#8208;list }
+       Is the top level graph. If the graph is strict then  multiple  edges  are
+       not  allowed between the same pairs of nodes.  If it is a directed graph,
+       indicated by digraph, then the edgeop must be &quot;-&gt;&quot;. If  it  is  an  undi&#8208;
+       rected graph then the edgeop must be &quot;--&quot;.  Statements may be:
+
+       name=val;
+       node [name=val];
+       edge [name=val];
+       Set  default  graph,  node, or edge attribute name to val.  Any subgraph,
+       node, or edge appearing after this inherits the new default attributes.
+
+       n0 [name0=val0,name1=val1,...]; Creates node n0 (if it does  not  already
+       exist) and sets its attributes according to the optional list.
+
+       n0 edgeop n1 edgeop ... edgeop nn [name0=val0,name1=val1,...];
+       Creates  edges  between  nodes  n0, n1, ..., nn and sets their attributes
+       according to the optional list.  Creates nodes as necessary.
+
+       [subgraph name] { statement&#8208;list }
+       Creates a subgraph.  Subgraphs may be used in place of n0, ..., nn in the
+       above  statements to create edges.  [subgraph name] is optional; if miss&#8208;
+       ing, the subgraph is assigned an internal name.
+
+       Comments may be /*C&#8208;like*/ or //C++&#8208;like.
+
+
+       Attribute names and values are ordinary (C&#8208;style) strings.  The following
+       sections describe attributes that control graph layout.
+
+
+GRAPH ATTRIBUTES
+       size=&quot;x,y&quot; sets bounding box of drawing in inches.
+
+       page=&quot;x,y&quot; sets the PostScript pagination unit.
+
+       ratio=f  sets the aspect ratio to f which may be a floating point number,
+       or one of the keywords fill, compress, or auto.
+
+       pagedir=[TBLR][TBLR] sets the major and minor order of pagination.
+
+       rotate=90 sets landscape mode.  (orientation=land is backward  compatible
+       but obsolete.)
+
+       center=n a non&#8208;zero value centers the drawing on the page.
+
+       layers=&quot;id:id:id:id&quot;  is a sequence of layer identifiers for overlay dia&#8208;
+       grams.  The PostScript array variable layercolorseq sets  the  assignment
+       of  colors  to  layers.  The  least index is 1 and each element must be a
+       3&#8208;element array to be interpreted as a color coordinate.
+
+       color=colorvalue sets foreground color (bgcolor for background).
+
+       href=&quot;url&quot; the default url for image map files; in PostScript files,  the
+       base  URL  for  all relative URLs, as recognized by Acrobat Distiller 3.0
+       and up.
+
+       URL=&quot;url&quot; (&quot;URL&quot; is a synonym for &quot;href&quot;.)
+
+       stylesheet=&quot;file.css&quot; includes a reference to a stylesheet in  -Tsvg  and
+       -Tsvgz outputs.  Ignored by other formats.
+
+       splines. If set to true, edges are drawn as splines.  If set to polyline,
+       edges are drawn as polylines.  If  set  to  ortho,  edges  are  drawn  as
+       orthogonal  polylines.  In all of these cases, the nodes may not overlap.
+       If splines=false or splines=line, edges are drawn as line segments.   The
+       default is false.
+
+
+NODE ATTRIBUTES
+       height=d  or width=d sets minimum height or width.  Adding fixedsize=true
+       forces these to be the actual size (text labels are ignored).
+
+       shape=record polygon epsf builtin_polygon
+       builtin_polygon is one of: plaintext ellipse oval circle egg triangle box
+       diamond trapezium parallelogram house hexagon octagon note tab box3d com&#8208;
+       ponent.   (Polygons  are  defined  or  modified  by  the  following  node
+       attributes:  regular,  peripheries,  sides,  orientation,  distortion and
+       skew.)  epsf uses the node&apos;s shapefile attribute as the path name  of  an
+       external EPSF file to be automatically loaded for the node shape.
+
+       label=text where text may include escaped newlines \n, \l, or \r for cen&#8208;
+       ter, left, and right justified lines.  The  string  &apos;\N&apos;  value  will  be
+       replaced by the node name.  The string &apos;\G&apos; value will be replaced by the
+       graph name.  Record labels may contain recursive box lists delimited by {
+       |  }.   Port identifiers in labels are set off by angle brackets &lt; &gt;.  In
+       the graph file, use colon (such as, node0:port28).
+
+       fontsize=n sets the label type size to n points.
+
+       fontname=name sets the label font family name.
+
+       color=colorvalue sets the outline color, and the default  fill  color  if
+       style=filled and fillcolor is not specified.
+
+       fillcolor=colorvalue sets the fill color when style=filled.  If not spec&#8208;
+       ified, the fillcolor when style=filled defaults to be  the  same  as  the
+       outline color.
+
+       fontcolor=colorvalue sets the label text color.
+
+       A  colorvalue may be &quot;h,s,v&quot; (hue, saturation, brightness) floating point
+       numbers between 0 and 1, or an X11 color name such  as  white  black  red
+       green  blue yellow magenta cyan or burlywood, or a &quot;#rrggbb&quot; (red, green,
+       blue, 2 hex characters each) value.
+
+       style=filled solid dashed dotted bold invis or any Postscript code.
+
+       layer=id or id:id or &quot;all&quot; sets the  node&apos;s  active  layers.   The  empty
+       string means no layers (invisible).
+
+       The following attributes apply only to polygon shape nodes:
+
+       regular=n if n is non&#8208;zero then the polygon is made regular, i.e. symmet&#8208;
+       ric about the x and y axis, otherwise the polygon  takes  on  the  aspect
+       ratio  of  the  label.  builtin_polygons that are not already regular are
+       made regular by this attribute.  builtin_polygons that are already  regu&#8208;
+       lar are not affected (i.e.  they cannot be made asymmetric).
+
+       peripheries=n  sets  the number of periphery lines drawn around the poly&#8208;
+       gon.   This  value  supersedes  the  number   of   periphery   lines   of
+       builtin_polygons.
+
+       sides=n  sets  the  number  of  sides  to  the polygon. n&lt;3 results in an
+       ellipse.  This attribute is ignored by builtin_polygons.
+
+       orientation=f sets the orientation of the first apex of the polygon coun&#8208;
+       terclockwise  from  the  vertical, in degrees.  f may be a floating point
+       number.  The orientation of labels is not  affected  by  this  attribute.
+       This attribute is added to the initial orientation of builtin_polygons.
+
+       distortion=f  sets  the  amount of broadening of the top and narrowing of
+       the bottom of the polygon (relative to its orientation).  Floating  point
+       values  between  -1  and  +1 are suggested.  This attribute is ignored by
+       builtin_polygons.
+
+       skew=f sets the amount of right&#8208;displacement of  the  top  and  left&#8208;dis&#8208;
+       placement  of  the  bottom  of the polygon (relative to its orientation).
+       Floating point values between -1 and +1 are suggested.  This attribute is
+       ignored by builtin_polygons.
+
+       href=&quot;url&quot;  sets  the  url  for  the node in imagemap, PostScript and SVG
+       files.  The substrings &apos;\N&apos; and &apos;\G&apos; are substituted in the  same  manner
+       as for the node label attribute.  Additionally the substring &apos;\L&apos; is sub&#8208;
+       stituted with the node label string.
+
+       URL=&quot;url&quot; (&quot;URL&quot; is a synonym for &quot;href&quot;.)
+
+       target=&quot;target&quot; is a target string for  client&#8208;side  imagemaps  and  SVG,
+       effective  when nodes have a URL.  The target string is used to determine
+       which window of  the  browser  is  used  for  the  URL.   Setting  it  to
+       &quot;_graphviz&quot;  will open a new window if it doesn&apos;t already exist, or reuse
+       it if it does.  If the target string is empty, the default, then no  tar&#8208;
+       get  attribute  is  included in the output.  The substrings &apos;\N&apos; and &apos;\G&apos;
+       are substituted in the same manner  as  for  the  node  label  attribute.
+       Additionally  the  substring  &apos;\L&apos;  is  substituted  with  the node label
+       string.
+
+       tooltip=&quot;tooltip&quot; is a tooltip string for client&#8208;side imagemaps and  SVG,
+       effective  when  nodes have a URL.  The tooltip string defaults to be the
+       same as the label string, but this attribute permits nodes without labels
+       to  still  have  tooltips  thus permitting denser graphs.  The substrings
+       &apos;\N&apos; and &apos;\G&apos; are substituted in the same manner as for  the  node  label
+       attribute.   Additionally the substring &apos;\L&apos; is substituted with the node
+       label string.
+
+
+
+EDGE ATTRIBUTES
+       label=text where text may include escaped newlines \n, \l, or \r for cen&#8208;
+       tered, left, or right justified lines.  If the substring &apos;\T&apos; is found in
+       a label it will be replaced by the tail_node name.  If the substring &apos;\H&apos;
+       is  found  in  a label it will be replaced by the head_node name.  If the
+       substring &apos;\E&apos; value is  found  in  a  label  it  will  be  replaced  by:
+       tail_node_name-&gt;head_node_name  If the substring &apos;\G&apos; is found in a label
+       it    will    be    replaced    by    the    graph    name.     or    by:
+       tail_node_name--head_node_name for undirected graphs.
+
+       fontsize=n sets the label type size to n points.
+
+       fontname=name sets the label font family name.
+
+       fontcolor=colorvalue sets the label text color.
+
+       style=solid dashed dotted bold invis
+
+       color=colorvalue sets the line color for edges.
+
+       color=colorvaluelist  a &apos;:&apos; separated list of colorvalue creates parallel
+       edges, one edge for each color.
+
+       dir=forward back both none controls arrow direction.
+
+       tailclip,headclip=false disables endpoint shape clipping.
+
+       href=&quot;url&quot; sets the url for the node  in  imagemap,  PostScript  and  SVG
+       files.   The  substrings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and &apos;\G&apos; are substituted in the
+       same manner as for the edge label attribute.  Additionally the  substring
+       &apos;\L&apos; is substituted with the edge label string.
+
+       URL=&quot;url&quot; (&quot;URL&quot; is a synonym for &quot;href&quot;.)
+
+       target=&quot;target&quot;  is  a  target  string for client&#8208;side imagemaps and SVG,
+       effective when edges have a URL.  If the  target  string  is  empty,  the
+       default,  then  no  target attribute is included in the output.  The sub&#8208;
+       strings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and &apos;\G&apos; are substituted in the same  manner  as
+       for the edge label attribute.  Additionally the substring &apos;\L&apos; is substi&#8208;
+       tuted with the edge label string.
+
+       tooltip=&quot;tooltip&quot; is a tooltip string for client&#8208;side imagemaps effective
+       when edges have a URL.  The tooltip string defaults to be the same as the
+       edge label string.  The substrings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and &apos;\G&apos; are  substi&#8208;
+       tuted  in  the same manner as for the edge label attribute.  Additionally
+       the substring &apos;\L&apos; is substituted with the edge label string.
+
+       arrowhead,arrowtail=none, normal, inv, dot, odot, invdot,  invodot,  tee,
+       empty, invempty, open, halfopen, diamond, odiamond, box, obox, crow.
+
+       arrowsize                                   (norm_length=10,norm_width=5,
+       inv_length=6,inv_width=7,dot_radius=2)
+
+       headlabel,taillabel=string for  port  labels.   labelfontcolor,labelfont&#8208;
+       name,labelfontsize  for head and tail labels.  The substrings &apos;\T&apos;, &apos;\H&apos;,
+       &apos;\E&apos; and &apos;\G&apos; are substituted in the same manner as for  the  edge  label
+       attribute.   Additionally the substring &apos;\L&apos; is substituted with the edge
+       label string.
+
+       headhref=&quot;url&quot; sets the url for the head port in imagemap, PostScript and
+       SVG  files.   The substrings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and &apos;\G&apos; are substituted in
+       the same manner as for the edge label attribute.  Additionally  the  sub&#8208;
+       string &apos;\L&apos; is substituted with the edge label string.
+
+       headURL=&quot;url&quot; (&quot;headURL&quot; is a synonym for &quot;headhref&quot;.)
+
+       headtarget=&quot;headtarget&quot;  is a target string for client&#8208;side imagemaps and
+       SVG, effective when edge heads have a URL.  The headtarget string is used
+       to  determine  which  window  of the browser is used for the URL.  If the
+       headtarget string is empty, the default, then headtarget defaults to  the
+       same  value  as target for the edge.  The substrings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and
+       &apos;\G&apos; are substituted in the same manner as for the edge label  attribute.
+       Additionally  the  substring  &apos;\L&apos;  is  substituted  with  the edge label
+       string.
+
+       headtooltip=&quot;tooltip&quot; is  a  tooltip  string  for  client&#8208;side  imagemaps
+       effective  when head ports have a URL.  The tooltip string defaults to be
+       the same as the headlabel string.  The substrings &apos;\T&apos;,  &apos;\H&apos;,  and  &apos;\E&apos;
+       are  substituted  in  the  same  manner  as for the edge label attribute.
+       Additionally the substring  &apos;\L&apos;  is  substituted  with  the  edge  label
+       string.
+
+       tailhref=&quot;url&quot; sets the url for the tail port in imagemap, PostScript and
+       SVG files.  The substrings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and &apos;\G&apos; are  substituted  in
+       the  same  manner as for the edge label attribute.  Additionally the sub&#8208;
+       string &apos;\L&apos; is substituted with the edge label string.
+
+       tailURL=&quot;url&quot; (&quot;tailURL&quot; is a synonym for &quot;tailhref&quot;.)
+
+       tailtarget=&quot;tailtarget&quot; is a target string for client&#8208;side imagemaps  and
+       SVG, effective when edge tails have a URL.  The tailtarget string is used
+       to determine which window of the browser is used for  the  URL.   If  the
+       tailtarget  string is empty, the default, then tailtarget defaults to the
+       same value as target for the edge.  The substrings &apos;\T&apos;, &apos;\H&apos;,  &apos;\E&apos;  and
+       &apos;\G&apos;  are substituted in the same manner as for the edge label attribute.
+       Additionally the substring  &apos;\L&apos;  is  substituted  with  the  edge  label
+       string.
+
+       tailtooltip=&quot;tooltip&quot;  is  a  tooltip  string  for  client&#8208;side imagemaps
+       effective when tail ports have a URL.  The tooltip string defaults to  be
+       the  same  as  the taillabel string.  The substrings &apos;\T&apos;, &apos;\H&apos;, &apos;\E&apos; and
+       &apos;\G&apos; are substituted in the same manner as for the edge label  attribute.
+       Additionally  the  substring  &apos;\L&apos;  is  substituted  with  the edge label
+       string.
+
+       labeldistance and port_label_distance set distance; also  labelangle  (in
+       degrees CCW)
+
+       decorate draws line from edge to label.
+
+       samehead,sametail aim edges having the same value to the same port, using
+       the average landing point.
+
+       layer=id or id:id or &quot;all&quot; sets the  edge&apos;s  active  layers.   The  empty
+       string means no layers (invisible).
+
+
+       (neato&#8208;specific attributes)
+       w=f  sets  the  weight (spring constant) of an edge to the given floating
+       point value.  The default is 1.0; greater values make the edge tend  more
+       toward its optimal length.
+
+       len=f sets the optimal length of an edge.  The default is 1.0.
+
+COMMAND LINE OPTIONS
+       -G sets a default graph attribute.
+       -N sets a default node attribute.
+       -E  sets  a  default  edge  attribute.  Example: -Gsize=&quot;7,8&quot; -Nshape=box
+       -Efontsize=8
+
+       -lfile loads custom PostScript library files.  Usually these define  cus&#8208;
+       tom  shapes or styles.  If -l is given by itself, the standard library is
+       omitted.
+
+       -Tlang sets the output language as described above.
+
+       -O automatically generate output filenames based on  the  input  filename
+       and the -T format.
+
+       -v (verbose) prints various information useful for debugging.
+
+       -V (version) prints version information and exits.
+
+       -? prints the usage and exits.
+
+EXAMPLES
+       digraph test123 {
+               pack=8
+               subgraph cluster0 {
+                 packmode=array
+                 x y x0 y0 x1
+                 subgraph cluster1 {
+                   m n
+                 }
+               }
+               b [shape=box];
+               c [label=&quot;hello\0orld&quot;,color=blue,fontsize=24,
+                    fontname=&quot;Palatino-Italic&quot;,fontcolor=red,style=filled];
+               a -&gt; z
+               x -&gt; z
+               a -&gt; b -&gt; c;
+               a -&gt; {x y};
+               edge [style=dashed,color=red];
+               b -&gt; x;
+       }
+
+AUTHORS
+       Emden R. Gansner &lt;erg@research.att.com&gt;
+
+SEE ALSO
+       This  man page contains only a small amount of the information related to
+       the Graphviz layout programs. The most complete information can be  found
+       at  http://www.graphviz.org/Documentation.php,  especially in the on&#8208;line
+       reference pages. Most of these documents are also available  in  the  doc
+       and doc/info subtrees in the source and binary distributions.
+
+       dot(1)
+
+
+
+                                   27 May 2009                          OSAGE(1)
+
+</pre></body></html>

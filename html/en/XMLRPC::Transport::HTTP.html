@@ -1,0 +1,130 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XMLRPC::Transport::HTTP - Server/Client side HTTP support for XMLRPC::Lite</title></head>
+<body><pre>
+
+XMLRPC::Transport::HTTPUser)Contributed Perl DocumenXMLRPC::Transport::HTTP(3pm)
+
+
+
+NAME
+       XMLRPC::Transport::HTTP - Server/Client side HTTP support for
+       XMLRPC::Lite
+
+SYNOPSIS
+       Client
+             use XMLRPC::Lite
+               proxy =&gt; &apos;http://localhost/&apos;,
+             # proxy =&gt; &apos;http://localhost/cgi-bin/xmlrpc.cgi&apos;, # local CGI server
+             # proxy =&gt; &apos;http://localhost/&apos;,                   # local daemon server
+             # proxy =&gt; &apos;http://login:password@localhost/cgi-bin/xmlrpc.cgi&apos;, # local CGI server with authentication
+             ;
+
+             print getStateName(1);
+
+       CGI server
+             use XMLRPC::Transport::HTTP;
+
+             my $server = XMLRPC::Transport::HTTP::CGI
+               -&gt; dispatch_to(&apos;methodName&apos;)
+               -&gt; handle
+             ;
+
+       Daemon server
+             use XMLRPC::Transport::HTTP;
+
+             my $daemon = XMLRPC::Transport::HTTP::Daemon
+               -&gt; new (LocalPort =&gt; 80)
+               -&gt; dispatch_to(&apos;methodName&apos;)
+             ;
+             print &quot;Contact to XMLRPC server at &quot;, $daemon-&gt;url, &quot;\n&quot;;
+             $daemon-&gt;handle;
+
+DESCRIPTION
+       This class encapsulates all HTTP related logic for a XMLRPC server,
+       independent of what web server it&apos;s attached to.  If you want to use this
+       class you should follow simple guideline mentioned above.
+
+   PROXY SETTINGS
+       You can use any proxy setting you use with LWP::UserAgent modules:
+
+        XMLRPC::Lite-&gt;proxy(&apos;http://endpoint.server/&apos;,
+                            proxy =&gt; [&apos;http&apos; =&gt; &apos;http://my.proxy.server&apos;]);
+
+       or
+
+        $xmlrpc-&gt;transport-&gt;proxy(&apos;http&apos; =&gt; &apos;http://my.proxy.server&apos;);
+
+       should specify proxy server for you. And if you use &quot;HTTP_proxy_user&quot; and
+       &quot;HTTP_proxy_pass&quot; for proxy authorization SOAP::Lite should know how to
+       handle it properly.
+
+   COOKIE-BASED AUTHENTICATION
+         use HTTP::Cookies;
+
+         my $cookies = HTTP::Cookies-&gt;new(ignore_discard =&gt; 1);
+           # you may also add &apos;file&apos; if you want to keep them between sessions
+
+         my $xmlrpc = XMLRPC::Lite-&gt;proxy(&apos;http://localhost/&apos;);
+         $xmlrpc-&gt;transport-&gt;cookie_jar($cookies);
+
+       Cookies will be taken from response and provided for request. You may
+       always add another cookie (or extract what you need after response) with
+       HTTP::Cookies interface.
+
+       You may also do it in one line:
+
+         $xmlrpc-&gt;proxy(&apos;http://localhost/&apos;,
+                        cookie_jar =&gt; HTTP::Cookies-&gt;new(ignore_discard =&gt; 1));
+
+   COMPRESSION
+       XMLRPC::Lite provides you option for enabling compression on wire (for
+       HTTP transport only). Both server and client should support this
+       capability, but this logic should be absolutely transparent for your
+       application.  Server will respond with encoded message only if client can
+       accept it (client sends Accept-Encoding with &apos;deflate&apos; or &apos;*&apos; values) and
+       client has fallback logic, so if server doesn&apos;t understand specified
+       encoding (Content-Encoding: deflate) and returns proper error code (415
+       NOT ACCEPTABLE) client will repeat the same request not encoded and will
+       store this server in per-session cache, so all other requests will go
+       there without encoding.
+
+       Having options on client and server side that let you specify threshold
+       for compression you can safely enable this feature on both client and
+       server side.
+
+       Compression will be enabled on client side IF: threshold is specified AND
+       size of current message is bigger than threshold AND module
+       Compress::Zlib is available. Client will send header &apos;Accept-Encoding&apos;
+       with value &apos;deflate&apos; if threshold is specified AND module Compress::Zlib
+       is available.
+
+       Server will accept compressed message if module Compress::Zlib is
+       available, and will respond with compressed message ONLY IF: threshold is
+       specified AND size of current message is bigger than threshold AND module
+       Compress::Zlib is available AND header &apos;Accept-Encoding&apos; is presented in
+       request.
+
+DEPENDENCIES
+        Crypt::SSLeay             for HTTPS/SSL
+        HTTP::Daemon              for XMLRPC::Transport::HTTP::Daemon
+        Apache, Apache::Constants for XMLRPC::Transport::HTTP::Apache
+
+SEE ALSO
+        See ::CGI, ::Daemon and ::Apache for implementation details.
+        See examples/XMLRPC/* for examples.
+
+COPYRIGHT
+       Copyright (C) 2000-2001 Paul Kulchenko. All rights reserved.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+AUTHOR
+       Paul Kulchenko (paulclinger@yahoo.com)
+
+
+
+perl v5.12.4                       2011-08-18       XMLRPC::Transport::HTTP(3pm)
+
+</pre></body></html>

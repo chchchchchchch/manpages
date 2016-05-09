@@ -1,0 +1,180 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Package::Stash - routines for manipulating stashes</title></head>
+<body><pre>
+
+Package::Stash(3pm)    User Contributed Perl Documentation   Package::Stash(3pm)
+
+
+
+NAME
+       Package::Stash - routines for manipulating stashes
+
+VERSION
+       version 0.33
+
+SYNOPSIS
+         my $stash = Package::Stash-&gt;new(&apos;Foo&apos;);
+         $stash-&gt;add_symbol(&apos;%foo&apos;, {bar =&gt; 1});
+         # $Foo::foo{bar} == 1
+         $stash-&gt;has_symbol(&apos;$foo&apos;) # false
+         my $namespace = $stash-&gt;namespace;
+         *{ $namespace-&gt;{foo} }{HASH} # {bar =&gt; 1}
+
+DESCRIPTION
+       Manipulating stashes (Perl&apos;s symbol tables) is occasionally necessary,
+       but incredibly messy, and easy to get wrong. This module hides all of
+       that behind a simple API.
+
+       NOTE: Most methods in this class require a variable specification that
+       includes a sigil. If this sigil is absent, it is assumed to represent the
+       IO slot.
+
+       Due to limitations in the typeglob API available to perl code, and to
+       typeglob manipulation in perl being quite slow, this module provides two
+       implementations - one in pure perl, and one using XS. The XS
+       implementation is to be preferred for most usages; the pure perl one is
+       provided for cases where XS modules are not a possibility. The current
+       implementation in use can be set by setting
+       $ENV{PACKAGE_STASH_IMPLEMENTATION} or $Package::Stash::IMPLEMENTATION
+       before loading Package::Stash (with the environment variable taking
+       precedence), otherwise, it will use the XS implementation if possible,
+       falling back to the pure perl one.
+
+METHODS
+   new $package_name
+       Creates a new &quot;Package::Stash&quot; object, for the package given as the only
+       argument.
+
+   name
+       Returns the name of the package that this object represents.
+
+   namespace
+       Returns the raw stash itself.
+
+   add_symbol $variable $value %opts
+       Adds a new package symbol, for the symbol given as $variable, and
+       optionally gives it an initial value of $value. $variable should be the
+       name of variable including the sigil, so
+
+         Package::Stash-&gt;new(&apos;Foo&apos;)-&gt;add_symbol(&apos;%foo&apos;)
+
+       will create %Foo::foo.
+
+       Valid options (all optional) are &quot;filename&quot;, &quot;first_line_num&quot;, and
+       &quot;last_line_num&quot;.
+
+       $opts{filename}, $opts{first_line_num}, and $opts{last_line_num} can be
+       used to indicate where the symbol should be regarded as having been
+       defined.  Currently these values are only used if the symbol is a
+       subroutine (&apos;&quot;&amp;&quot;&apos; sigil) and only if &quot;$^P &amp; 0x10&quot; is true, in which case
+       the special %DB::sub hash is updated to record the values of &quot;filename&quot;,
+       &quot;first_line_num&quot;, and &quot;last_line_num&quot; for the subroutine. If these are
+       not passed, their values are inferred (as much as possible) from &quot;caller&quot;
+       information.
+
+       This is especially useful for debuggers and profilers, which use %DB::sub
+       to determine where the source code for a subroutine can be found.  See
+       http://perldoc.perl.org/perldebguts.html#Debugger-Internals
+       &lt;http://perldoc.perl.org/perldebguts.html#Debugger-Internals&gt; for more
+       information about %DB::sub.
+
+   remove_glob $name
+       Removes all package variables with the given name, regardless of sigil.
+
+   has_symbol $variable
+       Returns whether or not the given package variable (including sigil)
+       exists.
+
+   get_symbol $variable
+       Returns the value of the given package variable (including sigil).
+
+   get_or_add_symbol $variable
+       Like &quot;get_symbol&quot;, except that it will return an empty hashref or
+       arrayref if the variable doesn&apos;t exist.
+
+   remove_symbol $variable
+       Removes the package variable described by $variable (which includes the
+       sigil); other variables with the same name but different sigils will be
+       untouched.
+
+   list_all_symbols $type_filter
+       Returns a list of package variable names in the package, without sigils.
+       If a &quot;type_filter&quot; is passed, it is used to select package variables of a
+       given type, where valid types are the slots of a typeglob (&apos;SCALAR&apos;,
+       &apos;CODE&apos;, &apos;HASH&apos;, etc). Note that if the package contained any &quot;BEGIN&quot;
+       blocks, perl will leave an empty typeglob in the &quot;BEGIN&quot; slot, so this
+       will show up if no filter is used (and similarly for &quot;INIT&quot;, &quot;END&quot;, etc).
+
+   get_all_symbols $type_filter
+       Returns a hashref, keyed by the variable names in the package. If
+       $type_filter is passed, the hash will contain every variable of that type
+       in the package as values, otherwise, it will contain the typeglobs
+       corresponding to the variable names (basically, a clone of the stash).
+
+BUGS / CAVEATS
+       &#183;   Prior to perl 5.10, scalar slots are only considered to exist if they
+           are defined
+
+           This is due to a shortcoming within perl itself. See &quot;Making
+           References&quot; in perlref point 7 for more information.
+
+       &#183;   GLOB and FORMAT variables are not (yet) accessible through this
+           module.
+
+       &#183;   Also, see the BUGS section for the specific backends
+           (Package::Stash::XS and Package::Stash::PP)
+
+       Please report any bugs through RT: email &quot;bug-package-stash at
+       rt.cpan.org&quot;, or browse to
+       http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Package-Stash
+       &lt;http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Package-Stash&gt;.
+
+SUPPORT
+       You can find this documentation for this module with the perldoc command.
+
+           perldoc Package::Stash
+&#12;       You can also look for information at:
+
+       &#183;   AnnoCPAN: Annotated CPAN documentation
+
+           http://annocpan.org/dist/Package-Stash
+           &lt;http://annocpan.org/dist/Package-Stash&gt;
+
+       &#183;   CPAN Ratings
+
+           http://cpanratings.perl.org/d/Package-Stash
+           &lt;http://cpanratings.perl.org/d/Package-Stash&gt;
+
+       &#183;   RT: CPAN&apos;s request tracker
+
+           http://rt.cpan.org/NoAuth/Bugs.html?Dist=Package-Stash
+           &lt;http://rt.cpan.org/NoAuth/Bugs.html?Dist=Package-Stash&gt;
+
+       &#183;   Search CPAN
+
+           http://search.cpan.org/dist/Package-Stash
+           &lt;http://search.cpan.org/dist/Package-Stash&gt;
+
+AUTHOR
+       Jesse Luehrs &lt;doy at tozt dot net&gt;
+
+       Based on code from Class::MOP::Package, by Stevan Little and the Moose
+       Cabal.
+
+SEE ALSO
+       &#183;   Class::MOP::Package
+
+           This module is a factoring out of code that used to live here
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2011 by Jesse Luehrs.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.12.4                       2011-09-28                Package::Stash(3pm)
+
+</pre></body></html>

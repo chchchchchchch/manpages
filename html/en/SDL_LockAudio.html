@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_LockAudio - Lock out the callback function</title></head>
+<body><pre>
+
+SDL_LockAudio(3)                SDL API Reference               SDL_LockAudio(3)
+
+
+
+NAME
+       SDL_LockAudio - Lock out the callback function
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       void SDL_LockAudio(void)
+
+DESCRIPTION
+       The  lock  manipulated by these functions protects the callback function.
+       During a LockAudio period, you can be guaranteed that the callback  func&#8208;
+       tion  is not running. Do not call these from the callback function or you
+       will cause deadlock.
+
+SEE ALSO
+       SDL_OpenAudio
+
+
+
+SDL                          Tue 11 Sep 2001, 22:58             SDL_LockAudio(3)
+
+</pre></body></html>

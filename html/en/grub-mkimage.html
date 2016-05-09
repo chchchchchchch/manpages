@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>grub-mkimage - make a bootable image of GRUB</title></head>
+<body><pre>
+
+GRUB-MKIMAGE(1)                   User Commands                  GRUB-MKIMAGE(1)
+
+
+
+NAME
+       grub-mkimage - make a bootable image of GRUB
+
+SYNOPSIS
+       grub-mkimage [OPTION]... [MODULES]
+
+DESCRIPTION
+       Make a bootable image of GRUB.
+
+       -d, --directory=DIR
+              use  images  and  modules  under DIR [default=/usr/lib/grub/@plat&#8208;
+              form@]
+
+       -p, --prefix=DIR
+              set grub_prefix directory [default=/boot/grub]
+
+       -m, --memdisk=FILE
+              embed FILE as a memdisk image
+
+       -c, --config=FILE
+              embed FILE as boot config
+
+       -n, --note
+              add NOTE segment for CHRP Open Firmware
+
+       -o, --output=FILE
+              output a generated image to FILE [default=stdout]
+
+       -O, --format=FORMAT
+              generate an image  in  format  available  formats:  i386-coreboot,
+              i386-multiboot,  i386-pc,  i386-pc-pxe,  i386-efi,  i386-ieee1275,
+              i386-qemu, x86_64-efi, mipsel-yeeloong-flash, mipsel-yeeloong-elf,
+              powerpc-ieee1275, sparc64-ieee1275-raw, sparc64-ieee1275-aout
+
+       -C, --compression=(xz|none|auto)
+              choose the compression to use
+
+       -h, --help
+              display this message and exit
+
+       -V, --version
+              print version information and exit
+
+       -v, --verbose
+              print verbose messages
+
+REPORTING BUGS
+       Report bugs to &lt;bug-grub@gnu.org&gt;.
+
+SEE ALSO
+       grub-install(8), grub-setup(8), grub-mkrescue(1), grub-mknetdir(8)
+
+       The  full  documentation for grub-mkimage is maintained as a Texinfo man&#8208;
+       ual.  If the info and grub-mkimage programs  are  properly  installed  at
+       your site, the command
+
+              info grub-mkimage
+
+       should give you access to the complete manual.
+
+
+
+grub-mkimage (GRUB) 1.99-27.1crunchbMay12013                     GRUB-MKIMAGE(1)
+
+</pre></body></html>

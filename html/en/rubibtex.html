@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rubibtex - make a bibliography for (La)TeX using Russian letters as item names</title></head>
+<body><pre>
+
+rubibtex(1)                           teTeX                          rubibtex(1)
+
+
+
+NAME
+       rubibtex  - make a bibliography for (La)TeX using Russian letters as item
+       names
+
+SYNOPSIS
+       rubibtex BASENAME
+
+DESCRIPTION
+       rubibtex is used to run bibtex(1) on auxiliary files with Russian charac&#8208;
+       ters in item names (citation keys).  It is part of the T2 package.
+
+       rubibtex copies the auxiliary file to /tmp, uses sed(1) to convert Cyril&#8208;
+       lic character commands to their 8-bit ASCII equivalents;  runs  bibtex(1)
+       on  the modified file; and finally moves the original auxiliary file back
+       (overwriting the modified file).
+
+       rubibtex assumes that the bibtex(1) database (bib) files are encoded with
+       the KOI8-R encoding.
+
+FILES
+       basename.aux
+              LaTeX auxiliary file
+
+BUGS
+       None known, but report any bugs found to the authors.
+
+COPYRIGHT
+       The  T2  package is Copyright 1997-1999 Werner Lemberg, Vladimir Volovich
+       and any individual authors listed elsewhere in package files.
+
+       It may be distributed under the conditions of the  LaTeX  Project  Public
+       License, either version 1.1 of this license or (at your option) any later
+       version.
+
+SEE ALSO
+       bibtex(1), sed(1), &lt;ftp://ftp.vsu.ru/pub/tex/T2/README&gt;.
+
+AUTHOR
+       Werner Lemberg &lt;wl@gnu.org&gt;, Vladimir Volovich &lt;TeX@vvv.vsu.ru&gt;.
+
+       This manual page was written by C.M.  Connelly  &lt;c@eskimo.com&gt;,  for  the
+       Debian  GNU/Linux  system.  It may be used by other distributions without
+       contacting the author.  Any mistakes or omissions in the manual page  are
+       my  fault;  inquiries  about or corrections to this manual page should be
+       directed to me (and not to the primary author).
+
+teTeX                             October 2000                       rubibtex(1)
+
+</pre></body></html>

@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>afm2afm - reencode an afm file</title></head>
+<body><pre>
+
+AFM2AFM(1)                        Marc Penninga                       AFM2AFM(1)
+
+
+
+NAME
+       afm2afm - reencode an afm file
+
+SYNOPSIS
+       afm2afm [-help] [-encoding encodingfile] [-output outputfile] afmfile
+
+DESCRIPTION
+       afm2afm re-encodes an afm file.
+
+       Metrics (including kerning data) for characters not present in the chosen
+       encoding are excluded from the output, which resuls in much smaller
+       files.
+
+       Note that if you don&apos;t specify an encoding file, the afm file isn&apos;t re-
+       encoded, but the unused data is still pruned.
+
+       The program also generates an entry for a dvips-style map file, but only
+       if the afm file has been re-encoded and the output was written to file
+       (i.e., if both the -encoding and -output options were specified).
+
+OPTIONS AND ARGUMENTS
+       -help
+           Print a short description of the syntax
+
+       -encoding encodingfile
+           Re-encode to the enconding in encodingfile
+
+       -output outputfile
+           Write the result to outputfile instead of &quot;stdout&quot;.
+
+       afmfile
+           The afm file to be re-encoded.
+
+       Option names may be shortened to a unique prefix.
+
+AUTHOR
+       Marc Penninga &lt;marcpenninga@gmail.com&gt;
+
+COPYRIGHT
+       Copyright (C) 2005-2012 Marc Penninga.
+
+LICENSE
+       This program is free software; you can redistribute it and/or modify it
+       under the terms of the GNU General Public License as published by the
+       Free Software Foundation, either version 2 of the License, or (at your
+       option) any later version.  A copy of the GNU General Public License is
+       included with autoinst; see the file GPLv2.txt.
+
+DISCLAIMER
+       This program is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+       Public License for more details.
+
+RECENT CHANGES
+       (See the source code for the rest of the story.)
+
+       2012-02-01  Refactored the code; added the &quot;no re-encoding, only pruning&quot;
+                   functionality.
+
+
+
+fontools                           2012-03-06                         AFM2AFM(1)
+
+</pre></body></html>

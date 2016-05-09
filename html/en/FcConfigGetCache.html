@@ -1,0 +1,29 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigGetCache - DEPRECATED used to return per-user cache filename</title></head>
+<body><pre>
+
+FcConfigGetCache(3)                                          FcConfigGetCache(3)
+
+
+
+NAME
+       FcConfigGetCache - DEPRECATED used to return per-user cache filename
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcChar8 * FcConfigGetCache (FcConfig *config);
+
+DESCRIPTION
+       With  fontconfig  no longer using per-user cache files, this function now
+       simply returns NULL to indicate that no per-user file exists.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012              FcConfigGetCache(3)
+
+</pre></body></html>

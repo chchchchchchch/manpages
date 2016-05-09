@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>casinh, casinhf, casinhl - complex arc sine hyperbolic</title></head>
+<body><pre>
+
+CASINH(3)                   Linux Programmer&apos;s Manual                  CASINH(3)
+
+
+
+NAME
+       casinh, casinhf, casinhl - complex arc sine hyperbolic
+
+SYNOPSIS
+       #include &lt;complex.h&gt;
+
+       double complex casinh(double complex z);
+       float complex casinhf(float complex z);
+       long double complex casinhl(long double complex z);
+
+       Link with -lm.
+
+DESCRIPTION
+       The  casinh()  function  calculates the complex arc hyperbolic sine of z.
+       If y = casinh(z), then z = csinh(y).  The imaginary part of y  is  chosen
+       in the interval [-pi/2,pi/2].
+
+       One has:
+
+           casinh(z) = clog(z + csqrt(z * z + 1))
+
+VERSIONS
+       These functions first appeared in glibc in version 2.1.
+
+CONFORMING TO
+       C99.
+
+SEE ALSO
+       asinh(3), cabs(3), cimag(3), csinh(3), complex(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2008-08-11                          CASINH(3)
+
+</pre></body></html>

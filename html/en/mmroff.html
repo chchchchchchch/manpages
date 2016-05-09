@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mmroff - reference preprocessor</title></head>
+<body><pre>
+
+MMROFF(1)                                                              MMROFF(1)
+
+
+
+NAME
+       mmroff - reference preprocessor
+
+SYNOPSIS
+       mmroff [ -x ] groff_arguments
+
+DESCRIPTION
+       mmroff  is a simple preprocessor for groff, it is used for expanding ref&#8208;
+       erences in mm, see groff_mm(7).  groff is executed twice, first  with  -z
+       and  -rRef=1 to collect all references and then to do the real processing
+       when the reference file is up to date.
+
+       -x     Just create the reference file. This can be used  to  refresh  the
+              reference file, it isn&apos;t always needed to have accurate references
+              and by using this option groff will only be run once.
+
+AUTHOR
+       J&#195;&#182;rgen H&#195;&#164;gg, Lund, Sweden &lt;jh@axis.se&gt;.
+
+FILES
+       /usr/share/groff/1.21/tmac/m.tmac
+
+       /usr/share/groff/1.21/tmac/mm/*.cov
+
+       /usr/share/groff/1.21/tmac/mm/*.MT
+
+       /usr/share/groff/1.21/tmac/mm/locale
+
+SEE ALSO
+       groff_mm(7), groff_mmse(7), groff(1), troff(1), tbl(1), pic(1), eqn(1)
+
+
+
+Groff Version 1.21              31 December 2010                       MMROFF(1)
+
+</pre></body></html>

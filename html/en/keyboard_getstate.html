@@ -1,0 +1,86 @@
+<html>
+<head><meta charset=utf-8/>
+<title>keyboard_getstate - get a pointer to a buffer holding the state of all keys in raw keyboard mode</title></head>
+<body><pre>
+
+keyboard_getstate(3)           Svgalib User Manual          keyboard_getstate(3)
+
+
+
+NAME
+       keyboard_getstate  -  get  a pointer to a buffer holding the state of all
+       keys in raw keyboard mode
+
+SYNOPSIS
+       #include &lt;vgakeyboard.h&gt;
+
+       char *keyboard_getstate(void);
+
+
+DESCRIPTION
+       When in raw keyboard mode this routine returns  a  pointer  buffer  to  a
+       static  buffer.  If  the  value  in  buffer[scancode]  is  KEY_PRESSED or
+       KEY_NOTPRESSED the key with that scancode is  pressed  or  not.  Actually
+       KEY_PRESSED  is  1  and  KEY_NOTPRESSED is 0, s.t. you can use constructs
+       like:
+
+       if(buffer[SCANCODE_ENTER]) {
+            /* do something */
+       }
+
+       This is more efficient than calling keyboard_keypressed(3) if you want to
+       check for many different keys.
+
+       Please  note  that  keyboard events will only be processed when you occa&#8208;
+       sionally call keyboard_update(3) or keyboard_waitforupdate(3).
+
+       keyboard_translatekeys(3) allows certain remap operations which make cer&#8208;
+       tain  keys (digits, enter) which might have several physical keys show up
+       under the same scancodes.
+
+       Here are the supported scancodes. The names  of  the  #defines  originate
+       from  the  US  keyboard layout, for other countries, they&apos;ll refer to the
+       key in the same physical location, but the keycap will have  a  different
+       inscription.  For  the list below, add SCANCODE_ in front of the names to
+       get the right name for your C source. That means, if it  lists  BACKSLASH
+       below,  you  shall  use  SCANCODE_BACKSLASH as symbol in your program. In
+       addition to the names below we also have SCANCODE_0 -  SCANCODE_9,  SCAN&#8208;
+       CODE_KEYPAD0 - SCANCODE_KEYPAD9, SCANCODE_A - SCANCODE_Z, and SCANCODE_F1
+       - SCANCODE_F12.
+
+       The  other  key  names  are  ESCAPE,  MINUS,   EQUAL,   BACKSPACE,   TAB,
+       BRACKET_LEFT,  BRACKET_RIGHT,  ENTER, LEFTCONTROL, SEMICOLON, APOSTROPHE,
+       GRAVE, LEFTSHIFT, BACKSLASH, COMMA, PERIOD, SLASH, RIGHTSHIFT, KEYPADMUL&#8208;
+       TIPLY,  LEFTALT, SPACE, CAPSLOCK, NUMLOCK, SCROLLLOCK, CURSORUPLEFT, CUR&#8208;
+       SORUP, CURSORUPRIGHT, KEYPADMINUS, CURSORLEFT,  CURSORRIGHT,  KEYPADPLUS,
+       CURSORDOWNLEFT,  CURSORDOWN,  CURSORDOWNRIGHT,  KEYPADPERIOD,  LESS, KEY&#8208;
+       PADENTER, RIGHTCONTROL,  CONTROL,  KEYPADDIVIDE,  PRINTSCREEN,  RIGHTALT,
+       BREAK,  BREAK_ALTERNATIVE,  HOME, CURSORBLOCKUP, PAGEUP, CURSORBLOCKLEFT,
+       CURSORBLOCKRIGHT, END, CURSORBLOCKDOWN, PAGEDOWN, INSERT, and REMOVE.
+
+
+SEE ALSO
+       svgalib(7), vgagl(7), libvga.config(5),  keytest(6),  eventtest(6),  key&#8208;
+       board_seteventhandler(3),  keyboard_init(3),  keyboard_init_return_fd(3),
+       keyboard_close(3),   keyboard_setdefaulteventhandler(3),    keyboard_get&#8208;
+       state(3),    keyboard_clearstate(3),    keyboard_translatekeys(3),   key&#8208;
+       board_update(3), keyboard_waitforupdate(3), vga_waitevent(3)
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               29 July 1997              keyboard_getstate(3)
+
+</pre></body></html>

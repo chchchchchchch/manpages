@@ -1,0 +1,167 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ip - show / manipulate routing, devices, policy routing and tunnels</title></head>
+<body><pre>
+
+IP(8)                                 Linux                                IP(8)
+
+
+
+NAME
+       ip - show / manipulate routing, devices, policy routing and tunnels
+
+SYNOPSIS
+       ip [ OPTIONS ] OBJECT { COMMAND | help }
+
+
+       OBJECT := { link | addr | addrlabel | route | rule | neigh | ntable |
+               tunnel | tuntap | maddr | mroute | mrule | monitor | xfrm | netns
+               | l2tp }
+
+
+       OPTIONS := { -V[ersion] | -s[tatistics] | -r[esolve] | -f[amily] { inet |
+               inet6 | ipx | dnet | link } | -o[neline] }
+
+
+OPTIONS
+       -V, -Version
+              print the version of the ip utility and exit.
+
+
+       -s, -stats, -statistics
+              output more information.  If the option appears twice or more, the
+              amount of information increases.  As a rule, the information is
+              statistics or some time values.
+
+
+       -l, -loops
+              Specify maximum number of loops the &apos;ip addr flush&apos; logic will
+              attempt before giving up.  The default is 10.  Zero (0) means loop
+              until all addresses are removed.
+
+
+       -f, -family
+              followed by protocol family identifier: inet, inet6 or link
+              ,enforce the protocol family to use.  If the option is not
+              present, the protocol family is guessed from other arguments.  If
+              the rest of the command line does not give enough information to
+              guess the family, ip falls back to the default one, usually inet
+              or any.  link is a special family identifier meaning that no net&#8208;
+              working protocol is involved.
+
+
+       -4     shortcut for -family inet.
+
+
+       -6     shortcut for -family inet6.
+
+
+       -0     shortcut for -family link.
+
+
+       -o, -oneline
+              output each record on a single line, replacing line feeds with the
+              &apos;\&#180; character. This is convenient when you want to count records
+              with wc(1)
+               or to grep(1) the output.
+
+
+       -r, -resolve
+              use the system&apos;s name resolver to print DNS names instead of host
+              addresses.
+
+
+IP - COMMAND SYNTAX
+   OBJECT
+       address
+              - protocol (IP or IPv6) address on a device.
+
+
+       addrlabel
+              - label configuration for protocol address selection.
+
+
+       l2tp   - tunnel ethernet over IP (L2TPv3).
+
+
+       link   - network device.
+
+
+       maddress
+              - multicast address.
+
+
+       monitor
+              - watch for netlink messages.
+
+
+       mroute - multicast routing cache entry.
+
+
+       mrule  - rule in multicast routing policy database.
+
+
+       neighbour
+              - manage ARP or NDISC cache entries.
+
+
+       netns  - manage network namespaces.
+
+
+       ntable - manage the neighbor cache&apos;s operation.
+
+
+       route  - routing table entry.
+
+
+       rule   - rule in routing policy database.
+
+
+       tunnel - tunnel over IP.
+
+
+       tuntap - manage TUN/TAP devices.
+
+
+       xfrm   - manage IPSec policies.
+
+
+       The names of all objects may be written in full or abbreviated form, f.e.
+       address is abbreviated as addr or just a.
+
+
+   COMMAND
+       Specifies the action to perform on the object.  The set of possible
+       actions depends on the object type.  As a rule, it is possible to add,
+       delete and show (or list ) objects, but some objects do not allow all of
+       these operations or have some additional commands.  The help command is
+       available for all objects.  It prints out a list of available commands
+       and argument syntax conventions.
+
+       If no command is given, some default command is assumed.  Usually it is
+       list or, if the objects of this class cannot be listed, help.
+
+
+HISTORY
+       ip was written by Alexey N. Kuznetsov and added in Linux 2.2.
+
+SEE ALSO
+       ip-address(8), ip-addrlabel(8), ip-l2tp(8), ip-link(8), ip-maddress(8),
+       ip-monitor(8), ip-mroute(8), ip-neighbour(8), ip-netns(8), ip-ntable(8),
+       ip-route(8), ip-rule(8), ip-tunnel(8), ip-xfrm(8)
+       IP Command reference ip-cref.ps
+
+REPORTING BUGS
+       Report bug to the Network Developers mailing list &lt;netdev@vger.ker&#8208;
+       nel.org&gt; where the development and maintenance is primarily done.  You do
+       not have to be subscribed to the list to send a message there.
+
+
+AUTHOR
+       Original Manpage by Michail Litvak &lt;mci@owl.openwall.com&gt;
+
+
+
+iproute2                           20 Dec 2011                             IP(8)
+
+</pre></body></html>

@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Dispatch::Email - Base class for objects that send log messages via email</title></head>
+<body><pre>
+
+Log::Dispatch::Email(3pUser Contributed Perl DocumentatLog::Dispatch::Email(3pm)
+
+
+
+NAME
+       Log::Dispatch::Email - Base class for objects that send log messages via
+       email
+
+VERSION
+       version 2.32
+
+SYNOPSIS
+         package Log::Dispatch::Email::MySender;
+
+         use Log::Dispatch::Email;
+         use base qw( Log::Dispatch::Email );
+
+         sub send_email {
+             my $self = shift;
+             my %p    = @_;
+
+             # Send email somehow.  Message is in $p{message}
+         }
+
+DESCRIPTION
+       This module should be used as a base class to implement Log::Dispatch::*
+       objects that send their log messages via email.  Implementing a subclass
+       simply requires the code shown in the SYNOPSIS with a real implementation
+       of the &quot;send_email()&quot; method.
+
+CONSTRUCTOR
+       The constructor takes the following parameters in addition to the
+       standard parameters documented in Log::Dispatch::Output:
+
+       &#183;   subject ($)
+
+           The subject of the email messages which are sent.  Defaults to &quot;$0:
+           log email&quot;
+
+       &#183;   to ($ or \@)
+
+           Either a string or a list reference of strings containing email
+           addresses.  Required.
+
+       &#183;   from ($)
+
+           A string containing an email address.  This is optional and may not
+           work with all mail sending methods.
+
+       &#183;   buffered (0 or 1)
+
+           This determines whether the object sends one email per message it is
+           given or whether it stores them up and sends them all at once.  The
+           default is to buffer messages.
+
+METHODS
+       &#183;   send_email(%p)
+
+           This is the method that must be subclassed.  For now the only
+           parameter in the hash is &apos;message&apos;.
+
+       &#183;   flush
+
+           If the object is buffered, then this method will call the
+           &quot;send_email()&quot; method to send the contents of the buffer and then
+           clear the buffer.
+
+       &#183;   DESTROY
+
+           On destruction, the object will call &quot;flush()&quot; to send any pending
+           email.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is Copyright (c) 2011 by Dave Rolsky.
+
+       This is free software, licensed under:
+
+         The Artistic License 2.0 (GPL Compatible)
+
+
+
+perl v5.14.2                       2012-05-25          Log::Dispatch::Email(3pm)
+
+</pre></body></html>

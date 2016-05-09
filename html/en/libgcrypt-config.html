@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libgcrypt-config - script to get information about the installed version of libgcrypt.</title></head>
+<body><pre>
+
+LIBGCRYPT(1)                          1.4.1                         LIBGCRYPT(1)
+
+
+
+NAME
+       libgcrypt-config  - script to get information about the installed version
+       of libgcrypt.
+
+SYNOPSIS
+       libgcrypt-config   [--prefix[=DIR]]   [--exec-prefix[=DIR]]   [--version]
+       [--libs] [--cflags] [LIBRARIES]
+
+DESCRIPTION
+       libgcrypt-config  is  a  tool  that is used to configure to determine the
+       compiler and linker flags that should be used to compile  and  link  pro&#8208;
+       grams  that  use  libgcrypt. It is also used internally to the .m4 macros
+       for GNU autoconf that are included with libgcrypt.
+
+OPTIONS
+       libgcrypt-config accepts the following options:
+
+       --version
+               Print the currently installed version of libgcrypt on  the  stan&#8208;
+               dard output.
+
+       --libs  Print  the  linker  flags  that are necessary to link a libgcrypt
+               program.
+
+       --cflags
+               Print  the  compiler  flags  that  are  necessary  to  compile  a
+               libgcrypt program.
+
+       --prefix=PREFIX
+               If  specified, use PREFIX instead of the installation prefix that
+               libgcrypt was built  with  when  computing  the  output  for  the
+               --cflags  and  --libs  options.  This option is also used for the
+               exec prefix if --exec-prefix was not specified. This option  must
+               be specified before any --libs or --cflags options.
+
+       --exec-prefix=PREFIX
+               If  specified, use PREFIX instead of the installation exec prefix
+               that libgcrypt was built with when computing the output  for  the
+               --cflags  and  --libs  options.   This  option  must be specified
+               before any --libs or --cflags options.
+
+SEE ALSO
+       libgnutls-config(1)
+
+COPYRIGHT
+       Copyright &#169;  1998 Owen Taylor, modified for libgcrypt and gnutls  by  Ivo
+       Timmermans, 2001.
+
+       Permission  to  use,  copy,  modify, and distribute this software and its
+       documentation for any purpose and without fee is hereby granted, provided
+       that  the  above copyright notice appear in all copies and that both that
+       copyright notice and this permission notice appear in supporting documen&#8208;
+       tation.
+
+
+
+Version                           26 April 2008                     LIBGCRYPT(1)
+
+</pre></body></html>

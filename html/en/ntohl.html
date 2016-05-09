@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htonl, htons, ntohl, ntohs - convert values between host and network byte order</title></head>
+<body><pre>
+
+BYTEORDER(3)                Linux Programmer&apos;s Manual               BYTEORDER(3)
+
+
+
+NAME
+       htonl, htons, ntohl, ntohs - convert values between host and network byte
+       order
+
+SYNOPSIS
+       #include &lt;arpa/inet.h&gt;
+
+       uint32_t htonl(uint32_t hostlong);
+
+       uint16_t htons(uint16_t hostshort);
+
+       uint32_t ntohl(uint32_t netlong);
+
+       uint16_t ntohs(uint16_t netshort);
+
+DESCRIPTION
+       The htonl() function converts the unsigned  integer  hostlong  from  host
+       byte order to network byte order.
+
+       The  htons()  function converts the unsigned short integer hostshort from
+       host byte order to network byte order.
+
+       The ntohl() function converts the unsigned integer netlong  from  network
+       byte order to host byte order.
+
+       The  ntohs()  function  converts the unsigned short integer netshort from
+       network byte order to host byte order.
+
+       On the i386 the host byte order is Least Significant Byte first,  whereas
+       the network byte order, as used on the Internet, is Most Significant Byte
+       first.
+
+CONFORMING TO
+       POSIX.1-2001.
+
+       Some  systems  require  the  inclusion  of  &lt;netinet/in.h&gt;   instead   of
+       &lt;arpa/inet.h&gt;.
+
+SEE ALSO
+       endian(3), gethostbyname(3), getservent(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2009-01-15                       BYTEORDER(3)
+
+</pre></body></html>

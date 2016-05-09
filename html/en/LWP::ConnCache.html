@@ -1,0 +1,127 @@
+<html>
+<head><meta charset=utf-8/>
+<title>LWP::ConnCache - Connection cache manager</title></head>
+<body><pre>
+
+LWP::ConnCache(3pm)    User Contributed Perl Documentation   LWP::ConnCache(3pm)
+
+
+
+NAME
+       LWP::ConnCache - Connection cache manager
+
+NOTE
+       This module is experimental.  Details of its interface is likely to
+       change in the future.
+
+SYNOPSIS
+        use LWP::ConnCache;
+        my $cache = LWP::ConnCache-&gt;new;
+        $cache-&gt;deposit($type, $key, $sock);
+        $sock = $cache-&gt;withdraw($type, $key);
+
+DESCRIPTION
+       The &quot;LWP::ConnCache&quot; class is the standard connection cache manager for
+       LWP::UserAgent.
+
+       The following basic methods are provided:
+
+       $cache = LWP::ConnCache-&gt;new( %options )
+           This method constructs a new &quot;LWP::ConnCache&quot; object.  The only
+           option currently accepted is &apos;total_capacity&apos;.  If specified it
+           initialize the total_capacity option.  It defaults to the value 1.
+
+       $cache-&gt;total_capacity( [$num_connections] )
+           Get/sets the number of connection that will be cached.  Connections
+           will start to be dropped when this limit is reached.  If set to 0,
+           then all connections are immediately dropped.  If set to &quot;undef&quot;,
+           then there is no limit.
+
+       $cache-&gt;capacity($type, [$num_connections] )
+           Get/set a limit for the number of connections of the specified type
+           that can be cached.  The $type will typically be a short string like
+           &quot;http&quot; or &quot;ftp&quot;.
+
+       $cache-&gt;drop( [$checker, [$reason]] )
+           Drop connections by some criteria.  The $checker argument is a
+           subroutine that is called for each connection.  If the routine
+           returns a TRUE value then the connection is dropped.  The routine is
+           called with ($conn, $type, $key, $deposit_time) as arguments.
+
+           Shortcuts: If the $checker argument is absent (or &quot;undef&quot;) all cached
+           connections are dropped.  If the $checker is a number then all
+           connections untouched that the given number of seconds or more are
+           dropped.  If $checker is a string then all connections of the given
+           type are dropped.
+
+           The $reason argument is passed on to the dropped() method.
+
+       $cache-&gt;prune
+           Calling this method will drop all connections that are dead.  This is
+           tested by calling the ping() method on the connections.  If the
+           ping() method exists and returns a FALSE value, then the connection
+           is dropped.
+
+       $cache-&gt;get_types
+           This returns all the &apos;type&apos; fields used for the currently cached
+           connections.
+
+       $cache-&gt;get_connections( [$type] )
+           This returns all connection objects of the specified type.  If no
+           type is specified then all connections are returned.  In scalar
+           context the number of cached connections of the specified type is
+           returned.
+
+       The following methods are called by low-level protocol modules to try to
+       save away connections and to get them back.
+
+       $cache-&gt;deposit($type, $key, $conn)
+           This method adds a new connection to the cache.  As a result other
+           already cached connections might be dropped.  Multiple connections
+           with the same $type/$key might added.
+
+       $conn = $cache-&gt;withdraw($type, $key)
+           This method tries to fetch back a connection that was previously
+           deposited.  If no cached connection with the specified $type/$key is
+           found, then &quot;undef&quot; is returned.  There is not guarantee that a
+           deposited connection can be withdrawn, as the cache manger is free to
+           drop connections at any time.
+
+       The following methods are called internally.  Subclasses might want to
+       override them.
+
+       $conn-&gt;enforce_limits([$type])
+           This method is called with after a new connection is added
+           (deposited) in the cache or capacity limits are adjusted.  The
+           default implementation drops connections until the specified capacity
+           limits are not exceeded.
+
+       $conn-&gt;dropping($conn_record, $reason)
+           This method is called when a connection is dropped.  The record
+           belonging to the dropped connection is passed as the first argument
+           and a string describing the reason for the drop is passed as the
+           second argument.  The default implementation makes some noise if the
+           $LWP::ConnCache::DEBUG variable is set and nothing more.
+
+SUBCLASSING
+       For specialized cache policy it makes sense to subclass &quot;LWP::ConnCache&quot;
+       and perhaps override the deposit(), enforce_limits() and dropping()
+       methods.
+
+       The object itself is a hash.  Keys prefixed with &quot;cc_&quot; are reserved for
+       the base class.
+
+SEE ALSO
+       LWP::UserAgent
+
+COPYRIGHT
+       Copyright 2001 Gisle Aas.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-01-14                LWP::ConnCache(3pm)
+
+</pre></body></html>

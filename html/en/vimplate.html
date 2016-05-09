@@ -1,0 +1,81 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vimplate - the vim template system.</title></head>
+<body><pre>
+
+VIMPLATE(1)            User Contributed Perl Documentation           VIMPLATE(1)
+
+
+
+NAME
+       vimplate - the vim template system.
+
+DEPENDS on PACKAGES
+       Template-Toolkit http://search.cpan.org/~abw/Template-Toolkit-2.14
+
+       please install Template-Toolkit on your system.
+
+DEPENDS on SETTINGS
+       variable HOME
+
+       on unix/bsd/linux the variable home is set.  On Windows please set the
+       variable home to the value where _vimplaterc should be locatet.
+
+SYNOPSIS
+       vimplate &lt;-template=&lt;template&gt;&gt; [-out=&lt;file&gt;] [-user=&lt;user&gt;] [-dir=&lt;dir&gt;]
+       [-config=&lt;file&gt;]
+       vimplate &lt;-createconfig&gt;
+       vimplate &lt;-listtemplates&gt;
+       vimplate &lt;-listusers&gt;
+       vimplate &lt;-version&gt;
+       vimplate &lt;-help|-h|-?&gt;
+       vimplate &lt;-man&gt;
+
+OPTIONS
+       -help|-h|-?
+           Print a brief help message and exit.
+
+       -man
+           Print the manual page and exit.
+
+       -version
+           Print the version and exit.
+
+       -createconfig
+           Write a vimplate config to $HOME/.vimplaterc or %HOME%\_vimplaterc
+           (on Windows) and exit.
+
+       -listtemplate
+           Print the avaible templates and exit.
+
+       -listusers
+           Print the avaible users and exit.
+
+       -user|u=&lt;username&gt;
+           Use the information form user &lt;username&gt; while parsing templates.
+
+       -dir|d=&lt;templatedir&gt;
+           Search templatefiles in &lt;templatedir&gt;.
+
+       -template=&lt;templatefile&gt;
+           Use the &lt;templatefile&gt;.
+
+DESCRIPTION
+       vimplate Print a spezified template to standard output.
+
+AUTHOR
+       Urs Stotz &lt;stotz@gmx.ch&gt;
+
+COPYRIGHT
+       Copyright (c) 2004-2005, Urs Stotz &lt;stotz@gmx.ch&gt;
+&#12;       All rights reserved. This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1) Template(3)
+
+
+
+perl v5.14.2                       2012-10-07                        VIMPLATE(1)
+
+</pre></body></html>

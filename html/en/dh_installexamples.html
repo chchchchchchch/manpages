@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_installexamples - install example files into package build directories</title></head>
+<body><pre>
+
+DH_INSTALLEXAMPLES(1)               Debhelper              DH_INSTALLEXAMPLES(1)
+
+
+
+NAME
+       dh_installexamples - install example files into package build directories
+
+SYNOPSIS
+       dh_installexamples [debhelper&#194; options] [-A] [-Xitem] [file&#194; ...]
+
+DESCRIPTION
+       dh_installexamples is a debhelper program that is responsible for
+       installing examples into usr/share/doc/package/examples in package build
+       directories.
+
+FILES
+       debian/package.examples
+           Lists example files or directories to be installed.
+
+OPTIONS
+       -A, --all
+           Install any files specified by command line parameters in ALL
+           packages acted on.
+
+       -Xitem, --exclude=item
+           Exclude files that contain item anywhere in their filename from being
+           installed.
+
+       file ...
+           Install these files (or directories) as examples into the first
+           package acted on. (Or into all packages if -A is specified.)
+
+NOTES
+       Note that dh_installexamples will happily copy entire directory
+       hierarchies if you ask it to (similar to cp -a). If it is asked to
+       install a directory, it will install the complete contents of the
+       directory.
+
+SEE ALSO
+       debhelper(7)
+
+       This program is a part of debhelper.
+
+AUTHOR
+       Joey Hess &lt;joeyh@debian.org&gt;
+
+
+
+9.20120909                         2011-09-12              DH_INSTALLEXAMPLES(1)
+
+</pre></body></html>

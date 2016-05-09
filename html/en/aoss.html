@@ -1,0 +1,65 @@
+<html>
+<head><meta charset=utf-8/>
+<title>aoss - Wrapper script to facilitate use of the ALSA OSS compatibility library.</title></head>
+<body><pre>
+
+AOSS(1)                                                                  AOSS(1)
+
+
+
+NAME
+       aoss  -  Wrapper  script  to facilitate use of the ALSA OSS compatibility
+       library.
+
+SYNOPSIS
+       aoss osscommand [arguments]
+
+
+DESCRIPTION
+       aoss is a simple wrapper script which facilitates the use of the ALSA OSS
+       compatibility  library.  It just sets the appropriate LD_PRELOAD path and
+       then runs the command.
+
+       This is useful in cases where routing settings (which can be made in your
+       .asoundrc file) need to be applied to commands that use the OSS API.
+
+       Examples of asoundrc configuration:
+
+       pcm.dsp0 {      type plug      slave.pcm &quot;hw:0,0&quot; }
+
+       or
+
+       pcm.dsp0 {      type plug      slave.pcm &quot;dmix&quot; }
+
+       In  the  above configuration examples, the pcm.dsp0 definition is used to
+       wrap calls do /dev/dsp0. You can also wrap usage of /dev/dsp1, /dev/dsp2,
+       etc. by defining pcm.dsp1, pcm.dsp2, etc..
+
+       The  PCM  name  to  open  can be given explicitly via ALSA_OSS_PCM_DEVICE
+       environment variable, too.  This overrides the default dsp0, etc.
+
+       Note on mmap: aoss mmap support might be buggy.  Your  results  may  vary
+       when  trying  to  use an application that uses mmap&apos;ing to access the OSS
+       device files.
+
+
+
+   Arguments
+       osscommand
+              A command that uses the OSS API
+
+       arguments
+              The appropriate arguments and options for the OSS command.
+
+
+
+       AUTHORS
+              The   OSS   compatibility   library   is   by    Abramo    Bagnara
+              &lt;abramo@alsa-project.org&gt;.   The aoss script and this document are
+              by James Tappin &lt;james@xena.uklinux.net&gt;.
+
+
+
+                                 3 October 2001                          AOSS(1)
+
+</pre></body></html>

@@ -1,0 +1,108 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lambda - Utility commands for anonymous procedures</title></head>
+<body><pre>
+
+lambda(3tcl)        Utility commands for anonymous procedures       lambda(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       lambda - Utility commands for anonymous procedures
+
+SYNOPSIS
+       package require Tcl  8.5
+
+       package require lambda  ?1?
+
+       ::lambda arguments body ?arg...?
+
+       ::lambda@ namespace arguments body ?arg...?
+
+_________________________________________________________________
+
+DESCRIPTION
+       This  package  provides  two  convenience commands to make the writing of
+       anonymous procedures, i.e. lambdas more proc-like. Instead of, for  exam&#8208;
+       ple, to write
+
+
+                   set f {::apply {{x} {
+                      ....
+                   }}}
+
+       with its deep nesting of braces, or
+
+
+                   set f [list ::apply {{x y} {
+                      ....
+                   }} $value_for_x]
+
+       with a list command to insert some of the arguments of a partial applica&#8208;
+       tion, just write
+
+
+                   set f [lambda {x} {
+                      ....
+                   }]
+
+       and
+
+
+                   set f [lambda {x y} {
+                      ....
+                   } $value_for_x]
+
+
+COMMANDS
+       ::lambda arguments body ?arg...?
+              The command constructs an anonymous procedure  from  the  list  of
+              arguments,  body  script and (optional) predefined argument values
+              and returns a command prefix representing  this  anonymous  proce&#8208;
+              dure.
+
+              When  invoked the body is run in a new procedure scope just under&#8208;
+              neath the global scope, with the arguments set to the values  sup&#8208;
+              plied at both construction and invokation time.
+
+       ::lambda@ namespace arguments body ?arg...?
+              The  command  constructs an anonymous procedure from the namespace
+              name, list of arguments, body  script  and  (optional)  predefined
+              argument  values  and  returns  a command prefix representing this
+              anonymous procedure.
+
+              When invoked the body is run in  a  new  procedure  scope  in  the
+              namespace,  with  the arguments set to the values supplied at both
+              construction and invokation time.
+
+AUTHORS
+       Andreas Kupries
+
+BUGS, IDEAS, FEEDBACK
+       This document, and the package it  describes,  will  undoubtedly  contain
+       bugs  and  other  problems.  Please report such in the category lambda of
+       the Tcllib SF Trackers  [http://sourceforge.net/tracker/?group_id=12883].
+       Please  also  report  any  ideas for enhancements you may have for either
+       package and/or documentation.
+
+SEE ALSO
+       apply(3tcl), proc(3tcl)
+
+KEYWORDS
+       anonymous procedure, callback, command prefix, currying, lambda,  partial
+       application, proc
+
+CATEGORY
+       Utility
+
+COPYRIGHT
+       Copyright (c) 2011 Andreas Kupries, BSD licensed
+
+
+
+
+lambda                                  1                           lambda(3tcl)
+
+</pre></body></html>

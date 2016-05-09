@@ -1,0 +1,122 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-gphoto2 - SANE backend for gphoto2 supported cameras</title></head>
+<body><pre>
+
+sane-gphoto2(5)           SANE Scanner Access Now Easy           sane-gphoto2(5)
+
+
+
+NAME
+       sane-gphoto2 - SANE backend for gphoto2 supported cameras
+
+DESCRIPTION
+       The  sane-gphoto2  library  implements  a  SANE (Scanner Access Now Easy)
+       backend that provides access to the digital cameras supported by gphoto2.
+       This  backend  has  only  been  tested  with a handful of cameras so far.
+       Patches to support other models are welcome.
+
+       Because of the limited testing of this backend, it is  commented  out  in
+       /etc/sane.d/dll.conf  by  default.   Either the comment character must be
+       removed or the backend must be called  explicitly.   E.g.  `scanimage  -d
+       gphoto2&apos; or `xscanimage gphoto2&apos;.
+
+DEVICE NAMES
+       The  current  version  of  the  backend only allows one camera to be con&#8208;
+       nected.  The device name is always &quot;0&quot;.
+
+CONFIGURATION
+       The contents of the gphoto2.conf specify the characteristics of the  cam&#8208;
+       era  to  be  used.    Resolutions  (high  resolution, low resolution, and
+       thumbnail size) are required since they are needed by the sane frontends,
+       but  can&apos;t  be  obtained  through the gphoto2 interface.  Valid ports and
+       cameras  can  be  obtained  by  &quot;gphoto2  --list-cameras&quot;  and   &quot;gphoto2
+       --list-ports&quot;.
+
+       The  dumpinquiry  line  causes  some  information  about the camera to be
+       printed.
+
+       Empty lines and lines starting with a hash mark (#) are ignored.  A  sam&#8208;
+       ple configuration file is shown below:
+
+       The  &quot;topfolder&quot;  line  specifies the &quot;fixed&quot; part of the file path.  For
+       example,  on  the  Kodak  DC-240,  files  are  stored  in  the  directory
+       /DCIM/100DC240.   The /DCIM portion is constant, but 100DC240 will change
+       and must be read from the camera.  In this  case,  the  line  would  read
+       &quot;topfolder=/DCIM&quot;
+
+       Some  cameras  don&apos;t implement a file structure and store all pictures in
+       the &quot;/&quot; directory.  This is indicated by setting &quot;subdirs=0&quot;  with  &quot;top&#8208;
+       folder=/&quot;
+
+              port=usb:
+              camera=Kodak DC240
+              # this is a comment
+              high_resolution=1280x960
+              low_resolution=640x480
+              thumb_resolution=160x120
+              dumpinquiry
+
+FILES
+       /etc/sane.d/gphoto2.conf
+              The  backend configuration file (see also description of SANE_CON&#8208;
+              FIG_DIR below).
+
+       /usr/lib/arch_triplet/sane/libsane-gphoto2.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-gphoto2.so
+              The shared library implementing this backend (present  on  systems
+              that support dynamic loading).
+&#12;
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This  environment  variable specifies the list of directories that
+              may contain the configuration file.  Under UNIX,  the  directories
+              are  separated by a colon (`:&apos;), under OS/2, they are separated by
+              a semi-colon (`;&apos;).  If this variable is not set,  the  configura&#8208;
+              tion  file is searched in two default directories: first, the cur&#8208;
+              rent working directory (&quot;.&quot;) and  then  in  /etc/sane.d.   If  the
+              value  of the environment variable ends with the directory separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly  specified directories.  For example, setting SANE_CON&#8208;
+              FIG_DIR to &quot;/tmp/config:&quot; would result  in  directories  &quot;tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_GPHOTO2
+              If  the  library was compiled with debugging support enabled, this
+              environment variable controls the debug level for this backend.  A
+              value of 128 requests maximally copious debug output; smaller lev&#8208;
+              els reduce verbosity.
+
+       GP_DEBUG
+              Set to 1, 2, or 3, to enable various levels  of  debugging  within
+              the gphoto2 libraries.
+
+
+SEE ALSO
+       sane(7)
+
+
+AUTHOR
+       Peter S. Fales
+
+
+       The manpage was largely copied from the dc210 manpage.
+
+
+BUGS
+       Many, no doubt.
+
+       More general comments, suggestions, and inquiries about frontends or SANE
+       should   go    to    the    SANE    Developers    mailing    list    (see
+       http://www.sane-project.org/mailing-lists.html for details).  You must be
+       subscribed to the list, otherwise your mail won&apos;t be  sent  to  the  sub&#8208;
+       scribers.
+
+
+
+
+                                   11 Jul 2008                   sane-gphoto2(5)
+
+</pre></body></html>

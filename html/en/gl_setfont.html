@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_setfont - set the text font to be used</title></head>
+<body><pre>
+
+gl_setfont(3)                  Svgalib User Manual                 gl_setfont(3)
+
+
+
+NAME
+       gl_setfont - set the text font to be used
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       void gl_setfont(int fw, int fh, void *fp);
+
+
+DESCRIPTION
+       Use  the  font stored as character bitmaps at fp, with characters of size
+       (fw, fh), as the basic font for write  operations.  Note  that  the  font
+       included in the library must be expanded first, because it is stored bit-
+       per-pixel; this is not required if the FONT_COMPRESSED gl_setwritemode(3)
+       flag is set.
+
+
+SEE ALSO
+       svgalib(7), vgagl(7), svgalib.conf(5), threedkit(7), testgl(1), gl_color&#8208;
+       font(3),    gl_expandfont(3),     gl_font8x8(3),     gl_setfontcolors(3),
+       gl_write(3), gl_writen(3).
+
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced demo  as  well  as  of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                2 Aug 1997                      gl_setfont(3)
+
+</pre></body></html>

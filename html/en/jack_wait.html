@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jack_wait - JACK toolkit client to check and wait for existence/exit of jackd.</title></head>
+<body><pre>
+
+JACK_WAIT(1)                                                        JACK_WAIT(1)
+
+
+
+NAME
+       jack_wait  -  JACK toolkit client to check and wait for existence/exit of
+       jackd.
+
+SYNOPSIS
+       jack_wait [ -s | --server servername ] [ -t | --timeout timeout_seconds [
+       -cqwhv ]
+
+DESCRIPTION
+       jack_wait When invoked with -c it only checks for the existence of a jack
+       server. When invoked with -w the program will wait  for  a  jackd  to  be
+       available.  The -q makes it wait for the jackd to exit.
+
+
+OPTIONS
+       -w, --wait
+              Wait for jackd to be available.
+
+       -q, --quit
+              Wait for jackd quit.
+
+       -c, --check
+              Only check for existence of jackd, and exit.
+
+       -s, --server servername
+              Connect to the jack server named servername
+
+       -t, --timeout timeout_seconds
+              Only wait timeout_seconds.
+
+       -h, --help
+              Display help/usage message
+
+       -v, --version
+              Output version information and exit
+
+
+
+
+
+1.9.9                             November 2012                     JACK_WAIT(1)
+
+</pre></body></html>

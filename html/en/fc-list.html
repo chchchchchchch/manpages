@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>fc-list - list available fonts</title></head>
+<body><pre>
+
+FC-LIST(1)                                                            FC-LIST(1)
+
+
+
+NAME
+       fc-list - list available fonts
+
+SYNOPSIS
+       fc-list  [  -vVh ] [ --verbose ] [ -f format | --format format ] [ --ver&#8208;
+       sion ] [ --help ]
+           [ pattern  [ element ... ]  ]
+
+
+DESCRIPTION
+       fc-list lists fonts and styles available on the system  for  applications
+       using fontconfig.  If any elements are specified, only those are printed.
+       Otherwise  family  and  style  are  printed,  unless  verbose  output  is
+       requested.
+
+OPTIONS
+       This program follows the usual GNU command line syntax, with long options
+       starting with two dashes (`-&apos;).  A summary of options is included below.
+
+       -v --verbose
+              Print verbose output of the whole font pattern for each match,  or
+              elements if any is provided.
+
+       -f --format format
+              Format output according to the format specifier format.
+
+       -V --version
+              Show version of the program and exit.
+
+       -h --help
+              Show summary of options.
+
+       pattern
+              If  this  argument  is  set,  only fonts matching pattern are dis&#8208;
+              played.
+
+       element
+              If set, the element property is displayed for matching fonts.
+
+EXAMPLES
+       fc-list
+              Lists all font faces.
+
+       fc-list :lang=hi
+              Lists font faces that cover Hindi.
+
+       fc-list : family style file spacing
+              Lists the filename and spacing value for each font face.  ``:&apos;&apos; is
+              an empty pattern that matches all fonts.
+
+SEE ALSO
+       fc-match(1)  FcFontList(3)  FcPatternFormat(3)  fc-cat(1) fc-cache(1) fc-
+       pattern(1) fc-query(1) fc-scan(1)
+
+       The fontconfig user&apos;s  guide,  in  HTML  format:  /usr/share/doc/fontcon&#8208;
+       fig/fontconfig-user.html.
+
+AUTHOR
+       This  manual  page  was  written by Keith Packard &lt;keithp@keithp.com&gt; and
+       Josselin Mouette &lt;joss@debian.org&gt;.
+
+
+
+                                  16 April 2012                       FC-LIST(1)
+
+</pre></body></html>

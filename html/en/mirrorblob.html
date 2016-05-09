@@ -1,0 +1,109 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mirrorblob - Draws a wobbly blob that distorts the image behind it.</title></head>
+<body><pre>
+
+mirrorblob(6x)                 XScreenSaver manual                mirrorblob(6x)
+
+
+
+NAME
+       mirrorblob - Draws a wobbly blob that distorts the image behind it.
+
+SYNOPSIS
+       mirrorblob  [-display  host:display.screen]  [-visual  visual]  [-window]
+       [-root] [-wire] [-delay  number]  [-fog]  [-walls]  [-colour]  [-texture]
+       [-offset-texture] [-blend] [-antialias] [-resolution number] [-bumps num&#8208;
+       ber] [-fade-time number] [-hold-time number] [-zoom number] [-fps]
+
+DESCRIPTION
+       Draws a wobbling blob, making use of alpha blending, fog,  textures,  and
+       lighting,  plus  a  ``frames  per second&apos;&apos; meter so that you can tell how
+       fast your graphics card is... Requires OpenGL.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.  -wire Render in  wireframe  instead  of
+               solid.
+
+       -delay number
+               Per-frame  delay,  in  microseconds.   Default:  10000 (0.01 sec&#8208;
+               onds.).
+
+       -fog | -no-fog
+               Whether to enable fog.
+
+       -walls | -no-walls
+               Add walls for blob to hit.
+
+       -colour | -no-colour
+               Draw coloured blob.  If also  textured,  the  texture  will  have
+               color mixed in.
+
+       -texture | -no-texture
+               Whether to wrap a texture image on the blob.
+
+       -offset_texture | -no-offset_texture
+               Whether to ofset the texture calculations to only use a region of
+               the image
+                under the blob.  This works well with a semi-transparent blob.
+
+       -blend | -no-blend
+               Whether to draw a  transparent  blob.  (see  also  offset_texture
+               above)
+
+       -antialias | -no-antialias
+               Whether to antialias lines.
+
+       -resolution number
+               Resolution  of  the  tessellation  used to calculate and draw the
+               blob.  Larger
+                numbers give a smoother  blob  but  increase  calculation  times
+               exponentially.
+
+       -bumps number
+               Number of bumps used to distort the blob.
+&#12;       -hold-time number
+               Time until loading a new image.
+
+       -fade-time number
+               Time taken to transition between images.
+
+       -zoom number
+               Size multiplier for blob.
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to  get  the  name  of  a resource file that overrides the global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 2003 by Jon Dowdall.  Permission to use, copy,  modify,  dis&#8208;
+       tribute,  and sell this software and its documentation for any purpose is
+       hereby granted without fee, provided  that  the  above  copyright  notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion notice appear in supporting documentation.  No  representations  are
+       made  about the suitability of this software for any purpose.  It is pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Jon Dowdall.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                 mirrorblob(6x)
+
+</pre></body></html>

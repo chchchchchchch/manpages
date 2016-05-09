@@ -1,0 +1,65 @@
+<html>
+<head><meta charset=utf-8/>
+<title>config.guess - guess the build system triplet</title></head>
+<body><pre>
+
+CONFIG.GUESS(1)                   User Commands                  CONFIG.GUESS(1)
+
+
+
+NAME
+       config.guess - guess the build system triplet
+
+SYNOPSIS
+       config.guess [OPTION]
+
+DESCRIPTION
+       The  GNU  build system distinguishes three types of machines, the `build&apos;
+       machine on which the compilers are run, the `host&apos; machine on  which  the
+       package being built will run, and, exclusively when you build a compiler,
+       assembler etc., the `target&apos; machine, for which the compiler being  built
+       will produce code.
+
+       This script will guess the type of the `build&apos; machine.
+
+       Output the configuration name of the system `config.guess&apos; is run on.
+
+   Operation modes:
+       -h, --help
+              print this help, then exit
+
+       -t, --time-stamp
+              print date of last modification, then exit
+
+       -v, --version
+              print version number, then exit
+
+ENVIRONMENT VARIABLES
+       config.guess  might need to compile and run C code, hence it needs a com&#8208;
+       piler  for  the   `build&apos;   machine:   use   the   environment   variable
+       `CC_FOR_BUILD&apos;  to  specify  the  compiler  for  the  build  machine.  If
+       `CC_FOR_BUILD&apos; is not specified, `CC&apos; will be used.  Be sure  to  specify
+       `CC_FOR_BUILD&apos; is `CC&apos; is a cross-compiler to the `host&apos; machine.
+
+         CC_FOR_BUILD    a native C compiler, defaults to `cc&apos;
+         CC              a native C compiler, the previous variable is preferred
+
+REPORTING BUGS
+       Report bugs and patches to &lt;config-patches@gnu.org&gt;.
+
+       Originally written by Per Bothner.  Copyright (C) 1992, 1993, 1994, 1995,
+       1996, 1997, 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+
+       This is free software; see the source for copying conditions.   There  is
+       NO  warranty;  not  even  for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       autoconf(1), automake(1),  autoreconf(1),  autoupdate(1),  autoheader(1),
+       autoscan(1), config.guess(1), config.sub(1), ifnames(1), libtool(1).
+
+
+
+config.guess (2005-09-19)        September 2005                  CONFIG.GUESS(1)
+
+</pre></body></html>

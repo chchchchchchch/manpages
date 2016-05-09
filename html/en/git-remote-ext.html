@@ -1,0 +1,123 @@
+<html>
+<head><meta charset=utf-8/>
+<title>git-remote-ext - Bridge smart transport to external command.</title></head>
+<body><pre>
+
+GIT-REMOTE-EXT(1)                  Git Manual                  GIT-REMOTE-EXT(1)
+
+
+
+NAME
+       git-remote-ext - Bridge smart transport to external command.
+
+SYNOPSIS
+       git remote add &lt;nick&gt; &quot;ext::&lt;command&gt;[ &lt;arguments&gt;...]&quot;
+
+
+DESCRIPTION
+       This remote helper uses the specified &lt;command&gt; to connect to a remote
+       git server.
+
+       Data written to stdin of the specified &lt;command&gt; is assumed to be sent to
+       a git:// server, git-upload-pack, git-receive-pack or git-upload-archive
+       (depending on situation), and data read from stdout of &lt;command&gt; is
+       assumed to be received from the same service.
+
+       Command and arguments are separated by an unescaped space.
+
+       The following sequences have a special meaning:
+
+       &apos;% &apos;
+           Literal space in command or argument.
+
+       %%
+           Literal percent sign.
+
+       %s
+           Replaced with name (receive-pack, upload-pack, or upload-archive) of
+           the service git wants to invoke.
+
+       %S
+           Replaced with long name (git-receive-pack, git-upload-pack, or
+           git-upload-archive) of the service git wants to invoke.
+
+       %G (must be the first characters in an argument)
+           This argument will not be passed to &lt;command&gt;. Instead, it will cause
+           the helper to start by sending git:// service requests to the remote
+           side with the service field set to an appropriate value and the
+           repository field set to rest of the argument. Default is not to send
+           such a request.
+
+           This is useful if remote side is git:// server accessed over some
+           tunnel.
+
+       %V (must be first characters in argument)
+           This argument will not be passed to &lt;command&gt;. Instead it sets the
+           vhost field in the git:// service request (to rest of the argument).
+           Default is not to send vhost in such request (if sent).
+
+ENVIRONMENT VARIABLES:
+       GIT_TRANSLOOP_DEBUG
+           If set, prints debugging information about various reads/writes.
+
+ENVIRONMENT VARIABLES PASSED TO COMMAND:
+       GIT_EXT_SERVICE
+           Set to long name (git-upload-pack, etc...) of service helper needs to
+           invoke.
+
+       GIT_EXT_SERVICE_NOPREFIX
+           Set to long name (upload-pack, etc...) of service helper needs to
+           invoke.
+&#12;EXAMPLES:
+       This remote helper is transparently used by git when you use commands
+       such as &quot;git fetch &lt;URL&gt;&quot;, &quot;git clone &lt;URL&gt;&quot;, , &quot;git push &lt;URL&gt;&quot; or &quot;git
+       remote add &lt;nick&gt; &lt;URL&gt;&quot;, where &lt;URL&gt; begins with ext::. Examples:
+
+       &quot;ext::ssh -i /home/foo/.ssh/somekey user@host.example %S foo/repo&quot;
+           Like host.example:foo/repo, but use /home/foo/.ssh/somekey as keypair
+           and user as user on remote side. This avoids needing to edit
+           .ssh/config.
+
+       &quot;ext::socat -t3600 - ABSTRACT-CONNECT:/git-server %G/somerepo&quot;
+           Represents repository with path /somerepo accessable over git
+           protocol at abstract namespace address /git-server.
+
+       &quot;ext::git-server-alias foo %G/repo&quot;
+           Represents a repository with path /repo accessed using the helper
+           program &quot;git-server-alias foo&quot;. The path to the repository and type
+           of request are not passed on the command line but as part of the
+           protocol stream, as usual with git:// protocol.
+
+       &quot;ext::git-server-alias foo %G/repo %Vfoo&quot;
+           Represents a repository with path /repo accessed using the helper
+           program &quot;git-server-alias foo&quot;. The hostname for the remote server
+           passed in the protocol stream will be &quot;foo&quot; (this allows multiple
+           virtual git servers to share a link-level address).
+
+       &quot;ext::git-server-alias foo %G/repo% with% spaces %Vfoo&quot;
+           Represents a repository with path /repo with spaces accessed using
+           the helper program &quot;git-server-alias foo&quot;. The hostname for the
+           remote server passed in the protocol stream will be &quot;foo&quot; (this
+           allows multiple virtual git servers to share a link-level address).
+
+       &quot;ext::git-ssl foo.example /bar&quot;
+           Represents a repository accessed using the helper program &quot;git-ssl
+           foo.example /bar&quot;. The type of request can be determined by the
+           helper using environment variables (see above).
+
+DOCUMENTATION
+       Documentation by Ilari Liusvaara, Jonathan Nieder and the git list
+       &lt;git@vger.kernel.org[1]&gt;
+
+GIT
+       Part of the git(1) suite
+
+NOTES
+        1. git@vger.kernel.org
+           mailto:git@vger.kernel.org
+
+
+
+Git 1.7.10.4                       11/24/2012                  GIT-REMOTE-EXT(1)
+
+</pre></body></html>

@@ -1,0 +1,182 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::FontDescription - Pango object to represent a description of a font</title></head>
+<body><pre>
+
+Pango::FontDescription(User Contributed Perl DocumentPango::FontDescription(3pm)
+
+
+
+NAME
+       Pango::FontDescription - Pango object to represent a description of a
+       font
+
+HIERARCHY
+         Glib::Boxed
+         +----Pango::FontDescription
+
+METHODS
+   fontdescription = Pango::FontDescription-&gt;new
+   $desc-&gt;set_absolute_size ($size)
+       &#183;   $size (double)
+
+       Since: pango 1.8
+
+   boolean = $desc-&gt;better_match ($old_match, $new_match)
+       &#183;   $old_match (Pango::FontDescription or undef)
+
+       &#183;   $new_match (Pango::FontDescription)
+
+   boolean = $desc1-&gt;equal ($desc2)
+       &#183;   $desc2 (Pango::FontDescription)
+
+   string = $desc-&gt;get_family
+   $desc-&gt;set_family ($family)
+       &#183;   $family (string)
+
+   $desc-&gt;set_family_static ($family)
+       &#183;   $family (string)
+
+   fontdescription = Pango::FontDescription-&gt;from_string ($str)
+       &#183;   $str (string)
+
+   gravity = $desc-&gt;get_gravity
+       Since: pango 1.16
+
+   $desc-&gt;set_gravity ($gravity)
+       &#183;   $gravity (Pango::Gravity)
+
+       Since: pango 1.16
+
+   integer = $desc-&gt;hash
+   $desc-&gt;merge ($desc_to_merge, $replace_existing)
+       &#183;   $desc_to_merge (Pango::FontDescription)
+
+       &#183;   $replace_existing (boolean)
+
+   $desc-&gt;merge_static ($desc_to_merge, $replace_existing)
+       &#183;   $desc_to_merge (Pango::FontDescription)
+
+       &#183;   $replace_existing (boolean)
+
+   fontmask = $desc-&gt;get_set_fields
+   integer = $desc-&gt;get_size
+   boolean = $desc-&gt;get_size_is_absolute
+       Since: pango 1.8
+
+   $desc-&gt;set_size ($size)
+       &#183;   $size (integer)
+
+   stretch = $desc-&gt;get_stretch
+   $desc-&gt;set_stretch ($stretch)
+       &#183;   $stretch (Pango::Stretch)
+&#12;   style = $desc-&gt;get_style
+   $desc-&gt;set_style ($style)
+       &#183;   $style (Pango::Style)
+
+   string = $desc-&gt;to_filename
+   string = $desc-&gt;to_string
+   $desc-&gt;unset_fields ($to_unset)
+       &#183;   $to_unset (Pango::FontMask)
+
+   variant = $desc-&gt;get_variant
+   $desc-&gt;set_variant ($variant)
+       &#183;   $variant (Pango::Variant)
+
+   weight = $desc-&gt;get_weight
+   $desc-&gt;set_weight ($weight)
+       &#183;   $weight (Pango::Weight)
+
+ENUMS AND FLAGS
+   flags Pango::FontMask
+       &#183;   &apos;family&apos; / &apos;PANGO_FONT_MASK_FAMILY&apos;
+
+       &#183;   &apos;style&apos; / &apos;PANGO_FONT_MASK_STYLE&apos;
+
+       &#183;   &apos;variant&apos; / &apos;PANGO_FONT_MASK_VARIANT&apos;
+
+       &#183;   &apos;weight&apos; / &apos;PANGO_FONT_MASK_WEIGHT&apos;
+
+       &#183;   &apos;stretch&apos; / &apos;PANGO_FONT_MASK_STRETCH&apos;
+
+       &#183;   &apos;size&apos; / &apos;PANGO_FONT_MASK_SIZE&apos;
+
+       &#183;   &apos;gravity&apos; / &apos;PANGO_FONT_MASK_GRAVITY&apos;
+
+   enum Pango::Gravity
+       &#183;   &apos;south&apos; / &apos;PANGO_GRAVITY_SOUTH&apos;
+
+       &#183;   &apos;east&apos; / &apos;PANGO_GRAVITY_EAST&apos;
+
+       &#183;   &apos;north&apos; / &apos;PANGO_GRAVITY_NORTH&apos;
+
+       &#183;   &apos;west&apos; / &apos;PANGO_GRAVITY_WEST&apos;
+
+       &#183;   &apos;auto&apos; / &apos;PANGO_GRAVITY_AUTO&apos;
+
+   enum Pango::Stretch
+       &#183;   &apos;ultra-condensed&apos; / &apos;PANGO_STRETCH_ULTRA_CONDENSED&apos;
+
+       &#183;   &apos;extra-condensed&apos; / &apos;PANGO_STRETCH_EXTRA_CONDENSED&apos;
+
+       &#183;   &apos;condensed&apos; / &apos;PANGO_STRETCH_CONDENSED&apos;
+
+       &#183;   &apos;semi-condensed&apos; / &apos;PANGO_STRETCH_SEMI_CONDENSED&apos;
+
+       &#183;   &apos;normal&apos; / &apos;PANGO_STRETCH_NORMAL&apos;
+
+       &#183;   &apos;semi-expanded&apos; / &apos;PANGO_STRETCH_SEMI_EXPANDED&apos;
+
+       &#183;   &apos;expanded&apos; / &apos;PANGO_STRETCH_EXPANDED&apos;
+
+       &#183;   &apos;extra-expanded&apos; / &apos;PANGO_STRETCH_EXTRA_EXPANDED&apos;
+
+       &#183;   &apos;ultra-expanded&apos; / &apos;PANGO_STRETCH_ULTRA_EXPANDED&apos;
+
+   enum Pango::Style
+       &#183;   &apos;normal&apos; / &apos;PANGO_STYLE_NORMAL&apos;
+
+       &#183;   &apos;oblique&apos; / &apos;PANGO_STYLE_OBLIQUE&apos;
+&#12;       &#183;   &apos;italic&apos; / &apos;PANGO_STYLE_ITALIC&apos;
+
+   enum Pango::Variant
+       &#183;   &apos;normal&apos; / &apos;PANGO_VARIANT_NORMAL&apos;
+
+       &#183;   &apos;small-caps&apos; / &apos;PANGO_VARIANT_SMALL_CAPS&apos;
+
+   enum Pango::Weight
+       &#183;   &apos;thin&apos; / &apos;PANGO_WEIGHT_THIN&apos;
+
+       &#183;   &apos;ultralight&apos; / &apos;PANGO_WEIGHT_ULTRALIGHT&apos;
+
+       &#183;   &apos;light&apos; / &apos;PANGO_WEIGHT_LIGHT&apos;
+
+       &#183;   &apos;book&apos; / &apos;PANGO_WEIGHT_BOOK&apos;
+
+       &#183;   &apos;normal&apos; / &apos;PANGO_WEIGHT_NORMAL&apos;
+
+       &#183;   &apos;medium&apos; / &apos;PANGO_WEIGHT_MEDIUM&apos;
+
+       &#183;   &apos;semibold&apos; / &apos;PANGO_WEIGHT_SEMIBOLD&apos;
+
+       &#183;   &apos;bold&apos; / &apos;PANGO_WEIGHT_BOLD&apos;
+
+       &#183;   &apos;ultrabold&apos; / &apos;PANGO_WEIGHT_ULTRABOLD&apos;
+
+       &#183;   &apos;heavy&apos; / &apos;PANGO_WEIGHT_HEAVY&apos;
+
+       &#183;   &apos;ultraheavy&apos; / &apos;PANGO_WEIGHT_ULTRAHEAVY&apos;
+
+SEE ALSO
+       Pango, Glib::Boxed
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15        Pango::FontDescription(3pm)
+
+</pre></body></html>

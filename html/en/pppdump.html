@@ -1,0 +1,54 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pppdump - convert PPP record file to readable format</title></head>
+<body><pre>
+
+PPPDUMP(8)                                                            PPPDUMP(8)
+
+
+
+NAME
+       pppdump - convert PPP record file to readable format
+
+SYNOPSIS
+       pppdump [ -h | -p [ -d ]] [ -r ] [ -m mru ] [ file ...  ]
+
+DESCRIPTION
+       The pppdump utility converts the files written using the record option of
+       pppd into a human-readable format.  If one or more filenames  are  speci&#8208;
+       fied, pppdump will read each in turn; otherwise it will read its standard
+       input.  In each case the result is written to standard output.
+
+       The options are as follows:
+
+       -h     Prints the bytes sent and received  in  hexadecimal.   If  neither
+              this  option nor the -p option is specified, the bytes are printed
+              as the characters  themselves,  with  non-printing  and  non-ASCII
+              characters printed as escape sequences.
+
+       -p     Collects  the bytes sent and received into PPP packets, interpret&#8208;
+              ing the async HDLC framing and escape characters and checking  the
+              FCS  (frame  check  sequence)  of  each  packet.   The packets are
+              printed as hex values and as characters (non-printable  characters
+              are printed as `.&apos;).
+
+       -d     With the -p option, this option causes pppdump to decompress pack&#8208;
+              ets which have been compressed with the  BSD-Compress  or  Deflate
+              methods.
+
+       -r     Reverses  the  direction indicators, so that `sent&apos; is printed for
+              bytes or packets received, and `rcvd&apos;  is  printed  for  bytes  or
+              packets sent.
+
+       -m mru Use  mru  as the MRU (maximum receive unit) for both directions of
+              the link when checking for over-length PPP packets  (with  the  -p
+              option).
+
+SEE ALSO
+       pppd(8)
+
+
+
+                                  1 April 1999                        PPPDUMP(8)
+
+</pre></body></html>

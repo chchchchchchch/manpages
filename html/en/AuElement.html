@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuElement - AuElement union</title></head>
+<body><pre>
+
+AuElement(3)                                                        AuElement(3)
+
+
+
+Name
+       AuElement - AuElement union
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef union _AuElement
+       {
+           unsigned short type;
+           AuElementImportClient importclient;
+           AuElementImportDevice importdevice;
+           AuElementImportBucket importbucket;
+           AuElementImportWaveForm importwaveform;
+           AuElementBundle bundle;
+           AuElementMultiplyConstant multiplyconstant;
+           AuElementAddConstant addconstant;
+           AuElementSum sum;
+           AuElementExportClient exportclient;
+           AuElementExportDevice exportdevice;
+           AuElementExportBucket exportbucket;
+           AuElementExportMonitor exportmonitor;
+       }AuElement;
+
+Members
+       type      Specifies the element type.  Currently, one of these constants:
+                 AuElementTypeAddConstant, AuElementTypeBundle, AuElementTypeEx&#8208;
+                 portBucket,  AuElementTypeExportClient,  AuElementTypeExportDe&#8208;
+                 vice,  AuElementTypeExportMonitor,   AuElementTypeImportClient,
+                 AuElementTypeImportDevice,   AuElementTypeImportBucket,  AuEle&#8208;
+                 mentTypeImportWaveForm,    AuElementTypeMultiplyConstant,    or
+                 AuElementTypeSum.
+
+       importclient
+                 Used to read audio data from a client application.
+
+       importdevice
+                 Used to read audio data from a device.
+
+       importbucket
+                 Used to read audio data from a bucket.
+
+       importwaveform
+                 Used to read audio data from a waveform generator.
+
+       bundle    Used to access tracks in audio data.
+
+       multiplyconstant
+                 Used to scale the value of samples in audio data.
+
+       addconstant
+                 Used to offset the value of samples in audio data.
+
+       sum       Used to merge together samples from different inputs.
+
+       exportclient
+                 Used to write audio data to a client application.
+
+       exportdevice
+                 Used to write audio data to a device.
+
+       exportbucket
+                 Used to write audio data to a bucket.
+&#12;       exportmonitor
+                 Used to write monitor data to a client application.
+
+Description
+       Elements  are  instructions to the server on how to handle the audio data
+       in a flow.
+
+See Also
+       AuMakeElementAddConstant, AuMakeElementBundle, AuMakeElementImportClient,
+       AuMakeElementImportDevice,   AuMakeElementImportBucket,  AuMakeElementIm&#8208;
+       portWaveForm, AuMakeElementExportClient, AuMakeElementExportDevice, AuMa&#8208;
+       keElementExportBucket, AuMakeElementExportMonitor, AuMakeElementMultiply&#8208;
+       Constant, AuMakeElementSum, AuReadElement, AuSetElements, AuSetElementPa&#8208;
+       rameters, AuWriteElement.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element union              1.9.3                         AuElement(3)
+
+</pre></body></html>

@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::DruidPageEdge - wrapper for GnomeDruidPageEdge</title></head>
+<body><pre>
+
+Gnome2::DruidPageEdge(3User Contributed Perl DocumentaGnome2::DruidPageEdge(3pm)
+
+
+
+NAME
+       Gnome2::DruidPageEdge - wrapper for GnomeDruidPageEdge
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Bin
+                                  +----Gnome2::DruidPage
+                                       +----Gnome2::DruidPageEdge
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+
+METHODS
+   widget = Gnome2::DruidPageEdge-&gt;new ($position)
+       &#183;   $position (Gnome2::EdgePosition)
+
+   widget = Gnome2::DruidPageEdge-&gt;new_aa ($position)
+       &#183;   $position (Gnome2::EdgePosition)
+
+   widget = Gnome2::DruidPageEdge-&gt;new_with_vals ($position, $antialiased,
+       $title=undef, $text=undef, $logo=undef, $watermark=undef,
+       $top_watermark=undef)
+       &#183;   $position (Gnome2::EdgePosition)
+
+       &#183;   $antialiased (boolean)
+
+       &#183;   $title (string)
+
+       &#183;   $text (string)
+
+       &#183;   $logo (Gtk2::Gdk::Pixbuf or undef)
+
+       &#183;   $watermark (Gtk2::Gdk::Pixbuf or undef)
+
+       &#183;   $top_watermark (Gtk2::Gdk::Pixbuf or undef)
+
+   $druid_page_edge-&gt;set_bg_color ($color)
+       &#183;   $color (Gtk2::Gdk::Color)
+
+   $druid_page_edge-&gt;set_logo_bg_color ($color)
+       &#183;   $color (Gtk2::Gdk::Color)
+
+   $druid_page_edge-&gt;set_logo ($logo_image)
+       &#183;   $logo_image (Gtk2::Gdk::Pixbuf or undef)
+
+   $druid_page_edge-&gt;set_text_color ($color)
+       &#183;   $color (Gtk2::Gdk::Color)
+
+   $druid_page_edge-&gt;set_text ($text)
+       &#183;   $text (string)
+
+   $druid_page_edge-&gt;set_textbox_color ($color)
+       &#183;   $color (Gtk2::Gdk::Color)
+
+   $druid_page_edge-&gt;set_title_color ($color)
+       &#183;   $color (Gtk2::Gdk::Color)
+&#12;   $druid_page_edge-&gt;set_title ($title)
+       &#183;   $title (string)
+
+   $druid_page_edge-&gt;set_top_watermark ($top_watermark_image)
+       &#183;   $top_watermark_image (Gtk2::Gdk::Pixbuf or undef)
+
+   $druid_page_edge-&gt;set_watermark ($watermark)
+       &#183;   $watermark (Gtk2::Gdk::Pixbuf or undef)
+
+ENUMS AND FLAGS
+   enum Gnome2::EdgePosition
+       &#183;   &apos;start&apos; / &apos;GNOME_EDGE_START&apos;
+
+       &#183;   &apos;finish&apos; / &apos;GNOME_EDGE_FINISH&apos;
+
+       &#183;   &apos;other&apos; / &apos;GNOME_EDGE_OTHER&apos;
+
+       &#183;   &apos;last&apos; / &apos;GNOME_EDGE_LAST&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Bin, Gnome2::DruidPage
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16         Gnome2::DruidPageEdge(3pm)
+
+</pre></body></html>

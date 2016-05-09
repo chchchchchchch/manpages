@@ -1,0 +1,183 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ltrace - A library call tracer</title></head>
+<body><pre>
+
+ltrace(1)                                                              ltrace(1)
+
+
+
+NAME
+       ltrace - A library call tracer
+
+
+SYNOPSIS
+       ltrace  [-CfhiLrStttV]  [-a column] [-A maxelts] [-D level] [-e expr] [-l
+       filename] [-n nr] [-o filename] [-p pid] ... [-s strsize]  [-u  username]
+       [-X extern] [-x extern] ... [--align=column] [--debug=level] [--demangle]
+       [--help] [--indent=nr] [--library=filename]  [--output=filename]  [--ver&#8208;
+       sion] [command [arg ...]]
+
+
+DESCRIPTION
+       ltrace  is  a  program  that  simply  runs the specified command until it
+       exits.  It intercepts and records the dynamic  library  calls  which  are
+       called by the executed process and the signals which are received by that
+       process.  It can also intercept and print the system  calls  executed  by
+       the program.
+
+       Its use is very similar to strace(1).
+
+
+OPTIONS
+       -a, --align column
+              Align return values in a specific column (default column is 5/8 of
+              screen width).
+
+       -A maxelts
+              Maximum number of array elements to print before  suppressing  the
+              rest with an ellipsis (&quot;...&quot;)
+
+       -c     Count time and calls for each library call and report a summary on
+              program exit.
+
+       -C, --demangle
+              Decode (demangle) low-level symbol names  into  user-level  names.
+              Besides removing any initial underscore prefix used by the system,
+              this makes C++ function names readable.
+
+       -D, --debug level
+              Show debugging output of ltrace itself.  level must be  a  sum  of
+              some of the following numbers:
+
+              01     DEBUG_GENERAL.  Shows helpful progress information
+
+              010    DEBUG_EVENT.   Shows  every event received by a traced pro&#8208;
+                     gram
+
+              020    DEBUG_PROCESS.  Shows every action ltrace  carries  upon  a
+                     traced process
+
+              040    DEBUG_FUNCTION.  Shows every entry to internal functions
+
+       -e expr
+              A qualifying expression which modifies which events to trace.  The
+              format of the expression is:
+              [!]value1[,value2]...
+              where the values are the functions to trace.  Using an exclamation
+              mark  negates  the  set of values.  For example -e printf means to
+              trace only the printf library call.  By contrast, -e !printf means
+              to trace every library call except printf.
+&#12;              Note that some shells use the exclamation point for history expan&#8208;
+              sion; even inside quoted arguments.  If so, you  must  escape  the
+              exclamation point with a backslash.
+
+       -f     Trace child processes as they are created by currently traced pro&#8208;
+              cesses as a result of the fork(2) or clone(2) system  calls.   The
+              new process is attached immediately.
+
+       -F     Load  an  alternate  config  file.  Normally, /etc/ltrace.conf and
+              ~/.ltrace.conf will be read (the latter only if it  exists).   Use
+              this  option  to load the given file or files instead of those two
+              default files.
+
+       -h, --help
+              Show a summary of the options to ltrace and exit.
+
+       -i     Print the instruction pointer at the time of the library call.
+
+       -l, --library filename
+              Display only the symbols included in the library filename.  Up  to
+              30  library  names can be specified with several instances of this
+              option.
+
+       -L     DON&apos;T display library calls (use it with the -S option).
+
+       -n, --indent nr
+              Indent trace output by nr number of spaces  for  each  new  nested
+              call.  Using this option makes the program flow visualization easy
+              to follow.
+
+       -o, --output filename
+              Write the trace output to the file filename rather than to stderr.
+
+       -p pid Attach to the process with the process ID pid and begin tracing.
+
+       -r     Print a relative timestamp with each  line  of  the  trace.   This
+              records  the  time  difference between the beginning of successive
+              lines.
+
+       -s strsize
+              Specify the maximum string size to print (the default is 32).
+
+       -S     Display system calls as well as library calls
+
+       -t     Prefix each line of the trace with the time of day.
+
+       -tt    If given twice, the time printed will include the microseconds.
+
+       -ttt   If given thrice, the time printed will  include  the  microseconds
+              and  the  leading portion will be printed as the number of seconds
+              since the epoch.
+
+       -T     Show  the  time  spent inside each call.  This  records  the  time
+              difference between the beginning and the end of each call.
+
+       -u username
+              Run  command  with the userid, groupid and supplementary groups of
+              username.  This option is only useful when  running  as  root  and
+              enables the correct execution of setuid and/or setgid binaries.
+
+       -X extern
+              Some  architectures  need  to  know where to set a breakpoint that
+              will be hit after the dynamic linker has run.   If  this  flag  is
+              used,  then  the  breakpoint  is  set  at extern, which must be an
+              external function.  By default, &apos;_start&apos; is used.  NOTE: this flag
+              is only available on the architectures that need it.
+
+       -x extern
+              Trace the external function extern.  This option may be repeated.
+
+       -V, --version
+              Show the version number of ltrace and exit.
+
+
+BUGS
+       It has most of the bugs stated in strace(1).
+
+       Manual page and documentation are not very up-to-date.
+
+       Option -f sometimes fails to trace some children.
+
+       It only works on Linux and in a small subset of architectures.
+
+       Only ELF32 binaries are supported.
+
+       Calls to dlopen()ed libraries will not be traced.
+
+       If  you  would  like  to report a bug, send a message to the mailing list
+       (ltrace-devel@lists.alioth.debian.org), or use the  reportbug(1)  program
+       if you are under the Debian GNU/Linux distribution.
+
+
+FILES
+       /etc/ltrace.conf
+              System configuration file
+
+       ~/.ltrace.conf
+              Personal config file, overrides /etc/ltrace.conf
+
+
+AUTHOR
+       Juan Cespedes &lt;cespedes@debian.org&gt;
+
+
+SEE ALSO
+       strace(1), ptrace(2)
+
+
+
+
+                                                                       ltrace(1)
+
+</pre></body></html>

@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSetErrorHandler - set nonfatal error handler</title></head>
+<body><pre>
+
+AuSetErrorHandler(3)                                        AuSetErrorHandler(3)
+
+
+
+Name
+       AuSetErrorHandler - set nonfatal error handler
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuBool (*AuSetErrorHandler(server, handler))()
+           AuServer *server;
+           AuBool (*handler)(AuServer *, AuErrorEvent *);
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       handler   Specifies  the  non-fatal error handler.  Use NULL to reinstall
+                 the default handler.
+
+Description
+       AuSetErrorHandler sets the non-fatal error handler and returns the previ&#8208;
+       ous  handler.   This  error  handler will be invoked whenever a non-fatal
+       error (error event) is received.  As this condition is not assumed to  be
+       fatal,  it  is  acceptable for the error handler to return.  However, the
+       error handler should not call any functions (directly or  indirectly)  on
+       the  server  that  will  generate protocol requests or that will look for
+       input events.
+
+See Also
+       AuServerName,  AuGetErrorDatabaseText,  AuGetErrorText,  AuSetIOErrorHan&#8208;
+       dler, AuSynchronize.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - error handling             1.9.3                 AuSetErrorHandler(3)
+
+</pre></body></html>

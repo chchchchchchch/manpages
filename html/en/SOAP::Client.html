@@ -1,0 +1,82 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SOAP::Client - exists purely as a superclass for client classes declared by the various SOAP::Lite transport modules.</title></head>
+<body><pre>
+
+SOAP::Client(3pm)      User Contributed Perl Documentation     SOAP::Client(3pm)
+
+
+
+NAME
+       SOAP::Client - exists purely as a superclass for client classes declared
+       by the various SOAP::Lite transport modules.
+
+DESCRIPTION
+       The SOAP::Client class exists purely as a superclass for client classes
+       declared by the various SOAP::Lite transport modules. The methods it
+       provides are all simple accessors; they return the current value when
+       called with no arguments or set the attribute value and return the object
+       reference when called with an argument. These attributes include:
+
+METHODS
+       code, message, status
+           Stores the response code, message, and status from the most-recent
+           send attempt. For some protocols, such as FTP, the same value is used
+           for all three because of the lack of finer-grained detail (the
+           default is to ensure that all three attributes contain data, even if
+           redundant). Other protocols (such as HTTP) have distinct values in
+           each.
+
+       endpoint
+           Identifies the current endpoint to which messages are being sent.
+           This should match the value of the transport method from the
+           SOAP::Transport class, but setting this doesn&apos;t propagate to the
+           transport object. It is better to use the transport object (or the
+           shortcut via the SOAP::Lite object itself) when setting this.
+
+       is_success
+           The success or failure of the most-recent transmission is noted here
+           as a boolean value.
+
+       options
+           The options attribute keeps a hash-table reference of additional
+           options and their values. At present, only one option is used by any
+           of the transport modules:
+
+           compress_threshold
+               The value of this option should be a numerical value. If set, and
+               if the Compress::Zlib library is available, messages whose size
+               in bytes exceeds this value will be compressed before sending.
+               Both ends of the conversation must have it enabled.
+
+           Other options may be defined using this mechanism. Note that setting
+           the options using this accessor requires a full hash reference be
+           passed. To set just one or a few values, consider retrieving the
+           current reference value and using it to set the key(s).
+
+SEE ALSO
+       SOAP::Server
+
+ACKNOWLEDGEMENTS
+       Special thanks to O&apos;Reilly publishing which has graciously allowed
+       SOAP::Lite to republish and redistribute large excerpts from Programming
+       Web Services with Perl, mainly the SOAP::Lite reference found in Appendix
+       B.
+
+COPYRIGHT
+       Copyright (C) 2000-2004 Paul Kulchenko. All rights reserved.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+&#12;AUTHORS
+       Paul Kulchenko (paulclinger@yahoo.com)
+
+       Randy J. Ray (rjray@blackperl.com)
+
+       Byrne Reese (byrne@majordojo.com)
+
+
+
+perl v5.12.4                       2011-08-15                  SOAP::Client(3pm)
+
+</pre></body></html>

@@ -1,0 +1,86 @@
+<html>
+<head><meta charset=utf-8/>
+<title>evince - GNOME document viewer</title></head>
+<body><pre>
+
+evince(1)                                                              evince(1)
+
+
+
+NAME
+       evince - GNOME document viewer
+
+       The Evince Document Viewer application for the GNOME desktop environment
+
+
+SYNTAX
+       evince  [--help] [--page-label=PAGE | --page-index=NUMBER] [--fullscreen]
+       [--presentation] [--preview] [--find=STRING] [filename(s)...]
+
+DESCRIPTION
+       evince
+
+       Evince is a document viewer capable of  displaying  multiple  and  single
+       page document formats like PDF and Postscript.  For more general informa&#8208;
+       tion     about     Evince     please     visit     our     website     at
+       http://www.gnome.org/projects/evince/
+
+
+OPTIONS
+       -?, -h, --help
+              Prints the command line options.
+
+       -p, --page-label=PAGE
+              Open  the  document  on the page with the specified page label (or
+              page number).
+
+       -p, --page-index=NUMBER
+              Open the document on the page with the specified page index  (this
+              is the exact page number, not a page label).
+
+       -f, --fullscreen
+              Run evince in fullscreen mode.
+
+       -s, --presentation
+              Run evince in presentation mode.
+
+       -l, --find=string
+              You can pass a word or phrase here. If it exists, evince will dis&#8208;
+              play the document and the first match.
+
+       filename(s)...
+              Specifies the file to open when Evince  starts.  If  this  is  not
+              specified,  Evince will open a blank window. Multiple files can be
+              loaded if they are separated by spaces.  Evince also supports han&#8208;
+              dling  of remote files.  For example, you can pass the location on
+              the   web   or   load   a   file   from   a   FTP   server,   like
+              &quot;ftp://adobe.com/sample.pdf&quot;.
+
+
+Print preview options
+       These  options are primarily intended for use with the GTK+ print preview
+       function. For more information  about  these  options  see  http://devel&#8208;
+       oper.gnome.org/gtk3/stable/GtkSettings.html#GtkSettings--gtk-print-pre&#8208;
+       view-command
+
+       -w, --preview
+              Run evince as a previewer.
+
+       --unlink-temp-file
+              If evince is run in preview mode, this will unlink  the  temporary
+              file created by GTK+.
+
+       --print-settings %s %f
+              This  sends  the full path of the PDF file, f, and the settings of
+              the print dialog, s, to evince.
+
+
+BUGS
+       If     you     find     a     bug,     please      report      it      at
+       http://bugzilla.gnome.org/enter_bug.cgi?product=evince.
+
+
+
+GNOME                              19 Jun 2011                         evince(1)
+
+</pre></body></html>

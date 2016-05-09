@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_installdirs - create subdirectories in package build directories</title></head>
+<body><pre>
+
+DH_INSTALLDIRS(1)                   Debhelper                  DH_INSTALLDIRS(1)
+
+
+
+NAME
+       dh_installdirs - create subdirectories in package build directories
+
+SYNOPSIS
+       dh_installdirs [debhelper&#194; options] [-A] [dir&#194; ...]
+
+DESCRIPTION
+       dh_installdirs is a debhelper program that is responsible for creating
+       subdirectories in package build directories.
+
+FILES
+       debian/package.dirs
+           Lists directories to be created in package.
+
+OPTIONS
+       -A, --all
+           Create any directories specified by command line parameters in ALL
+           packages acted on, not just the first.
+
+       dir ...
+           Create these directories in the package build directory of the first
+           package acted on. (Or in all packages if -A is specified.)
+
+SEE ALSO
+       debhelper(7)
+
+       This program is a part of debhelper.
+
+AUTHOR
+       Joey Hess &lt;joeyh@debian.org&gt;
+
+
+
+9.20120909                         2011-09-12                  DH_INSTALLDIRS(1)
+
+</pre></body></html>

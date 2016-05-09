@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbSASetScreen - Sets the screenXXX field of act from s</title></head>
+<body><pre>
+
+XkbSASetScreen(3)                 XKB FUNCTIONS                XkbSASetScreen(3)
+
+
+
+NAME
+       XkbSASetScreen - Sets the screenXXX field of act from s
+
+SYNOPSIS
+       void XkbSASetScreen (XkbSwitchScreenAction act, int s);
+
+ARGUMENTS
+       - act  action in which to set screenXXX
+
+       - s    value to set in screenXXX
+
+DESCRIPTION
+       Actions  associated  with the XkbSwitchScreen action structure change the
+       active screen on a multiscreen display.
+
+       The type field of the XkbSwitchScreenAction structure  should  always  be
+       XkbSA_SwitchScreen.
+
+       The  flags  field  is  composed  of the bitwise inclusive OR of the masks
+       shown in Table 1.
+
+
+       c s l l l lw(4i).  Table 1 Switch Screen Action Flags  _  Flag Meaning  _
+       XkbSA_SwitchAbsolute     T{  If  set,  the screenXXX field represents the
+       index of the new screen. Otherwise, it represents an offset from the cur&#8208;
+       rent  screen  to  the  new screen.  T} XkbSA_SwitchApplication  T{ If not
+       set, the action should switch to another screen on the same server.  Oth&#8208;
+       erwise,  it  should switch to another X server or application that shares
+       the same physical display.  T}
+
+       The screenXXX field is a signed character value  that  represents  either
+       the  relative  or  absolute  screen  index, depending on the state of the
+       XkbSA_SwitchAbsolute bit in the flags field. Xkb provides  the  following
+       macros  to  convert  between  the  integer and signed character value for
+       screen numbers in XkbSwitchScreenAction structures.
+
+STRUCTURES
+           typedef struct _XkbSwitchScreenAction {
+               unsigned char    type;        /&#8727; XkbSA_SwitchScreen */
+               unsigned char    flags;       /&#8727; controls screen switching */
+               char             screenXXX;   /&#8727; screen number or delta */
+           } XkbSwitchScreenAction;
+
+
+NOTES
+       This action is optional. Servers are free to ignore the action or any  of
+       its flags if they do not support the requested behavior. If the action is
+       ignored, it behaves like XkbSA_NoAction. Otherwise,  key  press  and  key
+       release events do not generate an event.
+
+
+
+X Version 11                      libX11 1.5.0                 XkbSASetScreen(3)
+
+</pre></body></html>

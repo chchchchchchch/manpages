@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_getmodenumber - return a number for the given video mode</title></head>
+<body><pre>
+
+vga_getmodenumber(3)           Svgalib User Manual          vga_getmodenumber(3)
+
+
+
+NAME
+       vga_getmodenumber - return a number for the given video mode
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_getmodenumber(char *name);
+
+
+DESCRIPTION
+       The  function parses *name and tries to find a videomode corresponding on
+       it.  *name is parsed case insensitive and should  be  either  an  integer
+       string  just  giving  a mode number or consist of a capital G followed by
+       the amount of x pixels, followed by a  lower  case  x,  followed  by  the
+       amount  of  y  pixels, followed by a lower case x.  Finally the number of
+       different colors is appended. Here the shortcuts  32K,64K,16M,  and  16M4
+       are used for 32768, 65536, and 16777216 are used. The last refers also to
+       16777216 which are store in 4 bytes (highest  address  byte  unused)  for
+       easier screen access.
+
+       For  unsupported  values or the string &quot;PROMPT&quot; the value -1 is returned.
+       Also a irritating error message is printed to stdout. This is used during
+       parsing the SVGALIB_DEFAULT_MODE environment variable. Probably it should
+       not be used for anything else.
+
+
+EXAMPLE
+       vga_getmodenumber(&quot;G640x480x256&quot;) returns 10.
+
+SEE ALSO
+       svgalib(7),  vgagl(7),  libvga.config(5),   vgatest(6),   vga_hasmode(3),
+       vga_modeinfo(3),  vga_setmode(3),  vga_lastmodenumber(3), vga_getcurrent&#8208;
+       mode(3), vga_getdefaultmode(3), vga_getmodename(3)
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib 1.3.0                     8 April 1998              vga_getmodenumber(3)
+
+</pre></body></html>

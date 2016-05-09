@@ -1,0 +1,35 @@
+<html>
+<head><meta charset=utf-8/>
+<title>makeg - make a debuggable executable</title></head>
+<body><pre>
+
+MAKEG(1)                                                                MAKEG(1)
+
+
+
+NAME
+       makeg - make a debuggable executable
+
+SYNOPSIS
+       makeg [ make-options ...  ] [ targets ...  ]
+
+DESCRIPTION
+       The  makeg  script  runs  make,  passing it variable settings to create a
+       debuggable target when used with a  Makefile  generated  by  imake.   For
+       example, it arranges for the C compiler to be called with the -g option.
+
+ENVIRONMENT
+       MAKE    The make program to use.  Default ``make&apos;&apos;.
+
+       GDB     Set  to  a non-null value if using the gdb debugger on Solaris 2,
+               which requires additional debugging options to be passed  to  the
+               compiler.
+
+SEE ALSO
+       make (1), imake (1)
+
+
+
+X Version 11                       imake 1.0.5                          MAKEG(1)
+
+</pre></body></html>

@@ -1,0 +1,173 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mono-shlib-cop - Shared Library Usage Checker</title></head>
+<body><pre>
+
+mono-shlib-cop(1)                                              mono-shlib-cop(1)
+
+
+
+NAME
+       mono-shlib-cop - Shared Library Usage Checker
+
+SYNOPSIS
+       mono-shlib-cop [OPTIONS]* [ASSEMBLY-FILE-NAME]*
+
+OPTIONS
+       -p, --prefixes=PREFIX
+              Mono installation prefixes.  This is to find $prefix/etc/mono/con&#8208;
+              fig.  The default is based upon the location of mscorlib.dll,  and
+              is normally correct.
+
+DESCRIPTION
+       mono-shlib-cop  is  a  tool  that inspects a managed assembly looking for
+       erroneous or suspecious usage of shared libraries.
+
+       The tool takes one or more assembly filenames, and inspects each assembly
+       specified.
+
+       The errors checked for include:
+
+       *      Does the shared library exist?
+
+       *      Does the requested symbol exist within the shared library?
+
+       The warnings checked for include:
+
+       *      Is  the target shared library a versioned library?  (Relevant only
+              on Unix systems, not Mac OS X or Windows.)
+
+       In general, only versioned libraries such as libc.so.6 are present on the
+       user&apos;s  machine, and efforts to load libc.so will result in a System.Dll&#8208;
+       NotFoundException.  There are three solutions to this:
+
+       1.     Require that the user install any -devel  packages  which  provide
+              the  unversioned  library.   This  usually  requires that the user
+              install a large number of additional  packages,  complicating  the
+              installation process.
+
+       2.     Use  a  fully  versioned  name in your DllImport statements.  This
+              requires editing your source code  and  recompiling  whenever  you
+              need to target a different version of the shared library.
+
+       3.     Provide  an assembly.config file which contains &lt;dllmap/&gt; elements
+              to remap the shared library name used  by  your  assembly  to  the
+              actual versioned shared library present on the users system.  Mono
+              provides a number of  pre-existing  &lt;dllmap/&gt;  entries,  including
+              ones for libc.so and libX11.so.
+
+EXAMPLE
+       The following code contains examples of the above errors and warnings:
+            using System.Runtime.InteropServices; // for DllImport
+            class Demo {
+                 [DllImport (&quot;bad-library-name&quot;)]
+                 private static extern void BadLibraryName ();
+
+                 [DllImport (&quot;libc.so&quot;)]
+                 private static extern void BadSymbolName ();
+
+                 [DllImport (&quot;libcap.so&quot;)]
+                 private static extern int cap_clear (IntPtr cap_p);
+            }
+
+       Bad library name
+              Assuming  that  the library bad-library-name doesn&apos;t exist on your
+              machine,  Demo.BadLibraryName  will  generate  an  error,  as   it
+              requires  a  shared  library  which cannot be loaded.  This may be
+              ignorable; see BUGS
+
+       Bad symbol name
+              Demo.BadSymbolName will generate an error, as libc.so (remapped to
+              libc.so.6  by mono&apos;s $prefix/etc/mono/config file) doesn&apos;t contain
+              the function BadSymbolName
+
+       Unversioned library dependency
+              Assuming you have the file libcap.so , Demo.cap_clear will  gener&#8208;
+              ate  a warning because, while libcap.so could be loaded, libcap.so
+              might not exist on the users machine (on  FC2,  /lib/libcap.so  is
+              provided  by  libcap-devel  ,  and you can&apos;t assume that end users
+              will have any -devel packages installed).
+
+FIXING CODE
+       The fix depends on the warning or error:
+
+       Bad library names
+              Use a valid library name in the DllImport attribute, or provide  a
+              &lt;dllmap/&gt;  entry  to  map  your  existing  library name to a valid
+              library name.
+
+       Bad symbol names
+              Reference a symbol that actually exists in the target library.
+
+       Unversioned library dependency
+              Provide a  &lt;dllmap/&gt;  entry  to  reference  a  properly  versioned
+              library, or ignore the warning (see BUGS ).
+
+DLLMAP ENTRIES
+       Mono  looks  for an ASSEMBLY-NAME mapping information.  For example, with
+       mcs.exe , Mono would read mcs.exe.config , and for Mono.Posix.dll ,  Mono
+       would read Mono.Posix.dll.config
+
+       The  .config  file  is an XML document containing a top-level &lt;configura&#8208;
+       tion/&gt; section with nested &lt;dllmap/&gt; entries, which contains dll and tar&#8208;
+       get attributes.  The dll attribute should contain the same string used in
+       your DllImport attribute value, and the target attribute specifies  which
+       shared library mono should actually load at runtime.
+
+       A sample .config file is:
+            &lt;configuration&gt;
+                 &lt;dllmap dll=&quot;gtkembedmoz&quot; target=&quot;libgtkembedmoz.so&quot; /&gt;
+            &lt;/configuration&gt;
+
+BUGS
+       *      Only DllImport entries are checked; the surrounding IL is ignored.
+              Consequently, if a runtime check  is  performed  to  choose  which
+              shared  library  to  invoke, an error will be reported even though
+              the specified library is never used.  Consider this code:
+                   using System.Runtime.InteropServices; // for DllImport
+                   class Beep {
+                        [DllImport (&quot;kernel32.dll&quot;)]
+                        private static extern int Beep (int dwFreq, int dwDuration);
+
+                        [DllImport (&quot;libcurses.so&quot;)]
+                        private static extern int beep ();
+
+                        public static void Beep ()
+                        {
+                             if (System.IO.Path.DirectorySeparatorChar == &apos;\\&apos;) {
+                                  Beep (750, 300);
+                             }
+                             else {
+                                  beep ();
+                             }
+                        }
+                   }
+              If mono-shlib-cop is run  on  this  assembly,  an  error  will  be
+              reported  for  using  kernel32.dll , even though kernel32.dll will
+              never be used on Unix platforms.
+
+       *      mono-shlib-cop currently only examines  the  shared  library  file
+              extension  to  determine  if a warning should be generated.  A .so
+              extension will always generate a warning, even if the .so is not a
+              symlink,  isn&apos;t provided in a -devel package, and there is no ver&#8208;
+              sioned    shared    library    (possible    examples     including
+              /usr/lib/libtcl8.4.so, /usr/lib/libubsec.so, etc.).
+
+              Consequently,  warnings  for  any  such libraries are useless, and
+              incorrect.
+
+              Windows and Mac OS X will never generate warnings, as these  plat&#8208;
+              forms use different shared library extensions.
+
+MAILING LISTS
+       Visit     http://lists.ximian.com/mailman/listinfo/mono-devel-list    for
+       details.
+
+WEB SITE
+       Visit http://www.mono-project.com for details
+
+
+
+                                                               mono-shlib-cop(1)
+
+</pre></body></html>

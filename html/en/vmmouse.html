@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vmmouse - VMware Mouse input driver</title></head>
+<body><pre>
+
+VMMOUSE(4)                                                            VMMOUSE(4)
+
+
+
+NAME
+       vmmouse - VMware Mouse input driver
+
+SYNOPSIS
+       Section &quot;InputDevice&quot;
+         Identifier &quot;idevname&quot;
+         Driver &quot;vmmouse&quot;
+         ...
+       EndSection
+
+DESCRIPTION
+       vmmouse  is  an  XFree86 input driver for mice.  The driver supports most
+       available mouse types and interfaces.  USB mice  are  only  supported  on
+       some OSs, and the level of support for PS/2 mice depends on the OS.
+
+       The  vmmouse  driver functions as a pointer input device, and may be used
+       as the X server&apos;s core pointer.  Multiple mice are supported by  multiple
+       instances of this driver.
+
+CONFIGURATION DETAILS
+       Please  refer  to  xorg.conf(5) for general configuration details and for
+       options that can be used with all input drivers.  This section only  cov&#8208;
+       ers configuration details specific to this driver.
+
+       The driver will automatically detect if the vmmouse device is present and
+       if it is not, it will load the regular mouse driver and attempt  to  fall
+       back  to  it.  There  are  no  vmmouse  specific  options, but if you set
+       mouse(4) options, they will be passed on.
+
+       See the mouse(4) man page for details on these options.
+
+SEE ALSO
+       Xorg(1), xorg.conf(5), Xserver(1), X(7), mouse(4)
+
+AUTHORS
+       Copyright (c) 1999-2007 VMware, Inc.
+
+
+
+X Version 11                xf86-input-vmmouse 12.9.0                 VMMOUSE(4)
+
+</pre></body></html>

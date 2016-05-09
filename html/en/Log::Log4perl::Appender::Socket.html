@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Appender::Socket - Log to a socket</title></head>
+<body><pre>
+
+Appender::Socket(3pm)  User Contributed Perl Documentation Appender::Socket(3pm)
+
+
+
+NAME
+       Log::Log4perl::Appender::Socket - Log to a socket
+
+SYNOPSIS
+           use Log::Log4perl::Appender::Socket;
+
+           my $appender = Log::Log4perl::Appender::Socket-&gt;new(
+             PeerAddr =&gt; &quot;server.foo.com&quot;,
+             PeerPort =&gt; 1234,
+           );
+
+           $appender-&gt;log(message =&gt; &quot;Log me\n&quot;);
+
+DESCRIPTION
+       This is a simple appender for writing to a socket. It relies on
+       IO::Socket::INET and offers all parameters this module offers.
+
+       Upon destruction of the object, pending messages will be flushed and the
+       socket will be closed.
+
+       If the appender cannot contact the server during the initialization phase
+       (while running the constructor &quot;new&quot;), it will &quot;die()&quot;.
+
+       If the appender fails to log a message because the socket&apos;s &quot;send()&quot;
+       method fails (most likely because the server went down), it will try to
+       reconnect once. If it succeeds, the message will be sent.  If the
+       reconnect fails, a warning is sent to STDERR and the &quot;log()&quot; method
+       returns, discarding the message.
+
+       If the option &quot;silent_recovery&quot; is given to the constructor and set to a
+       true value, the behaviour is different: If the socket connection can&apos;t be
+       established at initialization time, a single warning is issued.  Every
+       log attempt will then try to establish the connection and discard the
+       message silently if it fails.  If you don&apos;t even want the warning, set
+       the &quot;no_warning&quot; option to a true value.
+
+       Connecting at initialization time may not be the best option when running
+       under Apache1 Apache2/prefork, because the parent process creates the
+       socket and the connections are shared among the forked children--all the
+       children writing to the same socket could intermingle messages.  So
+       instead of that, you can use &quot;defer_connection&quot; which will put off making
+       the connection until the first log message is sent.
+
+EXAMPLE
+       Write a server quickly using the IO::Socket::INET module:
+
+           use IO::Socket::INET;
+
+           my $sock = IO::Socket::INET-&gt;new(
+               Listen    =&gt; 5,
+               LocalAddr =&gt; &apos;localhost&apos;,
+               LocalPort =&gt; 12345,
+               Proto     =&gt; &apos;tcp&apos;);
+
+           while(my $client = $sock-&gt;accept()) {
+               print &quot;Client connected\n&quot;;
+               while(&lt;$client&gt;) {
+                   print &quot;$_\n&quot;;
+               }
+           }
+
+       Start it and then run the following script as a client:
+
+           use Log::Log4perl qw(:easy);
+
+           my $conf = q{
+               log4perl.category                  = WARN, Socket
+               log4perl.appender.Socket           = Log::Log4perl::Appender::Socket
+               log4perl.appender.Socket.PeerAddr  = localhost
+               log4perl.appender.Socket.PeerPort  = 12345
+               log4perl.appender.Socket.layout    = SimpleLayout
+           };
+
+           Log::Log4perl-&gt;init(\$conf);
+
+           sleep(2);
+
+           for(1..10) {
+               ERROR(&quot;Quack!&quot;);
+               sleep(5);
+           }
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21              Appender::Socket(3pm)
+
+</pre></body></html>

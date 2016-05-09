@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::LibXML::NodeList - a list of XML document nodes</title></head>
+<body><pre>
+
+XML::LibXML::NodeList(3User Contributed Perl DocumentaXML::LibXML::NodeList(3pm)
+
+
+
+NAME
+       XML::LibXML::NodeList - a list of XML document nodes
+
+DESCRIPTION
+       An XML::LibXML::NodeList object contains an ordered list of nodes, as
+       detailed by the W3C DOM documentation of Node Lists.
+
+SYNOPSIS
+         my $results = $dom-&gt;findnodes(&apos;//somepath&apos;);
+         foreach my $context ($results-&gt;get_nodelist) {
+           my $newresults = $context-&gt;findnodes(&apos;./other/element&apos;);
+           ...
+         }
+
+API
+   new(@nodes)
+       You will almost never have to create a new NodeList object, as it is all
+       done for you by XPath.
+
+   get_nodelist()
+       Returns a list of nodes, the contents of the node list, as a perl list.
+
+   string_value()
+       Returns the string-value of the first node in the list.  See the XPath
+       specification for what &quot;string-value&quot; means.
+
+   to_literal()
+       Returns the concatenation of all the string-values of all the nodes in
+       the list.
+
+   get_node($pos)
+       Returns the node at $pos. The node position in XPath is based at 1, not
+       0.
+
+   size()
+       Returns the number of nodes in the NodeList.
+
+   pop()
+       Equivalent to perl&apos;s pop function.
+
+   push(@nodes)
+       Equivalent to perl&apos;s push function.
+
+   append($nodelist)
+       Given a nodelist, appends the list of nodes in $nodelist to the end of
+       the current list.
+
+   shift()
+       Equivalent to perl&apos;s shift function.
+
+   unshift(@nodes)
+       Equivalent to perl&apos;s unshift function.
+
+   prepend($nodelist)
+       Given a nodelist, prepends the list of nodes in $nodelist to the front of
+       the current list.
+
+   map($coderef)
+       Equivalent to perl&apos;s map function.
+
+   grep($coderef)
+       Equivalent to perl&apos;s grep function.
+&#12;   sort($coderef)
+       Equivalent to perl&apos;s sort function.
+
+       Caveat: Perl&apos;s magic $a and $b variables are not available in $coderef.
+       Instead the two terms are passed to the coderef as arguments.
+
+   reverse()
+       Equivalent to perl&apos;s reverse function.
+
+   foreach($coderef)
+       Inspired by perl&apos;s foreach loop. Executes the coderef on each item in the
+       list. Similar to &quot;map&quot;, but instead of returning the list of values
+       returned by $coderef, returns the original NodeList.
+
+   reduce($coderef, $init)
+       Equivalent to List::Util&apos;s reduce function. $init is optional and
+       provides an initial value for the reduction.
+
+       Caveat: Perl&apos;s magic $a and $b variables are not available in $coderef.
+       Instead the two terms are passed to the coderef as arguments.
+
+
+
+perl v5.14.2                       2012-06-20         XML::LibXML::NodeList(3pm)
+
+</pre></body></html>

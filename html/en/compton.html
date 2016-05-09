@@ -1,0 +1,184 @@
+<html>
+<head><meta charset=utf-8/>
+<title>compton - a compositor for X11</title></head>
+<body><pre>
+
+compton(1)                                                            compton(1)
+
+
+
+NAME
+       compton - a compositor for X11
+
+
+SYNOPSIS
+       compton  [-d  display]  [-r  radius]  [-o  opacity]  [-l left-offset] [-t
+       top-offset]  [-i  opacity]  [-e  opacity]  [-cCfFSdG]   [--config   path]
+       [--shadow-red   value]   [--shadow-green   value]  [--shadow-blue  value]
+       [--inactive-opacity-override]           [--inactive-dim            value]
+       [--mark-wmwin-focused]            [--shadow-exclude            condition]
+       [--mark-ovredir-focused] [--no-fading-openclose] [--shadow-ignore-shaped]
+       [--detect-round-corners]
+
+
+DESCRIPTION
+       compton is a compositor based on Dana Jansens&apos; version of xcompmgr (which
+       itself was written by Keith Packard). It includes many improvements  over
+       the  original  xcompmgr,  including window frame opacity, inactive window
+       transparency, and shadows on argb windows.
+
+
+EXAMPLE
+       $ compton -cC -i 0.6 -e 0.6 -f
+
+       $ compton --config ~/compton.conf
+
+
+OPTIONS
+       -d display
+              Which display should be managed.
+
+       -r radius
+              The blur radius for shadows. (default 12)
+
+       -o opacity
+              The translucency for shadows. (default .75)
+
+       -l left-offset
+              The left offset for shadows. (default -15)
+
+       -t top-offset
+              The top offset for shadows. (default -15)
+
+       -I fade-in-step
+              Opacity change between steps while fading in. (default 0.028)
+
+       -O fade-out-step
+              Opacity change between steps while fading out. (default 0.03)
+
+       -D fade-delta-time
+              The time between steps in a fade in milliseconds. (default 10)
+
+       -m opacity
+              The opacity for menus. (default 1.0)
+
+       -c     Enabled client-side shadows on windows.
+
+       -C     Avoid drawing shadows on dock/panel windows.
+
+       -z     Zero the part of the shadow&apos;s mask behind the  window  (experimen&#8208;
+              tal).
+&#12;       -f     Fade windows in/out when opening/closing and when opacity changes,
+              unless --no-fading-openclose is used.
+
+       -F     Equals -f. Deprecated.
+
+       -i opacity
+              Opacity of inactive windows. (0.1 - 1.0)
+
+       -e opacity
+              Opacity of window titlebars and borders. (0.1 - 1.0)
+
+       -G     Don&apos;t draw shadows on DND windows
+
+       -b     Daemonize/background process.
+
+       -S     Enable synchronous operation (for debugging).
+
+       --config path
+              Look for configuration file at the path.
+
+       --shadow-red value
+              Red color value of shadow (0.0 - 1.0, defaults to 0).
+
+       --shadow-green value
+              Green color value of shadow (0.0 - 1.0, defaults to 0).
+
+       --shadow-blue value
+              Blue color value of shadow (0.0 - 1.0, defaults to 0).
+
+       --inactive-opacity-override
+              Inactive opacity set by -i overrides value of _NET_WM_OPACITY.
+
+       --inactive-dim value
+              Dim inactive windows. (0.0 - 1.0, defaults to 0)
+
+       --mark-wmwin-focused
+              Try to detect WM windows and mark them as active.
+
+       --shadow-exclude condition
+              Exclude conditions for shadows.
+
+       --mark-ovredir-focused
+              Mark over-redirect windows as active.
+
+       --no-fading-openclose
+              Do not fade on window open/close.
+
+       --shadow-ignore-shaped
+              Do not paint shadows on shaped windows.
+
+       --detect-rounded-corners
+              Try to detect windows with rounded corners and don&apos;t consider them
+              shaped windows.
+
+       Format of a condition:
+
+              condition = &lt;target&gt;:&lt;type&gt;[&lt;flags&gt;]:&lt;pattern&gt;
+
+              &lt;target&gt; is one of &quot;n&quot; (window name), &quot;i&quot; (window class instance),
+              and &quot;g&quot; (window general class)
+
+              &lt;type&gt; is one of &quot;e&quot; (exact  match),  &quot;a&quot;  (match  anywhere),  &quot;s&quot;
+              (match  from start), &quot;w&quot; (wildcard), and &quot;p&quot; (PCRE regular expres&#8208;
+              sions, if compiled with the support).
+
+              &lt;flags&gt; could be a series of flags.  Currently  the  only  defined
+              flag is &quot;i&quot; (ignore case).
+
+              &lt;pattern&gt; is the actual pattern string.
+
+
+CONFIGURATION
+       (A  more  robust  sample configuration file exists in the compton reposi&#8208;
+       tory.)
+
+       Example
+
+       ~/compton.conf:
+
+           # Shadows
+           shadow = true;
+
+           # Opacity
+           inactive-opacity = 0.8;
+           frame-opacity = 0.7;
+
+           # Fades
+           fading = true;
+
+       Run with:
+
+           $ compton --config ~/compton.conf
+
+
+BUGS
+       Please report any you find to https://github.com/chjj/compton.
+
+
+AUTHORS
+       xcompmgr, originally written by Keith Packard,  with  contributions  from
+       Matthew  Allum, Eric Anholt, Dan Doel, Thomas Luebking, Matthew Hawn, Ely
+       Levy, Phil Blundell, and Carl Worth.   Compton  by  Christopher  Jeffrey,
+       based  on  Dana  Jansens&apos; original work, with numerous contributions from
+       Richard Grenville.
+
+
+SEE ALSO
+       compton-trans(1)
+
+
+
+                                                                      compton(1)
+
+</pre></body></html>

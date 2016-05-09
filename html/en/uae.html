@@ -1,0 +1,338 @@
+<html>
+<head><meta charset=utf-8/>
+<title>uae - The Ubiquitous Amiga Emulator</title></head>
+<body><pre>
+
+UAE(1)                       Contributed application                      UAE(1)
+
+
+
+NAME
+       uae - The Ubiquitous Amiga Emulator
+
+
+SYNOPSIS
+       uae [ -h ] [ -f file ] { -s opt=val }
+
+
+PRELIMINARIES
+       This  manual  page  was produced for uae 0.8.12.  It is only provided for
+       convenience by the maintainer of the Debian package of  uae.  Please  see
+       /usr/share/doc/uae for a thorough description. The following chapters are
+       simply snippets from the upstream README.
+
+       Btw, in my experience, the &quot;-h&quot; switch for some reasons does not work for
+       uae 0.8.x.
+
+
+OVERVIEW
+       An  emulator is a program which enables you to run software for a machine
+       which has non-native hardware and a non-native operating system, on  your
+       computer.  UAE allows you to run most of the available Amiga software. It
+       is a software emulation, meaning that no extra  or  special  hardware  is
+       needed  to  do  this. The hardware of an Amiga is emulated accurately, so
+       that Amiga software is tricked into thinking it is running  on  the  real
+       thing,  with your computer&apos;s display, keyboard, harddisk and mouse taking
+       the parts of their emulated counterparts.
+
+       UAE was developed for Unixoid systems. Meanwhile, it has been  ported  to
+       the  Mac,  DOS,  the BeBox, NextStep, the XFree86/OS2 environment and the
+       Amigas (it can run itself by now). You should have received several other
+       files along with this document with details on how to install and use the
+       version for your operating system.
+
+       This section is just what it says: an overview. Please read _all_ of this
+       file,  especially  if  you have problems. UAE has many, many features and
+       equally many configuration options. If you don&apos;t know  about  them,  it&apos;s
+       likely  that  UAE  doesn&apos;t  work  for  you, or doesn&apos;t work as good as it
+       could.
+
+       Please read also the file &quot;FAQ&quot;  which  contains  some  Frequently  Asked
+       Questions  (and  even  the  answers!) You should also look for a document
+       describing the specific port of UAE  to  the  operating  system  you  are
+       using, for example &quot;BeOS/README&quot; or &quot;DOS/README&quot;.
+
+       People  have  complained  that the UAE documentation contains only &quot;weird
+       jargon&quot;.  Sorry about this. Despite what MessySoft and Tomato  tell  you,
+       computer programs aren&apos;t always easy to use. UAE does require some assis&#8208;
+       tance from you, and therefore you should at least understand a bit  about
+       computers.  After  all,  you  are an Amiga fan, so you should know what a
+       Workbench is, don&apos;t you think?
+
+
+
+INVOKING UAE
+       First, read the system-specific documents for information how to  set  up
+       UAE.   You should have an executable program called &quot;uae&quot;. You can simply
+       execute it, but you can also optionally give it one or more of  the  fol&#8208;
+       lowing parameters:
+
+        -h              : Print out a help text.
+        -f file         : Load a configuration file.
+        -s opt=val      : Set the emulator&apos;s option &quot;opt&quot; to value &quot;val&quot;.
+
+       Configuration  files consist of several lines of the form &quot;opt=val&quot;, just
+       as with the &quot;-s&quot; parameter.  You can use the following options  with  the
+       &quot;-s&quot;  option,  or in a config file.  [Here, &quot;=n&quot; means the option takes a
+       number as value.  &quot;=bool&quot; means the option takes a value of either  &quot;yes&quot;
+       or  &quot;no&quot;  (or  &quot;true&quot;, &quot;false&quot;, or abbreviations of any of these).  There
+       are other classes as well.]
+
+       General options:
+
+       accuracy=n [default=2]
+
+       Set emulator accuracy to n. The default is n = 2, which means the  emula&#8208;
+       tor  will  try to be as accurate as possible. This no longer does much in
+       this version, and I&apos;ll probably remove it.
+
+       framerate=n [default=1]
+
+       Sets the frame rate to 1/n. Only every nth screen will be drawn.  Using a
+       higher  value can speed up the emulator, at the expense of graphics qual&#8208;
+       ity.
+
+       autoconfig=bool [default=yes]
+
+       If this is enabled, all expansion devices provided by the emulation  will
+       be  automounted. You should only disable this if you have a Kickstart ROM
+       earlier than 1.3 which can&apos;t cope with this. Some badly written games and
+       demos might also be incompatible with this.
+
+       kbd_lang=lang [default=us]
+
+       Set  the  keyboard language. Currently, the following values can be used:
+       &quot;us&quot; for U.S. keyboard (default), &quot;se&quot; for swedish, &quot;fr&quot; for french, &quot;it&quot;
+       for italian, &quot;es&quot; for spanish, or &quot;de&quot; for german keyboard.  This setting
+       only affects the X11 version.
+
+       floppy0=file [default=df0.adf]
+
+       Try to use the specified file as diskfile for drive 0 instead of df0.adf.
+       The options floppy1, floppy2, and floppy3 also exist.
+
+       kickstart_rom_file=file [default=kick.rom]
+
+       Use the specified file instead of kick.rom as Kickstart image.
+
+       joyport0=mode [default=mouse]
+
+       Specify  how  to emulate joystick port 0. You can use &quot;mouse&quot;, &quot;joy0&quot;, or
+       &quot;joy1&quot; to use the corresponding input devices of your machine, or you can
+       select several different keyboard replacements for a joystick: &quot;kbd1&quot; for
+       the numeric pad with &apos;0&apos; as fire button, &quot;kbd2&quot; for the cursor keys  with
+       right control as fire button and c is T/F/H/B with Alt as fire button.
+
+       joyport1=mode [default=joy0]
+
+       Like joyport0, but for the Amiga&apos;s joystick port 1.
+
+       use_gui=bool [default=yes]
+
+       Show a user-interface that enables changing these options at run-time.
+
+       32bit_blits=bool [default=no]
+
+       If  enabled,  the blitter emulation will use 32 bit operations where that
+       seems profitable (note that this will cause  bus  errors  on  most   RISC
+       machines)
+
+       immediate_blits=bool [default=no]
+
+       If  enabled,  all  blits  will  finish immediately, which can be nice for
+       speed, but may cause incompatibilities.
+
+       cpu_speed=speed [default=4]
+
+       This can have a value of &quot;real&quot;, &quot;max&quot;, or an integer between 1  and  20.
+       &quot;real&quot;  will  try to give the CPU emulation exactly as many cycles, rela&#8208;
+       tive to the other chips, as on a real A500.  &quot;max&quot; will try to  give  you
+       the maximum CPU emulation speed achievable on your machine.  Numeric val&#8208;
+       ues specify a fixed relation between CPU and custom chip emulation, where
+       lower  values  prioritize  CPU  emulation, while higher values prioritize
+       custom chip emulation.
+
+       cpu_type=type [default=68000]
+
+       Controls which CPU is emulated. This can be &quot;68000&quot;, &quot;68010&quot;, &quot;68020&quot;  or
+       &quot;68020/68881&quot;.   In  some  cases,  you  may  need  to  use  &quot;68ec020&quot;  or
+       &quot;68ec020/68881&quot; to emulate a crippled variant of the 68020 that has  only
+       a  24 bit address bus.  Some software, including some Kickstart versions,
+       does not work with a normal 68020 that has a 32 bit address  bus.   Care&#8208;
+       ful:  using  an &quot;ec&quot; variant has harmful side effects, and should be dis&#8208;
+       abled unless absolutely needed (you lose Z3  memory  and  Picasso  emula&#8208;
+       tion).
+
+       cpu_compatible=bool [default=no]
+
+       If enabled, a slower but slightly more accurate variant of the CPU emula&#8208;
+       tion will be used.  This is needed for some  types  of  copy  protection,
+       among other things. This is only meaningful for a CPU type of &quot;68000&quot;.
+
+       Emulating external devices (harddisk, CD-ROM, printer, serial port):
+
+       filesystem=access,volume:path [default=no filesystems mounted]
+
+       Mount the host&apos;s file system at &quot;path&quot; as an Amiga filesystem with volume
+       name &quot;VOLUME:&quot;.  &quot;access&quot; can be either &quot;ro&quot; (for readonly), or &quot;rw&quot; (for
+       read-write).   If  you  want to mount a CD-ROM, you should use a readonly
+       mount.  You can mount multiple file systems.  See below.
+
+       hardfile=access,secs,heads,reserved,bsize,file   [default=no    hardfiles
+       mounted]
+
+       Mount  the  hardfile  &quot;file&quot; as an emulated harddisk, using a geometry of
+       &quot;secs&quot; sectors per track, &quot;heads&quot;  surfaces  and  &quot;nr&quot;  reserved  blocks.
+       Each sector should have &quot;bsize&quot; bytes. This can be abused to mount floppy
+       images.  You can mount multiple hardfiles.  See below.
+
+       Sound options:
+
+       sound_output=type [default=none]
+
+       The type of sound output can be &quot;none&quot; (no sound  at  all),  &quot;interrupts&quot;
+       (emulated  for the internal side effects that can be noticed by programs,
+       but no sound output), &quot;normal&quot; (emulated, and sound output),  &quot;exact&quot;  (a
+       slightly more accurate emulation that may be necessary in some cases, but
+       can also be slower).
+
+       sound_channels=type [default=mono]
+
+       Can be &quot;mono&quot; or &quot;stereo&quot;.
+
+       sound_bits=n [default varies across UAE versions on different OS types]
+
+       Common values are 8 (low quality) or 16 (high quality)
+
+       sound_frequency=n [default varies across UAE  versions  on  different  OS
+       types]
+
+       Common  values  are 22050 or 44100. The quality of sound output increases
+       with the frequency.
+
+       sound_min_buff=n
+
+       sound_max_buff=n [default varies across  UAE  versions  on  different  OS
+       types]
+
+       You  can  specify  the  minimum  and  maximum  size  of the sound buffer.
+       Smaller buffers reduce latency.  Usually only the minimum size is used.
+
+       sound_interpol=type [default none]
+
+       Normally, sound samples are output exactly as they are computed,  without
+       any  post-processing.   This can generate errors in the sound output when
+       the output frequency isn&apos;t an  even  multiple  of  the  input  frequency.
+       These  errors are usuable perceived as a high-frequency noise.  There are
+       currently two types of interpolation available, both  under  experimenta&#8208;
+       tion.   You can use either &quot;rh&quot; or &quot;crux&quot; as value for this option.  Note
+       that no interpolation is supported for 8 bit output; you need to  use  16
+       bit  output  to  hear  a  difference.  If you have any comments about the
+       effects of either method on audio quality, I&apos;d be very interested to hear
+       them.
+
+       Memory options:
+
+       bogomem_size=n [default=0]
+
+       Emulate n*256K slow memory at 0xC00000. Some demos/games need this.
+
+       fastmem_size=n [default=0]
+
+       Emulate n megabytes of fast memory as an expansion board.
+
+       z3mem_size=n [default=0]
+
+       Emulate n megabytes of Zorro III fast memory as an expansion board.
+
+       chipmem_size=n [default=4]
+
+       Emulate  n*512K  chip  memory.  Some  very  broken programs need specific
+       amounts of chip mem to work properly. The  largest  valid  value  is  16,
+       which means 8MB chip memory.
+
+       Display options:
+
+       gfx_width=n [default=800]
+
+       Use a window that is n pixels wide for displaying the Amiga screen.
+
+       gfx_height=n [default=300]
+
+       Use a window that is n pixels high for displaying the Amiga screen.
+
+       gfx_lores=bool [default=no]
+
+       Enable  this option if you use a very small window width (320 to 400 pix&#8208;
+       els) to shrink the display horizontally.
+
+       gfx_linemode=type [default=none]
+
+       The type can be none (every line is drawn once), &quot;double&quot; (every line  is
+       drawn twice), and &quot;scanlines&quot; (every line is drawn once, but the image is
+       stretched vertically by inserting a black line every other line to  simu&#8208;
+       late  the  display  on  an  old  monitor).   The &quot;double&quot; mode gives best
+       results, but slows down the emulation quite a lot. Don&apos;t use  the  &quot;none&quot;
+       mode  if  you  want a decent interlace emulation.  If you use &quot;double&quot; or
+       &quot;scanlines&quot;, your window needs to be twice as  high  as  when  using  the
+       &quot;none&quot; mode.
+
+       gfx_correct_aspect=bool [default=none]
+
+       Try  to fit the image into the specified window dimensions by leaving out
+       certain lines.  Useful if you want to fit a 640x512 Amiga  display  in  a
+       640x480 window.
+
+       gfx_center_vertical=bool [default=no]
+
+       gfx_center_horizontal=bool [default=no]
+
+       If you use a smaller window than 800x300 (400x300 with &quot;gfx_lores&quot; option
+       or 800x600 with a gfx_linemode other than &quot;none&quot;), not all parts  of  the
+       display  will  fit  on  the  screen.  By enabling the necessary centering
+       options, you can ask the emulator to try and move the screen contents  so
+       that the relevant parts are displayed. If you are unlucky, this can cause
+       the contents to jump around a bit in certain cases.
+
+       gfx_fullscreen_amiga=bool [default=no]
+
+       Enable if you want to use the full screen, not a window on  the  desktop,
+       for  the  Amiga display.  Some ports (DOS, SVGAlib) always use fullscreen
+       mode.
+
+       gfx_fullscreen_picasso=bool [default=no]
+
+       Like gfx_fullscreen_amiga, but for the Picasso graphics card display.
+
+       gfx_color_mode=mode [default=8bit]
+
+       Select a color mode to use.  Color modes: 8bit (256 colors), 15bit (32768
+       colors),  16bit (65536 colors), 8bit_dithered (256 colors, with dithering
+       to improve quality), 4bit_dithered (16 colors, dithered); 32bit (16  mil&#8208;
+       lion colors)
+
+       gfxcard_size=n [default=0]
+
+       Emulate  a Picasso 96 compatible graphics card with n MB graphics memory.
+       This requires that you use set the CPU type to  &quot;68020&quot;  or  higher,  and
+       that you do not use 24 bit addressing.
+
+       Debugging options (not interesting for most users):
+
+       use_debugger=bool [default=no]
+
+       If enabled, don&apos;t start the emulator at once, use the built-in debugger.
+
+       log_illegal_mem [default=no]
+
+       If enabled, print illegal memory accesses
+
+
+FILES
+       $HOME/.uaerc user configuration file.
+
+
+
+3rd party                          25 Feb 2001                            UAE(1)
+
+</pre></body></html>

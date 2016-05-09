@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mouse_getx, mouse_gety, mouse_getbutton - query the mouse state</title></head>
+<body><pre>
+
+mouse_getx(3)                  Svgalib User Manual                 mouse_getx(3)
+
+
+
+NAME
+       mouse_getx, mouse_gety, mouse_getbutton - query the mouse state
+
+SYNOPSIS
+       #include &lt;vgamouse.h&gt;
+
+       int mouse_getx(void);
+       int mouse_gety(void);
+       int mouse_getbutton(void);
+
+
+DESCRIPTION
+       These  three  routines  do  the  obvious,  namely returning current mouse
+       pointer position and button state.  mouse_getbutton() returns an  integer
+       which  can  be  bitwise  &amp;&apos;d  with  MOUSE_LEFTBUTTON, MOUSE_MIDDLEBUTTON,
+       MOUSE_RIGHTBUTTON, MOUSE_FOURTHBUTTON, MOUSE_FIFTHBUTTON, MOUSE_SIXTHBUT&#8208;
+       TON, or MOUSE_RESETBUTTON.
+
+       A  1 on any of these bits means the button has been pressed, a 0 means it
+       hasn&apos;t.
+
+       Please note that you need to  call  mouse_update(3)  or  mouse_waitforup&#8208;
+       date(3) for the mouse state actually to change.
+
+       For  3d  pointer  devices,  there  is  actually  another  interface.  See
+       mouse_getposition_6d(3).
+
+SEE ALSO
+       svgalib(7),  vgagl(7),  libvga.config(5),  eventtest(6),  mouse_close(3),
+       mouse_init(3),       mouse_getposition_6d(3),       mouse_setposition(3),
+       mouse_setscale(3), mouse_setwrap(3), mouse_setxrange(3), mouse_update(3),
+       mouse_waitforupdate(3), vga_setmousesupport(3), mouse_seteventhandler(3),
+       vga_waitevent(3)
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997                     mouse_getx(3)
+
+</pre></body></html>

@@ -1,0 +1,116 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mkstemp, mkostemp, mkstemps, mkostemps - create a unique temporary file</title></head>
+<body><pre>
+
+MKSTEMP(3)                  Linux Programmer&apos;s Manual                 MKSTEMP(3)
+
+
+
+NAME
+       mkstemp, mkostemp, mkstemps, mkostemps - create a unique temporary file
+
+SYNOPSIS
+       #include &lt;stdlib.h&gt;
+
+       int mkstemp(char *template);
+
+       int mkostemp(char *template, int flags);
+
+       int mkstemps(char *template, int suffixlen);
+
+       int mkostemps(char *template, int suffixlen, int flags);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       mkstemp():
+           _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
+           _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
+           || /* Since glibc 2.12: */ _POSIX_C_SOURCE &gt;= 200112L
+
+       mkostemp(): _GNU_SOURCE
+       mkstemps(): _BSD_SOURCE || _SVID_SOURCE
+       mkostemps(): _GNU_SOURCE
+
+DESCRIPTION
+       The mkstemp() function generates a unique temporary  filename  from  tem&#8208;
+       plate,  creates  and  opens the file, and returns an open file descriptor
+       for the file.
+
+       The last six characters of  template  must  be  &quot;XXXXXX&quot;  and  these  are
+       replaced  with a string that makes the filename unique.  Since it will be
+       modified, template must not be a string constant, but should be  declared
+       as a character array.
+
+       The  file  is created with permissions 0600, that is, read plus write for
+       owner only.  (In glibc versions 2.06 and earlier,  the  file  is  created
+       with  permissions  0666,  that  is,  read  and write for all users.)  The
+       returned file descriptor provides both read and write access to the file.
+       The  file  is  opened with the open(2) O_EXCL flag, guaranteeing that the
+       caller is the process that creates the file.
+
+       The mkostemp() function is like mkstemp(), with the difference that flags
+       as for open(2) may be specified in flags (e.g., O_APPEND, O_SYNC).
+
+       The mkstemps() function is like mkstemp(), except that the string in tem&#8208;
+       plate contains a suffix of suffixlen characters.  Thus,  template  is  of
+       the  form  prefixXXXXXXsuffix,  and  the string XXXXXX is modified as for
+       mkstemp().
+
+       The mkostemps() function is to mkstemps() as mkostemp() is to mkstemp().
+
+RETURN VALUE
+       On success, these functions return the file descriptor of  the  temporary
+       file.  On error, -1 is returned, and errno is set appropriately.
+
+ERRORS
+       EEXIST Could not create a unique temporary filename.  Now the contents of
+              template are undefined.
+
+       EINVAL For mkstemp() and mkostemp(): The last six characters of  template
+              were not XXXXXX; now template is unchanged.
+
+              For  mkstemps()  and  mkostemps(): template is less than (6 + suf&#8208;
+              fixlen) characters long, or the last 6 characters before the  suf&#8208;
+              fix in template were not XXXXXX.
+
+       These  functions  may  also  fail  with  any  of the errors described for
+       open(2).
+
+VERSIONS
+       mkostemp() is available since glibc 2.7.  mkstemps() and mkostemps()  are
+       available since glibc 2.11.
+
+CONFORMING TO
+       mkstemp(): 4.3BSD, POSIX.1-2001.
+
+       mkstemps(): unstandardized, but appears on several other systems.
+
+       mkostemp() and mkostemps(): are glibc extensions.
+
+NOTES
+       The  old  behavior  of  creating  a file with mode 0666 may be a security
+       risk, especially since other UNIX flavors use 0600,  and  somebody  might
+       overlook this detail when porting programs.
+
+       More  generally,  the  POSIX specification of mkstemp() does not say any&#8208;
+       thing about file modes, so the application should make sure its file mode
+       creation   mask  (see  umask(2))  is  set  appropriately  before  calling
+       mkstemp() (and mkostemp()).
+
+       The prototype for mktemp() is in &lt;unistd.h&gt;  for  libc4,  libc5,  glibc1;
+       glibc2 follows POSIX.1 and has the prototype in &lt;stdlib.h&gt;.
+
+SEE ALSO
+       mkdtemp(3), mktemp(3), tempnam(3), tmpfile(3), tmpnam(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2012-04-21                         MKSTEMP(3)
+
+</pre></body></html>

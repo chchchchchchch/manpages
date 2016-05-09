@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>tabbed - simple generic tabbed interface</title></head>
+<body><pre>
+
+TABBED(1)                                                              TABBED(1)
+
+
+
+NAME
+       tabbed - simple generic tabbed interface
+
+SYNOPSIS
+       tabbed [-d] [-h] [-v]
+
+DESCRIPTION
+       tabbed  is a simple container for applications which support XEmbed, such
+       as xterm or surf.
+
+OPTIONS
+       -d     detaches tabbed from the terminal and prints xid to standard  out&#8208;
+              put. Useful for scripting.
+
+       -h     prints usage information to standard error, then exits.
+
+       -v     prints version information to standard error, then exits.
+
+USAGE
+       Ctrl-Shift-Return
+              new surf window
+
+       Ctrl-Shift-h
+              previous tab
+
+       Ctrl-Shift-l
+              next tab
+
+       Ctrl-Tab
+              toggles between tabs
+
+       Ctrl-q closes the tab
+
+       Ctrl-[0..9]
+              jumps to nth tab
+
+SEE ALSO
+       xterm(1), surf(1).
+
+BUGS
+       Please report them!
+
+
+
+                                   tabbed-0.3                          TABBED(1)
+
+</pre></body></html>

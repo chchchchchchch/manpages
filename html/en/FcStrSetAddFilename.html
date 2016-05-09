@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcStrSetAddFilename - add a filename to a string set</title></head>
+<body><pre>
+
+FcStrSetAddFilename(3)                                    FcStrSetAddFilename(3)
+
+
+
+NAME
+       FcStrSetAddFilename - add a filename to a string set
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcStrSetAddFilename (FcStrSet *set, const FcChar8 *s);
+
+DESCRIPTION
+       Adds  a copy s to set, The copy is created with FcStrCopyFilename so that
+       leading &apos;~&apos; values are replaced with the value of  the  HOME  environment
+       variable.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012           FcStrSetAddFilename(3)
+
+</pre></body></html>

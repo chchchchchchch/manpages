@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>keyboard_translatekeys - modify scancode mappings in raw keyboard mode</title></head>
+<body><pre>
+
+keyboard_translatekeys(3)      Svgalib User Manual     keyboard_translatekeys(3)
+
+
+
+NAME
+       keyboard_translatekeys - modify scancode mappings in raw keyboard mode
+
+SYNOPSIS
+       #include &lt;vgakeyboard.h&gt;
+
+       void keyboard_translatekeys(int mask);
+
+
+DESCRIPTION
+       This  function sets several flags which control how certain scancodes are
+       mapped. At startup a mask value of 0 is active.
+
+       mask must be a logical or of zero or more of  the  following  #predefined
+       integers to turn the features listed on:
+
+
+       TRANSLATE_CURSORKEYS
+              Translate the scancodes of the SCANCODE_CURSORBLOCK* keys to those
+              of the cursor keys on the number pad,  s.t.   keyboard_getstate(3)
+              and  keyboard_keypressed(3) report a keypress of the corresponding
+              number pad cursor key and not the one on the cursor block.
+
+       TRANSLATE_DIAGONAL
+              Translates the scancodes of diagonal cursor keys (keypad 7, 9,  1,
+              3)  to  presses of two of the ordinary up, down, left, right keys.
+              For  example,  instead  of  reporting  a  press  of  SCANCODE_CUR&#8208;
+              SORUPRIGHT  keyboard_getstate(3) and keyboard_keypressed(3) report
+              a simultaneous press  of  SCANCODE_CURSORUP  and  SCANCODE_CURSOR&#8208;
+              RIGHT.
+
+       TRANSLATE_KEYPADENTER
+              The  scancode  of  the  keypad  enter key is mapped to that of the
+              ordinary enter key, s.t.  keyboard_getstate(3)  and  keyboard_key&#8208;
+              pressed(3)  report  a press of SCANCODE_ENTER regardless if keypad
+              enter or ordinary enter is pressed.
+
+       DONT_CATCH_CTRLC
+              Pressing &lt;Ctrl&gt;-C does not raise a SIGINT.   On  contrary  to  the
+              other  flags  this  has  also  effect when a user defined keyboard
+              event handler is used. Svgalib  will  always  process  &lt;Alt&gt;-F1  -
+              &lt;Alt&gt;-F10 and perform console switches accordingly.
+
+
+BUGS
+       The  TRANSLATE_* options above do really do simple scancode translations.
+       For example, when TRANSLATE_KEYPADENTER is active and  the  user  presses
+       both enter and keypad enter. Then, if he releases one of them (say keypad
+       enter), it&apos;s release event will clear the common keyboard state, s.t.  no
+       keypress is reported even though enter is still pressed.
+
+       Similarly,  if TRANSLATE_DIAGONAL is active, the user holds cursor upleft
+       (keypad 7) down and then  presses  and  release  cursor  up  (keypad  8),
+       svgalib  will  only report a pressed cursor left but the simulated cursor
+       up will be lost. You can easily try this with the keytest(6) demo to make
+       the effect more clear to you.
+
+
+SEE ALSO
+       svgalib(7),  vgagl(7),  libvga.config(5),  keytest(6), eventtest(6), key&#8208;
+       board_seteventhandler(3),  keyboard_init(3),  keyboard_init_return_fd(3),
+       keyboard_close(3),  keyboard_update(3),  keyboard_waitforupdate(3),  key&#8208;
+       board_setdefaulteventhandler(3),        keyboard_getstate(3),        key&#8208;
+       board_clearstate(3), keyboard_keypressed(3), vga_waitevent(3)
+
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced function as well as of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               29 July 1997         keyboard_translatekeys(3)
+
+</pre></body></html>

@@ -1,0 +1,57 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X509_STORE_set_verify_cb_func, X509_STORE_set_verify_cb - set verification callback</title></head>
+<body><pre>
+
+X509_STORE_set_verify_cb_func(3SSL)  OpenSSL X509_STORE_set_verify_cb_func(3SSL)
+
+
+
+NAME
+       X509_STORE_set_verify_cb_func, X509_STORE_set_verify_cb - set
+       verification callback
+
+SYNOPSIS
+        #include &lt;openssl/x509_vfy.h&gt;
+
+        void X509_STORE_set_verify_cb(X509_STORE *st,
+                                       int (*verify_cb)(int ok, X509_STORE_CTX *ctx));
+
+        void X509_STORE_set_verify_cb_func(X509_STORE *st,
+                                       int (*verify_cb)(int ok, X509_STORE_CTX *ctx));
+
+DESCRIPTION
+       X509_STORE_set_verify_cb() sets the verification callback of ctx to
+       verify_cb overwriting any existing callback.
+
+       X509_STORE_set_verify_cb_func() also sets the verification callback but
+       it is implemented as a macro.
+
+NOTES
+       The verification callback from an X509_STORE is inherited by the
+       corresponding X509_STORE_CTX structure when it is initialized. This can
+       be used to set the verification callback when the X509_STORE_CTX is
+       otherwise inaccessible (for example during S/MIME verification).
+
+BUGS
+       The macro version of this function was the only one available before
+       OpenSSL 1.0.0.
+
+RETURN VALUES
+       X509_STORE_set_verify_cb() and X509_STORE_set_verify_cb_func() do not
+       return a value.
+
+SEE ALSO
+       X509_STORE_CTX_set_verify_cb(3) CMS_verify(3)
+
+HISTORY
+       X509_STORE_set_verify_cb_func() is available in all versions of SSLeay
+       and OpenSSL.
+
+       X509_STORE_set_verify_cb() was added to OpenSSL 1.0.0.
+
+
+
+1.0.1e                             2013-02-11X509_STORE_set_verify_cb_func(3SSL)
+
+</pre></body></html>

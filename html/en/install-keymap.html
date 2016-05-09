@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>install-keymap — expand a given keymap and install it as boot-time keymap</title></head>
+<body><pre>
+
+INSTALL-KEYMAP(8)                                              INSTALL-KEYMAP(8)
+
+
+
+NAME
+       install-keymap &#8212; expand a given keymap and install it as boot-time keymap
+
+SYNOPSIS
+       install-keymap [keymap-name | NONE | KERNEL]
+
+DESCRIPTION
+       install-keymap  usually  takes  a  keymap-name  as argument.  The file is
+       passed to loadkeys for loading, so that valid values  for  this  argument
+       are  the same than that of arguments to loadkeys.  install-keymap expands
+       include-like statements in that file, and puts the  result  in  /etc/con&#8208;
+       sole/boottime.kmap.gz, which will be loaded into the kernel at boot-time.
+
+       One  may  also specify KERNEL instead of a keymap name, causing /etc/con&#8208;
+       sole/boottime.kmap.gz     to be  removed,  making  sure  that  no  custom
+       keymap will replace the kernel&apos;s builtin keymap at next reboot.
+
+       An  argument  of NONE tells the command to do nothing.  It can be used by
+       caller scripts to avoid handling this special case and needlessly  dupli&#8208;
+       cate code.
+
+       The  purpose  of  this  processing  is to solve an annoying problem, of 2
+       apparently conflicting issues.  The first one is  an  important  goal  of
+       keymap  management  in  Debian, namely ensuring that whenever the user or
+       admin is expected to use the keyboard, the keymap selected  as  boot-time
+       keymap  is  in use; this means the keymap has to be loaded before a shell
+       is ever proposed, which means very early  in  the  booting  process,  and
+       especially before all local filesystems are mounted (/etc/rcS.d/S10check&#8208;
+       root.sh can spawn sulogin).
+
+       The second issue is that for flexibility we allow that /usr or /usr/share
+       may  live  on  their own partition(s), and thus /usr/share/keymaps, where
+       keymap files live, may not be available for reading at the time we need a
+       keymap  file.   And no, we won&apos;t put 1Mb of keymaps in the root partition
+       just for this.
+
+       And the problem is, most keymap files are not self-contained, so it  does
+       not  help  to  just  copy the selected file into the root partition.  The
+       best known solution so far is to  expand  the  keymap  file  so  that  it
+       becomes  self-contained,  and  put it in the root partition.  That&apos;s what
+       this tool does.
+
+FILES
+       /etc/console/boottime.kmap.gz
+
+       Where the boot-time keymap is stored
+
+SEE ALSO
+       loadkeys (8).
+
+AUTHOR
+       This  program  and  manual  page  were  written  by  Yann   Dirson   dir&#8208;
+       son@debian.org  for  the  Debian  GNU/Linux  system, but as it should not
+       include any Debian-specific code, it may be used by others.
+
+
+
+                                                               INSTALL-KEYMAP(8)
+
+</pre></body></html>

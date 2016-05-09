@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoystickOpen - Opens a joystick for use.</title></head>
+<body><pre>
+
+SDL_JoystickOpen(3)             SDL API Reference            SDL_JoystickOpen(3)
+
+
+
+NAME
+       SDL_JoystickOpen - Opens a joystick for use.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDL_Joystick *SDL_JoystickOpen(int index);
+
+DESCRIPTION
+       Opens  a  joystick  for use within SDL. The index refers to the N&apos;th joy&#8208;
+       stick in the system. A joystick must be opened before it game be used.
+
+RETURN VALUE
+       Returns a SDL_Joystick structure on success. NULL on failure.
+
+EXAMPLES
+       SDL_Joystick *joy;
+       // Check for joystick
+       if(SDL_NumJoysticks()&gt;0){
+         // Open joystick
+         joy=SDL_JoystickOpen(0);
+
+         if(joy)
+         {
+           printf(&quot;Opened Joystick 0
+       &quot;);
+           printf(&quot;Name: %s
+       &quot;, SDL_JoystickName(0));
+           printf(&quot;Number of Axes: %d
+       &quot;, SDL_JoystickNumAxes(joy));
+           printf(&quot;Number of Buttons: %d
+       &quot;, SDL_JoystickNumButtons(joy));
+           printf(&quot;Number of Balls: %d
+       &quot;, SDL_JoystickNumBalls(joy));
+         }
+         else
+           printf(&quot;Couldn&apos;t open Joystick 0
+       &quot;);
+
+         // Close if opened
+         if(SDL_JoystickOpened(0))
+           SDL_JoystickClose(joy);
+       }
+
+SEE ALSO
+       SDL_JoystickClose
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00          SDL_JoystickOpen(3)
+
+</pre></body></html>

@@ -1,0 +1,102 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-hp5400 - SANE backend for Hewlett-Packard 54XX scanners</title></head>
+<body><pre>
+
+sane-hp5400(5)            SANE Scanner Access Now Easy            sane-hp5400(5)
+
+
+
+NAME
+       sane-hp5400 - SANE backend for Hewlett-Packard 54XX scanners
+
+DESCRIPTION
+       The sane-hp5400 library implements a SANE (Scanner Access Now Easy) back&#8208;
+       end that provides access to the  following  Hewlett-Packard  USB  flatbed
+       scanners:
+
+              ScanJet 5400C
+              ScanJet 5470C
+              ScanJet 5490C
+
+       More   details   can   be   found   on   the   hp5400   backend  homepage
+       http://hp5400backend.sourceforge.net/.
+
+       This is ALPHA software. Keep your hand at the scanner&apos;s plug  and  unplug
+       it, if the head bumps at the end of the scan area. See also the BUGS sec&#8208;
+       tion.
+
+       If you own a scanner other than the ones listed  above  that  works  with
+       this  backend,  please  let  us  know this by sending the scanner&apos;s exact
+       model  name  and   the   USB   vendor   and   device   ids   (e.g.   from
+       /proc/bus/usb/devices,  sane-find-scanner  or  syslog) to us. Even if the
+       scanner&apos;s name is only  slightly  different  from  the  models  mentioned
+       above, please let us know.
+
+CONFIGURATION
+       The  contents  of  the hp5400.conf file is a list of usb lines containing
+       vendor and product ids that correspond to USB scanners. The file can also
+       contain  the names of device files that correspond to an HP 54XX scanner.
+       Empty lines and lines starting with a hash mark  (#)  are  ignored.   The
+       scanners  are  autodetected  by usb vendor_id product_id statements which
+       are already included into hp5400.conf.  &quot;vendor_id&quot; and &quot;product_id&quot;  are
+       hexadecimal  numbers that identify the scanner. If autodetection does not
+       work, add the device name of your scanner to the configuration file, e.g.
+       /dev/usb/scanner0.
+
+FILES
+       /etc/sane.d/hp5400.conf
+              The  backend configuration file (see also description of SANE_CON&#8208;
+              FIG_DIR below).
+
+       /usr/lib/arch_triplet/sane/libsane-hp5400.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-hp5400.so
+              The shared library implementing this backend (present  on  systems
+              that support dynamic loading).
+
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This  environment  variable specifies the list of directories that
+              may contain the configuration file.  Under UNIX,  the  directories
+              are  separated by a colon (`:&apos;), under OS/2, they are separated by
+              a semi-colon (`;&apos;).  If this variable is not set,  the  configura&#8208;
+              tion  file is searched in two default directories: first, the cur&#8208;
+              rent working directory (&quot;.&quot;) and  then  in  /etc/sane.d.   If  the
+              value  of the environment variable ends with the directory separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly  specified directories.  For example, setting SANE_CON&#8208;
+              FIG_DIR to &quot;/tmp/config:&quot; would result  in  directories  &quot;tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_HP5400
+              If the library was compiled with debug support enabled, this envi&#8208;
+              ronment variable  controls  the  debug  level  for  this  backend.
+              Higher debug levels increase the verbosity of the output.
+
+              Example: export SANE_DEBUG_HP5400=4
+
+
+SEE ALSO
+       sane(7), sane-usb(5),
+       http://hp5400backend.sourceforge.net/
+
+
+AUTHOR
+       Martijn    van    Oosterhout    &lt;kleptog@svana.org&gt;,   Thomas   Soumarmon
+       &lt;soumarmt@nerim.net&gt;.   Manpage   by    Henning    Meier-Geinitz    &lt;hen&#8208;
+       ning@meier-geinitz.de&gt;.
+
+
+BUGS
+       Scanning  is  only tested with Linux/ix86/gcc. Be careful when testing on
+       other operating systems and especially on big-endian platforms. The scan&#8208;
+       ner may get wrong data.
+
+
+
+
+                                   13 Jul 2008                    sane-hp5400(5)
+
+</pre></body></html>

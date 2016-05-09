@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuMakeElementImportBucket - initialize an ImportBucket element</title></head>
+<body><pre>
+
+AuMakeElementImportBucket(3)                        AuMakeElementImportBucket(3)
+
+
+
+Name
+       AuMakeElementImportBucket - initialize an ImportBucket element
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuMakeElementImportBucket(element, sample_rate, bucket, num_samples, off&#8208;
+       set, num_actions, actions)
+           AuElement *element; /* RETURN */
+           unsigned short sample_rate;
+           AuBucketID bucket;
+           AuUint32 num_samples;
+           AuInt32 offset;
+           int num_actions;
+           AuElementAction *actions;
+
+Arguments
+       element   Returns the initialized element.
+
+       sample_rate
+                 Specifies the sample rate of the audio data.
+
+       bucket    Specifies the ID of the bucket to read the audio data from.
+
+       num_samples
+                 Specifies the number  of  samples  to  read  from  the  bucket.
+                 Ignored for &quot;trivial&quot; flows.
+
+       offset    Specifies the offset into the bucket to begin reading at.
+
+       num_actions
+                 Specifies the number of actions in actions.
+
+       actions   Specifies  the  list of actions to associate with this element.
+                 Entries in this list can be initialized with AuMakeChangeState&#8208;
+                 Action,  AuMakeSendNotifyAction,  and AuMakeNoopAction.  May be
+                 NULL.
+
+Description
+       AuMakeElementImportBucket sets the type member of element  to  AuElement&#8208;
+       TypeImportBucket  and initializes the importbucket member of element with
+       the remaining arguments.
+
+       AuMakeElementImportBucket is implemented as a macro.
+
+See Also
+       AuMakeElementAddConstant, AuMakeElementBundle, AuMakeElementExportBucket,
+       AuMakeElementExportClient,   AuMakeElementExportDevice,  AuMakeElementEx&#8208;
+       portMonitor, AuMakeElementImportClient, AuMakeElementImportDevice,  AuMa&#8208;
+       keElementImportWaveForm, AuMakeElementMultiplyConstant, AuMakeElementSum.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element initialization     1.9.3         AuMakeElementImportBucket(3)
+
+</pre></body></html>

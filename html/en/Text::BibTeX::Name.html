@@ -1,0 +1,295 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Text::BibTeX::Name - interface to BibTeX-style author names</title></head>
+<body><pre>
+
+Text::BibTeX::Name(3pm)User Contributed Perl DocumentatioText::BibTeX::Name(3pm)
+
+
+
+NAME
+       Text::BibTeX::Name - interface to BibTeX-style author names
+
+SYNOPSIS
+          $name = new Text::BibTeX::Name;
+          $name-&gt;split(&apos;J. Random Hacker&apos;);
+          # or:
+          $name = new Text::BibTeX::Name (&apos;J. Random Hacker&apos;);
+
+          @firstname_tokens = $name-&gt;part (&apos;first&apos;);
+          $lastname = join (&apos; &apos;, $name-&gt;part (&apos;last&apos;));
+
+          $format = new Text::BibTeX::NameFormat;
+          # ...customize $format...
+          $formatted = $name-&gt;format ($format);
+
+DESCRIPTION
+       &quot;Text::BibTeX::Name&quot; provides an abstraction for BibTeX-style names and
+       some basic operations on them.  A name, in the BibTeX world, consists of
+       a list of tokens which are divided amongst four parts: `first&apos;, `von&apos;,
+       `last&apos;, and `jr&apos;.
+
+       Tokens are separated by whitespace or commas at brace-level zero.  Thus
+       the name
+
+          van der Graaf, Horace Q.
+
+       has five tokens, whereas the name
+
+          {Foo, Bar, and Sons}
+
+       consists of a single token.  Skip down to &quot;EXAMPLES&quot; for more examples,
+       or read on if you want to know the exact details of how names are split
+       into tokens and parts.
+
+       How tokens are divided into parts depends on the form of the name.  If
+       the name has no commas at brace-level zero (as in the second example),
+       then it is assumed to be in either &quot;first last&quot; or &quot;first von last&quot; form.
+       If there are no tokens that start with a lower-case letter, then &quot;first
+       last&quot; form is assumed: the final token is the last name, and all other
+       tokens form the first name.  Otherwise, the earliest contiguous sequence
+       of tokens with initial lower-case letters is taken as the `von&apos; part; if
+       this sequence includes the final token, then a warning is printed and the
+       final token is forced to be the `last&apos; part.
+
+       If a name has a single comma, then it is assumed to be in &quot;von last,
+       first&quot; form.  A leading sequence of tokens with initial lower-case
+       letters, if any, forms the `von&apos; part; tokens between the `von&apos; and the
+       comma form the `last&apos; part; tokens following the comma form the `first&apos;
+       part.  Again, if there are no tokens following a leading sequence of
+       lowercase tokens, a warning is printed and the token immediately
+       preceding the comma is taken to be the `last&apos; part.
+
+       If a name has more than two commas, a warning is printed and the name is
+       treated as though only the first two commas were present.
+
+       Finally, if a name has two commas, it is assumed to be in &quot;von last, jr,
+       first&quot; form.  (This is the only way to represent a name with a `jr&apos;
+       part.)  The parsing of the name is the same as for a one-comma name,
+       except that tokens between the two commas are taken to be the `jr&apos; part.
+
+CAVEAT
+       The C code that does the actual work of splitting up names takes a
+       shortcut and makes few assumptions about whitespace.  In particular,
+       there must be no leading whitespace, no trailing whitespace, no
+       consecutive whitespace characters in the string, and no whitespace
+       characters other than space.  In other words, all whitespace must consist
+       of lone internal spaces.
+
+EXAMPLES
+       The strings &quot;John Smith&quot; and &quot;Smith, John&quot; are different representations
+       of the same name, so split into parts and tokens the same way, namely as:
+
+          first =&gt; (&apos;John&apos;)
+          von   =&gt; ()
+          last  =&gt; (&apos;Smith&apos;)
+          jr    =&gt; ()
+
+       Note that every part is a list of tokens, even if there is only one token
+       in that part; empty parts get empty token lists.  Every token is just a
+       string.  Writing this example in actual code is simple:
+
+          $name = new Text::BibTeX::Name (&quot;John Smith&quot;);  # or &quot;Smith, John&quot;
+          $name-&gt;part (&apos;first&apos;);       # returns list (&quot;John&quot;)
+          $name-&gt;part (&apos;last&apos;);        # returns list (&quot;Smith&quot;)
+          $name-&gt;part (&apos;von&apos;);         # returns list ()
+          $name-&gt;part (&apos;jr&apos;);          # returns list ()
+
+       (We&apos;ll omit the empty parts in the rest of the examples: just assume that
+       any unmentioned part is an empty list.)  If more than two tokens are
+       included and there&apos;s no comma, they&apos;ll go to the first name: thus &quot;John
+       Q. Smith&quot; splits into
+
+          first =&gt; (&quot;John&quot;, &quot;Q.&quot;))
+          last  =&gt; (&quot;Smith&quot;)
+
+       and &quot;J. R. R. Tolkein&quot; into
+
+          first =&gt; (&quot;J.&quot;, &quot;R.&quot;, &quot;R.&quot;)
+          last  =&gt; (&quot;Tolkein&quot;)
+
+       The ambiguous name &quot;Kevin Philips Bong&quot; splits into
+
+          first =&gt; (&quot;Kevin&quot;, &quot;Philips&quot;)
+          last  =&gt; (&quot;Bong&quot;)
+
+       which may or may not be the right thing, depending on the particular
+       person.  There&apos;s no way to know though, so if this fellow&apos;s last name is
+       &quot;Philips Bong&quot; and not &quot;Bong&quot;, the string representation of his name must
+       disambiguate.  One possibility is &quot;Philips Bong, Kevin&quot; which splits into
+
+          first =&gt; (&quot;Kevin&quot;)
+          last  =&gt; (&quot;Philips&quot;, &quot;Bong&quot;)
+
+       Alternately, &quot;Kevin {Philips Bong}&quot; takes advantage of the fact that
+       tokes are only split on whitespace at brace-level zero, and becomes
+
+          first =&gt; (&quot;Kevin&quot;)
+          last  =&gt; (&quot;{Philips Bong}&quot;)
+
+       which is fine if your names are destined to be processed by TeX, but
+       might be problematic in other contexts.  Similarly, &quot;St John-Mollusc,
+       Oliver&quot; becomes
+
+          first =&gt; (&quot;Oliver&quot;)
+          last  =&gt; (&quot;St&quot;, &quot;John-Mollusc&quot;)
+
+       which can also be written as &quot;Oliver {St John-Mollusc}&quot;:
+
+          first =&gt; (&quot;Oliver&quot;)
+          last  =&gt; (&quot;{St John-Mollusc}&quot;)
+&#12;       Since tokens are separated purely by whitespace, hyphenated names will
+       work either way: both &quot;Nigel Incubator-Jones&quot; and &quot;Incubator-Jones,
+       Nigel&quot; come out as
+
+          first =&gt; (&quot;Nigel&quot;)
+          last  =&gt; (&quot;Incubator-Jones&quot;)
+
+       Multi-token last names with lowercase components -- the &quot;von part&quot; --
+       work fine: both &quot;Ludwig van Beethoven&quot; and &quot;van Beethoven, Ludwig&quot; parse
+       (correctly) into
+
+          first =&gt; (&quot;Ludwig&quot;)
+          von   =&gt; (&quot;van&quot;)
+          last  =&gt; (&quot;Beethoven&quot;)
+
+       This allows these European aristocratic names to sort properly, i.e. van
+       Beethoven under B rather than v.  Speaking of aristocratic European
+       names, &quot;Charles Louis Xavier Joseph de la Vall{\&apos;e}e Poussin&quot; is handled
+       just fine, and splits into
+
+          first =&gt; (&quot;Charles&quot;, &quot;Louis&quot;, &quot;Xavier&quot;, &quot;Joseph&quot;)
+          von   =&gt; (&quot;de&quot;, &quot;la&quot;)
+          last  =&gt; (&quot;Vall{\&apos;e}e&quot;, &quot;Poussin&quot;)
+
+       so could be sorted under V rather than d.  (Note that the sorting
+       algorithm in Text::BibTeX::BibSort is a slavish imitiation of BibTeX
+       0.99, and therefore does the wrong thing with these names: the sort key
+       starts with the &quot;von&quot; part.)
+
+       However, capitalized &quot;von parts&quot; don&apos;t work so well: &quot;R. J. Van de
+       Graaff&quot; splits into
+
+          first =&gt; (&quot;R.&quot;, &quot;J.&quot;, &quot;Van&quot;)
+          von   =&gt; (&quot;de&quot;)
+          last  =&gt; (&quot;Graaff&quot;)
+
+       which is clearly wrong.  This name should be represented as &quot;Van de
+       Graaff, R. J.&quot;
+
+          first =&gt; (&quot;R.&quot;, &quot;J.&quot;)
+          last  =&gt; (&quot;Van&quot;, &quot;de&quot;, &quot;Graaff&quot;)
+
+       which is probably right.  (This particular Van de Graaff was an American,
+       so he probably belongs under V -- which is where my (British) dictionary
+       puts him.  Other Van de Graaff&apos;s mileages may vary.)
+
+       Finally, many names include a suffix: &quot;Jr.&quot;, &quot;III&quot;, &quot;fils&quot;, and so forth.
+       These are handled, but with some limitations.  If there&apos;s a comma before
+       the suffix (the usual U.S. convention for &quot;Jr.&quot;), then the name should be
+       in last, jr, first form, e.g. &quot;Doe, Jr., John&quot; comes out (correctly) as
+
+          first =&gt; (&quot;John&quot;)
+          last  =&gt; (&quot;Doe&quot;)
+          jr    =&gt; (&quot;Jr.&quot;)
+
+       but &quot;John Doe, Jr.&quot; is ambiguous and is parsed as
+
+          first =&gt; (&quot;Jr.&quot;)
+          last  =&gt; (&quot;John&quot;, &quot;Doe&quot;)
+
+       (so don&apos;t do it that way).  If there&apos;s no comma before the suffix -- the
+       usual for Roman numerals, and occasionally seen with &quot;Jr.&quot; -- then you&apos;re
+       stuck and have to make the suffix part of the last name.  Thus, &quot;Gates
+       III, William H.&quot; comes out
+
+          first =&gt; (&quot;William&quot;, &quot;H.&quot;)
+          last  =&gt; (&quot;Gates&quot;, &quot;III&quot;)
+&#12;       but &quot;William H. Gates III&quot; is ambiguous, and becomes
+
+          first =&gt; (&quot;William&quot;, &quot;H.&quot;, &quot;Gates&quot;)
+          last  =&gt; (&quot;III&quot;)
+
+       -- not what you want.  Again, the curly-brace trick comes in handy, so
+       &quot;William H. {Gates III}&quot; splits into
+
+          first =&gt; (&quot;William&quot;, &quot;H.&quot;)
+          last  =&gt; (&quot;{Gates III}&quot;)
+
+       There is no way to make a comma-less suffix the &quot;jr&quot; part.  (This is an
+       unfortunate consequence of slavishly imitating BibTeX 0.99.)
+
+       Finally, names that aren&apos;t really names of people but rather are
+       organization or company names should be forced into a single token by
+       wrapping them in curly braces.  For example, &quot;Foo, Bar and Sons&quot; should
+       be written &quot;{Foo, Bar and Sons}&quot;, which will split as
+
+          last  =&gt; (&quot;{Foo, Bar and Sons}&quot;)
+
+       Of course, if this is one name in a BibTeX &quot;authors&quot; or &quot;editors&quot; list,
+       this name has to be wrapped in braces anyways (because of the &quot; and &quot;),
+       but that&apos;s another story.
+
+FORMATTING NAMES
+       Putting a split-up name back together again in a flexible, customizable
+       way is the job of another module: see Text::BibTeX::NameFormat.
+
+METHODS
+       new (CLASS [, NAME [, FILENAME, LINE, NAME_NUM]])
+           Creates a new &quot;Text::BibTeX::Name&quot; object.  If NAME is supplied, it
+           must be a string containing a single name, and it will be be passed
+           to the &quot;split&quot; method for further processing.  FILENAME, LINE, and
+           NAME_NUM, if present, are all also passed to &quot;split&quot; to allow better
+           error messages.
+
+       split (NAME [, FILENAME, LINE, NAME_NUM])
+           Splits NAME (a string containing a single name) into tokens and
+           subsequently into the four parts of a BibTeX-style name (first, von,
+           last, and jr).  (Each part is a list of tokens, and tokens are
+           separated by whitespace or commas at brace-depth zero.  See above for
+           full details on how a name is split into its component parts.)
+
+           The token-lists that make up each part of the name are then stored in
+           the &quot;Text::BibTeX::Name&quot; object for later retrieval or formatting
+           with the &quot;part&quot; and &quot;format&quot; methods.
+
+       part (PARTNAME)
+           Returns the list of tokens in part PARTNAME of a name previously
+           split with &quot;split&quot;.  For example, suppose a &quot;Text::BibTeX::Name&quot;
+           object is created and initialized like this:
+
+              $name = new Text::BibTeX::Name;
+              $name-&gt;split (&apos;Charles Louis Xavier Joseph de la Vall{\&apos;e}e Poussin&apos;);
+
+           Then this code:
+
+              $name-&gt;part (&apos;von&apos;);
+
+           would return the list &quot;(&apos;de&apos;,&apos;la&apos;)&quot;.
+
+       format (FORMAT)
+           Formats a name according to the specifications encoded in FORMAT,
+           which should be a &quot;Text::BibTeX::NameFormat&quot; (or descendant) object.
+           (In short, it must supply a method &quot;apply&quot; which takes a
+           &quot;Text::BibTeX::NameFormat&quot; object as its only argument.)  Returns the
+           formatted name as a string.
+
+           See Text::BibTeX::NameFormat for full details on formatting names.
+
+SEE ALSO
+       Text::BibTeX::Entry, Text::BibTeX::NameFormat, bt_split_names.
+
+AUTHOR
+       Greg Ward &lt;gward@python.net&gt;
+
+COPYRIGHT
+       Copyright (c) 1997-2000 by Gregory P. Ward.  All rights reserved.  This
+       file is part of the Text::BibTeX library.  This library is free software;
+       you may redistribute it and/or modify it under the same terms as Perl
+       itself.
+
+
+
+perl v5.14.2                       2012-06-02            Text::BibTeX::Name(3pm)
+
+</pre></body></html>

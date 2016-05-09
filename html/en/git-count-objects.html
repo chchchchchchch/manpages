@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>git-count-objects - Count unpacked number of objects and their disk consumption</title></head>
+<body><pre>
+
+GIT-COUNT-OBJECTS(1)               Git Manual               GIT-COUNT-OBJECTS(1)
+
+
+
+NAME
+       git-count-objects - Count unpacked number of objects and their disk
+       consumption
+
+SYNOPSIS
+       git count-objects [-v]
+
+
+DESCRIPTION
+       This counts the number of unpacked object files and disk space consumed
+       by them, to help you decide when it is a good time to repack.
+
+OPTIONS
+       -v, --verbose
+           In addition to the number of loose objects and disk space consumed,
+           it reports the number of in-pack objects, number of packs, disk space
+           consumed by those packs, and number of objects that can be removed by
+           running git prune-packed.
+
+GIT
+       Part of the git(1) suite
+
+
+
+Git 1.7.10.4                       11/24/2012               GIT-COUNT-OBJECTS(1)
+
+</pre></body></html>

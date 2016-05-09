@@ -1,0 +1,88 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pdfbook - put the pages of PDF files into 2-up signatures</title></head>
+<body><pre>
+
+pdfbook(1)                                                            pdfbook(1)
+
+
+
+NAME
+       pdfbook - put the pages of PDF files into 2-up signatures
+
+SYNOPSIS
+       pdfbook  [--short-edge] [OPTION [OPTION] ...] [SRC [PAGESPEC] [SRC [PAGE&#8208;
+       SPEC]] ...]
+
+DESCRIPTION
+       pdfbook makes 2-up versions of PDF files, with the pages ordered as  sig&#8208;
+       natures.  The default signature size is 4: to change this, use the option
+       &apos;--signature N&apos;, where N is a multiple of 4 (alternatively use  &apos;--signa&#8208;
+       ture* N&apos; for right-edge binding).
+
+       The  default is to make pages suitable for long-edge binding.  For short-
+       edge binding, use &apos;--short-edge&apos; as the first argument;  this  will  only
+       work if the LaTeX package &apos;everyshi&apos; is installed.
+
+       The  default  output  page orientation is landscape.  To change this, use
+       the &apos;--no-landscape&apos; option.
+
+       By default, the option &apos;--booklet true&apos; is used (see the pdfpages  manual
+       for details).  To turn this off, just specify &apos;--booklet false&apos;.
+
+       If  no source PDF file (&apos;SRC&apos;) is specified, input is from /dev/stdin. If
+       &apos;PAGESPEC&apos; is omitted, all pages are processed.
+
+       Source files are processed sequentially into a single output  unless  the
+       &apos;--batch&apos; option is used, in which case they are processed separately.
+
+       pdfbook  is  a  simple  wrapper for pdfjam, which provides a front end to
+       many of the capabilities of the pdfpages package for pdflatex.  A working
+       installation of pdflatex, with the pdfpages package, is required.
+
+       pdfbook operates on one or more PDF files, and (either with the &apos;--batch&apos;
+       option or with &apos;--outfile DIR&apos; where &apos;DIR&apos; is a directory) the  resulting
+       files  have  the  suffix  &apos;-book&apos;  applied to their names by default.  To
+       change the suffix, use the &apos;--suffix&apos; option, for example
+
+              pdfbook --suffix &apos;sig4&apos; --batch myfile1.pdf myfile2.pdf
+
+       will result in files named &apos;myfile1-sig4.pdf&apos; and &apos;myfile2-sig4.pdf&apos;.
+
+       pdfbook is part of the &quot;PDFjam&quot; package of tools, whose  homepage  is  at
+       http://www.warwick.ac.uk/go/pdfjam.
+
+SETUP
+       See http://go.warwick.ac.uk/pdfjam .
+
+USAGE
+       For the other available options and site/user defaults, see the output of
+
+              pdfjam --help
+
+       For   further   information   and   some   examples   see  http://go.war&#8208;
+       wick.ac.uk/pdfjam .
+
+LIMITATIONS AND BUGS
+       pdfbook does not work with encrypted PDF files,  and  does  not  preserve
+       hyperlinks.
+
+       Please report bugs! See the website at http://www.warwick.ac.uk/go/pdfjam
+       .
+
+LICENSE
+       PDFjam is distributed under the GNU public license.
+
+SEE ALSO
+       pdfjam(1).
+
+AUTHOR
+       pdfbook is written and maintained by David Firth as part  of  the  PDFjam
+       package.
+
+
+
+
+                                  10 March 2010                       pdfbook(1)
+
+</pre></body></html>

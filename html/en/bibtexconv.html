@@ -1,0 +1,177 @@
+<html>
+<head><meta charset=utf-8/>
+<title>bibtexconv — BibTeX Converter</title></head>
+<body><pre>
+
+bibtexconv(1)             BSD General Commands Manual            bibtexconv(1)
+
+NAME
+     bibtexconv &#8212; BibTeX Converter
+
+SYNOPSIS
+     bibtexconv BibTeX_File [-export-to-bibtex=file]
+                [-export-to-separate-bibtexs=prefix] [-export-to-xml=file]
+                [-export-to-separate-xmls=prefix] [-nbsp=string]
+                [-non-interactive] [-check-urls] [-only-check-new-urls]
+                [-store-downloads=directory] [-add-url-command]
+                [-skip-notes-with-isbn-and-issn] [-add-notes-with-isbn-and-issn]
+
+DESCRIPTION
+     bibtexconv is a BibTeX file converter which allows one to export BibTeX
+     entries to other formats, including customly defined text output. Further&#8208;
+     more, it provides the possibility to check URLs (including MD5, size and
+     MIME type computations) and to verify ISBN and ISSN numbers.
+     bibtexconv provides an interactive mode (usually used in form of export
+     scripts) which allows for fine-granular selection of entries, sorting and
+     export template specification.
+
+OPTIONS
+     The following arguments may be provided:
+
+     BibTeX_File
+             The BibTeX input file.
+
+     -export-to-bibtex=file
+             Write the results as BibTeX into the given file.
+
+     -export-to-separate-bibtexs=prefix
+             Write the results as BibTeX; for each entry, an own file will be
+             created. The filename will be generated from given prefix (e.g.
+             &quot;/tmp/MyBibTex-&quot;), the entry key and &quot;.bib&quot;.
+
+     -export-to-xml=file
+             Write the results as XML (as used by IETF Internet Draft processing
+             tools) into the given file.
+
+     -export-to-separate-xmls=prefix
+             Write the results as XML; for each entry, an own file will be cre&#8208;
+             ated. The filename will be generated from given prefix (e.g.
+             &quot;/tmp/MyBibTex-&quot;), the entry key and &quot;.xml&quot;.
+
+     -nbsp=string
+             Replace non-breakable space by given string (for example, &quot;&amp;nbsp;&quot;
+             when writing HTML).
+
+     -check-urls
+             Check URLs by downloading the content file and adding MD5, size and
+             MIME type entries.
+
+     -only-check-new-urls
+             Combined with -check-urls, checks are only performed for new
+             entries where MD5, size and/or MIME type are still unknown.
+
+     -store-downloads=directory
+             Combined with -check-urls, all checked references are downloaded
+             and stored in the given directory. Existing files will be overwrit&#8208;
+             ten.
+
+     -add-url-command
+             Add \url{} commands to url tags in BibTeX export.
+
+     -skip-notes-with-isbn-and-issn
+             When reading the BibTeX file, ignore &quot;note&quot; items with ISBN and
+             ISSN.
+
+     -add-notes-with-isbn-and-issn
+             When writing a BibTeX file, create &quot;note&quot; items with ISBN and ISSN.
+
+     -non-interactive
+             Turns on non-interactive mode. Useful for just performing URL
+             checks and ISBN/ISSN verification.
+
+COMMANDS
+     After startup, bibtexconv accepts the following commands from standard
+     input (not as command-line arguments!):
+
+     cite key custom1 custom2 custom3 custom4 custom5
+            Select specific entry in the input BibTeX file, given by key.
+            Optionally, up to five custom strings may be attached to the
+            selected entry.
+
+     citeAll
+            Select all entries in the input BibTeX file.
+
+     clear  Clear all selections.
+
+     echo string
+            Write given string to standard output.
+
+     export
+            Export selected entries to standard output, according to configured
+            printing template.
+
+     header
+
+     include file
+            Include another export script, given by file name.
+
+     monthNames jan feb mar apr may jun jul aug sep oct nov dec
+            Changes textual representation of month names. This is necessary
+            when non-English names are required for export.
+
+     nbsp   Changes textual representation of the &quot;non-breakable space&quot;, for
+            example &amp;nbsp; in HTML or ~ in BibTeX.
+
+     sort
+
+     template
+
+     template+
+
+     templatenew
+
+     trailer
+
+     utf8Style
+
+     xmlStyle
+
+EXAMPLES
+     Have a look into /usr/share/doc/bibtexconv/examples/ (or corresponding path
+     of your system) for example export scripts. The export scripts contain the
+     commands which are read by bibtexconv from standard input.
+
+     bibtexconv \
+             /usr/share/doc/bibtexconv/examples/ExampleReferences.bib \
+             -export-to-bibtex=UpdatedReferences.bib \
+             -check-urls -only-check-new-urls -non-interactive
+             Checks URLs of all entries in /usr/share/doc/bibtexconv/exam&#8208;
+             ples/ExampleReferences.bib, adds MD5, size and MIME type items and
+             writes the results to UpdatedReferences.bib.
+
+     bibtexconv \
+             /usr/share/doc/bibtexconv/examples/ExampleReferences.bib \
+             &lt;/usr/share/doc/bibtexconv/examples/web-example.export &gt;MyPublica&#8208;
+             tions.html
+             Uses export script /usr/share/doc/bibtexconv/examples/web-exam&#8208;
+             ple.export to export references from /usr/share/doc/bibtex&#8208;
+             conv/examples/ExampleReferences.bib to MyPublications.html as XHTML
+             1.1.
+
+     bibtexconv \
+             /usr/share/doc/bibtexconv/examples/ExampleReferences.bib \
+             &lt;/usr/share/doc/bibtexconv/examples/text-example.export &gt;MyPublica&#8208;
+             tions.txt
+             Uses export script /usr/share/doc/bibtexconv/examples/text-exam&#8208;
+             ple.export to export references from /usr/share/doc/bibtex&#8208;
+             conv/examples/ExampleReferences.bib to MyPublications.txt as plain
+             text.
+
+     bibtexconv \
+             /usr/share/doc/bibtexconv/examples/ExampleReferences.bib \
+             -non-interactive -export-to-separate-xmls=reference.
+             Convert all references to XML references to be includable in IETF
+             Internet Drafts. For each reference, an own file is generated,
+             named with the prefix &quot;reference.&quot;, for example reference.Globe&#8208;
+             com2010.xml for entry Globecom2010.
+
+     bibtexconv \
+             /usr/share/doc/bibtexconv/examples/ExampleReferences.bib \
+             -non-interactive -export-to-separate-bibtexs=
+             Convert all references to BibTeX references. For each reference, an
+             own file is generated, named with the prefix &quot;&quot;, for example Globe&#8208;
+             com2010.bib for entry Globecom2010.
+
+bibtexconv                       May 12, 2012                       bibtexconv
+
+</pre></body></html>

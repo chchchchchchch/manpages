@@ -1,0 +1,99 @@
+<html>
+<head><meta charset=utf-8/>
+<title>strtod, strtof, strtold - convert ASCII string to floating-point number</title></head>
+<body><pre>
+
+STRTOD(3)                   Linux Programmer&apos;s Manual                  STRTOD(3)
+
+
+
+NAME
+       strtod, strtof, strtold - convert ASCII string to floating-point number
+
+SYNOPSIS
+       #include &lt;stdlib.h&gt;
+
+       double strtod(const char *nptr, char **endptr);
+       float strtof(const char *nptr, char **endptr);
+       long double strtold(const char *nptr, char **endptr);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       strtof(), strtold():
+           _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
+
+DESCRIPTION
+       The strtod(), strtof(), and strtold() functions convert the initial por&#8208;
+       tion of the string pointed to by nptr to double, float, and long double
+       representation, respectively.
+
+       The expected form of the (initial portion of the) string is optional
+       leading white space as recognized by isspace(3), an optional plus (&apos;+&apos;)
+       or minus sign (&apos;-&apos;) and then either (i) a decimal number, or (ii) a hexa&#8208;
+       decimal number, or (iii) an infinity, or (iv) a NAN (not-a-number).
+
+       A decimal number consists of a nonempty sequence of decimal digits possi&#8208;
+       bly containing a radix character (decimal point, locale-dependent, usu&#8208;
+       ally &apos;.&apos;), optionally followed by a decimal exponent.  A decimal exponent
+       consists of an &apos;E&apos; or &apos;e&apos;, followed by an optional plus or minus sign,
+       followed by a nonempty sequence of decimal digits, and indicates multi&#8208;
+       plication by a power of 10.
+
+       A hexadecimal number consists of a &quot;0x&quot; or &quot;0X&quot; followed by a nonempty
+       sequence of hexadecimal digits possibly containing a radix character,
+       optionally followed by a binary exponent.  A binary exponent consists of
+       a &apos;P&apos; or &apos;p&apos;, followed by an optional plus or minus sign, followed by a
+       nonempty sequence of decimal digits, and indicates multiplication by a
+       power of 2.  At least one of radix character and binary exponent must be
+       present.
+
+       An infinity is either &quot;INF&quot; or &quot;INFINITY&quot;, disregarding case.
+
+       A NAN is &quot;NAN&quot; (disregarding case) optionally followed by &apos;(&apos;, a sequence
+       of characters, followed by &apos;)&apos;.  The character string specifies in an
+       implementation-dependent way the type of NAN.
+
+RETURN VALUE
+       These functions return the converted value, if any.
+
+       If endptr is not NULL, a pointer to the character after the last charac&#8208;
+       ter used in the conversion is stored in the location referenced by
+       endptr.
+
+       If no conversion is performed, zero is returned and the value of nptr is
+       stored in the location referenced by endptr.
+
+       If the correct value would cause overflow, plus or minus HUGE_VAL
+       (HUGE_VALF, HUGE_VALL) is returned (according to the sign of the value),
+       and ERANGE is stored in errno.  If the correct value would cause under&#8208;
+       flow, zero is returned and ERANGE is stored in errno.
+&#12;ERRORS
+       ERANGE Overflow or underflow occurred.
+
+CONFORMING TO
+       C89 describes strtod(), C99 describes the other two functions.
+
+NOTES
+       Since 0 can legitimately be returned on both success and failure, the
+       calling program should set errno to 0 before the call, and then determine
+       if an error occurred by checking whether errno has a nonzero value after
+       the call.
+
+EXAMPLE
+       See the example on the strtol(3) manual page; the use of the functions
+       described in this manual page is similar.
+
+SEE ALSO
+       atof(3), atoi(3), atol(3), strtol(3), strtoul(3)
+
+COLOPHON
+       This page is part of release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-09-20                          STRTOD(3)
+
+</pre></body></html>

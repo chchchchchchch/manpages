@@ -1,0 +1,43 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ppdpo - ppd message catalog generator</title></head>
+<body><pre>
+
+ppdpo(1)                           Apple Inc.                           ppdpo(1)
+
+
+
+NAME
+       ppdpo - ppd message catalog generator
+
+SYNOPSIS
+       ppdpo  [  -D  name[=value]  ] [ -I include-directory ] [ -o output-file ]
+       source-file
+
+DESCRIPTION
+       ppdpo extracts UI strings from PPDC source files and updates either a GNU
+       gettext or Mac OS X strings format message catalog source file for trans&#8208;
+       lation.
+
+       The -D option sets the named variable for use in the source file.  It  is
+       equivalent to using the #define directive in the source file.
+
+       The  -I  option  specifies  an  alternate  include directory; multiple -I
+       options can be supplied to add additional directories.
+
+       The -o option specifies the output file.  The  supported  extensions  are
+       &quot;.po&quot;  or &quot;.po.gz&quot; for GNU gettext format message catalogs and &quot;.strings&quot;
+       for Mac OS X strings files.
+
+SEE ALSO
+       ppdc(1), ppdhtml(1), ppdi(1), ppdmerge(1), ppdcfile(5)
+       http://localhost:631/help
+
+COPYRIGHT
+       Copyright 2007-2011 by Apple Inc.
+
+
+
+10 October 2008                       CUPS                              ppdpo(1)
+
+</pre></body></html>

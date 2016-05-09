@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gii_val_event - LibGII valuator events</title></head>
+<body><pre>
+
+gii_val_event(3)                       GGI                      gii_val_event(3)
+
+
+
+NAME
+       gii_val_event - LibGII valuator events
+
+SYNOPSIS
+       #include &lt;ggi/events.h&gt;
+
+       typedef struct {
+
+           COMMON_DATA;
+
+           uint32_t  first;          /* first valuator reported      */
+           uint32_t  count;          /* number reported              */
+           int32_t   value[32];      /* absolute/relative values     */
+
+       } gii_val_event;
+
+
+DESCRIPTION
+       A  valuator  is a representation of the state of an input device in terms
+       of a physical quantity  such  as  length.   A  valuator  event,  of  type
+       gii_val_event, reports a change in any of those quantities.
+
+GENERATED EVENTS
+       This structure is used for the evValRelative and evValAbsolute events.
+
+STRUCTURE MEMBERS
+       A  valuator  may  be  either  absolute  or  relative, like pointer motion
+       events.
+
+       To interpret the numbers, query valuator device info  with  the  GII_CMD&#8208;
+       CODE_GETVALINFO command code.
+
+SEE ALSO
+       gii_event(3), gii_cmddata_getvalinfo(3)
+
+
+
+libgii-1.0.x                       2006-12-30                   gii_val_event(3)
+
+</pre></body></html>

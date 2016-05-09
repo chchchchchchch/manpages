@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mergechanges - merge multiple changes files</title></head>
+<body><pre>
+
+MERGECHANGES(1)                                                  MERGECHANGES(1)
+
+
+
+NAME
+       mergechanges - merge multiple changes files
+
+SYNOPSIS
+       mergechanges [-f] file1 file2 [file...]
+
+DESCRIPTION
+       mergechanges merges two or more .changes files, merging the Architecture,
+       Description and Files (and Checksums-*, if present) fields  of  the  two.
+       There  are checks made to ensure that the changes files are from the same
+       source package and version and use the same  changes  file  Format.   The
+       first  changes  file  is  used  as the basis and the information from the
+       later ones is merged into it.
+
+       The output is normally written to stdout.  If the -f option is given, the
+       output  is  written to package_version_multi.changes instead, in the same
+       directory as the first changes file listed.
+
+AUTHOR
+       Gergely  Nagy  &lt;algernon@debian.org&gt;,  modifications  by  Julian   Gilbey
+       &lt;jdg@debian.org&gt; and Adam D. Barratt &lt;adam@adam-barratt.org.uk&gt;.
+
+
+
+DEBIAN                          Debian Utilities                 MERGECHANGES(1)
+
+</pre></body></html>

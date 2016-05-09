@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSoundCreateFileFromBucket - copy the data from a bucket into a file.</title></head>
+<body><pre>
+
+AuSoundCreateFileFromBucket(3)                    AuSoundCreateFileFromBucket(3)
+
+
+
+Name
+       AuSoundCreateFileFromBucket - copy the data from a bucket into a file.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+       #include &lt;audio/soundlib.h&gt;
+
+       AuBool AuSoundCreateFileFromBucket(server, filename, file_format, bucket,
+       status)
+           AuServer *server;
+           char *filename;
+           int file_format;
+           AuBucketID bucket;
+           AuStatus *status;
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       filename  Specifies the name of the file to use.
+
+       file format
+                 Specifies the format of the  file.   Currently,  the  following
+                 file  formats  are supported: SoundFileFormatSnd, SoundFileFor&#8208;
+                 matVoc, SoundFileFormatWave, SoundFileFormatAiff, SoundFileFor&#8208;
+                 matSvx.
+
+       bucket    Specifies the bucket to get the audio data from.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSoundCreateFileFromBucket creates a file  using  the  audio  data  from
+       bucket  and  returns  AuTrue  if  successfull  or AuFalse if there was an
+       error.
+
+Errors
+       AuBadBucket.
+
+See Also
+       AuSoundCreateDataFromBucket.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+soundlib                              1.9.3       AuSoundCreateFileFromBucket(3)
+
+</pre></body></html>

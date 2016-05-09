@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>HTML::FormatText - Format HTML as plaintext</title></head>
+<body><pre>
+
+HTML::FormatText(3pm)  User Contributed Perl Documentation HTML::FormatText(3pm)
+
+
+
+NAME
+       HTML::FormatText - Format HTML as plaintext
+
+VERSION
+       version 2.10
+
+SYNOPSIS
+           use HTML::TreeBuilder;
+           $tree = HTML::TreeBuilder-&gt;new-&gt;parse_file(&quot;test.html&quot;);
+
+           use HTML::FormatText;
+           $formatter = HTML::FormatText-&gt;new(leftmargin =&gt; 0, rightmargin =&gt; 50);
+           print $formatter-&gt;format($tree);
+
+       or, more simply:
+
+           use HTML::FormatText;
+           my $string = HTML::FormatText-&gt;format_file(
+               &apos;test.html&apos;,
+               leftmargin =&gt; 0, rightmargin =&gt; 50
+               );
+
+DESCRIPTION
+       HTML::FormatText is a formatter that outputs plain latin1 text.  All
+       character attributes (bold/italic/underline) are ignored.  Formatting of
+       HTML tables and forms is not implemented.
+
+       HTML::FormatText is built on HTML::Formatter and documentation for that
+       module applies to this - especially &quot;new&quot; in HTML::Formatter,
+       &quot;format_file&quot; in HTML::Formatter and &quot;format_string&quot; in HTML::Formatter.
+
+       You might specify the following parameters when constructing the
+       formatter:
+
+       leftmargin (alias lm)
+           The column of the left margin. The default is 3.
+
+       rightmargin (alias rm)
+           The column of the right margin. The default is 72.
+
+SEE ALSO
+       HTML::Formatter
+
+INSTALLATION
+       See perlmodinstall for information and options on installing Perl
+       modules.
+
+BUGS AND LIMITATIONS
+       No bugs have been reported.
+
+       Please report any bugs or feature requests through the web interface at
+       http://rt.cpan.org/Public/Dist/Display.html?Name=HTML-Format
+       &lt;http://rt.cpan.org/Public/Dist/Display.html?Name=HTML-Format&gt;.
+
+AVAILABILITY
+       The project homepage is http://search.cpan.org/dist/HTML-Format
+       &lt;http://search.cpan.org/dist/HTML-Format&gt;.
+
+       The latest version of this module is available from the Comprehensive
+       Perl Archive Network (CPAN). Visit &lt;http://www.perl.com/CPAN/&gt; to find a
+       CPAN site near you, or see http://search.cpan.org/dist/HTML-Format/
+       &lt;http://search.cpan.org/dist/HTML-Format/&gt;.
+
+       The development version lives at http://github.com/nigelm/html-format
+       &lt;http://github.com/nigelm/html-format&gt; and may be cloned from
+       git://github.com/nigelm/html-format.git &lt;git://github.com/nigelm/html-
+       format.git&gt;.  Instead of sending patches, please fork this project using
+       the standard git and github infrastructure.
+
+AUTHORS
+       &#183;   Nigel Metheringham &lt;nigelm@cpan.org&gt;
+
+       &#183;   Sean M Burke &lt;sburke@cpan.org&gt;
+
+       &#183;   Gisle Aas &lt;gisle@ActiveState.com&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2011 by Nigel Metheringham, 2002-2005 Sean
+       M Burke, 1999-2002 Gisle Aas.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.12.4                       2011-07-26              HTML::FormatText(3pm)
+
+</pre></body></html>

@@ -1,0 +1,32 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcFreeTypeCharIndex - map Unicode to glyph id</title></head>
+<body><pre>
+
+FcFreeTypeCharIndex(3)                                    FcFreeTypeCharIndex(3)
+
+
+
+NAME
+       FcFreeTypeCharIndex - map Unicode to glyph id
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt; #include &lt;fcfreetype.h&gt;
+
+       FT_UInt FcFreeTypeCharIndex (FT_Face face, FcChar32 ucs4);
+
+DESCRIPTION
+       Maps  a  Unicode  char  to a glyph index.  This function uses information
+       from several possible underlying encoding tables to  work  around  broken
+       fonts.   As  a result, this function isn&apos;t designed to be used in perfor&#8208;
+       mance sensitive areas; results from this  function  are  intended  to  be
+       cached by higher level functions.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012           FcFreeTypeCharIndex(3)
+
+</pre></body></html>

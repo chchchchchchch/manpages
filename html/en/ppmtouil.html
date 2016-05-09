@@ -1,0 +1,47 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ppmtouil - convert a portable pixmap into a Motif UIL icon file</title></head>
+<body><pre>
+
+ppmtouil(1)                                                          ppmtouil(1)
+
+
+
+NAME
+       ppmtouil - convert a portable pixmap into a Motif UIL icon file
+
+SYNOPSIS
+       ppmtouil [-name uilname] [ppmfile]
+
+DESCRIPTION
+       Reads a portable pixmap as input.  Produces a Motif UIL icon file as out&#8208;
+       put.
+
+       If the program was compiled with an rgb database  specified,  and  a  RGB
+       value  from the ppm input matches a RGB value from the database, then the
+       corresponding color name mnemonic is printed in the UIL&apos;s  colormap.   If
+       no  rgb  database was compiled in, or if the RGB values don&apos;t match, then
+       the color  will  be  printed  with  the  #RGB,  #RRGGBB,  #RRRGGGBBB,  or
+       #RRRRGGGGBBBB hexadecimal format.
+
+OPTIONS
+       -name  Allows  you  to  specify the prefix string which is printed in the
+              resulting UIL output.  If not specified, will default to the file&#8208;
+              name (without extension) of the ppmfile argument.  If -name is not
+              specified and no ppmfile is specified (i.e. piped input), the pre&#8208;
+              fix string will default to the string &quot;noname&quot;.
+
+       All flags can be abbreviated to their shortest unique prefix.
+
+SEE ALSO
+       ppm(5)
+
+AUTHOR
+       Converted  by  Jef Poskanzer from ppmtoxpm.c, which is Copyright (C) 1990
+       by Mark W. Snitily
+
+
+
+                                 31 August 1990                      ppmtouil(1)
+
+</pre></body></html>

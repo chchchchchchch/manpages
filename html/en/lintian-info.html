@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lintian-info - give detailed information about Lintian's error tags</title></head>
+<body><pre>
+
+LINTIAN-INFO(1)        User Contributed Perl Documentation       LINTIAN-INFO(1)
+
+
+
+NAME
+       lintian-info - give detailed information about Lintian&apos;s error tags
+
+SYNOPSIS
+       lintian-info [log-file...]
+
+       lintian-info --tags tag ...
+
+DESCRIPTION
+       The lintian-info command parses the output of the lintian command and
+       gives verbose information about the listed Lintian error tags, parses a
+       Lintian override file and gives verbose information about the tags
+       included, or (if given the -t or --tags option) explains a given tag or
+       tags.
+
+       If no log-file is specified on the command line, this command expects its
+       input on stdin. Thus, the output of lintian can either be piped through
+       lintian-info or a log file produced by lintian can be processed with this
+       command.  (Note, though, that the lintian command has a command line
+       option -i to display the same results as lintian-info, so you will not
+       normally need to pipe the output of lintian into this command.)
+
+OPTIONS
+       -a, --annotate
+           Read from standard input or any files specified on the command line
+           and search the input for lines formatted like Lintian override
+           entries.  For each one that was found, display verbose information
+           about that tag.
+
+       -h, --help
+           Display usage information and exit.
+
+       --profile prof
+           Use the severities from the vendor profile prof when displaying tags.
+           If the profile name does not contain a slash, the default profile for
+           than vendor is chosen.
+
+           If not specified, lintian-info loads the best profile for the current
+           vendor.
+
+           Please Refer to the Lintian User Manual for the full documentation of
+           profiles.
+
+       -t, --tags
+           Rather than treating them as log file names, treat any command-line
+           options as tag names and display the descriptions of each tag.
+
+EXIT STATUS
+       If -t or --tags was given and one or more of the tags specified were
+       unknown, this command returns the exit code 1.  Otherwise, it always
+       returns with exit code 0.
+
+SEE ALSO
+       lintian(1)
+
+AUTHORS
+       Niels Thykier &lt;niels@thykier.net&gt;
+
+       Richard Braakman &lt;dark@xs4all.nl&gt;
+
+       Christian Schwarz &lt;schwarz@monet.m.isar.de&gt;
+
+
+
+perl v5.14.2                       2013-02-16                    LINTIAN-INFO(1)
+
+</pre></body></html>

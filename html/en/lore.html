@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lore - convert documentations formats</title></head>
+<body><pre>
+
+GENERATELORE(1)                                                  GENERATELORE(1)
+
+
+
+NAME
+       lore - convert documentations formats
+
+SYNOPSIS
+       lore   [-l  linkrel]  [-d  docsdir]  [-i  input]  [-o  output]  [--config
+       attribute[=value] [...]] [-p] [file [...]]
+
+       lore --help
+
+DESCRIPTION
+       The --help prints out a usage message to standard output.
+
+       -p, --plain
+              Use non-flashy progress bar - one file per line.
+
+       -n, --null
+              Do not report progress at all.
+
+       -N, --number
+              Add chapter/section numbers to section headings.
+
+       -l, --linkrel
+              Where non-document links should be relative to.
+
+       -d, --docsdir
+              Where to look for .html files if no files are given.
+
+       -e, --inputext &lt;extension&gt;
+              The extension that your Lore input files have (default: .xhtml)
+
+       -i, --input
+              Input format. New input formats  can  be  dynamically  registered.
+              Lore  itself  comes  with  &quot;lore&quot;  (the  standard format), &quot;mlore&quot;
+              (allows LaTeX equations) and &quot;man&quot; (man page format). If the input
+              format  is not registered as a plugin, a module of the named input
+              will be searched. For example, --i twisted.lore.default is equiva&#8208;
+              lent to using the default Lore input.
+
+       -o, --output
+              Output  format.  Available output formats depend on the input. For
+              the core formats, lore and mlore support  html,  latex  and  lint,
+              while man allows lore.
+
+       -x, --index &lt;filename&gt;
+              The base filename you want to give your index file.
+
+       -b, --book &lt;filename&gt;
+              The book file to generate a book from.
+
+       --prefixurl &lt;prefix&gt;
+              The  prefix  to  stick on to relative links; only useful when pro&#8208;
+              cessing directories.
+
+       --version
+              Display version information and exit.
+
+       --config
+              Add input/output-specific information.   HTML  output  allows  for
+              &apos;ext=&lt;extension&gt;&apos;,  output  allows  for  &apos;section&apos; or &apos;chapter&apos; in
+              Lore,  and  nothing  in  Math-Lore.   Lore   output   allows   for
+              &apos;ext=&lt;extension&gt;&apos;.  Lint  output allows nothing.  Note that disal&#8208;
+              lowed --config options  are  merely  ignored,  and  do  not  cause
+              errors.
+
+DESCRIPTION
+       If no files are given, all *.html documents in docsdir are processed.
+
+AUTHOR
+       Written by Moshe Zadka
+
+REPORTING BUGS
+       To report a bug, visit http://twistedmatrix.com/bugs/
+
+COPYRIGHT
+       Copyright &#169; 2003-2008 Twisted Matrix Laboratories.
+       This  is  free software; see the source for copying conditions.  There is
+       NO warranty; not even for MERCHANTABILITY or  FITNESS  FOR  A  PARTICULAR
+       PURPOSE.
+
+
+
+                                  October 2002                   GENERATELORE(1)
+
+</pre></body></html>

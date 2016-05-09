@@ -1,0 +1,113 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pcilib - a library for accessing PCI devices</title></head>
+<body><pre>
+
+pcilib(7)                       The PCI Utilities                      pcilib(7)
+
+
+
+NAME
+       pcilib - a library for accessing PCI devices
+
+
+DESCRIPTION
+       The  PCI  library (also known as pcilib and libpci) is a portable library
+       for accessing PCI devices and their configuration space.
+
+
+ACCESS METHODS
+       The library supports a variety of methods  to  access  the  configuration
+       space  on  different  operating  systems.  By default, the first matching
+       method in this list is used, but you can specify  override  the  decision
+       (see the -A switch of lspci).
+
+
+       linux-sysfs
+              The /sys filesystem on Linux 2.6 and newer. The standard header of
+              the config space is available to all users, the rest only to root.
+              Supports  extended  configuration  space,  PCI  domains, VPD (from
+              Linux 2.6.26), physical slots (also since Linux 2.6.26) and infor&#8208;
+              mation on attached kernel drivers.
+
+       linux-proc
+              The  /proc/bus/pci interface supported by Linux 2.1 and newer. The
+              standard header of the config space is available to all users, the
+              rest only to root.
+
+       intel-conf1
+              Direct hardware access via Intel configuration mechanism 1. Avail&#8208;
+              able on i386 and compatibles on Linux, Solaris/x86, GNU Hurd, Win&#8208;
+              dows, BeOS and Haiku. Requires root privileges.
+
+       intel-conf2
+              Direct hardware access via Intel configuration mechanism 2. Avail&#8208;
+              able on i386 and compatibles on Linux, Solaris/x86, GNU Hurd, Win&#8208;
+              dows,  BeOS  and  Haiku.  Requires  root privileges. Warning: This
+              method is able to address only the first 16 devices on any bus and
+              it seems to be very unreliable in many cases.
+
+       fbsd-device
+              The /dev/pci device on FreeBSD. Requires root privileges.
+
+       aix-device
+              Access method used on AIX. Requires root privileges.
+
+       nbsd-libpci
+              The  /dev/pci0  device  on  NetBSD accessed using the local libpci
+              library.
+
+       obsd-device
+              The /dev/pci device on OpenBSD. Requires root privileges.
+
+       dump   Read the contents of configuration registers from a file specified
+              in  the  dump.name parameter. The format corresponds to the output
+              of lspci -x.
+
+
+PARAMETERS
+       The library is controlled by several parameters. They should have  sensi&#8208;
+       ble default values, but in case you want to do something unusual (or even
+       something weird), you can override them (see the -O switch of lspci).
+
+
+   Parameters of specific access methods
+       dump.name
+              Name of the bus dump file to read from.
+
+       fbsd.path
+              Path to the FreeBSD PCI device.
+
+       nbsd.path
+              Path to the NetBSD PCI device.
+
+       obsd.path
+              Path to the OpenBSD PCI device.
+
+       proc.path
+              Path to the procfs bus tree.
+
+       sysfs.path
+              Path to the sysfs device tree.
+
+
+   Parameters for resolving of ID&apos;s via DNS
+       net.domain
+              DNS domain containing the ID database.
+
+       net.cache_name
+              Name of the file used for caching of resolved ID&apos;s.
+
+
+SEE ALSO
+       lspci(8), setpci(8), update-pciids(8)
+
+
+AUTHOR
+       The PCI Utilities are maintained by Martin Mares &lt;mj@ucw.cz&gt;.
+
+
+
+pciutils-3.1.9                   14 January 2012                       pcilib(7)
+
+</pre></body></html>

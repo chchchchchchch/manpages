@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuFreeElements - free the memory used by lists of flow elements</title></head>
+<body><pre>
+
+AuFreeElements(3)                                              AuFreeElements(3)
+
+
+
+Name
+       AuFreeElements - free the memory used by lists of flow elements
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       void AuFreeElements(server, num_elements, elements)
+           AuServer *server;
+           int num_elements;
+           AuElement *elements;
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       num_elements
+                 Specifies the number of elements to free.
+
+       elements  Specifies a list of elements returned by AuGetElements.
+
+Description
+       AuFreeElements frees the memory allocated by AuGetElements.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - flow elements              1.9.3                    AuFreeElements(3)
+
+</pre></body></html>

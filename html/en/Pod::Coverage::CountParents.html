@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pod::Coverage::CountParents - subclass of Pod::Coverage that examines the inheritance tree</title></head>
+<body><pre>
+
+Pod::Coverage::CountParUser(Contributed Perl DocPod::Coverage::CountParents(3pm)
+
+
+
+NAME
+       Pod::Coverage::CountParents - subclass of Pod::Coverage that examines the
+       inheritance tree
+
+SYNOPSIS
+         # all in one invocation
+         use Pod::Coverage::CountParents package =&gt; &apos;Fishy&apos;;
+
+         # straight OO
+         use Pod::Coverage::CountParents;
+         my $pc = new Pod::Coverage::CountParents package =&gt; &apos;Pod::Coverage&apos;;
+         print &quot;We rock!&quot; if $pc-&gt;coverage == 1;
+
+DESCRIPTION
+       This module extends Pod::Coverage to include the documentation from
+       parent classes when identifying the coverage of the code.
+
+       If you want full documentation we suggest you check the Pod::Coverage
+       documentation.
+
+SEE ALSO
+       Pod::Coverage, base
+
+AUTHOR
+       Copyright (c) 2002 Richard Clamp. All rights reserved.  This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+
+
+perl v5.14.2                       2010-07-27   Pod::Coverage::CountParents(3pm)
+
+</pre></body></html>

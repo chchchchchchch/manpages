@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuOpenServer - connect to audio server</title></head>
+<body><pre>
+
+AuOpenServer(3)                                                  AuOpenServer(3)
+
+
+
+Name
+       AuOpenServer - connect to audio server
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuServer  *AuOpenServer(servername,  num_authproto,  authproto, num_auth&#8208;
+       data, authdata, ret_status)
+           char *servername;
+           int num_authproto;
+           char *authproto;
+           int num_authdata;
+           char *authdata;
+           char **return_status; /* RETURN */
+
+Arguments
+       servername
+                 Specifies the audio server name.  This  determines  the  server
+                 and communications domain to be used.
+
+       num_authproto
+                 Specifies  the  length of the connection authorization protocol
+                 name.
+
+       authproto Specifies the name of the connection authorization protocol.
+
+       num_authdata
+                 Specifies the length of the connection authorization data.
+
+       authdata  Specifies the connection authorization data.
+
+       return_status
+                 If non-NULL, and the connection is refused,  returns  an  error
+                 message.
+
+Description
+       AuOpenServer  creates  a  connection  to  the  specified audio server and
+       returns a pointer to an AuServer structure or  NULL,  with  return_status
+       (if  non-NULL)  pointing to an error message describing the reason, if it
+       was unsuccessfull.
+
+       If servername is NULL or a pointer to NUL,  AuOpenServer  get  the  value
+       from  the  enviroment.   servername has the format hostname:port or host&#8208;
+       name::port.  If a double colon (::) separates the hostname and port  num&#8208;
+       ber,  AuOpenServer  connects using DECnet streams.  If a single colon (:)
+       separates the hostname and port  number,  and  the  hostname  is  a  host
+       machine name, AuOpenServer connects using TCP streams.  If a single colon
+       (:) separates the hostname and port number, and the hostname  is  &quot;unix&quot;,
+       AuOpenServer  connects  using  UNIX  domain sockets (or Streams).  If the
+       hostname is not specified, AuOpenServer uses whatever it believes is  the
+       fastest transport.
+
+See Also
+       AuCloseServer, AuServerName.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - housekeeping               1.9.3                      AuOpenServer(3)
+
+</pre></body></html>

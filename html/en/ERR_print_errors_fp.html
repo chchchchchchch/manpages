@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ERR_print_errors, ERR_print_errors_fp - print error messages</title></head>
+<body><pre>
+
+ERR_print_errors(3SSL)               OpenSSL              ERR_print_errors(3SSL)
+
+
+
+NAME
+       ERR_print_errors, ERR_print_errors_fp - print error messages
+
+SYNOPSIS
+        #include &lt;openssl/err.h&gt;
+
+        void ERR_print_errors(BIO *bp);
+        void ERR_print_errors_fp(FILE *fp);
+
+DESCRIPTION
+       ERR_print_errors() is a convenience function that prints the error
+       strings for all errors that OpenSSL has recorded to bp, thus emptying the
+       error queue.
+
+       ERR_print_errors_fp() is the same, except that the output goes to a FILE.
+
+       The error strings will have the following format:
+
+        [pid]:error:[error code]:[library name]:[function name]:[reason string]:[file name]:[line]:[optional text message]
+
+       error code is an 8 digit hexadecimal number. library name, function name
+       and reason string are ASCII text, as is optional text message if one was
+       set for the respective error code.
+
+       If there is no text string registered for the given error code, the error
+       string will contain the numeric code.
+
+RETURN VALUES
+       ERR_print_errors() and ERR_print_errors_fp() return no values.
+
+SEE ALSO
+       err(3), ERR_error_string(3), ERR_get_error(3),
+       ERR_load_crypto_strings(3), SSL_load_error_strings(3)
+
+HISTORY
+       ERR_print_errors() and ERR_print_errors_fp() are available in all
+       versions of SSLeay and OpenSSL.
+
+
+
+1.0.1e                             2013-02-11             ERR_print_errors(3SSL)
+
+</pre></body></html>

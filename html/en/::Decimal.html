@@ -1,0 +1,317 @@
+<html>
+<head><meta charset=utf-8/>
+<title>::Decimal - General decimal arithmetic</title></head>
+<body><pre>
+
+Decimal(3tcl)            Tcl Decimal Arithmetic Library            Decimal(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       ::Decimal - General decimal arithmetic
+
+SYNOPSIS
+       package require Tcl  ?8.5?
+
+       ::Decimal::fromstr string
+
+       ::Decimal::tostr decimal
+
+       ::Decimal::setVariable variable setting
+
+       ::Decimal::add a b
+
+       ::Decimal::+ a b
+
+       ::Decimal::subtract a b
+
+       ::Decimal::- a b
+
+       ::Decimal::multiply a b
+
+       ::Decimal::* a b
+
+       ::Decimal::divide a b
+
+       ::Decimal::/ a b
+
+       ::Decimal::divideint a b
+
+       ::Decimal::remainder a b
+
+       ::Decimal::abs decimal
+
+       ::Decimal::compare a b
+
+       ::Decimal::max a b
+
+       ::Decimal::maxmag a b
+
+       ::Decimal::min a b
+
+       ::Decimal::minmag a b
+
+       ::Decimal::plus a
+
+       ::Decimal::minus a
+
+       ::Decimal::copynegate a
+
+       ::Decimal::copysign a b
+
+       ::Decimal::is-signed decimal
+
+       ::Decimal::is-zero decimal
+
+       ::Decimal::is-NaN decimal
+
+       ::Decimal::is-infinite decimal
+&#12;       ::Decimal::is-finite decimal
+
+       ::Decimal::fma a b c
+
+       ::Decimal::round_half_even decimal digits
+
+       ::Decimal::round_half_up decimal digits
+
+       ::Decimal::round_half_down decimal digits
+
+       ::Decimal::round_down decimal digits
+
+       ::Decimal::round_up decimal digits
+
+       ::Decimal::round_floor decimal digits
+
+       ::Decimal::round_ceiling decimal digits
+
+       ::Decimal::round_05up decimal digits
+
+_________________________________________________________________
+
+DESCRIPTION
+       The  decimal package provides decimal arithmetic support for both limited
+       precision floating point and arbitrary precision floating  point.   Addi&#8208;
+       tionally, integer arithmetic is supported.
+
+       More information and the specifications on which this package depends can
+       be   found    on    the    general    decimal    arithmetic    page    at
+       http://speleotrove.com/decimal This package provides for:
+
+       &#183;      A  new data type decimal which is represented as a list containing
+              sign, mantissa and exponent.
+
+       &#183;      Arithmetic operations on those decimal numbers such  as  addition,
+              subtraction, multiplication, etc...
+
+       Numbers  are  converted  to  decimal  format  using the operation ::Deci&#8208;
+       mal::fromstr.
+
+       Numbers are converted back to string format using the  operation  ::Deci&#8208;
+       mal::tostr.
+
+EXAMPLES
+       This  section  shows  some  simple  examples.  Since  the purpose of this
+       library is to perform decimal math operations, examples may be  the  sim&#8208;
+       plest  way to learn how to work with it and to see the difference between
+       using this package and sticking with expr. Consult  the  API  section  of
+       this man page for information about individual procedures.
+
+                  package require decimal
+
+                  # Various operations on two numbers.
+                  # We first convert them to decimal format.
+                  set a [::Decimal::fromstr 8.2]
+                  set b [::Decimal::fromstr .2]
+
+                  # Then we perform our operations. Here we multiply
+                  set c [::Decimal::* $a $b]
+
+                  # Finally we convert back to string format for presentation to the user.
+                  puts [::Decimal::tostr $c] ; # =&gt; will output 8.4
+
+                  # Other examples
+                  #
+                  # Subtraction
+                  set c [::Decimal::- $a $b]
+                  puts [::Decimal::tostr $c] ; # =&gt; will output 8.0
+
+                  # Why bother using this instead of simply expr?
+                  puts 8.399999999999999 ; # =&gt; will output 8.399999999999999
+                  puts 7.999999999999999 ; # =&gt; will output 7.999999999999999
+                  # See http://speleotrove.com/decimal to learn more about why this happens.
+
+
+API
+       ::Decimal::fromstr string
+              Convert string into a decimal.
+
+       ::Decimal::tostr decimal
+              Convert decimal into a string representing the number in base 10.
+
+       ::Decimal::setVariable variable setting
+              Sets the variable to setting. Valid variables are:
+
+              &#183;      rounding  - Method of rounding to use during rescale. Valid
+                     methods      are      round_half_even,       round_half_up,
+                     round_half_down,    round_down,    round_up,   round_floor,
+                     round_ceiling.
+
+              &#183;      precision - Maximum number of digits allowed in mantissa.
+
+              &#183;      extended - Set to 1 for extended  mode.  0  for  simplified
+                     mode.
+
+              &#183;      maxExponent  -  Maximum value for the exponent. Defaults to
+                     999.
+
+              &#183;      minExponent - Minimum value for the  exponent.  Default  to
+                     -998.
+
+       ::Decimal::add a b
+
+       ::Decimal::+ a b
+              Return the sum of the two decimals a and b.
+
+       ::Decimal::subtract a b
+
+       ::Decimal::- a b
+              Return the differnece of the two decimals a and b.
+
+       ::Decimal::multiply a b
+
+       ::Decimal::* a b
+              Return the product of the two decimals a and b.
+
+       ::Decimal::divide a b
+
+       ::Decimal::/ a b
+              Return the quotient of the division between the two decimals a and
+              b.
+
+       ::Decimal::divideint a b
+              Return a the integer portion  of  the  quotient  of  the  division
+              between decimals a and b
+
+       ::Decimal::remainder a b
+              Return  the  remainder  of the division between the two decimals a
+              and b.
+
+       ::Decimal::abs decimal
+              Return the absolute value of the decimal.
+&#12;       ::Decimal::compare a b
+              Compare the two decimals a and b, returning 0 if a == b, 1 if a  &gt;
+              b, and -1 if a &lt; b.
+
+       ::Decimal::max a b
+              Compare the two decimals a and b, and return a if a &gt;= b, and b if
+              a &lt; b.
+
+       ::Decimal::maxmag a b
+              Compare the two decimals a and b while ignoring their  signs,  and
+              return a if abs(a) &gt;= abs(b), and b if abs(a) &lt; abs(b).
+
+       ::Decimal::min a b
+              Compare the two decimals a and b, and return a if a &lt;= b, and b if
+              a &gt; b.
+
+       ::Decimal::minmag a b
+              Compare the two decimals a and b while ignoring their  signs,  and
+              return a if abs(a) &lt;= abs(b), and b if abs(a) &gt; abs(b).
+
+       ::Decimal::plus a
+              Return the result from ::Decimal::+ 0 $a.
+
+       ::Decimal::minus a
+              Return the result from ::Decimal::- 0 $a.
+
+       ::Decimal::copynegate a
+              Returns a with the sign flipped.
+
+       ::Decimal::copysign a b
+              Returns a with the sign set to the sign of the b.
+
+       ::Decimal::is-signed decimal
+              Return  the  sign  of the decimal.  The procedure returns 0 if the
+              number is positive, 1 if it&apos;s negative.
+
+       ::Decimal::is-zero decimal
+              Return true if decimal value is zero, otherwise false is returned.
+
+       ::Decimal::is-NaN decimal
+              Return true if decimal value is  NaN  (not  a  number),  otherwise
+              false is returned.
+
+       ::Decimal::is-infinite decimal
+              Return  true  if  decimal  value  is  Infinite, otherwise false is
+              returned.
+
+       ::Decimal::is-finite decimal
+              Return true  if  decimal  value  is  finite,  otherwise  false  is
+              returned.
+
+       ::Decimal::fma a b c
+              Return the result from first multiplying a by b and then adding c.
+              Rescaling only occurs after completion of all operations. In  this
+              way the result may vary from that returned by performing the oper&#8208;
+              ations individually.
+
+       ::Decimal::round_half_even decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing  rules:  Round  to  the  nearest. If equidistant, round so the
+              final digit is even.
+
+       ::Decimal::round_half_up decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing rules: Round to the nearest. If equidistant, round up.
+
+       ::Decimal::round_half_down decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing rules: Round to the nearest. If equidistant, round down.
+
+       ::Decimal::round_down decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing rules: Round toward 0.  (Truncate)
+
+       ::Decimal::round_up decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing rules: Round away from 0
+
+       ::Decimal::round_floor decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing rules: Round toward -Infinity.
+
+       ::Decimal::round_ceiling decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing rules: Round toward Infinity
+
+       ::Decimal::round_05up decimal digits
+              Rounds decimal to digits number of decimal points with the follow&#8208;
+              ing  rules:  Round zero or five away from 0. The same as round-up,
+              except that rounding up only occurs if the digit to be rounded  up
+              is 0 or 5, and after overflow the result is the same as for round-
+              down.
+
+BUGS, IDEAS, FEEDBACK
+       This document, and the package it  describes,  will  undoubtedly  contain
+       bugs  and  other problems.  Please report such in the category Decimal of
+       the Tcllib SF Trackers  [http://sourceforge.net/tracker/?group_id=12883].
+       Please  also  report  any  ideas for enhancements you may have for either
+       package and/or documentation.
+
+KEYWORDS
+       decimal, math, tcl
+
+CATEGORY
+       Mathematics
+
+COPYRIGHT
+       Copyright (c) 2011 Mark Alston &lt;mark at beernut dot com&gt;
+
+
+
+
+math                                  1.0.2                        Decimal(3tcl)
+
+</pre></body></html>

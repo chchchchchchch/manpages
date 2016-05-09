@@ -1,0 +1,121 @@
+<html>
+<head><meta charset=utf-8/>
+<title>request-key.conf - Instantiation handler configuration file</title></head>
+<body><pre>
+
+REQUEST-KEY.CONF(5)      Linux Key Management Utilities      REQUEST-KEY.CONF(5)
+
+
+
+NAME
+       request-key.conf - Instantiation handler configuration file
+
+DESCRIPTION
+       This  file  and its associated key-type specific variants are used by the
+       /sbin/request-key program to determine which program  it  should  run  to
+       instantiate a key.
+
+       request-key looks first in /etc/request-key.d/ for a file of the key type
+       name plus &quot;.conf&quot; that it can use.  If that is not found,  it  will  fall
+       back to /etc/request-key.conf.
+
+       request-key  works scans through the chosen file one line at a time until
+       it finds a match, which it will then use. If it  doesn&apos;t  find  a  match,
+       it&apos;ll return an error and the kernel will automatically negate the key.
+
+       Any blank line or line beginning with a hash mark &apos;#&apos; is considered to be
+       a comment and ignored.
+
+       All other lines are assumed to be command lines with a  number  of  white
+       space separated fields:
+
+       &lt;op&gt; &lt;type&gt; &lt;description&gt; &lt;callout-info&gt; &lt;prog&gt; &lt;arg1&gt; &lt;arg2&gt; ...
+
+       The first four fields are used to match the parameters passed to request-
+       key by the kernel. op is the operation type; currently the only supported
+       operation is &quot;create&quot;.
+
+       type,  description  and callout-info match the three parameters passed to
+       keyctl request2 or the request_key() system call. Each of these may  con&#8208;
+       tain one or more asterisk &apos;*&apos; characters as wildcards anywhere within the
+       string.
+
+       Should a match be made, the program specified by &lt;prog&gt; will  be  exec&apos;d.
+       This  must have a fully qualified path name. argv[0] will be set from the
+       part of the program name that follows the last slash &apos;/&apos; character.
+
+       If the program name is prefixed with a pipe bar character &apos;|&apos;,  then  the
+       program  will  be  forked and exec&apos;d attached to three pipes. The callout
+       information will be piped to it on it&apos;s stdin and  the  intended  payload
+       data  will  be retrieved from its stdout. Anything sent to stderr will be
+       posted in syslog. If the program exits  0,  then  /sbin/request-key  will
+       attempt  to  instantiate  the  key  with the data read from stdout. If it
+       fails in any other way, then request-key  will  attempt  to  execute  the
+       appropriate &apos;negate&apos; operation command.
+
+       The  program  arguments can be substituted with various macros. Only com&#8208;
+       plete argument substitution is supported - macro substitutions  can&apos;t  be
+       embedded.  All  macros  begin  with  a percent character &apos;%&apos;. An argument
+       beginning with two percent characters will have one of them discarded.
+
+       The following macros are supported:
+
+              %o    Operation type
+              %k    Key ID
+              %t    Key type
+              %d    Key description
+              %c    Callout information
+              %u    Key UID
+              %g    Key GID
+              %T    Requestor&apos;s thread keyring
+              %P    Requestor&apos;s process keyring
+              %S    Requestor&apos;s session keyring
+
+       There&apos;s another macro substitution too that permits the interpolation  of
+       the contents of a key:
+
+              %{&lt;type&gt;:&lt;description&gt;}
+
+       This performs a lookup for a key of the given type and description on the
+       requestor&apos;s keyrings, and if found,  substitutes  the  contents  for  the
+       macro.  If  not found an error will be logged and the key under construc&#8208;
+       tion will be negated.
+
+EXAMPLE
+       A basic file will be installed in the /etc. This will contain two  debug&#8208;
+       ging lines that can be used to test the installation:
+
+              create user debug:* negate /bin/keyctl negate %k 30 %S
+              create user debug:loop:* * |/bin/cat
+              create  user debug:* * /usr/share/keyutils/request-key-debug.sh %k
+              %d %c %S
+              negate * * * /bin/keyctl negate %k 30 %S
+
+       This is set up so that something like:
+
+              keyctl request2 user debug:xxxx negate
+
+       will create a negative user-defined key, something like:
+
+              keyctl request2 user debug:yyyy spoon
+
+       will create an instantiated user-defined key with &quot;Debug  spoon&quot;  as  the
+       payload, and something like:
+
+              keyctl request2 user debug:loop:zzzz abcdefghijkl
+
+       will create an instantiated user-defined key with the callout information
+       as the payload.
+
+FILES
+       /etc/request-key.conf
+       /etc/request-key.d/&lt;keytype&gt;.conf
+
+SEE ALSO
+       keyctl(1), request-key.conf(5)
+
+
+
+Linux                           15 November 2011             REQUEST-KEY.CONF(5)
+
+</pre></body></html>

@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_setlinearaddressing - switch to linear addressing mode</title></head>
+<body><pre>
+
+vga_setlinearaddressing(3)     Svgalib User Manual    vga_setlinearaddressing(3)
+
+
+
+NAME
+       vga_setlinearaddressing - switch to linear addressing mode
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_setlinearaddressing(void);
+
+
+DESCRIPTION
+       Switch  to  linear  addressing  mode. This maps all (or most) of the SVGA
+       memory at the position returned by vga_getgraphmem(3) (which will  proba&#8208;
+       bly    change   by   the   call   to   vga_setlinearaddressing()).    The
+       vga_set*page(3) calls are no longer required. This ensures  optimal  per&#8208;
+       formance,  however  the  drawing functions of svgalib do not support this
+       memory layout and not all cards support it (and not in all modes).
+
+       Use vga_modeinfo(3) to check for availability of the function in a  given
+       mode.
+
+       Furthermore, some cards (Cirrus) just enable this buffer at a fixed hard&#8208;
+       ware address.  For Cirrus it is mapped at 14MB so you should  never  used
+       it  if  you  have  more  than 14MB of memory (But how does an application
+       know?).  The Mach32 support for this is smarter. It  makes  this  feature
+       only available when it is safe to be used.
+
+       To avoid all this problems you can use
+
+
+       nolinear
+              Inhibit use of a linear mmaped frame buffer.
+
+       linear Allow (not enforce!) use of a linear mmaped frame buffer.
+
+       in  the /etc/vga/libvga.config file to disable the linear frame buffer if
+       it cannot be used.
+
+       Returns the size of the mapped framebuffer if  successful  (can  be  less
+       than total video memory), -1 if not.
+
+       The testlinear(6) demo shows the use of this feature (and if it works for
+       you).
+
+SEE ALSO
+       svgalib(7), vgagl(7), libvga.config(5),  testlinear(6),  vga_modeinfo(3),
+       vga_getgraphmem(3),          vga_setpage(3),          vga_setreadpage(3),
+       vga_setwritepage(3), vga_setlinearaddressing(3)
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The exact source of the referenced function as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997        vga_setlinearaddressing(3)
+
+</pre></body></html>

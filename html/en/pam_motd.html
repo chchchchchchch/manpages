@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pam_motd - Display the motd file</title></head>
+<body><pre>
+
+PAM_MOTD(8)                     Linux-PAM Manual                     PAM_MOTD(8)
+
+
+
+NAME
+       pam_motd - Display the motd file
+
+SYNOPSIS
+       pam_motd.so [motd=/path/filename]
+
+DESCRIPTION
+       pam_motd is a PAM module that can be used to display arbitrary motd
+       (message of the day) files after a successful login. By default the
+       /etc/motd file is shown. The message size is limited to 64KB.
+
+OPTIONS
+       motd=/path/filename
+           The /path/filename file is displayed as message of the day.
+
+       noupdate
+           Don&apos;t run the scripts in /etc/update-motd.d to refresh the motd file.
+
+MODULE TYPES PROVIDED
+       Only the session module type is provided.
+
+RETURN VALUES
+       PAM_IGNORE
+           This is the only return value of this module.
+
+EXAMPLES
+       The suggested usage for /etc/pam.d/login is:
+
+           session  optional  pam_motd.so  motd=/etc/motd
+
+
+
+SEE ALSO
+       motd(5), pam.conf(5), pam.d(5), pam(7)
+
+AUTHOR
+       pam_motd was written by Ben Collins &lt;bcollins@debian.org&gt;.
+
+
+
+Linux-PAM Manual                   10/30/2011                        PAM_MOTD(8)
+
+</pre></body></html>

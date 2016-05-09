@@ -1,0 +1,44 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::SAX::DocumentLocator - Helper class for document locators</title></head>
+<body><pre>
+
+SAX::DocumentLocator(3pUser Contributed Perl DocumentatSAX::DocumentLocator(3pm)
+
+
+
+NAME
+       XML::SAX::DocumentLocator - Helper class for document locators
+
+SYNOPSIS
+         my $locator = XML::SAX::DocumentLocator-&gt;new(
+             sub { $object-&gt;get_public_id },
+             sub { $object-&gt;get_system_id },
+             sub { $reader-&gt;current_line },
+             sub { $reader-&gt;current_column },
+             sub { $reader-&gt;get_encoding },
+             sub { $reader-&gt;get_xml_version },
+         );
+
+DESCRIPTION
+       This module gives you a tied hash reference that calls the specified
+       closures when asked for PublicId, SystemId, LineNumber and ColumnNumber.
+
+       It is useful for writing SAX Parsers so that you don&apos;t have to constantly
+       update the line numbers in a hash reference on the object you pass to
+       set_document_locator(). See the source code for XML::SAX::PurePerl for a
+       usage example.
+
+API
+       There is only 1 method: &quot;new&quot;. Simply pass it a list of closures that
+       when called will return the PublicId, the SystemId, the LineNumber, the
+       ColumnNumber, the Encoding and the XMLVersion respectively.
+
+       The closures are passed a single parameter, the key being requested. But
+       you&apos;re free to ignore that.
+
+
+
+perl v5.14.2                       2009-10-10          SAX::DocumentLocator(3pm)
+
+</pre></body></html>

@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xdg-open - opens a file or URL in the user's preferred application</title></head>
+<body><pre>
+
+XDG-OPEN(1)                      xdg-open Manual                     XDG-OPEN(1)
+
+
+
+NAME
+       xdg-open - opens a file or URL in the user&apos;s preferred application
+
+SYNOPSIS
+       xdg-open {file | URL}
+
+       xdg-open {--help | --manual | --version}
+
+DESCRIPTION
+       xdg-open opens a file or URL in the user&apos;s preferred application. If a
+       URL is provided the URL will be opened in the user&apos;s preferred web
+       browser. If a file is provided the file will be opened in the preferred
+       application for files of that type. xdg-open supports file, ftp, http and
+       https URLs.
+
+       xdg-open is for use inside a desktop session only. It is not recommended
+       to use xdg-open as root.
+
+OPTIONS
+       --help
+           Show command synopsis.
+
+       --manual
+           Show this manual page.
+
+       --version
+           Show the xdg-utils version information.
+
+EXIT CODES
+       An exit code of 0 indicates success while a non-zero exit code indicates
+       failure. The following failure codes can be returned:
+
+       1
+           Error in command line syntax.
+
+       2
+           One of the files passed on the command line did not exist.
+
+       3
+           A required tool could not be found.
+
+       4
+           The action failed.
+
+EXAMPLES
+           xdg-open &apos;http://www.freedesktop.org/&apos;
+
+       Opens the freedesktop.org website in the user&apos;s default browser.
+
+           xdg-open /tmp/foobar.png
+
+       Opens the PNG image file /tmp/foobar.png in the user&apos;s default image
+       viewing application.
+
+AUTHORS
+       Kevin Krammer
+           Author.
+
+       Jeremy White
+           Author.
+
+COPYRIGHT
+       Copyright &#169; 2006
+
+
+
+xdg-utils 1.0                      02/22/2015                        XDG-OPEN(1)
+
+</pre></body></html>

@@ -1,0 +1,157 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gifview - displays GIF images and animations on the X window system</title></head>
+<body><pre>
+
+GIFVIEW(1)                                                            GIFVIEW(1)
+
+
+
+NAME
+       gifview - displays GIF images and animations on the X window system
+
+SYNOPSIS
+       gifview [--display display] [options] [filenames and frames]...
+
+DESCRIPTION
+       gifview  displays  GIF  image files on workstations and terminals running
+       the X Window System.  gifview understands multi-image GIFs, which can  be
+       displayed either as slideshows or as animations.
+
+INTERACTION
+       gifview windows recognize several keystrokes and button commands. Many of
+       them are only useful for multi-image GIFs.
+
+       Space or n  Go to the next frame.
+
+       b or p      Go to the previous frame.
+
+       r or &lt;      Go to the first frame.
+
+       &gt;           Go to the last frame.
+
+       ESC         Stop the animation.
+
+       s or a      Toggle between animation and slideshow mode.
+
+       u           Toggle between normal and unoptimized mode.
+
+       Backspace   Delete this window.
+
+       q           Quit gifview.
+
+       Left-clicking on a window goes to the next  frame;  right-clicking  on  a
+       window deletes that window.
+
+COMMAND LINE
+       gifview&apos;s  command  line  consists  of GIF input files and options.  Most
+       options start with a dash (-) or plus (+); frame selections,  a  kind  of
+       option, start with a number sign (#). Anything else is a GIF input file.
+
+       gifview  displays  one  window for each GIF input file you specify. If no
+       GIF input file is given, or you give the special filename `-&apos;,  it  reads
+       from the standard input.
+
+OPTIONS
+       --animate, -a
+            Animate  multi-image  GIFs  by  default.  Normally, multi-image GIFs
+            first appear in slideshow mode. You can always use the `a&apos; keystroke
+            to  toggle between modes. This option has a converse, `--no-animate&apos;
+            or `+a&apos;.
+
+       --unoptimize, -U
+            Display multi-image GIFs as ``unoptimized&apos;&apos;, which shows a  faithful
+            representation  of  what  a user will see at each frame of an anima&#8208;
+            tion. See gifsicle(1) for a more detailed description of unoptimiza&#8208;
+            tion.  This  option has a converse, `--no-unoptimize&apos; or `+U&apos;.  GIFs
+            are always displayed unoptimized in animation mode.
+
+       -d display
+       --display display
+            Sets the X display to display.  This option must come before any GIF
+            files.
+
+       --name name
+            Sets  the  application  name under which resources are found, rather
+            than the default of &quot;gifview&quot;. Since gifview itself does not use the
+            resource database, this is mostly useful for communication with your
+            window manager.
+
+       --geometry geometry
+            Set the size and position of gifview&apos;s windows. This is a standard X
+            option.  At most one --geometry option can be given per window (that
+            is, per input GIF file).
+
+       --title title
+            Sets the gifview window&apos;s title. The default is &quot;gifview&quot;,  followed
+            by information about the currently displayed file and frame.
+
+       -w window
+       --window window
+            Display  the next GIF input in an existing X window, instead of mak&#8208;
+            ing a new top-level window. This way, you can use gifview to display
+            animated GIFs in a window you created with another program. The win&#8208;
+            dow argument should be an integer (gifview will use that window  ID)
+            or `root&apos; (gifview will use the root window).
+
+       --new-window window
+            Display  the  next GIF input in a new child of an existing X window.
+            This child window will disappear  when  gifview  exits.  The  window
+            argument  should  be an integer (gifview will use that window ID) or
+            `root&apos; (gifview will use the root window).
+
+       --install-colormap, -i
+            Use a private colormap for each window (if you are using  a  Pseudo&#8208;
+            Color display). This avoids polluting the existing colormap, and may
+            produce better results if your colormap is full, but causes annoying
+            colormap flashing.
+
+       --background color
+       --bg color
+            Set the background color, which is used for transparent pixels.
+
+       --min-delay delay
+            Set  the minimum delay between frames to delay, which is measured in
+            hundredths of a second. Default is 0.
+
+       --no-interactive, +e
+            Don&apos;t pay attention to mouse buttons or keystrokes.
+
+       --help
+            Print usage information and exit.
+
+       --version
+            Print the version number and some quickie warranty  information  and
+            exit.
+
+   Frame Selections
+       A frame selection tells gifview which frame to initially display from the
+       current input file. They are useful only for animations, as  non-animated
+       GIFs  only  have  one  frame.  Frame  selections can only be displayed in
+       slideshow mode.
+
+       #num         Select frame num. (The first frame is `#0&apos;.   Negative  num&#8208;
+                    bers count backwards from the last frame, which is `#-1&apos;.)
+       #name        Select the frame named name.
+
+       If  you  give  two  or more frame selections, you will get one window per
+       frame selection.
+&#12;SEE ALSO
+       gifsicle(1)
+
+BUGS
+       Please   email   suggestions,   additions,   patches    and    bugs    to
+       ekohler@gmail.com.
+
+AUTHORS
+       Eddie Kohler, ekohler@gmail.com
+       http://www.read.seas.harvard.edu/~kohler/
+
+       http://www.lcdf.org/gifsicle/
+       The gifsicle home page.
+
+
+
+Version 1.67                       5 May 2012                         GIFVIEW(1)
+
+</pre></body></html>

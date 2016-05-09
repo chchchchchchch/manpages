@@ -1,0 +1,64 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pam_ck_connector - Register session with ConsoleKit</title></head>
+<body><pre>
+
+PAM_CK_CONNECTOR(8)             ConsoleKit Manual            PAM_CK_CONNECTOR(8)
+
+
+
+NAME
+       pam_ck_connector - Register session with ConsoleKit
+
+SYNOPSIS
+       pam_ck_connector.so [debug]
+
+DESCRIPTION
+       The pam_ck_connector PAM module registers a login session with the
+       system-wide ConsoleKit daemon. This PAM module should be used with
+       caution; only local login managers such as login(1) should use this.
+       Since the ConsoleKit daemon can accept both an tty and an X11 display the
+       normal parameters set by PAM are not always useful.
+
+       An application can therefore override these with the PAM environment
+       variables CKCON_TTY, CKCON_X11_DISPLAY and CKCON_X11_DISPLAY_DEVICE (the
+       application should remember to unset these before starting the login
+       session).
+
+       Also note that the ConsoleKit daemon may reject registration attempts if
+       the given set of data are inconsistent with each other. More more
+       information, see the ConsoleKit documentation on the
+       OpenSessionWithParameters() method call on the
+       org.freedesktop.ConsoleKit.Manager D-Bus interface.
+
+       If registration with the ConsoleKit daemon succeeds, this PAM module will
+       set the environment variable XDG_SESSION_COOKIE which is used to defined
+       membership of a login session.
+
+       This PAM module has the side effect that it creates a connection to the
+       system message bus that is kept open until the session ends. This is used
+       by the ConsoleKit daemon to track the life-cycle of the session and, as
+       such, should the login manager crash, the session will be properly
+       unregistered.
+
+
+OPTIONS
+       debug
+          Print debug information.
+
+       nox11
+          Do not create a session if PAM specifies an X11 display instead of a
+          /dev/tty terminal.
+
+
+SEE ALSO
+       pam.conf(5), pam.d(8), pam(8), dbus-daemon(1)
+
+AUTHOR
+       pam_ck_connector was written by David Zeuthen &lt;davidz@redhat.com&gt;.
+
+
+
+ConsoleKit Manual                  02/27/2007                PAM_CK_CONNECTOR(8)
+
+</pre></body></html>

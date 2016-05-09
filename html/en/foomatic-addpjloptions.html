@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>foomatic-addpjloptions - Format PJL option information the for foomatic database</title></head>
+<body><pre>
+
+FOOMATIC-ADDPJLOPTIONS(8)                              FOOMATIC-ADDPJLOPTIONS(8)
+
+
+
+NAME
+       foomatic-addpjloptions  -  Format PJL option information the for foomatic
+       database
+
+SYNOPSIS
+       foomatic-addpjloptions [-dafis][-o dir] -p printer_ID [pjl_info_file]
+
+       foomatic-addpjloptions [-dafq] [pjl_info_file]
+
+       foomatic-addpjloptions -h
+
+
+Description
+       foomatic-addpjloptions formats the PJL information file (or STDIN) into a
+       format usable by the Foomatic database.
+
+
+
+   Options
+       -a   Convert all PJL options in the information file.
+
+
+       -d   Enable debugging information.
+
+
+       -f   Do not ask for permission, force conversion.
+
+
+       -h   Print a help message and exit.
+
+
+       -q   Print a summary of the PJL information.  This output is not compati&#8208;
+            ble with the foomatic database, and is useful for debugging.
+
+
+       -s   Produce a single option file containing all the option values.
+
+
+       -o dir
+            The directory the option information files are written to.
+
+
+       -p printer_ID
+            Name of the printer in the  foomatic  database.   This  is  used  to
+            extract printer manufacturer and model information.
+
+
+       pjl_info_file
+            File  with PJL information returned by the printer. If this filename
+            is not provided, the PJL options are taken from standard input.
+
+
+FILES
+       /usr/share/foomatic/templates/pjl*.xml
+            Template files for option information.
+
+
+       ./foomatic-db/opts
+            Option information stored in this directory.
+
+
+EXIT STATUS
+       foomatic-addpjloptions returns 0 on success, and a nonzero value on fail&#8208;
+       ure.
+
+AUTHOR
+       Manfred  Wassmann &lt;manolo@NCC-1701.B.Shuttle.de&gt; for the foomatic project
+       using output from the associated binary.
+
+       Modified by Patrick Powell (&lt;papowell at astart.com&gt;).
+
+BUGS
+       Please post bug reports on
+
+       http://lists.freestandards.org/mailman/listinfo/printing-foomatic
+
+
+
+
+Foomatic Project                   2001-05-07          FOOMATIC-ADDPJLOPTIONS(8)
+
+</pre></body></html>

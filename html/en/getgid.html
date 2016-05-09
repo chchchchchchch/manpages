@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>getgid, getegid - get group identity</title></head>
+<body><pre>
+
+GETGID(2)                   Linux Programmer&apos;s Manual                  GETGID(2)
+
+
+
+NAME
+       getgid, getegid - get group identity
+
+SYNOPSIS
+       #include &lt;unistd.h&gt;
+       #include &lt;sys/types.h&gt;
+
+       gid_t getgid(void);
+       gid_t getegid(void);
+
+DESCRIPTION
+       getgid() returns the real group ID of the calling process.
+
+       getegid() returns the effective group ID of the calling process.
+
+ERRORS
+       These functions are always successful.
+
+CONFORMING TO
+       POSIX.1-2001, 4.3BSD.
+
+NOTES
+       The  original  Linux  getgid()  and getegid() system calls supported only
+       16-bit group IDs.  Subsequently, Linux 2.4  added  getgid32()  and  gete&#8208;
+       gid32(), supporting 32-bit IDs.  The glibc getgid() and getegid() wrapper
+       functions transparently deal with the variations across kernel versions.
+
+SEE ALSO
+       getresgid(2), setgid(2), setregid(2), credentials(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-11-22                          GETGID(2)
+
+</pre></body></html>

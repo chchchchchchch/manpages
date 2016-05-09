@@ -1,0 +1,91 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Mail::Field::Generic - implementation for inspecific fields</title></head>
+<body><pre>
+
+Mail::Field::Generic(3pUser Contributed Perl DocumentatMail::Field::Generic(3pm)
+
+
+
+NAME
+       Mail::Field::Generic - implementation for inspecific fields
+
+INHERITANCE
+        Mail::Field::Generic
+          is a Mail::Field
+
+SYNOPSIS
+        use Mail::Field;
+        my $field = Mail::Field-&gt;new(&apos;Subject&apos;, &apos;some subject text&apos;);
+        my $field = Mail::Field-&gt;new(subject =&gt; &apos;some subject text&apos;);
+
+DESCRIPTION
+       A generic implementation for header fields without own implementation.
+       This is fine for fields like &quot;Subject&quot;, &quot;X-Mailer&quot;, etc., where the field
+       holds only a string of no particular importance/format.
+
+METHODS
+   Constructors
+       Mail::Field::Generic-&gt;combine(FIELDS)
+           See &quot;Constructors&quot; in Mail::Field
+
+       Mail::Field::Generic-&gt;extract(TAG, HEAD [, INDEX ])
+           See &quot;Constructors&quot; in Mail::Field
+
+       Mail::Field::Generic-&gt;new(TAG [, STRING | OPTIONS])
+           See &quot;Constructors&quot; in Mail::Field
+
+   &quot;Fake&quot; constructors
+       $obj-&gt;create(OPTIONS)
+            -Option--Default
+             Text    &apos;&apos;
+
+           Text =&gt; STRING
+       $obj-&gt;parse([STRING])
+           Set the new text, which is empty when no STRING is provided.
+
+   Accessors
+       $obj-&gt;set(OPTIONS)
+           See &quot;Accessors&quot; in Mail::Field
+
+       $obj-&gt;stringify()
+           See &quot;Accessors&quot; in Mail::Field
+
+       $obj-&gt;tag()
+       Mail::Field::Generic-&gt;tag()
+           See &quot;Accessors&quot; in Mail::Field
+
+   Smart accessors
+       $obj-&gt;text([STRING])
+           See &quot;Smart accessors&quot; in Mail::Field
+
+DIAGNOSTICS
+       Error: Undefined subroutine &lt;method&gt; called
+           Mail::Field objects use autoloading to compile new functionality.
+           Apparently, the mehod called is not implemented for the specific
+           class of the field object.
+
+SEE ALSO
+       This module is part of the MailTools distribution,
+       http://perl.overmeer.net/mailtools/.
+&#12;AUTHORS
+       The MailTools bundle was developed by Graham Barr.  Later, Mark Overmeer
+       took over maintenance without commitment to further development.
+
+       Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;.  Mail::Field::AddrList by Peter
+       Orbaek &lt;poe@cit.dk&gt;.  Mail::Mailer and Mail::Send by Tim Bunce
+       &lt;Tim.Bunce@ig.co.uk&gt;.  For other contributors see ChangeLog.
+
+LICENSE
+       Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and 2001-2007 Mark
+       Overmeer &lt;perl@overmeer.net&gt;.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.  See
+       http://www.perl.com/perl/misc/Artistic.html
+
+
+
+perl v5.14.2                       2012-02-25          Mail::Field::Generic(3pm)
+
+</pre></body></html>

@@ -1,0 +1,72 @@
+<html>
+<head><meta charset=utf-8/>
+<title>io_cancel - cancel an outstanding asynchronous I/O operation</title></head>
+<body><pre>
+
+IO_CANCEL(2)                Linux Programmer&apos;s Manual               IO_CANCEL(2)
+
+
+
+NAME
+       io_cancel - cancel an outstanding asynchronous I/O operation
+
+SYNOPSIS
+       #include &lt;linux/aio_abi.h&gt;          /* Defines needed types */
+
+       int io_cancel(aio_context_t ctx_id, struct iocb *iocb,
+                     struct io_event *result);
+
+       Note: There is no glibc wrapper for this system call; see NOTES.
+
+DESCRIPTION
+       The io_cancel() system call attempts to cancel an asynchronous I/O opera&#8208;
+       tion previously submitted with io_submit(2).  The ctx_id argument is  the
+       AIO  context  ID  of the operation to be canceled.  If the AIO context is
+       found, the event will be canceled and then copied into the memory pointed
+       to by result without being placed into the completion queue.
+
+RETURN VALUE
+       On success, io_cancel() returns 0.  For the failure return, see NOTES.
+
+ERRORS
+       EAGAIN The iocb specified was not canceled.
+
+       EFAULT One of the data structures points to invalid data.
+
+       EINVAL The AIO context specified by ctx_id is invalid.
+
+       ENOSYS io_cancel() is not implemented on this architecture.
+
+VERSIONS
+       The asynchronous I/O system calls first appeared in Linux 2.5.
+
+CONFORMING TO
+       io_cancel() is Linux-specific and should not be used in programs that are
+       intended to be portable.
+
+NOTES
+       Glibc does not provide a wrapper function  for  this  system  call.   You
+       could  invoke it using syscall(2).  But instead, you probably want to use
+       the io_cancel() wrapper function provided by libaio.
+
+       Note that the libaio wrapper function  uses  a  different  type  (io_con&#8208;
+       text_t)  for the ctx_id argument.  Note also that the libaio wrapper does
+       not follow the usual C library  conventions  for  indicating  errors:  on
+       error  it returns a negated error number (the negative of one of the val&#8208;
+       ues listed in ERRORS).  If the system call  is  invoked  via  syscall(2),
+       then  the  return  value  follows the usual conventions for indicating an
+       error: -1, with errno set to a (positive) value that indicates the error.
+
+SEE ALSO
+       io_destroy(2), io_getevents(2), io_setup(2), io_submit(2), aio(7)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-07-13                       IO_CANCEL(2)
+
+</pre></body></html>

@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lscpu - display information on CPU architecture</title></head>
+<body><pre>
+
+LSCPU(1)                          User Commands                         LSCPU(1)
+
+
+
+NAME
+       lscpu - display information on CPU architecture
+
+SYNOPSIS
+       lscpu [-hpx] [-s directory]
+
+DESCRIPTION
+       lscpu  gathers CPU architecture information like number of CPUs, threads,
+       cores, sockets, NUMA nodes, information about  CPU  caches,  CPU  family,
+       model,  bogoMIPS,  byte  order and stepping from sysfs and /proc/cpuinfo,
+       and prints it in a human-readable format.  It supports  both  online  and
+       offline  CPUs.  It can also print out in a parsable format, including how
+       different caches are shared by different CPUs, which can be fed to  other
+       programs.
+
+OPTIONS
+       -h, --help
+              Print a help message.
+
+       -p, --parse [=list]
+              Print out in parsable instead of human-readable format.
+
+              If the list argument is not given then the default backwardly com&#8208;
+              patible output is printed.  The backwardly compatible format  uses
+              two  commas  to  separate  CPU cache columns. If no CPU caches are
+              identified, then the cache columns are not printed at all.
+
+              The list argument is comma delimited list  of  the  columns.  Cur&#8208;
+              rently  supported are CPU, Core, Node, Socket, Book and Cache col&#8208;
+              umns. If the list argument is given then always all requested col&#8208;
+              umns are printed in the defined order. The Cache columns are sepa&#8208;
+              rated by &apos;:&apos;.
+
+              Note that the optional list argument cannot be separated from  the
+              option  by  a space, the correct form is for example &apos;-p=cpu,node&apos;
+              or &apos;--parse=cpu,node&apos;.
+
+       -s, --sysroot directory
+              Use the specified directory as system root.  This  allows  you  to
+              inspect a snapshot from a different system.
+
+       -x, --hex
+              Use  hexadecimal masks for CPU sets (e.g. 0x3).  The default is to
+              print the sets in list format (e.g. 0,1).
+
+BUGS
+       The basic overview about CPU family, model, etc. is always based  on  the
+       first CPU only.
+
+       Sometimes in Xen Dom0 the kernel reports wrong data.
+
+AUTHOR
+       Cai Qian &lt;qcai@redhat.com&gt;
+       Karel Zak &lt;kzak@redhat.com&gt;
+
+AVAILABILITY
+       The lscpu command is part of the util-linux package and is available from
+       ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
+
+
+
+util-linux                        February 2011                         LSCPU(1)
+
+</pre></body></html>

@@ -1,0 +1,180 @@
+<html>
+<head><meta charset=utf-8/>
+<title>RPC::XML::Parser - Interface for parsers created by RPC::XML::ParserFactory</title></head>
+<body><pre>
+
+RPC::XML::Parser(3pm)  User Contributed Perl Documentation RPC::XML::Parser(3pm)
+
+
+
+NAME
+       RPC::XML::Parser - Interface for parsers created by
+       RPC::XML::ParserFactory
+
+SYNOPSIS
+       This class is not instantiated directly; see RPC::XML::ParserFactory.
+
+DESCRIPTION
+       The RPC::XML::Parser class encapsulates the interface for the parsing
+       process. It is an empty class that is used in conjuntion with the
+       RPC::XML::ParserFactory class.
+
+       All parser implementations that are intended to be returned by calls to
+       RPC::XML::ParserFactory::new() should declare this as their parent class.
+
+SUBROUTINES/METHODS
+       This class provides empty implementations for the following methods. A
+       parser implementation must provide definitions for both of these methods.
+       If the versions from this class are triggered they will throw exceptions
+       (&quot;die&quot;).
+
+       The descriptions below define the interface that implementations must
+       adhere to.
+
+       new([ARGS])
+           Create a new instance of the class. Any extra data passed to the
+           constructor is taken as key/value pairs (not a hash reference) and
+           attached to the object.
+
+           The following parameters are currently recognized:
+
+           base64_to_fh
+                   If passed with a true value, this tells the parser that
+                   incoming Base64 data is to be spooled to a filehandle opened
+                   onto an anonymous temporary file. The file itself is unlinked
+                   after opening, though the resulting RPC::XML::base64 object
+                   can use its &quot;to_file&quot; method to save the data to a specific
+                   file at a later point. No checks on size are made; if this
+                   option is set, all Base64 data goes to filehandles.
+
+           base64_temp_dir
+                   If this argument is passed, the value is taken as the
+                   directory under which the temporary files are created. This
+                   is so that the application is not locked in to the list of
+                   directories that File::Spec defaults to with its &quot;tmpdir&quot;
+                   method. If this is not passed, the previously-mentioned
+                   method is used to derive the directory in which to create the
+                   temporary files. Only relevant if base64_to_fh is set.
+
+           The &quot;base64*&quot; parameters do not have to be implemented if the user
+           has no plans to use the &quot;to_file&quot; method of the RPC::XML::base64
+           data-class.
+
+           As a special-case, to preserve backwards compatibility with pre-0.69
+           versions of this package, new() has special behavior when
+           specifically called for the package RPC::XML::Parser. When called for
+           this package, the constructor quietly loads RPC::XML::ParserFactory
+           and uses it to construct and return an instance of a parser based on
+           XML::Parser.
+
+       parse [ STRING | STREAM ]
+           Parse the XML document specified in either a string or a stream. The
+           stream may be any file descriptor, derivative of IO::Handle, etc.
+
+           The value returned must be one of the following:
+
+           RPC::XML::request instance
+               When passed a valid XML-RPC request message, the return value
+               should be an instance of the RPC::XML::request class.
+
+           RPC::XML::response instance
+               Likewise, when passed a valid XML-RPC response, the return value
+               should be an instance of the RPC::XML::response class.
+
+           string containing an error message
+               If the message does not conform to either a request or a
+               response, or does not properly parse, the return value must be a
+               string containing the error message.
+
+           A non-blocking (push) parser instance
+               If no arguments are passed in, the return value must be a parser
+               object that implements push-parsing (non-blocking). It does not
+               have to be of the same class as the original object, but it must
+               support the remaining two methods
+
+       The next two methods are only called on push-parser instances, and as
+       such do not have to be implemented by the actual factory-compatible
+       parser. It is enough if the non-blocking parser instance it returns from
+       the no-argument call to parse() implements these:
+
+       parse_more STRING
+           Send a chunk of the current XML document to the parser for
+           processing.
+
+       parse_done
+           Signal the end of parsing. The return value from this should be one
+           of the same three possibilities that the direct use of parse()
+           (above) returns:
+
+           RPC::XML::request instance
+           RPC::XML::response instance
+           string containing an error message
+
+           parse_done() may also signal an error by throwing an exception.
+
+DIAGNOSTICS
+       Unless otherwises specified, routines return the object reference itself
+       upon a successful operation, and an error string (which is not a blessed
+       reference) upon error.
+
+BUGS
+       Please report any bugs or feature requests to &quot;bug-rpc-xml at
+       rt.cpan.org&quot;, or through the web interface at
+       http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RPC-XML
+       &lt;http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RPC-XML&gt;. I will be
+       notified, and then you&apos;ll automatically be notified of progress on your
+       bug as I make changes.
+
+SUPPORT
+       &#183;   RT: CPAN&apos;s request tracker
+
+           http://rt.cpan.org/NoAuth/Bugs.html?Dist=RPC-XML
+           &lt;http://rt.cpan.org/NoAuth/Bugs.html?Dist=RPC-XML&gt;
+
+       &#183;   AnnoCPAN: Annotated CPAN documentation
+
+           http://annocpan.org/dist/RPC-XML &lt;http://annocpan.org/dist/RPC-XML&gt;
+
+       &#183;   CPAN Ratings
+&#12;           http://cpanratings.perl.org/d/RPC-XML
+           &lt;http://cpanratings.perl.org/d/RPC-XML&gt;
+
+       &#183;   Search CPAN
+
+           http://search.cpan.org/dist/RPC-XML &lt;http://search.cpan.org/dist/RPC-
+           XML&gt;
+
+       &#183;   MetaCPAN
+
+           https://metacpan.org/release/RPC-XML
+           &lt;https://metacpan.org/release/RPC-XML&gt;
+
+       &#183;   Source code on GitHub
+
+           http://github.com/rjray/rpc-xml &lt;http://github.com/rjray/rpc-xml&gt;
+
+LICENSE AND COPYRIGHT
+       This file and the code within are copyright (c) 2011 by Randy J. Ray.
+
+       Copying and distribution are permitted under the terms of the Artistic
+       License 2.0 (http://www.opensource.org/licenses/artistic-license-2.0.php
+       &lt;http://www.opensource.org/licenses/artistic-license-2.0.php&gt;) or the GNU
+       LGPL 2.1 (http://www.opensource.org/licenses/lgpl-2.1.php
+       &lt;http://www.opensource.org/licenses/lgpl-2.1.php&gt;).
+
+CREDITS
+       The XML-RPC standard is Copyright (c) 1998-2001, UserLand Software, Inc.
+       See &lt;http://www.xmlrpc.com&gt; for more information about the XML-RPC
+       specification.
+
+SEE ALSO
+       RPC::XML, RPC::XML::ParserFactory, RPC::XML::Parser::XMLParser
+
+AUTHOR
+       Randy J. Ray &lt;rjray@blackperl.com&gt;
+
+
+
+perl v5.14.2                       2011-07-23              RPC::XML::Parser(3pm)
+
+</pre></body></html>

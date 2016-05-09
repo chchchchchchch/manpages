@@ -1,0 +1,527 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::th - DateTime locale package for "th"</title></head>
+<body><pre>
+
+DateTime::Locale::th(3pUser Contributed Perl DocumentatDateTime::Locale::th(3pm)
+
+
+
+NAME
+       DateTime::Locale::th - DateTime locale package for &quot;th&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;th&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Thai.
+
+DATA
+       This locale inherits from the DateTime::Locale::root locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         XXXXXXXXX
+         XXXXXXXXX
+         XXXXXX
+         XXXXXXXXXXX
+         XXXXXXXX
+         XXXXXXXX
+         XXXXXXXXXX
+
+       Abbreviated (format)
+
+         X.
+         X.
+         X.
+         XX.
+         X.
+         X.
+         XX.
+
+       Narrow (format)
+
+         X
+         X
+         X
+         X
+         X
+         X
+         X
+
+       Wide (stand-alone)
+
+         XXXXXXXXX
+         XXXXXXXXX
+         XXXXXX
+         XXXXXXXXXXX
+         XXXXXXXX
+         XXXXXXXX
+         XXXXXXXXXX
+
+       Abbreviated (stand-alone)
+
+         X.
+         X.
+         X.
+         XX.
+         X.
+         X.
+         XX.
+&#12;       Narrow (stand-alone)
+
+         X
+         X
+         X
+         X
+         X
+         X
+         X
+
+   Months
+       Wide (format)
+
+         XXXXXX
+         XXXXXXXXXX
+         XXXXXX
+         XXXXXX
+         XXXXXXX
+         XXXXXXXX
+         XXXXXXX
+         XXXXXXX
+         XXXXXXX
+         XXXXXX
+         XXXXXXXXX
+         XXXXXXX
+
+       Abbreviated (format)
+
+         X.X.
+         X.X.
+         XX.X.
+         XX.X.
+         X.X.
+         XX.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+
+       Narrow (format)
+
+         X.X.
+         X.X.
+         XX.X.
+         XX.X.
+         X.X.
+         XX.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+
+       Wide (stand-alone)
+
+         XXXXXX
+         XXXXXXXXXX
+         XXXXXX
+         XXXXXX
+         XXXXXXX
+         XXXXXXXX
+         XXXXXXX
+         XXXXXXX
+         XXXXXXX
+         XXXXXX
+         XXXXXXXXX
+         XXXXXXX
+
+       Abbreviated (stand-alone)
+
+         X.X.
+         X.X.
+         XX.X.
+         XX.X.
+         X.X.
+         XX.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+
+       Narrow (stand-alone)
+
+         X.X.
+         X.X.
+         XX.X.
+         XX.X.
+         X.X.
+         XX.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+         X.X.
+
+   Quarters
+       Wide (format)
+
+         XXXXXX 1
+         XXXXXX 2
+         XXXXXX 3
+         XXXXXX 4
+
+       Abbreviated (format)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         XXXXXX 1
+         XXXXXX 2
+         XXXXXX 3
+         XXXXXX 4
+
+       Abbreviated (stand-alone)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         XXXXXXXXXXXXXXXXXX
+         XXXXXXXXXXXX
+
+       Abbreviated
+
+         XXXXXX X.X.
+         X.X.
+
+       Narrow
+
+         XXXXXX X.X.
+         X.X.
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = XXXXXXXXXXXX 5 XXXXXXXXXX X.X. 2008
+          1995-12-22T09:05:02 = XXXXXXXXXXX 22 XXXXXXX X.X. 1995
+         -0010-09-15T04:44:23 = XXXXXXXXXXX 15 XXXXXXX XXXXXX X.X. -10
+
+       Long
+
+          2008-02-05T18:30:30 = 5 XXXXXXXXXX 2008
+          1995-12-22T09:05:02 = 22 XXXXXXX 1995
+         -0010-09-15T04:44:23 = 15 XXXXXXX -10
+
+       Medium
+
+          2008-02-05T18:30:30 = 5 X.X. 2008
+          1995-12-22T09:05:02 = 22 X.X. 1995
+         -0010-09-15T04:44:23 = 15 X.X. -10
+
+       Short
+
+          2008-02-05T18:30:30 = 5/2/2008
+          1995-12-22T09:05:02 = 22/12/1995
+         -0010-09-15T04:44:23 = 15/9/-010
+
+       Default
+
+          2008-02-05T18:30:30 = 5 X.X. 2008
+          1995-12-22T09:05:02 = 22 X.X. 1995
+         -0010-09-15T04:44:23 = 15 X.X. -10
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = 18 XXXXXX 30 XXXX 30 XXXXXX UTC
+          1995-12-22T09:05:02 = 9 XXXXXX 5 XXXX 02 XXXXXX UTC
+         -0010-09-15T04:44:23 = 4 XXXXXX 44 XXXX 23 XXXXXX UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18 XXXXXX 30 XXXX 30 XXXXXX UTC
+          1995-12-22T09:05:02 = 9 XXXXXX 5 XXXX 02 XXXXXX UTC
+         -0010-09-15T04:44:23 = 4 XXXXXX 44 XXXX 23 XXXXXX UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = XXXXXXXXXXXX 5 XXXXXXXXXX X.X. 2008, 18 XXXXXX 30 XXXX 30 XXXXXX UTC
+          1995-12-22T09:05:02 = XXXXXXXXXXX 22 XXXXXXX X.X. 1995, 9 XXXXXX 5 XXXX 02 XXXXXX UTC
+         -0010-09-15T04:44:23 = XXXXXXXXXXX 15 XXXXXXX XXXXXX X.X. -10, 4 XXXXXX 44 XXXX 23 XXXXXX UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 5 XXXXXXXXXX 2008, 18 XXXXXX 30 XXXX 30 XXXXXX UTC
+          1995-12-22T09:05:02 = 22 XXXXXXX 1995, 9 XXXXXX 5 XXXX 02 XXXXXX UTC
+         -0010-09-15T04:44:23 = 15 XXXXXXX -10, 4 XXXXXX 44 XXXX 23 XXXXXX UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 5 X.X. 2008, 18:30:30
+          1995-12-22T09:05:02 = 22 X.X. 1995, 9:05:02
+         -0010-09-15T04:44:23 = 15 X.X. -10, 4:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 5/2/2008, 18:30
+          1995-12-22T09:05:02 = 22/12/1995, 9:05
+         -0010-09-15T04:44:23 = 15/9/-010, 4:44
+
+       Default
+
+          2008-02-05T18:30:30 = 5 X.X. 2008, 18:30:30
+          1995-12-22T09:05:02 = 22 X.X. 1995, 9:05:02
+         -0010-09-15T04:44:23 = 15 X.X. -10, 4:44:23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (EEE d)
+
+          2008-02-05T18:30:30 = X. 5
+          1995-12-22T09:05:02 = X. 22
+         -0010-09-15T04:44:23 = X. 15
+
+       HHmm (HH:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+
+       HHmmss (HH:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+       Hm (H:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+
+       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 XXXXXXXXXX
+          1995-12-22T09:05:02 = 9:05 XXXXXXXXXX
+         -0010-09-15T04:44:23 = 4:44 XXXXXXXXXX
+&#12;       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 XXXXXXXXXX
+          1995-12-22T09:05:02 = 9:05:02 XXXXXXXXXX
+         -0010-09-15T04:44:23 = 4:44:23 XXXXXXXXXX
+
+       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (d/M)
+
+          2008-02-05T18:30:30 = 5/2
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/9
+
+       MEd (E, d/M)
+
+          2008-02-05T18:30:30 = X., 5/2
+          1995-12-22T09:05:02 = X., 22/12
+         -0010-09-15T04:44:23 = X., 15/9
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = X.X.
+          1995-12-22T09:05:02 = X.X.
+         -0010-09-15T04:44:23 = X.X.
+
+       MMMd (d MMM)
+
+          2008-02-05T18:30:30 = 5 X.X.
+          1995-12-22T09:05:02 = 22 X.X.
+         -0010-09-15T04:44:23 = 15 X.X.
+
+       MMMEd (E d MMM)
+
+          2008-02-05T18:30:30 = X. 5 X.X.
+          1995-12-22T09:05:02 = X. 22 X.X.
+         -0010-09-15T04:44:23 = X. 15 X.X.
+
+       MMMMd (d MMMM)
+
+          2008-02-05T18:30:30 = 5 XXXXXXXXXX
+          1995-12-22T09:05:02 = 22 XXXXXXX
+         -0010-09-15T04:44:23 = 15 XXXXXXX
+
+       MMMMEd (E d MMMM)
+
+          2008-02-05T18:30:30 = X. 5 XXXXXXXXXX
+          1995-12-22T09:05:02 = X. 22 XXXXXXX
+         -0010-09-15T04:44:23 = X. 15 XXXXXXX
+
+       mmss (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       ms (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       y (y)
+&#12;          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (M/yyyy)
+
+          2008-02-05T18:30:30 = 2/2008
+          1995-12-22T09:05:02 = 12/1995
+         -0010-09-15T04:44:23 = 9/-010
+
+       yMEd (EEE d/M/yyyy)
+
+          2008-02-05T18:30:30 = X. 5/2/2008
+          1995-12-22T09:05:02 = X. 22/12/1995
+         -0010-09-15T04:44:23 = X. 15/9/-010
+
+       yMMM (MMM y)
+
+          2008-02-05T18:30:30 = X.X. 2008
+          1995-12-22T09:05:02 = X.X. 1995
+         -0010-09-15T04:44:23 = X.X. -10
+
+       yMMMEd (EEE d MMM y)
+
+          2008-02-05T18:30:30 = X. 5 X.X. 2008
+          1995-12-22T09:05:02 = X. 22 X.X. 1995
+         -0010-09-15T04:44:23 = X. 15 X.X. -10
+
+       yMMMM (MMMM y)
+
+          2008-02-05T18:30:30 = XXXXXXXXXX 2008
+          1995-12-22T09:05:02 = XXXXXXX 1995
+         -0010-09-15T04:44:23 = XXXXXXX -10
+
+       yQ (Q yyyy)
+
+          2008-02-05T18:30:30 = 1 2008
+          1995-12-22T09:05:02 = 4 1995
+         -0010-09-15T04:44:23 = 3 -010
+
+       yQQQ (QQQ y)
+
+          2008-02-05T18:30:30 = Q1 2008
+          1995-12-22T09:05:02 = Q4 1995
+         -0010-09-15T04:44:23 = Q3 -10
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+       yyyyM (M/yyyy)
+
+          2008-02-05T18:30:30 = 2/2008
+          1995-12-22T09:05:02 = 12/1995
+         -0010-09-15T04:44:23 = 9/-010
+
+       yyyyMMMM (MMMM y)
+
+          2008-02-05T18:30:30 = XXXXXXXXXX 2008
+          1995-12-22T09:05:02 = XXXXXXX 1995
+         -0010-09-15T04:44:23 = XXXXXXX -10
+
+   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       XXXXXXXXX
+
+SUPPORT
+       See DateTime::Locale.
+&#12;AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19          DateTime::Locale::th(3pm)
+
+</pre></body></html>

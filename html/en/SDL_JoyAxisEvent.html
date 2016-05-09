@@ -1,0 +1,47 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_JoyAxisEvent - Joystick axis motion event structure</title></head>
+<body><pre>
+
+SDL_JoyAxisEvent(3)             SDL API Reference            SDL_JoyAxisEvent(3)
+
+
+
+NAME
+       SDL_JoyAxisEvent - Joystick axis motion event structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 type;
+         Uint8 which;
+         Uint8 axis;
+         Sint16 value;
+       } SDL_JoyAxisEvent;
+
+STRUCTURE DATA
+       type                SDL_JOYAXISMOTION
+
+       which               Joystick device index
+
+       axis                Joystick axis index
+
+       value               Axis value (range: -32768 to 32767)
+
+DESCRIPTION
+       SDL_JoyAxisEvent  is  a member of the SDL_Event union and is used when an
+       event of type SDL_JOYAXISMOTION is reported.
+
+       A SDL_JOYAXISMOTION event occurs when ever a user moves an  axis  on  the
+       joystick.  The field which is the index of the joystick that reported the
+       event and axis is the index of the axis (for a more detailed explaination
+       see the Joystick section). value is the current position of the axis.
+
+SEE ALSO
+       SDL_Event,  Joystick  Functions,  SDL_JoystickEventState, SDL_JoystickGe&#8208;
+       tAxis
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59          SDL_JoyAxisEvent(3)
+
+</pre></body></html>

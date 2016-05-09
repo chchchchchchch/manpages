@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_gencontrol - generate and install control file</title></head>
+<body><pre>
+
+DH_GENCONTROL(1)                    Debhelper                   DH_GENCONTROL(1)
+
+
+
+NAME
+       dh_gencontrol - generate and install control file
+
+SYNOPSIS
+       dh_gencontrol [debhelper&#194; options] [--&#194; params]
+
+DESCRIPTION
+       dh_gencontrol is a debhelper program that is responsible for generating
+       control files, and installing them into the DEBIAN directory with the
+       proper permissions.
+
+       This program is merely a wrapper around dpkg-gencontrol(1), which calls
+       it once for each package being acted on, and passes in some additional
+       useful flags.
+
+OPTIONS
+       -- params
+           Pass params to dpkg-gencontrol(1).
+
+       -uparams, --dpkg-gencontrol-params=params
+           This is another way to pass params to dpkg-gencontrol(1).  It is
+           deprecated; use -- instead.
+
+SEE ALSO
+       debhelper(7)
+
+       This program is a part of debhelper.
+
+AUTHOR
+       Joey Hess &lt;joeyh@debian.org&gt;
+
+
+
+9.20120909                         2011-09-12                   DH_GENCONTROL(1)
+
+</pre></body></html>

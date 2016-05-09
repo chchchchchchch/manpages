@@ -1,0 +1,103 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtAddEventHandler, XtAddRawEventHandler, XtRemoveEventHandler, XtRemoveRawEventHandler, XtInsertEventHandler, XtInsertRawEventHandler - add and remove event handlers</title></head>
+<body><pre>
+
+XtAddEventHandler(3)              XT FUNCTIONS              XtAddEventHandler(3)
+
+
+
+NAME
+       XtAddEventHandler, XtAddRawEventHandler, XtRemoveEventHandler, XtRemove&#8208;
+       RawEventHandler, XtInsertEventHandler, XtInsertRawEventHandler - add and
+       remove event handlers
+
+SYNTAX
+       void XtAddEventHandler(Widget w, EventMask event_mask, Boolean nonmask&#8208;
+              able, XtEventHandler proc, XtPointer client_data);
+
+       void XtAddRawEventHandler(Widget w, EventMask event_mask, Boolean non&#8208;
+              maskable, XtEventHandler proc, XtPointer client_data);
+
+       void XtRemoveEventHandler(Widget w, EventMask event_mask, Boolean non&#8208;
+              maskable, XtEventHandler proc, XtPointer client_data);
+
+       void XtRemoveRawEventHandler(Widget w, EventMask event_mask, Boolean non&#8208;
+              maskable, XtEventHandler proc, XtPointer client_data);
+
+       void XtInsertEventHandler(Widget w, EventMask event_mask, Boolean non&#8208;
+              maskable, XtEventHandler proc, XtPointer client_data, XtListPosi&#8208;
+              tion position);
+
+       void XtInsertRawEventHandler(Widget w, EventMask event_mask, Boolean non&#8208;
+              maskable, XtEventHandler proc, XtPointer client_data, XtListPosi&#8208;
+              tion position);
+
+       typedef enum { XtListHead, XtListTail } XtListPosition;
+
+ARGUMENTS
+       client_data
+                 Specifies additional data to be passed to the client&apos;s event
+                 handler.
+
+       event_mask
+                 Specifies the event mask for which to call or unregister this
+                 procedure.
+
+       nonmaskable
+                 Specifies a Boolean value that indicates whether this procedure
+                 should be called or removed on the nonmaskable events (Graphic&#8208;
+                 sExpose, NoExpose, SelectionClear, SelectionRequest, Selection&#8208;
+                 Notify, ClientMessage, and MappingNotify).
+
+       proc      Specifies the procedure that is to be added or removed.
+
+       w         Specifies the widget for which this event handler is being reg&#8208;
+                 istered.
+
+       position  Specifies when the event handler is to be called relative to
+                 other previously registered handlers.
+
+DESCRIPTION
+       The XtAddEventHandler function registers a procedure with the dispatch
+       mechanism that is to be called when an event that matches the mask occurs
+       on the specified widget.  If the procedure is already registered with the
+       same client_data, the specified mask is ORed into the existing mask.  If
+       the widget is realized, XtAddEventHandler calls XSelectInput, if neces&#8208;
+       sary.
+
+       The XtAddRawEventHandler function is similar to XtAddEventHandler except
+       that it does not affect the widget&apos;s mask and never causes an XSelectIn&#8208;
+       put for its events.  Note that the widget might already have those mask
+       bits set because of other nonraw event handlers registered on it.
+
+       The XtRemoveRawEventHandler function stops the specified procedure from
+       receiving the specified events.  Because the procedure is a raw event
+       handler, this does not affect the widget&apos;s mask and never causes a call
+       on XSelectInput.
+
+       XtInsertEventHandler is identical to XtAddEventHandler with the addi&#8208;
+       tional position argument. if position is XtListHead, the event handler is
+       registered to that it will be called before any event handlers that were
+       previously registered for the same widget.  If position is XtListTail,
+       the event handler is registered to be called after any previously regis&#8208;
+       tered event handlers. If the procedure is already registered with the
+       same client_data value, the specified mask augments the existing mask and
+       the procedure is repositioned in the list.
+
+       XtInsertRawEventHandler is similar to XtInsertEventHandler except that it
+       does not modify the widget&apos;s event mask and never causes an XSelectInput
+       for the specified events. If the procedure is already registered with the
+       same client_data value, the specified mask augments the existing mask and
+       the procedure is repositioned in the list.
+
+SEE ALSO
+       XtAppNextEvent(3), XtBuildEventMask(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3              XtAddEventHandler(3)
+
+</pre></body></html>

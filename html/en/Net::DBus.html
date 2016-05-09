@@ -1,0 +1,218 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DBus - Perl extension for the DBus message system</title></head>
+<body><pre>
+
+Net::DBus(3pm)         User Contributed Perl Documentation        Net::DBus(3pm)
+
+
+
+NAME
+       Net::DBus - Perl extension for the DBus message system
+
+SYNOPSIS
+         ####### Attaching to the bus ###########
+
+         use Net::DBus;
+
+         # Find the most appropriate bus
+         my $bus = Net::DBus-&gt;find;
+
+         # ... or explicitly go for the session bus
+         my $bus = Net::DBus-&gt;session;
+
+         # .... or explicitly go for the system bus
+         my $bus = Net::DBus-&gt;system
+
+
+         ######## Accessing remote services #########
+
+         # Get a handle to the HAL service
+         my $hal = $bus-&gt;get_service(&quot;org.freedesktop.Hal&quot;);
+
+         # Get the device manager
+         my $manager = $hal-&gt;get_object(&quot;/org/freedesktop/Hal/Manager&quot;,
+                                        &quot;org.freedesktop.Hal.Manager&quot;);
+
+         # List devices
+         foreach my $dev (@{$manager-&gt;GetAllDevices}) {
+             print $dev, &quot;\n&quot;;
+         }
+
+
+         ######### Providing services ##############
+
+         # Register a service known as &apos;org.example.Jukebox&apos;
+         my $service = $bus-&gt;export_service(&quot;org.example.Jukebox&quot;);
+
+DESCRIPTION
+       Net::DBus provides a Perl API for the DBus message system.  The DBus Perl
+       interface is currently operating against the 0.32 development version of
+       DBus, but should work with later versions too, providing the API changes
+       have not been too drastic.
+
+       Users of this package are either typically, service providers in which
+       case the Net::DBus::Service and Net::DBus::Object modules are of most
+       relevance, or are client consumers, in which case
+       Net::DBus::RemoteService and Net::DBus::RemoteObject are of most
+       relevance.
+
+METHODS
+       my $bus = Net::DBus-&gt;find(%params);
+           Search for the most appropriate bus to connect to and return a
+           connection to it. The heuristic used for the search is
+
+             - If DBUS_STARTER_BUS_TYPE is set to &apos;session&apos; attach
+               to the session bus
+
+             - Else If DBUS_STARTER_BUS_TYPE is set to &apos;system&apos; attach
+               to the system bus
+
+             - Else If DBUS_SESSION_BUS_ADDRESS is set attach to the
+               session bus
+
+             - Else attach to the system bus
+
+           The optional &quot;params&quot; hash can contain be used to specify connection
+           options. The only support option at this time is &quot;nomainloop&quot; which
+           prevents the bus from being automatically attached to the main
+           Net::DBus::Reactor event loop.
+
+       my $bus = Net::DBus-&gt;system(%params);
+           Return a handle for the system message bus. Note that the system
+           message bus is locked down by default, so unless appropriate access
+           control rules are added in /etc/dbus/system.d/, an application may
+           access services, but won&apos;t be able to export services.  The optional
+           &quot;params&quot; hash can contain be used to specify connection options. The
+           only support option at this time is &quot;nomainloop&quot; which prevents the
+           bus from being automatically attached to the main Net::DBus::Reactor
+           event loop.
+
+       my $bus = Net::DBus-&gt;session(%params);
+           Return a handle for the session message bus.  The optional &quot;params&quot;
+           hash can contain be used to specify connection options. The only
+           support option at this time is &quot;nomainloop&quot; which prevents the bus
+           from being automatically attached to the main Net::DBus::Reactor
+           event loop.
+
+       my $bus = Net::DBus-&gt;test(%params);
+           Returns a handle for a virtual bus for use in unit tests. This bus
+           does not make any network connections, but rather has an in-memory
+           message pipeline. Consult Net::DBus::Test::MockConnection for further
+           details of how to use this special bus.
+
+       my $bus = Net::DBus-&gt;new($address, %params);
+           Return a connection to a specific message bus.  The $address
+           parameter must contain the address of the message bus to connect to.
+           An example address for a session bus might look like
+           &quot;unix:abstract=/tmp/dbus-PBFyyuUiVb,guid=191e0a43c3efc222e0818be556d67500&quot;,
+           while one for a system bus would look like
+           &quot;unix:/var/run/dbus/system_bus_socket&quot;.  The optional &quot;params&quot; hash
+           can contain be used to specify connection options. The only support
+           option at this time is &quot;nomainloop&quot; which prevents the bus from being
+           automatically attached to the main Net::DBus::Reactor event loop.
+
+       my $connection = $bus-&gt;get_connection;
+           Return a handle to the underlying, low level connection object
+           associated with this bus. The returned object will be an instance of
+           the Net::DBus::Binding::Bus class. This method is not intended for
+           use by (most!) application developers, so if you don&apos;t understand
+           what this is for, then you don&apos;t need to be calling it!
+
+       my $service = $bus-&gt;get_service($name);
+           Retrieves a handle for the remote service identified by the service
+           name $name. The returned object will be an instance of the
+           Net::DBus::RemoteService class.
+
+       my $service = $bus-&gt;export_service($name);
+           Registers a service with the bus, returning a handle to the service.
+           The returned object is an instance of the Net::DBus::Service class.
+
+       my $object = $bus-&gt;get_bus_object;
+           Retrieves a handle to the bus object, &quot;/org/freedesktop/DBus&quot;,
+           provided by the service &quot;org.freedesktop.DBus&quot;. The returned object
+           is an instance of Net::DBus::RemoteObject
+
+       my $name = $bus-&gt;get_unique_name;
+           Retrieves the unique name of this client&apos;s connection to the bus.
+&#12;       my $name = $bus-&gt;get_service_owner($service);
+           Retrieves the unique name of the client on the bus owning the service
+           named by the $service parameter.
+
+DATA TYPING METHODS
+       These methods are not usually used, since most services provide
+       introspection data to inform clients of their data typing requirements.
+       If introspection data is incomplete, however, it may be necessary for a
+       client to mark values with specific data types. In such a case, the
+       following methods can be used. They are not, however, exported by default
+       so must be requested at import time by specifying &apos;use Net::DBus
+       qw(:typing)&apos;
+
+       $typed_value = dbus_int16($value);
+           Mark a value as being a signed, 16-bit integer.
+
+       $typed_value = dbus_uint16($value);
+           Mark a value as being an unsigned, 16-bit integer.
+
+       $typed_value = dbus_int32($value);
+           Mark a value as being a signed, 32-bit integer.
+
+       $typed_value = dbus_uint32($value);
+           Mark a value as being an unsigned, 32-bit integer.
+
+       $typed_value = dbus_int64($value);
+           Mark a value as being an unsigned, 64-bit integer.
+
+       $typed_value = dbus_uint64($value);
+           Mark a value as being an unsigned, 64-bit integer.
+
+       $typed_value = dbus_double($value);
+           Mark a value as being a double precision IEEE floating point.
+
+       $typed_value = dbus_byte($value);
+           Mark a value as being an unsigned, byte.
+
+       $typed_value = dbus_string($value);
+           Mark a value as being a UTF-8 string. This is not usually required
+           since &apos;string&apos; is the default data type for any Perl scalar value.
+
+       $typed_value = dbus_signature($value);
+           Mark a value as being a UTF-8 string, whose contents is a valid type
+           signature
+
+       $typed_value = dbus_object_path($value);
+           Mark a value as being a UTF-8 string, whose contents is a valid
+           object path.
+
+       $typed_value = dbus_boolean($value);
+           Mark a value as being an boolean
+
+       $typed_value = dbus_array($value);
+           Mark a value as being an array
+
+       $typed_value = dbus_struct($value);
+           Mark a value as being a structure
+
+       $typed_value = dbus_dict($value);
+           Mark a value as being a dictionary
+
+       $typed_value = dbus_variant($value);
+           Mark a value as being a variant
+
+SEE ALSO
+       Net::DBus, Net::DBus::RemoteService, Net::DBus::Service,
+       Net::DBus::RemoteObject, Net::DBus::Object, Net::DBus::Exporter,
+       Net::DBus::Dumper, Net::DBus::Reactor, &quot;dbus-monitor(1)&quot;,
+       &quot;dbus-daemon-1(1)&quot;, &quot;dbus-send(1)&quot;, &lt;http://dbus.freedesktop.org&gt;,
+
+AUTHOR
+       Daniel Berrange &lt;dan@berrange.com&gt;
+
+COPYRIGHT
+       Copyright 2004-2011 by Daniel Berrange
+
+
+
+perl v5.14.2                       2011-06-30                     Net::DBus(3pm)
+
+</pre></body></html>

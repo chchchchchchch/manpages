@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>glib-gettextize - gettext internationalization utility</title></head>
+<body><pre>
+
+GLIB-GETTEXTIZE(1)                User Commands               GLIB-GETTEXTIZE(1)
+
+
+
+NAME
+       glib-gettextize - gettext internationalization utility
+
+SYNOPSIS
+       glib-gettextize [option...] [directory]
+
+DESCRIPTION
+       glib-gettextize helps to prepare a source package for being
+       internationalized through gettext. It is a variant of the gettextize that
+       ships with gettext.
+
+       glib-gettextize differs from gettextize in that it doesn&apos;t create an
+       intl/ subdirectory and doesn&apos;t modify po/ChangeLog (note that newer
+       versions of gettextize behave like this when called with the
+       --no-changelog option).
+
+   Options
+       --help
+           print help and exit
+
+       --version
+           print version information and exit
+
+       -c, --copy
+           copy files instead of making symlinks
+
+       -f, --force
+           force writing of new files even if old ones exist
+
+SEE ALSO
+       gettextize(1)
+
+
+
+User Commands                      07/14/2012                 GLIB-GETTEXTIZE(1)
+
+</pre></body></html>

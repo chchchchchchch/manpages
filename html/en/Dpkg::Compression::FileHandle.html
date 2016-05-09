@@ -1,0 +1,144 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Dpkg::Compression::FileHandle - object dealing transparently with file compression</title></head>
+<body><pre>
+
+Dpkg::Compression::FileHandle(3)  libdpkg-perl  Dpkg::Compression::FileHandle(3)
+
+
+
+NAME
+       Dpkg::Compression::FileHandle - object dealing transparently with file
+       compression
+
+SYNOPSIS
+           use Dpkg::Compression::FileHandle;
+
+           $fh = Dpkg::Compression::FileHandle-&gt;new(filename=&gt;&quot;sample.gz&quot;);
+           print $fh &quot;Something\n&quot;;
+           close $fh;
+
+           $fh = Dpkg::Compression::FileHandle-&gt;new();
+           open($fh, &quot;&gt;&quot;, &quot;sample.bz2&quot;);
+           print $fh &quot;Something\n&quot;;
+           close $fh;
+
+           $fh = Dpkg::Compression::FileHandle-&gt;new();
+           $fh-&gt;open(&quot;sample.xz&quot;, &quot;w&quot;);
+           $fh-&gt;print(&quot;Something\n&quot;);
+           $fh-&gt;close();
+
+           $fh = Dpkg::Compression::FileHandle-&gt;new(filename=&gt;&quot;sample.gz&quot;);
+           my @lines = &lt;$fh&gt;;
+           close $fh;
+
+           $fh = Dpkg::Compression::FileHandle-&gt;new();
+           open($fh, &quot;&lt;&quot;, &quot;sample.bz2&quot;);
+           my @lines = &lt;$fh&gt;;
+           close $fh;
+
+           $fh = Dpkg::Compression::FileHandle-&gt;new();
+           $fh-&gt;open(&quot;sample.xz&quot;, &quot;r&quot;);
+           my @lines = $fh-&gt;getlines();
+           $fh-&gt;close();
+
+DESCRIPTION
+       Dpkg::Compression::FileHandle is an object that can be used like any
+       filehandle and that deals transparently with compressed files. By
+       default, the compression scheme is guessed from the filename but you can
+       override this behaviour with the method &quot;set_compression&quot;.
+
+       If you don&apos;t open the file explicitly, it will be auto-opened on the
+       first read or write operation based on the filename set at creation time
+       (or later with the &quot;set_filename&quot; method).
+
+       Once a file has been opened, the filehandle must be closed before being
+       able to open another file.
+
+STANDARD FUNCTIONS
+       The standard functions acting on filehandles should accept a
+       Dpkg::Compression::FileHandle object transparently including &quot;open&quot; (only
+       when using the variant with 3 parameters), &quot;close&quot;, &quot;binmode&quot;, &quot;eof&quot;,
+       &quot;fileno&quot;, &quot;getc&quot;, &quot;print&quot;, &quot;printf&quot;, &quot;read&quot;, &quot;sysread&quot;, &quot;say&quot;, &quot;write&quot;,
+       &quot;syswrite&quot;, &quot;seek&quot;, &quot;sysseek&quot;, &quot;tell&quot;.
+
+       Note however that &quot;seek&quot; and &quot;sysseek&quot; will only work on uncompressed
+       files as compressed files are really pipes to the compressor programs and
+       you can&apos;t seek on a pipe.
+
+FileHandle METHODS
+       The object inherits from FileHandle so all methods that work on this
+       object should work for Dpkg::Compression::FileHandle too. There may be
+       exceptions though.
+
+PUBLIC METHODS
+       my $fh = Dpkg::Compression::FileHandle-&gt;new(%opts)
+           Creates a new filehandle supporting on-the-fly
+           compression/decompression.  Supported options are &quot;filename&quot;,
+           &quot;compression&quot;, &quot;compression_level&quot; (see respective set_* functions)
+           and &quot;add_comp_ext&quot;. If &quot;add_comp_ext&quot; evaluates to true, then the
+           extension corresponding to the selected compression scheme is
+           automatically added to the recorded filename. It&apos;s obviously
+           incompatible with automatic detection of the compression method.
+
+       $fh-&gt;ensure_open($mode)
+           Ensure the file is opened in the requested mode (&quot;r&quot; for read and &quot;w&quot;
+           for write). Opens the file with the recorded filename if needed. If
+           the file is already open but not in the requested mode, then it
+           errors out.
+
+       $fh-&gt;set_compression($comp)
+           Defines the compression method used. $comp should one of the methods
+           supported by Dpkg::Compression or &quot;none&quot; or &quot;auto&quot;. &quot;none&quot; indicates
+           that the file is uncompressed and &quot;auto&quot; indicates that the method
+           must be guessed based on the filename extension used.
+
+       $fh-&gt;set_compression_level($level)
+           Indicate the desired compression level. It should be a value accepted
+           by the function &quot;compression_is_valid_level&quot; of Dpkg::Compression.
+
+       $fh-&gt;set_filename($name, [$add_comp_ext])
+           Use $name as filename when the file must be opened/created. If
+           $add_comp_ext is passed, it indicates whether the default extension
+           of the compression method must be automatically added to the filename
+           (or not).
+
+       my $file = $fh-&gt;get_filename()
+           Returns the filename that would be used when the filehandle must be
+           opened (both in read and write mode). This function errors out if
+           &quot;add_comp_ext&quot; is enableactivated while the compression method is set
+           to &quot;auto&quot;. The returned filename includes the extension of the
+           compression method if &quot;add_comp_ext&quot; is enabled.
+
+       $ret = $fh-&gt;use_compression()
+           Returns &quot;0&quot; if no compression is used and the compression method used
+           otherwise. If the compression is set to &quot;auto&quot;, the value returned
+           depends on the extension of the filename obtained with the
+           get_filename method.
+
+       my $real_fh = $fh-&gt;get_filehandle()
+           Returns the real underlying filehandle. Useful if you want to pass it
+           along in a derived object.
+
+DERIVED OBJECTS
+       If you want to create an object that inherits from
+       Dpkg::Compression::FileHandle you must be aware that the object is a
+       reference to a GLOB that is returned by Symbol::gensym() and as such it&apos;s
+       not a HASH.
+
+       You can store internal data in a hash but you have to use &quot;*$self-&quot;{...}&gt;
+       to access the associated hash like in the example below:
+
+           sub set_option {
+               my ($self, $value) = @_;
+               *$self-&gt;{&quot;option&quot;} = $value;
+           }
+
+AUTHOR
+       Rapha&#195;&#171;l Hertzog &lt;hertzog@debian.org&gt;
+
+
+
+1.16.16                            2015-04-09   Dpkg::Compression::FileHandle(3)
+
+</pre></body></html>

@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSetElements - set elements in a flow</title></head>
+<body><pre>
+
+AuSetElements(3)                                                AuSetElements(3)
+
+
+
+Name
+       AuSetElements - set elements in a flow
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       void AuSetElements(server, flow, clocked, num_elements, elements, status)
+           AuServer *server;
+           AuFlowID flow;
+           AuBool clocked;
+           int num_elements;
+           AuElement *elements;
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       flow      Specifies the ID of the flow to set elements in.
+
+       clocked   Specifies if the flow is clocked.
+
+       num_elements
+                 Specifies the number of elements.
+
+       elements  Specifies the list of elements to use.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSetElements is used to set the elements in flow.
+
+Note
+       Unclocked flows (Specifying a value  of  AuFalse  for  clocked)  are  not
+       implemented.
+
+Errors
+       AuBadFlow, AuBadLength, AuBadElement, AuBadAlloc, AuBadValue.
+
+See Also
+       AuGetElements, AuSetElementParameters.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - flow elements              1.9.3                     AuSetElements(3)
+
+</pre></body></html>

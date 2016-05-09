@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>joystick_update - query joysticks for status changes</title></head>
+<body><pre>
+
+joystick_update(3)             Svgalib User Manual            joystick_update(3)
+
+
+
+NAME
+       joystick_update - query joysticks for status changes
+
+SYNOPSIS
+       #include &lt;vgajoystick.h&gt;
+
+       int joystick_update(void);
+
+
+DESCRIPTION
+       queries all currently opened joysticks for position changes and calls the
+       appropriate event handlers.
+
+       A non-zero value is returned if and only if any joystick reported a posi&#8208;
+       tion change. In more detail the logical and of the return value and (1 &lt;&lt;
+       joydev) is non-zero if this joystick status changed.
+
+
+CAVEATS
+       This function is only available in ELF versions of svgalib. Due to  back&#8208;
+       wards compatibility issues it cannot be used with shared a.out libs.
+
+
+SEE ALSO
+       svgalib(7),  vgagl(7),  libvga.config(5),  joytest(6),  mjoytest(6), joy&#8208;
+       stick_init(3), joystick_close(3), joystick_sethandler(3), joystick_setde&#8208;
+       faulthandler(3),  joystick_getnumaxes(3), joystick_getnumbuttons(3), joy&#8208;
+       stick_getaxis(3),   joystick_getbutton(3),   joystick_button1(3),    joy&#8208;
+       stick_getb1(3), joystick_x(3), joystick_getx(3).
+
+
+AUTHOR
+       The  svgalib  joystick  handler  was  mostly  done  by  Daniel Engstr\&quot;om
+       &lt;daniel.engstrom@riksnett.no&gt;.  Multiple joystick, VC  switching  support
+       and  code to glue it into svgalib by Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. Part of the code is based on code from C.  Smith  and  Vojtech
+       Pavlik.
+
+
+
+Svgalib 1.3.0                     14 April 1998               joystick_update(3)
+
+</pre></body></html>

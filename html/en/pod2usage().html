@@ -1,0 +1,80 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pod::UsageTrans, pod2usage() - print a usage message from embedded pod documentation</title></head>
+<body><pre>
+
+Pod::UsageTrans(3pm)   User Contributed Perl Documentation  Pod::UsageTrans(3pm)
+
+
+
+NAME
+       Pod::UsageTrans, pod2usage() - print a usage message from embedded pod
+       documentation
+
+SYNOPSIS
+         use Pod::UsageTrans
+         use Locale::gettext;
+
+         setlocale(LC_MESSAGES,&apos;&apos;);
+         textdomain(&apos;prog&apos;);
+
+         my $message_text  = &quot;This text precedes the usage message.&quot;;
+         my $exit_status   = 2;          ## The exit status to use
+         my $verbose_level = 0;          ## The verbose level to use
+         my $filehandle    = \*STDERR;   ## The filehandle to write to
+         my $textdomain    = &apos;prog-pod&apos;; ## The gettext domain for the Pod documentation
+
+         pod2usage($message_text);
+
+         pod2usage($exit_status);
+
+         pod2usage( { -message =&gt; gettext( $message_text ) ,
+                      -exitval =&gt; $exit_status  ,
+                      -verbose =&gt; $verbose_level,
+                      -output  =&gt; $filehandle,
+                      -textdomain =&gt; $textdomain } );
+
+         pod2usage(   -msg     =&gt; $message_text ,
+                      -exitval =&gt; $exit_status  ,
+                      -verbose =&gt; $verbose_level,
+                      -output  =&gt; $filehandle,
+                      -textdomain =&gt; $textdomain );
+
+DESCRIPTION
+       Pod::UsageTrans works exactly like Pod::Usage but allows you to easily
+       translate your messages. It was specifically written to be compatible
+       with the .po files produced by po4a(7). If you want to use any other
+       method to produce your .po files you should probably take a look at the
+       source of code of this module to see which msgids you will need to use.
+
+       For documentation on calling pod2usage from your program see Pod::Usage.
+       Pod::UsageTrans additionally supports a &quot;-textdomain&quot; option where you
+       can specify the gettext domain to use. If &quot;-textdomain&quot; isn&apos;t set,
+       Pod::UsageTrans will behave exactly like Pod::Usage.
+
+BUGS
+       Pod::UsageTrans is currently in the state of a quickly hacked together
+       solution that was tested with exactly one use case. Expect bugs in corner
+       cases.
+
+       It specifically doesn&apos;t support many of the po4a options like charset
+       conversion between the POD input and the msgstr in the .pot file.
+
+SEE ALSO
+       po4a(7), Pod::Usage, gettext info documentation
+
+AUTHOR
+       Frank Lichtenheld, &lt;frank@lichtenheld.de&gt;
+
+       Based on Pod::Usage by Brad Appleton &lt;bradapp@enteract.com&gt; which is
+       based on code for Pod::Text::pod2text() written by Tom Christiansen
+       &lt;tchrist@mox.perl.com&gt;
+
+       Also based on Locale::Po4a::Pod, Locale::Po4a::Po and
+       Locale::Po4a::TransTractor by Martin Quinson and Denis Barbier.
+
+
+
+perl v5.10.1                       2011-04-04               Pod::UsageTrans(3pm)
+
+</pre></body></html>

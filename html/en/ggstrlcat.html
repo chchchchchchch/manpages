@@ -1,0 +1,105 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ggstrlcpy, ggstrlcat - size-bounded string copying and concatenation</title></head>
+<body><pre>
+
+ggstrlcpy(3)                           GGI                          ggstrlcpy(3)
+
+
+
+NAME
+       ggstrlcpy, ggstrlcat - size-bounded string copying and concatenation
+
+SYNOPSIS
+       #include &lt;ggi/gg.h&gt;
+
+       size_t ggstrlcpy(char *dst, const char *src, size_t siz);
+
+       size_t ggstrlcat(char *dst, const char *src, size_t siz);
+
+
+DESCRIPTION
+       The  ggstrlcpy  and  ggstrlcat  functions  copy  and  concatenate strings
+       respectively.  They are designed to be safer, more consistent,  and  less
+       error  prone  replacements  for  strncpy(3) and strncat(3).  Unlike those
+       functions, ggstrlcpy and ggstrlcat take the full size of the buffer  (not
+       just  the  length)  and guarantee to NUL-terminate the result (as long as
+       size is larger than 0 or, in the case of ggstrlcat, as long as  there  is
+       at  least one byte free in dst).  Note that you should include a byte for
+       the NUL in size.  Also note that ggstrlcpy and ggstrlcat only operate  on
+       true C strings.  This means that for ggstrlcpy src must be NUL-terminated
+       and for ggstrlcat both src and dst must be NUL-terminated.
+
+       The ggstrlcpy function copies up to siz - 1 characters from the  NUL-ter&#8208;
+       minated string src to dst, NUL-terminating the result.
+
+       The  ggstrlcat  function appends the NUL-terminated string src to the end
+       of dst.  It will append at most siz - strlen(dst) - 1  bytes,  NUL-termi&#8208;
+       nating the result.
+
+RETURN VALUES
+       The  ggstrlcpy  and  ggstrlcat  functions  return the total length of the
+       string they tried to create.  For ggstrlcpy that means the length of src.
+       For  ggstrlcat  that  means  the initial length of dst plus the length of
+       src.  While this may seem somewhat confusing it was done to make  trunca&#8208;
+       tion detection simple.
+
+       Note however, that if ggstrlcat traverses size characters without finding
+       a NUL, the length of the string is considered to be size and the destina&#8208;
+       tion  string will not be NUL-terminated (since there was no space for the
+       NUL).  This keeps ggstrlcat from running off the end  of  a  string.   In
+       practice  this  should not happen (as it means that either size is incor&#8208;
+       rect or that dst is not a proper C string).  The check exists to  prevent
+       potential security problems in incorrect code.
+
+EXAMPLES
+       The following code fragment illustrates the simple case:
+
+       char *s, *p, buf[BUFSIZ];
+
+       ...
+
+       (void)ggstrlcpy(buf, s, sizeof(buf));
+       (void)ggstrlcat(buf, p, sizeof(buf));
+
+       To  detect  truncation, perhaps while building a pathname, something like
+       the following might be used:
+
+       char *dir, *file, pname[MAXPATHLEN];
+
+       ...
+&#12;       if (ggstrlcpy(pname, dir, sizeof(pname)) &gt;= sizeof(pname))
+               goto toolong;
+       if (ggstrlcat(pname, file, sizeof(pname)) &gt;= sizeof(pname))
+               goto toolong;
+
+       Since we know how many characters we copied the first time, we can  speed
+       things up a bit by using a copy instead of an append:
+
+       char *dir, *file, pname[MAXPATHLEN];
+       size_t n;
+
+       ...
+
+       n = ggstrlcpy(pname, dir, sizeof(pname));
+       if (n &gt;= sizeof(pname))
+               goto toolong;
+       if (ggstrlcpy(pname + n, file, sizeof(pname) - n) &gt;= sizeof(pname) - n)
+               goto toolong;
+
+       However,  one  may  question  the validity of such optimizations, as they
+       defeat the whole purpose of ggstrlcpy and ggstrlcat.
+
+SEE ALSO
+       snprintf(3) strncat(3) strncpy(3)
+
+HISTORY
+       strlcpy and strlcat first appeared in OpenBSD 2.4, then in  NetBSD  1.4.3
+       and  FreeBSD  3.3.0.  ggstrlcpy and ggstrlcat has been added to libgg for
+       portability.
+
+
+
+libgg-1.0.x                        2005-08-26                       ggstrlcpy(3)
+
+</pre></body></html>

@@ -1,0 +1,87 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbAddGeomSection - Add one section to an existing keyboard geometry</title></head>
+<body><pre>
+
+XkbAddGeomSection(3)              XKB FUNCTIONS             XkbAddGeomSection(3)
+
+
+
+NAME
+       XkbAddGeomSection - Add one section to an existing keyboard geometry
+
+SYNOPSIS
+       XkbSectionPtr  XkbAddGeomSection  (XkbGeometryPtr  geom,  Atom  name, int
+              sz_rows, int sz_doodads, int sz_overlays);
+
+ARGUMENTS
+       - geom geometry to be updated
+
+       - name name of the new section
+
+       - sz_rows
+              number of rows to reserve in the section
+
+       - sz_doodads
+              number of doodads to reserve in the section
+
+       - sz_overlays
+              number of overlays to reserve in the section
+
+DESCRIPTION
+       Xkb provides functions to add a single new element to the top-level  key&#8208;
+       board  geometry.  In  each  case  the  num_ * fields of the corresponding
+       structure is incremented by 1. These functions do not change sz_*  unless
+       there  is  no more room in the array. Some of these functions fill in the
+       values of the element&apos;s structure from the  arguments.  For  other  func&#8208;
+       tions, you must explicitly write code to fill the structure&apos;s elements.
+
+       The  top-level  geometry  description includes a list of geometry proper&#8208;
+       ties.  A geometry property associates an arbitrary string with an equally
+       arbitrary  name. Programs that display images of keyboards can use geome&#8208;
+       try properties as hints, but they are not interpreted by  Xkb.  No  other
+       geometry structures refer to geometry properties.
+
+       A  keyboard geometry contains an arbitrary number of sections.  XkbAddGe&#8208;
+       omSection adds one section to an existing keyboard  geometry  geom.   The
+       new  section contains space for the number of rows, doodads, and overlays
+       specified by sz_rows, sz_doodads, and sz_overlays.  The  new  section  is
+       allocated  and zeroed and given the name specified by name.  If a section
+       with name name already exists in the geometry, a pointer to the  existing
+       section is returned.  XkbAddGeomSection returns NULL if any of the param&#8208;
+       eters is empty or if it was not able to allocate space for  the  section.
+       To  allocate space for an arbitrary number of sections to a geometry, use
+       XkbAllocGeomSections.
+
+STRUCTURES
+       typedef struct _XkbSection {
+           Atom                    name;        /&#8727; section name */
+           unsigned char           priority;    /&#8727; drawing priority, 0=&gt;highest, 255=&gt;lowest */
+           short                   top;         /&#8727; top coordinate of section origin */
+           short                   left;        /&#8727; left coordinate of row origin */
+           unsigned short          width;       /&#8727; section width, in mm/10 */
+           unsigned short          height;      /&#8727; section height, in mm/10 */
+           short                   angle;       /&#8727; angle of section rotation, counterclockwise */
+           unsigned short          num_rows;    /&#8727; number of rows in the rows array */
+           unsigned short          num_doodads; /&#8727; number of doodads in the doodads array */
+           unsigned short          num_overlays; /&#8727; number of overlays in the overlays array */
+           unsigned short          sz_rows;      /&#8727; size of the rows array */
+           unsigned short          sz_doodads;   /&#8727; size of the doodads array */
+           unsigned short          sz_overlays;  /&#8727; size of the overlays array */
+           XkbRowPtr               rows;         /&#8727; section rows array */
+           XkbDoodadPtr            doodads;      /&#8727; section doodads array */
+           XkbBoundsRec            bounds;       /&#8727; bounding box for the section, before rotation*/
+           XkbOverlayPtr           overlays;     /&#8727; section overlays array */
+       } XkbSectionRec, *XkbSectionPtr;
+
+       top and left are the origin of the section, relative to the origin of the
+       keyboard, in mm/10. angle is in 1/10 degrees.
+
+SEE ALSO
+       XkbAllocGeomSections(3)
+
+
+
+X Version 11                      libX11 1.5.0              XkbAddGeomSection(3)
+
+</pre></body></html>

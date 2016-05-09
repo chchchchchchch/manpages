@@ -1,0 +1,188 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Config - Log4perl configuration file syntax</title></head>
+<body><pre>
+
+Config(3pm)            User Contributed Perl Documentation           Config(3pm)
+
+
+
+NAME
+       Log::Log4perl::Config - Log4perl configuration file syntax
+
+DESCRIPTION
+       In &quot;Log::Log4perl&quot;, configuration files are used to describe how the
+       system&apos;s loggers ought to behave.
+
+       The format is the same as the one as used for &quot;log4j&quot;, just with a few
+       perl-specific extensions, like enabling the &quot;Bar::Twix&quot; syntax instead of
+       insisting on the Java-specific &quot;Bar.Twix&quot;.
+
+       Comment lines (starting with arbitrary whitespace and a #) and blank
+       lines (all whitespace or empty) are ignored.
+
+       Also, blanks between syntactical entities are ignored, it doesn&apos;t matter
+       if you write
+
+           log4perl.logger.Bar.Twix=WARN,Screen
+
+       or
+
+           log4perl.logger.Bar.Twix = WARN, Screen
+
+       &quot;Log::Log4perl&quot; will strip the blanks while parsing your input.
+
+       Assignments need to be on a single line. However, you can break the line
+       if you want to by using a continuation character at the end of the line.
+       Instead of writing
+
+           log4perl.appender.A1.layout=Log::Log4perl::Layout::SimpleLayout
+
+       you can break the line at any point by putting a backslash at the very
+       (!)  end of the line to be continued:
+
+           log4perl.appender.A1.layout=\
+               Log::Log4perl::Layout::SimpleLayout
+
+       Watch out for trailing blanks after the backslash, which would prevent
+       the line from being properly concatenated.
+
+   Loggers
+       Loggers are addressed by category:
+
+           log4perl.logger.Bar.Twix      = WARN, Screen
+
+       This sets all loggers under the &quot;Bar::Twix&quot; hierarchy on priority &quot;WARN&quot;
+       and attaches a later-to-be-defined &quot;Screen&quot; appender to them.  Settings
+       for the root appender (which doesn&apos;t have a name) can be accomplished by
+       simply omitting the name:
+
+           log4perl.logger = FATAL, Database, Mailer
+
+       This sets the root appender&apos;s level to &quot;FATAL&quot; and also attaches the
+       later-to-be-defined appenders &quot;Database&quot; and &quot;Mailer&quot; to it.
+
+       The additivity flag of a logger is set or cleared via the &quot;additivity&quot;
+       keyword:
+
+           log4perl.additivity.Bar.Twix = 0|1
+
+       (Note the reversed order of keyword and logger name, resulting from the
+       dilemma that a logger name could end in &quot;.additivity&quot; according to the
+       log4j documentation).
+
+   Appenders and Layouts
+       Appender names used in Log4perl configuration file lines need to be
+       resolved later on, in order to define the appender&apos;s properties and its
+       layout. To specify properties of an appender, just use the &quot;appender&quot;
+       keyword after the &quot;log4perl&quot; intro and the appender&apos;s name:
+
+               # The Bar::Twix logger and its appender
+           log4perl.logger.Bar.Twix = DEBUG, A1
+           log4perl.appender.A1=Log::Log4perl::Appender::File
+           log4perl.appender.A1.filename=test.log
+           log4perl.appender.A1.mode=append
+           log4perl.appender.A1.layout=Log::Log4perl::Layout::SimpleLayout
+
+       This sets a priority of &quot;DEBUG&quot; for loggers in the &quot;Bar::Twix&quot; hierarchy
+       and assigns the &quot;A1&quot; appender to it, which is later on resolved to be an
+       appender of type &quot;Log::Log4perl::Appender::File&quot;, simply appending to a
+       log file. According to the &quot;Log::Log4perl::Appender::File&quot; manpage, the
+       &quot;filename&quot; parameter specifies the name of the log file and the &quot;mode&quot;
+       parameter can be set to &quot;append&quot; or &quot;write&quot; (the former will append to
+       the logfile if one with the specified name already exists while the
+       latter would clobber and overwrite it).
+
+       The order of the entries in the configuration file is not important,
+       &quot;Log::Log4perl&quot; will read in the entire file first and try to make sense
+       of the lines after it knows the entire context.
+
+       You can very well define all loggers first and then their appenders (you
+       could even define your appenders first and then your loggers, but let&apos;s
+       not go there):
+
+           log4perl.logger.Bar.Twix = DEBUG, A1
+           log4perl.logger.Bar.Snickers = FATAL, A2
+
+           log4perl.appender.A1=Log::Log4perl::Appender::File
+           log4perl.appender.A1.filename=test.log
+           log4perl.appender.A1.mode=append
+           log4perl.appender.A1.layout=Log::Log4perl::Layout::SimpleLayout
+
+           log4perl.appender.A2=Log::Log4perl::Appender::Screen
+           log4perl.appender.A2.stderr=0
+           log4perl.appender.A2.layout=Log::Log4perl::Layout::PatternLayout
+           log4perl.appender.A2.layout.ConversionPattern = %d %m %n
+
+       Note that you have to specify the full path to the layout class and that
+       &quot;ConversionPattern&quot; is the keyword to specify the printf-style formatting
+       instructions.
+
+Configuration File Cookbook
+       Here&apos;s some examples of often-used Log4perl configuration files:
+
+   Append to STDERR
+           log4perl.category.Bar.Twix      = WARN, Screen
+           log4perl.appender.Screen        = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.layout = \
+               Log::Log4perl::Layout::PatternLayout
+           log4perl.appender.Screen.layout.ConversionPattern = %d %m %n
+
+   Append to STDOUT
+           log4perl.category.Bar.Twix      = WARN, Screen
+           log4perl.appender.Screen        = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.stderr = 0
+           log4perl.appender.Screen.layout = \
+               Log::Log4perl::Layout::PatternLayout
+           log4perl.appender.Screen.layout.ConversionPattern = %d %m %n
+&#12;   Append to a log file
+           log4perl.logger.Bar.Twix = DEBUG, A1
+           log4perl.appender.A1=Log::Log4perl::Appender::File
+           log4perl.appender.A1.filename=test.log
+           log4perl.appender.A1.mode=append
+           log4perl.appender.A1.layout = \
+               Log::Log4perl::Layout::PatternLayout
+           log4perl.appender.A1.layout.ConversionPattern = %d %m %n
+
+       Note that you could even leave out
+
+           log4perl.appender.A1.mode=append
+
+       and still have the logger append to the logfile by default, although the
+       &quot;Log::Log4perl::Appender::File&quot; module does exactly the opposite.  This
+       is due to some nasty trickery &quot;Log::Log4perl&quot; performs behind the scenes
+       to make sure that beginner&apos;s CGI applications don&apos;t clobber the log file
+       every time they&apos;re called.
+
+   Write a log file from scratch
+       If you loathe the Log::Log4perl&apos;s append-by-default strategy, you can
+       certainly override it:
+
+           log4perl.logger.Bar.Twix = DEBUG, A1
+           log4perl.appender.A1=Log::Log4perl::Appender::File
+           log4perl.appender.A1.filename=test.log
+           log4perl.appender.A1.mode=write
+           log4perl.appender.A1.layout=Log::Log4perl::Layout::SimpleLayout
+
+       &quot;write&quot; is the &quot;mode&quot; that has &quot;Log::Log4perl::Appender::File&quot;
+       explicitely clobber the log file if it exists.
+
+SEE ALSO
+       Log::Log4perl::Config::PropertyConfigurator
+
+       Log::Log4perl::Config::DOMConfigurator
+
+       Log::Log4perl::Config::LDAPConfigurator (coming soon!)
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                        Config(3pm)
+
+</pre></body></html>

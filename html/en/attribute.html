@@ -1,0 +1,352 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca attribute conversions -</title></head>
+<body><pre>
+
+libcaca attribute conversions(3caca) libcacalibcaca attribute conversions(3caca)
+
+
+
+NAME
+       libcaca attribute conversions -
+
+   Functions
+       __extern uint32_t caca_get_attr (caca_canvas_t const *, int, int)
+           Get the text attribute at the given coordinates.
+       __extern int caca_set_attr (caca_canvas_t *, uint32_t)
+           Set the default character attribute.
+       __extern int caca_unset_attr (caca_canvas_t *, uint32_t)
+           Unset flags in the default character attribute.
+       __extern int caca_toggle_attr (caca_canvas_t *, uint32_t)
+           Toggle flags in the default character attribute.
+       __extern int caca_put_attr (caca_canvas_t *, int, int, uint32_t)
+           Set the character attribute at the given coordinates.
+       __extern int caca_set_color_ansi (caca_canvas_t *, uint8_t, uint8_t)
+           Set the default colour pair for text (ANSI version).
+       __extern int caca_set_color_argb (caca_canvas_t *, uint16_t, uint16_t)
+           Set the default colour pair for text (truecolor version).
+       __extern uint8_t caca_attr_to_ansi (uint32_t)
+           Get DOS ANSI information from attribute.
+       __extern uint8_t caca_attr_to_ansi_fg (uint32_t)
+           Get ANSI foreground information from attribute.
+       __extern uint8_t caca_attr_to_ansi_bg (uint32_t)
+           Get ANSI background information from attribute.
+       __extern uint16_t caca_attr_to_rgb12_fg (uint32_t)
+           Get 12-bit RGB foreground information from attribute.
+       __extern uint16_t caca_attr_to_rgb12_bg (uint32_t)
+           Get 12-bit RGB background information from attribute.
+       __extern void caca_attr_to_argb64 (uint32_t, uint8_t[8])
+           Get 64-bit ARGB information from attribute.
+
+Detailed Description
+       These functions perform conversions between attribute values.
+
+Function Documentation
+   __extern uint32_t caca_get_attr (caca_canvas_t const *cv, intx, inty) Get the
+       internal libcaca attribute value of the character at the given
+       coordinates. The attribute value has 32 significant bits, organised as
+       follows from MSB to LSB:
+       &#183; 3 bits for the background alpha
+
+       &#183; 4 bits for the background red component
+
+       &#183; 4 bits for the background green component
+
+       &#183; 3 bits for the background blue component
+
+       &#183; 3 bits for the foreground alpha
+
+       &#183; 4 bits for the foreground red component
+
+       &#183; 4 bits for the foreground green component
+
+       &#183; 3 bits for the foreground blue component
+
+       &#183; 4 bits for the bold, italics, underline and blink flags
+
+       If the coordinates are outside the canvas boundaries, the current
+       attribute is returned.
+
+       This function never fails.
+&#12;       Parameters:
+           cv A handle to the libcaca canvas.
+           x X coordinate.
+           y Y coordinate.
+
+       Returns:
+           The requested attribute.
+
+       Referenced by caca_conio_textbackground(), caca_conio_textcolor(),
+       caca_dither_bitmap(), caca_flush_figlet(), and caca_put_figchar().
+
+   __extern int caca_set_attr (caca_canvas_t *cv, uint32_tattr) Set the default
+       character attribute for drawing. Attributes define foreground and
+       background colour, transparency, bold, italics and underline styles, as
+       well as blink. String functions such as caca_printf() and graphical
+       primitive functions such as caca_draw_line() will use this attribute.
+       The value of attr is either:
+
+       &#183; a 32-bit integer as returned by caca_get_attr(), in which case it also
+         contains colour information,
+
+       &#183; a combination (bitwise OR) of style values (CACA_UNDERLINE, CACA_BLINK,
+         CACA_BOLD and CACA_ITALICS), in which case setting the attribute does
+         not modify the current colour information.
+
+       To retrieve the current attribute value, use caca_get_attr(-1,-1).
+
+       This function never fails.
+
+       Parameters:
+           cv A handle to the libcaca canvas.
+           attr The requested attribute value.
+
+       Returns:
+           This function always returns 0.
+
+       Referenced by caca_dither_bitmap(), and caca_put_figchar().
+
+   __extern int caca_unset_attr (caca_canvas_t *cv, uint32_tattr) Unset flags in
+       the default character attribute for drawing. Attributes define foreground
+       and background colour, transparency, bold, italics and underline styles,
+       as well as blink. String functions such as caca_printf() and graphical
+       primitive functions such as caca_draw_line() will use this attribute.
+       The value of attr is a combination (bitwise OR) of style values
+       (CACA_UNDERLINE, CACA_BLINK, CACA_BOLD and CACA_ITALICS). Unsetting these
+       attributes does not modify the current colour information.
+
+       To retrieve the current attribute value, use caca_get_attr(-1,-1).
+
+       This function never fails.
+
+       Parameters:
+           cv A handle to the libcaca canvas.
+           attr The requested attribute values to unset.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_toggle_attr (caca_canvas_t *cv, uint32_tattr) Toggle flags
+       in the default character attribute for drawing. Attributes define
+       foreground and background colour, transparency, bold, italics and
+       underline styles, as well as blink. String functions such as
+       caca_printf() and graphical primitive functions such as caca_draw_line()
+       will use this attribute.
+       The value of attr is a combination (bitwise OR) of style values
+       (CACA_UNDERLINE, CACA_BLINK, CACA_BOLD and CACA_ITALICS). Toggling these
+       attributes does not modify the current colour information.
+
+       To retrieve the current attribute value, use caca_get_attr(-1,-1).
+
+       This function never fails.
+
+       Parameters:
+           cv A handle to the libcaca canvas.
+           attr The requested attribute values to toggle.
+
+       Returns:
+           This function always returns 0.
+
+   __extern int caca_put_attr (caca_canvas_t *cv, intx, inty, uint32_tattr) Set
+       the character attribute, without changing the character&apos;s value. If the
+       character at the given coordinates is a fullwidth character, both cells&apos;
+       attributes are replaced.
+       The value of attr is either:
+
+       &#183; a 32-bit integer as returned by caca_get_attr(), in which case it also
+         contains colour information,
+
+       &#183; a combination (bitwise OR) of style values (CACA_UNDERLINE, CACA_BLINK,
+         CACA_BOLD and CACA_ITALICS), in which case setting the attribute does
+         not modify the current colour information.
+
+       This function never fails.
+
+       Parameters:
+           cv A handle to the libcaca canvas.
+           x X coordinate.
+           y Y coordinate.
+           attr The requested attribute value.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_add_dirty_rect(), and CACA_MAGIC_FULLWIDTH.
+
+       Referenced by caca_flush_figlet(), and caca_put_figchar().
+
+   __extern int caca_set_color_ansi (caca_canvas_t *cv, uint8_tfg, uint8_tbg)
+       Set the default ANSI colour pair for text drawing. String functions such
+       as caca_printf() and graphical primitive functions such as
+       caca_draw_line() will use these attributes.
+       Color values are those defined in caca.h, such as CACA_RED or
+       CACA_TRANSPARENT.
+
+       If an error occurs, 0 is returned and errno is set accordingly:
+
+       &#183; EINVAL At least one of the colour values is invalid.
+
+       Parameters:
+           cv A handle to the libcaca canvas.
+           fg The requested ANSI foreground colour.
+           bg The requested ANSI background colour.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       Referenced by caca_conio_textbackground(), caca_conio_textcolor(),
+       caca_create_canvas(), and caca_dither_bitmap().
+
+   __extern int caca_set_color_argb (caca_canvas_t *cv, uint16_tfg, uint16_tbg)
+       Set the default ARGB colour pair for text drawing. String functions such
+       as caca_printf() and graphical primitive functions such as
+       caca_draw_line() will use these attributes.
+       Colors are 16-bit ARGB values, each component being coded on 4 bits. For
+       instance, 0xf088 is solid dark cyan (A=15 R=0 G=8 B=8), and 0x8fff is
+       white with 50% alpha (A=8 R=15 G=15 B=15).
+
+       This function never fails.
+
+       Parameters:
+           cv A handle to the libcaca canvas.
+           fg The requested ARGB foreground colour.
+           bg The requested ARGB background colour.
+
+       Returns:
+           This function always returns 0.
+
+   __extern uint8_t caca_attr_to_ansi (uint32_tattr) Get the ANSI colour pair
+       for a given attribute. The returned value is an 8-bit value whose higher
+       4 bits are the background colour and lower 4 bits are the foreground
+       colour.
+       If the attribute has ARGB colours, the nearest colour is used. Special
+       attributes such as CACA_DEFAULT and CACA_TRANSPARENT are not handled and
+       are both replaced with CACA_LIGHTGRAY for the foreground colour and
+       CACA_BLACK for the background colour.
+
+       This function never fails. If the attribute value is outside the expected
+       32-bit range, higher order bits are simply ignored.
+
+       Parameters:
+           attr The requested attribute value.
+
+       Returns:
+           The corresponding DOS ANSI value.
+
+       References CACA_BLACK, and CACA_LIGHTGRAY.
+
+   __extern uint8_t caca_attr_to_ansi_fg (uint32_tattr) Get the ANSI foreground
+       colour value for a given attribute. The returned value is either one of
+       the CACA_RED, CACA_BLACK etc. predefined colours, or the special value
+       CACA_DEFAULT meaning the media&apos;s default foreground value, or the special
+       value CACA_TRANSPARENT.
+       If the attribute has ARGB colours, the nearest colour is returned.
+
+       This function never fails. If the attribute value is outside the expected
+       32-bit range, higher order bits are simply ignored.
+
+       Parameters:
+           attr The requested attribute value.
+
+       Returns:
+           The corresponding ANSI foreground value.
+
+       Referenced by caca_conio_textbackground().
+
+   __extern uint8_t caca_attr_to_ansi_bg (uint32_tattr) Get the ANSI background
+       colour value for a given attribute. The returned value is either one of
+       the CACA_RED, CACA_BLACK etc. predefined colours, or the special value
+       CACA_DEFAULT meaning the media&apos;s default background value, or the special
+       value CACA_TRANSPARENT.
+       If the attribute has ARGB colours, the nearest colour is returned.
+
+       This function never fails. If the attribute value is outside the expected
+       32-bit range, higher order bits are simply ignored.
+
+       Parameters:
+           attr The requested attribute value.
+&#12;       Returns:
+           The corresponding ANSI background value.
+
+       Referenced by caca_conio_textcolor().
+
+   __extern uint16_t caca_attr_to_rgb12_fg (uint32_tattr) Get the 12-bit
+       foreground colour value for a given attribute. The returned value is a
+       native-endian encoded integer with each red, green and blue values
+       encoded on 8 bits in the following order:
+       &#183; 8-11 most significant bits: red
+
+       &#183; 4-7 most significant bits: green
+
+       &#183; least significant bits: blue
+
+       This function never fails. If the attribute value is outside the expected
+       32-bit range, higher order bits are simply ignored.
+
+       Parameters:
+           attr The requested attribute value.
+
+       Returns:
+           The corresponding 12-bit RGB foreground value.
+
+       References CACA_DEFAULT, CACA_LIGHTGRAY, and CACA_TRANSPARENT.
+
+   __extern uint16_t caca_attr_to_rgb12_bg (uint32_tattr) Get the 12-bit
+       background colour value for a given attribute. The returned value is a
+       native-endian encoded integer with each red, green and blue values
+       encoded on 8 bits in the following order:
+       &#183; 8-11 most significant bits: red
+
+       &#183; 4-7 most significant bits: green
+
+       &#183; least significant bits: blue
+
+       This function never fails. If the attribute value is outside the expected
+       32-bit range, higher order bits are simply ignored.
+
+       Parameters:
+           attr The requested attribute value.
+
+       Returns:
+           The corresponding 12-bit RGB background value.
+
+       References CACA_BLACK, CACA_DEFAULT, and CACA_TRANSPARENT.
+
+   __extern void caca_attr_to_argb64 (uint32_tattr, uint8_targb[8]) Get the
+       64-bit colour and alpha values for a given attribute. The values are
+       written as 8-bit integers in the argb array in the following order:
+       &#183; argb[0]: background alpha value
+
+       &#183; argb[1]: background red value
+
+       &#183; argb[2]: background green value
+
+       &#183; argb[3]: background blue value
+
+       &#183; argb[4]: foreground alpha value
+
+       &#183; argb[5]: foreground red value
+
+       &#183; argb[6]: foreground green value
+
+       &#183; argb[7]: foreground blue value
+&#12;       This function never fails. If the attribute value is outside the expected
+       32-bit range, higher order bits are simply ignored.
+
+       Parameters:
+           attr The requested attribute value.
+           argb An array of 8-bit integers.
+
+       References CACA_BLACK, CACA_DEFAULT, CACA_LIGHTGRAY, and
+       CACA_TRANSPARENT.
+
+       Referenced by caca_render_canvas().
+
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2libcaca attribute conversions(3caca)
+
+</pre></body></html>

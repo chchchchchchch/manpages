@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuElementState - element state structure</title></head>
+<body><pre>
+
+AuElementState(3)                                              AuElementState(3)
+
+
+
+Name
+       AuElementState - element state structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef struct _AuElementState
+       {
+           AuFlowID flow;
+           unsigned char element_num;
+           unsigned char state;
+           unsigned short pad;
+       }AuElementState;
+
+Members
+       flow      Specifies the flow.
+
+       element_num
+                 Specifies  the index of the element of interest.  Use AuElemen&#8208;
+                 tAll to access the state of the flow.
+
+       state     Specifies the state of the element (or flow) specified by  ele&#8208;
+                 ment_num.   This should be one of thses constants: AuStateStop,
+                 AuStateStart, or AuStatePause.
+
+Description
+       The AuElementState structure is used to access the state of elements in a
+       flow.   Only  flows  and  component elements (ExportBucket, ExportClient,
+       ExportDevice, ImportClient, ImportDevice, ImportBucket,  and  ImportWave&#8208;
+       Form) have state.
+
+See Also
+       AuGetElementStates, AuMakeElementState, AuGetElementStates.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - element state structure    1.9.3                    AuElementState(3)
+
+</pre></body></html>

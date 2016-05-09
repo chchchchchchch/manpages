@@ -1,0 +1,269 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vgrabbj - grab images from a v4l-compatible webcam</title></head>
+<body><pre>
+
+VGRABBJ(1)                                                            VGRABBJ(1)
+
+
+
+NAME
+       vgrabbj - grab images from a v4l-compatible webcam
+
+SYNOPSIS
+       vgrabbj [options]
+
+DESCRIPTION
+       This manual page documents briefly the vgrabbj command.
+
+       vgrabbj  is  a  program that will grab images from any v4l-capable device
+       which supports one of the rgb24, rgb32, yuv420, yuv420p, yuyv, or  yuv422
+       palettes and saves the image as a .jpg, .png, or .pnm file.
+
+       Optional,  it  can  timestamp  the resulting image, and/or upload it to a
+       ftp-server. Additionally, a daemon-mode is available to do the above reg&#8208;
+       ularly.
+
+       On  startup, the default configuration file /etc/vgrabbj.conf is read and
+       evaluated. If a configuration file is specified via the -c parameter (see
+       below),  that  file  is  read and parsed. Values which are present in the
+       default config file keep their values.  Finally, the commandline is eval&#8208;
+       uated. If an option is presented more than once, the last in the command&#8208;
+       line is taken.  If no options given, vgrabbj tries to  open  the  default
+       v4l-device /dev/video, grab an image and return it on /dev/stdout.  So be
+       aware.
+
+OPTIONS
+       All options are either numeric values, strings, or booleans. If it  is  a
+       boolean  switch (e.g. no value/string shown after the switch), it plainly
+       switches the  current  setting  of  that  particular  option.   Remember,
+       vgrabbj.conf  is read first, so any option set to on or off there will be
+       toggled by the commandline switch.
+
+       -h     Show summary of options and version number.  -c &lt;filename&gt;  Speci&#8208;
+              fies filename as alternative configuration file.
+
+       -l &lt;seconds&gt;
+              Daemonize &amp; loop with seconds intervals (min. 1).
+
+       -L &lt;microseconds&gt;
+              Daemonize  &amp;  loop  microseconds  intervals  (min.  1). Same as -l
+              except you can control it more precisely.
+
+       -a     Enable vgrabbj&apos;s brightness adjustment (default: disabled). To use
+              vgrabbj&apos;s  brightness  adjustment,  RGB24 support of the device is
+              necessary. You may have to provide it to your device  via  the  -F
+              parameter  (see  below).   If  your device does not support RGB24,
+              this setting is silently ignored.
+
+       -q &lt;quality&gt;
+              Sets the quality of a jpeg output to quality (1-100, default: 75).
+
+       -i &lt;imagesize&gt;
+              Sets the imagesize of input device, where imagesize is one of:
+
+               sqcif= 128x96,     qsif = 160x120,
+               qcif = 176x144,    sif  = 320x240,
+               cif  = 352x288,    vga  = 640x480,
+               svga = 800x600,    xga  = 1024x768,
+               sxga = 1280x1024,  uxga = 1600x1200,
+
+              (default: cif)
+&#12;       -w &lt;width&gt;
+              Sets the width of the image to width. Needs  -H.   The  v4l-device
+              has to support the image width you set with this option.
+
+       -H &lt;height&gt;
+              Sets  the height of the image to height. Needs -w.  The v4l-device
+              has to support the image height you set with this option.
+
+       -o &lt;format&gt;
+              Sets the output to format (either  jpeg,  png,  or  pnm,  default:
+              jpeg)
+
+       -f &lt;filename&gt;
+              Output is written to filename (default: /dev/stdout)
+
+       -A &lt;path+filename&gt;
+              Additional  to  the  output  of  -f another file is written to the
+              named path+filename, whereas the whole may be formatted  according
+              to strftime(2). This enables the creation of an archive of images.
+              Currently, the output is only supported on the same filesystem  as
+              the original output.
+
+       -E &lt;value&gt;
+              Defines how many images shall be read until a copy for the archive
+              is made. E.g. 1 means each image taken is also put in the archive.
+              5 would mean every fifth image taken is put in the archive.
+
+       -M &lt;value&gt;
+              Sets  the  maximum  number  of  images kept in the archive. If you
+              defined 5 seconds for daemon mode, archive every image,  you  col&#8208;
+              lect  720 images per hour. If you set this switch to 720 you would
+              keep an hour of images in the archive.
+
+       -d &lt;device&gt;
+              Sets the input device to device (default: /dev/video)
+
+       -s &lt;device&gt;
+              This flag causes vgrabbj to print the v4l capabilities of &lt;device&gt;
+              and exit.
+
+       -C     Causes  vgrabbj  to  open  the  device  only  while  image data is
+              grabbed.  This is helpful if you need access to the device besides
+              vgrabbj.  It&apos;s  use  is  discouraged due to possible problems with
+              memory fragmentation.  Default is  to  keep  the  v4l-device  open
+              while vgrabbj is running.
+
+       -g     Disables  setting of the image size (see -i, -H, and -w. Necessary
+              for certain v4l-devices which do not support to be set to  a  par&#8208;
+              ticular image size (e.g. IBM-usb-cam, QuickCam). For these devices
+              you have to specify the size at module load time.
+
+       -S     Switches colormap from BGR to RGB (or vice versa). Use if you have
+              odd colors.
+
+       -R     Swaps left and right of the image like a mirror.
+
+       -U     Swaps  top and bottom of the image like a mirror (e.g. for upside-
+              down montage of the cam).
+
+       -G     Turns off use of mmap&apos;ed memory. see vgrabbj.conf(5) for details.
+
+       -D &lt;value&gt;
+              Sets the loglevel of vgrabbj. Valid for value are 0, 2, 3, 4, 6, 7
+              (default:  4). 0 means no messages at all, 7 is debug. Don&apos;t use 7
+              if you are running vgrabbj in daemon mode, it&apos;ll surely fill  your
+              syslog.  Be  aware, that loglevel 7 will also write your ftp-pass&#8208;
+              word (if defined in vgrabbj.conf(5)) in the logfile!
+
+       -n     Disable the use of the temporary outputfile and write directly  to
+              the output-file specified with -f. Output to /dev/stdout is always
+              written directly without the use of a temporary file.
+
+              If a filename different from /dev/stdout was  given  with  the  -f
+              parameter,  vgrabbj  defaults to use a temporary file called file&#8208;
+              name.tmp to write the image. This file is then renamed to filename
+              to shorten the time period corrupt data may be read from filename.
+
+       -F &lt;palette&gt;
+              Force  the  usage of the specified palette. If palette is not sup&#8208;
+              ported by either vgrabbj or the v4l-device, fallback to a  palette
+              supported  by both is provided. If no common denominator is avail&#8208;
+              able, vgrabbj exits. See DESCRIPTION for details on palettes  sup&#8208;
+              ported by vgrabbj. Possible values are (copy from videodev.h):
+
+               1  VIDEO_PALETTE_GREY      Linear greyscale
+               2  VIDEO_PALETTE_HI240     High 240 cube (BT848)
+               3  VIDEO_PALETTE_RGB565    565 16 bit RGB
+               4  VIDEO_PALETTE_RGB24     24bit RGB
+               5  VIDEO_PALETTE_RGB32     32bit RGB
+               6  VIDEO_PALETTE_RGB555    555 15bit RGB
+               7  VIDEO_PALETTE_YUV422    YUV422 capture
+               8  VIDEO_PALETTE_YUYV
+               9  VIDEO_PALETTE_UYVY
+               10 VIDEO_PALETTE_YUV420
+               10 VIDEO_PALETTE_YUV411    YUV411 capture
+               11 VIDEO_PALETTE_RAW       RAW capture (BT848)
+               12 VIDEO_PALETTE_YUV422P   YUV 4:2:2 Planar
+               13 VIDEO_PALETTE_YUV411P   YUV 4:1:1 Planar
+               14 VIDEO_PALETTE_YUV420P   YUV 4:2:0 Planar
+               15 VIDEO_PALETTE_YUV410P   YUV 4:1:0 Planar
+               16 VIDEO_PALETTE_PLANAR
+               17 VIDEO_PALETTE_COMPONENT
+
+              (no default, depends on v4l-device)
+
+       -z &lt;value&gt;
+              value  images are grabbed and immediately discarded. Only the last
+              image is written to the output. This might be helpful if your v4l-
+              device needs to take a couple of images to auto-adjust to the cur&#8208;
+              rent light.
+
+       -X     Does not fork daemon process and keeps vgrabbj in daemon  mode  in
+              foreground,  attached  to  the terminal. Useful for debugging pur&#8208;
+              pose. Not available in config file.
+
+HARDWARE CONTROL OPTIONS
+       With the following options you can control the hardware settings of  your
+       cam  -  if it is supported by your cam. Be aware that these options might
+       break your hardware, as there is no check on what values  are  available,
+       allowed, and supported by your hardware.
+
+       -W &lt;value&gt;
+              Whiteness definition.
+
+       -r &lt;value&gt;
+              Color definition.
+
+       -x &lt;value&gt;
+              Contrast definition.
+
+       -b &lt;value&gt;
+              Brightness definition.
+
+       -u &lt;value&gt;
+              Hue definition.
+&#12;TIMESTAMP OPTIONS
+       The following options are available only if vgrabbj was compiled with the
+       freetype library available. If you set any one of these  options  on  the
+       commandline  timestamp  will be enabled with default values for all other
+       options.
+
+       -e     Switches timestamp to be used or not. Default is off, but  may  be
+              overridden  by  config-file,  so just try to enable this switch if
+              there is no timestamp in the resulting image.
+
+       -t &lt;filename&gt;
+              The  TrueType  font  to  be  used  for  the   timestamp   (default
+              /usr/X11R6/lib/X11/fonts/TrueType/Arialn.ttf)
+
+       -T &lt;size&gt;
+              Set the fontsize to size for timestamp (3-100, default: 12).
+
+       -p &quot;&lt;format-str&gt;&quot;
+              Defines  the  timestamp. format-str can be plain text or any strf&#8208;
+              time format and has to be enclosed with &apos;&quot;&quot;&apos;  (default:  &quot;%a,  %e.
+              %B %Y - %T&quot; - see strftime(3) for details)
+
+       -P &lt;value&gt;
+              Alignment of the timestamp in the image. Possible value:
+
+              0 = upper left,    1 = upper right,
+              2 = lower left,    3 = lower right,
+              4 = upper center,  5 = lower center
+
+              (default: 1).
+
+       -m &lt;value&gt;
+              Defines  the  blend  between  font  background  and  image (1-100,
+              default: 60).
+
+       -B &lt;value&gt;
+              value pixels will be used as border around  the  timestamp  string
+              (1-255, default: 2).
+
+FTP OPTIONS
+       There  are  no options for ftp-upload on the command line. This is due to
+       the need to provide a password which would be visible via the ps(1)  com&#8208;
+       mand.  See  vgrabbj.conf  for  details  on  how  to set-up the ftp-upload
+       option.  Additionally, vgrabbj has to be compiled with libftp support.
+
+BUGS
+       %F in the archive time-string (year with century) causes  memory  corrup&#8208;
+       tion  at  a  pentium-machine  running vgrabbj (not validated). No further
+       bugs are known at this time.
+
+SEE ALSO
+       vgrabbj.conf(4), strftime(3), ps(1)
+
+AUTHOR
+       This  manual   page   was   originally   written   by   Michael   Janssen
+       &lt;janssen@cns.uni.edu&gt;,  for  the  Debian GNU/Linux system and enhanced by
+       Jens Gecius &lt;devel@gecius.de&gt;.
+
+
+
+                               February  24, 2002                     VGRABBJ(1)
+
+</pre></body></html>

@@ -1,0 +1,49 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lookbib - search bibliographic databases</title></head>
+<body><pre>
+
+LOOKBIB(1)                                                            LOOKBIB(1)
+
+
+
+NAME
+       lookbib - search bibliographic databases
+
+SYNOPSIS
+       lookbib [ -v ] [ -istring ] [ -tn ] filename...
+
+       It  is  possible to have whitespace between a command line option and its
+       parameter.
+
+DESCRIPTION
+       lookbib prints a prompt on the standard error (unless the standard  input
+       is not a terminal), reads from the standard input a line containing a set
+       of keywords, searches the bibliographic databases filename... for  refer&#8208;
+       ences containing those keywords, prints any references found on the stan&#8208;
+       dard output, and repeats this process until the end of input.   For  each
+       database  filename  to  be  searched,  if  an index filename.i created by
+       indxbib(1) exists, then it will be searched instead; each index can cover
+       multiple databases.
+
+OPTIONS
+       -v     Print the version number.
+
+       -istring
+              When  searching  files  for which no index exists, ignore the con&#8208;
+              tents of fields whose names are in string.
+
+       -tn    Only require the first n characters of keys  to  be  given.   Ini&#8208;
+              tially n is 6.
+
+FILES
+       filename.i  Index files.
+
+SEE ALSO
+       refer(1), lkbib(1), indxbib(1)
+
+
+
+Groff Version 1.21              31 December 2010                      LOOKBIB(1)
+
+</pre></body></html>

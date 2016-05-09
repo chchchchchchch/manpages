@@ -1,0 +1,39 @@
+<html>
+<head><meta charset=utf-8/>
+<title>diffindex-rred - Restricted restricted ed</title></head>
+<body><pre>
+
+DIFFINDEX-RRED(1)                                              DIFFINDEX-RRED(1)
+
+
+
+NAME
+       diffindex-rred - Restricted restricted ed
+
+SYNOPSIS
+       diffindex-rred diff1 ...
+
+
+DESCRIPTION
+       diffindex-rred  is  a  command  line  tool  for  applying diff --ed style
+       patches, as used in APT&apos;s diff/Index format.  It  can  efficiently  apply
+       several  patches  in  one  run and does not need to read the whole source
+       file into memory.
+
+       The source file is taken from stdin. The patched file is written to  std&#8208;
+       out.  Compressed  patch files are decompressed automatically if they have
+       the proper .gz, .bz2, or .lzo extension.
+
+       diffindex-rred is used by diffindex-download.
+
+SEE ALSO
+       apt-file(1), diffindex-download(1)
+
+AUTHOR
+       diffindex-rred was written by Stefan Fritsch &lt;sf@debian.org&gt;.
+
+
+
+                                  January 2009                 DIFFINDEX-RRED(1)
+
+</pre></body></html>

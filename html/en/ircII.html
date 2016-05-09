@@ -1,0 +1,236 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ircII - interface to the Internet Relay Chat system</title></head>
+<body><pre>
+
+IRCII(1)                                                                IRCII(1)
+
+
+
+NAME
+       ircII - interface to the Internet Relay Chat system
+
+SYNOPSIS
+       irc  [-c chan] [-p portno] [-P portno] [-b] [-f] [-F] [-s] [-S] [-t] [-T]
+       [-d] [nickname [server list]] [-a] [-v] [-q] [-h hostname ] [-icb] [-irc]
+
+DESCRIPTION
+       The ircII program is a full screen, termcap based interface  to  Internet
+       Relay  Chat.   It  gives  full access to all of the normal IRC functions,
+       plus a variety of additional options.
+
+OPTIONS
+       -c chan
+              Automatically join channel chan.
+
+       -p portno
+              Set the IRC port number to portno (default: 6667, the standard IRC
+              port).   Only  supply this if you connect to a server which uses a
+              port other than 6667.
+
+       -P portno
+              Set the ICB port number to portno (default: 7326, the standard ICB
+              port).
+
+       -b     Load  the  .ircrc  file  before connection to a server, not after&#8208;
+              wards.
+
+       -f     Use flow control (^S and ^Q) to stop/start the display.   Normally
+              these  are  both bound to other functions within irc.  This switch
+              is ignored if the  -d switch is used.
+
+       -F     Don&apos;t use flow control (^S and ^Q)  to  stop  start  the  display.
+              This switch is ignored if the  -d switch is used.
+
+       -s     Don&apos;t  start  up  the  ircio  process to connect to the IRC server
+              (default).
+
+       -S     Start up the ircio process to connect to the IRC server.
+
+       -t     Don&apos;t use the termcap ti and te sequences when starting and  exit&#8208;
+              ing (default).
+
+       -T     Do  use  the termcap ti and te sequences when starting and exiting
+              if they exist.
+
+       -d     Start in &quot;dumb&quot; mode.  All input is taken directly from stdin  and
+              all  output  goes  to  stdout  without using any of the termcap(5)
+              screen control codes.
+
+       nickname
+              Set the nickname  (overrides  the  environment  variable  IRCNICK;
+              default: the username).
+
+       server Set  the  list  of servers with which irc will try to connect upon
+              startup.  This list is also used by the program&apos;s /server command.
+              The format for lines in the list is:
+
+              hostname [:portno[:password[:nick]]] for IRC connections.  For ICB
+              connections, the format is:
+
+              ICB/hostname [:portno[::nick[:group[:mode]]]] with group being the
+              initial  group  and  mode being the initial group mode.  See /HELP
+              ICB for more information about ICB.
+
+              If the  hostname  is  in  the  format  :servergroup:host.com  then
+              servergroup is taken to be the Server Group for this server entry.
+
+       -a     This  adds  the normal irc server list to the command line list of
+              irc servers.
+
+       -v     Print the version and release date of ircII and exit.
+
+       -q     Start up irc quickly -- don&apos;t load the IRCRC file.
+
+       -h hostname
+              This option instructs ircII to use the given hostname as the local
+              address.  Useful only on multi-homed hosts.
+
+       -icb   Use ICB connections by default.
+
+       -irc   Use IRC connections by default.
+
+DETAILED DESCRIPTION
+   The Screen:
+       The  screen is split into two parts, separated by an inverse-video status
+       line (if supported).  The upper (larger)  part  of  the  screen  displays
+       responses  from  the  IRC server.  The lower part of the screen (a single
+       line) accepts keyboard input.
+
+       Some terminals do not support certain  features  required  by  ircII,  in
+       which  case  you  receive  a  message  stating this.  If this occurs, try
+       changing the terminal type or run ircII with the -d option.
+
+   Irc Commands:
+       Any line beginning with the slash character &apos;/&apos; is regarded as  an  ircII
+       command (the command character may be changed; type &apos;/help set cmdchar&apos;).
+       Any line not beginning with this character is treated as a message to  be
+       sent  to  the  current  channel.   To produce a listing of commands, type
+       &apos;/help ?&apos;.  To receive information about the commands type  &apos;/help  &lt;com&#8208;
+       mand&gt; &apos;.
+
+   The .ircrc File:
+       When  ircII is executed, it checks the user&apos;s home directory for a .ircrc
+       file, executing the commands in the file.  Commands in this file  do  not
+       need to have a leading slash character &apos;/&apos;.  This allows predefinition of
+       aliases and other features.
+
+EXAMPLES
+       irc -c #users -p 5555
+              Connect IRC to port number 5555 of the default host and  enter  on
+              channel #users.
+
+       irc Mermaid
+              Use the nickname &quot;Mermaid&quot;.
+
+       irc Mermaid server1:5000 server2::passwd server3
+              Use the nickname &quot;Mermaid&quot; and the modified server list.
+
+       irc piglet3 :ln:irc1.lamenet.org :ln:irc1.lamenet.org
+              Use    the    nickname    &quot;piglet3&quot;,   initially   connecting   to
+              irc.au.lamenet.org, with  also  irc.us.lamenet.org  added  to  the
+              server list, both having a server group name &quot;ln&quot;.
+
+       irc oink ICB/www.icb.net
+              Use the nick &quot;oink&quot; making an ICB connection to www.icb.net.
+
+       irc -d Use dumb mode.
+
+       irc -f Allow use of ^S/^Q to stop/start screen display.
+&#12;       irc -e elisa
+              Interface IRC with a program called elisa.
+
+       setenv IRCNICK Mermaid
+       setenv IRCNAME &quot;The one and only :)&quot;
+
+       irc    Set  the  username (if not specified elsewhere) to &quot;Mermaid&quot;.  The
+              user&apos;s name (when provided inside parentheses  in  response  to  a
+              WHOIS command) is set to &quot;The one and only :)&quot;.
+
+FILES
+       /usr/bin/ircII        the executable program
+
+       ~/.ircrc              default initialization file
+
+       ~/.irc/               directory  you can put your own ircII scripts into,
+                             that can then be loaded with /load
+
+       /etc/irc/             directory  containing  message-of-the-day,   master
+                             initialization,   help   files  and  ircII  scripts
+                             /etc/irc/script/local is the master  initialization
+                             file  for  the site, loaded before .ircrc is.  This
+                             is a Debian GNU/Linux conffile.
+
+       /usr/share/ircII/     shared repository for help, translation tables  and
+                             distributed scripts.
+
+THE HELP FILES
+       All  of the ircII commands are fully described in the help files package.
+       The best way to start here is with the /HELP ?  command as this prints  a
+       listing of all available help files.
+
+SIGNALS
+       ircII handles the following signals
+
+       SIGUSR1
+              Closes all DCC connections and EXEC&apos;ed processes.
+
+       SIGUSR2
+              Drops ircII back to the command line.
+
+ENVIRONMENT VARIABLES
+       It  can be helpful to predefine certain variables in in the .cshrc, .pro&#8208;
+       file, or .login file:
+
+       IRCNICK
+              The user&apos;s IRC nickname.
+
+       IRCNAME
+              The user&apos;s IRC realname (otherwise retreived from /etc/passwd)
+
+       IRCSERVER
+              The default IRC server(s) (see server option for details)
+
+       IRCSERVERSFILE
+              The file containing the default list of  server(s),  usually  PRE&#8208;
+              FIX/lib/irc/ircII.servers.   This  file  should contain one server
+              entry per line.
+
+       HOME   Overrides the default home path in /etc/passwd.
+
+       TERM   The type of terminal in use.
+
+FILES
+       ircII uses the following files under the library directory, usually  PRE&#8208;
+       FIX/share/irc.
+
+       ircII.servers
+              The  initial  list  of servers if none are provided on the command
+              line.
+
+       ircII.motd
+              Message of the day.  This file is displayed only once each time it
+              is changed.
+
+SEE ALSO
+       ircd(8)
+
+BUGS
+       Please  notify  the current developer of the software of any bugs in cur&#8208;
+       rent versions.
+
+AUTHORS
+       Program written by Michael  Sandrof  (ms5n+@andrew.cmu.edu).   Now  being
+       maintained  by  Matthew Green (mrg@eterna.com.au). Debian specific exten&#8208;
+       sions by the Debian Maintainer Bernd Eckenfels (ecki@debian.org).   Names
+       of  contributors and contact address can be retrieved with the /info com&#8208;
+       mand.     This     manual     page     written     by     Darren     Reed
+       (avalon@coombs.anu.EDU.AU),  revised  by  R.  P. C. Rodgers (rodgers@max&#8208;
+       well.mmwb.ucsf.edu),   by   the    lynX,    and    by    Matthew    Green
+       (mrg@eterna.com.au).
+
+
+
+                                 31 October 2002                        IRCII(1)
+
+</pre></body></html>

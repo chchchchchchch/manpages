@@ -1,0 +1,85 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ilasm, ilasm2 - Mono IL assembler</title></head>
+<body><pre>
+
+ilasm(1)                                                                ilasm(1)
+
+
+
+NAME
+       ilasm, ilasm2 - Mono IL assembler
+
+SYNOPSIS
+       ilasm [option] [source-files]
+
+       ilasm2 [option] [source-files]
+
+DESCRIPTION
+       ilasm  is  the Mono ILAsm assembler.  You can pass one or more options to
+       drive the compiler, and a set of source files.
+
+       Use ilasm to generate 1.0 assemblies and use ilasm2 to assemble  programs
+       that use the 2.0 features (generics).
+
+       The  Mono ILAsm assembler accepts options starting with / or - for mosted
+       options.
+
+       The Mono ILAsm assembler generates images (.exe and .dll files) that con&#8208;
+       tain  CIL byte code that can be executed by any system that implemented a
+       Common Language Infrastructure virtual machine.
+
+OPTIONS
+       /output:&lt;file_name&gt;
+              Specify the output file name.
+
+       /exe   Generate an exe
+
+       /dll   Generate a library
+
+       /scan_only
+              Just scan the IL code and display tokens.
+
+       /show_tokens
+              Show tokens as they are parsed.
+
+       /show_method_def
+              Display method information when a method is defined.
+
+       /show_method_ref
+              Display method information when a method is referenced
+
+       /key:KEYFILE
+              Strongname (sign) the output assembly using the key  pair  present
+              in  the  specified  strong name key file (snk). A full key pair is
+              required (i.e. delay signing is done using a .publickey  directive
+              in the sources).
+
+       /key:@CONTAINER
+              Strongname  (sign)  the output assembly using the key pair present
+              in the specified container.
+
+       --about
+              Display information about ilasm
+
+       --version
+              Display ilasm version
+
+SEE ALSO
+       mono(1),mcs(1)
+
+COPYRIGHT
+       Copyright (C) 2004, 2007 Novell, Inc (http://www.novell.com)
+&#12;MAILING LISTS
+       Visit    http://lists.ximian.com/mailman/listinfo/mono-devel-list     for
+       details.
+
+WEB SITE
+       Visit: http://www.mono-project.com for details
+
+
+
+
+                                                                        ilasm(1)
+
+</pre></body></html>

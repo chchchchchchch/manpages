@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Filter::Boolean - Special filter to combine the results of others</title></head>
+<body><pre>
+
+Filter::Boolean(3pm)   User Contributed Perl Documentation  Filter::Boolean(3pm)
+
+
+
+NAME
+       Log::Log4perl::Filter::Boolean - Special filter to combine the results of
+       others
+
+SYNOPSIS
+           log4perl.logger = WARN, AppWarn, AppError
+
+           log4perl.filter.Match1       = sub { /let this through/ }
+           log4perl.filter.Match2       = sub { /and that, too/ }
+           log4perl.filter.MyBoolean       = Log::Log4perl::Filter::Boolean
+           log4perl.filter.MyBoolean.logic = Match1 || Match2
+
+           log4perl.appender.Screen        = Log::Dispatch::Screen
+           log4perl.appender.Screen.Filter = MyBoolean
+           log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
+
+DESCRIPTION
+       Sometimes, it&apos;s useful to combine the output of various filters to arrive
+       at a log/no log decision. While Log4j, Log4perl&apos;s mother ship, chose to
+       implement this feature as a filter chain, similar to Linux&apos; IP chains,
+       Log4perl tries a different approach.
+
+       Typically, filter results will not need to be passed along in chains but
+       combined in a programmatic manner using boolean logic. &quot;Log if this
+       filter says &apos;yes&apos; and that filter says &apos;no&apos;&quot; is a fairly common
+       requirement but hard to implement as a chain.
+
+       &quot;Log::Log4perl::Filter::Boolean&quot; is a special predefined custom filter
+       for Log4perl which combines the results of other custom filters in
+       arbitrary ways, using boolean expressions:
+
+           log4perl.logger = WARN, AppWarn, AppError
+
+           log4perl.filter.Match1       = sub { /let this through/ }
+           log4perl.filter.Match2       = sub { /and that, too/ }
+           log4perl.filter.MyBoolean       = Log::Log4perl::Filter::Boolean
+           log4perl.filter.MyBoolean.logic = Match1 || Match2
+
+           log4perl.appender.Screen        = Log::Dispatch::Screen
+           log4perl.appender.Screen.Filter = MyBoolean
+           log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
+
+       &quot;Log::Log4perl::Filter::Boolean&quot;&apos;s boolean expressions allow for
+       combining different appenders by name using AND (&amp;&amp; or &amp;), OR (|| or |)
+       and NOT (!) as logical expressions. Parentheses are used for grouping.
+       Precedence follows standard Perl. Here&apos;s a bunch of examples:
+
+           Match1 &amp;&amp; !Match2            # Match1 and not Match2
+           !(Match1 || Match2)          # Neither Match1 nor Match2
+           (Match1 &amp;&amp; Match2) || Match3 # Both Match1 and Match2 or Match3
+
+SEE ALSO
+       Log::Log4perl::Filter, Log::Log4perl::Filter::LevelMatch,
+       Log::Log4perl::Filter::LevelRange, Log::Log4perl::Filter::StringRange
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21               Filter::Boolean(3pm)
+
+</pre></body></html>

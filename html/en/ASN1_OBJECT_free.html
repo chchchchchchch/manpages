@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ASN1_OBJECT_new, ASN1_OBJECT_free, - object allocation functions</title></head>
+<body><pre>
+
+ASN1_OBJECT_new(3SSL)                OpenSSL               ASN1_OBJECT_new(3SSL)
+
+
+
+NAME
+       ASN1_OBJECT_new, ASN1_OBJECT_free, - object allocation functions
+
+SYNOPSIS
+        #include &lt;openssl/asn1.h&gt;
+
+        ASN1_OBJECT *ASN1_OBJECT_new(void);
+        void ASN1_OBJECT_free(ASN1_OBJECT *a);
+
+DESCRIPTION
+       The ASN1_OBJECT allocation routines, allocate and free an ASN1_OBJECT
+       structure, which represents an ASN1 OBJECT IDENTIFIER.
+
+       ASN1_OBJECT_new() allocates and initializes a ASN1_OBJECT structure.
+
+       ASN1_OBJECT_free() frees up the ASN1_OBJECT structure a.
+
+NOTES
+       Although ASN1_OBJECT_new() allocates a new ASN1_OBJECT structure it is
+       almost never used in applications. The ASN1 object utility functions such
+       as OBJ_nid2obj() are used instead.
+
+RETURN VALUES
+       If the allocation fails, ASN1_OBJECT_new() returns NULL and sets an error
+       code that can be obtained by ERR_get_error(3).  Otherwise it returns a
+       pointer to the newly allocated structure.
+
+       ASN1_OBJECT_free() returns no value.
+
+SEE ALSO
+       ERR_get_error(3), d2i_ASN1_OBJECT(3)
+
+HISTORY
+       ASN1_OBJECT_new() and ASN1_OBJECT_free() are available in all versions of
+       SSLeay and OpenSSL.
+
+
+
+1.0.1e                             2013-02-11              ASN1_OBJECT_new(3SSL)
+
+</pre></body></html>

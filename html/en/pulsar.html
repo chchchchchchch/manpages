@@ -1,0 +1,100 @@
+<html>
+<head><meta charset=utf-8/>
+<title>pulsar - intersecting planes, alpha blending, fog, and textures.</title></head>
+<body><pre>
+
+pulsar(6x)                     XScreenSaver manual                    pulsar(6x)
+
+
+
+NAME
+       pulsar - intersecting planes, alpha blending, fog, and textures.
+
+SYNOPSIS
+       pulsar  [-display host:display.screen] [-visual visual] [-window] [-root]
+       [-no-light]  [-wire]  [-delay  number]  [-quads  number]  [-image   file]
+       [-light]  [-fog]  [-texture]  [-mipmap]  [-no-blend]  [-antialias] [-tex&#8208;
+       ture_quality] [-do_depth] [-fps]
+
+DESCRIPTION
+       Draws some intersecting planes, making use of alpha blending,  fog,  tex&#8208;
+       tures,  and  mipmaps,  plus a ``frames per second&apos;&apos; meter so that you can
+       tell how fast your graphics card is... Requires OpenGL.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -light | -no-light
+               Use Flat Coloring.
+
+       -wire   Render in wireframe instead of solid.
+
+       -delay number
+               Per-frame delay, in  microseconds.   Default:  10000  (0.01  sec&#8208;
+               onds.).
+
+       -image file
+               The texture map to use.
+
+       -quads number
+               Quad Count.  1 - 50.  Default: 5.
+
+       -light | -no-light
+               Whether to enable lighting.
+
+       -fog | -no-fog
+               Whether to enable fog.
+
+       -texture | -no-texture
+               Whether to enable texturing.
+
+       -mipmap | -no-mipmap
+               Whether to enable texture mipmaps.
+
+       -blend | -no-blend
+               Whether to enable blending.
+
+       -antialias | -no-antialias
+               Whether to anti-alias lines.
+
+       -texture_quality | -no-texture_quality
+               Whether to enable texture filtering.
+
+       -do_depth | -no-do_depth
+               Whether to enable depth buffer.
+&#12;       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to  get  the  name  of  a resource file that overrides the global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 2002 by David Konerding.  Permission to  use,  copy,  modify,
+       distribute,  and sell this software and its documentation for any purpose
+       is hereby granted without fee, provided that the above  copyright  notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion notice appear in supporting documentation.  No  representations  are
+       made  about the suitability of this software for any purpose.  It is pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       David Konerding.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                     pulsar(6x)
+
+</pre></body></html>

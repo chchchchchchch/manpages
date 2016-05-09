@@ -1,0 +1,77 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuSoundRecordToBucket - create a flow to record to a bucket.</title></head>
+<body><pre>
+
+AuSoundRecordToBucket(3)                                AuSoundRecordToBucket(3)
+
+
+
+Name
+       AuSoundRecordToBucket - create a flow to record to a bucket.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+       #include &lt;audio/soundlib.h&gt;
+
+       AuEventHandlerRec   *AuSoundRecordToBucket(server,  destination,  source,
+       gain, callback, callback_data, mode, flow, volume_mult_elem, status)
+           AuServer *server;
+           AuBucketID destination;
+           AuDeviceID source;
+           AuFixedPoint gain;
+           void  (*callback)  (AuServer  *,  AuEventHandlerRec  *,  AuEvent   *,
+       AuPointer);
+           AuPointer callback_data;
+           int mode;
+           AuFlowID *flow; /* RETURN */
+           int *volume_mult_elem; /* RETURN */
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       destination
+                 Specifies the bucket to record to.
+
+       source    Specifies the input device to record from.
+
+       gain      Specifies the gain for the input device.
+
+       callback  Specifies  the procedure to be called for additional event pro&#8208;
+                 cessing.
+
+       callback_data
+                 Specifies any additional arguments to be passed  to  the  call&#8208;
+                 back.
+
+       mode      Specifies  the  line  mode for the input device.  Currently the
+                 following line modes are defined: AuDeviceInputModeNone,  AuDe&#8208;
+                 viceInputModeLineIn, AuDeviceInputModeMicrophone.
+
+       flow      If non-NULL, returns the flow ID.
+
+       volume_mult_elem
+                 According to the comment in the source, not implemented.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuSoundRecordToBucket creates a flow to record from source into  destina&#8208;
+       tion  and returns a pointer to the event handler created or NULL if there
+       was an error.
+
+Errors
+       AuBadBucket, AuBadDevice.
+
+See Also
+       AuSoundRecord,         AuSoundRecordToData,          AuSoundRecordToFile,
+       AuSoundRecordToFileN.
+&#12;       audiolib - Network Audio System C Language Interface
+
+
+
+soundlib                              1.9.3             AuSoundRecordToBucket(3)
+
+</pre></body></html>

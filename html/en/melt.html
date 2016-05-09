@@ -1,0 +1,139 @@
+<html>
+<head><meta charset=utf-8/>
+<title>melt - author, play, and encode multitrack audio/video compositions</title></head>
+<body><pre>
+
+MELT(1)                           User Commands                          MELT(1)
+
+
+
+NAME
+       melt - author, play, and encode multitrack audio/video compositions
+
+SYNOPSIS
+       melt [options] [producer [name=value]* ]+
+
+OPTIONS
+       -attach filter[:arg] [name=value]*
+              Attach a filter to the output
+
+       -attach-cut filter[:arg] [name=value]*
+              Attach a filter to a cut
+
+       -attach-track filter[:arg] [name=value]* Attach a filter to a track
+
+       -attach-clip filter[:arg] [name=value]*
+              Attach a filter to a producer
+
+       -audio-track | -hide-video
+              Add an audio-only track
+
+       -blank frames
+              Add blank silence to a track
+
+       -consumer id[:arg] [name=value]*
+              Set the consumer (sink)
+
+       -debug Set the logging level to debug
+
+       -filter filter[:arg] [name=value]*
+              Add a filter to the current track
+
+       -group [name=value]*
+              Apply properties repeatedly
+
+       -help  Show this message
+
+       -jack  Enable JACK transport synchronization
+
+       -join clips
+              Join multiple clips into one cut
+
+       -mix length
+              Add a mix between the last two cuts
+
+       -mixer transition
+              Add a transition to the mix
+
+       -null-track | -hide-track
+              Add a hidden track
+
+       -profile name
+              Set the processing settings
+
+       -progress
+              Display progress along with position
+
+       -remove
+              Remove the most recent cut
+
+       -repeat times
+              Repeat the last cut
+&#12;       -query List all of the registered services
+
+       -query &quot;consumers&quot; | &quot;consumer&quot;=id
+              List consumers or show info about one
+
+       -query &quot;filters&quot; | &quot;filter&quot;=id
+              List filters or show info about one
+
+       -query &quot;producers&quot; | &quot;producer&quot;=id
+              List producers or show info about one
+
+       -query &quot;transitions&quot; | &quot;transition&quot;=id
+              List transitions, show info about one
+
+       -query &quot;profiles&quot; | &quot;profile&quot;=id
+              List profiles, show info about one
+
+       -query &quot;presets&quot; | &quot;preset&quot;=id
+              List presets, show info about one
+
+       -query &quot;formats&quot;
+              List audio/video formats
+
+       -query &quot;audio_codecs&quot;
+              List audio codecs
+
+       -query &quot;video_codecs&quot;
+              List video codecs
+
+       -serialise [filename]
+              Write the commands to a text file
+
+       -silent
+              Do not display position/transport
+
+       -split relative-frame
+              Split the last cut into two cuts
+
+       -swap  Rearrange the last two cuts
+
+       -track Add a track
+
+       -transition id[:arg] [name=value]*
+              Add a transition
+
+       -verbose
+              Set the logging level to verbose
+
+       -version
+              Show the version and copyright
+
+       -video-track | -hide-audio
+              Add a video-only track
+
+       For more help: &lt;http://www.mltframework.org/&gt;
+
+COPYRIGHT
+       Copyright  &#169; 2002-2012 Ushodaya Enterprises Limited &lt;http://www.mltframe&#8208;
+       work.org/&gt;
+       This is free software; see the source for copying conditions.   There  is
+       NO  warranty;  not  even  for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+
+
+melt 0.8.8                        January 2013                           MELT(1)
+
+</pre></body></html>

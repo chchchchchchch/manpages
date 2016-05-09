@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>signbit - test sign of a real floating-point number</title></head>
+<body><pre>
+
+SIGNBIT(3)                  Linux Programmer&apos;s Manual                 SIGNBIT(3)
+
+
+
+NAME
+       signbit - test sign of a real floating-point number
+
+SYNOPSIS
+       #include &lt;math.h&gt;
+
+       int signbit(x);
+
+       Link with -lm.
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       signbit():
+           _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
+
+DESCRIPTION
+       signbit()  is  a  generic macro which can work on all real floating-point
+       types.  It returns a nonzero value if the value of x  has  its  sign  bit
+       set.
+
+       This  is  not the same as x &lt; 0.0, because IEEE 754 floating point allows
+       zero to be signed.  The comparison -0.0 &lt; 0.0 is false, but signbit(-0.0)
+       will return a nonzero value.
+
+       NaNs and infinities have a sign bit.
+
+RETURN VALUE
+       The  signbit() macro returns nonzero if the sign of x is negative; other&#8208;
+       wise it returns zero.
+
+ERRORS
+       No errors occur.
+
+CONFORMING TO
+       C99, POSIX.1-2001.  This function is defined in IEC 559 (and the appendix
+       with recommended functions in IEEE 754/IEEE 854).
+
+SEE ALSO
+       copysign(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2010-09-20                         SIGNBIT(3)
+
+</pre></body></html>

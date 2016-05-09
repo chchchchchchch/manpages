@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_GetModState - Get the state of modifier keys.</title></head>
+<body><pre>
+
+SDL_GetModState(3)              SDL API Reference             SDL_GetModState(3)
+
+
+
+NAME
+       SDL_GetModState - Get the state of modifier keys.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDLMod SDL_GetModState(void);
+
+DESCRIPTION
+       Returns the current state of the modifier keys (CTRL, ALT, etc.).
+
+RETURN VALUE
+       The return value can be an OR&apos;d combination of the SDLMod enum.
+
+              SDLMod
+
+              typedef enum {
+                KMOD_NONE  = 0x0000,
+                KMOD_LSHIFT= 0x0001,
+                KMOD_RSHIFT= 0x0002,
+                KMOD_LCTRL = 0x0040,
+                KMOD_RCTRL = 0x0080,
+                KMOD_LALT  = 0x0100,
+                KMOD_RALT  = 0x0200,
+                KMOD_LMETA = 0x0400,
+                KMOD_RMETA = 0x0800,
+                KMOD_NUM   = 0x1000,
+                KMOD_CAPS  = 0x2000,
+                KMOD_MODE  = 0x4000,
+              } SDLMod;
+
+        SDL also defines the following symbols for convenience:
+
+              #define KMOD_CTRL (KMOD_LCTRL|KMOD_RCTRL)
+              #define KMOD_SHIFT  (KMOD_LSHIFT|KMOD_RSHIFT)
+              #define KMOD_ALT  (KMOD_LALT|KMOD_RALT)
+              #define KMOD_META (KMOD_LMETA|KMOD_RMETA)
+
+SEE ALSO
+       SDL_GetKeyState
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59           SDL_GetModState(3)
+
+</pre></body></html>

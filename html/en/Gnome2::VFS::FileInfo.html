@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::VFS::FileInfo - stores information about files, like stat</title></head>
+<body><pre>
+
+Gnome2::VFS::FileInfo(3User Contributed Perl DocumentaGnome2::VFS::FileInfo(3pm)
+
+
+
+NAME
+       Gnome2::VFS::FileInfo - stores information about files, like stat
+
+METHODS
+   fileinfo = Gnome2::VFS::FileInfo-&gt;new ($hash_ref)
+       &#183;   $hash_ref (scalar)
+
+       Creates a new GnomeVFSFileInfo object from hash_ref for use with
+       Gnome2::VFS::FileInfo::matches, for example.  Normally, you can always
+       directly use a hash reference if you&apos;re asked for a GnomeVFSFileInfo.
+
+   boolean = $a-&gt;matches ($b)
+       &#183;   $b (Gnome2::VFS::FileInfo)
+
+   string = $info-&gt;get_mime_type
+SEE ALSO
+       Gnome2::VFS
+
+COPYRIGHT
+       Copyright (C) 2003-2007 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2::VFS for a full
+       notice.
+
+
+
+perl v5.14.2                       2011-11-15         Gnome2::VFS::FileInfo(3pm)
+
+</pre></body></html>

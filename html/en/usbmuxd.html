@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>usbmuxd - iPhone/iPod Touch USB multiplex server daemon</title></head>
+<body><pre>
+
+usbmuxd(1)                                                            usbmuxd(1)
+
+
+
+NAME
+       usbmuxd - iPhone/iPod Touch USB multiplex server daemon
+
+SYNOPSIS
+       usbmuxd [options]
+
+DESCRIPTION
+       usbmuxd stands for &quot;USB multiplexing daemon&quot;.  To the user/developer what
+       it actually does is to proxy requests over a USB cable on directly  to  a
+       listening TCP port on the iPhone.
+
+
+OPTIONS
+       -h|--help
+              Print this message.
+
+       -v|--verbose
+              Be verbose (use twice or more to increase).
+
+       -f|--foreground
+              Do not daemonize (implies one -v).
+
+       -U|--user[=USER]
+              Change to this user after startup (needs usb privileges).  If USER
+              is not specified, defaults to usbmux.
+
+       -u|--udev
+              Run in udev operation mode.
+
+       -x|--exit
+              Tell a running instance to exit if there are no devices  connected
+              (must be in udev mode).
+
+       -X|--force-exit
+              Tell  a  running instance to exit, even if there are still devices
+              connected (always works).
+
+
+AUTHORS
+       Hector Martin &quot;marcan&quot; &lt;hector@marcansoft.com&gt;
+
+       Nikias Bassen &lt;nikias@gmx.li&gt;
+
+       Paul Sladen &lt;libiphone@paul.sladen.org&gt;
+
+       Man page written to conform with Debian by Julien Lavergne.
+
+
+
+                                                                      usbmuxd(1)
+
+</pre></body></html>

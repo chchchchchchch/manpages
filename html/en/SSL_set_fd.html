@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SSL_set_fd - connect the SSL object with a file descriptor</title></head>
+<body><pre>
+
+SSL_set_fd(3SSL)                     OpenSSL                    SSL_set_fd(3SSL)
+
+
+
+NAME
+       SSL_set_fd - connect the SSL object with a file descriptor
+
+SYNOPSIS
+        #include &lt;openssl/ssl.h&gt;
+
+        int SSL_set_fd(SSL *ssl, int fd);
+        int SSL_set_rfd(SSL *ssl, int fd);
+        int SSL_set_wfd(SSL *ssl, int fd);
+
+DESCRIPTION
+       SSL_set_fd() sets the file descriptor fd as the input/output facility for
+       the TLS/SSL (encrypted) side of ssl. fd will typically be the socket file
+       descriptor of a network connection.
+
+       When performing the operation, a socket BIO is automatically created to
+       interface between the ssl and fd. The BIO and hence the SSL engine
+       inherit the behaviour of fd. If fd is non-blocking, the ssl will also
+       have non-blocking behaviour.
+
+       If there was already a BIO connected to ssl, BIO_free() will be called
+       (for both the reading and writing side, if different).
+
+       SSL_set_rfd() and SSL_set_wfd() perform the respective action, but only
+       for the read channel or the write channel, which can be set
+       independently.
+
+RETURN VALUES
+       The following return values can occur:
+
+       0   The operation failed. Check the error stack to find out why.
+
+       1   The operation succeeded.
+
+SEE ALSO
+       SSL_get_fd(3), SSL_set_bio(3), SSL_connect(3), SSL_accept(3),
+       SSL_shutdown(3), ssl(3) , bio(3)
+
+
+
+1.0.1e                             2013-02-11                   SSL_set_fd(3SSL)
+
+</pre></body></html>

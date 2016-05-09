@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gtrayicon - Generic tray icon for GNOME</title></head>
+<body><pre>
+
+gtrayicon(1)                                                        gtrayicon(1)
+
+
+
+NAME
+       gtrayicon - Generic tray icon for GNOME
+
+
+DESCRIPTION
+       Generic tray icon for GNOME is a small utility which allows to add a icon
+       to the system tray that can be used to trigger customized  enable/disable
+       actions.
+
+
+OPTIONS
+       --tooltip=string
+              string to appear as tooltip
+
+       --activate=cmd
+              activate command
+
+       --deactivate=cmd
+              deactivate command
+
+       --activate-icon=icon-path
+              icon to show for &apos;activate&apos; action
+
+       --deactivate-icon=icon-path
+              icon to show for &apos;deactivate&apos;
+
+       --menu-file=menu-path
+              custom menu to display for right button
+
+       --activated
+              start in &apos;activated&apos; state (default: &apos;deactivated&apos; state)
+
+
+EXAMPLE
+       Activate action: start webfs (web server) setting a pid file
+       Deactivate action: kill that webfs instance
+
+
+       gtrayicon \
+                --activate=&quot;/usr/bin/webfsd -k /tmp/pid.file -r /var/www&quot; \
+                --deactivate=&quot;cat /tmp/pid.file | xargs -ipid kill -TERM pid&quot;
+
+
+MENU
+       For an example on how to write a menu file,see
+       /usr/share/doc/gtrayicon/examples/sample.menu
+
+
+SEE ALSO
+       Website: http://gtrayicon.sourceforge.net/
+
+
+AUTHOR
+       Gtrayicon  was written by Javier Valencia (javiervalencia80 at gmail.com)
+       This Man page was written by Taylor LeMasurier-Wren &lt;ripps818@gmail.com&gt;
+
+
+
+                                                                    gtrayicon(1)
+
+</pre></body></html>

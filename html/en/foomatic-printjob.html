@@ -1,0 +1,109 @@
+<html>
+<head><meta charset=utf-8/>
+<title>foomatic-printjob - manage printer jobs in a spooler-independent fashion</title></head>
+<body><pre>
+
+FOOMATIC-PRINTJOB(1)                                        FOOMATIC-PRINTJOB(1)
+
+
+
+NAME
+       foomatic-printjob - manage printer jobs in a spooler-independent fashion
+
+SYNOPSIS
+       foomatic-printjob  [ -s spooler ] [ -P queuename ] [ -o option1=value1 -o
+       option2 ... ] [ -i ] [ file1 file2 ... ]
+
+       foomatic-printjob -Q [ -s spooler ] [ -P queuename ] [ -i  ]  [  -a  ]  [
+       user1 user2 ... ]
+
+       foomatic-printjob  -R [ -s spooler ] [ -P queuename ] [ -i ] [ - | jobid1
+       jobid2 ... ]
+
+       foomatic-printjob -C [ -s spooler ] [ -i ] command [ arguments ]
+
+       foomatic-printjob -S [ -s spooler ] [ -i ]
+
+       foomatic-printjob -h [ -s spooler ] [ -P queuename ] [ -i ]
+
+
+DESCRIPTION
+       foomatic-printjob provides a spooler-independent  interface  to  creating
+       and managing printer jobs and print queues.  Note that the first argument
+       changes the mode of the command, as it combines the functionality of sev&#8208;
+       eral System V-style printing commands.
+
+
+   OPTIONS
+       -sspooler Explicit spooler type.
+
+
+       -Pqueuename
+                 Any  commands  specified  should apply to this queue instead of
+                 the default.
+
+
+       -ooption=value
+                 Set option to value
+
+
+       -ooption  Set the switch option
+
+
+       -#n       Print n copies
+
+
+       file1  file2  ...
+                 Files to be printed, when no file is given, standard input will
+                 be printed
+
+
+       -Q        Query  the  jobs  in a queue.  If a list of users is specified,
+                 only those users&apos; jobs will be queried.
+
+
+       -Q -a     Query the jobs in all queues.  If a list of users is specified,
+                 only those users&apos; jobs will be queried.
+
+
+       -R [ - | jobid1 jobid2 ... ]
+                 Remove a job from a queue.  Using - will remove all jobs.
+&#12;
+       -C command [ arguments ]
+                 Execute  control commands for queue/job manipulation.  The com&#8208;
+                 mands are the ones of the BSD &quot;lpc&quot; utility.  Use  the  control
+                 command  &quot;help&quot;  to get a list of supported commands. Note: the
+                 amount of commands varies with the spooler, but the  same  com&#8208;
+                 mands given under different spoolers do the same thing.
+
+
+       -i        Interactive  mode: You will be asked if foomatic-printjob is in
+                 doubt about something. Otherwise foomatic-printjob  uses  auto-
+                 detection or quits with an error.
+
+
+       -S        Save the chosen spooler as the default spooler
+
+
+       -h        Show  this  message  or  show  a list of available options if a
+                 queue is specified
+
+
+SEE ALSO
+       foomatic-configure(1) and the documentation for your print spooler.
+
+
+AUTHOR
+       Manfred  Wassmann  &lt;manolo@NCC-1701.B.Shuttle.de&gt;  and   Chris   Lawrence
+       &lt;lawrencc@debian.org&gt;  for  the  foomatic  project  using output from the
+       associated binary.
+
+
+BUGS
+       This manpage still needs some editing.
+
+
+
+Foomatic Project                   2001-01-06               FOOMATIC-PRINTJOB(1)
+
+</pre></body></html>

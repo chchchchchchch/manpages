@@ -1,0 +1,65 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dubdv - insert audio into a digital video stream</title></head>
+<body><pre>
+
+ENCODE(1)                                                              ENCODE(1)
+
+
+
+NAME
+       dubdv - insert audio into a digital video stream
+
+SYNOPSIS
+       dubdv [ options ] audio_inputfR [ filename or - for stdin ]
+
+DESCRIPTION
+       dubdv  reads  the  audio  from a WAV file or the OSS DSP device and over&#8208;
+       writes the existing audio in a raw DV file or stream.
+
+       --version
+              show dubdv version number.
+
+       -v, --verbose
+              show encoder statistics / status information.
+
+       -a, --audio-input=filter-name
+              Choose audio-input-filter: [none, &gt;wav&lt;, dsp] WAV is  the  default
+              audio_input format.
+
+       -o, --output=filter-name
+              Choose output-filter: [&gt;raw&lt;]
+
+       -t, --truncate
+              truncate output at end of DV input.
+
+       -r, --repeat=count
+              repeat  the  first  video frame count times.  This option does not
+              dub audio into the repeated frame.
+
+       Help Options
+
+       -?, --help
+              Show help message.
+
+       --usage
+              Display brief usage message.
+
+SEE ALSO
+       playdv(1),dvconnect(1),encodedv(1).
+
+AVAILABILITY
+       See http://libdv.sourceforge.net/ for the latest version.
+
+AUTHORS
+       dubdv  was  written  by  James  Bowman  &lt;jamesb@excamera.com&gt;  and  Peter
+       Schlaile &lt;udbz@rz.uni-karlsruhe.de&gt;.
+
+       This  manual page is based on dubdv&apos;s help message and was written by Dan
+       Dennedy &lt;dan@dennedy.org&gt;.
+
+
+
+                                  January 2004                         ENCODE(1)
+
+</pre></body></html>

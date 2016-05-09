@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>drmHandleEvent - read and process pending DRM events</title></head>
+<body><pre>
+
+drmHandleEvent(libdrm 2.4.40)                      drmHandleEvent(libdrm 2.4.40)
+
+
+
+NAME
+       drmHandleEvent - read and process pending DRM events
+
+SYNOPSIS
+       #include &lt;xf86drm.h&gt;
+
+       typedef struct _drmEventContext {
+            int version;
+            void (*vblank_handler)(int fd,
+                             unsigned int sequence,
+                             unsigned int tv_sec,
+                             unsigned int tv_usec,
+                             void *user_data);
+            void (*page_flip_handler)(int fd,
+                             unsigned int sequence,
+                             unsigned int tv_sec,
+                             unsigned int tv_usec,
+                             void *user_data);
+       } drmEventContext, *drmEventContextPtr;
+
+       int drmHandleEvent(int fd, drmEventContextPtr evctx);
+
+DESCRIPTION
+       This  function  will process outstanding DRM events on fd , which must be
+       an open DRM device.  This function should be called after  the  DRM  file
+       descriptor  has  polled  readable;  it  will  read the events and use the
+       passed-in evctx structure to call function pointers with  the  parameters
+       noted above.
+
+
+RETURN VALUE
+       Returns  0  on  success,  or  if  there  is no data to read from the file
+       descriptor.  Returns -1 if the read  on  the  file  descriptor  fails  or
+       returns less than a full event record.
+
+
+REPORTING BUGS
+       Bugs  in  this function should be reported to http://bugs.freedesktop.org
+       under the &quot;Mesa&quot; product, with &quot;Other&quot; or &quot;libdrm&quot; as the component.
+
+
+SEE ALSO
+       drmModePageFlip(3), drmWaitVBlank(3)
+
+
+
+                                                   drmHandleEvent(libdrm 2.4.40)
+
+</pre></body></html>

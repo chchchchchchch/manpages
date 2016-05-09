@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>testlibraw - run basic functionality tests on libraw1394</title></head>
+<body><pre>
+
+testlibraw(1)                    Linux IEEE 1394                   testlibraw(1)
+
+
+
+NAME
+       testlibraw - run basic functionality tests on libraw1394
+
+SYNOPSIS
+       testlibraw
+
+DESCRIPTION
+       testlibraw  attaches  to the Linux IEEE 1394 subsystem through libraw1394
+       and tries to read data from all connected nodes.  It therefore acts as  a
+       check that:
+
+       *      libraw1394 is installed correctly
+
+       *      the IEEE 1394 subsystem is loaded in the kernel and of a supported
+              version
+
+       *      libraw1394 and kernel side raw1394 can communicate
+
+       *      connected nodes can be reached and do respond.
+
+       The read transactions are of a form that all powered up nodes  conforming
+       to the IEEE 1394 standard have to be able to respond to.
+
+       The  source  of  this  program also acts as a demonstration of libraw1394
+       programming, including initialization, transactions and the event loop.
+
+EXAMPLE RUN
+       FIXME: insert example here
+
+BUGS
+       None known.
+
+SEE ALSO
+       http://linux1394.sourceforge.net/
+
+AUTHOR
+       Andreas Bombe &lt;aeb@debian.org&gt;
+
+
+
+                                libraw1394 2.0.9                   testlibraw(1)
+
+</pre></body></html>

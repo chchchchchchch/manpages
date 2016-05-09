@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mutt_dotlock - Lock mail spool files.</title></head>
+<body><pre>
+
+dotlock(1)                        User Manuals                        dotlock(1)
+
+
+
+NAME
+       mutt_dotlock - Lock mail spool files.
+
+SYNOPSIS
+       mutt_dotlock [-t|-f|-u|-d] [-p] [-r retries] file
+
+DESCRIPTION
+       mutt_dotlock  implements  the traditional mail spool file locking method:
+       To lock file, a file named file.lock is  created.  The  program  operates
+       with group mail privileges if necessary.
+
+OPTIONS
+       -t     Just try.  mutt_dotlock won&apos;t actually lock a file, but inform the
+              invoking process if it&apos;s at all possible to lock file.
+
+       -f     Force the lock.  If another process holds a lock  on  file  longer
+              than  a  certain amount of time, mutt_dotlock will break that lock
+              by removing the lockfile.
+
+       -u     Unlock.  mutt_dotlock will remove file.lock.
+
+       -d     Delete.  mutt_dotlock will lock file, remove it if it  has  length
+              0, and afterwards remove file.lock.
+
+       -p     Use  privileges.   If given this option, mutt_dotlock will operate
+              with group mail privileges when creating and deleting lock files.
+
+       -r retries
+              This command line option tells mutt_dotlock to try locking retries
+              times  before  giving  up  or (if invoked with the -f command line
+              option) break a lock.  The default value is 5.  mutt_dotlock waits
+              one second between successive locking attempts.
+
+FILES
+       file.lock
+              The lock file mutt_dotlock generates.
+
+SEE ALSO
+       fcntl(2), flock(2), lockfile(1), mutt(1)
+
+DIAGNOSTICS
+       mutt_dotlock gives all diagnostics in its return values:
+
+       0 - DL_EX_OK
+              The program was successful.
+
+       1 - DL_EX_ERROR
+              An  unspecified error such as bad command line parameters, lack of
+              system memory and the like has occured.
+
+       3 - DL_EX_EXIST
+              The user wants to lock a file which has  been  locked  by  another
+              process  already.   If mutt_dotlock is invoked with the -f command
+              line option, mutt_dotlock won&apos;t generate  this  error,  but  break
+              other processes&apos; locks.
+
+       4 - DL_EX_NEED_RPIVS
+              This  return  value  only  occurs if mutt_dotlock has been invoked
+              with the -t command line option.  It means that mutt_dotlock  will
+              have to use its group mail privileges to lock file.
+
+       5 - DL_EX_IMPOSSIBLE
+              This  return  value  only  occurs if mutt_dotlock has been invoked
+              with the -t command line option.  It means  that  mutt_dotlock  is
+              unable to lock file even with group mail privileges.
+
+NOTES
+       mutt_dotlock  tries  to implement an NFS-safe dotlocking method which was
+       borrowed from lockfile (1).
+
+       If the user can&apos;t open file  for  reading  with  his  normal  privileges,
+       mutt_dotlock  will  return  the  DL_EX_ERROR  exit value to avoid certain
+       attacks against other users&apos; spool files. The code carefully avoids  race
+       conditions  when  checking  permissions;  for details of all this see the
+       comments in dotlock.c.
+
+HISTORY
+       mutt_dotlock is part of the Mutt mail user agent package.   It  has  been
+       created to avoid running mutt with group mail privileges.
+
+AUTHOR
+       Thomas Roessler &lt;roessler@does-not-exist.org&gt;
+
+
+
+Unix                               AUGUST 1999                        dotlock(1)
+
+</pre></body></html>

@@ -1,0 +1,124 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XSetScreenSaver, XForceScreenSaver, XActivateScreenSaver, XResetScreenSaver, XGetScreenSaver - manipulate the screen saver</title></head>
+<body><pre>
+
+XSetScreenSaver(3)               XLIB FUNCTIONS               XSetScreenSaver(3)
+
+
+
+NAME
+       XSetScreenSaver, XForceScreenSaver, XActivateScreenSaver, XResetScreen&#8208;
+       Saver, XGetScreenSaver - manipulate the screen saver
+
+SYNTAX
+       int XSetScreenSaver(Display *display, int timeout, int interval, int pre&#8208;
+              fer_blanking, int allow_exposures);
+
+       int XForceScreenSaver(Display *display, int mode);
+
+       int XActivateScreenSaver(Display *display);
+
+       int XResetScreenSaver(Display *display);
+
+       int XGetScreenSaver(Display *display, int *timeout_return, int *inter&#8208;
+              val_return, int *prefer_blanking_return, int *allow_expo&#8208;
+              sures_return);
+
+ARGUMENTS
+       allow_exposures
+                 Specifies the screen save control values.  You can pass DontAl&#8208;
+                 lowExposures, AllowExposures, or DefaultExposures.
+
+       allow_exposures_return
+                 Returns the current screen save control value (DontAllowExpo&#8208;
+                 sures, AllowExposures, or DefaultExposures).
+
+       display   Specifies the connection to the X server.
+
+       interval  Specifies the interval, in seconds, between screen saver alter&#8208;
+                 ations.
+
+       interval_return
+                 Returns the interval between screen saver invocations.
+
+       mode      Specifies the mode that is to be applied.  You can pass Screen&#8208;
+                 SaverActive or ScreenSaverReset.
+
+       prefer_blanking
+                 Specifies how to enable screen blanking.  You can pass Dont&#8208;
+                 PreferBlanking, PreferBlanking, or DefaultBlanking.
+
+       prefer_blanking_return
+                 Returns the current screen blanking preference (Dont&#8208;
+                 PreferBlanking, PreferBlanking, or DefaultBlanking).
+
+       timeout   Specifies the timeout, in seconds, until the screen saver turns
+                 on.
+
+       timeout_return
+                 Returns the timeout, in seconds, until the screen saver turns
+                 on.
+
+DESCRIPTION
+       Timeout and interval are specified in seconds.  A timeout of 0 disables
+       the screen saver (but an activated screen saver is not deactivated), and
+       a timeout of -1 restores the default.  Other negative values generate a
+       BadValue error.  If the timeout value is nonzero, XSetScreenSaver enables
+       the screen saver.  An interval of 0 disables the random-pattern motion.
+       Both values are limited to a 16-bit signed integer range by the wire pro&#8208;
+       tocol, despite the C prototype.  If no input from devices (keyboard,
+       mouse, and so on) is generated for the specified number of timeout sec&#8208;
+       onds once the screen saver is enabled, the screen saver is activated.
+
+       For each screen, if blanking is preferred and the hardware supports video
+       blanking, the screen simply goes blank.  Otherwise, if either exposures
+       are allowed or the screen can be regenerated without sending Expose
+       events to clients, the screen is tiled with the root window background
+       tile randomly re-origined each interval seconds.  Otherwise, the screens&apos;
+       state do not change, and the screen saver is not activated.  The screen
+       saver is deactivated, and all screen states are restored at the next key&#8208;
+       board or pointer input or at the next call to XForceScreenSaver with mode
+       ScreenSaverReset.
+
+       If the server-dependent screen saver method supports periodic change, the
+       interval argument serves as a hint about how long the change period
+       should be, and zero hints that no periodic change should be made.  Exam&#8208;
+       ples of ways to change the screen include scrambling the colormap period&#8208;
+       ically, moving an icon image around the screen periodically, or tiling
+       the screen with the root window background tile, randomly re-origined
+       periodically.
+
+       XSetScreenSaver can generate a BadValue error.
+
+       If the specified mode is ScreenSaverActive and the screen saver currently
+       is deactivated, XForceScreenSaver activates the screen saver even if the
+       screen saver had been disabled with a timeout of zero.  If the specified
+       mode is ScreenSaverReset and the screen saver currently is enabled,
+       XForceScreenSaver deactivates the screen saver if it was activated, and
+       the activation timer is reset to its initial state (as if device input
+       had been received).
+
+       XForceScreenSaver can generate a BadValue error.
+
+       The XActivateScreenSaver function activates the screen saver.
+
+       The XResetScreenSaver function resets the screen saver.
+
+       The XGetScreenSaver function gets the current screen saver values.
+
+DIAGNOSTICS
+       BadValue  Some numeric value falls outside the range of values accepted
+                 by the request.  Unless a specific range is specified for an
+                 argument, the full range defined by the argument&apos;s type is
+                 accepted.  Any argument defined as a set of alternatives can
+                 generate this error.
+
+SEE ALSO
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0                XSetScreenSaver(3)
+
+</pre></body></html>

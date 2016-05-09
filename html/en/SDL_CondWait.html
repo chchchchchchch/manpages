@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_CondWait - Wait on a condition variable</title></head>
+<body><pre>
+
+SDL_CondWait(3)                 SDL API Reference                SDL_CondWait(3)
+
+
+
+NAME
+       SDL_CondWait - Wait on a condition variable
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_CondWait(SDL_cond *cond, SDL_mutex *mut);
+
+DESCRIPTION
+       Wait  on  the  condition variable cond and unlock the provided mutex. The
+       mutex must the locked before entering this function. Returns 0 when it is
+       signalled, or -1 on an error.
+
+SEE ALSO
+       SDL_CondWaitTimeout, SDL_CondSignal, SDL_mutexP
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00              SDL_CondWait(3)
+
+</pre></body></html>

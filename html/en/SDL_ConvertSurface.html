@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_ConvertSurface - Converts a surface to the same format as another surface.</title></head>
+<body><pre>
+
+SDL_ConvertSurface(3)           SDL API Reference          SDL_ConvertSurface(3)
+
+
+
+NAME
+       SDL_ConvertSurface  -  Converts  a  surface to the same format as another
+       surface.
+
+SYNOPSIS
+       #include &quot;SDL/SDL.h&quot;
+
+       SDL_Surface *SDL_ConvertSurface(SDL_Surface *src,  SDL_PixelFormat  *fmt,
+       Uint32 flags);
+
+DESCRIPTION
+       Creates  a  new surface of the specified format, and then copies and maps
+       the given surface to it. If this function fails, it returns NULL.
+
+       The flags parameter is  passed  to  SDL_CreateRGBSurface  and  has  those
+       semantics.
+
+       This function is used internally by SDL_DisplayFormat.
+
+       This function can only be called after SDL_Init.
+
+RETURN VALUE
+       Returns either a pointer to the new surface, or NULL on error.
+
+SEE ALSO
+       SDL_CreateRGBSurface, SDL_DisplayFormat, SDL_PixelFormat, SDL_Surface
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01        SDL_ConvertSurface(3)
+
+</pre></body></html>

@@ -1,0 +1,31 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcFontList - List fonts</title></head>
+<body><pre>
+
+FcFontList(3)                                                      FcFontList(3)
+
+
+
+NAME
+       FcFontList - List fonts
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcFontSet * FcFontList (FcConfig *config, FcPattern *p, FcObjectSet *os);
+
+DESCRIPTION
+       Selects  fonts  matching  p, creates patterns from those fonts containing
+       only the objects in os and returns the set of unique such  patterns.   If
+       config  is  NULL,  the default configuration is checked to be up to date,
+       and used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                    FcFontList(3)
+
+</pre></body></html>

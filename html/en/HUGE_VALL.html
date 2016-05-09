@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>INFINITY, NAN, HUGE_VAL, HUGE_VALF, HUGE_VALL - floating-point constants</title></head>
+<body><pre>
+
+INFINITY(3)                 Linux Programmer&apos;s Manual                INFINITY(3)
+
+
+
+NAME
+       INFINITY, NAN, HUGE_VAL, HUGE_VALF, HUGE_VALL - floating-point constants
+
+SYNOPSIS
+       #define _ISOC99_SOURCE      /* See feature_test_macros(7) */
+       #include &lt;math.h&gt;
+
+       INFINITY
+
+       NAN
+
+       HUGE_VAL
+       HUGE_VALF
+       HUGE_VALL
+
+DESCRIPTION
+       The  macro  INFINITY  expands  to  a float constant representing positive
+       infinity.
+
+       The macro NAN expands to a float constant representing a quiet NaN  (when
+       supported).   A  quiet  NaN is a NaN (&quot;not-a-number&quot;) that does not raise
+       exceptions when it is used in arithmetic.  The opposite  is  a  signaling
+       NaN.  See IEC 60559:1989.
+
+       The  macros  HUGE_VAL,  HUGE_VALF, HUGE_VALL expand to constants of types
+       double, float and long double, respectively, that represent a large posi&#8208;
+       tive value, possibly plus infinity.
+
+CONFORMING TO
+       C99.
+
+AVAILABILITY
+       On  a glibc system, the macro HUGE_VAL is always available.  Availability
+       of the NAN macro can be tested using #ifdef NAN, and similarly for INFIN&#8208;
+       ITY,   HUGE_VALF,  HUGE_VALL.   They  will  be  defined  by  &lt;math.h&gt;  if
+       _ISOC99_SOURCE or _GNU_SOURCE is defined, or __STDC_VERSION__ is  defined
+       and has a value not less than 199901L.
+
+SEE ALSO
+       fpclassify(3), math_error(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2007-07-26                        INFINITY(3)
+
+</pre></body></html>

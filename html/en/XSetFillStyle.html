@@ -1,0 +1,62 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XSetFillStyle, XSetFillRule - GC convenience routines</title></head>
+<body><pre>
+
+XSetFillStyle(3)                 XLIB FUNCTIONS                 XSetFillStyle(3)
+
+
+
+NAME
+       XSetFillStyle, XSetFillRule - GC convenience routines
+
+SYNTAX
+       int XSetFillStyle(Display *display, GC gc, int fill_style);
+
+       int XSetFillRule(Display *display, GC gc, int fill_rule);
+
+ARGUMENTS
+       display   Specifies the connection to the X server.
+
+       fill_rule Specifies the fill-rule you want to set for the specified GC.
+                 You can pass EvenOddRule or WindingRule.
+
+       fill_style
+                 Specifies the fill-style you want to set for the specified GC.
+                 You can pass FillSolid, FillTiled, FillStippled, or FillOpaque&#8208;
+                 Stippled.
+
+       gc        Specifies the GC.
+
+DESCRIPTION
+       The XSetFillStyle function sets the fill-style in the specified GC.
+
+       XSetFillStyle can generate BadAlloc, BadGC, and BadValue errors.
+
+       The XSetFillRule function sets the fill-rule in the specified GC.
+
+       XSetFillRule can generate BadAlloc, BadGC, and BadValue errors.
+
+DIAGNOSTICS
+       BadAlloc  The server failed to allocate the requested resource or server
+                 memory.
+
+       BadGC     A value for a GContext argument does not name a defined GCon&#8208;
+                 text.
+
+       BadValue  Some numeric value falls outside the range of values accepted
+                 by the request.  Unless a specific range is specified for an
+                 argument, the full range defined by the argument&apos;s type is
+                 accepted.  Any argument defined as a set of alternatives can
+                 generate this error.
+
+SEE ALSO
+       XCreateGC(3), XQueryBestSize(3), XSetArcMode(3), XSetClipOrigin(3), XSet&#8208;
+       Font(3), XSetLineAttributes(3), XSetState(3), XSetTile(3)
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0                  XSetFillStyle(3)
+
+</pre></body></html>

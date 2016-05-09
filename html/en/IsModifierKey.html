@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>IsCursorKey, IsFunctionKey, IsKeypadKey, IsMiscFunctionKey, IsModifierKey, IsPFKey, IsPrivateKeypadKey - keysym classification macros</title></head>
+<body><pre>
+
+IsCursorKey(3)                   XLIB FUNCTIONS                   IsCursorKey(3)
+
+
+
+NAME
+       IsCursorKey, IsFunctionKey, IsKeypadKey, IsMiscFunctionKey, IsModi&#8208;
+       fierKey, IsPFKey, IsPrivateKeypadKey - keysym classification macros
+
+SYNTAX
+       int IsCursorKey(KeySym keysym);
+
+       int IsFunctionKey(KeySym keysym);
+
+       int IsKeypadKey(KeySym keysym);
+
+       int IsMiscFunctionKey(KeySym keysym);
+
+       int IsModifierKey(KeySym keysym);
+
+       int IsPFKey(KeySym keysym);
+
+       int IsPrivateKeypadKey(KeySym keysym);
+
+ARGUMENTS
+       keysym    Specifies the KeySym that is to be tested.
+
+DESCRIPTION
+       The IsCursorKey macro returns True if the specified KeySym is a cursor
+       key.
+
+       The IsFunctionKey macro returns True if the KeySym is a function key.
+
+       The IsKeypadKey macro returns True if the specified KeySym is a keypad
+       key.
+
+       The IsMiscFunctionKey macro returns True if the specified KeySym is a
+       miscellaneous function key.
+
+       The IsModifierKey macro returns True if the specified KeySym is a modi&#8208;
+       fier key.
+
+       The IsPFKey macro returns True if the specified KeySym is a PF key.
+
+       The IsPrivateKeypadKey macro returns True if the specified KeySym is a
+       vendor-private keypad key.
+
+SEE ALSO
+       XkbKeyTypesForCoreSymbols(3), AllPlanes(3), BlackPixelOfScreen(3), Image&#8208;
+       ByteOrder(3)
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0                    IsCursorKey(3)
+
+</pre></body></html>

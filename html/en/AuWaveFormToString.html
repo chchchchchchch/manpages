@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuWaveFormToString - return string description of wave form.</title></head>
+<body><pre>
+
+AuWaveFormToString(3)                                      AuWaveFormToString(3)
+
+
+
+Name
+       AuWaveFormToString - return string description of wave form.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       char *AuWaveFormToString(waveform)
+           unsigned int waveform;
+
+Arguments
+       waveform  Specifies  the waveform.  Currently the following waveforms are
+                 defined:   AuWaveFormSquare,   AuWaveFormSine,   AuWaveFormSaw,
+                 AuWaveFormConstant.
+
+Description
+       AuWaveFormToString  returns a string description of waveform or &quot;unknown&quot;
+       if it isnt recognized.
+
+See Also
+       AuStringToWaveForm.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+
+audioutil                             1.9.3                AuWaveFormToString(3)
+
+</pre></body></html>

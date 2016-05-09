@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ssh-copy-id - install your public key in a remote machine's authorized_keys</title></head>
+<body><pre>
+
+SSH-COPY-ID(1)                                                    SSH-COPY-ID(1)
+
+
+
+NAME
+       ssh-copy-id  -  install  your  public  key  in  a remote machine&apos;s autho&#8208;
+       rized_keys
+
+SYNOPSIS
+       ssh-copy-id [-i [identity_file]] [user@]machine
+
+DESCRIPTION
+       ssh-copy-id is a script that uses ssh to log into a  remote  machine  and
+       append  the  indicated  identity  file  to  that  machine&apos;s ~/.ssh/autho&#8208;
+       rized_keys file.
+
+       If  the  -i  option  is  given  then  the  identity  file  (defaults   to
+       ~/.ssh/id_rsa.pub)  is  used, regardless of whether there are any keys in
+       your ssh-agent.  Otherwise, if this:
+
+             ssh-add -L
+
+       provides any output, it uses that in preference to the identity file.
+
+       If the -i option is used, or the ssh-add produced no output, then it uses
+       the  contents of the identity file.  Once it has one or more fingerprints
+       (by whatever means) it uses ssh to append them to  ~/.ssh/authorized_keys
+       on the remote machine (creating the file, and directory, if necessary.)
+
+
+NOTES
+       This program does not modify the permissions of any pre-existing files or
+       directories. Therefore, if the remote sshd has  StrictModes  set  in  its
+       configuration,  then  the  user&apos;s  home, ~/.ssh folder, and ~/.ssh/autho&#8208;
+       rized_keys file may need to have  group  writability  disabled  manually,
+       e.g. via
+
+             chmod go-w ~ ~/.ssh ~/.ssh/authorized_keys
+
+       on the remote machine.
+
+
+SEE ALSO
+       ssh(1), ssh-agent(1), sshd(8)
+
+
+
+OpenSSH                         14 November 1999                  SSH-COPY-ID(1)
+
+</pre></body></html>

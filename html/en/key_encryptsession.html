@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>key_decryptsession, key_encryptsession, key_setsecret, key_gendes, key_secretkey_is_set - interfaces to rpc keyserver daemon</title></head>
+<body><pre>
+
+KEY_SETSECRET(3)            Linux Programmer&apos;s Manual           KEY_SETSECRET(3)
+
+
+
+NAME
+       key_decryptsession,    key_encryptsession,   key_setsecret,   key_gendes,
+       key_secretkey_is_set - interfaces to rpc keyserver daemon
+
+SYNOPSIS
+       #include &lt;rpc/rpc.h&gt;
+
+       int key_decryptsession(const char *remotename, des_block *deskey);
+
+       int key_encryptsession(const char *remotename, des_block *deskey);
+
+       int key_gendes(des_block *deskey);
+
+       int key_setsecret(const char *key);
+
+       int key_secretkey_is_set(void);
+
+DESCRIPTION
+       The functions here are used within the RPC&apos;s secure authentication mecha&#8208;
+       nism  (AUTH_DES).   There should be no need for user programs to use this
+       functions.
+
+       The function key_decryptsession() uses the (remote)  server  netname  and
+       takes  the  DES key for decrypting.  It uses the public key of the server
+       and the secret key associated with  the  effective  UID  of  the  calling
+       process.
+
+       The function key_encryptsession() is the inverse of key_decryptsession().
+       It encrypts the DES keys with the public key of the server and the secret
+       key associated with the effective UID of the calling process.
+
+       The  function key_gendes() is used to ask the keyserver for a secure con&#8208;
+       versation key.
+
+       The function key_setsecret() is used to set the key for the effective UID
+       of the calling process.
+
+       The  function  key_secretkey_is_set()  can be used to determine whether a
+       key has been set for the effective UID of the calling process.
+
+RETURN VALUE
+       These functions return 1 on success and 0 on failure.
+
+NOTES
+       Note that we talk about two types of encryption here.  One is  asymmetric
+       using a public and secret key.  The other is symmetric, the 64-bit DES.
+
+       These routines were part of the Linux/Doors-project, abandoned by now.
+
+SEE ALSO
+       crypt(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2002-07-18                   KEY_SETSECRET(3)
+
+</pre></body></html>

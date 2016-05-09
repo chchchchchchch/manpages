@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>splitindex - manual page for splitindex 0.2a</title></head>
+<body><pre>
+
+SPLITINDEX(1)                     User Commands                    SPLITINDEX(1)
+
+
+
+NAME
+       splitindex - manual page for splitindex 0.2a
+
+SYNOPSIS
+       splitindex.pl [OPTION]... RAWINDEXFILE [MAKEINDEXOPTION]...
+
+       splitindex [OPTION]... RAWINDEXFILE [MAKEINDEXOPTION]...
+
+       java splitindex [OPTION]... RAWINDEXFILE [MAKEINDEXOPTION]...
+
+       tex splitindex
+
+DESCRIPTION
+       splitindex 0.2a Copyright (c) 2002 Markus Kohm &lt;kohm@gmx.de&gt;
+
+       Split a single raw index file into multiple raw index files.
+
+       Example: splitindex.pl foo.idx.
+
+OPTIONS
+       -h, --help
+              show this help and terminate
+
+       -m, --makeindex PROGNAME
+              call PROGNAME instead of default `makeindex&apos;.
+
+       -i, --identify EXPRESSION
+              use  regular EXPRESSION to match entries (see also option --resul&#8208;
+              tis     and     --suffixis).      Default     is     `^(\\indexen&#8208;
+              try)\[([^]]*)\](.*)$&apos;.
+
+       -r, --resultis PATTERN
+              create  line  to be written from PATTERN after matching lines (see
+              also option --identify).  Default is `$1$3&apos;.
+
+       -s, --suffixis PATTERN
+              create suffix to be used from PATTERN after  matching  lines  (see
+              also option --identify).  Default is `-$2&apos;.
+
+       -v, --verbose
+              be more verbose (can be used multiple to increase verbosity)
+
+       --version
+              show version and terminate
+
+COPYRIGHT
+       Copyright &#169; 2002 Markus Kohm &lt;kohm@gmx.de&gt;
+
+SEE ALSO
+       The  full  documentation  for splitindex is maintained as a LaTeX manual.
+       If the texdoc and splitindex programs  are  properly  installed  at  your
+       site, the command
+
+              texdoc splitidx
+
+       should give you access to the complete manual.
+
+
+
+splitindex 0.2a                   November 2002                    SPLITINDEX(1)
+
+</pre></body></html>

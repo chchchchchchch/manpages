@@ -1,0 +1,114 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hgignore - syntax for Mercurial ignore files</title></head>
+<body><pre>
+
+HGIGNORE(5)                     Mercurial Manual                     HGIGNORE(5)
+
+
+
+NAME
+       hgignore - syntax for Mercurial ignore files
+
+SYNOPSIS
+       The  Mercurial  system uses a file called .hgignore in the root directory
+       of a repository to control its behavior when it searches for  files  that
+       it is not currently tracking.
+
+DESCRIPTION
+       The  working directory of a Mercurial repository will often contain files
+       that should not be tracked by Mercurial. These include backup files  cre&#8208;
+       ated by editors and build products created by compilers.  These files can
+       be ignored by listing them in a .hgignore file in the root of the working
+       directory.  The  .hgignore file must be created manually. It is typically
+       put under version control, so that the settings will propagate  to  other
+       repositories with push and pull.
+
+       An  untracked file is ignored if its path relative to the repository root
+       directory, or any prefix path of that path, is matched against  any  pat&#8208;
+       tern in .hgignore.
+
+       For  example, say we have an untracked file, file.c, at a/b/file.c inside
+       our repository. Mercurial will ignore file.c if any pattern in  .hgignore
+       matches a/b/file.c, a/b or a.
+
+       In  addition,  a  Mercurial  configuration  file  can  reference a set of
+       per-user or global ignore files. See the ignore configuration key on  the
+       [ui]  section  of  hg  help  config for details of how to configure these
+       files.
+
+       To control Mercurial&apos;s handling of files that it manages,  many  commands
+       support the -I and -X options; see hg help &lt;command&gt; and hg help patterns
+       for details.
+
+SYNTAX
+       An ignore file is a plain text file consisting of  a  list  of  patterns,
+       with  one  pattern  per line. Empty lines are skipped. The # character is
+       treated as a comment character, and the \  character  is  treated  as  an
+       escape character.
+
+       Mercurial  supports  several pattern syntaxes. The default syntax used is
+       Python/Perl-style regular expressions.
+
+       To change the syntax used, use a line of the following form:
+
+       syntax: NAME
+
+       where NAME is one of the following:
+
+       regexp
+
+              Regular expression, Python/Perl syntax.
+
+       glob
+
+              Shell-style glob.
+
+       The chosen syntax stays in effect when parsing all patterns that  follow,
+       until another syntax is selected.
+
+       Neither glob nor regexp patterns are rooted. A glob-syntax pattern of the
+       form *.c will match a file ending in .c in any directory,  and  a  regexp
+       pattern  of  the  form  \.c$  will do the same. To root a regexp pattern,
+       start it with ^.
+
+       Note   Patterns specified in other  than  .hgignore  are  always  rooted.
+              Please see hg help patterns for details.
+
+EXAMPLE
+       Here is an example ignore file.
+
+       # use glob syntax.
+       syntax: glob
+
+       *.elc
+       *.pyc
+       *~
+
+       # switch to regexp syntax.
+       syntax: regexp
+       ^\.pc/
+
+AUTHOR
+       Vadim Gelfer &lt;vadim.gelfer@gmail.com&gt;
+
+       Mercurial was written by Matt Mackall &lt;mpm@selenic.com&gt;.
+
+SEE ALSO
+       hg(1), hgrc(5)
+
+COPYING
+       This  manual page is copyright 2006 Vadim Gelfer.  Mercurial is copyright
+       2005-2012 Matt Mackall.  Free use of this software is granted  under  the
+       terms of the GNU General Public License version 2 or any later version.
+
+AUTHOR
+       Vadim Gelfer &lt;vadim.gelfer@gmail.com&gt;
+
+       Organization: Mercurial
+
+
+
+                                                                     HGIGNORE(5)
+
+</pre></body></html>

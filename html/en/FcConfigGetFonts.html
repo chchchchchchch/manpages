@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigGetFonts - Get config font set</title></head>
+<body><pre>
+
+FcConfigGetFonts(3)                                          FcConfigGetFonts(3)
+
+
+
+NAME
+       FcConfigGetFonts - Get config font set
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcFontSet * FcConfigGetFonts (FcConfig *config, FcSetName set);
+
+DESCRIPTION
+       Returns  one of the two sets of fonts from the configuration as specified
+       by set. This font set is owned by the library and must not be modified or
+       freed.  If config is NULL, the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012              FcConfigGetFonts(3)
+
+</pre></body></html>

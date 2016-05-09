@@ -1,0 +1,163 @@
+<html>
+<head><meta charset=utf-8/>
+<title>build.xml - configuration file used by ant to build projects</title></head>
+<body><pre>
+
+build.xml(5)                                                        build.xml(5)
+
+
+
+NAME
+       build.xml - configuration file used by ant to build projects
+
+
+DESCRIPTION
+       The  file  build.xml  is  the  default  configuration file used by ant to
+       determine target to build for a specific project. It  can  be  considered
+       the ant equivalent of Makefile.
+
+       The  format  of  ant  is XML and for each project a separate file is con&#8208;
+       structed.  The buildfile consists of one or more  tasks.  An  example  is
+       given below.
+
+       &lt;project default=&quot;compile&quot;&gt;
+
+         &lt;target name=&quot;compile&quot;&gt;
+           &lt;javac srcdir=&quot;src&quot;/&gt;
+         &lt;/target&gt;
+
+       &lt;/project&gt;
+
+       This  example  has one target and it is defaulted. The target itself con&#8208;
+       sists of one task javac which compiles the files in the src directory.
+
+
+TARGETS
+       Targets can depend on other targets. These dependencies are given by  the
+       depends attribute of the &lt;target&gt; element.
+
+
+TASKS
+       A  task  is  a  piece  of code that is executed.  Ant recognizes built-in
+       task, optional tasks, but one can also write new tasks.
+
+       Built-in tasks
+
+       The built-in tasks are: Ant, AntCall,  AntStructure,  AntVersion,  Apply,
+       Apt,  Available,  Basename, BuildNumber, BUnzip2, BZip2, Checksum, Chmod,
+       Concat, Condition, Copy,  Componentdef,  Cvs,  CvsChangeLog,  CvsVersion,
+       CVSPass,  CvsTagDiff,  Defaultexcludes, Delete, Deltree, Dependset, Diag&#8208;
+       nostics, Dirname,  Ear,  Echo,  EchoXML,  Exec,  Fail,  Filter,  FixCRLF,
+       GenKey,  Get,  HostInfo, GUnzip, GZip, Import, Include, Input, Jar, Java,
+       Javac, Javadoc, Length, LoadFile,  LoadProperties,  LoadResource,  Local,
+       MakeURL,  Mail, MacroDef, Manifest, ManifestClassPath, Mkdir, Move, Nice,
+       Parallel,  Patch,  PathConvert,  PreSetDef,   Property,   PropertyHelper,
+       Record,  Replace, ResourceCount, Retry, Rmic, Sequential, SignJar, Sleep,
+       Sql, SubAnt, Sync, Tar, Taskdef, Tempfile, Touch, Truncate, TStamp, Type&#8208;
+       def,  Unjar,  Untar, Unwar, Unzip, Uptodate, Waitfor, WhichResource, War,
+       XmlProperty, XSLT, Zip
+
+
+       Java   Executes a Java class within the running (Ant) VM or forks another
+              VM  if  specified.  Below  are some of the attibutes to the &lt;java&gt;
+              element:
+
+              classname (required) the Java class to execute
+
+              fork if enabled triggers the class execution in another  VM  (dis&#8208;
+              abled by default)
+
+              jvm  the  command used to invoke the Java Virtual Machine, default
+              is java. The  command  is  resolved  by  java.lang.Runtime.exec().
+              Ignored if fork is disabled.
+
+              Other  arguments  are  classpath, classpathref, maxmemory, failon&#8208;
+              error, dir and output.
+
+
+       Javac  Compiles a source tree within the running (Ant) VM.
+
+              srcdir (required) location of the java files
+
+              destdir location to store the class files
+
+              debug indicates whether  source  should  be  compiled  with  debug
+              information; defaults to off
+
+              optimize  indicates  whether  source should be compiled with opti&#8208;
+              mization; defaults to off
+
+              target generate class files for specific VM version (e.g., 1.1  or
+              1.2).
+
+              includes  comma-separated  list  of patterns of files that must be
+              included; all files are included when omitted
+
+              excludes comma-separated list of patterns of files  that  must  be
+              excluded;  no  files  (except  default excludes) are excluded when
+              omitted.
+
+              defaultexcludes indicates whether default excludes should be  used
+              (yes | no); default excludes are used when omitted.
+
+              Other  arguments  are includesfile, excludesfile, classpath, boot&#8208;
+              classpath, classpathref, bootclasspathref, extdirs, encoding, dep&#8208;
+              recation,   verbose,   includeAntRuntime,  includeJavaRuntime  and
+              failonerror.
+
+
+Properties
+       A project can have a set of properties, which consist  of  a  name  value
+       combination.  Within  tasks they can be used by placing them between &quot;${&quot;
+       and &quot;}&quot;, as in &quot;${builddir}/classes&quot;.
+
+       Built-in Properties
+
+       Ant provides access to all system properties as if they had been  defined
+       using  a  &lt;property&gt; task. For example, ${os.name} expands to the name of
+       the operating system.
+
+
+       basedir
+              the absolute path of  the  project&apos;s  basedir  (as  set  with  the
+              basedir attribute of &lt;project&gt;).
+
+       ant.file
+              the absolute path of the buildfile.
+
+       ant.version
+              the version of Ant.
+
+       ant.project.name
+              the  name of the project that is currently executing; it is set in
+              the name attribute of &lt;project&gt;.
+
+       ant.java.version
+              the JVM version Ant detected; currently it  can  hold  the  values
+              &quot;1.1&quot;, &quot;1.2&quot; and &quot;1.3&quot;.
+
+
+Classpath
+       The classpath can be set by using the &lt;classpath&gt; element:
+
+       &lt;classpath&gt;
+         &lt;pathelement path=&quot;${classpath}&quot;/&gt;
+         &lt;pathelement location=&quot;lib/helper.jar&quot;/&gt;
+         &lt;fileset dir=&quot;lib&quot;&gt;
+           &lt;include name=&quot;**/*.jar&quot;/&gt;
+         &lt;/fileset&gt; &lt;/classpath&gt;
+
+
+SEE ALSO
+       ant(1)
+
+
+AUTHOR
+       This  manpage is made by Egon Willighagen &lt;egonw@sci.kun.nl&gt; and based on
+       the Ant Manual &lt;http://jakarta.apache.org/ant/manual/&gt;.
+
+
+
+Debian GNU/Linux                  February 2010                     build.xml(5)
+
+</pre></body></html>

@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetXlibControls - Determines the current state of the Library Controls</title></head>
+<body><pre>
+
+XkbGetXlibControls(3)             XKB FUNCTIONS            XkbGetXlibControls(3)
+
+
+
+NAME
+       XkbGetXlibControls - Determines the current state of the Library Controls
+
+SYNOPSIS
+       unsigned int XkbGetXlibControls (Display  *display);
+
+ARGUMENTS
+       - display
+              connection to X server
+
+DESCRIPTION
+       XkbGetXlibControls returns the current state of the Library Controls as a
+       bit mask that is an inclusive OR of the control masks from  Table  1  for
+       the  controls  that are enabled. For the optional compose processing con&#8208;
+       trols, the fact that a control is enabled does not imply that it is actu&#8208;
+       ally implemented.
+
+
+       c  s  l  l  l  l.   Table  1  Library  Control  Masks  _  Library Control
+       Mask     Value _ XkbLC_ForceLatin1Lookup  (1 &lt;&lt;  0)  XkbLC_ConsumeLookup&#8208;
+       Mods  (1  &lt;&lt; 1) XkbLC_AlwaysConsumeShiftAndLock    (1 &lt;&lt; 2) XkbLC_Ignore&#8208;
+       NewKeyboards (1  &lt;&lt;  3)  XkbLC_ConsumeKeysOnComposeFail     (1   &lt;&lt;   29)
+       XkbLC_ComposeLED    (1   &lt;&lt;   30)   XkbLC_BeepOnComposeFail  (1   &lt;&lt;  31)
+       XkbLC_AllControls   (0xc0000007)
+
+
+
+
+X Version 11                      libX11 1.5.0             XkbGetXlibControls(3)
+
+</pre></body></html>

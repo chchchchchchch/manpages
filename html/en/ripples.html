@@ -1,0 +1,97 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ripples - interference patterns.</title></head>
+<body><pre>
+
+ripples(6x)                    XScreenSaver manual                   ripples(6x)
+
+
+
+NAME
+       ripples - interference patterns.
+
+SYNOPSIS
+       ripples [-display host:display.screen] [-visual visual] [-window] [-root]
+       [-delay  number]  [-duration  secs]  [-rate  number]  [-fluidity  number]
+       [-light  number]  [-water]  [-stir] [-oily] [-grayscale] [-colors number]
+       [-no-shm] [-fps]
+
+DESCRIPTION
+       This draws rippling interference patterns like splashing water. With  the
+       -water  option,  it manipulates your desktop image to look like something
+       is dripping into it.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual  class,  or the id number (decimal or hex) of a specific vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -delay number
+               Per-frame delay, in  microseconds.   Default:  50000  (0.05  sec&#8208;
+               onds.).
+
+       -duration seconds
+               How long to run before loading a new image.  Default 120 seconds.
+
+       -rate number
+               Drizzle.  1 - 100.  Default: 5.
+
+       -fluidity number
+               Small Drops.  0 - 16.  Default: 6.
+
+       -light number
+               Lighting Effect.  0 - 8.  Default: 0.
+
+       -water | -no-water
+               Grab Screen Image.  Boolean.
+
+       -stir | -no-stir
+               Moving Splashes.  Boolean.
+
+       -oily | -no-oily
+               Psychedelic Colors.  Boolean.
+
+       -grayscale
+               Convert  the screen image to grayscale.  Ignored if we don&apos;t grab
+               the screen image or if  our  screen  doesn&apos;t  have  enough  color
+               depth.
+
+       -colors number
+               Colors Two.  Default: 200.
+
+       -shm | -no-shm
+               Use Shared Memory.  Boolean.
+
+       -fps    Display the current frame rate and CPU load.
+&#12;ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to  get  the  name  of  a resource file that overrides the global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 2002 by Tom Hammersley.  Permission  to  use,  copy,  modify,
+       distribute,  and sell this software and its documentation for any purpose
+       is hereby granted without fee, provided that the above  copyright  notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion notice appear in supporting documentation.  No  representations  are
+       made  about the suitability of this software for any purpose.  It is pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Tom Hammersley.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                    ripples(6x)
+
+</pre></body></html>

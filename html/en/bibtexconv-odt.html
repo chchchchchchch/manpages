@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>bibtexconv-odt — ODT Helper Script for BibTeX Converter</title></head>
+<body><pre>
+
+bibtexconv-odt(1)         BSD General Commands Manual        bibtexconv-odt(1)
+
+NAME
+     bibtexconv-odt &#8212; ODT Helper Script for BibTeX Converter
+
+SYNOPSIS
+     bibtexconv-odt Template_ODT Output_ODT BibTeX_File Export_Script
+
+DESCRIPTION
+     bibtexconv-odt runs bibtexconv to generate an Open Document Text (ODT) con&#8208;
+     tent.xml file, which is then joined with an existing template ODT file into
+     an output ODT file.
+
+OPTIONS
+     The following arguments have to be provided:
+
+     Template_ODT
+             The template ODT file.
+
+     Output_ODT
+             The output ODT file.
+
+     BibTeX_File
+             The input BibTeX file for BibTeXConv.
+
+     Export_Script
+             The input export script for BibTeXConv.
+
+EXAMPLE
+     bibtexconv-odt \
+             /usr/share/doc/bibtexconv/examples/ODT-Template.odt \
+             MyPublications.odt \
+             /usr/share/doc/bibtexconv/examples/ExampleReferences.bib \
+             /usr/share/doc/bibtexconv/examples/odt-example.export
+             Uses export script /usr/share/doc/bibtexconv/examples/odt-exam&#8208;
+             ple.export to export references from /usr/share/doc/bibtex&#8208;
+             conv/examples/ExampleReferences.bib to MyPublications.odt as Open&#8208;
+             Document Text (ODT), according to the template ODT file
+             /usr/share/doc/bibtexconv/examples/ODT-Template.odt.
+
+bibtexconv-odt                   May 12, 2012                   bibtexconv-odt
+
+</pre></body></html>

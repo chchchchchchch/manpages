@@ -1,0 +1,95 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-magicolor - SANE backend for KONICA MINOLTA magicolor scanners</title></head>
+<body><pre>
+
+sane-magicolor(5)         SANE Scanner Access Now Easy         sane-magicolor(5)
+
+
+
+NAME
+       sane-magicolor - SANE backend for KONICA MINOLTA magicolor scanners
+
+DESCRIPTION
+       The  sane-magicolor  backend  supports  KONICA MINOLTA magicolor scanners
+       connected via USB or LAN. Currently, only the magicolor 1690MF device  is
+       supported, no other devices with the same scanning protocol are known.
+
+SUPPORTED DEVICES
+       The following scanner should work with this backend:
+
+       Device Details
+       -----------------------------
+       Vendor: KONICA MINOLTA
+       Model: magicolor 1690MF
+
+
+CONFIGURATION
+       This  section decribes the backend&apos;s configuration file entries. The file
+       is located at:
+
+              /etc/sane.d/magicolor.conf
+
+       For a proper setup, at least one of the following entries are needed:
+
+              net autodiscovery
+              net [IP ADDRESS] [DEVICE-ID]
+              usb
+              usb [VENDOR-ID] [DEVICE-ID]
+
+
+FILES
+       /etc/sane.d/magicolor.conf
+              The backend configuration file
+
+       /usr/lib/arch_triplet/sane/libsane-magicolor.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-magicolor.so
+              The shared library implementing this backend (present  on  systems
+              that support dynamic loading).
+
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This  environment  variable specifies the list of directories that
+              may contain the configuration file.  Under UNIX,  the  directories
+              are  separated by a colon (`:&apos;), under OS/2, they are separated by
+              a semi-colon (`;&apos;).  If this variable is not set,  the  configura&#8208;
+              tion  file is searched in two default directories: first, the cur&#8208;
+              rent working directory (&quot;.&quot;) and  then  in  /etc/sane.d.   If  the
+              value  of the environment variable ends with the directory separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly  specified directories.  For example, setting SANE_CON&#8208;
+              FIG_DIR to &quot;/tmp/config:&quot; would result in  directories  &quot;/tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_MAGICOLOR
+              If the library was compiled with debug support enabled, this envi&#8208;
+              ronment variable  controls  the  debug  level  for  this  backend.
+              Higher debug levels increase the verbosity of the output.
+
+              Example: export SANE_DEBUG_MAGICOLOR=127
+
+              To  obtain  debug  messages from the backend, set this environment
+              variable before calling your favorite frontend (e.g. xscanimage).
+
+              Example: SANE_DEBUG_MAGICOLOR=65 xscanimage
+
+KNOWN BUGS AND RESTRICTIONS
+       Large color scans may sometimes timeout due to unknown reasons (the scan&#8208;
+       ner simply stops returning data)
+
+       Cancelling large scans may lock up the scanner.
+
+SEE ALSO
+       sane(7),
+       http://wiki.kainhofer.com/hardware/magicolor_scan
+
+AUTHOR
+       Reinhold Kainhofer &lt;reinhold@kainhofer.com&gt;
+
+
+
+                                   10 Jan 2011                 sane-magicolor(5)
+
+</pre></body></html>

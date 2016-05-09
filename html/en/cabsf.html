@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cabs, cabsf, cabsl - absolute value of a complex number</title></head>
+<body><pre>
+
+CABS(3)                     Linux Programmer&apos;s Manual                    CABS(3)
+
+
+
+NAME
+       cabs, cabsf, cabsl - absolute value of a complex number
+
+SYNOPSIS
+       #include &lt;complex.h&gt;
+
+       double cabs(double complex z);
+       float cabsf(float complex z);
+       long double cabsl(long double complex z);
+
+       Link with -lm.
+
+DESCRIPTION
+       The  cabs()  function returns the absolute value of the complex number z.
+       The result is a real number.
+
+VERSIONS
+       These functions first appeared in glibc in version 2.1.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The function is actually an  alias  for  hypot(a, b)  (or,  equivalently,
+       sqrt(a*a + b*b)).
+
+SEE ALSO
+       abs(3), cimag(3), hypot(3), complex(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+                                   2008-08-11                            CABS(3)
+
+</pre></body></html>

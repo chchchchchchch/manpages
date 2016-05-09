@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>disco - Mono's Web Service Discovery Tool</title></head>
+<body><pre>
+
+disco(1)                                                                disco(1)
+
+
+
+NAME
+       disco - Mono&apos;s Web Service Discovery Tool
+
+SYNOPSIS
+       disco [options] url
+
+DESCRIPTION
+       disco is a tool for discovering web services and for retireving the docu&#8208;
+       ments that describe those services.
+
+       url is the location of a DISCO document, which includes a  list  of  WSDL
+       documents, XML schemas and references to other DISCO documents.
+
+       disco  downloads  the DISCO document and all referenced documents (unless
+       the -nosave option is specified), and saves them to disk.
+
+OPTIONS
+       The following options are available:
+
+       -nologo
+              Supress the startup logo.
+
+       -nosave
+              Do not save the discovered documents to disk. The  default  is  to
+              save the documents.
+
+       -o:directory , -out:directory
+              The directory where to save the discovered documents.  By default,
+              documents are saved in the current directory.
+
+       -u:username , -user:username
+              The user name to use when connecting to the server.
+
+       -p:password , -password:password
+              The password to use when connecting to the server.
+
+       -d:domain , -domain:domain
+              The domain to use when connecting to the server.
+
+       -proxy:url
+              The url of the proxy server to use for http requests.
+
+       -proxyusername:username
+              The user name to use when connecting to the proxy.
+
+       -proxypassword:password
+              The password to use when connecting to the proxy.
+
+       -proxydomain:domain
+              The domain to use when connecting to the proxy.
+
+AUTHORS
+       Lluis Sanchez Gual (lluis@ximian.com)
+
+LICENSE
+       disco is released under the terms of the GNU GPL.
+
+SEE ALSO
+       wsdl(1), soapsuds(1), mono(1), mcs(1)
+
+
+
+                                                                        disco(1)
+
+</pre></body></html>

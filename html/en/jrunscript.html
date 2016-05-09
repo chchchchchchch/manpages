@@ -1,0 +1,130 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jrunscript - command line script shell</title></head>
+<body><pre>
+
+jrunscript(1)                                                      jrunscript(1)
+
+
+
+Name
+       jrunscript - command line script shell
+
+SYNOPSIS
+       jrunscript [ options ] [ arguments... ]
+
+
+PARAMETERS
+          options
+             Options, if used, should follow immediately after the command name.
+
+          arguments
+             Arguments, if used, should follow immediately after options or com&#8208;
+             mand name.
+
+
+DESCRIPTION
+       jrunscript is a command line script shell. jrunscript  supports  both  an
+       interactive (read-eval-print) mode and a batch (-f option) mode of script
+       execution. This is a scripting language independent  shell.  By  default,
+       JavaScript is the language used, but the -l option can be used to specify
+       a different language. Through Java to scripting  language  communication,
+       jrunscript supports &quot;exploratory programming&quot; style.
+
+       NOTE:  This  tool is experimental and may not be available in future ver&#8208;
+       sions of the JDK.
+
+OPTIONS
+          -classpath path
+             Specify where to find the user&apos;s .class files that are accessed  by
+             the script.
+
+          -cp path
+             This is a synonym for -classpath path
+
+          -Dname=value
+             Set a Java system property.
+
+          -J&lt;flag&gt;
+             Pass  &lt;flag&gt;  directly  to  the Java virtual machine on which jrun&#8208;
+             script is run.
+
+          -l language
+             Use the specified scripting language.  By  default,  JavaScript  is
+             used.  Note that to use other scripting languages, you also need to
+             specify the corresponding script engine&apos;s jar  file  using  -cp  or
+             -classpath option.
+
+          -e script
+             Evaluate  the  given  script.  This  option can be used to run &quot;one
+             liner&quot; scripts specified completely on the command line.
+
+          -encoding encoding
+             Specify the character encoding used while reading script files.
+
+          -f script-file
+             Evaluate the given script file (batch mode).
+
+          -f -
+             Read and evaluate a script from standard input (interactive mode).
+
+          -help
+             Output help message and exit.
+&#12;          -?
+             Output help message and exit.
+
+          -q
+             List all script engines available and exit.
+
+
+ARGUMENTS
+       If [arguments...] are present and if no -e or -f option is used, then the
+       first  argument is the script file and the rest of the arguments, if any,
+       are passed as script arguments. If [arguments..] and -e or -f option  are
+       used,  then  all  [arguments..] are passed as script arguments. If [argu&#8208;
+       ments..], -e and -f are missing, interactive mode is used.  Script  argu&#8208;
+       ments  are  available to a script in an engine variable named &quot;arguments&quot;
+       of type String array.
+
+EXAMPLES
+   Executing inline scripts
+       jrunscript -e &quot;print(&apos;hello world&apos;)&quot;
+       jrunscript -e &quot;cat(&apos;http://java.sun.com&apos;)&quot;
+
+
+   Use specified language and evaluate given script file
+       jrunscript -l js -f test.js
+
+
+   Interactive mode
+       jrunscript
+       js&gt; print(&apos;Hello World\n&apos;);
+       Hello World
+       js&gt; 34 + 55
+       89.0
+       js&gt; t = new java.lang.Thread(function() { print(&apos;Hello World\n&apos;); })
+       Thread[Thread-0,5,main]
+       js&gt; t.start()
+       js&gt; Hello World
+
+       js&gt;
+
+
+   Run script file with script arguments
+       jrunscript test.js arg1 arg2 arg3
+
+
+       test.js is script file to execute and arg1, arg2 and arg3 are  passed  to
+       script  as  script  arguments.  Script can access these using &quot;arguments&quot;
+       array.
+
+SEE ALSO
+       If JavaScript is used, then before evaluating any  user  defined  script,
+       jrunscript  initializes  certain  built-in  functions  and objects. These
+       JavaScript built-ins are documented in jsdocs @
+       http://docs.oracle.com/javase/7/docs/technotes/tools/share/jsdocs/all&#8208;
+       classes-noframe.html.
+
+                                   16 Mar 2012                     jrunscript(1)
+
+</pre></body></html>

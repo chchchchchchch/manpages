@@ -1,0 +1,261 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Text::BibTeX::Bib - defines the "Bib" database structure</title></head>
+<body><pre>
+
+Text::BibTeX::Bib(3pm) User Contributed Perl DocumentationText::BibTeX::Bib(3pm)
+
+
+
+NAME
+       Text::BibTeX::Bib - defines the &quot;Bib&quot; database structure
+
+SYNOPSIS
+          $bibfile = new Text::BibTeX::File $filename;
+          $bibfile-&gt;set_structure (&apos;Bib&apos;,
+                                   # Default option values:
+                                   sortby =&gt; &apos;name&apos;,
+                                   namestyle =&gt; &apos;full&apos;
+                                   nameorder =&gt; &apos;first&apos;,
+                                   atitle =&gt; 1,
+                                   labels =&gt; &apos;numeric&apos;);
+
+          # Alternate option values:
+          $bibfile-&gt;set_option (sortby =&gt; &apos;year&apos;);
+          $bibfile-&gt;set_option (namestyle =&gt; &apos;nopunct&apos;);
+          $bibfile-&gt;set_option (namestyle =&gt; &apos;nospace&apos;);
+          $bibfile-&gt;set_option (nameorder =&gt; &apos;last&apos;);
+          $bibfile-&gt;set_option (atitle =&gt; 0);
+          $bibfile-&gt;set_option (labels =&gt; &apos;alpha&apos;);   # not implemented yet!
+
+          # parse entry from $bibfile and automatically make it a BibEntry
+          $entry = new Text::BibTeX::Entry $bibfile;
+
+          # or get an entry from somewhere else which is hard-coded to be
+          # a BibEntry
+          $entry = new Text::BibTeX::BibEntry ...;
+
+          $sortkey = $entry-&gt;sort_key;
+          @blocks = $entry-&gt;format;
+
+DESCRIPTION
+       (NOTE! Do not believe everything you read in this document.  The classes
+       described here are unfinished and only lightly tested.  The current
+       implementation is a proof-of-principle, to convince myself (and anyone
+       who might be interested) that it really is possible to reimplement BibTeX
+       0.99 in Perl using the core &quot;Text::BibTeX&quot; classes; this principle is
+       vaguely demonstrated by the current &quot;Bib*&quot; modules, but not really
+       proved.  Many important features needed to reimplement the standard
+       styles of BibTeX 0.99 are missing, even though this document may brashly
+       assert otherwise.  If you are interested in using these classes, you
+       should start by reading and grokking the code, and contributing the
+       missing bits and pieces that you need.)
+
+       &quot;Text::BibTeX::Bib&quot; implements the database structure for bibliographies
+       as defined by the standard styles of BibTeX 0.99.  It does this by
+       providing two classes, &quot;BibStructure&quot; and &quot;BibEntry&quot; (the leading
+       &quot;Text::BibTeX&quot; is implied, and will be omitted for the rest of this
+       document).  These two classes, being specific to bibliographic data, are
+       outside of the core &quot;Text::BibTeX&quot; class hierarchy, but are distributed
+       along with it as they provide a canonical example of a specific database
+       structure using classes derived from the core hierarchy.
+
+       &quot;BibStructure&quot;, which derives from the &quot;Structure&quot; class, deals with the
+       structure as a whole: it handles structure options and describes all the
+       types and fields that make up the database structure.  If you&apos;re
+       interested in writing your own database structure modules, the standard
+       interface for both of these is described in Text::BibTeX::Structure; if
+       you&apos;re just interested in finding out the exact database structure or the
+       options supported by the &quot;Bib&quot; structure, you&apos;ve come to the right place.
+       (However, you may have to wade through a bit of excess verbiage due to
+       this module&apos;s dual purpose: first, to reimplement the standard styles of
+       BibTeX 0.99, and second, to provide an example for other programmers
+       wishing to implement new or derived database structure modules.)
+
+       &quot;BibEntry&quot; derives from the &quot;StructuredEntry&quot; class and provides methods
+       that operate on individual entries presumed to come from a database
+       conforming to the structure defined by the &quot;BibStructure&quot; class.
+       (Actually, to be completely accurate, &quot;BibEntry&quot; inherits from two
+       intermediate classes, &quot;BibSort&quot; and &quot;BibFormat&quot;.  These two classes just
+       exist to reduce the amount of code in the &quot;Bib&quot; module, and thanks to the
+       magic of inheritance, their existence is usually irrelevant.  But you
+       might want to consult those two classes if you&apos;re interested in the gory
+       details of sorting and formatting entries from BibTeX 0.99-style
+       bibliography databases.)
+
+STRUCTURE OPTIONS
+       &quot;BibStructure&quot; handles several user-supplied &quot;structure options&quot; and
+       methods for dealing with them.  The options currently supported by the
+       &quot;Bib&quot; database structure, and the values allowed for them, are:
+
+       &quot;sortby&quot;
+           How to sort entries.  Valid values: &quot;name&quot; (sort on author names,
+           year, and title), &quot;year&quot; (sort on year, author names, and title).
+           Sorting on &quot;author names&quot; is a bit more complicated than just using
+           the &quot;author&quot; field; see Text::BibTeX::BibSort for details.  Default
+           value: &quot;name&quot;.
+
+       &quot;namestyle&quot;
+           How to print author (and editor) names: &quot;full&quot; for unabbreviated
+           first names, &quot;abbrev&quot; for first names abbreviated with periods,
+           &quot;nopunct&quot; for first names abbreviated with space but no periods, and
+           &quot;nospace&quot; to abbreviate without space or periods.  Default value:
+           &quot;full&quot;.
+
+       &quot;nameorder&quot;
+           The order in which to print names: &quot;first&quot; for &quot;first von last jr&quot;
+           order, and &quot;last&quot; for &quot;von last jr first&quot; order.  Default value:
+           &quot;first&quot;.
+
+       &quot;atitle_lower&quot;
+           A boolean option: if true, non-book titles will be changed to
+           &quot;sentence capitalization:&quot; words following colons and sentence-ending
+           punctuation will be capitalized, and everything else at brace-depth
+           zero will be changed to lowercase.  Default value: true.
+
+       &quot;labels&quot;
+           The type of bibliographic labels to generate: &quot;numeric&quot; or &quot;alpha&quot;.
+           (Alphabetic labels are not yet implemented, so this option is
+           currently ignored.)  Default value: &quot;numeric&quot;.
+
+       Also, several &quot;markup options&quot; are supported.  Markup options are
+       distinct because they don&apos;t change how text is extracted from the
+       database entries and subsequently mangled; rather, they supply bits of
+       markup that go around the database-derived text.  Markup options are
+       always two-element lists: the first to &quot;turn on&quot; some feature of the
+       markup language, and the second to turn it off.  For example, if your
+       target language is LaTeX2e and you want journal names emphasized, you
+       would supply a list reference &quot;[&apos;\emph{&apos;,&apos;}&apos;]&quot; for the &quot;journal_mkup&quot;
+       option.  If you were instead generating HTML, you might supply
+       &quot;[&apos;&lt;emph&gt;&apos;,&apos;&lt;/emph&gt;&apos;]&quot;.  To keep the structure module general with
+       respect to markup languages, all markup options are empty by default.
+       (Or, rather, they are all references to lists consisting of two empty
+       strings.)
+
+       &quot;name_mkup&quot;
+           Markup to add around the list of author names.
+&#12;       &quot;atitle_mkup&quot;
+           Markup to add around non-book (article) titles.
+
+       &quot;btitle_mkup&quot;
+           Markup to add around book titles.
+
+       &quot;journal_mkup&quot;
+           Markup to add around journal names.
+
+   Option methods
+       As required by the &quot;Text::BibTeX::Structure&quot; module, &quot;Text::BibTeX::Bib&quot;
+       provides two methods for handling options: &quot;known_option&quot; and
+       &quot;default_option&quot;.  (The other two option methods, &quot;set_options&quot; and
+       &quot;get_options&quot;, are just inherited from &quot;Text::BibTeX::Structure&quot;.)
+
+       known_option (OPTION)
+           Returns true if OPTION is one of the options on the above list.
+
+       default_option (OPTION)
+           Returns the default value of OPTION, or &quot;croak&quot;s if OPTION is not a
+           supported option.
+
+DATABASE STRUCTURE
+       The other purpose of a structure class is to provide a method,
+       &quot;describe_entry&quot;, that lists the allowed entry types and the known fields
+       for the structure.  Programmers wishing to write their own database
+       structure module should consult Text::BibTeX::Structure for the
+       conventions and requirements of this method; the purpose of the present
+       document is to describe the &quot;Bib&quot; database structure.
+
+       The allowed entry types, and the fields recognized for them, are:
+
+       &quot;article&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;journal&quot;, &quot;year&quot;.  Optional
+           fields: &quot;volume&quot;, &quot;number&quot;, &quot;pages&quot;, &quot;month&quot;, &quot;note&quot;.
+
+       &quot;book&quot;
+           Required fields: &quot;title&quot;, &quot;publisher&quot;, &quot;year&quot;.  Optional fields:
+           &quot;series&quot;, &quot;address&quot;, &quot;edition&quot;, &quot;month&quot;, &quot;note&quot;.  Constrained fields:
+           exactly one of &quot;author&quot;, &quot;editor&quot;; at most one of &quot;volume&quot;, &quot;number&quot;.
+
+       &quot;booklet&quot;
+           Required fields: &quot;title&quot;.  Optional fields: &quot;author&quot;, &quot;howpublished&quot;,
+           &quot;address&quot;, &quot;month&quot;, &quot;year&quot;, &quot;note&quot;.
+
+       &quot;inbook&quot;
+           Required fields: &quot;publisher&quot;, &quot;year&quot;.  Optional fields: &quot;series&quot;,
+           &quot;type&quot;, &quot;address&quot;, &quot;edition&quot;, &quot;month&quot;, &quot;note&quot;.  Constrained fields:
+           exactly one of &quot;author&quot;, &quot;editor&quot;; at least one of &quot;chapter&quot;,
+           &quot;pages&quot;; at most one of &quot;volume&quot;, &quot;number&quot;.
+
+       &quot;incollection&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;booktitle&quot;, &quot;publisher&quot;, &quot;year&quot;.
+           Optional fields: &quot;editor&quot;, &quot;series&quot;, &quot;type&quot;, &quot;chapter&quot;, &quot;pages&quot;,
+           &quot;address&quot;, &quot;edition&quot;, &quot;month&quot;, &quot;note&quot;.  Constrained fields: at most
+           one of &quot;volume&quot;, &quot;number&quot;.
+
+       &quot;inproceedings&quot;
+       &quot;conference&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;booktitle&quot;, &quot;year&quot;.  Optional
+           fields: &quot;editor&quot;, &quot;series&quot;, &quot;pages&quot;, &quot;address&quot;, &quot;month&quot;,
+           &quot;organization&quot;, &quot;publisher&quot;, &quot;note&quot;.  Constrained fields: at most one
+           of &quot;volume&quot;, &quot;number&quot;.
+
+       &quot;manual&quot;
+           Required fields: &quot;title&quot;.  Optional fields: &quot;author&quot;, &quot;organization&quot;,
+           &quot;address&quot;, &quot;edition&quot;, &quot;month&quot;, &quot;year&quot;, &quot;note&quot;.
+
+       &quot;mastersthesis&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;school&quot;, &quot;year&quot;.  Optional
+           fields: &quot;type&quot;, &quot;address&quot;, &quot;month&quot;, &quot;note&quot;.
+
+       &quot;misc&quot;
+           Required fields: none.  Optional fields: &quot;author&quot;, &quot;title&quot;,
+           &quot;howpublished&quot;, &quot;month&quot;, &quot;year&quot;, &quot;note&quot;.
+
+       &quot;phdthesis&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;school&quot;, &quot;year&quot;.  Optional
+           fields: &quot;type&quot;, &quot;address&quot;, &quot;month&quot;, &quot;note&quot;.
+
+       &quot;proceedings&quot;
+           Required fields: &quot;title&quot;, &quot;year&quot;.  Optional fields: &quot;editor&quot;,
+           &quot;series&quot;, &quot;address&quot;, &quot;month&quot;, &quot;organization&quot;, &quot;publisher&quot;, &quot;note&quot;.
+           Constrained fields: at most one of &quot;volume&quot;, &quot;number&quot;.
+
+       &quot;techreport&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;institution&quot;, &quot;year&quot;.  Optional
+           fields: &quot;type&quot;, &quot;number&quot;, &quot;address&quot;, &quot;month&quot;, &quot;note&quot;.
+
+       &quot;unpublished&quot;
+           Required fields: &quot;author&quot;, &quot;title&quot;, &quot;note&quot;.  Optional fields:
+           &quot;month&quot;, &quot;year&quot;.
+
+STRUCTURED ENTRY CLASS
+       The second class provided by the &quot;Text::BibTeX::Bib&quot; module is &quot;BibEntry&quot;
+       (again, a leading &quot;Text::BibTeX&quot; is implied).  This being a structured
+       entry class, it derives from &quot;StructuredEntry&quot;.  The conventions and
+       requirements for such a class are documented in Text::BibTeX::Structure
+       for the benefit of programmers implementing their own structure modules.
+
+       If you wish to write utilities making use of the &quot;Bib&quot; database
+       structure, then you should call one of the &quot;officially supported&quot; methods
+       provided by the &quot;BibEntry&quot; class.  Currently, there are only two of
+       these: &quot;sort_key&quot; and &quot;format&quot;.  These are actually implemented in the
+       &quot;BibSort&quot; and &quot;BibFormat&quot; classes, respectively, which are base classes
+       of &quot;BibEntry&quot;.  Thus, see Text::BibTeX::BibSort and
+       Text::BibTeX::BibFormat for details on these two methods.
+
+SEE ALSO
+       Text::BibTeX::Structure, Text::BibTeX::BibSort, Text::BibTeX::BibFormat.
+
+AUTHOR
+       Greg Ward &lt;gward@python.net&gt;
+
+COPYRIGHT
+       Copyright (c) 1997-2000 by Gregory P. Ward.  All rights reserved.  This
+       file is part of the Text::BibTeX library.  This library is free software;
+       you may redistribute it and/or modify it under the same terms as Perl
+       itself.
+
+
+
+perl v5.14.2                       2012-06-02             Text::BibTeX::Bib(3pm)
+
+</pre></body></html>

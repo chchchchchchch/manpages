@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Date::Language - Language specific date formating and parsing</title></head>
+<body><pre>
+
+Date::Language(3pm)    User Contributed Perl Documentation   Date::Language(3pm)
+
+
+
+NAME
+       Date::Language - Language specific date formating and parsing
+
+SYNOPSIS
+         use Date::Language;
+
+         my $lang = Date::Language-&gt;new(&apos;German&apos;);
+         $lang-&gt;time2str(&quot;%a %b %e %T %Y\n&quot;, time);
+
+DESCRIPTION
+       Date::Language provides objects to parse and format dates for specific
+       languages. Available languages are
+
+         Afar                    French                  Russian_cp1251
+         Amharic                 Gedeo                   Russian_koi8r
+         Austrian                German                  Sidama
+         Brazilian               Greek                   Somali
+         Chinese                 Hungarian               Spanish
+         Chinese_GB              Icelandic               Swedish
+         Czech                   Italian                 Tigrinya
+         Danish                  Norwegian               TigrinyaEritrean
+         Dutch                   Oromo                   TigrinyaEthiopian
+         English                 Romanian                Turkish
+         Finnish                 Russian
+
+METHODS
+       time2str
+           See &quot;time2str&quot; in Date::Format
+
+       strftime
+           See &quot;strftime&quot; in Date::Format
+
+       ctime
+           See &quot;ctime&quot; in Date::Format
+
+       asctime
+           See &quot;asctime&quot; in Date::Format
+
+       str2time
+           See &quot;str2time&quot; in Date::Parse
+
+       strptime
+           See &quot;strptime&quot; in Date::Parse
+
+
+
+perl v5.10.1                       2009-12-12                Date::Language(3pm)
+
+</pre></body></html>

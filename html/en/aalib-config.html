@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>aalib-config - script to get information about the installed version of aalib</title></head>
+<body><pre>
+
+AALIB(1)                                                                AALIB(1)
+
+
+
+NAME
+       aalib-config  -  script to get information about the installed version of
+       aalib
+
+SYNOPSIS
+       aalib-config [--prefix[=DIR]] [--exec-prefix[=DIR]] [--version]  [--libs]
+       [--static-libs] [--cflags]
+
+DESCRIPTION
+       aalib-config  is  a  tool that is used to configure to determine the com&#8208;
+       piler and linker flags that should be used to compile and  link  programs
+       that  use  aalib.  It  is  also used internally to the .m4 macros for GNU
+       autoconf that are included with aalib.
+
+OPTIONS
+       aalib-config accepts the following options:
+
+       --version
+               Print the currently installed version of aalib  on  the  standard
+               output.
+
+       --libs  Print  the  linker  flags that are necessary to link a aalib pro&#8208;
+               gram.
+
+       --static-libs
+               Print the linker flags that are necessary to link a aalib program
+               statically.
+
+       --cflags
+               Print  the  compiler  flags that are necessary to compile a aalib
+               program.
+
+       --prefix=PREFIX
+               If specified, use PREFIX instead of the installation prefix  that
+               aalib  was  built with when computing the output for the --cflags
+               and --libs options. This option is also used for the exec  prefix
+               if --exec-prefix was not specified. This option must be specified
+               before any --libs or --cflags options.
+
+       --exec-prefix=PREFIX
+               If specified, use PREFIX instead of the installation exec  prefix
+               that  aalib  was  built  with  when  computing the output for the
+               --cflags and --libs  options.   This  option  must  be  specified
+               before any --libs or --cflags options.
+
+COPYRIGHT
+       Copyright &#169;  1998 Owen Taylor
+
+       Permission  to  use,  copy,  modify, and distribute this software and its
+       documentation for any purpose and without fee is hereby granted, provided
+       that  the  above copyright notice appear in all copies and that both that
+       copyright notice and this permission notice appear in supporting documen&#8208;
+       tation.
+
+       Modified for aalib by Joey Hess
+
+
+
+                                                                        AALIB(1)
+
+</pre></body></html>

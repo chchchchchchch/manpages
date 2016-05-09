@@ -1,0 +1,192 @@
+<html>
+<head><meta charset=utf-8/>
+<title>docidx_lang_intro - docidx language introduction</title></head>
+<body><pre>
+
+docidx_lang_intro(3tcl)        Documentation tools       docidx_lang_intro(3tcl)
+
+
+
+________________________________________________________________________________
+
+NAME
+       docidx_lang_intro - docidx language introduction
+
+DESCRIPTION
+       This  document  is  an  informal  introduction to version 1 of the docidx
+       markup language based on a multitude of examples. After  reading  this  a
+       writer should be ready to understand the two parts of the formal specifi&#8208;
+       cation, i.e. the docidx language syntax specification and the docidx lan&#8208;
+       guage command reference.
+
+   FUNDAMENTALS
+       While  the docidx markup language is quite similar to the doctools markup
+       language, in the broadest terms possible, there is one key difference. An
+       index  consists  essentially  only of markup commands, with no plain text
+       interspersed between them, except for whitespace.
+
+       Each markup command is a Tcl command surrounded by a matching pair  of  [
+       and ]. Inside of these delimiters the usual rules for a Tcl command apply
+       with regard to word quotation, nested commands, continuation lines,  etc.
+       I.e.
+
+                  ... [key {markup language}] ...
+
+
+
+                ... [manpage thefile \\
+                        {file description}] ...
+
+
+   BASIC STRUCTURE
+       The most simple document which can be written in docidx is
+
+
+                  [index_begin GROUPTITLE TITLE]
+                  [index_end]
+
+
+       Not  very useful, but valid. This also shows us that all docidx documents
+       consist of only one part where we will list all  keys  and  their  refer&#8208;
+       ences.
+
+       A more useful index will contain at least keywords, or short &apos;keys&apos;, i.e.
+       the phrases which were indexed. So:
+
+
+              [index_begin GROUPTITLE TITLE]
+              [key markup]
+              [key {semantic markup}]]
+              [key {docidx markup}]
+              [key {docidx language}]
+              [key {docidx commands}]
+              [index_end]
+
+
+       In the above example the command key  is  used  to  declare  the  keyword
+       phrases we wish to be part of the index.
+
+       However  a truly useful index does not only list the keyword phrases, but
+       will also contain references to documents associated with  the  keywords.
+       Here is a made-up index for all the manpages in the module base64:
+
+
+              [index_begin tcllib/base64 {De- &amp; Encoding}]
+              [key base64]
+              [manpage base64]
+              [key encoding]
+              [manpage base64]
+              [manpage uuencode]
+              [manpage yencode]
+              [key uuencode]
+              [manpage uuencode]
+              [key yEnc]
+              [manpage yencode]
+              [key ydecode]
+              [manpage yencode]
+              [key yencode]
+              [manpage yencode]
+              [index_end]
+
+
+       In  the above example the command manpage is used to insert references to
+       documents, using symbolic file names, with each command belonging to  the
+       last key command coming before it.
+
+       The  other command to insert references is url. In contrast to manpage it
+       uses explicit (possibly format-specific) urls to describe the location of
+       the  referenced  document.  As such this command is intended for the cre&#8208;
+       ation of references to external documents which could not be  handled  in
+       any other way.
+
+   ADVANCED STRUCTURE
+       In  all  previous  examples we fudged a bit regarding the markup actually
+       allowed to be used before the index_begin command opening the document.
+
+       Instead of only whitespace the two templating commands include  and  vset
+       are  also  allowed, to enable the writer to either set and/or import con&#8208;
+       figuration settings relevant to the table of contents. I.e. it is  possi&#8208;
+       ble to write
+
+
+              [include FILE]
+              [vset VAR VALUE]
+              [index_begin GROUPTITLE TITLE]
+              ...
+              [index_end]
+
+       Even  more  important,  these  two  commands are allowed anywhere where a
+       markup command is allowed, without regard for any other structure.
+
+
+              [index_begin GROUPTITLE TITLE]
+              [include FILE]
+              [vset VAR VALUE]
+              ...
+              [index_end]
+
+       The only restriction include has to obey is  that  the  contents  of  the
+       included  file  must  be valid at the place of the inclusion. I.e. a file
+       included before index_begin may contain only the templating commands vset
+       and  include,  a file included after a key may contain only manape or url
+       references, and other keys, etc.
+
+   ESCAPES
+       Beyond the 6 commands shown so far we have two more  available.   However
+       their  function  is not the marking up of index structure, but the inser&#8208;
+       tion of characters, namely [ and ].  These commands, lb  and  rb  respec&#8208;
+       tively,  are  required  because our use of [ and ] to bracket markup com&#8208;
+       mands makes it impossible to directly use [ and ] within the text.
+
+       Our example of their use are the sources of the last sentence in the pre&#8208;
+       vious paragraph, with some highlighting added.
+
+
+                ...
+                These commands, [cmd lb] and [cmd lb] respectively, are required
+                because our use of [lb] and [rb] to bracket markup commands makes it
+                impossible to directly use [lb] and [rb] within the text.
+                ...
+
+
+FURTHER READING
+       Now  that  this  document  has  been digested the reader, assumed to be a
+       writer of documentation should be fortified enough to be able  to  under&#8208;
+       stand  the formal docidx language syntax specification as well. From here
+       on out the docidx language command  reference  will  also  serve  as  the
+       detailed  specification  and  cheat  sheet for all available commands and
+       their syntax.
+
+       To be able to validate a document while writing it,  it  is  also  recom&#8208;
+       mended to familiarize oneself with Tclapps&apos; ultra-configurable dtp.
+
+       On  the  other hand, docidx is perfectly suited for the automatic genera&#8208;
+       tion from doctools documents, and this is the  route  Tcllib&apos;s  easy  and
+       simple  dtplite goes, creating an index for a set of documents behind the
+       scenes, without the writer having to do so on their own.
+
+BUGS, IDEAS, FEEDBACK
+       This document, will undoubtedly contain bugs and other problems.   Please
+       report   such  in  the  category  doctools  of  the  Tcllib  SF  Trackers
+       [http://sourceforge.net/tracker/?group_id=12883].  Please also report any
+       ideas for enhancements you may have.
+
+SEE ALSO
+       docidx_intro, docidx_lang_cmdref, docidx_lang_syntax
+
+KEYWORDS
+       docidx  commands,  docidx language, docidx markup, docidx syntax, markup,
+       semantic markup
+
+CATEGORY
+       Documentation tools
+
+COPYRIGHT
+       Copyright (c) 2007-2009 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+
+
+
+
+doctools                               1.0               docidx_lang_intro(3tcl)
+
+</pre></body></html>

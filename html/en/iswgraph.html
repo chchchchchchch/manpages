@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>iswgraph - test for graphic wide character</title></head>
+<body><pre>
+
+ISWGRAPH(3)                 Linux Programmer&apos;s Manual                ISWGRAPH(3)
+
+
+
+NAME
+       iswgraph - test for graphic wide character
+
+SYNOPSIS
+       #include &lt;wctype.h&gt;
+
+       int iswgraph(wint_t wc);
+
+DESCRIPTION
+       The   iswgraph()   function  is  the  wide-character  equivalent  of  the
+       isgraph(3) function.  It tests whether wc is a wide  character  belonging
+       to the wide-character class &quot;graph&quot;.
+
+       The  wide-character  class  &quot;graph&quot;  is  a subclass of the wide-character
+       class &quot;print&quot;.
+
+       Being a subclass of the wide-character class &quot;print&quot;, the  wide-character
+       class &quot;graph&quot; is disjoint from the wide-character class &quot;cntrl&quot;.
+
+       The  wide-character  class  &quot;graph&quot;  is  disjoint from the wide-character
+       class &quot;space&quot; and therefore also disjoint from its subclass &quot;blank&quot;.
+
+       The wide-character class &quot;graph&quot; contains all the  wide  characters  from
+       the  wide-character  class &quot;print&quot; except the space character.  It there&#8208;
+       fore contains the wide-character classes &quot;alnum&quot; and &quot;punct&quot;.
+
+RETURN VALUE
+       The iswgraph() function returns nonzero if wc is a wide character belong&#8208;
+       ing to the wide-character class &quot;graph&quot;.  Otherwise it returns zero.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The  behavior  of iswgraph() depends on the LC_CTYPE category of the cur&#8208;
+       rent locale.
+
+SEE ALSO
+       isgraph(3), iswctype(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1999-07-25                        ISWGRAPH(3)
+
+</pre></body></html>

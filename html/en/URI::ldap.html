@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>URI::ldap - LDAP Uniform Resource Locators</title></head>
+<body><pre>
+
+URI::ldap(3pm)         User Contributed Perl Documentation        URI::ldap(3pm)
+
+
+
+NAME
+       URI::ldap - LDAP Uniform Resource Locators
+
+SYNOPSIS
+         use URI;
+
+         $uri = URI-&gt;new(&quot;ldap:$uri_string&quot;);
+         $dn     = $uri-&gt;dn;
+         $filter = $uri-&gt;filter;
+         @attr   = $uri-&gt;attributes;
+         $scope  = $uri-&gt;scope;
+         %extn   = $uri-&gt;extensions;
+
+         $uri = URI-&gt;new(&quot;ldap:&quot;);  # start empty
+         $uri-&gt;host(&quot;ldap.itd.umich.edu&quot;);
+         $uri-&gt;dn(&quot;o=University of Michigan,c=US&quot;);
+         $uri-&gt;attributes(qw(postalAddress));
+         $uri-&gt;scope(&apos;sub&apos;);
+         $uri-&gt;filter(&apos;(cn=Babs Jensen)&apos;);
+         print $uri-&gt;as_string,&quot;\n&quot;;
+
+DESCRIPTION
+       &quot;URI::ldap&quot; provides an interface to parse an LDAP URI into its
+       constituent parts and also to build a URI as described in RFC 2255.
+
+METHODS
+       &quot;URI::ldap&quot; supports all the generic and server methods defined by URI,
+       plus the following.
+
+       Each of the following methods can be used to set or get the value in the
+       URI. The values are passed in unescaped form.  None of these return
+       undefined values, but elements without a default can be empty.  If
+       arguments are given, then a new value is set for the given part of the
+       URI.
+
+       $uri-&gt;dn( [$new_dn] )
+           Sets or gets the Distinguished Name part of the URI.  The DN
+           identifies the base object of the LDAP search.
+
+       $uri-&gt;attributes( [@new_attrs] )
+           Sets or gets the list of attribute names which are returned by the
+           search.
+
+       $uri-&gt;scope( [$new_scope] )
+           Sets or gets the scope to be used by the search. The value can be one
+           of &quot;base&quot;, &quot;one&quot; or &quot;sub&quot;. If none is given in the URI then the
+           return value defaults to &quot;base&quot;.
+
+       $uri-&gt;_scope( [$new_scope] )
+           Same as scope(), but does not default to anything.
+
+       $uri-&gt;filter( [$new_filter] )
+           Sets or gets the filter to be used by the search. If none is given in
+           the URI then the return value defaults to &quot;(objectClass=*)&quot;.
+
+       $uri-&gt;_filter( [$new_filter] )
+           Same as filter(), but does not default to anything.
+
+       $uri-&gt;extensions( [$etype =&gt; $evalue,...] )
+           Sets or gets the extensions used for the search. The list passed
+           should be in the form etype1 =&gt; evalue1, etype2 =&gt; evalue2,... This
+           is also the form of list that is returned.
+
+SEE ALSO
+       &lt;http://tools.ietf.org/html/rfc2255&gt;
+
+AUTHOR
+       Graham Barr &lt;gbarr@pobox.com&gt;
+
+       Slightly modified by Gisle Aas to fit into the URI distribution.
+
+COPYRIGHT
+       Copyright (c) 1998 Graham Barr. All rights reserved. This program is free
+       software; you can redistribute it and/or modify it under the same terms
+       as Perl itself.
+
+
+
+perl v5.14.2                       2012-02-11                     URI::ldap(3pm)
+
+</pre></body></html>

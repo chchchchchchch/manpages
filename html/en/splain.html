@@ -1,0 +1,179 @@
+<html>
+<head><meta charset=utf-8/>
+<title>diagnostics, splain - produce verbose warning diagnostics</title></head>
+<body><pre>
+
+SPLAIN(1)               Perl Programmers Reference Guide               SPLAIN(1)
+
+
+
+NAME
+       diagnostics, splain - produce verbose warning diagnostics
+
+SYNOPSIS
+       Using the &quot;diagnostics&quot; pragma:
+
+           use diagnostics;
+           use diagnostics -verbose;
+
+           enable  diagnostics;
+           disable diagnostics;
+
+       Using the &quot;splain&quot; standalone filter program:
+
+           perl program 2&gt;diag.out
+           splain [-v] [-p] diag.out
+
+       Using diagnostics to get stack traces from a misbehaving script:
+
+           perl -Mdiagnostics=-traceonly my_script.pl
+
+DESCRIPTION
+   The &quot;diagnostics&quot; Pragma
+       This module extends the terse diagnostics normally emitted by both the
+       perl compiler and the perl interpreter (from running perl with a -w
+       switch or &quot;use warnings&quot;), augmenting them with the more explicative and
+       endearing descriptions found in perldiag.  Like the other pragmata, it
+       affects the compilation phase of your program rather than merely the
+       execution phase.
+
+       To use in your program as a pragma, merely invoke
+
+           use diagnostics;
+
+       at the start (or near the start) of your program.  (Note that this does
+       enable perl&apos;s -w flag.)  Your whole compilation will then be subject(ed
+       :-) to the enhanced diagnostics.  These still go out STDERR.
+
+       Due to the interaction between runtime and compiletime issues, and
+       because it&apos;s probably not a very good idea anyway, you may not use &quot;no
+       diagnostics&quot; to turn them off at compiletime.  However, you may control
+       their behaviour at runtime using the disable() and enable() methods to
+       turn them off and on respectively.
+
+       The -verbose flag first prints out the perldiag introduction before any
+       other diagnostics.  The $diagnostics::PRETTY variable can generate nicer
+       escape sequences for pagers.
+
+       Warnings dispatched from perl itself (or more accurately, those that
+       match descriptions found in perldiag) are only displayed once (no
+       duplicate descriptions).  User code generated warnings a la warn() are
+       unaffected, allowing duplicate user messages to be displayed.
+
+       This module also adds a stack trace to the error message when perl dies.
+       This is useful for pinpointing what caused the death. The -traceonly (or
+       just -t) flag turns off the explanations of warning messages leaving just
+       the stack traces. So if your script is dieing, run it again with
+
+         perl -Mdiagnostics=-traceonly my_bad_script
+
+       to see the call stack at the time of death. By supplying the -warntrace
+       (or just -w) flag, any warnings emitted will also come with a stack
+       trace.
+
+   The splain Program
+       While apparently a whole nuther program, splain is actually nothing more
+       than a link to the (executable) diagnostics.pm module, as well as a link
+       to the diagnostics.pod documentation.  The -v flag is like the &quot;use
+       diagnostics -verbose&quot; directive.  The -p flag is like the
+       $diagnostics::PRETTY variable.  Since you&apos;re post-processing with splain,
+       there&apos;s no sense in being able to enable() or disable() processing.
+
+       Output from splain is directed to STDOUT, unlike the pragma.
+
+EXAMPLES
+       The following file is certain to trigger a few errors at both runtime and
+       compiletime:
+
+           use diagnostics;
+           print NOWHERE &quot;nothing\n&quot;;
+           print STDERR &quot;\n\tThis message should be unadorned.\n&quot;;
+           warn &quot;\tThis is a user warning&quot;;
+           print &quot;\nDIAGNOSTIC TESTER: Please enter a &lt;CR&gt; here: &quot;;
+           my $a, $b = scalar &lt;STDIN&gt;;
+           print &quot;\n&quot;;
+           print $x/$y;
+
+       If you prefer to run your program first and look at its problem
+       afterwards, do this:
+
+           perl -w test.pl 2&gt;test.out
+           ./splain &lt; test.out
+
+       Note that this is not in general possible in shells of more dubious
+       heritage, as the theoretical
+
+           (perl -w test.pl &gt;/dev/tty) &gt;&amp; test.out
+           ./splain &lt; test.out
+
+       Because you just moved the existing stdout to somewhere else.
+
+       If you don&apos;t want to modify your source code, but still have on-the-fly
+       warnings, do this:
+
+           exec 3&gt;&amp;1; perl -w test.pl 2&gt;&amp;1 1&gt;&amp;3 3&gt;&amp;- | splain 1&gt;&amp;2 3&gt;&amp;-
+
+       Nifty, eh?
+
+       If you want to control warnings on the fly, do something like this.  Make
+       sure you do the &quot;use&quot; first, or you won&apos;t be able to get at the enable()
+       or disable() methods.
+
+           use diagnostics; # checks entire compilation phase
+               print &quot;\ntime for 1st bogus diags: SQUAWKINGS\n&quot;;
+               print BOGUS1 &apos;nada&apos;;
+               print &quot;done with 1st bogus\n&quot;;
+
+           disable diagnostics; # only turns off runtime warnings
+               print &quot;\ntime for 2nd bogus: (squelched)\n&quot;;
+               print BOGUS2 &apos;nada&apos;;
+               print &quot;done with 2nd bogus\n&quot;;
+
+           enable diagnostics; # turns back on runtime warnings
+               print &quot;\ntime for 3rd bogus: SQUAWKINGS\n&quot;;
+               print BOGUS3 &apos;nada&apos;;
+               print &quot;done with 3rd bogus\n&quot;;
+
+           disable diagnostics;
+               print &quot;\ntime for 4th bogus: (squelched)\n&quot;;
+               print BOGUS4 &apos;nada&apos;;
+               print &quot;done with 4th bogus\n&quot;;
+
+INTERNALS
+       Diagnostic messages derive from the perldiag.pod file when available at
+       runtime.  Otherwise, they may be embedded in the file itself when the
+       splain package is built.   See the Makefile for details.
+
+       If an extant $SIG{__WARN__} handler is discovered, it will continue to be
+       honored, but only after the diagnostics::splainthis() function (the
+       module&apos;s $SIG{__WARN__} interceptor) has had its way with your warnings.
+
+       There is a $diagnostics::DEBUG variable you may set if you&apos;re desperately
+       curious what sorts of things are being intercepted.
+
+           BEGIN { $diagnostics::DEBUG = 1 }
+
+BUGS
+       Not being able to say &quot;no diagnostics&quot; is annoying, but may not be
+       insurmountable.
+
+       The &quot;-pretty&quot; directive is called too late to affect matters.  You have
+       to do this instead, and before you load the module.
+
+           BEGIN { $diagnostics::PRETTY = 1 }
+
+       I could start up faster by delaying compilation until it should be
+       needed, but this gets a &quot;panic: top_level&quot; when using the pragma form in
+       Perl 5.001e.
+
+       While it&apos;s true that this documentation is somewhat subserious, if you
+       use a program named splain, you should expect a bit of whimsy.
+
+AUTHOR
+       Tom Christiansen &lt;tchrist@mox.perl.com&gt;, 25 June 1995.
+
+
+
+perl v5.14.2                       2014-09-30                          SPLAIN(1)
+
+</pre></body></html>

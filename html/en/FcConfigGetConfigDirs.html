@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigGetConfigDirs - Get config directories</title></head>
+<body><pre>
+
+FcConfigGetConfigDirs(3)                                FcConfigGetConfigDirs(3)
+
+
+
+NAME
+       FcConfigGetConfigDirs - Get config directories
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcStrList * FcConfigGetConfigDirs (FcConfig *config);
+
+DESCRIPTION
+       Returns the list of font directories specified in the configuration files
+       for config.  Does not include any subdirectories.  If config is NULL, the
+       current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012         FcConfigGetConfigDirs(3)
+
+</pre></body></html>

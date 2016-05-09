@@ -1,0 +1,223 @@
+<html>
+<head><meta charset=utf-8/>
+<title>alsaloop - command-line PCM loopback</title></head>
+<body><pre>
+
+ALSALOOP(1)                                                          ALSALOOP(1)
+
+
+
+NAME
+       alsaloop - command-line PCM loopback
+
+SYNOPSIS
+       alsaloop [-option] [cmd]
+
+DESCRIPTION
+       alsaloop  allows create a PCM loopback between a PCM capture device and a
+       PCM playback device.
+
+       alsaloop supports multiple soundcards,  adaptive  clock  synchronization,
+       adaptive  rate  resampling  using the samplerate library (if available in
+       the system). Also, mixer controls can be  redirected  from  one  card  to
+       another (for example Master and PCM).
+
+
+OPTIONS
+       -h | --help
+
+              Prints the help information.
+
+
+       -g &lt;file&gt; | --config=&lt;file&gt;
+
+              Use  given  configuration file. The syntax of this file is simple:
+              one line contains the command line options for one  job.  The  &apos;#&apos;
+              means comment and rest of line is ignored. Example:
+
+                # First line - comment, second line - first job
+                -C hw:1,0 -P hw:0,0 -t 50000 -T 1
+                # Third line - comment, fourth line - second job
+                -C hw:1,1 -P hw:0,1 -t 40000 -T 2
+
+
+       -d | --daemonize
+
+              Daemonize the main process and use syslog for messages.
+
+
+       -P &lt;device&gt; | --pdevice=&lt;device&gt;
+
+              Use given playback device.
+
+
+       -C &lt;device&gt; | --cdevice=&lt;device&gt;
+
+              Use given capture device.
+
+
+       -X &lt;device&gt; | --pctl=&lt;device&gt;
+
+              Use given CTL device for playback.
+
+
+       -Y &lt;device&gt; | --cctl=&lt;device&gt;
+
+              Use given CTL device for capture.
+
+
+       -l &lt;latency&gt; | --latency=&lt;frames&gt;
+
+              Requested latency in frames.
+
+
+       -t &lt;usec&gt; | --tlatency=&lt;usec&gt;
+
+              Requested latency in usec (1/1000000sec).
+
+
+       -f &lt;format&gt; | --format=&lt;format&gt;
+
+              Format  specification  (usually S16_LE S32_LE). Use -h to list all
+              formats.  Default format is S16_LE.
+
+
+       -c &lt;channels&gt; | --channels=&lt;channels&gt;
+
+              Channel count specification. Default value is 2.
+
+
+       -c &lt;rate&gt; | --rate=&lt;rate&gt;
+
+              Rate specification. Default value is 48000 (Hz).
+
+
+       -n | --resample
+
+              Allow rate resampling using alsa-lib.
+
+
+       -A &lt;converter&gt; | --samplerate=&lt;converter&gt;
+
+              Use libsamplerate and choose a converter:
+
+                0 or sincbest     - best quality
+                1 or sincmedium   - medium quality
+                2 or sincfastest  - lowest quality
+                3 or zerohold     - hold zero samples
+                4 or linear       - worst quality - linear resampling
+                5 or auto         - choose best method
+
+
+       -B &lt;size&gt; | --buffer=&lt;size&gt;
+
+              Buffer size in frames.
+
+
+       -E &lt;size&gt; | --period=&lt;size&gt;
+
+              Period size in frames.
+
+
+       -s &lt;secs&gt; | --seconds=&lt;secs&gt;
+
+              Duration of loop in seconds.
+
+
+       -b | --nblock
+
+              Non-block mode (very early process wakeup). Eats more CPU.
+
+
+       -S &lt;mode&gt; | --sync=&lt;mode&gt;
+
+              Sync mode specification for capture to playback stream:
+                0 or none       - do not touch the stream
+                1 or simple     - add or remove samples to keep
+                                  both streams synchronized
+                2 or captshift  - use driver for the capture device
+                                  (if supported) to compensate
+                                  the rate shift
+                3 or playshift  - use driver for the playback device
+                                  (if supported) to compensate
+                                  the rate shift
+                4 or samplerate - use samplerate library to do rate resampling
+                5 or auto       - automatically selects the best method
+                                  in this order: captshift, playshift,
+                                  samplerate, simple
+
+
+       -T &lt;num&gt; | --thread=&lt;num&gt;
+
+              Thread number (-1 means create a unique  thread).  All  jobs  with
+              same thread numbers are run within one thread.
+
+
+       -m &lt;mixid&gt; | --mixer=&lt;midid&gt;
+
+              Redirect mixer control from the playback card to the capture card.
+              Format of mixid is SRCID(PLAYBACK)[@DSTID(PLAYBACK)]:
+
+                &quot;name=&apos;Master Playback Switch&apos;@name=&apos;Another Switch&apos;&quot;
+                &quot;name=&apos;PCM Playback Volume&apos;&quot;
+
+              Known attributes:
+
+                name      - control ID name
+                index     - control ID index
+                device    - control ID device
+                subdevice - control ID subdevice
+                iface     - control ID interface
+                numid     - control ID numid
+
+
+       -O &lt;ossmixid&gt; | --ossmixer=&lt;midid&gt;
+
+              Redirect mixer control from the OSS Mixer emulation layer (capture
+              card)  to  the  ALSA  layer  (capture card). Format of ossmixid is
+              ALSAID[,INDEX]@OSSID:
+
+                &quot;Master@VOLUME&quot;
+                &quot;PCM,1@ALTPCM&quot;
+
+              Known OSS attributes:
+
+                VOLUME, BASS, TREBLE, SYNTH, PCM, SPEAKER, LINE, MIC, CD,  IMIX,
+              ALTPCM,
+                RECLEV,  IGAIN,  OGAIN, LINE1, LINE2, LINE3, DIGITAL1, DIGITAL2,
+              DIGITAL3,
+                PHONEIN, PHONEOUT, VIDEO, RADIO, MONITOR
+
+
+       -v | --verbose
+
+              Verbose mode. Use multiple times to increase verbosity.
+
+
+
+       -U | --xrun
+
+              Verbose xrun profiling.
+
+
+       -W &lt;timeout&gt; | --wake=&lt;timeout&gt;
+
+              Set process wake timeout.
+
+
+EXAMPLES
+       alsaloop -C hw:0,0 -P hw:1,0 -t 50000
+
+
+BUGS
+       None known.
+
+AUTHOR
+       alsaloop is by Jaroslav Kysela &lt;perex@perex.cz&gt;.   This  document  is  by
+       Jaroslav Kysela &lt;perex@perex.cz&gt;.
+
+
+
+                                   5 Aug 2010                        ALSALOOP(1)
+
+</pre></body></html>

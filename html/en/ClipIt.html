@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ClipIt - Lightweight GTK+ Clipboard Manager</title></head>
+<body><pre>
+
+CLIPIT(1)                                                              CLIPIT(1)
+
+
+
+NAME
+       ClipIt - Lightweight GTK+ Clipboard Manager
+
+SYNOPSIS
+       clipit [OPTION]
+
+DESCRIPTION
+       ClipIt is a lightweight GTK+ clipboard manager.
+
+       ClipIt features a clipboard CLI. Unrecognized options and the contents of
+       your standard input get copied to your clipboard. See CLI EXAMPLES.
+
+OPTIONS
+       -?, --help
+              Show help options.
+
+       -d, --daemon
+              Run as daemon. Use this mode if you just want ClipIt to keep  your
+              clipboard and primary contents safe.
+
+       -n, --no-icon
+              Do not use status icon.
+
+       -c, --clipboard
+              Print clipboard contents.
+
+       -p, --primary
+              Print primary contents.
+
+NOTES
+   ACTIONS
+       ClipIt&apos;s  actions  perform commands using the contents of your clipboard.
+       &quot;%s&quot; in the command is replaced with the clipboard contents.
+
+   CLI EXAMPLES
+       Put text in the clipboard
+               echo &quot;copied to clipboard&quot; | clipit
+               clipit &quot;copied to clipboard&quot;
+
+       Put text in the clipboard and print the clipboard contents
+               echo &quot;copied to clipboard&quot; | clipit -c
+
+   Hotkeys
+        The available hotkey modifiers are  &lt;Ctrl&gt;,  &lt;Alt&gt;  &lt;Shift&gt;,  &lt;Release&gt;,
+       &lt;Meta&gt;, &lt;Super&gt;, &lt;Hyper&gt;, &lt;Mod[1-5]&gt;
+
+SEE ALSO
+       Website: http://sourceforge.net/projects/gtkclipit/
+
+AUTHOR
+       Maintained  by  Cristian Henzel &lt;oss@rspwn.com&gt;.  Forked from parcellite,
+       which was written by Gilberto &quot;Xyhthyx&quot; Miralla &lt;xyhthyx@gmail.com&gt;.
+
+
+
+                                   2010-11-11                          CLIPIT(1)
+
+</pre></body></html>

@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_copyboxfromcontext - copy rectangular area from another context</title></head>
+<body><pre>
+
+gl_copyboxfromcontext(3)       Svgalib User Manual      gl_copyboxfromcontext(3)
+
+
+
+NAME
+       gl_copyboxfromcontext - copy rectangular area from another context
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       void  gl_copyboxfromcontext(GraphicsContext  *gc,  int x1, int y1, int w,
+       int h, int x2, int y2);
+
+
+DESCRIPTION
+       Copy the rectangular area at (x1, y1) in the context gc of size (w, h) to
+       position (x2, y2) in the current context.
+
+       This is more efficient than copyboxtocontext(3).
+
+
+SEE ALSO
+       svgalib(7), vgagl(7), svgalib.conf(5), threedkit(7), testgl(1), plane(1),
+       wrapdemo(1),  gl_copybox(3),  gl_copyboxtocontext(3),   gl_copyscreen(3),
+       gl_fillbox(3),  gl_getbox(3),  gl_getcontext(3), gl_putbox(3), gl_putbox&#8208;
+       mask(3), gl_putboxmaskcompiled(3), gl_putboxpart(3), gl_rgbcolor(3).
+
+
+AUTHOR
+       This manual page  was  edited  by  Michael  Weller  &lt;eowmob@exp-math.uni-
+       essen.de&gt;.  The  exact  source  of  the referenced demo as well as of the
+       original documentation is unknown.
+
+       It is very likely that both are at least to some extent are due  to  Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally  this  might  be  wrong. I hereby asked to be excused by the
+       original author and will happily accept any additions or  corrections  to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                2 Aug 1997           gl_copyboxfromcontext(3)
+
+</pre></body></html>

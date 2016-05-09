@@ -1,0 +1,111 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::FontPicker - wrapper for GnomeFontPicker</title></head>
+<body><pre>
+
+Gnome2::FontPicker(3pm)User Contributed Perl DocumentatioGnome2::FontPicker(3pm)
+
+
+
+NAME
+       Gnome2::FontPicker - wrapper for GnomeFontPicker
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Bin
+                                  +----Gtk2::Button
+                                       +----Gnome2::FontPicker
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+         Glib::Object::_Unregistered::GtkActivatable
+
+METHODS
+   widget = Gnome2::FontPicker-&gt;new
+   $gfp-&gt;fi_set_show_size ($show_size)
+       &#183;   $show_size (boolean)
+
+   $gfp-&gt;fi_set_use_font_in_label ($use_font_in_label, $size)
+       &#183;   $use_font_in_label (boolean)
+
+       &#183;   $size (integer)
+
+   string = $gfp-&gt;get_font_name
+   boolean = $gfp-&gt;set_font_name ($fontname)
+       &#183;   $fontname (string)
+
+   fontpickermode = $gfp-&gt;get_mode
+   $gfp-&gt;set_mode ($mode)
+       &#183;   $mode (Gnome2::FontPickerMode)
+
+   string = $gfp-&gt;get_preview_text
+   $gfp-&gt;set_preview_text ($text)
+       &#183;   $text (string)
+
+   string = $gfp-&gt;get_title
+   $gfp-&gt;set_title ($title)
+       &#183;   $title (string)
+
+   widget = $gfp-&gt;uw_get_widget
+   $gfp-&gt;uw_set_widget ($widget)
+       &#183;   $widget (Gtk2::Widget)
+
+PROPERTIES
+       &apos;font&apos; (gpointer : default 0 : readable)
+           The selected GtkFont
+
+       &apos;font-name&apos; (string : default &quot;sans 12&quot; : readable / writable)
+           Name of the selected font
+
+       &apos;label-font-size&apos; (integer : default 14 : readable / writable)
+           Font size for label in font info mode
+
+       &apos;mode&apos; (Gnome2::FontPickerMode : default &quot;pixmap&quot; : readable / writable)
+           The mode of operation of the font picker
+
+       &apos;preview-text&apos; (string : default
+       &quot;AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz&quot; : readable /
+       writable)
+           Preview text shown in the dialog
+
+       &apos;show-size&apos; (boolean : default true : readable / writable)
+           Show size in font info mode
+
+       &apos;title&apos; (string : default &quot;Pick a Font&quot; : readable / writable)
+           The title of the selection dialog box
+
+       &apos;use-font-in-label&apos; (boolean : default false : readable / writable)
+           Use font in the label in font info mode
+
+SIGNALS
+       font-set (Gnome2::FontPicker, string)
+
+ENUMS AND FLAGS
+   enum Gnome2::FontPickerMode
+       &#183;   &apos;pixmap&apos; / &apos;GNOME_FONT_PICKER_MODE_PIXMAP&apos;
+
+       &#183;   &apos;font-info&apos; / &apos;GNOME_FONT_PICKER_MODE_FONT_INFO&apos;
+
+       &#183;   &apos;user-widget&apos; / &apos;GNOME_FONT_PICKER_MODE_USER_WIDGET&apos;
+
+       &#183;   &apos;unknown&apos; / &apos;GNOME_FONT_PICKER_MODE_UNKNOWN&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Bin, Gtk2::Button
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16            Gnome2::FontPicker(3pm)
+
+</pre></body></html>

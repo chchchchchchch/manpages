@@ -1,0 +1,176 @@
+<html>
+<head><meta charset=utf-8/>
+<title>zbarimg - scan and decode bar codes from image file(s)</title></head>
+<body><pre>
+
+ZBARIMG(1)                     ZBar Barcode Reader                    ZBARIMG(1)
+
+
+
+NAME
+       zbarimg - scan and decode bar codes from image file(s)
+
+SYNOPSIS
+       zbarimg [-qv] [--quiet] [--verbose[=n]]
+               {-dD | --display | --nodisplay | --xml | --noxml |
+               -S[symbology.]config[=value] | --set [symbology.]config[=value] |
+               image...}
+
+       zbarimg {-h | --help | --version}
+
+DESCRIPTION
+       For each specified image file zbarimg scans the image for bar codes and
+       prints any decoded data to stdout. Images may optionally be displayed to
+       the screen.
+
+       The underlying library currently supports EAN-13 (including UPC and ISBN
+       subsets), EAN-8, Code 128, Code 39, and Interleaved 2 of 5 symbologies.
+       The specific type of each detected symbol is printed with the decoded
+       data.
+
+       Note that &quot;image&quot; in this context refers to any format supported by
+       ImageMagick, including many vector formats such as PDF and PostScript.
+       Keep in mind that vector formats are rasterized before scanning; manually
+       rasterize vector images before scanning to avoid unintentionally
+       corrupting embedded barcode bitmaps.
+
+OPTIONS
+       This program follows the usual GNU command line syntax. Single letter
+       options may be bundled, long options start with two dashes (`-&#180;).
+
+       -h, --help
+           Print a short help message describing command line options to
+           standard output and exit
+
+       --version
+           Print program version information to standard output and exit
+
+       -v, --verbose[=n]
+           Increase debug output level. Multiple -v options create more spew.
+           Alternatively specify n to set the debug level directly
+
+       -S[symbology.]config[=value], --set [symbology.]config[=value]
+           Set decoder configuration option config for symbology to value.
+           value defaults to 1 if omitted.  symbology is one of ean13, ean8,
+           upca, upce, isbn13, isbn10, i25, code39, code128 or the special value
+           *. If symbology is omitted or *, the config will be set for all
+           applicable symbologies. These are the currently recognized configs.
+           Prefix a config with &quot;no-&quot; to negate it. Not all configs are
+           appropriate for every symbology.
+
+           enable
+               Control decoding/reporting of a symbology. For symbologies which
+               are just subsets of ean13 (upca, upce, isbn13, isbn10), this
+               config controls whether the subsets are detected and reported as
+               such. These special cases are disabled by default, all other
+               symbologies default to enabled
+
+           disable
+               Antonym for enable
+
+           emit-check
+               Control whether check digits are included in the decoded output.
+               Enabled by default. This config does not apply for code128, which
+               never returns the check digit. It also not apply for cases where
+               the check digit is disabled (see add-check). Check digits are
+               currently not implemented for i25 or code39
+
+           add-check
+               Enable decode and verification of a check digit for symbologies
+               where it is optional: this will include code39 and i25, neither
+               of which implements the check digit yet
+
+           ascii
+               Enable escape sequences that encode the full ASCII character set.
+               This would apply to code39, except that it&#180;s not implemented
+               either...
+
+           position
+               Enable collection of symbol position information. Enabled by
+               default. Currently, the position information is unusable, so you
+               can save a few cycles by disabling this.
+
+           min-length=n, max-length=n
+               Bound the number of decoded characters in a valid symbol. If a
+               decode result is outside the configured min/max range
+               (inclusive), it will not be reported. Set to 0 to disable the
+               corresponding check. This setting applies to variable-length
+               symbologies: i25, code39, code128 and pdf417.  min-length
+               defaults to 6 for i25 and 1 for code39 (per Code 39
+               autodiscrimination recommendation); all others default to 0
+
+           x-density=n, y-density=n
+               Adjust the density of the scanner passes. Lower values scan more
+               of the image at the cost of decreased performance. Setting to 0
+               disables scanning along that axis. Defaults are both 1.
+
+       -q, --quiet
+           Quiet operation; only output decoded symbol data. specifically this
+           disables the statistics line printed (to stderr) before exiting, as
+           well as the warning message printed (also to stderr) when no barcodes
+           are found in an image
+
+       -d, --display, -D, --nodisplay
+           Enable/disable display of subsequent image files, until next
+           --display or --nodisplay is encountered. This option may appear
+           multiple times to enable display of specific images. Image display is
+           disabled by default
+
+       --xml, --noxml
+           Enable/disable result output using an XML format. This format wraps
+           the raw data from the symbol with information about the scan (such as
+           page indices) in an easy to parse format. The latest schema is
+           available from http://zbar.sourceforge.net/2008/barcode.xsd.
+
+       --raw
+           Enable raw symbol data output. This format prints symbol data
+           separated by newlines without the additional symbology type
+           information that is printed by default
+
+EXAMPLES
+       Scan a PNG image of a UPC bar code symbol and pass resulting data to a
+       script that searches for the code in a database and does something useful
+       with it:
+
+           zbarimg product.png | upcrpc.py
+
+       The upcrpc.py example script included in the examples/ subdirectory of
+       the distribution will make an XMLRPC call to a popular internet UPC
+       database and print the product description if found.
+
+       Scan a JPEG image containing several barcodes and display the image in a
+       window, also disabling recognition of Interleaved 2 of 5 codes to prevent
+       confusion with other symbologies or background noise:
+
+           zbarimg --display -Si25.disable label.jpg
+
+       Look in a scanned document only for Code 39, using XML output format so
+       the page numbers are available. To enable only Code 39, first all
+       symbologies are disabled, then Code 39 is re-enabled:
+
+           zbarimg --xml -Sdisable -Scode39.enable scan.tiff
+
+
+SEE ALSO
+       zbarcam(1)
+
+       http://zbar.sf.net/
+
+BUGS
+       See http://sf.net/tracker/?group_id=189236&amp;atid=928515
+
+AUTHOR
+       Jeff Brown &lt;spadix@users.sourceforge.net&gt;
+           Lead developer
+
+COPYRIGHT
+       Copyright &#169; 2007-2009 Jeff Brown
+
+       All Rights Reserved
+
+
+
+
+zbar-0.10                          2009-10-23                         ZBARIMG(1)
+
+</pre></body></html>

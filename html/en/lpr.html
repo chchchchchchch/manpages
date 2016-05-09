@@ -1,0 +1,98 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lpr - print files</title></head>
+<body><pre>
+
+lpr(1)                             Apple Inc.                             lpr(1)
+
+
+
+NAME
+       lpr - print files
+
+SYNOPSIS
+       lpr  [  -E  ]  [  -H  server[:port]  ]  [  -U  username  ]  [ -P destina&#8208;
+       tion[/instance] ]  [  -#  num-copies  [  -h  ]  [  -l  ]  [  -m  ]  [  -o
+       option[=value] ] [ -p] [ -q ] [ -r ] [ -C/J/T title ] [ file(s) ]
+
+DESCRIPTION
+       lpr  submits files for printing. Files named on the command line are sent
+       to the named printer (or the default destination  if  no  destination  is
+       specified).  If  no  files  are listed on the command-line, lpr reads the
+       print file from the standard input.
+
+THE DEFAULT DESTINATION
+       CUPS provides many ways to set the default destination. The &quot;LPDEST&quot;  and
+       &quot;PRINTER&quot;  environment variables are consulted first. If neither are set,
+       the current default set using the lpoptions(1) command is used,  followed
+       by the default set using the lpadmin(8) command.
+
+OPTIONS
+       The following options are recognized by lpr:
+
+       -E
+            Forces encryption when connecting to the server.
+
+       -H server[:port]
+            Specifies an alternate server.
+
+       -C &quot;name&quot;
+
+       -J &quot;name&quot;
+
+       -T &quot;name&quot;
+            Sets the job name.
+
+       -P destination[/instance]
+            Prints files to the named printer.
+
+       -U username
+            Specifies an alternate username.
+
+       -# copies
+            Sets the number of copies to print from 1 to 100.
+
+       -h
+            Disables  banner  printing.  This  option  is equivalent to &quot;-o job-
+            sheets=none&quot;.
+
+       -l
+            Specifies that the print file is already formatted for the  destina&#8208;
+            tion and should be sent without filtering. This option is equivalent
+            to &quot;-o raw&quot;.
+
+       -m
+            Send an email on job completion.
+
+       -o option[=value]
+            Sets a job option.
+
+       -p
+            Specifies that the print file should  be  formatted  with  a  shaded
+            header  with  the date, time, job name, and page number. This option
+            is equivalent to &quot;-o prettyprint&quot; and is only useful  when  printing
+            text files.
+
+       -q
+            Hold job for printing.
+
+       -r
+            Specifies  that the named print files should be deleted after print&#8208;
+            ing them.
+
+COMPATIBILITY
+       The &quot;c&quot;, &quot;d&quot;, &quot;f&quot;, &quot;g&quot;, &quot;i&quot;, &quot;n&quot;, &quot;t&quot;, &quot;v&quot;, and &quot;w&quot; options are not  sup&#8208;
+       ported by CUPS and produce a warning message if used.
+
+SEE ALSO
+       cancel(1), lp(1), lpadmin(8), lpoptions(1), lpq(1), lprm(1), lpstat(1),
+       http://localhost:631/help
+
+COPYRIGHT
+       Copyright 2007-2011 by Apple Inc.
+
+
+
+29 August 2008                        CUPS                                lpr(1)
+
+</pre></body></html>

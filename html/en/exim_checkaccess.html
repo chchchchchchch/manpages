@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>exim_checkaccess - Check address acceptance from given IP</title></head>
+<body><pre>
+
+EXIM_CHECKACCESS(8)                                          EXIM_CHECKACCESS(8)
+
+
+
+NAME
+       exim_checkaccess - Check address acceptance from given IP
+
+SYNOPSIS
+       exim_checkaccess IP-address email@address [more Exim options]
+
+
+DESCRIPTION
+       Exim&apos;s  -bh  command  line argument allows you to run a fake SMTP session
+       with debugging output, in order to check what Exim is doing  when  it  is
+       applying  policy  controls to incoming SMTP mail.  However, not everybody
+       is sufficiently familiar with the SMTP protocol to be able to  make  full
+       use of -bh, and sometimes you just want to answer the question &#8220;Does this
+       address have access?&#8221; without bothering with any further details.
+
+       The exim_checkaccess utility is a &#8216;packaged&#8217; version of  -bh.   It  takes
+       two arguments, an IP address and an email address:
+
+         exim_checkaccess 10.9.8.7 A.User@a.domain.example
+
+       The  utility runs a call to Exim with the -bh option, to test whether the
+       given email address would be accepted in a RCPT command in a TCP/IP  con&#8208;
+       nection from the host with the given IP address.  The output of the util&#8208;
+       ity is either the word &#8216;accepted&#8217;, or the SMTP error response, for  exam&#8208;
+       ple:
+
+         Rejected:
+           550 Relay not permitted
+
+       When  running  this  test,  the  utility uses &#8220;&lt;&gt;&#8221; as the envelope sender
+       address for the MAIL command, but you can change this by providing  addi&#8208;
+       tional  options.   These  are  passed  directly to the Exim command.  For
+       example, to specify that the test is to be run with  the  sender  address
+       &#8220;himself@there.example&#8221; you can use:
+
+         exim_checkaccess 10.9.8.7 A.User@a.domain.example \
+                          -f himself@there.example
+
+       Note  that  these  additional Exim command line items must be given after
+       the two mandatory arguments.
+
+
+BUGS
+       This manual page needs a major re-work. If somebody  knows  better  groff
+       than  us  and  has  more  experience in writing manual pages, any patches
+       would be greatly appreciated.
+
+
+SEE ALSO
+       exim(8), /usr/share/doc/exim4-base/
+
+
+AUTHOR
+       This manual page was stitched together from spec.txt by  Andreas  Metzler
+       &lt;ametzler  at  downhill.at.eu.org&gt;,  for the Debian GNU/Linux system (but
+       may be used by others).
+
+
+
+                                 March 26, 2003              EXIM_CHECKACCESS(8)
+
+</pre></body></html>

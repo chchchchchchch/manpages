@@ -1,0 +1,539 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::cs - DateTime locale package for "cs"</title></head>
+<body><pre>
+
+DateTime::Locale::cs(3pUser Contributed Perl DocumentatDateTime::Locale::cs(3pm)
+
+
+
+NAME
+       DateTime::Locale::cs - DateTime locale package for &quot;cs&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;cs&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Czech.
+
+DATA
+       This locale inherits from the DateTime::Locale::root locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         pondXli
+         utery
+         stXeda
+         Xtvrtek
+         patek
+         sobota
+         nedXle
+
+       Abbreviated (format)
+
+         po
+         ut
+         st
+         Xt
+         pa
+         so
+         ne
+
+       Narrow (format)
+
+         P
+         U
+         S
+         X
+         P
+         S
+         N
+
+       Wide (stand-alone)
+
+         pondXli
+         utery
+         stXeda
+         Xtvrtek
+         patek
+         sobota
+         nedXle
+
+       Abbreviated (stand-alone)
+
+         po
+         ut
+         st
+         Xt
+         pa
+         so
+         ne
+&#12;       Narrow (stand-alone)
+
+         P
+         U
+         S
+         X
+         P
+         S
+         N
+
+   Months
+       Wide (format)
+
+         ledna
+         unora
+         bXezna
+         dubna
+         kvXtna
+         Xervna
+         Xervence
+         srpna
+         zaXi
+         Xijna
+         listopadu
+         prosince
+
+       Abbreviated (format)
+
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+         10
+         11
+         12
+
+       Narrow (format)
+
+         l
+         u
+         b
+         d
+         k
+         X
+         X
+         s
+         z
+         X
+         l
+         p
+
+       Wide (stand-alone)
+
+         leden
+         unor
+         bXezen
+         duben
+         kvXten
+         Xerven
+         Xervenec
+         srpen
+         zaXi
+         Xijen
+         listopad
+         prosinec
+
+       Abbreviated (stand-alone)
+
+         1.
+         2.
+         3.
+         4.
+         5.
+         6.
+         7.
+         8.
+         9.
+         10.
+         11.
+         12.
+
+       Narrow (stand-alone)
+
+         l
+         u
+         b
+         d
+         k
+         X
+         X
+         s
+         z
+         X
+         l
+         p
+
+   Quarters
+       Wide (format)
+
+         1. Xtvrtleti
+         2. Xtvrtleti
+         3. Xtvrtleti
+         4. Xtvrtleti
+
+       Abbreviated (format)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         1. Xtvrtleti
+         2. Xtvrtleti
+         3. Xtvrtleti
+         4. Xtvrtleti
+
+       Abbreviated (stand-alone)
+
+         Q1
+         Q2
+         Q3
+         Q4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         BCE
+         CE
+
+       Abbreviated
+
+         pX.Kr.
+         po Kr.
+
+       Narrow
+
+         pX.Kr.
+         po Kr.
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = utery, 5. unora 2008
+          1995-12-22T09:05:02 = patek, 22. prosince 1995
+         -0010-09-15T04:44:23 = sobota, 15. zaXi -10
+
+       Long
+
+          2008-02-05T18:30:30 = 5. unora 2008
+          1995-12-22T09:05:02 = 22. prosince 1995
+         -0010-09-15T04:44:23 = 15. zaXi -10
+
+       Medium
+
+          2008-02-05T18:30:30 = 5.2.2008
+          1995-12-22T09:05:02 = 22.12.1995
+         -0010-09-15T04:44:23 = 15.9.-010
+
+       Short
+
+          2008-02-05T18:30:30 = 5.2.08
+          1995-12-22T09:05:02 = 22.12.95
+         -0010-09-15T04:44:23 = 15.9.-10
+
+       Default
+
+          2008-02-05T18:30:30 = 5.2.2008
+          1995-12-22T09:05:02 = 22.12.1995
+         -0010-09-15T04:44:23 = 15.9.-010
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = utery, 5. unora 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = patek, 22. prosince 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = sobota, 15. zaXi -10 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 5. unora 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = 22. prosince 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = 15. zaXi -10 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 5.2.2008 18:30:30
+          1995-12-22T09:05:02 = 22.12.1995 9:05:02
+         -0010-09-15T04:44:23 = 15.9.-010 4:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 5.2.08 18:30
+          1995-12-22T09:05:02 = 22.12.95 9:05
+         -0010-09-15T04:44:23 = 15.9.-10 4:44
+
+       Default
+
+          2008-02-05T18:30:30 = 5.2.2008 18:30:30
+          1995-12-22T09:05:02 = 22.12.1995 9:05:02
+         -0010-09-15T04:44:23 = 15.9.-010 4:44:23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (d EEE)
+
+          2008-02-05T18:30:30 = 5 ut
+          1995-12-22T09:05:02 = 22 pa
+         -0010-09-15T04:44:23 = 15 so
+
+       H (H)
+
+          2008-02-05T18:30:30 = 18
+          1995-12-22T09:05:02 = 9
+         -0010-09-15T04:44:23 = 4
+
+       HHmm (HH:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+
+       HHmmss (HH:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+       Hm (H:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+&#12;       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 odp.
+          1995-12-22T09:05:02 = 9:05 dop.
+         -0010-09-15T04:44:23 = 4:44 dop.
+
+       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 odp.
+          1995-12-22T09:05:02 = 9:05:02 dop.
+         -0010-09-15T04:44:23 = 4:44:23 dop.
+
+       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (d.M)
+
+          2008-02-05T18:30:30 = 5.2
+          1995-12-22T09:05:02 = 22.12
+         -0010-09-15T04:44:23 = 15.9
+
+       MEd (E, M-d)
+
+          2008-02-05T18:30:30 = ut, 2-5
+          1995-12-22T09:05:02 = pa, 12-22
+         -0010-09-15T04:44:23 = so, 9-15
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = 2.
+          1995-12-22T09:05:02 = 12.
+         -0010-09-15T04:44:23 = 9.
+
+       MMMd (MMM d)
+
+          2008-02-05T18:30:30 = 2 5
+          1995-12-22T09:05:02 = 12 22
+         -0010-09-15T04:44:23 = 9 15
+
+       MMMEd (E MMM d)
+
+          2008-02-05T18:30:30 = ut 2 5
+          1995-12-22T09:05:02 = pa 12 22
+         -0010-09-15T04:44:23 = so 9 15
+
+       MMMMd (d. MMMM)
+
+          2008-02-05T18:30:30 = 5. unora
+          1995-12-22T09:05:02 = 22. prosince
+         -0010-09-15T04:44:23 = 15. zaXi
+
+       MMMMEd (E MMMM d)
+
+          2008-02-05T18:30:30 = ut unora 5
+          1995-12-22T09:05:02 = pa prosince 22
+         -0010-09-15T04:44:23 = so zaXi 15
+
+       mmss (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       ms (mm:ss)
+&#12;          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       y (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (y-M)
+
+          2008-02-05T18:30:30 = 2008-2
+          1995-12-22T09:05:02 = 1995-12
+         -0010-09-15T04:44:23 = -10-9
+
+       yMEd (EEE, y-M-d)
+
+          2008-02-05T18:30:30 = ut, 2008-2-5
+          1995-12-22T09:05:02 = pa, 1995-12-22
+         -0010-09-15T04:44:23 = so, -10-9-15
+
+       yMMM (y MMM)
+
+          2008-02-05T18:30:30 = 2008 2
+          1995-12-22T09:05:02 = 1995 12
+         -0010-09-15T04:44:23 = -10 9
+
+       yMMMEd (EEE, y MMM d)
+
+          2008-02-05T18:30:30 = ut, 2008 2 5
+          1995-12-22T09:05:02 = pa, 1995 12 22
+         -0010-09-15T04:44:23 = so, -10 9 15
+
+       yMMMM (y MMMM)
+
+          2008-02-05T18:30:30 = 2008 unora
+          1995-12-22T09:05:02 = 1995 prosince
+         -0010-09-15T04:44:23 = -10 zaXi
+
+       yQ (y Q)
+
+          2008-02-05T18:30:30 = 2008 1
+          1995-12-22T09:05:02 = 1995 4
+         -0010-09-15T04:44:23 = -10 3
+
+       yQQQ (y QQQ)
+
+          2008-02-05T18:30:30 = 2008 Q1
+          1995-12-22T09:05:02 = 1995 Q4
+         -0010-09-15T04:44:23 = -10 Q3
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+       yyyy (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yyyyM (M.yyyy)
+
+          2008-02-05T18:30:30 = 2.2008
+          1995-12-22T09:05:02 = 12.1995
+         -0010-09-15T04:44:23 = 9.-010
+
+       yyyyMMMM (MMMM y)
+
+          2008-02-05T18:30:30 = unora 2008
+          1995-12-22T09:05:02 = prosince 1995
+         -0010-09-15T04:44:23 = zaXi -10
+&#12;   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       pondXli
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19          DateTime::Locale::cs(3pm)
+
+</pre></body></html>

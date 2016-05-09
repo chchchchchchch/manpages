@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>flipscreen3d - rotates an image of the screen through 3 dimensions.</title></head>
+<body><pre>
+
+flipscreen3d(6x)               XScreenSaver manual              flipscreen3d(6x)
+
+
+
+NAME
+       flipscreen3d - rotates an image of the screen through 3 dimensions.
+
+SYNOPSIS
+       flipscreen3d  [-display  host:display.screen]  [-visual visual] [-window]
+       [-root] [-delay number] [-no-rotate] [-wireframe] [-fps]
+
+DESCRIPTION
+       Grabs an image of the desktop, turns it into a GL texture map, and  spins
+       it around and deforms it in various ways.
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the id number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -delay number
+               Per-frame  delay,  in  microseconds.   Default:  20000 (0.02 sec&#8208;
+               onds.).
+
+       -rotate | -no-rotate
+               Whether to rotate.
+
+       -wireframe
+               Just render boxes instead of textures (for debugging).
+
+       -fps    Display the current frame rate, CPU load, and polygon count.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright  &#169;  2002  by Ben Buxton.  Permission to use, copy, modify, dis&#8208;
+       tribute, and sell this software and its documentation for any purpose  is
+       hereby  granted  without  fee,  provided  that the above copyright notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion  notice  appear in supporting documentation.  No representations are
+       made about the suitability of this software for any purpose.  It is  pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Ben Buxton.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)               flipscreen3d(6x)
+
+</pre></body></html>

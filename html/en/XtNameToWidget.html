@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtNameToWidget, XtWindowToWidget - translating strings to widgets or widgets to windows</title></head>
+<body><pre>
+
+XtNameToWidget(3)                 XT FUNCTIONS                 XtNameToWidget(3)
+
+
+
+NAME
+       XtNameToWidget, XtWindowToWidget - translating strings to widgets or wid&#8208;
+       gets to windows
+
+SYNTAX
+       Widget XtNameToWidget(Widget reference, String names);
+
+       Widget XtWindowToWidget(Display *display, Window window);
+
+ARGUMENTS
+       display   Specifies the display on which the window is defined.
+
+       names     Specifies the fully qualified name of the desired widget.
+
+       reference Specifies the widget from which the search is to start.
+
+       window    Specify the window for which you want the widget.
+
+DESCRIPTION
+       The XtNameToWidget function looks for a widget whose name is the first
+       component in the specified names and that is a pop-up child of reference
+       (or a normal child if reference is a subclass of compositeWidgetClass).
+       It then uses that widget as the new reference and repeats the search
+       after deleting the first component from the specified names.  If it can&#8208;
+       not find the specified widget, XtNameToWidget returns NULL.
+
+       Note that the names argument contains the name of a widget with respect
+       to the specified reference widget and can contain more than one widget
+       name (separated by periods) for widgets that are not direct children of
+       the specified reference widget.
+
+       If more than one child of the reference widget matches the name, XtName&#8208;
+       ToWidget can return any of the children.  The Intrinsics do not require
+       that all children of a widget have unique names.  If the specified names
+       contain more than one component and if more than one child matches the
+       first component, XtNameToWidget can return NULL if the single branch that
+       it follows does not contain the named widget.  That is, XtNameToWidget
+       does not back up and follow other matching branches of the widget tree.
+
+       The XtWindowToWidget function translates the specified window and display
+       pointer into the appropriate widget instance.
+
+SEE ALSO
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3                 XtNameToWidget(3)
+
+</pre></body></html>

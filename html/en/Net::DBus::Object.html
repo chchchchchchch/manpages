@@ -1,0 +1,179 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DBus::Object - Provide objects to the bus for clients to use</title></head>
+<body><pre>
+
+Net::DBus::Object(3pm) User Contributed Perl DocumentationNet::DBus::Object(3pm)
+
+
+
+NAME
+       Net::DBus::Object - Provide objects to the bus for clients to use
+
+SYNOPSIS
+         # Connecting an object to the bus, under a service
+         package main;
+
+         use Net::DBus;
+
+         # Attach to the bus
+         my $bus = Net::DBus-&gt;find;
+
+         # Acquire a service &apos;org.demo.Hello&apos;
+         my $service = $bus-&gt;export_service(&quot;org.demo.Hello&quot;);
+
+         # Export our object within the service
+         my $object = Demo::HelloWorld-&gt;new($service);
+
+         ....rest of program...
+
+         # Define a new package for the object we&apos;re going
+         # to export
+         package Demo::HelloWorld;
+
+         # Specify the main interface provided by our object
+         use Net::DBus::Exporter qw(org.example.demo.Greeter);
+
+         # We&apos;re going to be a DBus object
+         use base qw(Net::DBus::Object);
+
+         # Export a &apos;Greeting&apos; signal taking a stringl string parameter
+         dbus_signal(&quot;Greeting&quot;, [&quot;string&quot;]);
+
+         # Export &apos;Hello&apos; as a method accepting a single string
+         # parameter, and returning a single string value
+         dbus_method(&quot;Hello&quot;, [&quot;string&quot;], [&quot;string&quot;]);
+
+         sub new {
+             my $class = shift;
+             my $service = shift;
+             my $self = $class-&gt;SUPER::new($service, &quot;/org/demo/HelloWorld&quot;);
+
+             bless $self, $class;
+
+             return $self;
+         }
+
+         sub Hello {
+           my $self = shift;
+           my $name = shift;
+
+           $self-&gt;emit_signal(&quot;Greeting&quot;, &quot;Hello $name&quot;);
+           return &quot;Said hello to $name&quot;;
+         }
+
+         # Export &apos;Goodbye&apos; as a method accepting a single string
+         # parameter, and returning a single string, but put it
+         # in the &apos;org.exaple.demo.Farewell&apos; interface
+
+         dbus_method(&quot;Goodbye&quot;, [&quot;string&quot;], [&quot;string&quot;], &quot;org.example.demo.Farewell&quot;);
+
+         sub Goodbye {
+           my $self = shift;
+           my $name = shift;
+
+           $self-&gt;emit_signal(&quot;Greeting&quot;, &quot;Goodbye $name&quot;);
+           return &quot;Said goodbye to $name&quot;;
+         }
+
+DESCRIPTION
+       This the base of all objects which are exported to the message bus. It
+       provides the core support for type introspection required for objects
+       exported to the message. When sub-classing this object, methods can be
+       created &amp; tested as per normal Perl modules. Then just as the Exporter
+       module is used to export methods within a script, the Net::DBus::Exporter
+       module is used to export methods (and signals) to the message bus.
+
+       All packages inheriting from this, will automatically have the interface
+       &quot;org.freedesktop.DBus.Introspectable&quot; registered with
+       Net::DBus::Exporter, and the &quot;Introspect&quot; method within this exported.
+
+METHODS
+       my $object = Net::DBus::Object-&gt;new($service, $path)
+           This creates a new DBus object with an path of $path registered
+           within the service $service. The $path parameter should be a string
+           complying with the usual DBus requirements for object paths, while
+           the $service parameter should be an instance of Net::DBus::Service.
+           The latter is typically obtained by calling the &quot;export_service&quot;
+           method on the Net::DBus object.
+
+       my $object = Net::DBus::Object-&gt;new($parentobj, $subpath)
+           This creates a new DBus child object with an path of $subpath
+           relative to its parent $parentobj. The $subpath parameter should be a
+           string complying with the usual DBus requirements for object paths,
+           while the $parentobj parameter should be an instance of
+           Net::DBus::Object.
+
+       $object-&gt;disconnect();
+           This method disconnects the object from the bus, such that it will no
+           longer receive messages sent by other clients. Any child objects will
+           be recursively disconnected too. After an object has been
+           disconnected, it is possible for Perl to garbage collect the object
+           instance. It will also make it possible to connect a newly created
+           object to the same path.
+
+       my $bool = $object-&gt;is_connected
+           Returns a true value if the object is connected to the bus, and thus
+           capable of being accessed by remote clients. Returns false if the
+           object is disconnected &amp; thus ready for garbage collection. All
+           objects start off in the connected state, and will only transition if
+           the &quot;disconnect&quot; method is called.
+
+       my $service = $object-&gt;get_service
+           Retrieves the Net::DBus::Service object within which this object is
+           exported.
+
+       my $path = $object-&gt;get_object_path
+           Retrieves the path under which this object is exported
+
+       $object-&gt;emit_signal_in($name, $interface, $client, @args);
+           Emits a signal from the object, with a name of $name. If the
+           $interface parameter is defined, the signal will be scoped within
+           that interface. If the $client parameter is defined, the signal will
+           be unicast to that client on the bus. The signal and the data types
+           of the arguments @args must have been registered with
+           Net::DBus::Exporter by calling the &quot;dbus_signal&quot; method.
+
+       $self-&gt;emit_signal_to($name, $client, @args);
+           Emits a signal from the object, with a name of $name. The signal and
+           the data types of the arguments @args must have been registered with
+           Net::DBus::Exporter by calling the &quot;dbus_signal&quot; method. The signal
+           will be sent only to the client named by the $client parameter.
+
+       $self-&gt;emit_signal($name, @args);
+           Emits a signal from the object, with a name of $name. The signal and
+           the data types of the arguments @args must have been registered with
+           Net::DBus::Exporter by calling the &quot;dbus_signal&quot; method. The signal
+           will be broadcast to all clients on the bus.
+
+       $object-&gt;connect_to_signal_in($name, $interface, $coderef);
+           Connects a callback to a signal emitted by the object. The $name
+           parameter is the name of the signal within the object, and $coderef
+           is a reference to an anonymous subroutine. When the signal $name is
+           emitted by the remote object, the subroutine $coderef will be
+           invoked, and passed the parameters from the signal. The $interface
+           parameter is used to specify the explicit interface defining the
+           signal to connect to.
+
+       $object-&gt;connect_to_signal($name, $coderef);
+           Connects a callback to a signal emitted by the object. The $name
+           parameter is the name of the signal within the object, and $coderef
+           is a reference to an anonymous subroutine. When the signal $name is
+           emitted by the remote object, the subroutine $coderef will be
+           invoked, and passed the parameters from the signal.
+
+AUTHOR
+       Daniel P. Berrange
+
+COPYRIGHT
+       Copyright (C) 2005-2011 Daniel P. Berrange
+
+SEE ALSO
+       Net::DBus, Net::DBus::Service, Net::DBus::RemoteObject,
+       Net::DBus::Exporter.
+
+
+
+perl v5.14.2                       2011-06-30             Net::DBus::Object(3pm)
+
+</pre></body></html>

@@ -1,0 +1,158 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sane-artec - SANE backend for Artec flatbed scanners</title></head>
+<body><pre>
+
+sane-artec(5)             SANE Scanner Access Now Easy             sane-artec(5)
+
+
+
+NAME
+       sane-artec - SANE backend for Artec flatbed scanners
+
+
+DESCRIPTION
+       The  sane-artec library implements a SANE (Scanner Access Now Easy) back&#8208;
+       end that provides access  to  Artec/Ultima  SCSI  flatbed  scanners.   At
+       present, the following scanners are known to work at least partially with
+       this backend:
+
+              * Artec A6000C
+              * Artec A6000C PLUS
+              * Artec ViewStation AT3
+              * BlackWidow BW4800SP (rebadged Artec AT3)
+              * Artec ViewStation AT6
+              * Artec ViewStation AT12
+              * Artec AM12S
+              * Plustek 19200S (rebadged Artec AM12S)
+
+       Although this manual page is generally updated with each release,  up-to-
+       date  information on new releases and extraneous helpful hints are avail&#8208;
+       able from the backend homepage:
+              http://www4.infi.net/~cpinkham/sane/
+
+
+DOCUMENTATION
+CONFIGURATION
+       The contents of the artec.conf file are a list of device names that  cor&#8208;
+       respond  to  Artec  scanners.  Empty lines and lines starting with a hash
+       mark (#) are ignored.  See sane-scsi(5) on details of what constitutes  a
+       valid device name.
+
+       Sample file:
+       # artec.conf
+       #
+       # this is a comment.
+       #
+       # this line says search for any SCSI devices which are scanners and have
+       #     a vendor string of &apos;ULTIMA&apos;
+       scsi ULTIMA
+       #
+       # the next line forces the backend to assume the next scanner found has
+       #     the specified vendor string (useful for testing rebadged models).
+       vendor ULTIMA
+       #
+       # the next line forces the backend to assume the next scanner found has
+       #     the specified model string (useful for testing rebadged models).
+       model AT3
+       #
+       # now a line that actually specifies a device.  The backend is going to
+       #     assume this is an Artec/Ultima AT3 because we forced the vendor and
+       #     model above.
+       /dev/scanner
+       #
+       # once we hit a scanner device line, the forced vendor and model
+       # string are
+       #     &apos;forgotten&apos;, so the vendor and model for this next device will be
+       #     determined from the result of a SCSI inquiry.
+       /dev/sge
+       #
+&#12;SCSI ADAPTER TIPS
+       Some  Artec scanners come with an included SCSI adapter.  If your scanner
+       came with a DTC ISA scsi cards, you can probably use it with  recent  (&gt;=
+       2.2.0) kernels using the generic NCR5380 support.  You must pass the fol&#8208;
+       lowing boot argument to the kernel: &quot;dtc3181e=0x2c0,0&quot;
+       I do not have any information on the PCI SCSI adapter included with  some
+       newer Artec scanners.
+
+
+FILES
+       /etc/sane.d/artec.conf
+              The  backend configuration file (see also description of SANE_CON&#8208;
+              FIG_DIR below).
+
+       /usr/lib/arch_triplet/sane/libsane-artec.a
+              The static library implementing this backend.
+
+       /usr/lib/arch_triplet/sane/libsane-artec.so
+              The shared library implementing this backend (present  on  systems
+              that support dynamic loading).
+
+ENVIRONMENT
+       SANE_CONFIG_DIR
+              This  environment  variable specifies the list of directories that
+              may contain the configuration file.  Under UNIX,  the  directories
+              are  separated by a colon (`:&apos;), under OS/2, they are separated by
+              a semi- colon (`;&apos;).  If this variable is not set, the  configura&#8208;
+              tion  file is searched in two default directories: first, the cur&#8208;
+              rent working direc- tory (&quot;.&quot;) and then in  /etc/sane.d.   If  the
+              value  of the environment variable ends with the directory separa&#8208;
+              tor character, then the default directories are searched after the
+              explicitly  specified directories.  For example, setting SANE_CON&#8208;
+              FIG_DIR to &quot;/tmp/config:&quot; would result  in  directories  &quot;tmp/con&#8208;
+              fig&quot;, &quot;.&quot;, and &quot;/etc/sane.d&quot; being searched (in this order).
+
+       SANE_DEBUG_ARTEC
+              If the library was compiled with debug support enabled, this envi&#8208;
+              ronment variable controls the debug level for this backend.  E.g.,
+              a  value  of  128 requests all debug output to be printed. Smaller
+              levels reduce verbosity: SANE_DEBUG_ARTEC values
+
+              Number  Remark
+
+               0       print important errors
+               1       print errors
+               2       print sense
+               3       print warnings
+               4       print scanner-inquiry
+               5       print informations
+               6       print less important informations
+               7       print major called procedures
+               8       print all called procedures
+               9       print procedure info/data messages
+               10      print called sane-init-routines
+               11      print called sane-procedures
+               12      print sane infos
+               13      print sane option-control messages
+
+               50      print verbose data/debug messages
+
+               == 100  print software RGB calibration data
+               == 101  print raw data from scanner to artec.data.raw file
+
+               == 128  print out all messages
+
+       Example: export SANE_DEBUG_ARTEC=13
+
+
+BUGS
+       Known bugs in this release: A6000C+ users with firmware v1.92 or  earlier
+       have problems with the backend, the cause has not been determined.  Some&#8208;
+       times the backend is not particularly robust, you can  possibly  lock  up
+       the  SCSI  bus  (and/or machine) by not having patience enough when scan&#8208;
+       ning.  3-channel gamma correction is not implemented  and  single-channel
+       gamma correction is not totally working on models other than the AT3.
+
+
+SEE ALSO
+       sane(7), sane-scsi(5)
+
+
+AUTHOR
+       Chris Pinkham (cpinkham@corp.infi.net)
+
+
+
+                                   11 Jul 2008                     sane-artec(5)
+
+</pre></body></html>

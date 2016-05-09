@@ -1,0 +1,139 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ispellaff2myspell - A program to convert ispell affix tables to myspell format.</title></head>
+<body><pre>
+
+ISPELLAFF2MYSPELL(1)   User Contributed Perl Documentation  ISPELLAFF2MYSPELL(1)
+
+
+
+NAME
+       ispellaff2myspell - A program to convert ispell affix tables to myspell
+       format.
+
+SYNOPSIS
+        ispellaff2myspell [options] &lt;affixfile&gt; --myheader your_header
+
+          Options:
+
+           --affixfile=s      Affix file
+           --bylocale         Use current locale setup for upper/lowercase
+                              conversion
+           --charset=s        Use specified charset for upper/lowercase
+                              conversion (defaults to latin1)
+           --debug            Print debugging info
+           --extraflags=s     Allow some non alphabetic flags
+           --lowercase=s      Lowercase string
+           --myheader=s       Header file
+           --printcomments    Print commented lines in output
+           --replacements=s   Replacements file
+           --split=i          Split flags with more that i entries
+           --uppercase=s      Uppercase string
+
+DESCRIPTION
+       ispellaff2myspell is a script that will convert ispell affix tables to
+       myspell format in a more or less successful way.
+
+       This script does not create the dict file. Something like
+
+       ( echo `cat mydict.words+ | wc -l`; cat mydict.words+ ) &gt; mydict.dict
+
+       should do the work, with mydict.words+ being the munched wordlist
+
+OPTIONS
+       --affixfile=s
+               Affix file. You can put it directly in the command line.
+
+       --bylocale
+               Use current locale setup for upper/lowercase conversion. Make
+               sure that the selected locale match the dictionary one, or you
+               might get into trouble.
+
+       --charset=s
+               Use specified charset for upper/lowercase conversion (defaults to
+               latin1).  Currently allowed values for charset are: latin0,
+               latin1, latin2, latin3.
+
+       --debug Print some debugging info.
+
+       --extraflags:s
+               Allows some non alphabetic flags.
+
+               When invoked with no value the supported flags are currently
+               those corresponding to chars represented with the escape char \
+               as first char. \ will be stripped.
+
+               When given with the flag prefix will allow that flag and strip
+               the given prefix. Be careful when giving the prefix to properly
+               escape chars, e.g. you will need -e &quot;\\\\&quot; or -e &apos;\\&apos; for flags
+               like \[ to be stripped to [. Otherwise you might even get errors.
+               Use -e &quot;^&quot; to allow all flags and pass them unmodified.
+&#12;               You will need a call to -e for each flag type, e.g., -e &quot;\\\\&quot; -e
+               &quot;~\\\\&quot; (or -e &apos;\\&apos; -e &apos;~\\&apos;).
+
+               When a prefix is explicitely set, the default value (anything
+               starting by \) is disabled and you need to enable it explicitely
+               as in previous example.
+
+       --lowercase=s
+               Lowercase string. Manually set the string of lowercase chars.
+               This requires --uppercase having exactly that string but
+               uppercase.
+
+       --myheader=s
+               Header file. The myspell aff header. You need to write it
+               manually. This can contain everything you want to be before the
+               affix table
+
+       --printcomments
+               Print commented lines in output.
+
+       --replacements=file
+               Add a pre-defined replacements table taken from &apos;file&apos; to the
+               .aff file.  Will skip lines not beginning with REP, and set the
+               replacements number appropriately.
+
+       --split=i
+               Split flags with more that i entries. This can be of interest for
+               flags having a lot of entries. Will split the flag in chunks
+               containing i entries.
+
+       --uppercase=s
+               Uppercase string. Manually set the sring of uppercase chars. This
+               requires --lowercase having exactly that string but lowercase.
+
+       If your encoding is currently unsupported you can send me a file with the
+       two strings of lower and uppercase chars. Note that they must match
+       exactly but case changed. It will look something like
+
+         $lowercase=&apos;a-zaaaa~aeaaaeceeeeeiiiie`n~oooo~oeouuuueyp&apos;;
+         $uppercase=&apos;A-ZAAAA~AeAaCEEEEeIIIIe&#8208;N~OOOO~OeOUUUUeYP&apos;;
+
+SEE ALSO
+       The OpenOffice.org Lingucomponent Project home page
+
+       &lt;http://lingucomponent.openoffice.org/index.html&gt;
+
+       and the document
+
+       &lt;http://lingucomponent.openoffice.org/affix.readme&gt;
+
+       that provides information about the basics of the myspell affix file
+       format.
+
+       You can also take a look at
+
+        /usr/share/doc/libmyspell-dev/affix.readme.gz
+        /usr/share/doc/libmyspell-dev/README.compoundwords
+        /usr/share/doc/libmyspell-dev/README.replacetable
+
+       in your Debian system.
+
+AUTHORS
+       Agustin Martin &lt;agustin.martin@hispalinux.es&gt;
+
+
+
+perl v5.10.1                       2010-08-24               ISPELLAFF2MYSPELL(1)
+
+</pre></body></html>

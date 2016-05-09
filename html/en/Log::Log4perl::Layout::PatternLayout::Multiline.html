@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl::Layout::PatternLayout::Multiline - Multiline Pattern Layout</title></head>
+<body><pre>
+
+Layout::PatternLayout::UseriContributed PerLayout::PatternLayout::Multiline(3pm)
+
+
+
+NAME
+       Log::Log4perl::Layout::PatternLayout::Multiline - Multiline Pattern
+       Layout
+
+SYNOPSIS
+           use Log::Log4perl::Layout::PatternLayout::Multiline;
+
+           my $layout = Log::Log4perl::Layout::PatternLayout::Multiline-&gt;new(
+               &quot;%d (%F:%L)&gt; %m&quot;);
+
+DESCRIPTION
+       &quot;Log::Log4perl::Layout::PatternLayout::Multiline&quot; is a subclass of
+       Log4perl&apos;s PatternLayout and is helpful if you send multiline messages to
+       your appenders which appear as
+
+           2007/04/04 23:59:01 This is
+           a message with
+           multiple lines
+
+       and you want them to appear as
+
+           2007/04/04 23:59:01 This is
+           2007/04/04 23:59:01 a message with
+           2007/04/04 23:59:01 multiple lines
+
+       instead. This layout class simply splits up the incoming message into
+       several chunks split by line breaks and renders them with PatternLayout
+       just as if it had arrived in separate chunks in the first place.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-Layout::PatternLayout::Multiline(3pm)
+
+</pre></body></html>

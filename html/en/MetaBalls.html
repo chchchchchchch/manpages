@@ -1,0 +1,80 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MetaBalls - draws 2D metaballs</title></head>
+<body><pre>
+
+metaballs(6x)                  XScreenSaver manual                 metaballs(6x)
+
+
+
+NAME
+       MetaBalls - draws 2D metaballs
+
+SYNOPSIS
+       MetaBalls   [-display  host:display.screen]  [-visual  visual]  [-window]
+       [-root] [-ncolors number] [-count number] [-delay number]  [-cycles  num&#8208;
+       ber] [-radius number] [-delta number] [-fps]
+
+DESCRIPTION
+       This  hack draws 2D metaballs to the screen by calculating the sum of the
+       colors of all metaballs covering a pixel.  Ported from the  demo  effects
+       collection (http://demo-effects.sourceforge.net)
+
+OPTIONS
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the id number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -ncolors number
+               Number of Colors.  Default: 256.
+
+       -count number
+               Number of MetaBalls.     2 - 255.  Default: 10.
+
+       -delay number
+               Per-frame  delay,  in  microseconds.   Default:  5000 (0.005 sec&#8208;
+               onds.).
+
+       -cycles number
+               Duration.  100 - 3000.  Default: 1000.
+
+       -radius number
+               MetaBall Radius.  2 - 100.  Default: 100.
+
+       -delta number
+               MetaBall Movement.  1 - 20.  Default: 3.
+
+       -fps    Display the current frame rate and CPU load.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright &#169; 2002-2003 by W.P. van Paassen.  Permission to use, copy, mod&#8208;
+       ify, distribute, and sell this software and  its  documentation  for  any
+       purpose  is hereby granted without fee, provided that the above copyright
+       notice appear in all copies and that both that copyright notice and  this
+       permission notice appear in supporting documentation.  No representations
+       are made about the      suitability of this software for any purpose.  It
+       is provided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       W.P. van Paassen
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                  metaballs(6x)
+
+</pre></body></html>

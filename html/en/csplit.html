@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>csplit - split a file into sections determined by context lines</title></head>
+<body><pre>
+
+CSPLIT(1)                         User Commands                        CSPLIT(1)
+
+
+
+NAME
+       csplit - split a file into sections determined by context lines
+
+SYNOPSIS
+       csplit [OPTION]... FILE PATTERN...
+
+DESCRIPTION
+       Output  pieces  of  FILE separated by PATTERN(s) to files `xx00&apos;, `xx01&apos;,
+       ..., and output byte counts of each piece to standard output.
+
+       Mandatory arguments to long options are mandatory for short options too.
+
+       -b, --suffix-format=FORMAT
+              use sprintf FORMAT instead of %02d
+
+       -f, --prefix=PREFIX
+              use PREFIX instead of `xx&apos;
+
+       -k, --keep-files
+              do not remove output files on errors
+
+       -n, --digits=DIGITS
+              use specified number of digits instead of 2
+
+       -s, --quiet, --silent
+              do not print counts of output file sizes
+
+       -z, --elide-empty-files
+              remove empty output files
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       Read standard input if FILE is -.  Each PATTERN may be:
+
+       INTEGER
+              copy up to but not including specified line number
+
+       /REGEXP/[OFFSET]
+              copy up to but not including a matching line
+
+       %REGEXP%[OFFSET]
+              skip to, but not including a matching line
+
+       {INTEGER}
+              repeat the previous pattern specified number of times
+
+       {*}    repeat the previous pattern as many times as possible
+
+       A line OFFSET is a required `+&apos; or `-&apos; followed by a positive integer.
+
+AUTHOR
+       Written by Stuart Kemp and David MacKenzie.
+
+REPORTING BUGS
+       Report csplit bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report csplit translation bugs to &lt;http://translationproject.org/team/&gt;
+&#12;COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The full documentation for csplit is maintained as a Texinfo manual.   If
+       the  info  and  csplit  programs are properly installed at your site, the
+       command
+
+              info coreutils &apos;csplit invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                        CSPLIT(1)
+
+</pre></body></html>

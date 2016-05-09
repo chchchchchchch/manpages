@@ -1,0 +1,146 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca canvas frame handling -</title></head>
+<body><pre>
+
+libcaca canvas frame handling(3caca) libcacalibcaca canvas frame handling(3caca)
+
+
+
+NAME
+       libcaca canvas frame handling -
+
+   Functions
+       __extern int caca_get_frame_count (caca_canvas_t const *)
+           Get the number of frames in a canvas.
+       __extern int caca_set_frame (caca_canvas_t *, int)
+           Activate a given canvas frame.
+       __extern char const * caca_get_frame_name (caca_canvas_t const *)
+           Get the current frame&apos;s name.
+       __extern int caca_set_frame_name (caca_canvas_t *, char const *)
+           Set the current frame&apos;s name.
+       __extern int caca_create_frame (caca_canvas_t *, int)
+           Add a frame to a canvas.
+       __extern int caca_free_frame (caca_canvas_t *, int)
+           Remove a frame from a canvas.
+
+Detailed Description
+       These functions provide high level routines for canvas frame insertion,
+       removal, copying etc.
+
+Function Documentation
+   __extern int caca_get_frame_count (caca_canvas_t const *cv) Return the
+       current canvas&apos; frame count.
+       This function never fails.
+
+       Parameters:
+           cv A libcaca canvas
+
+       Returns:
+           The frame count
+
+       Referenced by caca_set_canvas_boundaries().
+
+   __extern int caca_set_frame (caca_canvas_t *cv, intid) Set the active canvas
+       frame. All subsequent drawing operations will be performed on that frame.
+       The current painting context set by caca_set_attr() is inherited.
+       If the frame index is outside the canvas&apos; frame range, nothing happens.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EINVAL Requested frame is out of range.
+
+       Parameters:
+           cv A libcaca canvas
+           id The canvas frame to activate
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       References caca_add_dirty_rect().
+
+       Referenced by caca_set_canvas_boundaries().
+
+   __extern char const* caca_get_frame_name (caca_canvas_t const *cv) Return the
+       current frame&apos;s name. The returned string is valid until the frame is
+       deleted or caca_set_frame_name() is called to change the frame name
+       again.
+       This function never fails.
+
+       Parameters:
+           cv A libcaca canvas.
+
+       Returns:
+           The current frame&apos;s name.
+
+   __extern int caca_set_frame_name (caca_canvas_t *cv, char const *name) Set
+       the current frame&apos;s name. Upon creation, a frame has a default name of
+       &apos;frame#xxxxxxxx&apos; where xxxxxxxx is a self-incrementing hexadecimal
+       number.
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; ENOMEM Not enough memory to allocate new frame.
+
+       Parameters:
+           cv A libcaca canvas.
+           name The name to give to the current frame.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+   __extern int caca_create_frame (caca_canvas_t *cv, intid) Create a new frame
+       within the given canvas. Its contents and attributes are copied from the
+       currently active frame.
+       The frame index indicates where the frame should be inserted. Valid
+       values range from 0 to the current canvas frame count. If the frame index
+       is greater than or equals the current canvas frame count, the new frame
+       is appended at the end of the canvas. If the frame index is less than
+       zero, the new frame is inserted at index 0.
+
+       The active frame does not change, but its index may be renumbered due to
+       the insertion.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; ENOMEM Not enough memory to allocate new frame.
+
+       Parameters:
+           cv A libcaca canvas
+           id The index where to insert the new frame
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       Referenced by caca_set_canvas_boundaries().
+
+   __extern int caca_free_frame (caca_canvas_t *cv, intid) Delete a frame from a
+       given canvas.
+       The frame index indicates the frame to delete. Valid values range from 0
+       to the current canvas frame count minus 1. If the frame index is greater
+       than or equals the current canvas frame count, the last frame is deleted.
+
+       If the active frame is deleted, frame 0 becomes the new active frame.
+       Otherwise, the active frame does not change, but its index may be
+       renumbered due to the deletion.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EINVAL Requested frame is out of range, or attempt to delete the last
+         frame of the canvas.
+
+       Parameters:
+           cv A libcaca canvas
+           id The index of the frame to delete
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+&#12;       References caca_add_dirty_rect().
+
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2libcaca canvas frame handling(3caca)
+
+</pre></body></html>

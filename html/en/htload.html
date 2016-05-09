@@ -1,0 +1,124 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htload - reads in an ASCII-text version of the document database</title></head>
+<body><pre>
+
+htload(1)                                                              htload(1)
+
+
+
+NAME
+       htload - reads in an ASCII-text version of the document database
+
+SYNOPSIS
+       htload [options]
+
+DESCRIPTION
+       Htload   reads  in  an ASCII-text version of the document database in the
+       same form as the  -t  option  of  htdig  and  htdump. Note that this will
+       overwrite data in your databases, so this should be used with great care.
+
+OPTIONS
+       -a     Use alternate work files. Tells htload to append .work to database
+              files, allowing it to operate on a second set of databases.
+
+       -c configfile
+              Use the specified configfile instead of the default.
+
+       -i     Initial.  Do  not use any old databases. This is  accomplished  by
+              first erasing the databases.
+
+       -v     Verbose mode. This doesn&apos;t have much effect.
+
+File Formats
+       Document Database
+              Each  line  in  the file starts with the document id followed by a
+              list of fieldname : value separated by  tabs.  The  fields  always
+              appear in the order listed below:
+
+       u      URL
+
+       t      Title
+
+       a      State (0 = normal, 1 = not found, 2 = not indexed, 3 = obsolete)
+
+       m      Last modification time as reported by the server
+
+       s      Size in bytes
+
+       H      Excerpt
+
+       h      Meta description
+
+       l      Time of last retrieval
+
+       L      Count of the links in the document (outgoing links)
+
+       b      Count of the links to the document (incoming links or backlinks)
+
+       c      HopCount of this document
+
+       g      Signature of the document used for duplicate-detection
+
+       e      E-mail address to use for a notification message from htnotify
+
+       n      Date to send out a notification e-mail message
+
+       S      Subject for a notification e-mail message
+
+       d      The   text   of   links   pointing  to  this  document.  (e.g.  &lt;a
+              href=&quot;docURL&quot;&gt;description&lt;/a&gt;)
+&#12;       A      Anchors in the document (i.e. &lt;A NAME=...)
+
+       Word Database
+              While  htdump  and  htload  don&apos;t  deal  with  the  word  database
+              directly,  it&apos;s  worth mentioning it here because you need to deal
+              with it when copying  the  ASCII  databases  from  one  system  to
+              another. The initial word database produced by htdig is already in
+              ASCII format, and a binary version of it is produced  by  htmerge,
+              for  use  by htsearch. So, when you copy over the ASCII version of
+              the document database produced by htdump, you need  to  copy  over
+              the  wordlist as well, then run htload to make the binary document
+              database on the target system, followed by running htmerge to make
+              the word index.
+
+       Each line in the word list file starts with the word
+              followed  by  a  list  of fieldname : value separated by tabs. The
+              fields always appear in the order listed below, with the last  two
+              being optional:
+
+       i      Document ID
+
+       l      Location of word in document (1 to 1000)
+
+       w      Weight of word based on scoring factors
+
+       c      Count of word&apos;s appearances in document, if more than 1
+
+       a      Anchor number if word occurred after a named anchor
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+       /var/lib/htdig/db.docs
+              The default ASCII document database file.
+
+       /var/lib/htdig/db.wordlist
+              The default ASCII word database file.
+
+SEE ALSO
+       Please   refer   to   the   HTML   pages   (in   the  htdig-doc  package)
+       /usr/share/doc/htdig-doc/html/index.html and the manual pages htdig(1)  ,
+       htmerge(1)  and  htdump(1) for a detailed description of ht://Dig and its
+       commands.
+
+AUTHOR
+       This manual page was written by Stijn de Bekker, based on the HTML  docu&#8208;
+       mentation of ht://Dig.
+
+
+
+                                 15 October 2001                       htload(1)
+
+</pre></body></html>

@@ -1,0 +1,558 @@
+<html>
+<head><meta charset=utf-8/>
+<title>java - the Java application launcher</title></head>
+<body><pre>
+
+java(1)                                                                  java(1)
+
+
+
+Name
+       java - the Java application launcher
+
+SYNOPSIS
+           java [ options ] class [ argument ... ]
+           java [ options ] -jar file.jar [ argument ... ]
+
+
+          options
+             Command-line options.
+
+          class
+             Name of the class to be invoked.
+
+          file.jar
+             Name of the jar file to be invoked. Used only with -jar.
+
+          argument
+             Argument passed to the main function.
+
+
+DESCRIPTION
+       The  java  tool  launches  a Java application. It does this by starting a
+       Java runtime environment, loading a specified class,  and  invoking  that
+       class&apos;s main method.
+
+       The  method  must  be  declared public and static, it must not return any
+       value, and it must accept a String array as a parameter. The method  dec&#8208;
+       laration must look like the following:
+
+       public static void main(String args[])
+
+
+       By  default, the first non-option argument is the name of the class to be
+       invoked. A fully-qualified class name should be used. If the -jar  option
+       is  specified, the first non-option argument is the name of a JAR archive
+       containing class and resource files for the application, with the startup
+       class indicated by the Main-Class manifest header.
+
+       The  Java runtime searches for the startup class, and other classes used,
+       in three sets of locations:  the  bootstrap  class  path,  the  installed
+       extensions, and the user class path.
+
+       Non-option  arguments after the class name or JAR file name are passed to
+       the main function.
+
+OPTIONS
+       The launcher has a set of standard options that are supported on the cur&#8208;
+       rent  runtime  environment  and  will be supported in future releases. In
+       addition, the current implementations of the virtual machines  support  a
+       set  of  non-standard  options  that  are  subject  to  change  in future
+       releases.
+
+Standard Options
+          -client
+             Select the Java HotSpot Client VM. A 64-bit capable  jdk  currently
+             ignores this option and instead uses the Java Hotspot Server VM.
+             For default VM selection, see Server-Class Machine Detection @
+             http://docs.oracle.com/javase/7/docs/tech&#8208;
+             notes/guides/vm/server-class.html
+
+          -server
+             Select the Java HotSpot Server VM. On a 64-bit capable jdk only the
+             Java Hotspot Server VM is supported so the -server option is
+             implicit.
+             For default VM selection, see Server-Class Machine Detection @
+             http://docs.oracle.com/javase/7/docs/tech&#8208;
+             notes/guides/vm/server-class.html
+
+          -agentlib:libname[=options]
+             Load native agent library libname, e.g.
+             -agentlib:hprof
+             -agentlib:jdwp=help
+             -agentlib:hprof=help
+             For more information, see JVMTI Agent Command Line Options @
+             http://docs.oracle.com/javase/7/docs/plat&#8208;
+             form/jvmti/jvmti.html#starting.
+
+          -agentpath:pathname[=options]
+             Load a native agent library by full pathname. For more information,
+             see JVMTI Agent Command Line Options @
+             http://docs.oracle.com/javase/7/docs/plat&#8208;
+             form/jvmti/jvmti.html#starting.
+
+          -classpath classpath
+
+          -cp classpath
+             Specify a list of directories, JAR archives, and ZIP archives to
+             search for class files. Class path entries are separated by colons
+             (:). Specifying -classpath or -cp overrides any setting of the
+             CLASSPATH environment variable.
+             If -classpath and -cp are not used and CLASSPATH is not set, the
+             user class path consists of the current directory (.).
+             As a special convenience, a class path element containing a base&#8208;
+             name of * is considered equivalent to specifying a list of all the
+             files in the directory with the extension .jar or .JAR (a java pro&#8208;
+             gram cannot tell the difference between the two invocations).
+             For example, if directory foo contains a.jar and b.JAR, then the
+             class path element foo/* is expanded to a A.jar:b.JAR, except that
+             the order of jar files is unspecified. All jar files in the speci&#8208;
+             fied directory, even hidden ones, are included in the list. A
+             classpath entry consisting simply of * expands to a list of all the
+             jar files in the current directory. The CLASSPATH environment vari&#8208;
+             able, where defined, will be similarly expanded. Any classpath
+             wildcard expansion occurs before the Java virtual machine is
+             started -- no Java program will ever see unexpanded wildcards
+             except by querying the environment. For example; by invoking Sys&#8208;
+             tem.getenv(&quot;CLASSPATH&quot;).
+             For more information on class paths, see Setting the Class Path @
+             http://docs.oracle.com/javase/7/docs/tech&#8208;
+             notes/tools/index.html#classpath.
+
+          -Dproperty=value
+             Set a system property value.
+
+          -d32
+
+          -d64
+             Request that the program to be run in a 32-bit or 64-bit environ&#8208;
+             ment, respectively. If the requested environment is not installed
+             or is not supported, an error is reported.
+             Currently only the Java HotSpot Server VM supports 64-bit opera&#8208;
+             tion, and the &quot;-server&quot; option is implicit with the use of -d64.
+             And the &quot;-client&quot; option is ignored with the use of -d64. This is
+             subject to change in a future release.
+             If neither -d32 nor -d64 is specified, the default is to run in a
+             32-bit environment, except for 64-bit only systems. This is subject
+             to change in a future release.
+
+          -enableassertions[:&lt;package name&gt;&quot;...&quot; | :&lt;class name&gt; ]
+
+          -ea[:&lt;package name&gt;&quot;...&quot; | :&lt;class name&gt; ]
+
+          -disableassertions[:&lt;package name&gt;&quot;...&quot; | :&lt;class name&gt; ]
+
+          -da[:&lt;package name&gt;&quot;...&quot; | :&lt;class name&gt; ]
+             Disable assertions. This is the default.
+             With no arguments, disableassertions or -da disables assertions.
+             With one argument ending in &quot;...&quot;, the switch disables assertions
+             in the specified package and any subpackages. If the argument is
+             simply &quot;...&quot;, the switch disables assertions in the unnamed package
+             in the current working directory. With one argument not ending in
+             &quot;...&quot;, the switch disables assertions in the specified class.
+             To run a program with assertions enabled in package com.wom&#8208;
+             bat.fruitbat but disabled in class com.wombat.fruitbat.Brickbat,
+             the following command could be used:
+             java -ea:com.wombat.fruitbat... -da:com.wombat.fruitbat.Brickbat &lt;Main Class&gt;
+             The -disableassertions and -da switches apply to all class loaders
+             and to system classes (which do not have a class loader). There is
+             one exception to this rule: in their no-argument form, the switches
+             do not apply to system. This makes it easy to turn on asserts in
+             all classes except for system classes. A separate switch is pro&#8208;
+             vided to enable asserts in all system classes; see -disablesys&#8208;
+             temassertions below.  Enable assertions. Assertions are disabled by
+             default.
+             With no arguments, enableassertions or -ea enables assertions. With
+             one argument ending in &quot;...&quot;, the switch enables assertions in the
+             specified package and any subpackages. If the argument is simply
+             &quot;...&quot;, the switch enables assertions in the unnamed package in the
+             current working directory. With one argument not ending in &quot;...&quot;,
+             the switch enables assertions in the specified class.
+             If a single command line contains multiple instances of these
+             switches, they are processed in order before loading any classes.
+             So, for example, to run a program with assertions enabled only in
+             package com.wombat.fruitbat (and any subpackages), the following
+             command could be used:
+             java -ea:com.wombat.fruitbat... &lt;Main Class&gt;
+             The -enableassertions and -ea switches apply to all class loaders
+             and to system classes (which do not have a class loader). There is
+             one exception to this rule: in their no-argument form, the switches
+             do not apply to system. This makes it easy to turn on asserts in
+             all classes except for system classes. A separate switch is pro&#8208;
+             vided to enable asserts in all system classes; see -enablesys&#8208;
+             temassertions below.
+
+          -enablesystemassertions
+
+          -esa
+             Enable asserts in all system classes (sets the default assertion
+             status for system classes to true).
+
+          -disablesystemassertions
+
+          -dsa
+             Disables asserts in all system classes.
+
+          -help or -?
+             Display usage information and exit.
+
+          -jar
+             Execute a program encapsulated in a JAR file. The first argument is
+             the name of a JAR file instead of a startup class name. In order
+             for this option to work, the manifest of the JAR file must contain
+             a line of the form Main-Class: classname. Here, classname identi&#8208;
+             fies the class having the public static void main(String[] args)
+             method that serves as your application&apos;s starting point. See the
+             jar(1) and the Jar trail of the Java Tutorial @
+             http://docs.oracle.com/javase/tutorial/deployment/jar for informa&#8208;
+             tion about working with Jar files and Jar-file manifests.
+             When you use this option, the JAR file is the source of all user
+             classes, and other user class path settings are ignored.
+             Note that JAR files that can be run with the &quot;java -jar&quot; option can
+             have their execute permissions set so they can be run without using
+             &quot;java -jar&quot;. Refer to Java Archive (JAR) Files @
+             http://docs.oracle.com/javase/7/docs/tech&#8208;
+             notes/guides/jar/index.html.
+
+          -javaagent:jarpath[=options]
+             Load a Java programming language agent, see java.lang.instrument @
+             http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/pack&#8208;
+             age-summary.html.
+&#12;          -jre-restrict-search
+             Include user-private JREs in the version search.
+
+          -no-jre-restrict-search
+             Exclude user-private JREs in the version search.
+
+          -showversion
+             Display version information and continue. (See also -version.)
+
+          -splash:imagepath
+             Show splash screen with image specified by imagepath.
+
+          -verbose
+
+          -verbose:class
+             Display information about each class loaded.
+
+          -verbose:gc
+             Report on each garbage collection event.
+
+          -verbose:jni
+             Report information about use of native methods and other Java
+             Native Interface activity.
+
+          -version
+             Display version information and exit. (See also -showversion.)
+
+          -version:release
+             Specifies that the version specified by release is required by the
+             class or jar file specified on the command line. If the version of
+             the java command invoked does not meet this specification and an
+             appropriate implementation is found on the system, the appropriate
+             implementation will be used.
+             release not only can specify an exact version, but can also specify
+             a list of versions called a version string. A version string is an
+             ordered list of version ranges separated by spaces. A version range
+             is either a version-id, a version-id followed by a star (*), a ver&#8208;
+             sion-id followed by a plus sign (+) , or two version-ranges com&#8208;
+             bined using an ampersand (&amp;). The star means prefix match, the plus
+             sign means this version or greater, and the ampersand means the
+             logical anding of the two version-ranges. For example:
+             -version:&quot;1.6.0_13 1.6*&amp;1.6.0_10+&quot;
+             The meaning of the above is that the class or jar file requires
+             either version 1.6.0_13, or a version with 1.6 as a version-id pre&#8208;
+             fix and that is not less than 1.6.0_10.. The exact syntax and defi&#8208;
+             nition of version strings may be found in Appendix A of the Java
+             Network Launching Protocol &amp; API Specification (JSR-56).
+             For jar files, the usual preference is to specify version require&#8208;
+             ments in the jar file manifest rather than on the command line.
+             See the following NOTES section for important policy information on
+             the use of this option.
+
+
+   Non-Standard Options
+          -X Display information about non-standard options and exit.
+
+          -Xint
+             Operate in interpreted-only mode. Compilation to native code is
+             disabled, and all bytecodes are executed by the interpreter. The
+             performance benefits offered by the Java HotSpot VMs&apos; adaptive com&#8208;
+             piler will not be present in this mode.
+
+          -Xbatch
+             Disable background compilation. Normally the VM will compile the
+             method as a background task, running the method in interpreter mode
+             until the background compilation is finished. The -Xbatch flag dis&#8208;
+             ables background compilation so that compilation of all methods
+             proceeds as a foreground task until completed.
+
+          -Xbootclasspath:bootclasspath
+             Specify a colon-separated list of directories, JAR archives, and
+             ZIP archives to search for boot class files. These are used in
+             place of the boot class files included in the Java platform JDK.
+             Note: Applications that use this option for the purpose of overrid&#8208;
+             ing a class in rt.jar should not be deployed as doing so would con&#8208;
+             travene the Java Runtime Environment binary code license.
+
+          -Xbootclasspath/a:path
+             Specify a colon-separated path of directires, JAR archives, and ZIP
+             archives to append to the default bootstrap class path.
+
+          -Xbootclasspath/p:path
+             Specify a colon-separated path of directires, JAR archives, and ZIP
+             archives to prepend in front of the default bootstrap class path.
+             Note: Applications that use this option for the purpose of overrid&#8208;
+             ing a class in rt.jar should not be deployed as doing so would con&#8208;
+             travene the Java Runtime Environment binary code license.
+
+          -Xcheck:jni
+             Perform additional checks for Java Native Interface (JNI) func&#8208;
+             tions. Specifically, the Java Virtual Machine validates the parame&#8208;
+             ters passed to the JNI function as well as the runtime environment
+             data before processing the JNI request. Any invalid data encoun&#8208;
+             tered indicates a problem in the native code, and the Java Virtual
+             Machine will terminate with a fatal error in such cases. Expect a
+             performance degradation when this option is used.
+
+          -Xfuture
+             Perform strict class-file format checks. For purposes of backwards
+             compatibility, the default format checks performed by the JDK&apos;s
+             virtual machine are no stricter than the checks performed by 1.1.x
+             versions of the JDK software. The -Xfuture flag turns on stricter
+             class-file format checks that enforce closer conformance to the
+             class-file format specification. Developers are encouraged to use
+             this flag when developing new code because the stricter checks will
+             become the default in future releases of the Java application
+             launcher.
+
+          -Xnoclassgc
+             Disable class garbage collection. Use of this option will prevent
+             memory recovery from loaded classes thus increasing overall memory
+             usage. This could cause OutOfMemoryError to be thrown in some
+             applications.
+
+          -Xincgc
+             Enable the incremental garbage collector. The incremental garbage
+             collector, which is off by default, will reduce the occasional long
+             garbage-collection pauses during program execution. The incremental
+             garbage collector will at times execute concurrently with the pro&#8208;
+             gram and during such times will reduce the processor capacity
+             available to the program.
+
+          -Xloggc:file
+             Report on each garbage collection event, as with -verbose:gc, but
+             log this data to file. In addition to the information -verbose:gc
+             gives, each reported event will be preceeded by the time (in sec&#8208;
+             onds) since the first garbage-collection event.
+             Always use a local file system for storage of this file to avoid
+             stalling the JVM due to network latency. The file may be truncated
+             in the case of a full file system and logging will continue on the
+             truncated file. This option overrides -verbose:gc if both are given
+             on the command line.
+
+          -Xmnsize or -XX:NewSize
+             Sets the size of the young generation (nursery).
+
+          -Xmsn
+             Specify the initial size, in bytes, of the memory allocation pool.
+             This value must be a multiple of 1024 greater than 1MB. Append the
+             letter k or K to indicate kilobytes, or m or M to indicate
+             megabytes. The default value is chosen at runtime based on system
+             configuration. For more information, see HotSpot Ergonomics @
+             http://docs.oracle.com/javase/7/docs/tech&#8208;
+             notes/guides/vm/gc-ergonomics.html
+             Examples:
+                    -Xms6291456
+                    -Xms6144k
+                    -Xms6m
+
+
+          -Xmxn
+             Specify the maximum size, in bytes, of the memory allocation pool.
+             This value must a multiple of 1024 greater than 2MB. Append the
+             letter k or K to indicate kilobytes, or m or M to indicate
+             megabytes. The default value is chosen at runtime based on system
+             configuration. For more information, see HotSpot Ergonomics @
+             http://docs.oracle.com/javase/7/docs/tech&#8208;
+             notes/guides/vm/gc-ergonomics.html
+             Examples:
+                    -Xmx83886080
+                    -Xmx81920k
+                    -Xmx80m
+
+             On Solaris 7 and Solaris 8 SPARC platforms, the upper limit for
+             this value is approximately 4000m minus overhead amounts. On
+             Solaris 2.6 and x86 platforms, the upper limit is approximately
+             2000m minus overhead amounts. On Linux platforms, the upper limit
+             is approximately 2000m minus overhead amounts.
+
+          -Xprof
+             Profiles the running program, and sends profiling data to standard
+             output. This option is provided as a utility that is useful in pro&#8208;
+             gram development and is not intended to be used in production sys&#8208;
+             tems.
+
+          -Xrs
+             Reduces use of operating-system signals by the Java virtual machine
+             (JVM).
+             In a previous release, the Shutdown Hooks facility was added to
+             allow orderly shutdown of a Java application. The intent was to
+             allow user cleanup code (such as closing database connections) to
+             run at shutdown, even if the JVM terminates abruptly.
+             Sun&apos;s JVM catches signals to implement shutdown hooks for abnormal
+             JVM termination. The JVM uses SIGHUP, SIGINT, and SIGTERM to initi&#8208;
+             ate the running of shutdown hooks.
+             The JVM uses a similar mechanism to implement the pre-1.2 feature
+             of dumping thread stacks for debugging purposes. Sun&apos;s JVM uses
+             SIGQUIT to perform thread dumps.
+             Applications embedding the JVM frequently need to trap signals like
+             SIGINT or SIGTERM, which can lead to interference with the JVM&apos;s
+             own signal handlers. The -Xrs command-line option is available to
+             address this issue. When -Xrs is used on Sun&apos;s JVM, the signal
+             masks for SIGINT, SIGTERM, SIGHUP, and SIGQUIT are not changed by
+             the JVM, and signal handlers for these signals are not installed.
+             There are two consequences of specifying -Xrs:
+
+             o SIGQUIT thread dumps are not available.
+
+             o User code is responsible for causing shutdown hooks to run, for
+               example by calling System.exit() when the JVM is to be termi&#8208;
+               nated.
+
+          -Xssn
+             Set thread stack size.
+
+          -XX:AllocationPrefetchStyle=n
+             Sets the style of prefetch used during allocation. default=2.
+
+          -XX:+AggressiveOpts
+             Enables aggressive optimization.
+
+          -XX:+|-DisableAttachMechanism
+             This option specifies whether tools (such as jmap and jconsole) are
+             allowed to attach to the JVM. By default, this feature is disabled.
+             That is, attaching is enabled. Example usage:
+                   java -XX:+DisableAttachMechanism
+
+          -XXLargePageSizeInBytes=n
+             This option specifies the maximum size for large pages.
+
+          -XX:MaxGCPauseMillis=n
+             Sets a target for the maximum GC pause time.
+             This is a soft goal, and the JVM will make its best effort to
+             achieve it.
+
+          -XX:NewSize
+             Sets the size of the young generation (nursery). Sames as -Xmnsize.
+
+          -XX:ParallelGCThreads=n
+             Sets the number of GC threads in the parallel collectors.
+
+          -XX:PredictedClassLoadCount=n
+             This option requires that the UnlockExperimentalVMOptions flag be
+             set first. Use the PredictedClassLoadCount flag if your application
+             loads a lot of classes, and especially if class.forName() is used
+             heavily. The recommended value is the number of classes loaded as
+             shown in the output from -verbose:class.
+             Example usage:
+                   java -XX:+UnlockExperimentalVMOptions -XX:PredictedClassLoadCount=60013
+
+          -XX:+PrintCompilation
+             Prints verbose output from the HotSpot dynamic runtime compiler.
+
+          -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+             Prints garbage collection output along with time stamps.
+
+          -XX:SoftRefLRUPolicyMSPerMB=0
+             This flag enables aggressive processing of software references. Use
+             this flag if HotSpot GC is impacted by the software reference
+             count.
+
+          -XX:TLABSize=n
+             Thread local allocation buffers (TLAB) are enabled by default in
+             HotSpot. HotSpot automatically sizes TLABs based on allocation pat&#8208;
+             terns. The -XX:TLABSize option allows fine-tuning the size of
+             TLABs.
+
+          -XX:+UseAltSigs
+             The VM uses SIGUSR1 and SIGUSR2 by default, which can sometimes
+             conflict with applications that signal-chain SIGUSR1 and SIGUSR2.
+             The -XX:+UseAltSigs option will cause the VM to use signals other
+             than SIGUSR1 and SIGUSR2 as the default.
+
+          -XX:+|-UseCompressedOops
+             Enables compressed references in 64-bit JVMs.
+             This option is true by default.
+
+          -XX:+UseConcMarkSweepGC or -XX:+UseG1GC
+             These flags enable either the Concurrent Mark Sweep (CMS) or the G1
+             garbage collectors.
+
+          -XX:+|-UseLargePages
+             Use this flag to enable large page support. Large pages are enabled
+             by default on Solaris.
+
+          -XX:+UseParallelOldGC
+             Enables the parallel garbage collectors, which are optimized for
+             throughput and average response time.
+
+NOTES
+       The -version:release command line option places no restrictions on the
+       complexity of the release specification. However, only a restricted sub&#8208;
+       set of the possible release specifications represent sound policy and
+       only these are fully supported. These policies are:
+
+          1. Any version, represented by not using this option.
+
+          2. Any version greater than an arbitrarily precise version-id. For
+             example:
+             &quot;1.6.0_10+&quot;
+             This would utilize any version greater than 1.6.0_10. This is use&#8208;
+             ful for a case where an interface was introduced (or a bug fixed)
+             in the release specified.
+
+          3. A version greater than an arbitrarily precise version-id, bounded
+             by the upper bound of that release family. For example:
+             &quot;1.6.0_10+&amp;1.6*&quot;
+&#12;          4. &quot;Or&quot; expressions of items 2. or 3. above. For example:
+             &quot;1.6.0_10+&amp;1.6* 1.7+&quot;
+             Similar to item 2. this is useful when a change was introduced in a
+             release (1.7) but also made available in updates to previous
+             releases.
+
+EXIT STATUS
+       The following exit values are generally returned by the launcher, typi&#8208;
+       cally when the launcher is called with the wrong arguments, serious
+       errors, or exceptions thrown from the Java Virtual Machine. However, a
+       Java application may choose to return any value using the API call Sys&#8208;
+       tem.exit(exitValue).
+
+          o 0: Successful completion
+
+          o &gt;0: An error occurred
+
+SEE ALSO
+          o javac(1)
+
+          o jdb(1)
+
+          o javah(1)
+
+          o jar(1)
+
+          o The Java Extensions Framework @
+            http://docs.oracle.com/javase/7/docs/technotes/guides/exten&#8208;
+            sions/index.html
+
+          o Security Features @
+            http://docs.oracle.com/javase/7/docs/technotes/guides/secu&#8208;
+            rity/index.html.
+
+          o HotSpot VM Specific Options @
+            http://java.sun.com/docs/hotspot/VMOptions.html.
+
+
+                                   20 Mar 2012                           java(1)
+
+</pre></body></html>

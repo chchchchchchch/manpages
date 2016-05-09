@@ -1,0 +1,82 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbSetNamedIndicator - Names an indicator if it is not already named; toggles the state of the indicator; sets the indicator to a specified state and sets the indicator map for the indicator</title></head>
+<body><pre>
+
+XkbSetNamedIndicator(3)           XKB FUNCTIONS          XkbSetNamedIndicator(3)
+
+
+
+NAME
+       XkbSetNamedIndicator  -  Names  an  indicator if it is not already named;
+       toggles the state of the indicator; sets the  indicator  to  a  specified
+       state and sets the indicator map for the indicator
+
+SYNOPSIS
+       Bool  XkbSetNamedIndicator  (Display *dpy, unsigned int device_spec, Atom
+              name, Bool change_state, Bool state, Bool  create_new,  XkbIndica&#8208;
+              torMapPtr map);
+
+ARGUMENTS
+       - dpy  connection to the X server
+
+       - device_spec
+              device ID, or XkbUseCoreKbd
+
+       - name name of the indicator to change
+
+       - change_state
+              whether to change the indicator state or not
+
+       - state
+              desired new state for the indicator
+
+       - create_new
+              whether  a new indicator with the specified name should be created
+              when necessary
+
+       - map  new map for the indicator
+
+DESCRIPTION
+       If a compatible version of the Xkb extension  is  not  available  in  the
+       server, XkbSetNamedIndicator returns False. Otherwise, it sends a request
+       to the X server to change the indicator specified  by  name  and  returns
+       True.
+
+       If  change_state is True, and the optional parameter, state, is not NULL,
+       XkbSetNamedIndicator tells the server to change the state  of  the  named
+       indicator to the value specified by state.
+
+       If  an  indicator with the name specified by name does not already exist,
+       the create_new parameter tells the server whether it should create a  new
+       named  indicator. If create_new is True, the server finds the first indi&#8208;
+       cator that doesn&apos;t have a name and gives it the name specified  by  name.
+       If  the  optional parameter, map, is not NULL, XkbSetNamedIndicator tells
+       the server to change the indicator&apos;s map to the values specified in map.
+
+       In addition, it can  also  generate  XkbIndicatorStateNotify,  XkbIndica&#8208;
+       torMapNotify, and XkbNamesNotify events.
+
+RETURN VALUES
+       True           The  XkbSetNamedIndicator  function returns True if a com&#8208;
+                      patible version of the Xkb extension is available  in  the
+                      server.
+
+       False          The  XkbSetNamedIndicator function returns False if a com&#8208;
+                      patible version of the Xkb extension is not  available  in
+                      the server.
+
+DIAGNOSTICS
+       BadAtom        A name is neither a valid Atom or None
+&#12;       BadImplementation
+                      Invalid reply from server
+
+SEE ALSO
+       XkbIndicatorMapNotify(3), XkbIndicatorStateNotify(3), XkbNamesNotify(3)
+
+
+
+
+X Version 11                      libX11 1.5.0           XkbSetNamedIndicator(3)
+
+</pre></body></html>

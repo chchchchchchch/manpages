@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::HIP - DNS HIP resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::HIP(3pm) User Contributed Perl DocumentationNet::DNS::RR::HIP(3pm)
+
+
+
+NAME
+       Net::DNS::RR::HIP - DNS HIP resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       This class implements the HIP RR (RFC5205)
+
+METHODS
+   pkalgorithm
+       Returns or sets the public key algorithm field
+
+   hit
+       Returns or sets the hit in base16 representation.
+
+   hitbin
+       Returns or sets the binary representation of the the hit.
+
+       Using hit or hitbin to set the one of these attributes will update both
+       attributes.
+
+   pubkey
+       Returns or sets the publick key in base64 representation.
+
+   pubkey
+       Returns or sets the binary representation of the the public key.
+
+       Using pubkey or pubkeybin to set the one of these attributes will update
+       both attributes.
+
+   rendezvousservers
+             my $rendezvousservers=$hip-&gt;rendezvousservers();
+
+       Returns a reference to an array of rendezvous servers. The representation
+       is in Perl&apos;s internal storage format i.e. without trailing dot.
+
+            $hip-&gt;rendezvousservers( [ qw|example.com  example.net| ] )
+
+       With a reference to an array as the argument this method will set the
+       rendezvousservers.
+
+NOTES
+       Since (multiline) base64 encoded publik keys may contain spaces string
+       parsing of the HIP RR depends on rendevous server names containing at
+       least one . (dot) in their domain name. Failure of string parsing will
+       return an &apos;undef&apos;.
+
+       The rdatastr method (and hence the string and print methods) return the
+       rendezvousservers as fully qualified domain names.
+
+COPYRIGHT
+       Copyright (c) 2009 Olaf Kolkman (NLnet Labs)
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 5205
+
+
+
+perl v5.14.2                       2009-12-30             Net::DNS::RR::HIP(3pm)
+
+</pre></body></html>

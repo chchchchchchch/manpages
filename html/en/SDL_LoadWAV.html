@@ -1,0 +1,59 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_LoadWAV - Load a WAVE file</title></head>
+<body><pre>
+
+SDL_LoadWAV(3)                  SDL API Reference                 SDL_LoadWAV(3)
+
+
+
+NAME
+       SDL_LoadWAV - Load a WAVE file
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       SDL_AudioSpec  *SDL_LoadWAV(const  char *file, SDL_AudioSpec *spec, Uint8
+       **audio_buf, Uint32 *audio_len);
+
+DESCRIPTION
+       SDL_LoadWAV This function loads a WAVE file into memory.
+
+       If this function succeeds, it returns  the  given  SDL_AudioSpec,  filled
+       with the audio data format of the wave data, and sets audio_buf to a mal&#8208;
+       loc&apos;d buffer containing the audio data, and sets audio_len to the  length
+       of  that  audio  buffer, in bytes. You need to free the audio buffer with
+       SDL_FreeWAV when you are done with it.
+
+       This function returns NULL and sets the SDL error  message  if  the  wave
+       file  cannot  be opened, uses an unknown data format, or is corrupt. Cur&#8208;
+       rently raw, MS-ADPCM and IMA-ADPCM WAVE files are supported.
+
+EXAMPLE
+       SDL_AudioSpec wav_spec;
+       Uint32 wav_length;
+       Uint8 *wav_buffer;
+
+       /* Load the WAV */
+       if( SDL_LoadWAV(&quot;test.wav&quot;, &amp;wav_spec, &amp;wav_buffer, &amp;wav_length) == NULL ){
+         fprintf(stderr, &quot;Could not open test.wav: %s
+       &quot;, SDL_GetError());
+         exit(-1);
+       }
+       .
+       .
+       .
+       /* Do stuff with the WAV */
+       .
+       .
+       /* Free It */
+       SDL_FreeWAV(wav_buffer);
+
+SEE ALSO
+       SDL_AudioSpec, SDL_OpenAudio, SDL_FreeWAV
+
+
+
+SDL                          Tue 11 Sep 2001, 22:58               SDL_LoadWAV(3)
+
+</pre></body></html>

@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hal-get-property - get a property from a device object</title></head>
+<body><pre>
+
+HAL-GET-PROPERTY(1)                                          HAL-GET-PROPERTY(1)
+
+
+
+NAME
+       hal-get-property - get a property from a device object
+
+SYNOPSIS
+       hal-get-property [options]
+
+
+DESCRIPTION
+       hal-get-property  retrieves  a  property  from a device object in the HAL
+       device database. For more information about both the big picture and spe&#8208;
+       cific  HAL  properties,  refer  to  the  HAL  spec  which can be found in
+       /usr/share/doc/hal-doc/spec/hal-spec.html depending on the distribution.
+
+
+OPTIONS
+       The following options are supported:
+
+       --udi  The UDI (Unique Device Identifier) of the device object.
+
+       --key  The name of the property.
+
+       --hex  Show int32/uint64 values in hex (without a leading 0x).
+
+       --verbose
+              Verbose output.
+
+       --help Print out usage.
+
+       --version
+              Print the version.
+
+
+RETURN VALUE
+       If both the property and device object exists the value of  the  property
+       is  printed  on stdout and the program will exit with exit code 0. Other&#8208;
+       wise the exit code will be non-zero.
+
+
+BUGS
+       Please send bug reports to either the distribution  or  the  HAL  mailing
+       list,  see  http://lists.freedesktop.org/mailman/listinfo/hal  on  how to
+       subscribe.
+
+
+SEE ALSO
+       hald(8),  lshal(1),  hal-set-property(1),  hal-find-by-property(1),  hal-
+       find-by-capability(1)
+
+
+AUTHOR
+       Written  by  David  Zeuthen &lt;david@fubar.dk&gt; with a lot of help from many
+       others.
+
+
+
+
+                                                             HAL-GET-PROPERTY(1)
+
+</pre></body></html>

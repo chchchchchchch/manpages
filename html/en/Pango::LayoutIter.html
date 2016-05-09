@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Pango::LayoutIter - an object used to iterate over the visual extents of a Pango::Layout</title></head>
+<body><pre>
+
+Pango::LayoutIter(3pm) User Contributed Perl DocumentationPango::LayoutIter(3pm)
+
+
+
+NAME
+       Pango::LayoutIter - an object used to iterate over the visual extents of
+       a Pango::Layout
+
+HIERARCHY
+         Glib::Boxed
+         +----Pango::LayoutIter
+
+METHODS
+   boolean = $iter-&gt;at_last_line
+   integer = $iter-&gt;get_baseline
+   array reference = $iter-&gt;get_char_extents
+   list = $iter-&gt;get_cluster_extents
+   integer = $iter-&gt;get_index
+   list = $iter-&gt;get_layout_extents
+   layout = $iter-&gt;get_layout
+       Since: pango 1.20
+
+   list = $iter-&gt;get_line_extents
+   layoutline = $iter-&gt;get_line
+   layoutline = $iter-&gt;get_line_readonly
+       Since: pango 1.16
+
+   (y0_, y1_) = $iter-&gt;get_line_yrange
+   boolean = $iter-&gt;next_char
+   boolean = $iter-&gt;next_cluster
+   boolean = $iter-&gt;next_line
+   boolean = $iter-&gt;next_run
+   list = $iter-&gt;get_run_extents
+SEE ALSO
+       Pango, Glib::Boxed
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Pango for a full notice.
+
+
+
+perl v5.14.2                       2011-11-15             Pango::LayoutIter(3pm)
+
+</pre></body></html>

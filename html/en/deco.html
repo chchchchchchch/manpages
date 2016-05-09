@@ -1,0 +1,106 @@
+<html>
+<head><meta charset=utf-8/>
+<title>deco - draw tacky 70s basement wall panelling</title></head>
+<body><pre>
+
+deco(6x)                       XScreenSaver manual                      deco(6x)
+
+
+
+NAME
+       deco - draw tacky 70s basement wall panelling
+
+SYNOPSIS
+       deco  [-display  host:display.screen]  [-foreground  color]  [-background
+       color] [-window] [-root] [-mono] [-install] [-visual visual] [-delay sec&#8208;
+       onds]  [-max-depth  int]  [-min-width int] [-min-height int] [-line-width
+       yIint] [-smooth-colors] [-golden-ratio] [-mondrian] [-fps]
+
+DESCRIPTION
+       The deco program subdivides and colors  rectangles  randomly.   It  looks
+       kind  of like Brady-Bunch-era rec-room wall paneling.  (Raven says: &quot;This
+       screensaver is ugly enough to peel paint.&quot;)  Can also produce  more  aes&#8208;
+       thetically pleasing displays via options.
+
+OPTIONS
+       deco accepts the following options:
+
+       -window Draw on a newly-created window.  This is the default.
+
+       -root   Draw on the root window.
+
+       -mono   If on a color display, pretend we&apos;re on a monochrome display.
+
+       -install
+               Install a private colormap for the window.
+
+       -visual visual
+               Specify which visual to use.  Legal values are the name of a vis&#8208;
+               ual class, or the id number (decimal or hex) of a  specific  vis&#8208;
+               ual.
+
+       -delay seconds
+               How long to wait before starting over.  Default 5 seconds.
+
+       -max-depth integer
+               How deep to subdivide.  Default 12.
+
+       -min-width integer
+
+       -min-height integer
+               The size of the smallest rectangle to draw.  Default 20x20.
+
+       -line-width integer
+               Width  of  lines  drawn between rectangles. Default zero (minimal
+               width).
+
+       -smooth-colors
+
+       -no-smooth-colors
+               Whether to use a smooth color palette instead of  a  random  one.
+               Less jarring. Default False.
+
+       -golden-ratio
+
+       -no-golden-ratio
+               Whether to subdivide rectangles using the golden ratio instead of
+               1/2.  This ratio is supposed to be more  aesthetically  pleasing.
+               Default false.
+
+       -mondrian
+
+       -no-mondrian
+               Whether  to  imitiate style of some famous paintings by Piet Mon&#8208;
+               drian.  Overrides line-width and colormap options. Default false.
+
+       -fps    Display the current frame rate and CPU load.
+
+ENVIRONMENT
+       DISPLAY to get the default host and display number.
+
+       XENVIRONMENT
+               to get the name of a resource  file  that  overrides  the  global
+               resources stored in the RESOURCE_MANAGER property.
+
+SEE ALSO
+       X(1), xscreensaver(1)
+
+COPYRIGHT
+       Copyright  &#169;  1997  by  Jamie Zawinski.  Permission to use, copy, modify,
+       distribute, and sell this software and its documentation for any  purpose
+       is  hereby  granted without fee, provided that the above copyright notice
+       appear in all copies and that both that copyright notice and this permis&#8208;
+       sion  notice  appear in supporting documentation.  No representations are
+       made about the suitability of this software for any purpose.  It is  pro&#8208;
+       vided &quot;as is&quot; without express or implied warranty.
+
+AUTHOR
+       Jamie  Zawinski  &lt;jwz@jwz.org&gt;,  26-Apr-97,  based  on code by Michael D.
+       Bayne &lt;mdb@go2net.com&gt;. Golden ratio and Mondrian settings by  Lars  Hut&#8208;
+       tar.
+
+
+
+X Version 11                   5.15 (28-Sep-2011)                       deco(6x)
+
+</pre></body></html>

@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>htnotify - sends email notifications about out-dated web pages discovered by htmerge</title></head>
+<body><pre>
+
+htnotify(1)                                                          htnotify(1)
+
+
+
+NAME
+       htnotify - sends email notifications about out-dated web pages discovered
+       by htmerge
+
+SYNOPSIS
+       htnotify [options]
+
+DESCRIPTION
+       Htnotify scans the document database created  by  htmerge  and  sends  an
+       email  message  for every page that is out of date. Please have a look at
+       the ht://Dig notification manual for instructions on how to set  up  this
+       service.
+
+OPTIONS
+       -b database
+              Specifies  an  alternative  database than what is specified in the
+              configuration file.
+
+       -c configfile
+              Use the specified configfile instead of the default.   -v  Verbose
+              mode. This increases the verbosity of the program.  Used once will
+              display a log of what email messages were  sent.  Used  more  than
+              once  will  display information about each document that has email
+              notification set.
+
+FILES
+       /etc/htdig/htdig.conf
+              The default configuration file.
+
+SEE ALSO
+       Please  refer  to   the   HTML   pages   (in   the   htdig-doc   package)
+       /usr/share/doc/htdig-doc/html/index.html  and  the  manual pages htdig(1)
+       and htmerge(1) for a detailed description of ht://Dig and its commands.
+
+AUTHOR
+       This manual page was written by Christian Schwarz, modified by  Stijn  de
+       Bekker, based on the HTML documentation of ht://Dig.
+
+
+
+                                  21 July 1997                       htnotify(1)
+
+</pre></body></html>

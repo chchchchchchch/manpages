@@ -1,0 +1,82 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dh_python3 - calculates Python 3 dependencies, adds maintainer scripts to byte compile files, etc.</title></head>
+<body><pre>
+
+DH_PYTHON3(1)                     User Commands                    DH_PYTHON3(1)
+
+
+
+NAME
+       dh_python3 - calculates Python 3 dependencies, adds maintainer scripts to
+       byte compile files, etc.
+
+SYNOPSIS
+       dh_python3 -p PACKAGE [-V [X.Y][-][A.B]] DIR_OR_FILE [-X REGEXPR]
+
+OPTIONS
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show this help message and exit
+
+       --no-guessing-deps
+              disable guessing dependencies
+
+       --no-dbg-cleaning
+              do not remove any files from debug packages
+
+       --skip-private
+              don&apos;t check private directories
+
+       -v, --verbose
+              turn verbose mode on
+
+       -i, --indep
+              act on architecture independent packages
+
+       -a, --arch
+              act on architecture dependent packages
+
+       -q, --quiet
+              be quiet
+
+       -p PACKAGE, --package=PACKAGE
+              act on the package named PACKAGE
+
+       -N NO_PACKAGE, --no-package=NO_PACKAGE
+              do not act on the specified package
+
+       -V VRANGE
+              specify list of supported Python versions. See  py3compile(1)  for
+              examples
+
+       -X REGEXPR, --exclude=REGEXPR
+              exclude  items  that  match given REGEXPR. You may use this option
+              multiple times to build up a list of things to exclude.
+
+       --compile-all
+              compile all files from given private directory  in  postinst/rtup&#8208;
+              date  not  just the ones provided by the package (i.e. do not pass
+              the --package parameter to py3compile/py3clean)
+
+       --depends=DEPENDS
+              translate given requirements into Debian dependencies and add them
+              to ${python:Depends}. Use it for missing items in requires.txt.
+
+       --recommends=RECOMMENDS
+              translate given requirements into Debian dependencies and add them
+              to ${python:Recommends}
+&#12;       --suggests=SUGGESTS
+              translate given requirements into Debian dependencies and add them
+              to ${python:Suggests}
+
+SEE ALSO
+       /usr/share/doc/python3-doc/README.PyDist (python3-doc package)
+
+
+
+dh_python3 3.0~beta2             September 2010                    DH_PYTHON3(1)
+
+</pre></body></html>

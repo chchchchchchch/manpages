@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcDirCacheUnlink - Remove all caches related to dir</title></head>
+<body><pre>
+
+FcDirCacheUnlink(3)                                          FcDirCacheUnlink(3)
+
+
+
+NAME
+       FcDirCacheUnlink - Remove all caches related to dir
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcDirCacheUnlink (const FcChar8 *dir, FcConfig *config);
+
+DESCRIPTION
+       Scans  the  cache  directories  in  config, removing any instances of the
+       cache file for dir. Returns FcFalse when some internal error occurs  (out
+       of memory, etc). Errors actually unlinking any files are ignored.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012              FcDirCacheUnlink(3)
+
+</pre></body></html>

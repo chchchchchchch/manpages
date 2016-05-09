@@ -1,0 +1,115 @@
+<html>
+<head><meta charset=utf-8/>
+<title>kbd - Keyboard input driver</title></head>
+<body><pre>
+
+KBD(4)                                                                    KBD(4)
+
+
+
+NAME
+       kbd - Keyboard input driver
+
+SYNOPSIS
+       Section &quot;InputDevice&quot;
+         Identifier &quot;idevname&quot;
+         Driver &quot;kbd&quot;
+         ...
+       EndSection
+
+DESCRIPTION
+       kbd is an Xorg input driver for keyboards.  The driver supports the stan&#8208;
+       dard OS-provided keyboard interface, but these are currently only  avail&#8208;
+       able  to  this driver module for Linux, BSD, and Solaris.  This driver is
+       the replacement for the built-in keyboard  driver  formerly  included  in
+       Xorg.
+
+       The kbd driver functions as a keyboard input device.
+
+CONFIGURATION DETAILS
+       Depending on the X server version in use, input device options may be set
+       in either a xorg.conf file, an xorg.conf.d snippet, or in the  configura&#8208;
+       tion files read by the Hardware Abstraction Layer (HAL) daemon, hald(1).
+
+       Please  refer  to  xorg.conf(5) for general configuration details and for
+       options that can be used with all input drivers.  This section only  cov&#8208;
+       ers configuration details specific to this driver.
+
+       The following driver Options are supported:
+
+       Option &quot;Device&quot; &quot;string&quot;
+              Specify  the  keyboard  device.  Default: the OS&apos;s default console
+              keyboard input source.
+
+       Option &quot;Protocol&quot; &quot;string&quot;
+              Specify the keyboard protocol.  Valid protocol types include:
+
+                   Standard, Xqueue.
+
+              Not all protocols are supported on all platforms.  Default: &quot;Stan&#8208;
+              dard&quot;.
+
+       Option &quot;XLeds&quot; &quot;ledlist&quot;
+              makes  the keyboard LEDs specified in ledlist available for client
+              use instead of their traditional function (Scroll Lock, Caps  Lock
+              and  Num  Lock).  The numbers in the list are in the range 1 to 3.
+              Default: empty list.
+
+       Option &quot;XkbRules&quot; &quot;rules&quot;
+              specifies which XKB rules file to use for  interpreting  the  Xkb&#8208;
+              Model,  XkbLayout,  XkbVariant, and XkbOptions settings.  Default:
+              &quot;base&quot; for most platforms.  If you use the &quot;base&quot; value  then  you
+              can find listing of all valid values for these four options in the
+              /usr/share/X11/xkb/rules/base.lst file.
+
+       Option &quot;XkbModel&quot; &quot;modelname&quot;
+              specifies the XKB keyboard model name.  Default: &quot;pc105&quot; for  most
+              platforms.
+
+       Option &quot;XkbLayout&quot; &quot;layoutname&quot;
+              specifies the XKB keyboard layout name.  This is usually the coun&#8208;
+              try or language type of the  keyboard.   Default:  &quot;us&quot;  for  most
+              platforms.
+
+       Option &quot;XkbVariant&quot; &quot;variants&quot;
+              specifies  the XKB keyboard variant components.  These can be used
+              to enhance the keyboard layout details.  Default: not set.
+
+       Option &quot;XkbOptions&quot; &quot;options&quot;
+              specifies the XKB keyboard option components.  These can  be  used
+              to enhance the keyboard behaviour.  Default: not set.
+
+       For a list of available XKB options, see xkeyboard-config(7).
+
+EXAMPLE
+       The following xorg.conf fragment ensures that user will be able to switch
+       between us and sk layouts by pressing the &quot;menu&quot; key. The scroll lock LED
+       shows which layout is currently active.
+
+       The XkbVariant option defines which variants of the two layouts should be
+       used. In case of the us layout its default variant is used.  In  case  of
+       the sk layout its qwerty variant is used.
+
+           Section &quot;InputDevice&quot;
+               Identifier   &quot;Generic Keyboard&quot;
+               Driver       &quot;kbd&quot;
+               Option       &quot;CoreKeyboard&quot;
+               Option       &quot;XkbRules&quot;      &quot;base&quot;
+               Option       &quot;XkbModel&quot;      &quot;pc105&quot;
+               Option       &quot;XkbLayout&quot;     &quot;us,sk&quot;
+               Option       &quot;XkbVariant&quot;    &quot;,qwerty&quot;
+               Option       &quot;XkbOptions&quot;    &quot;grp:menu_toggle,grp_led:scroll&quot;
+           EndSection
+
+SEE ALSO
+       Xorg(1), xorg.conf(5), Xserver(1), X(7).
+
+       hal(7), hald(8), fdi(5).
+
+       xkeyboard-config(7).
+
+
+
+X Version 11                xf86-input-keyboard 1.6.1                     KBD(4)
+
+</pre></body></html>

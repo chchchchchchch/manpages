@@ -1,0 +1,270 @@
+<html>
+<head><meta charset=utf-8/>
+<title>dpkg-buildflags - returns build flags to use during package build</title></head>
+<body><pre>
+
+dpkg-buildflags(1)                 dpkg suite                 dpkg-buildflags(1)
+
+
+
+NAME
+       dpkg-buildflags - returns build flags to use during package build
+
+SYNOPSIS
+       dpkg-buildflags [option...] [command]
+
+DESCRIPTION
+       dpkg-buildflags  is  a  tool  to retrieve compilation flags to use during
+       build of Debian packages.  The default flags are defined  by  the  vendor
+       but they can be extended/overriden in several ways:
+
+       1.     system-wide with /etc/dpkg/buildflags.conf;
+
+       2.     for  the  current  user with $XDG_CONFIG_HOME/dpkg/buildflags.conf
+              where $XDG_CONFIG_HOME defaults to $HOME/.config;
+
+       3.     temporarily by the user with environment  variables  (see  section
+              ENVIRONMENT);
+
+       4.     dynamically  by  the package maintainer with environment variables
+              set via debian/rules (see section ENVIRONMENT).
+
+       The configuration files can contain two types of directives:
+
+       SET flag value
+              Override the flag named flag to have the value value.
+
+       STRIP flag value
+              Strip from the flag named flag  all  the  build  flags  listed  in
+              value.
+
+       APPEND flag value
+              Extend  the  flag  named  flag  by  appending the options given in
+              value.  A space is prepended to the appended value if  the  flag&apos;s
+              current value is non-empty.
+
+       PREPEND flag value
+              Extend  the  flag  named  flag  by prepending the options given in
+              value.  A space is appended to the prepended value if  the  flag&apos;s
+              current value is non-empty.
+
+       The  configuration  files  can  contain comments on lines starting with a
+       hash (#). Empty lines are also ignored.
+
+COMMANDS
+       --dump Print to standard output all compilation flags and  their  values.
+              It  prints  one flag per line separated from its value by an equal
+              sign (&quot;flag=value&quot;). This is the default action.
+
+       --list Print the list of flags supported by the current vendor  (one  per
+              line).  See the SUPPORTED FLAGS section for more information about
+              them.
+
+       --status
+              Display any information that can be useful to explain  the  behav&#8208;
+              iour  of  dpkg-buildflags: relevant environment variables, current
+              vendor, state of all feature flags. Also print the resulting  com&#8208;
+              piler flags with their origin.
+
+              This  is  intended  to be run from debian/rules, so that the build
+              log keeps a clear trace of the build flags used. This can be  use&#8208;
+              ful to diagnose problems related to them.
+
+       --export=format
+              Print  to standard output shell (if format is sh) or make (if for&#8208;
+              mat is make) commands that can be used to export all the  compila&#8208;
+              tion  flags  in  the  environment. If format is configure then the
+              output can be used on a ./configure command-line.  If  the  format
+              value is not given, sh is assumed. Only compilation flags starting
+              with an upper case character are included, others are  assumed  to
+              not be suitable for the environment.
+
+       --get flag
+              Print  the  value  of the flag on standard output. Exits with 0 if
+              the flag is known otherwise exits with 1.
+
+       --origin flag
+              Print the origin of the value that is  returned  by  --get.  Exits
+              with 0 if the flag is known otherwise exits with 1. The origin can
+              be one of the following values:
+
+              vendor the original flag set by the vendor is returned;
+
+              system the flag is set/modified by a system-wide configuration;
+
+              user   the flag is set/modified by a user-specific configuration;
+
+              env    the flag is set/modified by an environment-specific config&#8208;
+                     uration.
+
+       --query-features area
+              Print  the  features  enabled for a given area. The only currently
+              recognized area is hardening. Exits with 0 if the  area  is  known
+              otherwise exits with 1.
+
+              The  output  format  is  RFC822 header-style, with one section per
+              feature.  For example:
+
+                Feature: pie
+                Enabled: no
+
+                Feature: stackprotector
+                Enabled: yes
+
+       --help Show the usage message and exit.
+
+       --version
+              Show the version and exit.
+
+SUPPORTED FLAGS
+       CFLAGS Options for the C compiler. The default value set  by  the  vendor
+              includes  -g  and  the default optimization level (-O2 usually, or
+              -O0 if the DEB_BUILD_OPTIONS environment variable defines noopt).
+
+       CPPFLAGS
+              Options for the C preprocessor. Default value: empty.
+
+       CXXFLAGS
+              Options for the C++ compiler. Same as CFLAGS.
+
+       FFLAGS Options for the Fortran compiler. Same as CFLAGS.
+
+       LDFLAGS
+              Options passed to the compiler when linking executables or  shared
+              objects  (if the linker is called directly, then -Wl and , have to
+              be stripped from these options). Default value: empty.
+
+FILES
+       /etc/dpkg/buildflags.conf
+              System wide configuration file.
+&#12;       $XDG_CONFIG_HOME/dpkg/buildflags.conf    or     $HOME/.config/dpkg/build&#8208;
+       flags.conf
+              User configuration file.
+
+ENVIRONMENT
+       There  are 2 sets of environment variables doing the same operations, the
+       first one (DEB_flag_op) should never be used  within  debian/rules.  It&apos;s
+       meant  for any user that wants to rebuild the source package with differ&#8208;
+       ent build flags. The second set (DEB_flag_MAINT_op) should only  be  used
+       in  debian/rules  by  package  maintainers  to change the resulting build
+       flags.
+
+       DEB_flag_SET
+       DEB_flag_MAINT_SET
+              This variable can be used to force  the  value  returned  for  the
+              given flag.
+
+       DEB_flag_STRIP
+       DEB_flag_MAINT_STRIP
+              This  variable  can  be  used to provide a space separated list of
+              options that will be stripped from the set of flags  returned  for
+              the given flag.
+
+       DEB_flag_APPEND
+       DEB_flag_MAINT_APPEND
+              This  variable  can be used to append supplementary options to the
+              value returned for the given flag.
+
+       DEB_flag_PREPEND
+       DEB_flag_MAINT_PREPEND
+              This variable can be used to prepend supplementary options to  the
+              value returned for the given flag.
+
+       DEB_BUILD_MAINT_OPTIONS
+              This  variable  can  be  used  to disable/enable various hardening
+              build flags through the hardening option. See the  HARDENING  sec&#8208;
+              tion for details.
+
+HARDENING
+       Several  compile-time options (detailed below) can be used to help harden
+       a resulting binary against memory corruption attacks,  or  provide  addi&#8208;
+       tional  warning messages during compilation. Except as noted below, these
+       are enabled by default for architectures that support them.
+
+       Each  hardening  feature   can   be   enabled   and   disabled   in   the
+       DEB_BUILD_MAINT_OPTIONS  environment  variable&apos;s hardening value with the
+       &quot;+&quot; and &quot;-&quot; modifier. For example, to enable the &quot;pie&quot; feature  and  dis&#8208;
+       able the &quot;fortify&quot; feature you can do this in debian/rules:
+
+         export DEB_BUILD_MAINT_OPTIONS=hardening=+pie,-fortify
+
+       The  special  feature  all can be used to enable or disable all hardening
+       features at the same time. Thus disabling everything  and  enabling  only
+       &quot;format&quot; and &quot;fortify&quot; can be achieved with:
+
+         export DEB_BUILD_MAINT_OPTIONS=hardening=-all,+format,+fortify
+
+       format This  setting  (enabled  by  default)  adds  -Wformat -Werror=for&#8208;
+              mat-security to CFLAGS and CXXFLAGS. This will warn about improper
+              format  string  uses, and will fail when format functions are used
+              in a way that represent possible security  problems.  At  present,
+              this  warns  about  calls  to printf and scanf functions where the
+              format string is not a string literal  and  there  are  no  format
+              arguments,  as  in printf(foo); instead of printf(&quot;%s&quot;, foo); This
+              may be a security hole if the format string  came  from  untrusted
+              input and contains &quot;%n&quot;.
+
+       fortify
+              This  setting  (enabled  by  default)  adds -D_FORTIFY_SOURCE=2 to
+              CPPFLAGS. During code generation the compiler knows a  great  deal
+              of  information  about buffer sizes (where possible), and attempts
+              to replace insecure unlimited length buffer  function  calls  with
+              length-limited  ones.  This  is  especially useful for old, crufty
+              code.  Additionally, format strings in writable memory  that  con&#8208;
+              tain  &apos;%n&apos; are blocked. If an application depends on such a format
+              string, it will need to be worked around.
+
+              Note that for this option to have any effect, the source must also
+              be compiled with -O1 or higher.
+
+       stackprotector
+              This   setting   (enabled   by   default)  adds  -fstack-protector
+              --param=ssp-buffer-size=4 to CFLAGS and CXXFLAGS. This adds safety
+              checks  against stack overwrites. This renders many potential code
+              injection attacks into aborting situations. In the best case  this
+              turns  code  injection  vulnerabilities  into denial of service or
+              into non-issues (depending on the application).
+
+              This feature requires linking against glibc (or  another  provider
+              of  __stack_chk_fail),  so needs to be disabled when building with
+              -nostdlib or -ffreestanding or similar.
+
+       relro  This setting (enabled by default) adds  -Wl,-z,relro  to  LDFLAGS.
+              During  program load, several ELF memory sections need to be writ&#8208;
+              ten to by the linker. This flags the loader to turn these sections
+              read-only before turning over control to the program. Most notably
+              this prevents GOT overwrite attacks. If this option  is  disabled,
+              bindnow will become disabled as well.
+
+       bindnow
+              This  setting  (disabled  by  default) adds -Wl,-z,now to LDFLAGS.
+              During program load, all dynamic symbols  are  resolved,  allowing
+              for  the  entire  PLT to be marked read-only (due to relro above).
+              The option cannot become enabled if relro is not enabled.
+
+       pie    This setting (disabled  by  default)  adds  -fPIE  to  CFLAGS  and
+              CXXFLAGS,  and  -fPIE  -pie  to LDFLAGS. Position Independent Exe&#8208;
+              cutable are needed to take advantage of Address Space Layout  Ran&#8208;
+              domization,  supported  by  some  kernel  versions. While ASLR can
+              already be enforced for data areas in the stack and heap (brk  and
+              mmap),  the  code  areas must be compiled as position-independent.
+              Shared libraries already do this (-fPIC), so they gain ASLR  auto&#8208;
+              matically,  but  binary .text regions need to be build PIE to gain
+              ASLR. When this happens, ROP (Return Oriented Programming) attacks
+              are  much harder since there are no static locations to bounce off
+              of during a memory corruption attack.
+
+              This is not compatible with -fPIC  so  care  must  be  taken  when
+              building shared objects.
+
+              Additionally,  since  PIE  is  implemented via a general register,
+              some architectures (most notably i386) can see performance  losses
+              of  up  to  15%  in very text-segment-heavy application workloads;
+              most workloads see less than 1%. Architectures with  more  general
+              registers (e.g. amd64) do not see as high a worst-case penalty.
+
+
+
+Debian Project                     2012-04-03                 dpkg-buildflags(1)
+
+</pre></body></html>

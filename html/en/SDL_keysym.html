@@ -1,0 +1,81 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_keysym - Keysym structure</title></head>
+<body><pre>
+
+SDL_keysym(3)                   SDL API Reference                  SDL_keysym(3)
+
+
+
+NAME
+       SDL_keysym - Keysym structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 scancode;
+         SDLKey sym;
+         SDLMod mod;
+         Uint16 unicode;
+       } SDL_keysym;
+
+STRUCTURE DATA
+       scancode            Hardware specific scancode
+
+       sym                 SDL virtual keysym
+
+       mod                 Current key modifiers
+
+       unicode             Translated character
+
+DESCRIPTION
+       The  SDL_keysym  structure  is used by reporting key presses and releases
+       since it is a part of the SDL_KeyboardEvent.
+
+       The scancode field should generally be left alone,  it  is  the  hardware
+       dependent  scancode  returned by the keyboard. The sym field is extremely
+       useful. It is the SDL-defined value of the key (see SDL  Key  Syms.  This
+       field  is very useful when you are checking for certain key presses, like
+       so:
+
+       .
+       .
+       while(SDL_PollEvent(&amp;event)){
+         switch(event.type){
+           case SDL_KEYDOWN:
+             if(event.key.keysym.sym==SDLK_LEFT)
+               move_left();
+             break;
+           .
+           .
+           .
+         }
+       }
+       .
+       .
+
+        mod stores the current state of the keyboard modifiers as  explained  in
+       SDL_GetModState.  The  unicode  is  only used when UNICODE translation is
+       enabled with SDL_EnableUNICODE. If unicode is non-zero then  this  a  the
+       UNICODE  character  corresponding  to the keypress. If the high 9 bits of
+       the character are 0, then this maps to the equivalent ASCII character:
+
+       char ch;
+       if ( (keysym.unicode &amp; 0xFF80) == 0 ) {
+         ch = keysym.unicode &amp; 0x7F;
+       }
+       else {
+         printf(&quot;An International Character.
+       &quot;);
+       }
+
+        UNICODE translation does have a  slight  overhead  so  don&apos;t  enable  it
+       unless its needed.
+
+SEE ALSO
+       SDLKey
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00                SDL_keysym(3)
+
+</pre></body></html>

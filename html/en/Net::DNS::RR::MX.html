@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::MX - DNS MX resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::MX(3pm)  User Contributed Perl Documentation Net::DNS::RR::MX(3pm)
+
+
+
+NAME
+       Net::DNS::RR::MX - DNS MX resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for DNS Mail Exchanger (MX) resource records.
+
+METHODS
+   preference
+           print &quot;preference = &quot;, $rr-&gt;preference, &quot;\n&quot;;
+
+       Returns the preference for this mail exchange.
+
+   exchange
+           print &quot;exchange = &quot;, $rr-&gt;exchange, &quot;\n&quot;;
+
+       Returns name of this mail exchange.
+
+COPYRIGHT
+       Copyright (c) 1997-2002 Michael Fuhr.
+
+       Portions Copyright (c) 2002-2004 Chris Reinhardt.  Portions Copyright (c)
+       2005 Olaf Kolkman NLnet Labs.
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 1035 Section
+       3.3.9
+
+
+
+perl v5.14.2                       2009-12-30              Net::DNS::RR::MX(3pm)
+
+</pre></body></html>

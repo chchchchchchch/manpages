@@ -1,0 +1,139 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ts.conf - Configuration file for tslib, controlling touch screens for embedded devices.</title></head>
+<body><pre>
+
+TS.CONF(5)                            tslib                           TS.CONF(5)
+
+
+
+NAME
+       ts.conf - Configuration file for tslib, controlling touch screens for
+       embedded devices.
+
+DESCRIPTION
+       The idea of tslib is to have a core library that provides standardised
+       services, and a set of plugins to manage the conversion and filtering as
+       needed.
+
+       The plugins for a particular touchscreen are loaded automatically by the
+       library under the control of a static configuration file, /etc/ts.conf.
+       /etc/ts.conf gives the library basic configuration information. Each line
+       specifies one module, and the parameters for that module. The modules are
+       loaded in order, with the first one processing the touchscreen data
+       first. For example:
+
+             module_raw input
+             module variance delta=30
+             module dejitter delta=100
+             module linear
+
+
+MODULE PARAMETERS
+       variance
+           Tries to do it&apos;s best in order to filter out random noise coming from
+           touchscreen ADC&apos;s. This is achieved by limiting the sample movement
+           speed to some value (e.g. the pen is not supposed to move quicker
+           than some threshold).
+
+           This is a &apos;greedy&apos; filter, e.g. it gives less samples on output than
+           receives on input.
+
+           &#183;   Parameters: delta.
+
+               Set the squared distance in touchscreen units between previous
+               and current pen position (e.g. (X2-X1)^2 + (Y2-Y1)^2). This
+               defines the criteria for determining whenever two samples are
+               &apos;near&apos; or &apos;far&apos; to each other.
+
+               If the distance between previous and current sample is &apos;far&apos;, the
+               sample is marked as &apos;potential noise&apos;. This doesn&apos;t mean yet that
+               it will be discarded; if the next reading will be close to it,
+               this will be considered just a regular &apos;quick motion&apos; event, and
+               it will sneak to the next layer. Also, if the sample after the
+               &apos;potential noise&apos; is &apos;far&apos; from both previously discussed
+               samples, this is also considered a &apos;quick motion&apos; event and the
+               sample sneaks into the output stream.
+
+       dejitter
+           Removes jitter on the X and Y co-ordinates. This is achieved by
+           applying a weighted smoothing filter. The latest samples have most
+           weight; earlier samples have less weight. This allows to achieve 1:1
+           input-&gt;output rate.
+
+           &#183;   Parameters: delta.
+
+               Squared distance between two samples ((X2-X1)^2 + (Y2-Y1)^2) that
+               defines the &apos;quick motion&apos; threshold. If the pen moves quick, it
+               is not feasible to smooth pen motion, besides quick motion is not
+               precise anyway; so if quick motion is detected the module just
+               discards the backlog and simply copies input to output.
+&#12;       linear
+           Linear scaling module, primarily used for conversion of touch screen
+           co-ordinates to screen co-ordinates.
+
+           &#183;   Parameters: xyswap.
+
+               Interchange the X and Y co-ordinates -- no longer used or needed
+               if the new linear calibration utility ts_calibrate is used.
+
+ENVIRONMENT VARIABLES
+       Latest versions of the Xorg tslib input driver use hal to configure the
+       touchscreen within Xorg. Environment variables are only needed for the
+       tslib commands.
+
+       TSLIB_TSDEVICE
+           If the default touchscreen device cannot be found, set the
+           TSLIB_TSDEVICE environment variable to the touchscreen device to use.
+
+           Default: /dev/input/event0
+
+       TSLIB_CONSOLEDEVICE
+           Tslib default console device.
+
+           Default: /dev/tty
+
+       TSLIB_CALIBFILE
+           Stores calibration data obtained using ts_calibrate.
+
+           Default: /etc/pointercal
+
+       TSLIB_CONFFILE
+           Set a different location for the ts.conf configuration file itself.
+
+           Default; /etc/ts.conf.
+
+       TSLIB_FBDEVICE
+           Framebuffer device to use for the touchscreen support.
+
+           Default: /dev/fb0.
+
+       TSLIB_PLUGINDIR
+           Plugin directory for tslib.
+
+           Default: /usr/lib/$triplet/ts0/ where triplet is the MultiArch path,
+           e.g. arm-linux-gnueabi.
+
+AUTHOR
+       This manual page was written by Neil Williams codehelp@debian.org for the
+       Debian(TM) distribution because the original program does not have a
+       manual page, but may be used by others. Permission is granted to copy,
+       distribute and/or modify this document under the terms of the GNU General
+       Public License, Version 2 any later version published by the Free
+       Software Foundation.
+
+       On Debian systems, the complete text of the GNU General Public License
+       can be found in /usr/share/common-licenses/GPL.
+
+AUTHOR
+       Russell King
+           Author.
+
+COPYRIGHT
+       Copyright &#169; 2008 Neil Williams
+
+
+
+Debian 5                  Wed 06 Aug 2008 10:46:33 ART                TS.CONF(5)
+
+</pre></body></html>

@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>uae_readdisk - Tool for reading *.adf (Amiga Disk Format) files</title></head>
+<body><pre>
+
+UAE(1)                       Contributed application                      UAE(1)
+
+
+
+NAME
+       uae_readdisk - Tool for reading *.adf (Amiga Disk Format) files
+
+
+SYNOPSIS
+       uae [ -h ] [ -f file ] { -s opt=val }
+
+
+PRELIMINARIES
+       This  manual  page  was produced for uae 0.8.12.  It is only provided for
+       convenience by the maintainer of the Debian package of  uae.  Please  see
+       /usr/share/doc/uae for a thorough description. The following chapters are
+       simply snippets from the upstream README.
+
+
+Retrieving files from a disk image
+       If you have a disk image file, and you want to retrieve  the  files  from
+       it, you can use the &quot;readdisk&quot; tool. It is automatically built by &quot;make&quot;.
+       If you have a disk image of a disk called &quot;Workbench1.3D&quot; as df0.adf, and
+       you do
+          readdisk  df0.adf the whole directory structure of the disk image will
+       be stored in a newly created subdirectory called &quot;Workbench1.3D&quot;. You can
+       optionally give a second parameter to specify a directory where to create
+       the output other than the current directory.  readdisk  only  understands
+       about  the  OFS right now. FFS disks will cheerfully be regarded as being
+       unreadable. Use the unixfs.device from within the emulator if you want to
+       transfer files from FFS disks.
+
+
+
+3rd party                          25 Feb 2001                            UAE(1)
+
+</pre></body></html>

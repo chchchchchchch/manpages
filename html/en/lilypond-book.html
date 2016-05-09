@@ -1,0 +1,105 @@
+<html>
+<head><meta charset=utf-8/>
+<title>lilypond-book - manual page for lilypond-book 2.14.2</title></head>
+<body><pre>
+
+LILYPOND-BOOK(1)                  User Commands                 LILYPOND-BOOK(1)
+
+
+
+NAME
+       lilypond-book - manual page for lilypond-book 2.14.2
+
+SYNOPSIS
+       lilypond-book [OPTION]... FILE
+
+DESCRIPTION
+       Process LilyPond snippets in hybrid HTML, LaTeX, texinfo or DocBook docu&#8208;
+       ment.
+
+OPTIONS
+       -F, --filter=FILTER
+              pipe snippets through FILTER [default: `convert-ly -n -&apos;]
+
+       -f, --format=FORMAT
+              use output format FORMAT (texi [default], texi-html, latex,  html,
+              docbook)
+
+       -h, --help
+              show this help and exit
+
+       -I, --include=DIR
+              add DIR to include path
+
+       --info-images-dir=DIR
+              format  Texinfo  output so that Info will look for images of music
+              in DIR
+
+       --left-padding=PAD
+              pad left side of music to align music inspite of uneven  bar  num&#8208;
+              bers (in mm)
+
+       --lily-output-dir=DIR
+              write lily-XXX files to DIR, link into --output dir
+
+       --load-custom-package=PACKAGE
+              Load  the additional python PACKAGE (containing e.g. a custom out&#8208;
+              put format)
+
+       -o, --output=DIR
+              write output to DIR
+
+       -P, --process=COMMAND
+              process ly_files using COMMAND FILE...
+
+       -s, --safe
+              Compile snippets in safe mode
+
+       --skip-lily-check
+              do not fail if no lilypond output is found
+
+       --skip-png-check
+              do not fail if no PNG images are found for EPS files
+
+       --use-source-file-names
+              write snippet output files with the same base name as their source
+              file
+
+       -V, --verbose
+              be verbose
+
+       --version
+              show version number and exit
+&#12;       -w, --warranty
+              show warranty and copyright
+
+   Options only for the latex and texinfo backends:
+       --latex-program=PROG
+              run  executable  PROG instead of latex, or in case --pdf option is
+              set instead of pdflatex
+
+       --pdf  create PDF files for use with PDFTeX
+
+EXAMPLES
+              $ lilypond-book --filter=&quot;tr &apos;[a-z]&apos; &apos;[A-Z]&apos;&quot; BOOK
+              $ lilypond-book -F &quot;convert-ly --no-version --from=2.0.0 -&quot; BOOK
+              $ lilypond-book --process=&apos;lilypond -I include&apos; BOOK
+
+REPORTING BUGS
+       Report                              bugs                              via
+       http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.bugs
+
+SEE ALSO
+       The  full documentation for lilypond-book is maintained as a Texinfo man&#8208;
+       ual.  If the info and lilypond-book programs are  properly  installed  at
+       your site, the command
+
+              info lilypond-book
+
+       should give you access to the complete manual.
+
+
+
+lilypond-book 2.14.2              February 2013                 LILYPOND-BOOK(1)
+
+</pre></body></html>

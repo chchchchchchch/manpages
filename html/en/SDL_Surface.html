@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_Surface - Graphical Surface Structure</title></head>
+<body><pre>
+
+SDL_Surface(3)                  SDL API Reference                 SDL_Surface(3)
+
+
+
+NAME
+       SDL_Surface - Graphical Surface Structure
+
+STRUCTURE DEFINITION
+       typedef struct SDL_Surface {
+               Uint32 flags;                           /* Read-only */
+               SDL_PixelFormat *format;                /* Read-only */
+               int w, h;                               /* Read-only */
+               Uint16 pitch;                           /* Read-only */
+               void *pixels;                           /* Read-write */
+
+               /* clipping information */
+               SDL_Rect clip_rect;                     /* Read-only */
+
+               /* Reference count -- used when freeing surface */
+               int refcount;                           /* Read-mostly */
+
+            /* This structure also contains private fields not shown here */
+       } SDL_Surface;
+
+STRUCTURE DATA
+       flags               Surface flags
+
+       format              Pixel format
+
+       w, h                Width and height of the surface
+
+       pitch               Length of a surface scanline in bytes
+
+       pixels              Pointer to the actual pixel data
+
+       clip_rect           surface clip rectangle
+
+DESCRIPTION
+       SDL_Surface&apos;s  represent  areas of &quot;graphical&quot; memory, memory that can be
+       drawn  to.  The  video  framebuffer  is  returned  as  a  SDL_Surface  by
+       SDL_SetVideoMode  and  SDL_GetVideoSurface.  Most of the fields should be
+       pretty obvious. w and h are the width and height of the surface  in  pix&#8208;
+       els.  pixels is a pointer to the actual pixel data, the surface should be
+       locked before accessing this field. The clip_rect field is  the  clipping
+       rectangle as set by SDL_SetClipRect.
+
+       The following are supported in the flags field.
+
+       SDL_SWSURFACE       Surface is stored in system memory
+
+       SDL_HWSURFACE       Surface is stored in video memory
+
+       SDL_ASYNCBLIT       Surface uses asynchronous blits if possible
+
+       SDL_ANYFORMAT       Allows any pixel-format (Display surface)
+
+       SDL_HWPALETTE       Surface has exclusive palette
+
+       SDL_DOUBLEBUF       Surface is double buffered (Display surface)
+
+       SDL_FULLSCREEN      Surface is full screen (Display Surface)
+
+       SDL_OPENGL          Surface has an OpenGL context (Display Surface)
+
+       SDL_OPENGLBLIT      Surface supports OpenGL blitting (Display Surface)
+&#12;       SDL_RESIZABLE       Surface is resizable (Display Surface)
+
+       SDL_HWACCEL         Surface blit uses hardware acceleration
+
+       SDL_SRCCOLORKEY     Surface use colorkey blitting
+
+       SDL_RLEACCEL        Colorkey blitting is accelerated with RLE
+
+       SDL_SRCALPHA        Surface blit uses alpha blending
+
+       SDL_PREALLOC        Surface uses preallocated memory
+
+SEE ALSO
+       SDL_PixelFormat
+
+
+
+SDL                          Tue 11 Sep 2001, 23:01               SDL_Surface(3)
+
+</pre></body></html>

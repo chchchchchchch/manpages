@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Glib::Flags -  Overloaded operators representing GLib flags</title></head>
+<body><pre>
+
+Glib::Flags(3pm)       User Contributed Perl Documentation      Glib::Flags(3pm)
+
+
+
+NAME
+       Glib::Flags -  Overloaded operators representing GLib flags
+
+HIERARCHY
+         Glib::Flags
+
+DESCRIPTION
+       Glib maps flag and enum values to the nicknames strings provided by the
+       underlying C libraries.  Representing flags this way in Perl is an
+       interesting problem, which Glib solves by using some cool overloaded
+       operators.
+
+       The functions described here actually do the work of those overloaded
+       operators.  See the description of the flags operators in the &quot;This Is
+       Now That&quot; section of Glib for more info.
+
+METHODS
+   scalar = $class-&gt;new ($a)
+       &#183;   $a (scalar)
+
+       Create a new flags object with given bits.  This is for use from a
+       subclass, it&apos;s not possible to create a &quot;Glib::Flags&quot; object as such.
+       For example,
+
+           my $f1 = Glib::ParamFlags-&gt;new (&apos;readable&apos;);
+           my $f2 = Glib::ParamFlags-&gt;new ([&apos;readable&apos;,&apos;writable&apos;]);
+
+       An object like this can then be used with the overloaded operators.
+
+   scalar = $a-&gt;all ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (scalar)
+
+   aref = $f-&gt;as_arrayref
+       Return the bits of $f as a reference to an array of strings, like
+       [&apos;flagbit1&apos;,&apos;flagbit2&apos;].  This is the overload function for &quot;@{}&quot;, ie.
+       arrayizing $f.  You can call it directly as a method too.
+
+       Note that @$f gives the bits as a list, but as_arrayref gives an
+       arrayref.  If an arrayref is what you want then the method style
+       somefunc()-&gt;as_arrayref can be more readable than [@{somefunc()}].
+
+   bool = $f-&gt;bool
+       Return 1 if any bits are set in $f, or 0 if none are set.  This is the
+       overload for $f in boolean context (like &quot;if&quot;, etc).  You can call it as
+       a method to get a true/false directly too.
+
+   integer = $a-&gt;eq ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (integer)
+
+   integer = $a-&gt;ge ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (integer)
+
+   scalar = $a-&gt;intersect ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (scalar)
+&#12;   integer = $a-&gt;ne ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (integer)
+
+   scalar = $a-&gt;sub ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (scalar)
+
+   scalar = $a-&gt;union ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (scalar)
+
+   scalar = $a-&gt;xor ($b, $swap)
+       &#183;   $b (scalar)
+
+       &#183;   $swap (scalar)
+
+SEE ALSO
+       Glib
+
+COPYRIGHT
+       Copyright (C) 2003-2011 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Glib for a full notice.
+
+
+
+perl v5.14.2                       2012-05-24                   Glib::Flags(3pm)
+
+</pre></body></html>

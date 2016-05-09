@@ -1,0 +1,109 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Authen::SASL::Perl::DIGEST_MD5 - Digest MD5 Authentication class</title></head>
+<body><pre>
+
+Authen::SASL::Perl::DIGUserMContributed Perl Authen::SASL::Perl::DIGEST_MD5(3pm)
+
+
+
+NAME
+       Authen::SASL::Perl::DIGEST_MD5 - Digest MD5 Authentication class
+
+SYNOPSIS
+         use Authen::SASL qw(Perl);
+
+         $sasl = Authen::SASL-&gt;new(
+           mechanism =&gt; &apos;DIGEST-MD5&apos;,
+           callback  =&gt; {
+             user =&gt; $user,
+             pass =&gt; $pass,
+             serv =&gt; $serv
+           },
+         );
+
+DESCRIPTION
+       This method implements the client and server parts of the DIGEST-MD5 SASL
+       algorithm, as described in RFC 2831.
+
+   CALLBACK
+       The callbacks used are:
+
+       client
+
+       authname
+           The authorization id to use after successful authentication
+
+       user
+           The username to be used in the response
+
+       pass
+           The password to be used to compute the response.
+
+       serv
+           The service name when authenticating to a replicated service
+
+       realm
+           The authentication realm when overriding the server-provided default.
+           If not given the server-provided value is used.
+
+           The callback will be passed the list of realms that the server
+           provided in the initial response.
+
+       server
+
+       realm
+           The default realm to provide to the client
+
+       getsecret(username, realm, authzid)
+           returns the password associated with &quot;username&quot; and &quot;realm&quot;
+
+   PROPERTIES
+       The properties used are:
+
+       maxbuf
+           The maximum buffer size for receiving cipher text
+
+       minssf
+           The minimum SSF value that should be provided by the SASL security
+           layer.  The default is 0
+
+       maxssf
+           The maximum SSF value that should be provided by the SASL security
+           layer.  The default is 2**31
+
+       externalssf
+           The SSF value provided by an underlying external security layer.  The
+           default is 0
+
+       ssf The actual SSF value provided by the SASL security layer after the
+           SASL authentication phase has been completed. This value is read-only
+           and set by the implementation after the SASL authentication phase has
+           been completed.
+
+       maxout
+           The maximum plaintext buffer size for sending data to the peer.  This
+           value is set by the implementation after the SASL authentication
+           phase has been completed and a SASL security layer is in effect.
+
+SEE ALSO
+       Authen::SASL, Authen::SASL::Perl
+
+AUTHORS
+       Graham Barr, Djamel Boudjerda (NEXOR), Paul Connolly, Julian Onions
+       (NEXOR), Yann Kerherve.
+
+       Please report any bugs, or post any suggestions, to the perl-ldap mailing
+       list &lt;perl-ldap@perl.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2003-2009 Graham Barr, Djamel Boudjerda, Paul Connolly,
+       Julian Onions, Nexor, Peter Marschall and Yann Kerherve.  All rights
+       reserved. This program is free software; you can redistribute it and/or
+       modify it under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-06-06Authen::SASL::Perl::DIGEST_MD5(3pm)
+
+</pre></body></html>

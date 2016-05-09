@@ -1,0 +1,98 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xsd - Mono's utility for generating schema or class files</title></head>
+<body><pre>
+
+xsd(1)                                                                    xsd(1)
+
+
+
+NAME
+       xsd - Mono&apos;s utility for generating schema or class files
+
+SYNOPSIS
+       xsd &lt;schema.xsd&gt; /classes [options]
+
+       xsd &lt;schema.xsd&gt; /dataset [options]
+
+       xsd &lt;assembly&gt;.dll|&lt;assembly&gt;.exe [options]
+
+       xsd &lt;instance.xml&gt; [&lt;instance.xml&gt; ...] [options]
+
+DESCRIPTION
+       xsd is a tool for intended to complement the XML serialization support of
+       Mono. It can do the following tasks:
+
+       Generate serializable classes
+              From a given XML schema, generate a class that can be used to read
+              and  write  xml  documents  that  conform  that  schema  (/classes
+              option).
+
+       Generate typed datasets
+              From a given XML schema, generate a typed DataSet class  that  can
+              be  used  to read and write xml documents that conform that schema
+              (/dataset option).
+
+       Generate XML schemas
+              From a given assembly and an optional type name, generate  an  XML
+              schema  that can be used to validate the xml documents that can be
+              obtained by serializing objects of that type. If no type  is  pro&#8208;
+              vided,  xsd generates a schema for all types in the assembly. When
+              specifying the assembly name do not  include  the  file  extension
+              (.dll  or .exe). xsd will look for the assembly using the standard
+              assembly loading rules.
+
+       Infer XML schemas
+              From a given set of XML documents, infer the XML schema  that  can
+              be used to validate those documents.
+
+
+OPTIONS
+       The following options are available:
+
+       /element:name /e:name
+              Specifies  the name of the XML schema element for which a class or
+              a dataset has to be generated.
+
+
+       /namespace:name /n:name
+              Specifies the namespace of the XML schema element for which
+              a class or a dataset has to be generated.
+
+       /language:name /l:name
+              Specifies the programming language to use for the generated
+              code. The only supported languages are CS (C#) and VB (Vis&#8208;
+              ual Basic.NET).
+
+       /generator:type,assembly /g:type,assembly
+              Indicates xsd.exe to use custom CodeDomProvider to generate
+              code. The type name must be full name. Assembly name  is  a
+              local  file  name that is going to be loaded. The specified
+              Type must have the default constructor.
+
+       /outputdir:path /o:path
+              Specifies the directory  where  to  generate  the  code  or
+              schemas.
+
+       /type:name /t:name
+              Specifies  the  full name of the type (including namespace)
+              for which to generate the XML schema.
+
+       /help /h
+              Show usage help.
+
+AUTHORS
+       Lluis Sanchez Gual (lluis@ximian.com)
+       Atsushi Enomoto (atsushi@ximian.com)
+
+LICENSE
+       xsd is released under the terms of the GNU GPL.
+
+SEE ALSO
+       disco(1), soapsuds(1), mono(1), mcs(1), wsdl(1)
+
+
+
+                                                                          xsd(1)
+
+</pre></body></html>

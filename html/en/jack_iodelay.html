@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jack_iodelay - JACK toolkit client to measure roundtrip latency</title></head>
+<body><pre>
+
+JACK_IODELAY(1)                                                  JACK_IODELAY(1)
+
+
+
+NAME
+       jack_iodelay - JACK toolkit client to measure roundtrip latency
+
+SYNOPSIS
+       jack_iodelay
+
+DESCRIPTION
+       jack_iodelay will create one input and one output port, and then measures
+       the latency (signal delay) between them. For this  to  work,  the  output
+       port  must be connected to its input port. The measurement is accurate to
+       a resolution of greater than 1 sample.
+
+       The expected use is to connect jack_iodelay&apos;s output port to  a  hardware
+       playback  port, then use a physical loopback cable from the corresponding
+       hardware output connector to an input connector, and to connect that cor&#8208;
+       responding  hardware capture port to jack_iodelay&apos;s input port. This cre&#8208;
+       ates a roundtrip that goes through any analog-to-digital and  digital-to-
+       analog converters that are present in the audio hardware.
+
+       Although  the  hardware  loopback latency is the expected use, it is also
+       possible to use jack_iodelay to measure the latency along any fully  con&#8208;
+       nected signal path, such as those involving other JACK clients.
+
+       Once  jack_iodelay  completes  its  measurement  it  will print the total
+       latency it has detected. This will include  the  JACK  buffer  length  in
+       addition  to  any  other  latency in the signal path. It will continue to
+       print the value every 0.5 seconds so  that  if  you  wish  you  can  vary
+       aspects of the signal path to see their effect on the measured latency.
+
+       If  no incoming signal is detected from the input port, jack_iodelay will
+       print
+
+        Signal below threshold... .
+
+       every second until this changes (e.g. until  you  establish  the  correct
+       connections).
+
+       To use the value measured by jack_iodelay with the -I and -O arguments of
+       a JACK backend (also called Input Latency and Output Latency in the setup
+       dialog  of  qjackctl),  you  must  subtract the JACK buffer size from the
+       result. The buffer size is determined by multiplying the number of frames
+       per  period  (given to the jackd backend by the -p or --period option) by
+       the number of periods per buffer (given to the jackd backend by the -n or
+       --nperiods  option).   Note  that  JACK2  will add an implicit additional
+       period when using the default asynchronous mode, so for JACK1 or JACK2 in
+       synchronous  mode,  the buffer size is n*p, but for JACK2 in asynchronous
+       mode the buffer size is (n+1)*p.  Once the JACK buffer size is subtracted
+       from  the  measured latency, the result is the &quot;extra&quot; latency due to the
+       interface hardware. Then, if you believe that the latency is equally dis&#8208;
+       tributed  between  the  input  and  output  parts  of your audio hardware
+       (extremely likely), divide the result by two and use that for  input  and
+       output  latency  values.  Doing this measurement will enable JACK clients
+       that use the JACK latency API to accurately position/delay audio to  keep
+       signals  synchronized  even when there are inherent delays in the end-to-
+       end signal pathways.
+
+AUTHOR
+       Originally written in C++ by Fons Adriaensen, ported to C by Torben Hohn.
+
+
+
+1.9.9                             November 2012                  JACK_IODELAY(1)
+
+</pre></body></html>

@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>diff2patches - Extract non-debian/ patches from .diff.gz files</title></head>
+<body><pre>
+
+diff2patches(1)                                                  diff2patches(1)
+
+
+
+NAME
+       diff2patches - Extract non-debian/ patches from .diff.gz files
+
+SYNTAX
+       diff2patches filename
+       diff2patches --help|--version
+
+DESCRIPTION
+       Extracts patches from .diff.gz which apply to files outside the &#8220;debian/&#8221;
+       directory scope.  A patch is created for each modified file.  Each  patch
+       is named according to the path of the modified file, with &#8220;/&#8221; replaced by
+       &#8220;___&#8221;, and an extension of &#8220;.patch&#8221;.
+
+OPTIONS
+       filename
+           Extract patches from  filename  which  apply  outside  the  &#8220;debian/&#8221;
+           directory.
+
+       --help
+           Output help information and exit.
+
+       --version
+           Output version information and exit.
+
+FILES
+       debian/control
+              Existence of this file is tested before any patch is extracted.
+
+       debian/
+       debian/patches/
+              Patches    are    extracted   to   one   of   these   directories.
+              &#8220;debian/patches/&#8221; is preferred, if it exists.  If  DEB_PATCHES  is
+              present  in  the  environment, it will override this behavior (see
+              &#8220;ENVIRONMENT VARIABLES&#8221; section below).
+
+ENVIRONMENT VARIABLES
+       DEB_PATCHES
+              When defined and points to  an  existing  directory,  patches  are
+              extracted   in   that   directory  and  not  under  &#8220;debian/&#8221;  nor
+              &#8220;debian/patches/&#8221;.
+
+SEE ALSO
+       combinediff(1)
+
+AUTHOR
+       Raphael Geissert &lt;atomo64@gmail.com&gt;
+
+
+
+Raphael Geissert &lt;atomo64@gmail.com&gt;                             diff2patches(1)
+
+</pre></body></html>

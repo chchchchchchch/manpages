@@ -1,0 +1,53 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuGetElements - get the elements in a flow</title></head>
+<body><pre>
+
+AuGetElements(3)                                                AuGetElements(3)
+
+
+
+Name
+       AuGetElements - get the elements in a flow
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuElement *AuGetElements(server, flow, clocked, num_elements, status)
+           AuServer *server;
+           AuFlowID flow;
+           AuBool *clocked; /* RETURN */
+           int *num_elements; /* RETURN */
+           AuStatus *status; /* RETURN */
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       flow      Specifies the ID of the flow to get the elements from.
+
+       clocked   Returns a boolean value that indicates if the flow is clocked.
+
+       num_elements
+                 Returns the number of elements.
+
+       status    If non-NULL, flush the output buffer and return the status from
+                 the server.
+
+Description
+       AuGetElements returns the list of elements comprising flow or NULL,  with
+       num_elements set to 0, if there was an error.  Use AuFreeElements to free
+       this list when nolonger needed.
+
+Errors
+       AuBadFlow.
+
+See Also
+       AuSetElements.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - flow elements              1.9.3                     AuGetElements(3)
+
+</pre></body></html>

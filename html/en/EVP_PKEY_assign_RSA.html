@@ -1,0 +1,84 @@
+<html>
+<head><meta charset=utf-8/>
+<title>EVP_PKEY_set1_RSA, EVP_PKEY_set1_DSA, EVP_PKEY_set1_DH, EVP_PKEY_set1_EC_KEY, EVP_PKEY_get1_RSA, EVP_PKEY_get1_DSA, EVP_PKEY_get1_DH, EVP_PKEY_get1_EC_KEY, EVP_PKEY_assign_RSA, EVP_PKEY_assign_DSA, EVP_PKEY_assign_DH, EVP_PKEY_assign_EC_KEY, EVP_PKEY_type - EVP_PKEY assignment functions.</title></head>
+<body><pre>
+
+EVP_PKEY_set1_RSA(3SSL)              OpenSSL             EVP_PKEY_set1_RSA(3SSL)
+
+
+
+NAME
+       EVP_PKEY_set1_RSA, EVP_PKEY_set1_DSA, EVP_PKEY_set1_DH,
+       EVP_PKEY_set1_EC_KEY, EVP_PKEY_get1_RSA, EVP_PKEY_get1_DSA,
+       EVP_PKEY_get1_DH, EVP_PKEY_get1_EC_KEY, EVP_PKEY_assign_RSA,
+       EVP_PKEY_assign_DSA, EVP_PKEY_assign_DH, EVP_PKEY_assign_EC_KEY,
+       EVP_PKEY_type - EVP_PKEY assignment functions.
+
+SYNOPSIS
+        #include &lt;openssl/evp.h&gt;
+
+        int EVP_PKEY_set1_RSA(EVP_PKEY *pkey,RSA *key);
+        int EVP_PKEY_set1_DSA(EVP_PKEY *pkey,DSA *key);
+        int EVP_PKEY_set1_DH(EVP_PKEY *pkey,DH *key);
+        int EVP_PKEY_set1_EC_KEY(EVP_PKEY *pkey,EC_KEY *key);
+
+        RSA *EVP_PKEY_get1_RSA(EVP_PKEY *pkey);
+        DSA *EVP_PKEY_get1_DSA(EVP_PKEY *pkey);
+        DH *EVP_PKEY_get1_DH(EVP_PKEY *pkey);
+        EC_KEY *EVP_PKEY_get1_EC_KEY(EVP_PKEY *pkey);
+
+        int EVP_PKEY_assign_RSA(EVP_PKEY *pkey,RSA *key);
+        int EVP_PKEY_assign_DSA(EVP_PKEY *pkey,DSA *key);
+        int EVP_PKEY_assign_DH(EVP_PKEY *pkey,DH *key);
+        int EVP_PKEY_assign_EC_KEY(EVP_PKEY *pkey,EC_KEY *key);
+
+        int EVP_PKEY_type(int type);
+
+DESCRIPTION
+       EVP_PKEY_set1_RSA(), EVP_PKEY_set1_DSA(), EVP_PKEY_set1_DH() and
+       EVP_PKEY_set1_EC_KEY() set the key referenced by pkey to key.
+
+       EVP_PKEY_get1_RSA(), EVP_PKEY_get1_DSA(), EVP_PKEY_get1_DH() and
+       EVP_PKEY_get1_EC_KEY() return the referenced key in pkey or NULL if the
+       key is not of the correct type.
+
+       EVP_PKEY_assign_RSA() EVP_PKEY_assign_DSA(), EVP_PKEY_assign_DH() and
+       EVP_PKEY_assign_EC_KEY() also set the referenced key to key however these
+       use the supplied key internally and so key will be freed when the parent
+       pkey is freed.
+
+       EVP_PKEY_type() returns the type of key corresponding to the value type.
+       The type of a key can be obtained with EVP_PKEY_type(pkey-&gt;type). The
+       return value will be EVP_PKEY_RSA, EVP_PKEY_DSA, EVP_PKEY_DH or
+       EVP_PKEY_EC for the corresponding key types or NID_undef if the key type
+       is unassigned.
+
+NOTES
+       In accordance with the OpenSSL naming convention the key obtained from or
+       assigned to the pkey using the 1 functions must be freed as well as pkey.
+
+       EVP_PKEY_assign_RSA() EVP_PKEY_assign_DSA(), EVP_PKEY_assign_DH()
+       EVP_PKEY_assign_EC_KEY() are implemented as macros.
+
+RETURN VALUES
+       EVP_PKEY_set1_RSA(), EVP_PKEY_set1_DSA(), EVP_PKEY_set1_DH() and
+       EVP_PKEY_set1_EC_KEY() return 1 for success or 0 for failure.
+
+       EVP_PKEY_get1_RSA(), EVP_PKEY_get1_DSA(), EVP_PKEY_get1_DH() and
+       EVP_PKEY_get1_EC_KEY() return the referenced key or NULL if an error
+       occurred.
+
+       EVP_PKEY_assign_RSA() EVP_PKEY_assign_DSA(), EVP_PKEY_assign_DH() and
+       EVP_PKEY_assign_EC_KEY() return 1 for success and 0 for failure.
+
+SEE ALSO
+       EVP_PKEY_new(3)
+
+HISTORY
+       TBA
+
+
+
+1.0.1e                             2013-02-11            EVP_PKEY_set1_RSA(3SSL)
+
+</pre></body></html>

@@ -1,0 +1,125 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2 - Perl interface to the 2.x series of the GNOME libraries</title></head>
+<body><pre>
+
+Gnome2(3pm)            User Contributed Perl Documentation           Gnome2(3pm)
+
+
+
+NAME
+       Gnome2 - Perl interface to the 2.x series of the GNOME libraries
+
+SYNOPSIS
+         use Gnome2;
+         Gnome2::Program-&gt;init ($appname, $appversion);
+         my $app = Gnome2::App-&gt;new ($appname);
+         $app-&gt;show;
+         Gtk2-&gt;main;
+
+ABSTRACT
+       Perl bindings to the 2.x series of the GNOME libraries.  This module
+       allows you to interface with the libgnome and libgnomeui libraries to
+       create GNOME applications.
+
+DESCRIPTION
+       Since this module tries to stick very closely to the C API, the
+       documentation found at
+
+         http://developer.gnome.org/doc/API/2.0/libgnome/index.html
+
+       and
+
+         http://developer.gnome.org/doc/API/2.0/libgnomeui/index.html
+
+       is the canonical reference.
+
+       In addition to that, there&apos;s also the automatically generated API
+       documentation: Gnome2::index(3pm).
+
+       The mapping described in Gtk2::api(3pm) also applies to this module.
+
+       To discuss this module, ask questions and flame/praise the authors, join
+       gtk-perl-list@gnome.org at lists.gnome.org.
+
+MISSING METHODS
+       gnome_app_fill_menu_with_data
+       gnome_app_fill_menu_custom
+           Use gnome_app_fill_menu instead.
+
+       gnome_app_fill_toolbar_with_data
+       gnome_app_fill_toolbar_custom
+           Use gnome_app_fill_toolbar instead.
+
+       gnome_app_create_menus_interp
+       gnome_app_create_menus_with_data
+       gnome_app_create_menus_custom
+           Use gnome_app_create_menus instead.
+
+       gnome_app_create_toolbar_interp
+       gnome_app_create_toolbar_with_data
+       gnome_app_create_toolbar_custom
+           Use gnome_app_create_toolbar instead.
+
+       gnome_app_insert_menus_custom
+       gnome_app_insert_menus_with_data
+       gnome_app_insert_menus_interp
+           Use gnome_app_insert_menus instead.
+
+RENAMED METHODS
+       gnome_program_get
+           Gnome2::Program-&gt;get has been renamed to -&gt;get_program to avoid a
+           clash with GObject-&gt;get.
+
+       gnome_popup_menu_attach
+           Gtk2::Menu-&gt;attach has been renamed to -&gt;attach_to to avoid a clash
+           with gtk_menu_attach.
+
+       gnome_popup_menu_append
+           Gtk2::Menu-&gt;append has been renamed to -&gt;append_from to avoid a clash
+           with gtk_menu_shell_append.
+
+DIFFERENT CALL SIGNATURES OR SEMANTICS
+       gnome_client_set_restart_command
+       gnome_client_set_discard_command
+       gnome_client_set_resign_command
+       gnome_client_set_shutdown_command
+       gnome_client_set_clone_command
+           Instead of argc and argv you simply pass in a list.
+
+       gnome_program_init
+           Gnome2::Program-&gt;init automagically fills argc and argv so just omit
+           these parameters.
+
+SEE ALSO
+       perl(1), Gnome2::index(3pm), Glib(3pm), Gtk2(3pm), Gtk2::api(3pm).
+
+AUTHOR
+       muppet &lt;scott at asofyet dot org&gt; did the initial stuff.
+
+       Torsten Schoenfeld &lt;kaffeetisch at gmx dot de&gt; took over between 0.34 and
+       0.36, and implemented lots of tests and missing functionality, and
+       corrected several of muppet&apos;s mistakes.
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2003-2006 by the gtk2-perl team (see the file AUTHORS)
+
+       This library is free software; you can redistribute it and/or modify it
+       under the terms of the GNU Lesser General Public License as published by
+       the Free Software Foundation; either version 2.1 of the License, or (at
+       your option) any later version.
+
+       This library is distributed in the hope that it will be useful, but
+       WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
+       General Public License for more details.
+
+       You should have received a copy of the GNU Lesser General Public License
+       along with this library; if not, write to the Free Software Foundation,
+       Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+
+perl v5.14.2                       2007-08-13                        Gnome2(3pm)
+
+</pre></body></html>

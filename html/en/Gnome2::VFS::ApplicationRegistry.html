@@ -1,0 +1,146 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::VFS::ApplicationRegistry - registry for applications</title></head>
+<body><pre>
+
+Gnome2::VFS::ApplicatioUseriContributed PerGnome2::VFS::ApplicationRegistry(3pm)
+
+
+
+NAME
+       Gnome2::VFS::ApplicationRegistry - registry for applications
+
+METHODS
+   scalar = Gnome2::VFS::ApplicationRegistry-&gt;new ($app_id)
+       &#183;   $app_id (string)
+
+   list = Gnome2::VFS::ApplicationRegistry-&gt;get_applications ($mime_type=undef)
+       &#183;   $mime_type (string)
+
+       Returns a list of valid application id&apos;s that can handle this MIME type.
+
+   Gnome2::VFS::ApplicationRegistry-&gt;reload
+   Gnome2::VFS::ApplicationRegistry-&gt;shutdown
+   result = Gnome2::VFS::ApplicationRegistry-&gt;sync
+ENUMS AND FLAGS
+   enum Gnome2::VFS::Result
+       &#183;   &apos;ok&apos; / &apos;GNOME_VFS_OK&apos;
+
+       &#183;   &apos;error-not-found&apos; / &apos;GNOME_VFS_ERROR_NOT_FOUND&apos;
+
+       &#183;   &apos;error-generic&apos; / &apos;GNOME_VFS_ERROR_GENERIC&apos;
+
+       &#183;   &apos;error-internal&apos; / &apos;GNOME_VFS_ERROR_INTERNAL&apos;
+
+       &#183;   &apos;error-bad-parameters&apos; / &apos;GNOME_VFS_ERROR_BAD_PARAMETERS&apos;
+
+       &#183;   &apos;error-not-supported&apos; / &apos;GNOME_VFS_ERROR_NOT_SUPPORTED&apos;
+
+       &#183;   &apos;error-io&apos; / &apos;GNOME_VFS_ERROR_IO&apos;
+
+       &#183;   &apos;error-corrupted-data&apos; / &apos;GNOME_VFS_ERROR_CORRUPTED_DATA&apos;
+
+       &#183;   &apos;error-wrong-format&apos; / &apos;GNOME_VFS_ERROR_WRONG_FORMAT&apos;
+
+       &#183;   &apos;error-bad-file&apos; / &apos;GNOME_VFS_ERROR_BAD_FILE&apos;
+
+       &#183;   &apos;error-too-big&apos; / &apos;GNOME_VFS_ERROR_TOO_BIG&apos;
+
+       &#183;   &apos;error-no-space&apos; / &apos;GNOME_VFS_ERROR_NO_SPACE&apos;
+
+       &#183;   &apos;error-read-only&apos; / &apos;GNOME_VFS_ERROR_READ_ONLY&apos;
+
+       &#183;   &apos;error-invalid-uri&apos; / &apos;GNOME_VFS_ERROR_INVALID_URI&apos;
+
+       &#183;   &apos;error-not-open&apos; / &apos;GNOME_VFS_ERROR_NOT_OPEN&apos;
+
+       &#183;   &apos;error-invalid-open-mode&apos; / &apos;GNOME_VFS_ERROR_INVALID_OPEN_MODE&apos;
+
+       &#183;   &apos;error-access-denied&apos; / &apos;GNOME_VFS_ERROR_ACCESS_DENIED&apos;
+
+       &#183;   &apos;error-too-many-open-files&apos; / &apos;GNOME_VFS_ERROR_TOO_MANY_OPEN_FILES&apos;
+
+       &#183;   &apos;error-eof&apos; / &apos;GNOME_VFS_ERROR_EOF&apos;
+
+       &#183;   &apos;error-not-a-directory&apos; / &apos;GNOME_VFS_ERROR_NOT_A_DIRECTORY&apos;
+
+       &#183;   &apos;error-in-progress&apos; / &apos;GNOME_VFS_ERROR_IN_PROGRESS&apos;
+
+       &#183;   &apos;error-interrupted&apos; / &apos;GNOME_VFS_ERROR_INTERRUPTED&apos;
+
+       &#183;   &apos;error-file-exists&apos; / &apos;GNOME_VFS_ERROR_FILE_EXISTS&apos;
+&#12;       &#183;   &apos;error-loop&apos; / &apos;GNOME_VFS_ERROR_LOOP&apos;
+
+       &#183;   &apos;error-not-permitted&apos; / &apos;GNOME_VFS_ERROR_NOT_PERMITTED&apos;
+
+       &#183;   &apos;error-is-directory&apos; / &apos;GNOME_VFS_ERROR_IS_DIRECTORY&apos;
+
+       &#183;   &apos;error-no-memory&apos; / &apos;GNOME_VFS_ERROR_NO_MEMORY&apos;
+
+       &#183;   &apos;error-host-not-found&apos; / &apos;GNOME_VFS_ERROR_HOST_NOT_FOUND&apos;
+
+       &#183;   &apos;error-invalid-host-name&apos; / &apos;GNOME_VFS_ERROR_INVALID_HOST_NAME&apos;
+
+       &#183;   &apos;error-host-has-no-address&apos; / &apos;GNOME_VFS_ERROR_HOST_HAS_NO_ADDRESS&apos;
+
+       &#183;   &apos;error-login-failed&apos; / &apos;GNOME_VFS_ERROR_LOGIN_FAILED&apos;
+
+       &#183;   &apos;error-cancelled&apos; / &apos;GNOME_VFS_ERROR_CANCELLED&apos;
+
+       &#183;   &apos;error-directory-busy&apos; / &apos;GNOME_VFS_ERROR_DIRECTORY_BUSY&apos;
+
+       &#183;   &apos;error-directory-not-empty&apos; / &apos;GNOME_VFS_ERROR_DIRECTORY_NOT_EMPTY&apos;
+
+       &#183;   &apos;error-too-many-links&apos; / &apos;GNOME_VFS_ERROR_TOO_MANY_LINKS&apos;
+
+       &#183;   &apos;error-read-only-file-system&apos; /
+           &apos;GNOME_VFS_ERROR_READ_ONLY_FILE_SYSTEM&apos;
+
+       &#183;   &apos;error-not-same-file-system&apos; / &apos;GNOME_VFS_ERROR_NOT_SAME_FILE_SYSTEM&apos;
+
+       &#183;   &apos;error-name-too-long&apos; / &apos;GNOME_VFS_ERROR_NAME_TOO_LONG&apos;
+
+       &#183;   &apos;error-service-not-available&apos; /
+           &apos;GNOME_VFS_ERROR_SERVICE_NOT_AVAILABLE&apos;
+
+       &#183;   &apos;error-service-obsolete&apos; / &apos;GNOME_VFS_ERROR_SERVICE_OBSOLETE&apos;
+
+       &#183;   &apos;error-protocol-error&apos; / &apos;GNOME_VFS_ERROR_PROTOCOL_ERROR&apos;
+
+       &#183;   &apos;error-no-master-browser&apos; / &apos;GNOME_VFS_ERROR_NO_MASTER_BROWSER&apos;
+
+       &#183;   &apos;error-no-default&apos; / &apos;GNOME_VFS_ERROR_NO_DEFAULT&apos;
+
+       &#183;   &apos;error-no-handler&apos; / &apos;GNOME_VFS_ERROR_NO_HANDLER&apos;
+
+       &#183;   &apos;error-parse&apos; / &apos;GNOME_VFS_ERROR_PARSE&apos;
+
+       &#183;   &apos;error-launch&apos; / &apos;GNOME_VFS_ERROR_LAUNCH&apos;
+
+       &#183;   &apos;error-timeout&apos; / &apos;GNOME_VFS_ERROR_TIMEOUT&apos;
+
+       &#183;   &apos;error-nameserver&apos; / &apos;GNOME_VFS_ERROR_NAMESERVER&apos;
+
+       &#183;   &apos;error-locked&apos; / &apos;GNOME_VFS_ERROR_LOCKED&apos;
+
+       &#183;   &apos;error-deprecated-function&apos; / &apos;GNOME_VFS_ERROR_DEPRECATED_FUNCTION&apos;
+
+       &#183;   &apos;error-invalid-filename&apos; / &apos;GNOME_VFS_ERROR_INVALID_FILENAME&apos;
+
+       &#183;   &apos;error-not-a-symbolic-link&apos; / &apos;GNOME_VFS_ERROR_NOT_A_SYMBOLIC_LINK&apos;
+
+       &#183;   &apos;num-errors&apos; / &apos;GNOME_VFS_NUM_ERRORS&apos;
+
+SEE ALSO
+       Gnome2::VFS
+
+COPYRIGHT
+       Copyright (C) 2003-2007 by the gtk2-perl team.
+&#12;       This software is licensed under the LGPL.  See Gnome2::VFS for a full
+       notice.
+
+
+
+perl v5.14.2                       2011-11-Gnome2::VFS::ApplicationRegistry(3pm)
+
+</pre></body></html>

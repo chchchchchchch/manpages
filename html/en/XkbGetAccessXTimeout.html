@@ -1,0 +1,109 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetAccessXTimeout - Queries the current AccessXTimeout options for a keyboard device</title></head>
+<body><pre>
+
+XkbGetAccessXTimeout(3)           XKB FUNCTIONS          XkbGetAccessXTimeout(3)
+
+
+
+NAME
+       XkbGetAccessXTimeout  -  Queries the current AccessXTimeout options for a
+       keyboard device
+
+SYNOPSIS
+       Bool XkbGetAccessXTimeout (Display *display,  unsigned  int  device_spec,
+              unsigned   short  *timeout_rtrn,  unsigned  int  *ctrls_mask_rtrn,
+              unsigned     int      *ctrls_values_rtrn,      unsigned      short
+              *options_mask_rtrn, unsigned short *options_values_rtrn);
+
+ARGUMENTS
+       - display
+              unsigned short
+
+       - device_spec
+              device to query, or XkbUseCoreKbd
+
+       - timeout_rtrn
+              delay until AccessXTimeout, seconds
+
+       - ctrls_mask_rtrn
+              backfilled with controls to modify
+
+       - ctrls_values_rtrn
+              backfilled with on/off status for controls
+
+       - options_mask_rtrn
+              backfilled with ax_options to modify
+
+       - options_values_rtrn
+              backfilled with values for ax_options
+
+DESCRIPTION
+       In  environments  where  computers  are shared, features such as SlowKeys
+       present a problem: if SlowKeys is on, the keyboard can appear to be unre&#8208;
+       sponsive  because keys are not accepted until they are held for a certain
+       period of time. To help solve this problem, Xkb provides an  AccessXTime&#8208;
+       out  control  to  automatically  change the enabled/disabled state of any
+       boolean  controls  and  to  change  the  value  of  the  AccessXKeys  and
+       AccessXFeedback  control  attributes if the keyboard is idle for a speci&#8208;
+       fied period of time.
+
+       When a timeout as specified by AccessXTimeout occurs  and  a  control  is
+       consequently modified, Xkb generates an XkbControlsNotify event.
+
+       XkbGetAccessXTimeout  sends  a request to the X server to obtain the cur&#8208;
+       rent values for the AccessXTimeout attributes, waits  for  a  reply,  and
+       backfills  the  values  into  the  appropriate  arguments. The parameters
+       options_mask_rtrn and options_values_rtrn are backfilled with the options
+       to  modify and the values for ax_options, which is a field in the XkbCon&#8208;
+       trolsRec structure.  XkbGetAccessXTimeout returns True if successful;  if
+       a compatible version of the Xkb extension is not available in the server,
+       XkbGetAccessXTimeout returns False.
+
+RETURN VALUES
+       True           The XkbGetAccessXTimeout returns True when it successfully
+                      sends a request to the X server to obtain the current val&#8208;
+                      ues for the AccessXTimeout attributes, waits for a  reply,
+                      and backfills the values into the appropriate arguments.
+
+       False          The  XkbGetAccessXTimeout  funtion returns False if a com&#8208;
+                      patible version of the Xkb extension is not  available  in
+                      the server.
+
+STRUCTURES
+       The XkbControlsRec structure is defined as follows:
+
+       #define XkbMaxLegalKeyCode     255
+       #define XkbPerKeyBitArraySize  ((XkbMaxLegalKeyCode+1)/8)
+
+       typedef struct {
+           unsigned char   mk_dflt_btn;      /&#8727; default button for keyboard driven mouse */
+           unsigned char   num_groups;       /&#8727; number of keyboard groups */
+           unsigned char   groups_wrap;      /&#8727; how to wrap out-of-bounds groups */
+           XkbModsRec      internal;         /&#8727; defines server internal modifiers */
+           XkbModsRec      ignore_lock;      /&#8727; modifiers to ignore when checking for grab */
+           unsigned int    enabled_ctrls;    /&#8727; 1 bit =&gt; corresponding boolean control enabled */
+           unsigned short  repeat_delay;     /&#8727; ms delay until first repeat */
+           unsigned short  repeat_interval;  /&#8727; ms delay between repeats */
+           unsigned short  slow_keys_delay;  /&#8727; ms minimum time key must be down to be ok */
+           unsigned short  debounce_delay;   /&#8727; ms delay before key reactivated */
+           unsigned short  mk_delay;         /&#8727; ms delay to second mouse motion event */
+           unsigned short  mk_interval;      /&#8727; ms delay between repeat mouse events */
+           unsigned short  mk_time_to_max;   /&#8727; # intervals until constant mouse move */
+           unsigned short  mk_max_speed;     /&#8727; multiplier for maximum mouse speed */
+           short           mk_curve;         /&#8727; determines mouse move curve type */
+           unsigned short  ax_options;       /&#8727; 1 bit =&gt; Access X option enabled */
+           unsigned short  ax_timeout;       /&#8727; seconds until Access X disabled */
+           unsigned short  axt_opts_mask;    /&#8727; 1 bit =&gt; options to reset on Access X timeout */
+           unsigned short  axt_opts_values;  /&#8727; 1 bit =&gt; turn option on, 0=&gt; off */
+           unsigned int    axt_ctrls_mask;   /&#8727; which bits in enabled_ctrls to modify */
+           unsigned int    axt_ctrls_values; /&#8727; values for new bits in enabled_ctrls */
+           unsigned char   per_key_repeat[XkbPerKeyBitArraySize];  /&#8727; per key auto repeat */
+       } XkbControlsRec, *XkbControlsPtr;
+
+
+
+X Version 11                      libX11 1.5.0           XkbGetAccessXTimeout(3)
+
+</pre></body></html>

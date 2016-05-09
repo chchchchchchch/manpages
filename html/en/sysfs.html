@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sysfs - get file system type information</title></head>
+<body><pre>
+
+SYSFS(2)                    Linux Programmer&apos;s Manual                   SYSFS(2)
+
+
+
+NAME
+       sysfs - get file system type information
+
+SYNOPSIS
+       int sysfs(int option, const char *fsname);
+
+       int sysfs(int option, unsigned int fs_index, char *buf);
+
+       int sysfs(int option);
+
+DESCRIPTION
+       sysfs() returns information about the file system types currently present
+       in the kernel.  The specific form of the sysfs() call and the information
+       returned depends on the option in effect:
+
+       1  Translate  the file-system identifier string fsname into a file-system
+          type index.
+
+       2  Translate the file-system type index fs_index into  a  null-terminated
+          file-system  identifier  string.   This  string will be written to the
+          buffer pointed to by buf.  Make sure that  buf  has  enough  space  to
+          accept the string.
+
+       3  Return  the total number of file system types currently present in the
+          kernel.
+
+       The numbering of the file-system type indexes begins with zero.
+
+RETURN VALUE
+       On success, sysfs() returns the file-system index for option 1, zero  for
+       option  2, and the number of currently configured file systems for option
+       3.  On error, -1 is returned, and errno is set appropriately.
+
+ERRORS
+       EFAULT Either fsname or buf is outside your accessible address space.
+
+       EINVAL fsname is not a valid file-system  type  identifier;  fs_index  is
+              out-of-bounds; option is invalid.
+
+CONFORMING TO
+       SVr4.
+
+NOTES
+       This  System-V derived system call is obsolete; don&apos;t use it.  On systems
+       with /proc, the same information can be obtained  via  /proc/filesystems;
+       use that interface instead.
+
+BUGS
+       There  is  no  libc or glibc support.  There is no way to guess how large
+       buf should be.
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2010-06-27                           SYSFS(2)
+
+</pre></body></html>

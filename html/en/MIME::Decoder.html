@@ -1,0 +1,336 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MIME::Decoder - an object for decoding the body part of a MIME stream</title></head>
+<body><pre>
+
+MIME::Decoder(3pm)     User Contributed Perl Documentation    MIME::Decoder(3pm)
+
+
+
+NAME
+       MIME::Decoder - an object for decoding the body part of a MIME stream
+
+SYNOPSIS
+       Before reading further, you should see MIME::Tools to make sure that you
+       understand where this module fits into the grand scheme of things.  Go
+       on, do it now.  I&apos;ll wait.
+
+       Ready?  Ok...
+
+   Decoding a data stream
+       Here&apos;s a simple filter program to read quoted-printable data from STDIN
+       (until EOF) and write the decoded data to STDOUT:
+
+           use MIME::Decoder;
+
+           $decoder = new MIME::Decoder &apos;quoted-printable&apos; or die &quot;unsupported&quot;;
+           $decoder-&gt;decode(\*STDIN, \*STDOUT);
+
+   Encoding a data stream
+       Here&apos;s a simple filter program to read binary data from STDIN (until EOF)
+       and write base64-encoded data to STDOUT:
+
+           use MIME::Decoder;
+
+           $decoder = new MIME::Decoder &apos;base64&apos; or die &quot;unsupported&quot;;
+           $decoder-&gt;encode(\*STDIN, \*STDOUT);
+
+   Non-standard encodings
+       You can write and install your own decoders so that MIME::Decoder will
+       know about them:
+
+           use MyBase64Decoder;
+
+           install MyBase64Decoder &apos;base64&apos;;
+
+       You can also test if a given encoding is supported:
+
+           if (supported MIME::Decoder &apos;x-uuencode&apos;) {
+               ### we can uuencode!
+           }
+
+DESCRIPTION
+       This abstract class, and its private concrete subclasses (see below)
+       provide an OO front end to the actions of...
+
+       &#183;   Decoding a MIME-encoded stream
+
+       &#183;   Encoding a raw data stream into a MIME-encoded stream.
+
+       The constructor for MIME::Decoder takes the name of an encoding
+       (&quot;base64&quot;, &quot;7bit&quot;, etc.), and returns an instance of a subclass of
+       MIME::Decoder whose &quot;decode()&quot; method will perform the appropriate
+       decoding action, and whose &quot;encode()&quot; method will perform the appropriate
+       encoding action.
+
+PUBLIC INTERFACE
+   Standard interface
+       If all you are doing is using this class, here&apos;s all you&apos;ll need...
+
+       new ENCODING
+           Class method, constructor.  Create and return a new decoder object
+           which can handle the given ENCODING.
+
+               my $decoder = new MIME::Decoder &quot;7bit&quot;;
+
+           Returns the undefined value if no known decoders are appropriate.
+
+       best ENCODING
+           Class method, constructor.  Exactly like new(), except that this
+           defaults any unsupported encoding to &quot;binary&quot;, after raising a
+           suitable warning (it&apos;s a fatal error if there&apos;s no binary decoder).
+
+               my $decoder = best MIME::Decoder &quot;x-gzip64&quot;;
+
+           Will either return a decoder, or a raise a fatal exception.
+
+       decode INSTREAM,OUTSTREAM
+           Instance method.  Decode the document waiting in the input handle
+           INSTREAM, writing the decoded information to the output handle
+           OUTSTREAM.
+
+           Read the section in this document on I/O handles for more information
+           about the arguments.  Note that you can still supply old-style
+           unblessed filehandles for INSTREAM and OUTSTREAM.
+
+           Returns true on success, throws exception on failure.
+
+       encode INSTREAM,OUTSTREAM
+           Instance method.  Encode the document waiting in the input filehandle
+           INSTREAM, writing the encoded information to the output stream
+           OUTSTREAM.
+
+           Read the section in this document on I/O handles for more information
+           about the arguments.  Note that you can still supply old-style
+           unblessed filehandles for INSTREAM and OUTSTREAM.
+
+           Returns true on success, throws exception on failure.
+
+       encoding
+           Instance method.  Return the encoding that this object was created to
+           handle, coerced to all lowercase (e.g., &quot;base64&quot;).
+
+       head [HEAD]
+           Instance method.  Completely optional: some decoders need to know a
+           little about the file they are encoding/decoding; e.g., x-uu likes to
+           have the filename.  The HEAD is any object which responds to messages
+           like:
+
+               $head-&gt;mime_attr(&apos;content-disposition.filename&apos;);
+
+       supported [ENCODING]
+           Class method.  With one arg (an ENCODING name), returns truth if that
+           encoding is currently handled, and falsity otherwise.  The ENCODING
+           will be automatically coerced to lowercase:
+
+               if (supported MIME::Decoder &apos;7BIT&apos;) {
+                   ### yes, we can handle it...
+               }
+               else {
+                   ### drop back six and punt...
+               }
+
+           With no args, returns a reference to a hash of all available
+           decoders, where the key is the encoding name (all lowercase, like
+           &apos;7bit&apos;), and the value is true (it happens to be the name of the
+           class that handles the decoding, but you probably shouldn&apos;t rely on
+           that).  You may safely modify this hash; it will not change the way
+           the module performs its lookups.  Only &quot;install&quot; can do that.
+&#12;           Thanks to Achim Bohnet for suggesting this method.
+
+   Subclass interface
+       If you are writing (or installing) a new decoder subclass, there are some
+       other methods you&apos;ll need to know about:
+
+       decode_it INSTREAM,OUTSTREAM
+           Abstract instance method.  The back-end of the decode method.  It
+           takes an input handle opened for reading (INSTREAM), and an output
+           handle opened for writing (OUTSTREAM).
+
+           If you are writing your own decoder subclass, you must override this
+           method in your class.  Your method should read from the input handle
+           via &quot;getline()&quot; or &quot;read()&quot;, decode this input, and print the decoded
+           data to the output handle via &quot;print()&quot;.  You may do this however you
+           see fit, so long as the end result is the same.
+
+           Note that unblessed references and globrefs are automatically turned
+           into I/O handles for you by &quot;decode()&quot;, so you don&apos;t need to worry
+           about it.
+
+           Your method must return either &quot;undef&quot; (to indicate failure), or 1
+           (to indicate success).  It may also throw an exception to indicate
+           failure.
+
+       encode_it INSTREAM,OUTSTREAM
+           Abstract instance method.  The back-end of the encode method.  It
+           takes an input handle opened for reading (INSTREAM), and an output
+           handle opened for writing (OUTSTREAM).
+
+           If you are writing your own decoder subclass, you must override this
+           method in your class.  Your method should read from the input handle
+           via &quot;getline()&quot; or &quot;read()&quot;, encode this input, and print the encoded
+           data to the output handle via &quot;print()&quot;.  You may do this however you
+           see fit, so long as the end result is the same.
+
+           Note that unblessed references and globrefs are automatically turned
+           into I/O handles for you by &quot;encode()&quot;, so you don&apos;t need to worry
+           about it.
+
+           Your method must return either &quot;undef&quot; (to indicate failure), or 1
+           (to indicate success).  It may also throw an exception to indicate
+           failure.
+
+       filter IN, OUT, COMMAND...
+           Class method, utility.  If your decoder involves an external program,
+           you can invoke them easily through this method.  The command must be
+           a &quot;filter&quot;: a command that reads input from its STDIN (which will
+           come from the IN argument) and writes output to its STDOUT (which
+           will go to the OUT argument).
+
+           For example, here&apos;s a decoder that un-gzips its data:
+
+               sub decode_it {
+                   my ($self, $in, $out) = @_;
+                   $self-&gt;filter($in, $out, &quot;gzip -d -&quot;);
+               }
+
+           The usage is similar to IPC::Open2::open2 (which it uses internally),
+           so you can specify COMMAND as a single argument or as an array.
+
+       init ARGS...
+           Instance method.  Do any necessary initialization of the new
+           instance, taking whatever arguments were given to &quot;new()&quot;.  Should
+           return the self object on success, undef on failure.
+
+       install ENCODINGS...
+           Class method.  Install this class so that each encoding in ENCODINGS
+           is handled by it:
+
+               install MyBase64Decoder &apos;base64&apos;, &apos;x-base64super&apos;;
+
+           You should not override this method.
+
+       uninstall ENCODINGS...
+           Class method.  Uninstall support for encodings.  This is a way to
+           turn off the decoding of &quot;experimental&quot; encodings.  For safety,
+           always use MIME::Decoder directly:
+
+               uninstall MIME::Decoder &apos;x-uu&apos;, &apos;x-uuencode&apos;;
+
+           You should not override this method.
+
+DECODER SUBCLASSES
+       You don&apos;t need to &quot;use&quot; any other Perl modules; the following &quot;standard&quot;
+       subclasses are included as part of MIME::Decoder:
+
+            Class:                         Handles encodings:
+            ------------------------------------------------------------
+            MIME::Decoder::Binary          binary
+            MIME::Decoder::NBit            7bit, 8bit
+            MIME::Decoder::Base64          base64
+            MIME::Decoder::QuotedPrint     quoted-printable
+
+       The following &quot;non-standard&quot; subclasses are also included:
+
+            Class:                         Handles encodings:
+            ------------------------------------------------------------
+            MIME::Decoder::UU              x-uu, x-uuencode
+            MIME::Decoder::Gzip64          x-gzip64            ** requires gzip!
+
+NOTES
+   Input/Output handles
+       As of MIME-tools 2.0, this class has to play nice with the new MIME::Body
+       class... which means that input and output routines cannot just assume
+       that they are dealing with filehandles.
+
+       Therefore, all that MIME::Decoder and its subclasses require (and, thus,
+       all that they can assume) is that INSTREAMs and OUTSTREAMs are objects
+       which respond to a subset of the messages defined in the IO::Handle
+       interface; minimally:
+
+             print
+             getline
+             read(BUF,NBYTES)
+
+       Thanks to Achim Bohnet for suggesting this more-generic I/O model.
+
+   Writing a decoder
+       If you&apos;re experimenting with your own encodings, you&apos;ll probably want to
+       write a decoder.  Here are the basics:
+
+       1.  Create a module, like &quot;MyDecoder::&quot;, for your decoder.  Declare it to
+           be a subclass of MIME::Decoder.
+
+       2.  Create the following instance methods in your class, as described
+           above:
+
+               decode_it
+               encode_it
+               init
+
+       3.  In your application program, activate your decoder for one or more
+           encodings like this:
+
+               require MyDecoder;
+
+               install MyDecoder &quot;7bit&quot;;   ### use MyDecoder to decode &quot;7bit&quot;
+               install MyDecoder &quot;x-foo&quot;;  ### also use MyDecoder to decode &quot;x-foo&quot;
+
+       To illustrate, here&apos;s a custom decoder class for the &quot;quoted-printable&quot;
+       encoding:
+
+           package MyQPDecoder;
+
+           @ISA = qw(MIME::Decoder);
+           use MIME::Decoder;
+           use MIME::QuotedPrint;
+
+           ### decode_it - the private decoding method
+           sub decode_it {
+               my ($self, $in, $out) = @_;
+               local $_;
+               while (defined($_ = $in-&gt;getline)) {
+                   my $decoded = decode_qp($_);
+                   $out-&gt;print($decoded);
+               }
+               1;
+           }
+
+           ### encode_it - the private encoding method
+           sub encode_it {
+               my ($self, $in, $out) = @_;
+
+               my ($buf, $nread) = (&apos;&apos;, 0);
+               while ($in-&gt;read($buf, 60)) {
+                   my $encoded = encode_qp($buf);
+                   $out-&gt;print($encoded);
+               }
+               1;
+           }
+
+       That&apos;s it.  The task was pretty simple because the &quot;quoted-printable&quot;
+       encoding can easily be converted line-by-line... as can even &quot;7bit&quot; and
+       &quot;8bit&quot; (since all these encodings guarantee short lines, with a max of
+       1000 characters).  The good news is: it is very likely that it will be
+       similarly-easy to write a MIME::Decoder for any future standard
+       encodings.
+
+       The &quot;binary&quot; decoder, however, really required block reads and writes:
+       see &quot;MIME::Decoder::Binary&quot; for details.
+
+SEE ALSO
+       MIME::Tools, other MIME::Decoder subclasses.
+
+AUTHOR
+       Eryq (eryq@zeegee.com), ZeeGee Software Inc (http://www.zeegee.com).
+
+       All rights reserved.  This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+       1;
+
+
+
+perl v5.14.2                       2012-06-08                 MIME::Decoder(3pm)
+
+</pre></body></html>

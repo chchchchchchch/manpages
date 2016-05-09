@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hp-unload - Photo Card Access Utility</title></head>
+<body><pre>
+
+hp-unload(1)                      User Manuals                      hp-unload(1)
+
+
+
+NAME
+       hp-unload - Photo Card Access Utility
+
+DESCRIPTION
+       Access inserted photo cards on supported HPLIP printers. This provides an
+       alternative for older devices that do not support USB mass storage or for
+       access to photo cards over a network.
+
+SYNOPSIS
+       hp-unload [DEVICE_URI|PRINTER_NAME] [MODE] [OPTIONS]
+
+PRINTER|DEVICE-URI
+       To specify a device-URI:
+              -d&lt;device-uri&gt; or --device=&lt;device-uri&gt;
+
+       To specify a CUPS printer:
+              -p&lt;printer&gt; or --printer=&lt;printer&gt;
+
+MODE
+       Run in interactive mode:
+              -i or --interactive
+
+       Run in non-interactive mode:
+              -n or --non-interactive
+
+OPTIONS
+       Set the logging level:
+              -l&lt;level&gt;  or --logging=&lt;level&gt; &lt;level&gt;: none, info*, error, warn,
+              debug (*default)
+
+       Run in debug mode:
+              -g (same as option: -ldebug)
+
+       This help information:
+              -h or --help
+
+       Output directory:
+              -o&lt;dir&gt; or --output=&lt;dir&gt;  (Defaults  to  current  directory)(Only
+              used for non-GUI modes)
+
+SEE ALSO
+       hp-toolbox
+
+AUTHOR
+       HPLIP  (Hewlett-Packard  Linux  Imaging  and Printing) is an HP developed
+       solution for printing, scanning, and faxing  with  HP  inkjet  and  laser
+       based printers in Linux.
+
+REPORTING BUGS
+       The  HPLIP Launchpad.net site https://launchpad.net/hplip is available to
+       get help, report bugs, make suggestions, discuss  the  HPLIP  project  or
+       otherwise contact the HPLIP Team.
+
+COPYRIGHT
+       Copyright (c) 2001-14 Hewlett-Packard Development Company, L.P.
+
+       This  software comes with ABSOLUTELY NO WARRANTY.  This is free software,
+       and you are welcome to distribute it under certain conditions. See  COPY&#8208;
+       ING file for more details.
+
+
+
+
+Linux                                  3.3                          hp-unload(1)
+
+</pre></body></html>

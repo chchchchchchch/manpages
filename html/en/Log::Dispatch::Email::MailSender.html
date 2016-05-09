@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Dispatch::Email::MailSender - Subclass of Log::Dispatch::Email that uses the Mail::Sender module</title></head>
+<body><pre>
+
+Log::Dispatch::Email::MUsereContributed PerLog::Dispatch::Email::MailSender(3pm)
+
+
+
+NAME
+       Log::Dispatch::Email::MailSender - Subclass of Log::Dispatch::Email that
+       uses the Mail::Sender module
+
+VERSION
+       version 2.32
+
+SYNOPSIS
+         use Log::Dispatch;
+
+         my $log = Log::Dispatch-&gt;new(
+             outputs =&gt; [
+                 [
+                     &apos;Email::MailSender&apos;,
+                     min_level =&gt; &apos;emerg&apos;,
+                     to        =&gt; [qw( foo@example.com bar@example.org )],
+                     subject   =&gt; &apos;Big error!&apos;
+                 ]
+             ],
+         );
+
+         $log-&gt;emerg(&quot;Something bad is happening&quot;);
+
+DESCRIPTION
+       This is a subclass of Log::Dispatch::Email that implements the send_email
+       method using the Mail::Sender module.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is Copyright (c) 2011 by Dave Rolsky.
+
+       This is free software, licensed under:
+
+         The Artistic License 2.0 (GPL Compatible)
+
+
+
+perl v5.14.2                       2012-05-Log::Dispatch::Email::MailSender(3pm)
+
+</pre></body></html>

@@ -1,0 +1,111 @@
+<html>
+<head><meta charset=utf-8/>
+<title>exim_lock - Mailbox maintenance</title></head>
+<body><pre>
+
+EXIM_LOCK(8)                                                        EXIM_LOCK(8)
+
+
+
+NAME
+       exim_lock - Mailbox maintenance
+
+SYNOPSIS
+       exim_lock [options]mailbox-file
+
+
+DESCRIPTION
+       The  exim_lock  utility  locks a mailbox file using the same algorithm as
+       Exim.  For a discussion of locking issues, see section  25.2.   exim_lock
+       can  be  used  to prevent any modification of a mailbox by Exim or a user
+       agent while investigating a problem.  The utility requires  the  name  of
+       the file as its first argument.  If the locking is successful, the second
+       argument is run as a command (using C&apos;s &#8220;system()&#8221; function); if there is
+       no  second argument, the value of the SHELL environment variable is used;
+       if this is unset or empty, /bin/sh is run.  When  the  command  finishes,
+       the  mailbox is unlocked and the utility ends.  The following options are
+       available:
+
+       -fcntl Use &#8220;fcntl()&#8221; locking on the open mailbox.
+
+       -interval
+              This must be followed by a number, which is a number  of  seconds;
+              it sets the interval to sleep between retries (default 3).
+
+       -lockfile
+              Create a lock file before opening the mailbox.
+
+       -mbx   Lock the mailbox using MBX rules.
+
+       -q     Suppress verification output.
+
+       -retries
+              This  must be followed by a number; it sets the number of times to
+              try to get the lock (default 10).
+
+       -timeout
+              This must be followed by a number, which is a number  of  seconds;
+              it  sets  a timeout to be used with a blocking &#8220;fcntl()&#8221; lock.  If
+              it is not set (the default), a non-blocking call is used.
+
+       -v     Generate verbose output.
+
+              If none of -fcntl, -lockfile or -mbx are given, the default is  to
+              create  a lock file and also use &#8220;fcntl()&#8221; locking on the mailbox,
+              which is the same as Exim&apos;s default.  The use of  -fcntl  requires
+              that  the file be writable; the use of -lockfile requires that the
+              directory containing the file be writable.  Locking by  lock  file
+              does  not  last for ever; Exim assumes that a lock file is expired
+              if it is more than 30 minutes old.
+
+              The -mbx option is mutually exclusive with -fcntl.   It  causes  a
+              shared  lock to be taken out on the open mailbox, and an exclusive
+              lock on the file /tmp/.n.m where n and m are the device number and
+              inode  number  of the mailbox file.  When the locking is released,
+              if an exclusive lock can be obtained for the mailbox, the file  in
+              /tmp is deleted.
+
+              The default output contains verification of the locking that takes
+              place.  The -v option causes some  additional  information  to  be
+              given.  The -q option suppresses all output except error messages.
+&#12;       A command such as
+
+         exim_lock /var/spool/mail/spqr
+
+       runs an interactive shell while the file is locked, whereas
+
+         exim_lock -q /var/spool/mail/spqr &lt;&lt;End
+         &lt;some commands&gt;
+         End
+
+       runs  a  specific  non-interactive sequence of commands while the file is
+       locked, suppressing all verification output.  A single command can be run
+       by a command such as
+
+         exim_lock    -q   /var/spool/mail/spqr       &quot;cp   /var/spool/mail/spqr
+       /some/where&quot;
+
+       Note that if a command is supplied, it must be entirely contained  within
+       the second argument - hence the quotes.
+
+
+BUGS
+       This  manual  page  needs a major re-work. If somebody knows better groff
+       than us and has more experience in  writing  manual  pages,  any  patches
+       would be greatly appreciated.
+
+
+SEE ALSO
+       exim(8), /usr/share/doc/exim4-base/
+
+
+AUTHOR
+       This  manual  page was stitched together from spec.txt by Andreas Metzler
+       &lt;ametzler at downhill.at.eu.org&gt;, for the Debian  GNU/Linux  system  (but
+       may be used by others).
+
+
+
+                                 March 26, 2003                     EXIM_LOCK(8)
+
+</pre></body></html>

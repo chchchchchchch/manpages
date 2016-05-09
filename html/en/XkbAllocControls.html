@@ -1,0 +1,89 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbAllocControls - Allocates an XkbControlsRec structure in the XkbDescRec</title></head>
+<body><pre>
+
+XkbAllocControls(3)               XKB FUNCTIONS              XkbAllocControls(3)
+
+
+
+NAME
+       XkbAllocControls  -  Allocates  an XkbControlsRec structure in the XkbDe&#8208;
+       scRec
+
+SYNOPSIS
+       Status XkbAllocControls (XkbDescPtr xkb, unsigned int which);
+
+ARGUMENTS
+       - xkb  Xkb description in which to allocate ctrls rec
+
+       - which
+              mask of components of ctrls to allocate
+
+DESCRIPTION
+       The need to allocate an XkbControlsRec structure seldom arises; Xkb  cre&#8208;
+       ates  one when an application calls XkbGetControls or a related function.
+       For those situations where there is not an XkbControlsRec structure allo&#8208;
+       cated in the XkbDescRec, allocate one by calling XkbAllocControls.
+
+       XkbAllocControls allocates the ctrls field of the xkb parameter, initial&#8208;
+       izes all fields to zero, and returns Success. If the ctrls field  is  not
+       NULL,  XkbAllocControls simply returns Success. If xkb is NULL, XkbAlloc&#8208;
+       Controls reports a BadMatch error. If the ctrls field could not be  allo&#8208;
+       cated, it reports a BadAlloc error.
+
+       The  which mask specifies the individual fields of the ctrls structure to
+       be allocated and can contain any of the valid masks defined in  Table  1.
+       (SHOULD  THIS  COMMENT  BE  LEFT  IN????)   Because none of the currently
+       existing controls have any structures associated with them, which is cur&#8208;
+       rently of little practical value in this call.
+
+       Table  1  shows  the  actual  values for the individual mask bits used to
+       select controls for modification and to enable and disable  the  control.
+       Note  that  the same mask bit is used to specify general modifications to
+       the parameters used to configure the control (which), and to  enable  and
+       disable  the control (enabled_ctrls). The anomalies in the table (no &quot;ok&quot;
+       in column) are for controls that have no configurable attributes; and for
+       controls that are not boolean controls and therefore cannot be enabled or
+       disabled.
+
+
+       c s s s l l l l l l l l l l l l.  Table  1  Controls  Mask  Bits  _  Mask
+       Bit  which   or  enabled   Value        changed_ctrls  _ctrls   _  XkbRe&#8208;
+       peatKeysMask   ok   ok   (1L&lt;&lt;0)    XkbSlowKeysMask     ok   ok   (1L&lt;&lt;1)
+       XkbBounceKeysMask   ok   ok   (1L&lt;&lt;2)                           XkbStick&#8208;
+       yKeysMask   ok   ok   (1L&lt;&lt;3) XkbMouseKeysMask    ok   ok   (1L&lt;&lt;4)  Xkb&#8208;
+       MouseKeysAccelMask    ok   ok   (1L&lt;&lt;5)                            XkbAc&#8208;
+       cessXKeysMask  ok   ok   (1L&lt;&lt;6)                       XkbAccessXTimeout&#8208;
+       Mask    ok   ok   (1L&lt;&lt;7)      XkbAccessXFeedbackMask   ok   ok   (1L&lt;&lt;8)
+       XkbAudibleBellMask       ok   (1L&lt;&lt;9)                            XkbOver&#8208;
+       lay1Mask          ok   (1L&lt;&lt;10)    XkbOverlay2Mask          ok   (1L&lt;&lt;11)
+       XkbIgnoreGroupLockMask        ok   (1L&lt;&lt;12)                XkbGroupsWrap&#8208;
+       Mask   ok        (1L&lt;&lt;27)  XkbInternalModsMask ok        (1L&lt;&lt;28)  XkbIg&#8208;
+       noreLockModsMask    ok        (1L&lt;&lt;29)                   XkbPerKeyRepeat&#8208;
+       Mask ok        (1L&lt;&lt;30)       XkbControlsEnabledMask   ok        (1L&lt;&lt;31)
+       XkbAccessXOptionsMask    ok   ok   (XkbStickyKeysMask                   |
+                      XkbAccessXFeedbackMask)                XkbAllBooleanCtrls&#8208;
+       Mask        ok   (0x00001FFF) XkbAllControlsMask  ok        (0xF8001FFF)
+
+RETURN VALUES
+       SUCCESS        allocates  the  ctrls  field   of   the   xkb   parameter,
+                      initializes all fields to zero
+
+                    the ctrls field is not NULL
+
+DIAGNOSTICS
+       BadAlloc       Unable to allocate storage
+
+       BadMatch       A  compatible  version  of  Xkb  was  not available in the
+                      server or an argument has correct type and range,  but  is
+                      otherwise invalid
+
+SEE ALSO
+       XkbGetControls(3)
+
+
+
+X Version 11                      libX11 1.5.0               XkbAllocControls(3)
+
+</pre></body></html>

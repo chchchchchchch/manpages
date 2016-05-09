@@ -1,0 +1,123 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca file IO -</title></head>
+<body><pre>
+
+libcaca file IO(3caca)               libcaca              libcaca file IO(3caca)
+
+
+
+NAME
+       libcaca file IO -
+
+   Functions
+       __extern caca_file_t * caca_file_open (char const *, const char *)
+           Open a file for reading or writing.
+       __extern int caca_file_close (caca_file_t *)
+           Close a file handle.
+       __extern uint64_t caca_file_tell (caca_file_t *)
+           Return the position in a file handle.
+       __extern size_t caca_file_read (caca_file_t *, void *, size_t)
+           Read data from a file handle.
+       __extern size_t caca_file_write (caca_file_t *, const void *, size_t)
+           Write data to a file handle.
+       __extern char * caca_file_gets (caca_file_t *, char *, int)
+           Read a line from a file handle.
+       __extern int caca_file_eof (caca_file_t *)
+           Tell whether a file handle reached end of file.
+
+Detailed Description
+       These functions allow to read and write files in a platform-independent
+       way.
+
+Function Documentation
+   __extern caca_file_t* caca_file_open (char const *path, const char *mode)
+       Create a caca file handle for a file. If the file is zipped, it is
+       decompressed on the fly.
+       If an error occurs, NULL is returned and errno is set accordingly:
+
+       &#183; ENOSTS Function not implemented.
+
+       &#183; EINVAL File not found or permission denied.
+
+       Parameters:
+           path The file path
+           mode The file open mode
+
+       Returns:
+           A file handle to path.
+
+       Referenced by caca_import_canvas_from_file().
+
+   __extern int caca_file_close (caca_file_t *fp) Close and destroy the
+       resources associated with a caca file handle.
+       This function is a wrapper for fclose() or, if available, gzclose().
+
+       Parameters:
+           fp The file handle
+
+       Returns:
+           The return value of fclose() or gzclose().
+
+       Referenced by caca_import_canvas_from_file().
+
+   __extern uint64_t caca_file_tell (caca_file_t *fp) Return the file handle
+       position, in bytes.
+       Parameters:
+           fp The file handle
+
+       Returns:
+           The current offset in the file handle.
+&#12;   __extern size_t caca_file_read (caca_file_t *fp, void *ptr, size_tsize) Read
+       data from a file handle and copy them into the given buffer.
+       Parameters:
+           fp The file handle
+           ptr The destination buffer
+           size The number of bytes to read
+
+       Returns:
+           The number of bytes read
+
+       Referenced by caca_import_canvas_from_file().
+
+   __extern size_t caca_file_write (caca_file_t *fp, const void *ptr,
+       size_tsize) Write the contents of the given buffer to the file handle.
+       Parameters:
+           fp The file handle
+           ptr The source buffer
+           size The number of bytes to write
+
+       Returns:
+           The number of bytes written
+
+   __extern char* caca_file_gets (caca_file_t *fp, char *s, intsize) Read one
+       line of data from a file handle, up to one less than the given number of
+       bytes. A trailing zero is appended to the data.
+       Parameters:
+           fp The file handle
+           s The destination buffer
+           size The maximum number of bytes to read
+
+       Returns:
+           The number of bytes read, including the trailing zero
+
+   __extern int caca_file_eof (caca_file_t *fp) Return the end-of-file status of
+       the file handle.
+       This function is a wrapper for feof() or, if available, gzeof().
+
+       Parameters:
+           fp The file handle
+
+       Returns:
+           1 if EOF was reached, 0 otherwise
+
+       Referenced by caca_import_canvas_from_file().
+
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2012           libcaca file IO(3caca)
+
+</pre></body></html>

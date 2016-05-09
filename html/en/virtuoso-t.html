@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>virtuoso-t - OpenLink Virtuoso Opensource Server</title></head>
+<body><pre>
+
+VIRTUOSO-T(1)                                                      VIRTUOSO-T(1)
+
+
+
+NAME
+       virtuoso-t - OpenLink Virtuoso Opensource Server
+
+SYNOPSIS
+       virtuoso-t [-fcnCbDARwMKrBd] [+foreground] [+configfile arg] [+no-
+                  checkpoint] [+checkpoint-only] [+backup-dump] [+crash-dump]
+                  [+configfile arg] [+restore-crash-dump] [+wait] [+more arg]
+                  [+dumpkeys arg] [+restore-backup arg] [+backup-dirs arg]
+                  [+debug] [+pwdold arg] [+pwddba arg] [+pwddav arg]
+       virtuoso-t [+help]
+
+DESCRIPTION
+       This manual page documents briefly the virtuoso-t command.
+
+       This  manual  page  was  written  for the Debian distribution because the
+       original program does not have a manual page.  Instead, it has documenta&#8208;
+       tion in the &apos;doc&apos; VAD package.
+
+       virtuoso-t is the OpenLink Virtuoso server
+
+OPTIONS
+       A  summary  of options is included below. For a complete description, see
+       the &apos;doc&apos; VAD package.
+
+       +foreground
+              run in the foreground
+
+       +configfile
+              use alternate configuration file
+
+       +no-checkpoint
+              do not checkpoint on startup
+
+       +checkpoint-only
+              exit as soon as checkpoint on startup is complete
+
+       +backup-dump
+              dump database into the transaction log, then exit
+
+       +crash-dump
+              dump inconsistent database into the transaction log, then exit
+
+       +crash-dump-data-ini
+              specify the DB ini to use for reading the data to dump
+
+       +restore-crash-dump
+              restore from a crash-dump
+
+       +wait  wait for background initialization to complete
+
+       +mode  specify mode options for server startup (onbalr)
+
+       +dumpkeys
+              specify key id(s) to dump on crash dump (default : all)
+
+       +restore-backup
+              default backup directories
+
+       +backup-dirs
+              run in the foreground
+
+       +debug Show additional debugging info
+&#12;       +pwdold
+              Old DBA password
+
+       +pwddba
+              New DBA password
+
+       +pwddav
+              New DAV password
+
+FILES
+       /etc/virtuoso/virtuoso.ini
+              The configuration file to control the behaviour of  the  main  in&#8208;
+              stance of virtuoso-t.
+
+SEE ALSO
+       The programs are documented fully by the &apos;doc&apos; VAD package.
+
+
+
+                                  18 April 2013                    VIRTUOSO-T(1)
+
+</pre></body></html>

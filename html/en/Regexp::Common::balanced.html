@@ -1,0 +1,94 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Regexp::Common::balanced -- provide regexes for strings with balanced parenthesized delimiters or arbitrary delimiters.</title></head>
+<body><pre>
+
+Regexp::Common::balanceUsermContributed Perl DocumeRegexp::Common::balanced(3pm)
+
+
+
+NAME
+       Regexp::Common::balanced -- provide regexes for strings with balanced
+       parenthesized delimiters or arbitrary delimiters.
+
+SYNOPSIS
+           use Regexp::Common qw /balanced/;
+
+           while (&lt;&gt;) {
+               /$RE{balanced}{-parens=&gt;&apos;()&apos;}/
+                                          and print q{balanced parentheses\n};
+           }
+
+DESCRIPTION
+       Please consult the manual of Regexp::Common for a general description of
+       the works of this interface.
+
+       Do not use this module directly, but load it via Regexp::Common.
+
+   $RE{balanced}{-parens}
+       Returns a pattern that matches a string that starts with the nominated
+       opening parenthesis or bracket, contains characters and properly nested
+       parenthesized subsequences, and ends in the matching parenthesis.
+
+       More than one type of parenthesis can be specified:
+
+               $RE{balanced}{-parens=&gt;&apos;(){}&apos;}
+
+       in which case all specified parenthesis types must be correctly balanced
+       within the string.
+
+       If we are using C{-keep} (See Regexp::Common):
+
+       $1  captures the entire expression
+
+   $RE{balanced}{-begin =&gt; &quot;begin&quot;}{-end =&gt; &quot;end&quot;}
+       Returns a pattern that matches a string that is properly balanced using
+       the begin and end strings as start and end delimiters.  Multiple sets of
+       begin and end strings can be given by separating them by &quot;|&quot;s (which can
+       be escaped with a backslash).
+
+           qr/$RE{balanced}{-begin =&gt; &quot;do|if|case&quot;}{-end =&gt; &quot;done|fi|esac&quot;}/
+
+       will match properly balanced strings that either start with do and end
+       with done, start with if and end with fi, or start with case and end with
+       esac.
+
+       If -end contains less cases than -begin, the last case of -end is
+       repeated. If it contains more cases than -begin, the extra cases are
+       ignored. If either of -begin or -end isn&apos;t given, or is empty, -begin =&gt;
+       &apos;(&apos; and -end =&gt; &apos;)&apos; are assumed.
+
+       If we are using C{-keep} (See Regexp::Common):
+
+       $1  captures the entire expression
+
+SEE ALSO
+       Regexp::Common for a general description of how to use this interface.
+
+AUTHOR
+       Damian Conway (damian@conway.org)
+
+MAINTAINANCE
+       This package is maintained by Abigail (regexp-common@abigail.be).
+&#12;BUGS AND IRRITATIONS
+       Bound to be plenty.
+
+       For a start, there are many common regexes missing.  Send them in to
+       regexp-common@abigail.be.
+
+LICENSE and COPYRIGHT
+       This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+
+       This module is free software, and maybe used under any of the following
+       licenses:
+
+        1) The Perl Artistic License.     See the file COPYRIGHT.AL.
+        2) The Perl Artistic License 2.0. See the file COPYRIGHT.AL2.
+        3) The BSD Licence.               See the file COPYRIGHT.BSD.
+        4) The MIT Licence.               See the file COPYRIGHT.MIT.
+
+
+
+perl v5.14.2                       2010-02-23      Regexp::Common::balanced(3pm)
+
+</pre></body></html>

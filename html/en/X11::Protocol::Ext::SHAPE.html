@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X11::Protocol::Ext::SHAPE - Perl module for the X11 Protocol Nonrectangular Window Shape Extension</title></head>
+<body><pre>
+
+Protocol::Ext::SHAPE(3pUser Contributed Perl DocumentatProtocol::Ext::SHAPE(3pm)
+
+
+
+NAME
+       X11::Protocol::Ext::SHAPE - Perl module for the X11 Protocol
+       Nonrectangular Window Shape Extension
+
+SYNOPSIS
+         use X11::Protocol;
+         $x = X11::Protocol-&gt;new($ENV{&apos;DISPLAY&apos;});
+         $x-&gt;init_extension(&apos;SHAPE&apos;) or die;
+
+DESCRIPTION
+       This module is used by the X11::Protocol module to participate in the
+       shaped window extension to the X protocol, allowing windows to be of any
+       shape, not just rectangles.
+
+SYMBOLIC CONSTANTS
+       This extension adds the constant types &apos;ShapeKind&apos; and &apos;ShapeOp&apos;, with
+       values as defined in the standard.
+
+EVENTS
+       This extension adds the event type &apos;ShapeNotify&apos;, with values as
+       specified in the standard. This event is selected using the
+       ShapeSelectInput() request.
+
+REQUESTS
+       This extension adds several requests, called as shown below:
+
+         $x-&gt;ShapeQueryVersion
+         =&gt;
+         ($major, $minor)
+
+         $x-&gt;ShapeRectangles($dest, $destKind, $op, $xOff, $yOff,
+                             $ordering, @rectangles)
+
+         $x-&gt;ShapeMask($dest, $destKind, $op, $xOff, $yOff, $source)
+
+         $x-&gt;ShapeCombine($dest, $destKind, $op, $xOff, $yOff, $source,
+                          $sourceKind)
+
+         $x-&gt;ShapeOffset($dest, $destKind, $xOff, $yOff)
+
+         $x-&gt;ShapeQueryExtents($dest)
+         =&gt;
+         ($boundingShaped, $clipShaped,
+          ($xBoundingShape, $yBoundingShape,
+           $widthBoundingShape, $heightBoundingShape)
+          ($xClipShape, $yClipShape, $widthClipShape, $heightClipShape))
+
+         $x-&gt;ShapeSelectInput($window, $enable)
+
+         $x-&gt;ShapeInputSelected($window)
+         =&gt;
+         $enable
+
+         $x-&gt;ShapeGetRectangles($window, $kind)
+         =&gt;
+         ($ordering, [$x, $y, $width, $height], ...)
+
+AUTHOR
+       Stephen McCamant &lt;SMCCAM@cpan.org&gt;.
+
+SEE ALSO
+       perl(1), X11::Protocol, Nonrectangular Window Shape Extension (X
+       Consortium Standard).
+
+
+
+perl v5.14.2                       2003-02-16          Protocol::Ext::SHAPE(3pm)
+
+</pre></body></html>

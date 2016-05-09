@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_getpixel - return the color of a pixel</title></head>
+<body><pre>
+
+gl_getpixel(3)                 Svgalib User Manual                gl_getpixel(3)
+
+
+
+NAME
+       gl_getpixel - return the color of a pixel
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       int gl_getpixel(int x, int y);
+
+
+DESCRIPTION
+       Returns  the  color of pixel at position (x, y) in the format used in the
+       screen memory.
+
+       The color -1 is returned for points outside the clipping window.
+
+
+SEE ALSO
+       svgalib(7), vgagl(7), svgalib.conf(5), threedkit(7),  testgl(1),  gl_get&#8208;
+       box(3),  gl_getpalette(3), gl_getpalettecolor(3), gl_getpalettecolors(3),
+       gl_getpixelrgb(3),   gl_rgbcolor(3),   gl_setpalette(3),   gl_setpalette&#8208;
+       color(3), gl_setpalettecolors(3), gl_setpixel(3), gl_setpixelrgb(3).
+
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced demo  as  well  as  of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                2 Aug 1997                     gl_getpixel(3)
+
+</pre></body></html>

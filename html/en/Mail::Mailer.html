@@ -1,0 +1,132 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Mail::Mailer - Simple interface to electronic mailing mechanisms</title></head>
+<body><pre>
+
+Mail::Mailer(3pm)      User Contributed Perl Documentation     Mail::Mailer(3pm)
+
+
+
+NAME
+       Mail::Mailer - Simple interface to electronic mailing mechanisms
+
+INHERITANCE
+        Mail::Mailer
+          is a IO::Handle
+
+SYNOPSIS
+         use Mail::Mailer;
+         use Mail::Mailer qw(mail);    # specifies default mailer
+
+         $mailer = Mail::Mailer-&gt;new;
+         $mailer = Mail::Mailer-&gt;new($type, @args);
+
+         $mailer-&gt;open(\%headers);
+         print $mailer $body;
+         $mailer-&gt;close
+             or die &quot;couldn&apos;t send whole message: $!\n&quot;;
+
+DESCRIPTION
+       Sends mail using any of the built-in methods.  As TYPE argument to new(),
+       you can specify any of
+
+       &quot;sendmail&quot;
+           Use the &quot;sendmail&quot; program to deliver the mail.
+
+       &quot;smtp&quot;
+           Use the &quot;smtp&quot; protocol via Net::SMTP to deliver the mail. The server
+           to use can be specified in @args with
+
+            $mailer = Mail::Mailer-&gt;new(&apos;smtp&apos;, Server =&gt; $server);
+
+           The smtp mailer does not handle &quot;Cc&quot; and &quot;Bcc&quot; lines, neither their
+           &quot;Resent-*&quot; fellows. The &quot;Debug&quot; options enables debugging output from
+           &quot;Net::SMTP&quot;.
+
+           You may also use the &quot;Auth =&gt; [ $user, $password ]&quot; option for SASL
+           authentication. To make this work, you have to install the
+           Authen::SASL distribution yourself: it is not automatically
+           installed.
+
+       &quot;smtps&quot;
+           Use the smtp over ssl protocol via Net::SMTP::SSL to deliver the
+           mail.  Usage is identical to &quot;smtp&quot;. You have to install Authen::SASL
+           as well.
+
+            $mailer = Mail::Mailer-&gt;new(&apos;smtps&apos;, Server =&gt; $server);
+
+       &quot;qmail&quot;
+           Use qmail&apos;s qmail-inject program to deliver the mail.
+
+       &quot;testfile&quot;
+           Used for debugging, this displays the data to the file named in
+           $Mail::Mailer::testfile::config{outfile} which defaults to a file
+           named &quot;mailer.testfile&quot;.  No mail is ever sent.
+
+       &quot;Mail::Mailer&quot; will search for executables in the above order. The
+       default mailer will be the first one found.
+
+METHODS
+   Constructors
+       Mail::Mailer-&gt;new(TYPE, ARGS)
+           The TYPE is one of the back-end sender implementations, as described
+           in the DESCRIPTION chapter of this manual page.  The ARGS are passed
+           to that back-end.
+
+       $obj-&gt;open(HASH)
+           The HASH consists of key and value pairs, the key being the name of
+           the header field (eg, &quot;To&quot;), and the value being the corresponding
+           contents of the header field.  The value can either be a scalar (eg,
+           &quot;gnat@frii.com&quot;) or a reference to an array of scalars (&quot;eg,
+           [&apos;gnat@frii.com&apos;, &apos;Tim.Bunce@ig.co.uk&apos;]&quot;).
+
+DETAILS
+   ENVIRONMENT VARIABLES
+       PERL_MAILERS
+           Augments/override the build in choice for binary used to send out our
+           mail messages.
+
+           Format:
+
+               &quot;type1:mailbinary1;mailbinary2;...:type2:mailbinaryX;...:...&quot;
+
+           Example: assume you want you use private sendmail binary instead of
+           mailx, one could set &quot;PERL_MAILERS&quot; to:
+
+               &quot;mail:/does/not/exists:sendmail:$HOME/test/bin/sendmail&quot;
+
+           On systems which may include &quot;:&quot; in file names, use &quot;|&quot; as separator
+           between type-groups.
+
+               &quot;mail:c:/does/not/exists|sendmail:$HOME/test/bin/sendmail&quot;
+
+   BUGS
+       Mail::Mailer does not help with folding, and does not protect against
+       various web-script hacker attacks, for instance where a new-line is
+       inserted in the content of the field.
+
+SEE ALSO
+       This module is part of the MailTools distribution,
+       http://perl.overmeer.net/mailtools/.
+
+AUTHORS
+       The MailTools bundle was developed by Graham Barr.  Later, Mark Overmeer
+       took over maintenance without commitment to further development.
+
+       Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;.  Mail::Field::AddrList by Peter
+       Orbaek &lt;poe@cit.dk&gt;.  Mail::Mailer and Mail::Send by Tim Bunce
+       &lt;Tim.Bunce@ig.co.uk&gt;.  For other contributors see ChangeLog.
+
+LICENSE
+       Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and 2001-2007 Mark
+       Overmeer &lt;perl@overmeer.net&gt;.
+
+       This program is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.  See
+       http://www.perl.com/perl/misc/Artistic.html
+
+
+
+perl v5.14.2                       2012-02-25                  Mail::Mailer(3pm)
+
+</pre></body></html>

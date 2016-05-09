@@ -1,0 +1,68 @@
+<html>
+<head><meta charset=utf-8/>
+<title>iswdigit - test for decimal digit wide character</title></head>
+<body><pre>
+
+ISWDIGIT(3)                 Linux Programmer&apos;s Manual                ISWDIGIT(3)
+
+
+
+NAME
+       iswdigit - test for decimal digit wide character
+
+SYNOPSIS
+       #include &lt;wctype.h&gt;
+
+       int iswdigit(wint_t wc);
+
+DESCRIPTION
+       The   iswdigit()   function  is  the  wide-character  equivalent  of  the
+       isdigit(3) function.  It tests whether wc is a wide  character  belonging
+       to the wide-character class &quot;digit&quot;.
+
+       The  wide-character  class  &quot;digit&quot;  is  a subclass of the wide-character
+       class &quot;xdigit&quot;, and therefore also a subclass of the wide-character class
+       &quot;alnum&quot;,  of  the  wide-character class &quot;graph&quot; and of the wide-character
+       class &quot;print&quot;.
+
+       Being a subclass of the wide character class &quot;print&quot;, the  wide-character
+       class &quot;digit&quot; is disjoint from the wide-character class &quot;cntrl&quot;.
+
+       Being  a subclass of the wide-character class &quot;graph&quot;, the wide-character
+       class &quot;digit&quot; is disjoint from the wide-character class &quot;space&quot;  and  its
+       subclass &quot;blank&quot;.
+
+       Being  a subclass of the wide-character class &quot;alnum&quot;, the wide-character
+       class &quot;digit&quot; is disjoint from the wide-character class &quot;punct&quot;.
+
+       The wide-character class &quot;digit&quot;  is  disjoint  from  the  wide-character
+       class  &quot;alpha&quot;  and  therefore also disjoint from its subclasses &quot;lower&quot;,
+       &quot;upper&quot;.
+
+       The wide-character class &quot;digit&quot; always contains exactly the  digits  &apos;0&apos;
+       to &apos;9&apos;.
+
+RETURN VALUE
+       The iswdigit() function returns nonzero if wc is a wide character belong&#8208;
+       ing to the wide-character class &quot;digit&quot;.  Otherwise it returns zero.
+
+CONFORMING TO
+       C99.
+
+NOTES
+       The behavior of iswdigit() depends on the LC_CTYPE category of  the  cur&#8208;
+       rent locale.
+
+SEE ALSO
+       isdigit(3), iswctype(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                1999-07-25                        ISWDIGIT(3)
+
+</pre></body></html>

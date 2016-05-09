@@ -1,0 +1,88 @@
+<html>
+<head><meta charset=utf-8/>
+<title>midi2ly - manual page for midi2ly (LilyPond) 2.14.2</title></head>
+<body><pre>
+
+MIDI2LY(1)                        User Commands                       MIDI2LY(1)
+
+
+
+NAME
+       midi2ly - manual page for midi2ly (LilyPond) 2.14.2
+
+SYNOPSIS
+       midi2ly [OPTION]... FILE
+
+DESCRIPTION
+       Convert MIDI to LilyPond input.
+
+OPTIONS
+       -a, --absolute-pitches
+              print absolute pitches
+
+       -d, --duration-quant=DUR
+              quantise note durations on DUR
+
+       -D, --debug
+              debug printing
+
+       -e, --explicit-durations
+              print explicit durations
+
+       -h, --help
+              show this help and exit
+
+       -i, --include-header=FILE
+              prepend FILE to output
+
+       -k, --key=ALT[:MINOR]
+              set key: ALT=+sharps|-flats; MINOR=1
+
+       -o, --output=FILE
+              write output to FILE
+
+       -p, --preview
+              preview of first 4 bars
+
+       -s, --start-quant=DUR
+              quantise note starts on DUR
+
+       -S, --skip
+              use s instead of r for rests
+
+       -t, --allow-tuplet=DUR*NUM/DEN
+              allow tuplet durations DUR*NUM/DEN
+
+       -V, --verbose
+              be verbose
+
+       --version
+              show version number and exit
+
+       -w, --warranty
+              show warranty and copyright
+
+       -x, --text-lyrics
+              treat every text as a lyric
+
+EXAMPLES
+              $   midi2ly  --key=-2:1  --duration-quant=32  --allow-tuplet=4*2/3
+              --allow-tuplet=2*4/3 foo.midi
+&#12;REPORTING BUGS
+       Report bugs via http://post.gmane.org/post.php?group=gmane.comp.gnu.lily&#8208;
+       pond.bugs
+
+SEE ALSO
+       The full documentation for midi2ly is maintained as a Texinfo manual.  If
+       the info and midi2ly programs are properly installed at  your  site,  the
+       command
+
+              info midi2ly
+
+       should give you access to the complete manual.
+
+
+
+midi2ly (LilyPond) 2.14.2         February 2013                       MIDI2LY(1)
+
+</pre></body></html>

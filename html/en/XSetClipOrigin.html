@@ -1,0 +1,108 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XSetClipOrigin, XSetClipMask, XSetClipRectangles - GC convenience routines</title></head>
+<body><pre>
+
+XSetClipOrigin(3)                XLIB FUNCTIONS                XSetClipOrigin(3)
+
+
+
+NAME
+       XSetClipOrigin, XSetClipMask, XSetClipRectangles - GC convenience rou&#8208;
+       tines
+
+SYNTAX
+       int XSetClipOrigin(Display *display, GC gc, int clip_x_origin, int
+              clip_y_origin);
+
+       int XSetClipMask(Display *display, GC gc, Pixmap pixmap);
+
+       int XSetClipRectangles(Display *display, GC gc, int clip_x_origin, int
+              clip_y_origin, XRectangle rectangles[], int n, int ordering);
+
+ARGUMENTS
+       display   Specifies the connection to the X server.
+
+       clip_x_origin
+       clip_y_origin
+                 Specify the x and y coordinates of the clip-mask origin.
+
+       gc        Specifies the GC.
+
+       n         Specifies the number of rectangles.
+
+       ordering  Specifies the ordering relations on the rectangles.  You can
+                 pass Unsorted, YSorted, YXSorted, or YXBanded.
+
+       pixmap    Specifies the pixmap or None.
+
+       rectangles
+                 Specifies an array of rectangles that define the clip-mask.
+
+DESCRIPTION
+       The XSetClipOrigin function sets the clip origin in the specified GC.
+       The clip-mask origin is interpreted relative to the origin of whatever
+       destination drawable is specified in the graphics request.
+
+       XSetClipOrigin can generate BadAlloc and BadGC errors.
+
+       The XSetClipMask function sets the clip-mask in the specified GC to the
+       specified pixmap.  If the clip-mask is set to None, the pixels are are
+       always drawn (regardless of the clip-origin).
+
+       XSetClipMask can generate BadAlloc, BadGC, BadMatch, and BadValue errors.
+
+       The XSetClipRectangles function changes the clip-mask in the specified GC
+       to the specified list of rectangles and sets the clip origin.  The output
+       is clipped to remain contained within the rectangles.  The clip-origin is
+       interpreted relative to the origin of whatever destination drawable is
+       specified in a graphics request.  The rectangle coordinates are inter&#8208;
+       preted relative to the clip-origin.  The rectangles should be noninter&#8208;
+       secting, or the graphics results will be undefined.  Note that the list
+       of rectangles can be empty, which effectively disables output.  This is
+       the opposite of passing None as the clip-mask in XCreateGC, XChangeGC,
+       and XSetClipMask.
+
+       If known by the client, ordering relations on the rectangles can be spec&#8208;
+       ified with the ordering argument.  This may provide faster operation by
+       the server.  If an incorrect ordering is specified, the X server may gen&#8208;
+       erate a BadMatch error, but it is not required to do so.  If no error is
+       generated, the graphics results are undefined.  Unsorted means the rec&#8208;
+       tangles are in arbitrary order.  YSorted means that the rectangles are
+       nondecreasing in their Y origin.  YXSorted additionally constrains
+       YSorted order in that all rectangles with an equal Y origin are nonde&#8208;
+       creasing in their X origin.  YXBanded additionally constrains YXSorted by
+       requiring that, for every possible Y scanline, all rectangles that
+       include that scanline have an identical Y origins and Y extents.
+
+       XSetClipRectangles can generate BadAlloc, BadGC, BadMatch, and BadValue
+       errors.
+
+DIAGNOSTICS
+       BadAlloc  The server failed to allocate the requested resource or server
+                 memory.
+
+       BadGC     A value for a GContext argument does not name a defined GCon&#8208;
+                 text.
+
+       BadMatch  Some argument or pair of arguments has the correct type and
+                 range but fails to match in some other way required by the
+                 request.
+
+       BadValue  Some numeric value falls outside the range of values accepted
+                 by the request.  Unless a specific range is specified for an
+                 argument, the full range defined by the argument&apos;s type is
+                 accepted.  Any argument defined as a set of alternatives can
+                 generate this error.
+
+SEE ALSO
+       XCreateGC(3), XDrawRectangle(3), XQueryBestSize(3), XSetArcMode(3), XSet&#8208;
+       FillStyle(3), XSetFont(3), XSetLineAttributes(3), XSetState(3), XSet&#8208;
+       Tile(3)
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0                 XSetClipOrigin(3)
+
+</pre></body></html>

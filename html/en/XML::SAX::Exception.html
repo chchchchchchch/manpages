@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XML::SAX::Exception - Exception classes for XML::SAX</title></head>
+<body><pre>
+
+XML::SAX::Exception(3pmUser Contributed Perl DocumentatiXML::SAX::Exception(3pm)
+
+
+
+NAME
+       XML::SAX::Exception - Exception classes for XML::SAX
+
+SYNOPSIS
+         throw XML::SAX::Exception::NotSupported(
+                 Message =&gt; &quot;The foo feature is not supported&quot;,
+                 );
+
+DESCRIPTION
+       This module is the base class for all SAX Exceptions, those defined in
+       the spec as well as those that one may create for one&apos;s own SAX errors.
+
+       There are three subclasses included, corresponding to those of the SAX
+       spec:
+
+         XML::SAX::Exception::NotSupported
+         XML::SAX::Exception::NotRecognized
+         XML::SAX::Exception::Parse
+
+       Use them wherever you want, and as much as possible when you encounter
+       such errors. SAX is meant to use exceptions as much as possible to flag
+       problems.
+
+CREATING NEW EXCEPTION CLASSES
+       All you need to do to create a new exception class is:
+
+         @XML::SAX::Exception::MyException::ISA = (&apos;XML::SAX::Exception&apos;)
+
+       The given package doesn&apos;t need to exist, it&apos;ll behave correctly this way.
+       If your exception refines an existing exception class, then you may also
+       inherit from that instead of from the base class.
+
+THROWING EXCEPTIONS
+       This is as simple as exemplified in the SYNOPSIS. In fact, there&apos;s
+       nothing more to know. All you have to do is:
+
+         throw XML::SAX::Exception::MyException( Message =&gt; &apos;Something went wrong&apos; );
+
+       and voila, you&apos;ve thrown an exception which can be caught in an eval
+       block.
+
+
+
+perl v5.12.4                       2011-09-09           XML::SAX::Exception(3pm)
+
+</pre></body></html>

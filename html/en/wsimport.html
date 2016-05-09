@@ -1,0 +1,142 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wsimport - Java(TM) API for XML Web Services (JAX-WS) 2.0</title></head>
+<body><pre>
+
+wsimport(1)                                                          wsimport(1)
+
+
+
+Name
+       wsimport - Java(TM) API for XML Web Services (JAX-WS) 2.0
+
+       Specification Version: 2.1
+       Implementation Version: 2.1.1
+
+Overview
+       The wsimport tool generates JAX-WS portable artifacts, such as:
+
+          o Service Endpoint Interface (SEI)
+
+          o Service
+
+          o Exception class mapped from wsdl:fault (if any)
+
+          o Async Reponse Bean derived from response wsdl:message (if any)
+
+          o JAXB generated value types (mapped java classes from schema types)
+
+       These  artifacts  can  be packaged in a WAR file with the WSDL and schema
+       documents along with the endpoint implementation  to  be  deployed.  also
+       provides wsimport ant task, see Wsimport ant task @
+       https://jax-ws.dev.java.net/nonav/2.1.1/docs/wsimportant.html.
+
+
+Launching wsimport
+          o Solaris/Linux
+
+             * /bin/wsimport.sh -help
+
+          o Windows
+
+             * \bin\wsimport.bat -help
+
+
+Syntax
+       wsimport [options] &lt;wsdl&gt;
+
+       The following table lists the wsimport options.
+
+       Option                     Description
+       -d &lt;directory&gt;             Specify where to place gen&#8208;
+                                  erated output files
+       -b &lt;path&gt;                  Specify external JAX-WS or
+                                  JAXB binding files (Each
+                                  &lt;file&gt; must have its own
+                                  -b)
+       -B &lt;jaxbOption&gt;            Pass this option to JAXB
+                                  schema compiler
+       -catalog                   Specify catalog file to
+                                  resolve external entity
+                                  references, it supports
+                                  TR9401, XCatalog, and OASIS
+                                  XML Catalog format. Please
+                                  read the documentation of
+                                  catalog @
+                                  https://jax-ws.dev.java.net/nonav/2.1.1/docs/cat&#8208;
+                                  alog-support.html and see
+                                  catalog sample.
+       -extension                 Allow vendor extensions
+                                  (functionality not speci&#8208;
+                                  fied by the specification).
+                                  Use of extensions may
+                                  result in applications that
+                                  are not portable or may not
+                                  interoperate with other
+                                  implementations
+       -help                      Display help
+       -httpproxy:&lt;host&gt;:&lt;port&gt;   Specify an HTTP proxy
+                                  server (port defaults to
+                                  8080)
+       -keep                      Keep generated files
+       -p                         Specifying a target package
+                                  via this command-line
+                                  option, overrides any wsdl
+                                  and schema binding cus&#8208;
+                                  tomization for package name
+                                  and the default package
+                                  name algorithm defined in
+                                  the specification
+       -s &lt;directory&gt;             Specify where to place gen&#8208;
+                                  erated source files
+       -verbose                   Output messages about what
+                                  the compiler is doing
+       -version                   Print version information
+       -wsdllocation &lt;location&gt;   @WebServiceClient.wsdlLoca&#8208;
+                                  tion value
+       -target                    Generate code as per the
+                                  given JAX-WS specification
+                                  version. version 2.0 will
+                                  generate compliant code for
+                                  JAX-WS 2.0 spec.
+       -quiet                     Suppress wsimport output
+&#12;       Multiple JAX-WS and JAXB binding files can be specified using -b option
+       and they can be used to customize various things like package names, bean
+       names, etc. More information on JAX-WS and JAXB binding files can be
+       found in the customization documentation @
+       https://jax-ws.dev.java.net/nonav/2.1.1/docs/customizations.html.
+
+       The following table lists wsimport non-standard options:
+
+       Option                        Description
+       -XadditionalHeaders           Map headers not bound to
+                                     request or response message
+                                     to Java method parameters.
+       -Xauthfile &lt;file&gt;             WSDL URI that specifies the
+                                     file that contains autho&#8208;
+                                     rization information; this
+                                     URI is in the following
+                                     format: http://&lt;user
+                                     name&gt;:&lt;password&gt;@&lt;host
+                                     name&gt;/&lt;Web service
+                                     name&gt;?wsdl
+       -Xdebug                       Print debugging informa&#8208;
+                                     tion.
+       -Xno-addressing-databinding   Enable binding of W3C End&#8208;
+                                     pointReferenceType to Java.
+       -Xnocompile                   Do not compile generated
+                                     Java files.
+
+
+Example
+       wsimport -p stockquote http://stockquote.example.com/quote?wsdl
+
+       This will generate the Java artifacts and compile them by importing the
+       http://stockquote.example.com/quote?wsdl.
+
+
+
+
+                                   16 Mar 2012                       wsimport(1)
+
+</pre></body></html>

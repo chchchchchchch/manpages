@@ -1,0 +1,170 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gocr - command line text recognition tool</title></head>
+<body><pre>
+
+GOCR(1)                           User&apos;s Manual                          GOCR(1)
+
+
+
+NAME
+       gocr - command line text recognition tool
+
+SYNOPSIS
+       gocr [OPTION] [-i] pnm-file
+
+DESCRIPTION
+       gocr  is  an  optical character recognition program that can be used from
+       the command line.  It takes input in PNM, PGM, PBM, PPM, or  PCX  format,
+       and  writes recognized text to stdout.  If the pnm file is a single dash,
+       PNM data is read  from  stdin.   If  gzip,  bzip2  and  netpbm-progs  are
+       installed  and  your  system supports popen(3) also pnm.gz, pnm.bz2, png,
+       jpg, jpeg, tiff, gif, bmp, ps (only single pages) and eps  are  supported
+       as input files (not as input stream), where pnm can be replaced by one of
+       ppm, pgm and pbm.
+
+OPTIONS
+       -h     show usage information
+
+       -i file
+              read input from file (or stdin if file is a single dash)
+
+       -o file
+              send output to file instead of stdout
+
+       -e file
+              send errors to file instead of stderr or to stdout if  file  is  a
+              dash
+
+       -x file
+              progress output to file (file can be a file name, a fifo name or a
+              file descriptor 1...255), this is useful for  GUI  developpers  to
+              show the OCR progress, the file descriptor argument is only avail&#8208;
+              able, if compiled with __USE_POSIX defined
+
+       -p path
+              database path, a final slash must be included, default  is  ./db/,
+              this path will be populated with images of learned characters
+
+       -f format
+              output  format of the recognized text (ISO8859_1 TeX HTML XML UTF8
+              ASCII), XML will also output position and probability data
+
+       -l level
+              set grey level to level (0&lt;160&lt;=255, default: 0  for  autodetect),
+              darker  pixels  belong  to  characters, brighter pixels are inter&#8208;
+              preted as background of the input image
+
+       -d size
+              set dust size in pixels (clusters smaller than this are  removed),
+              0 means no clusters are removed, the default is -1 for auto detec&#8208;
+              tion
+
+       -s num set spacewidth between words in units  of  dots  (default:  0  for
+              autodetect),  wider widths are interpreted as word spaces, smaller
+              as character spaces
+
+       -v verbosity
+              be verbose to stderr; verbosity is a bitfield
+
+       -c string
+              only verbose output of characters from string to stderr, more out&#8208;
+              put  is generated for all characters within the string, the under&#8208;
+              score stands for unknown chars, this function is usefull to  limit
+              debug information to the necessary one
+
+       -C string
+              only  recognise  characters from string, this is a filter function
+              in cases where the interest is only to a  part  of  the  character
+              alphabet,  you  can  use  0-9  or a-z to specify ranges, use -- to
+              detect the minus sign
+
+       -a certainty
+              set value for certainty  of  recognition  (0..100;  default:  95),
+              characters with a higher certainty are accepted, characters with a
+              lower certainty are  treated  as  unknown  (not  recognized);  set
+              higher  values,  if  you want to have only more certain recognized
+              characters
+
+       -u string
+              output this string for every unrecognized  character  (default  is
+              &quot;_&quot;)
+
+       -m mode
+              set oprational mode; mode is a bitfield (default: 0)
+
+       -n bool
+              if bool is non-zero, only recognise numbers (this is now obsolete,
+              use -C &quot;0123456789&quot;)
+
+       The verbosity is specified as a bitfield:
+
+       1         print more info
+
+       2         list shapes of boxes (see -c) to stderr
+
+       4         list pattern of boxes (see -c) to stderr
+
+       8         print pattern after recognition for debugging
+
+       16        print debug information about recognition of lines to stderr
+
+       32        create outXX.png with boxes and lines marked  on  each  general
+                 OCR-step
+
+       The operation modes are:
+
+       2         use  database  to recognize characters which are not recognized
+                 by other algorithms, (early development)
+
+       4         switching on layout analysis or zoning (development)
+
+       8         don&apos;t compare unrecognized characters to recognized one
+
+       16        don&apos;t try to divide overlapping characters to two or three sin&#8208;
+                 gle characters
+
+       32        don&apos;t do context correction
+
+       64        character  packing,  before recognition starts, similar charac&#8208;
+                 ters are searched and only one of this characters will be  send
+                 to the recognition engine (development)
+
+       130       extend  database,  prompts user for unidentified characters and
+                 extends the database with users answer (128+2,  early  develop&#8208;
+                 ment)
+
+       256       switch off the recognition engine (makes sense together with -m
+                 2)
+&#12;
+
+AUTHOR
+       Joerg Schulenburg (see http://jocr.sourceforge.net/ for EMAIL)
+       First version of man page by Tim Waugh &lt;twaugh@redhat.com&gt;
+
+VERSION INFORMATION
+       This man page documents gocr, version 0.41.
+
+REPORTING BUGS
+       Report bugs to Joerg Schulenburg
+
+SEE ALSO
+       More details can be found  at  /usr/share/doc/gocr-X.XX/gocr.html.   Also
+       read /usr/share/doc/gocr-X.XX/README to learn, how to improve results.
+
+EXAMPLES
+       gocr -v 33 text1.pbm
+              output verbose information, out30.png is created to see details of
+              recognition process
+
+       gocr -v 7 -c _YV text1.pbm
+              verbose output for unknown chars and chars Y and V
+
+       djpeg -pnm -gray text.jpg | gocr -
+              convert a jpeg file to pnm format and input via pipe
+
+
+
+Linux                              29 Mar 2009                           GOCR(1)
+
+</pre></body></html>

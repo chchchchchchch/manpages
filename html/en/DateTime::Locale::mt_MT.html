@@ -1,0 +1,516 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::Locale::mt_MT - DateTime locale package for "mt_MT"</title></head>
+<body><pre>
+
+DateTime::Locale::mt_MTUser)Contributed Perl DocumenDateTime::Locale::mt_MT(3pm)
+
+
+
+NAME
+       DateTime::Locale::mt_MT - DateTime locale package for &quot;mt_MT&quot;
+
+SYNOPSIS
+         use DateTime;
+
+         my $dt = DateTime-&gt;now( locale =&gt; &apos;mt_MT&apos; );
+         print $dt-&gt;month_name();
+
+DESCRIPTION
+       This is the DateTime locale package for Maltese Malta.
+
+DATA
+       This locale inherits from the DateTime::Locale::mt locale.
+
+       It contains the following data.
+
+   Days
+       Wide (format)
+
+         It-Tnejn
+         It-Tlieta
+         L-ErbgXa
+         Il-Xamis
+         Il-XimgXa
+         Is-Sibt
+         Il-Xadd
+
+       Abbreviated (format)
+
+         Tne
+         Tli
+         Erb
+         Xam
+         Xim
+         Sib
+         Xad
+
+       Narrow (format)
+
+         T
+         T
+         E
+         X
+         X
+         S
+         X
+
+       Wide (stand-alone)
+
+         It-Tnejn
+         It-Tlieta
+         L-ErbgXa
+         Il-Xamis
+         Il-XimgXa
+         Is-Sibt
+         Il-Xadd
+
+       Abbreviated (stand-alone)
+
+         Tne
+         Tli
+         Erb
+         Xam
+         Xim
+         Sib
+         Xad
+&#12;       Narrow (stand-alone)
+
+         T
+         T
+         E
+         X
+         X
+         S
+         X
+
+   Months
+       Wide (format)
+
+         Jannar
+         Frar
+         Marzu
+         April
+         Mejju
+         Xunju
+         Lulju
+         Awwissu
+         Settembru
+         Ottubru
+         Novembru
+         DiXembru
+
+       Abbreviated (format)
+
+         Jan
+         Fra
+         Mar
+         Apr
+         Mej
+         Xun
+         Lul
+         Aww
+         Set
+         Ott
+         Nov
+         DiX
+
+       Narrow (format)
+
+         J
+         F
+         M
+         A
+         M
+         X
+         L
+         A
+         S
+         O
+         N
+         D
+
+       Wide (stand-alone)
+
+         Jannar
+         Frar
+         Marzu
+         April
+         Mejju
+         Xunju
+         Lulju
+         Awwissu
+         Settembru
+         Ottubru
+         Novembru
+         DiXembru
+
+       Abbreviated (stand-alone)
+
+         Jan
+         Fra
+         Mar
+         Apr
+         Mej
+         Xun
+         Lul
+         Aww
+         Set
+         Ott
+         Nov
+         DiX
+
+       Narrow (stand-alone)
+
+         J
+         F
+         M
+         A
+         M
+         X
+         L
+         A
+         S
+         O
+         N
+         D
+
+   Quarters
+       Wide (format)
+
+         K1
+         K2
+         K3
+         K4
+
+       Abbreviated (format)
+
+         K1
+         K2
+         K3
+         K4
+
+       Narrow (format)
+
+         1
+         2
+         3
+         4
+
+       Wide (stand-alone)
+
+         K1
+         K2
+         K3
+         K4
+
+       Abbreviated (stand-alone)
+
+         K1
+         K2
+         K3
+         K4
+
+       Narrow (stand-alone)
+
+         1
+         2
+         3
+         4
+&#12;   Eras
+       Wide
+
+         Qabel Kristu
+         Wara Kristu
+
+       Abbreviated
+
+         QK
+         WK
+
+       Narrow
+
+         QK
+         WK
+
+   Date Formats
+       Full
+
+          2008-02-05T18:30:30 = It-Tlieta, 5 taX Frar 2008
+          1995-12-22T09:05:02 = Il-XimgXa, 22 taX DiXembru 1995
+         -0010-09-15T04:44:23 = Is-Sibt, 15 taX Settembru -10
+
+       Long
+
+          2008-02-05T18:30:30 = 5 taX Frar 2008
+          1995-12-22T09:05:02 = 22 taX DiXembru 1995
+         -0010-09-15T04:44:23 = 15 taX Settembru -10
+
+       Medium
+
+          2008-02-05T18:30:30 = 05 Fra 2008
+          1995-12-22T09:05:02 = 22 DiX 1995
+         -0010-09-15T04:44:23 = 15 Set -10
+
+       Short
+
+          2008-02-05T18:30:30 = 05/02/2008
+          1995-12-22T09:05:02 = 22/12/1995
+         -0010-09-15T04:44:23 = 15/09/-010
+
+       Default
+
+          2008-02-05T18:30:30 = 05 Fra 2008
+          1995-12-22T09:05:02 = 22 DiX 1995
+         -0010-09-15T04:44:23 = 15 Set -10
+
+   Time Formats
+       Full
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 18:30:30 UTC
+          1995-12-22T09:05:02 = 09:05:02 UTC
+         -0010-09-15T04:44:23 = 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 09:05
+         -0010-09-15T04:44:23 = 04:44
+&#12;       Default
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 09:05:02
+         -0010-09-15T04:44:23 = 04:44:23
+
+   Datetime Formats
+       Full
+
+          2008-02-05T18:30:30 = It-Tlieta, 5 taX Frar 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = Il-XimgXa, 22 taX DiXembru 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = Is-Sibt, 15 taX Settembru -10 04:44:23 UTC
+
+       Long
+
+          2008-02-05T18:30:30 = 5 taX Frar 2008 18:30:30 UTC
+          1995-12-22T09:05:02 = 22 taX DiXembru 1995 09:05:02 UTC
+         -0010-09-15T04:44:23 = 15 taX Settembru -10 04:44:23 UTC
+
+       Medium
+
+          2008-02-05T18:30:30 = 05 Fra 2008 18:30:30
+          1995-12-22T09:05:02 = 22 DiX 1995 09:05:02
+         -0010-09-15T04:44:23 = 15 Set -10 04:44:23
+
+       Short
+
+          2008-02-05T18:30:30 = 05/02/2008 18:30
+          1995-12-22T09:05:02 = 22/12/1995 09:05
+         -0010-09-15T04:44:23 = 15/09/-010 04:44
+
+       Default
+
+          2008-02-05T18:30:30 = 05 Fra 2008 18:30:30
+          1995-12-22T09:05:02 = 22 DiX 1995 09:05:02
+         -0010-09-15T04:44:23 = 15 Set -10 04:44:23
+
+   Available Formats
+       d (d)
+
+          2008-02-05T18:30:30 = 5
+          1995-12-22T09:05:02 = 22
+         -0010-09-15T04:44:23 = 15
+
+       EEEd (d EEE)
+
+          2008-02-05T18:30:30 = 5 Tli
+          1995-12-22T09:05:02 = 22 Xim
+         -0010-09-15T04:44:23 = 15 Sib
+
+       Hm (H:mm)
+
+          2008-02-05T18:30:30 = 18:30
+          1995-12-22T09:05:02 = 9:05
+         -0010-09-15T04:44:23 = 4:44
+
+       hm (h:mm a)
+
+          2008-02-05T18:30:30 = 6:30 WN
+          1995-12-22T09:05:02 = 9:05 QN
+         -0010-09-15T04:44:23 = 4:44 QN
+
+       Hms (H:mm:ss)
+
+          2008-02-05T18:30:30 = 18:30:30
+          1995-12-22T09:05:02 = 9:05:02
+         -0010-09-15T04:44:23 = 4:44:23
+
+       hms (h:mm:ss a)
+
+          2008-02-05T18:30:30 = 6:30:30 WN
+          1995-12-22T09:05:02 = 9:05:02 QN
+         -0010-09-15T04:44:23 = 4:44:23 QN
+&#12;       M (L)
+
+          2008-02-05T18:30:30 = 2
+          1995-12-22T09:05:02 = 12
+         -0010-09-15T04:44:23 = 9
+
+       Md (M-d)
+
+          2008-02-05T18:30:30 = 2-5
+          1995-12-22T09:05:02 = 12-22
+         -0010-09-15T04:44:23 = 9-15
+
+       MEd (E, M-d)
+
+          2008-02-05T18:30:30 = Tli, 2-5
+          1995-12-22T09:05:02 = Xim, 12-22
+         -0010-09-15T04:44:23 = Sib, 9-15
+
+       MMdd (dd/MM)
+
+          2008-02-05T18:30:30 = 05/02
+          1995-12-22T09:05:02 = 22/12
+         -0010-09-15T04:44:23 = 15/09
+
+       MMM (LLL)
+
+          2008-02-05T18:30:30 = Fra
+          1995-12-22T09:05:02 = DiX
+         -0010-09-15T04:44:23 = Set
+
+       MMMd (MMM d)
+
+          2008-02-05T18:30:30 = Fra 5
+          1995-12-22T09:05:02 = DiX 22
+         -0010-09-15T04:44:23 = Set 15
+
+       MMMEd (E MMM d)
+
+          2008-02-05T18:30:30 = Tli Fra 5
+          1995-12-22T09:05:02 = Xim DiX 22
+         -0010-09-15T04:44:23 = Sib Set 15
+
+       MMMMd (d &apos;ta&apos;X MMMM)
+
+          2008-02-05T18:30:30 = 5 taX Frar
+          1995-12-22T09:05:02 = 22 taX DiXembru
+         -0010-09-15T04:44:23 = 15 taX Settembru
+
+       MMMMEd (E MMMM d)
+
+          2008-02-05T18:30:30 = Tli Frar 5
+          1995-12-22T09:05:02 = Xim DiXembru 22
+         -0010-09-15T04:44:23 = Sib Settembru 15
+
+       ms (mm:ss)
+
+          2008-02-05T18:30:30 = 30:30
+          1995-12-22T09:05:02 = 05:02
+         -0010-09-15T04:44:23 = 44:23
+
+       y (y)
+
+          2008-02-05T18:30:30 = 2008
+          1995-12-22T09:05:02 = 1995
+         -0010-09-15T04:44:23 = -10
+
+       yM (y-M)
+
+          2008-02-05T18:30:30 = 2008-2
+          1995-12-22T09:05:02 = 1995-12
+         -0010-09-15T04:44:23 = -10-9
+
+       yMEd (EEE, y-M-d)
+&#12;          2008-02-05T18:30:30 = Tli, 2008-2-5
+          1995-12-22T09:05:02 = Xim, 1995-12-22
+         -0010-09-15T04:44:23 = Sib, -10-9-15
+
+       yMMM (y MMM)
+
+          2008-02-05T18:30:30 = 2008 Fra
+          1995-12-22T09:05:02 = 1995 DiX
+         -0010-09-15T04:44:23 = -10 Set
+
+       yMMMEd (EEE, y MMM d)
+
+          2008-02-05T18:30:30 = Tli, 2008 Fra 5
+          1995-12-22T09:05:02 = Xim, 1995 DiX 22
+         -0010-09-15T04:44:23 = Sib, -10 Set 15
+
+       yMMMM (y MMMM)
+
+          2008-02-05T18:30:30 = 2008 Frar
+          1995-12-22T09:05:02 = 1995 DiXembru
+         -0010-09-15T04:44:23 = -10 Settembru
+
+       yQ (y Q)
+
+          2008-02-05T18:30:30 = 2008 1
+          1995-12-22T09:05:02 = 1995 4
+         -0010-09-15T04:44:23 = -10 3
+
+       yQQQ (y QQQ)
+
+          2008-02-05T18:30:30 = 2008 K1
+          1995-12-22T09:05:02 = 1995 K4
+         -0010-09-15T04:44:23 = -10 K3
+
+       yyQ (Q yy)
+
+          2008-02-05T18:30:30 = 1 08
+          1995-12-22T09:05:02 = 4 95
+         -0010-09-15T04:44:23 = 3 -10
+
+       yyyyMM (MM/yyyy)
+
+          2008-02-05T18:30:30 = 02/2008
+          1995-12-22T09:05:02 = 12/1995
+         -0010-09-15T04:44:23 = 09/-010
+
+       yyyyMMM (MMM y)
+
+          2008-02-05T18:30:30 = Fra 2008
+          1995-12-22T09:05:02 = DiX 1995
+         -0010-09-15T04:44:23 = Set -10
+
+   Miscellaneous
+       Prefers 24 hour time?
+
+       Yes
+
+       Local first day of the week
+
+       Il-Xadd
+
+SUPPORT
+       See DateTime::Locale.
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT
+       Copyright (c) 2008 David Rolsky. All rights reserved. This program is
+       free software; you can redistribute it and/or modify it under the same
+       terms as Perl itself.
+
+       This module was generated from data provided by the CLDR project, see the
+       LICENSE.cldr in this distribution for details on the CLDR data&apos;s license.
+
+
+
+perl v5.10.1                       2010-03-19       DateTime::Locale::mt_MT(3pm)
+
+</pre></body></html>

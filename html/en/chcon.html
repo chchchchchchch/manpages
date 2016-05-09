@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>chcon - change file security context</title></head>
+<body><pre>
+
+CHCON(1)                          User Commands                         CHCON(1)
+
+
+
+NAME
+       chcon - change file security context
+
+SYNOPSIS
+       chcon [OPTION]... CONTEXT FILE...
+       chcon [OPTION]... [-u USER] [-r ROLE] [-l RANGE] [-t TYPE] FILE...
+       chcon [OPTION]... --reference=RFILE FILE...
+
+DESCRIPTION
+       Change  the  security context of each FILE to CONTEXT.  With --reference,
+       change the security context of each FILE to that of RFILE.
+
+       -h, --no-dereference
+              affect symbolic links instead of any referenced file
+
+       --reference=RFILE
+              use RFILE&apos;s security context  rather  than  specifying  a  CONTEXT
+              value
+
+       -R, --recursive
+              operate on files and directories recursively
+
+       -v, --verbose
+              output a diagnostic for every file processed
+
+       -u, --user=USER
+              set user USER in the target security context
+
+       -r, --role=ROLE
+              set role ROLE in the target security context
+
+       -t, --type=TYPE
+              set type TYPE in the target security context
+
+       -l, --range=RANGE
+              set range RANGE in the target security context
+
+       The  following  options  modify  how a hierarchy is traversed when the -R
+       option is also specified.  If more than one is specified, only the  final
+       one takes effect.
+
+       -H     if a command line argument is a symbolic link to a directory, tra&#8208;
+              verse it
+
+       -L     traverse every symbolic link to a directory encountered
+
+       -P     do not traverse any symbolic links (default)
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+AUTHOR
+       Written by Russell Coker and Jim Meyering.
+
+REPORTING BUGS
+       Report chcon bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report chcon translation bugs to &lt;http://translationproject.org/team/&gt;
+&#12;COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The full documentation for chcon is maintained as a Texinfo  manual.   If
+       the info and chcon programs are properly installed at your site, the com&#8208;
+       mand
+
+              info coreutils &apos;chcon invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                         CHCON(1)
+
+</pre></body></html>

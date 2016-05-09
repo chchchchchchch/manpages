@@ -1,0 +1,95 @@
+<html>
+<head><meta charset=utf-8/>
+<title>calibre-debug - part of calibre</title></head>
+<body><pre>
+
+CALIBRE-DEBUG(1)                     calibre                    CALIBRE-DEBUG(1)
+
+
+
+NAME
+       calibre-debug - part of calibre
+
+SYNOPSIS
+       calibre-debug  [options]
+
+DESCRIPTION
+       Run an embedded python interpreter.
+
+       Whenever  you  pass  arguments to calibre-debug that have spaces in them,
+       enclose the arguments in quotation marks.
+
+OPTIONS
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show this help message and exit
+
+       -c, --command
+              Run python code.
+
+       -e, --exec-file
+              Run the python code in file.
+
+       -d, --debug-device-driver
+              Debug the specified device driver.
+
+       -g, --gui
+              Run the GUI with debugging enabled. Debug  output  is  printed  to
+              stdout and stderr.
+
+       --gui-debug
+              Run  the  GUI with a debug console, logging to the specified path.
+              For internal use only, use the -g option to run the GUI  in  debug
+              mode
+
+       --show-gui-debug
+              Display the specified log file. For internal use only.
+
+       -w, --viewer
+              Run the ebook viewer
+
+       --paths
+              Output the paths necessary to setup the calibre environment
+
+       --migrate
+              Migrate old database. Needs two arguments. Path to library1.db and
+              path to new library folder.
+
+       --add-simple-plugin
+              Add a simple plugin (i.e. a plugin that consists  of  only  a  .py
+              file), by specifying the path to the py file containing the plugin
+              code.
+
+       --reinitialize-db
+              Re-initialize the sqlite calibre database at the  specified  path.
+              Useful  to  recover  from  db corruption. You can also specify the
+              path to an SQL dump which will be used instead of trying  to  dump
+              the  database.  This can be useful when dumping fails, but dumping
+              with sqlite3 works.
+&#12;       -p, --py-console
+              Run python console
+
+       -m, --inspect-mobi
+              Inspect the MOBI file(s) at the specified path(s)
+
+       --tweak-book
+              Tweak the book (exports the book as a collection of HTML files and
+              metadata,  which  you  can edit using standard HTML editing tools,
+              and then rebuilds the file from the edited HTML.  Makes  no  addi&#8208;
+              tional changes to the HTML, unlike a full calibre conversion).
+
+       --test-build
+              Test binary modules in build
+
+SEE ALSO
+       The User Manual is available at http://manual.calibre-ebook.com
+
+       Created by Kovid Goyal &lt;kovid@kovidgoyal.net&gt;
+
+
+
+calibre-debug (calibre 0.8.51)    January 2013                  CALIBRE-DEBUG(1)
+
+</pre></body></html>

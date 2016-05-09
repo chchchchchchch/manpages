@@ -1,0 +1,71 @@
+<html>
+<head><meta charset=utf-8/>
+<title>OpenSSL_add_all_algorithms, OpenSSL_add_all_ciphers, OpenSSL_add_all_digests - add algorithms to internal table</title></head>
+<body><pre>
+
+OpenSSL_add_all_algorithms(3SSL)     OpenSSL    OpenSSL_add_all_algorithms(3SSL)
+
+
+
+NAME
+       OpenSSL_add_all_algorithms, OpenSSL_add_all_ciphers,
+       OpenSSL_add_all_digests - add algorithms to internal table
+
+SYNOPSIS
+        #include &lt;openssl/evp.h&gt;
+
+        void OpenSSL_add_all_algorithms(void);
+        void OpenSSL_add_all_ciphers(void);
+        void OpenSSL_add_all_digests(void);
+
+        void EVP_cleanup(void);
+
+DESCRIPTION
+       OpenSSL keeps an internal table of digest algorithms and ciphers. It uses
+       this table to lookup ciphers via functions such as
+       EVP_get_cipher_byname().
+
+       OpenSSL_add_all_digests() adds all digest algorithms to the table.
+
+       OpenSSL_add_all_algorithms() adds all algorithms to the table (digests
+       and ciphers).
+
+       OpenSSL_add_all_ciphers() adds all encryption algorithms to the table
+       including password based encryption algorithms.
+
+       EVP_cleanup() removes all ciphers and digests from the table.
+
+RETURN VALUES
+       None of the functions return a value.
+
+NOTES
+       A typical application will call OpenSSL_add_all_algorithms() initially
+       and EVP_cleanup() before exiting.
+
+       An application does not need to add algorithms to use them explicitly,
+       for example by EVP_sha1(). It just needs to add them if it (or any of the
+       functions it calls) needs to lookup algorithms.
+
+       The cipher and digest lookup functions are used in many parts of the
+       library. If the table is not initialized several functions will misbehave
+       and complain they cannot find algorithms. This includes the PEM, PKCS#12,
+       SSL and S/MIME libraries.  This is a common query in the OpenSSL mailing
+       lists.
+
+       Calling OpenSSL_add_all_algorithms() links in all algorithms: as a result
+       a statically linked executable can be quite large. If this is important
+       it is possible to just add the required ciphers and digests.
+
+BUGS
+       Although the functions do not return error codes it is possible for them
+       to fail.  This will only happen as a result of a memory allocation
+       failure so this is not too much of a problem in practice.
+
+SEE ALSO
+       evp(3), EVP_DigestInit(3), EVP_EncryptInit(3)
+
+
+
+1.0.1e                             2013-02-11   OpenSSL_add_all_algorithms(3SSL)
+
+</pre></body></html>

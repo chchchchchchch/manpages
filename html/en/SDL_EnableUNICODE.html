@@ -1,0 +1,45 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_EnableUNICODE - Enable UNICODE translation</title></head>
+<body><pre>
+
+SDL_EnableUNICODE(3)            SDL API Reference           SDL_EnableUNICODE(3)
+
+
+
+NAME
+       SDL_EnableUNICODE - Enable UNICODE translation
+
+SYNOPSIS
+       #include &quot;SDL.h&quot;
+
+       int SDL_EnableUNICODE(int enable);
+
+DESCRIPTION
+       Enables/Disables Unicode keyboard translation.
+
+       To  obtain the character codes corresponding to received keyboard events,
+       Unicode translation must first be turned  on  using  this  function.  The
+       translation  incurs  a  slight  overhead  for  each keyboard event and is
+       therefore disabled by default. For each subsequently  received  key  down
+       event,  the  unicode member of the SDL_keysym structure will then contain
+       the corresponding character code, or zero for keysyms that do not  corre&#8208;
+       spond to any character code.
+
+       A  value  of 1 for enable enables Unicode translation; 0 disables it, and
+       -1 leaves it unchanged  (useful  for  querying  the  current  translation
+       mode).
+
+       Note that only key press events will be translated, not release events.
+
+RETURN VALUE
+       Returns the previous translation mode (0 or 1).
+
+SEE ALSO
+       SDL_keysym
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59         SDL_EnableUNICODE(3)
+
+</pre></body></html>

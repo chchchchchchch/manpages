@@ -1,0 +1,37 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtBuildEventMask - retrieve a widget's event mask</title></head>
+<body><pre>
+
+XtBuildEventMask(3)               XT FUNCTIONS               XtBuildEventMask(3)
+
+
+
+NAME
+       XtBuildEventMask - retrieve a widget&apos;s event mask
+
+SYNTAX
+       EventMask XtBuildEventMask(Widget w);
+
+ARGUMENTS
+       w         Specifies the widget.
+
+DESCRIPTION
+       The XtBuildEventMask function returns the event mask representing the
+       logical OR of all event masks for event handlers registered on the widget
+       with XtAddEventHandler and all event translations, including accelera&#8208;
+       tors, installed on the widget.  This is the same event mask stored into
+       the XSetWindowAttributes structure by XtRealizeWidget and sent to the
+       server when event handlers and translations are installed or removed on
+       the realized widget.
+
+SEE ALSO
+       XtAddEventHandler(3)
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3               XtBuildEventMask(3)
+
+</pre></body></html>

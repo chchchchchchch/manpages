@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>asn1_der_decoding_element - API function</title></head>
+<body><pre>
+
+asn1_der_decoding_element(3)        libtasn1        asn1_der_decoding_element(3)
+
+
+
+NAME
+       asn1_der_decoding_element - API function
+
+SYNOPSIS
+       #include &lt;libtasn1.h&gt;
+
+       asn1_retCode  asn1_der_decoding_element(ASN1_TYPE * structure, const char
+       * elementName, const void * ider, int len, char * errorDescription);
+
+ARGUMENTS
+       ASN1_TYPE * structure
+                   pointer to an ASN1 structure
+
+       const char * elementName
+                   name of the element to fill
+
+       const void * ider
+                   vector that contains the DER encoding of the whole structure.
+
+       int len     number of bytes of *der: der[0]..der[len-1]
+
+       char * errorDescription
+                   null-terminated  string  contains  details  when   an   error
+                   occurred.
+
+DESCRIPTION
+       Fill  the element named ELEMENTNAME with values of a DER encoding string.
+       The structure must just be created with  function  asn1_create_element().
+       The  DER  vector must contain the encoding string of the whole STRUCTURE.
+       If an error occurs during  the  decoding  procedure,  the  *STRUCTURE  is
+       deleted and set equal to ASN1_TYPE_EMPTY.
+
+RETURNS
+       ASN1_SUCCESS  if  DER  encoding  OK, ASN1_ELEMENT_NOT_FOUND if ELEMENT is
+       ASN1_TYPE_EMPTY  or  elementName   ==   NULL,   and   ASN1_TAG_ERROR   or
+       ASN1_DER_ERROR  if the der encoding doesn&apos;t match the structure structure
+       (*ELEMENT deleted).
+
+COPYRIGHT
+       Copyright &#169; 2006-2011 Free Software Foundation, Inc..
+       Copying and distribution of this file, with or without modification,  are
+       permitted in any medium without royalty provided the copyright notice and
+       this notice are preserved.
+
+SEE ALSO
+       The full documentation for libtasn1 is maintained as  a  Texinfo  manual.
+       If  the  info  and libtasn1 programs are properly installed at your site,
+       the command
+
+              info libtasn1
+
+       should give you access to the complete manual.
+
+
+
+libtasn1                              2.13          asn1_der_decoding_element(3)
+
+</pre></body></html>

@@ -1,0 +1,30 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcConfigAppFontAddFile - Add font file to font database</title></head>
+<body><pre>
+
+FcConfigAppFontAddFile(3)                              FcConfigAppFontAddFile(3)
+
+
+
+NAME
+       FcConfigAppFontAddFile - Add font file to font database
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool FcConfigAppFontAddFile (FcConfig *config, const FcChar8 *file);
+
+DESCRIPTION
+       Adds  an  application-specific font to the configuration. Returns FcFalse
+       if the fonts cannot be  added  (due  to  allocation  failure).  Otherwise
+       returns FcTrue.  If config is NULL, the current configuration is used.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012        FcConfigAppFontAddFile(3)
+
+</pre></body></html>

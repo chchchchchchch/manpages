@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::LeapSecond - leap seconds table and utilities</title></head>
+<body><pre>
+
+DateTime::LeapSecond(3pUser Contributed Perl DocumentatDateTime::LeapSecond(3pm)
+
+
+
+NAME
+       DateTime::LeapSecond - leap seconds table and utilities
+
+VERSION
+       version 0.75
+
+SYNOPSIS
+         use DateTime;
+         use DateTime::LeapSecond;
+
+         print &quot;Leap seconds between years 1990 and 2000 are &quot;;
+         print DateTime::Leapsecond::leap_seconds( $utc_rd_2000 ) -
+               DateTime::Leapsecond::leap_seconds( $utc_rd_1990 );
+
+DESCRIPTION
+       This module is used to calculate leap seconds for a given Rata Die day.
+       It is used when DateTime.pm cannot compile the XS version of this code.
+
+       This library is known to be accurate for dates until December 2009.
+
+       There are no leap seconds before 1972, because that&apos;s the year this
+       system was implemented.
+
+       &#183;   leap_seconds( $rd )
+
+           Returns the number of accumulated leap seconds for a given day, in
+           the range 0 .. 22.
+
+       &#183;   extra_seconds( $rd )
+
+           Returns the number of leap seconds for a given day, in the range -2
+           .. 2.
+
+       &#183;   day_length( $rd )
+
+           Returns the number of seconds for a given day, in the range 86398 ..
+           86402.
+
+SEE ALSO
+       &lt;http://hpiers.obspm.fr/eop-pc/earthor/utc/leapsecond.html&gt;
+
+       http://datetime.perl.org
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is Copyright (c) 2012 by Dave Rolsky.
+
+       This is free software, licensed under:
+
+         The Artistic License 2.0 (GPL Compatible)
+
+
+
+perl v5.14.2                       2012-06-11          DateTime::LeapSecond(3pm)
+
+</pre></body></html>

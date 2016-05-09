@@ -1,0 +1,60 @@
+<html>
+<head><meta charset=utf-8/>
+<title>DateTime::TimeZone::Local::VMS - Determine the local system's time zone on VMS</title></head>
+<body><pre>
+
+DateTime::TimeZone::LocUserVContributed Perl DateTime::TimeZone::Local::VMS(3pm)
+
+
+
+NAME
+       DateTime::TimeZone::Local::VMS - Determine the local system&apos;s time zone
+       on VMS
+
+VERSION
+       version 1.58
+
+SYNOPSIS
+         my $tz = DateTime::TimeZone-&gt;new( name =&gt; &apos;local&apos; );
+
+         my $tz = DateTime::TimeZone::Local-&gt;TimeZone();
+
+DESCRIPTION
+       This module provides methods for determining the local time zone on a VMS
+       platform.
+
+       NOTE: This is basically a stub pending an implementation by someone who
+       knows something about VMS.
+
+HOW THE TIME ZONE IS DETERMINED
+       This class tries the following methods of determining the local time
+       zone:
+
+       &#183;   %ENV
+
+           We check the following environment variables:
+
+           &#183;       TZ
+
+           &#183;       SYS$TIMEZONE_RULE
+
+           &#183;       SYS$TIMEZONE_NAME
+
+           &#183;       UCX$TZ
+
+           &#183;       TCPIP$TZ
+
+AUTHOR
+       Dave Rolsky &lt;autarch@urth.org&gt;
+
+COPYRIGHT AND LICENSE
+       This software is copyright (c) 2013 by Dave Rolsky.
+
+       This is free software; you can redistribute it and/or modify it under the
+       same terms as the Perl 5 programming language system itself.
+
+
+
+perl v5.14.2                       2013-03-11DateTime::TimeZone::Local::VMS(3pm)
+
+</pre></body></html>

@@ -1,0 +1,111 @@
+<html>
+<head><meta charset=utf-8/>
+<title>squeak - Unix Squeak virtual machine launcher</title></head>
+<body><pre>
+
+SQUEAK(1)                                                              SQUEAK(1)
+
+
+
+NAME
+       squeak - Unix Squeak virtual machine launcher
+
+SYNOPSIS
+       squeak squeak [image filename]  [project filename]
+
+DESCRIPTION
+       squeak  is  the  virtual  machine  for  the  Squeak Smalltalk system.  It
+       requires three files to operate correctly: an  image  file  containing  a
+       `snapshot&apos; of a live Squeak session, a changes file containing the source
+       code for modified methods in the image, and a copy of (or a  link  to)  a
+       shared  system  sources  file containing the source code for methods that
+       have not been modified since the last major version increment.
+
+       The image and changes files contain the state of a user&apos;s Squeak session,
+       which  is  persistent  between  consecutive  sessions.  Private copies of
+       these files are therefore normally required.  The  squeak  script  checks
+       that  the  local  Squeak  installation  appears sane, and then copies the
+       required files to the current working directory.  If squeak encounters no
+       problems,  it  will finish by running squeak vm to start a Squeak session
+       using the newly copied image and changes files.
+
+INVOCATION
+       squeak accepts  an optional image name, and/or an optional project  name.
+       If  an  image  name is given on the command line then squeak tries to run
+       that  image.   Otherwise   squeak   checks   the   environment   variable
+       SQUEAK_IMAGE  and,  if it is set, uses its value as the name of the image
+       to run.  Otherwise squeak looks for available images in the ~/squeak  and
+       /usr/share/squeak  directories.  Then, squeak shows a dialog with all the
+       available images for the user to choose one of them. If the chosen  image
+       is  at  SQUEAK_IMAGE_DIR (which is by default /usr/share/squeak), it will
+       be copied to  ~/squeak.  If only one image is available, no  dialog  will
+       be shown and the script will run that image.
+
+       The  image  argument can be followed by a project name.  This is the name
+       of a &apos;document&apos; that should have been saved  from  a  Squeak  image.  The
+       project name must have the &apos;.pr&apos; extension.
+
+       The  project argument can also be providen without an image name. In that
+       case, squeak will look for an image to run the project following the same
+       criteria explained above.
+
+ENVIRONMENT
+       To  know  all  the environment variables that can affect the squeak image
+       launching, take a look at the Environment section  of  the  squeakvm  man
+       page.
+
+       Appart from those options, these are applied to this script:
+
+
+
+       SQUEAK_IMAGE_DIR
+              is  the directory, together with ~/squeak where the launcher looks
+              for Squeak images.  (The default value is /usr/share/squeak)
+
+       SQUEAK_IMAGE
+              is the name of a image file to be run by the script.
+
+       SQUEAK is the name of an alternative vm (or alternative vm options) to be
+              run  by  the script. The script launches the vm with these default
+              options: &apos;-mmap 1024M -nomixer&apos;
+&#12;NOTES
+       This manual page documents version [version] of Unix Squeak.  It may  not
+       be appropriate for any other version.
+
+       The  image  and changes files containing a saved Squeak session are inti&#8208;
+       mately related.  They should always be used together, never be separated,
+       and  under  no  circumstances  should an image be run with a changes file
+       that has been used with a different image.   Failure  to  adhere  to  the
+       above  could cause the source code for the methods in the image to become
+       garbled and impossible to retrieve.
+
+       The Unix Squeak virtual machine fully supports OpenGL in both the X11 and
+       Quartz  display  drivers.  Open Croquet will run just fine with either of
+       these drivers (and many Mac OS X users will even have the choice of which
+       driver to use :).
+
+       Because  of licensing issues, a Squeak image or Squeak sources package is
+       not available in Debian yet. So the user must download a proper image  in
+       order  to get this script useful.  Available images can be found in these
+       web sites:
+
+       The official Squeak home page:
+              http://squeak.org
+
+       The SqueakLand (international educational oriented) world:
+              http://www.squeakland.org
+
+       The spanish educative oriented Squeak page:
+              http://squeak.educarex.es/
+
+AUTHOR
+       This manual page was written by Jos&#195;&#169; L. Redrejo for the Debian project
+
+SEE ALSO
+       squeakvm(1).
+
+
+
+                                                                       SQUEAK(1)
+
+</pre></body></html>

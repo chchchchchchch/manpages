@@ -1,0 +1,428 @@
+<html>
+<head><meta charset=utf-8/>
+<title>byobu - wrapper script for seeding a user's byobu configuration and launching a text based window manager (either screen or tmux)</title></head>
+<body><pre>
+
+byobu(1)                              byobu                             byobu(1)
+
+
+
+NAME
+       byobu  -  wrapper  script  for  seeding  a user&apos;s byobu configuration and
+       launching a text based window manager (either screen or tmux)
+
+
+SYNOPSIS
+       byobu [screen options]
+
+       byobu-screen [screen options]
+
+       byobu-tmux [tmux options]
+
+       Options to byobu are simply passed through screen(1) or tmux(1).
+
+
+DESCRIPTION
+       byobu is a script that launches  a  text  based  window  manager  (either
+       screen(1)  or tmux(1)) in the byobu configuration.  This enables the dis&#8208;
+       play of system information and status notifications within two  lines  at
+       the  bottom of the screen session. It also enables multiple tabbed termi&#8208;
+       nal sessions, accessible through simple keystrokes.
+
+       byobu currently defaults to using tmux(1) (if present)  as  the  backend,
+       however, this can be overriden with the byobu-select-backend(1) utility.
+
+       Note   that   BYOBU_CONFIG_DIR=$XDG_CONFIG_HOME/byobu   if  defined,  and
+       $HOME/.byobu otherwise.
+
+
+STATUS NOTIFICATIONS
+       byobu supports a number of unique and  interesting  status  notifications
+       across the lowest two lines in the screen.  Each status notification item
+       is independently configurable, enabled and disabled by the  configuration
+       utility.   The guide below helps identify each status item (in alphabeti&#8208;
+       cal order):
+
+       apport - symbol displayed if there are pending crash reports; {!}  symbol
+       displayed  on  the lower bar toward the left, in black on an orange back&#8208;
+       ground
+
+       arch - system architecture; displayed on the lower bar toward  the  left,
+       in the default text color on the default background color
+
+       battery - battery information; display on the lower bar toward the right;
+       - indicates discharging, + indicates charging, = indicates fully charged;
+       when  charging or discharging, the current battery capacity as a percent&#8208;
+       age is displayed;  the colours green, yellow, and red are  used  to  give
+       further  indication  of  the battery&apos;s charge state; you may override the
+       detected   battery   by   setting   BATTERY=/proc/acpi/battery/BAT0    in
+       $BYOBU_CONFIG_DIR/statusrc
+
+       cpu_count  - the number of cpu&apos;s or cores on the system; displayed in the
+       lower bar toward the right in the default text color on the default back&#8208;
+       ground, followed by a trailing &apos;x&apos;
+
+       cpu_freq  -  the  current  frequency  of the cpu in GHz; displayed in the
+       lower bar toward the right in white text on a light blue background
+
+       cpu_temp - the cpu temperature in Celsius (default) or  Fahrenheit,  con&#8208;
+       figure  TEMP=F  or TEMP=C in $BYOBU_CONFIG_DIR/statusrc; displayed in the
+       lower bar toward the right in yellow text on a black background; you  may
+       override   the   detected   cpu   temperature  device  by  setting  MONI&#8208;
+       TORED_TEMP=/proc/acpi/whatever in $BYOBU_CONFIG_DIR/statusrc
+
+       custom - user defined custom scripts; must be executable programs of  any
+       kind  in $BYOBU_CONFIG_DIR/bin; must be named N_NAME, where N is the fre&#8208;
+       quency in seconds to refresh the status indicator, and NAME is  the  name
+       of  the  script;  N  should not be less than 5 seconds; the script should
+       echo a small amount of text to standard out, standard error is discarded;
+       the indicator will be displayed in the lower panel, in inverted colors to
+       your current background/foreground scheme, unless  you  manually  specify
+       the  colors in your script&apos;s output; BEWARE, cpu-intensive custom scripts
+       may impact your overall system performance and could  upset  your  system
+       administrator!
+         Example: $BYOBU_CONFIG_DIR/bin/1000_uname
+           #!/bin/sh
+           printf &quot;\005{= bw}%s\005{-}&quot; &quot;$(uname -r)&quot;
+
+       date  -  the system date in YYYY-MM-DD formate; displayed in the lower on
+       the far right in the default text color on the default background
+
+       disk - total disk space available and total used  on  /  directory;  dis&#8208;
+       played  in the lower bar on the far right in white text on a light purple
+       background; override the default directory  by  specifying  an  alternate
+       mount point with MONITORED_DISK=/wherever in $BYOBU_CONFIG_DIR/statusrc
+
+       disk_io  -  instantaneous  read/write  througput in kB/s or MB/s over the
+       last 3 seconds; displayed in the lower bar toward the right in white text
+       on  a  light  purple  background with a leading &apos;&lt;&apos; sign indicating &apos;read
+       speed&apos; and &apos;&gt;&apos; sign indicating &apos;write speed&apos;; override the default  moni&#8208;
+       tored    disk    by   specifying   an   alternate   device   with   MONI&#8208;
+       TORED_DISK=/dev/sdb, and override the default DISK_IO_THRESHOLD=50 (kB/s)
+       in $BYOBU_CONFIG_DIR/statusrc
+
+       distro  - OS/distribution name of the release running on the current sys&#8208;
+       tem as reported by lsb_release(1) or /etc/issue; displayed in  the  lower
+       bar  in  bold  black  text  toward the left on a grey background; you may
+       override  the  detected  release  with  DISTRO=Whatever  in   $BYOBU_CON&#8208;
+       FIG_DIR/statusrc
+
+       ec2_cost - an estimation of the cost of the current boot of the system in
+       terms of the Amazon EC2 billing model; displayed in the lower bar  toward
+       the  right in green text on a black background; there is a leading &apos;~&apos; to
+       indicate that this is an estimation, and the monetary units are  US  Dol&#8208;
+       lars &apos;$&apos;; if not running in EC2, this plugin is disabled unless EC2_ESTI&#8208;
+       MATE=1 in ~/.byobu/statusrc
+
+       entropy - a count of the system&apos;s current entropy in bytes; displayed  in
+       the  lower bar toward the right in yellow text on a dark grey background;
+       there is a leading &apos;e&apos; to indicate &apos;entropy&apos;
+
+       raid - note very prominently if there is a RAID failure detected, in  red
+       blinking  text on a white background; the term &apos;RAID&apos; notes that there is
+       something wrong with the RAID,  and  if  there  is  a  rebuild/resync  in
+       progress, the percent complete is also shown
+
+       rcs_cost - an estimation of the cost of the current boot of the system in
+       terms of the Rackspace Cloud Server billing model; displayed in the lower
+       bar  toward  the  right  in  green text on a black background; there is a
+       leading &apos;~&apos; to indicate that this is  an  estimation,  and  the  monetary
+       units are US Dollars &apos;$&apos;
+
+       fan_speed  - cpu or system fan speed as reported by lm-sensors; displayed
+       in the lower bar toward the right in black text  on  a  grey  background;
+       there is a trailing &apos;rpm&apos; for units; you may override the detected fan by
+       setting FAN=/sys/path/to/your/fan1_input in $BYOBU_CONFIG_DIR/statusrc
+
+       hostname - the hostname of the system; displayed in the upper bar on  the
+       far right in bold black text on a grey background; there is a leading &apos;@&apos;
+       symbol if the username status is also enabled
+
+       ip_address - the IPv4 address of the system in dotted decimal form;  dis&#8208;
+       played  in  the  upper  bar on the far right in bold black text on a grey
+       background;  you can override and display your IPv6  address  by  setting
+       &apos;IPV6=1&apos;, and you can show your external ip address by setting &apos;IP_EXTER&#8208;
+       NAL=1&apos; in $BYOBU_CONFIG_DIR/statusrc
+
+       ip_address4 - the IPv4 address of the system in dotted decimal form; dis&#8208;
+       played  in  the  upper  bar on the far right in bold black text on a grey
+       background;  you can show your external ip address by setting  &apos;IP_EXTER&#8208;
+       NAL=1&apos; in $BYOBU_CONFIG_DIR/statusrc
+
+       ip_address6  - the IPv6 address of the system; displayed in the upper bar
+       on the far right in bold black text on a grey background;  you  can  show
+       your  external  ip  address  by  setting  &apos;IP_EXTERNAL=1&apos;  in $BYOBU_CON&#8208;
+       FIG_DIR/statusrc
+
+       load_average - the system load average over the last 1 minute;  displayed
+       in the lower bar toward the right in black text on a yellow background
+
+       logo - an approximation of the current operating system&apos;s logo; displayed
+       in the lower bar on the far left; you may customize this logo by  setting
+       a  chosen  logo  in $BYOBU_CONFIG_DIR/logo, or you may override this with
+       LOGO=:-D in $BYOBU_CONFIG_DIR/statusrc
+
+       mail - system mail for the current user; the letter &apos;[M]&apos; is displayed in
+       the lower bar toward the left in black text on a grey background
+
+       memory  - total memory available and used in the system; displayed in the
+       lower bar toward the right in white text on a green background
+
+       menu - a simple indicator directing new users to use the F9 keybinding to
+       access the byobu menu
+
+       network  -  instantaneous  upload/download bandwidth in [GMk]bps over the
+       last 3 seconds; nothing is displayed if traffic is 0;  displayed  in  the
+       lower  bar  toward  the  left in white text on a purple background with a
+       leading &apos;^&apos; sign indicating &apos;up&apos; and &apos;v&apos; sign indicating &apos;down&apos;; override
+       the  default  interface  by  specifying an alternate interface with MONI&#8208;
+       TORED_NETWORK=eth1, and override  the  default  units  (bits)  with  NET&#8208;
+       WORK_UNITS=bytes, and override the default NETWORK_THRESHOLD=20 (kbps) in
+       $BYOBU_CONFIG_DIR/statusrc
+
+       notify_osd - Send on-screen notification messages to  screen&apos;s  notifica&#8208;
+       tion buffer
+
+       processes - total number of processes running on the system; displayed in
+       the lower bar in white text on a dark yellow background with  a  trailing
+       &apos;&amp;&apos; indicating &apos;background processes&apos;
+
+       reboot_required - symbol present if a reboot is required following a sys&#8208;
+       tem update; displayed in the lower bar white text on a blue background by
+       the  symbol  &apos;(R)&apos;;  additionally,  reboot_required  will print &apos;&lt;F5&gt;&apos; in
+       white text on a blue background, if Byobu requires  you  to  reload  your
+       profile  to  affect  some  changes; it will also detect if your system is
+       currently in powernap(8) state and if so print &apos;.zZ&apos;.
+
+       release - OS/distribution name of the release running on the current sys&#8208;
+       tem  as  reported by lsb_release(1) or /etc/issue; displayed in the lower
+       bar in bold black text toward the left on  a  grey  background;  you  may
+       override  the  detected  release  with  RELEASE=Whatever  in  $BYOBU_CON&#8208;
+       FIG_DIR/statusrc; you may also abbreviate the release string to N charac&#8208;
+       ters by setting RELEASE_ABBREVIATED=N in $BYOBU_CONFIG_DIR/statusrc
+&#12;       services  - users can configure a list of services to monitor, define the
+       SERVICES variable in $BYOBU_CONFIG_DIR/statusrc, a  whitespace  separated
+       of  services,  each  service should include the init name of the service,
+       then a pipe, and then an abbreviated name or symbol to display when  run&#8208;
+       ning  (e.g.  SERVICES=&quot;ssh|ssh apache2|http&quot;); displayed in the lower bar
+       toward the center in cyan on a white background
+
+       swap - total swap space and total used  as  a  percentage  of  the  total
+       available; displayed in the lower bar toward the right in white text on a
+       light green background with a trailing &apos;%&apos; sign
+
+       time - the system time in HH:MM:SS format; displayed in the lower bar  on
+       the far right in the default text and default background colors
+
+       time_binary  -  only  for  the  hard  core geek, the local system time in
+       binary; requires UTF8 support in a VERY recent version of GNU Screen; you
+       must  additionally  set &quot;UTF8=1&quot; in $BYOBU_CONFIG_DIR/statusrc; displayed
+       in the lower bar on the far right in the default text and background col&#8208;
+       ors
+
+       time_utc - the UTC system time in HH:MMformat; displayed in the lower bar
+       on the far right in dark text on a light background
+
+       updates_available - the number of updates available on the  system;  dis&#8208;
+       played  in  the  lower  bar toward the right in white text on a red back&#8208;
+       ground with a trailing &apos;!&apos; sign; if  any  updates  are  marked  &apos;security
+       updates&apos;,  then there will be a total of two trailing exclamation points,
+       &apos;!!&apos;
+
+       uptime - the total system uptime since last boot; displayed in the  lower
+       bar toward the right in blue text on a grey background
+
+       users - the number of remote users logged into the system via sshd, empty
+       if 0 users; displayed in the lower bar toward the right in red text on  a
+       grey background with a trailing &apos;#&apos; sign; set USERS_DISTINCT=1 to instead
+       count the number of distinct users logged into the  system  (rather  than
+       open ssh sessions)
+
+       whoami  -  the name of the user who owns the screen session; displayed in
+       the upper bar toward the far right in bold black text  on  a  grey  back&#8208;
+       ground
+
+       wifi_quality - the connection rate and signal quality of the wifi connec&#8208;
+       tion; displayed in the lower bar toward the right in black text on a cyan
+       background; the connection rate is in &apos;Mb/s&apos; and the signal quality is as
+       a percentage with a trailing &apos;%&apos;; override the default interface by spec&#8208;
+       ifying an alternate interface with MONITORED_NETWORK=wlan0 in $BYOBU_CON&#8208;
+       FIG_DIR/statusrc
+
+
+SESSIONS
+       Byobu name screen sessions &quot;byobu&quot;, if  unspecified.   To  hide  sessions
+       from  byobu-select-session(1), prepend a &quot;.&quot; to the beginning of the ses&#8208;
+       sion name, like:
+
+        byobu -S .hidden
+
+
+WINDOWS
+       Each open window in the screen session is  displayed  in  the  upper  bar
+       toward  the  far  left.  These are numbered, and include indicators as to
+       activity in the window (see &quot;activity&quot; in screen(1)  for  symbol  defini&#8208;
+       tions).   The current active window is highlighted by inverting the back&#8208;
+       ground/text from the rest of the window bar.
+
+       Users can create a list of windows to launch at  startup  in  $BYOBU_CON&#8208;
+       FIG_DIR/windows.   This file is the same syntax as ~/.screenrc, each line
+       specifying  a  window  using  the  &quot;screen&quot;  command,  as  described   in
+       screen(1).
+
+       User  can  also  launch  Byobu  with unique window sets.  Users can store
+       these as $BYOBU_CONFIG_DIR/windows.[NAME],  and  launch  Byobu  with  the
+       environment variable BYOBU_WINDOWS.
+
+       For example:
+         $ cat $BYOBU_CONFIG_DIR/windows.ssh_sessions
+         screen -t localhost bash
+         screen -t aussie ssh root@aussie
+         screen -t beagle ssh root@beagle
+         screen -t collie ssh root@collie
+         $ BYOBU_WINDOWS=ssh_sessions byobu
+
+
+UNITS OF MEASURE
+       byobu  uses binary for capacity measurements of KB, MB, GB, and TB.  This
+       means multiples of 1024 rather than multiples of 1000, in accordance with
+       JEDEC Standard 100B.01 for disk and memory capacity measurements.  See:
+        * http://en.wikipedia.org/wiki/JEDEC_memory_standards
+
+       byobu  uses  decimal  for  measurements of network data transfer, meaning
+       multiple of 1000, rather than 1024.  See:
+        * http://en.wikipedia.org/wiki/Data_rate_units
+
+
+KEYBINDINGS
+       byobu keybindings can be user  defined  in  /usr/share/byobu/keybindings/
+       (or  within  .screenrc if byobu-export was used). The common key bindings
+       are:
+
+       F2 - Create a new window
+
+       F3 - Move to previous window
+
+       F4 - Move to next window
+
+       F5 - Reload profile
+
+       F6 - Detach from this session
+
+       F7 - Enter copy/scrollback mode
+
+       F8 - Re-title a window
+
+       F9 - Configuration Menu
+
+       F12 -  Lock this terminal
+
+       shift-F2 - Split the screen horizontally
+
+       ctrl-F2 - Split the screen vertically
+
+       shift-F3 - Shift the focus to the previous split region
+
+       shift-F4 - Shift the focus to the next split region
+
+       shift-F5 - Join all splits
+
+       ctrl-F6 - Remove this split
+
+       ctrl-F5 - Reconnect GPG and SSH sockets
+
+       shift-F6 - Detach, but do not logout
+
+       alt-pgup - Enter scrollback mode
+
+       alt-pgdn - Enter scrollback mode
+
+       Ctrl-a $ - show detailed status
+
+       Ctrl-a R - Reload profile
+
+       Ctrl-a ! - Toggle key bindings on and off
+
+       Ctrl-a k - Kill the current window
+
+       Ctrl-a ~ - Save the current window&apos;s scrollback buffer
+
+
+SCROLLBACK, COPY, PASTE MODES
+       Each window in Byobu has up to 10,000 lines of scrollback history,  which
+       you  can  enter  and navigate using the alt-pgup and alt-pgdn keys.  Exit
+       this scrollback mode by hitting enter.  You  can  also  easily  copy  and
+       paste  text  from scrollback mode.  To do so, enter scrollback using alt-
+       pgup or alt-pgdn, press the spacebar  to  start  highlighting  text,  use
+       up/down/left/right/pgup/pgdn  to select the text, and press enter to copy
+       the text.  You can then paste the text using alt-insert or ctrl-a-].
+
+
+BUGS
+       For Byobu colors to work properly, older versions of GNU Screen require a
+       1-line patch to adjust MAX_WINMSG_REND in screen.c.  The change is in GNU
+       Screen&apos;s upstream source control system as of 2010-01-26, but GNU  Screen
+       has  not  released a new upstream version in several years.  You can dis&#8208;
+       able colors entirely by setting  MONOCHROME=1  in  $BYOBU_CONFIG_DIR/sta&#8208;
+       tusrc.  For more information, see:
+        * http://savannah.gnu.org/bugs/?22146
+
+       PuTTY  users  have reported that the F2, F3, and F4 shortcut keys are not
+       working properly.  PuTTY sends the same escape  sequences  as  the  linux
+       console for F1-F4 by default.  You can fix this problem in the PuTTY con&#8208;
+       fig,  Terminal  -&gt;  Keyboard  -&gt;   Function   keys:   Xterm   R6.    See:
+       http://www.mail-archive.com/screen-users@gnu.org/msg01525.html
+
+       Apple  Mac OSX terminal users have reported &apos;flashing text&apos;.  You can fix
+       this in the advanced settings of the terminal application, with  &apos;Declare
+       Terminal As: xterm-color&apos;.
+
+       Apple  Mac  keyboard users may need to specify a vt100 terminal by adding
+       this to your OSX profile, in order to get Byobu&apos;s function keys and  col&#8208;
+       ors to work:
+         alias ssh=&apos;TERM=vt100 ssh&apos;
+
+       Users  of  a non-UTF8 locale (such as cs_CZ charset ISO-8859-2), may need
+       to add &quot;defutf8 off&quot; to ~/.screenrc, if some characters are rendering  as
+       &quot;?&quot;.
+
+       Users  who  customize  their  PS1  prompt  need  to  put  this setting in
+       ~/.bashrc, rather than ~/.profile, in order for it to work correctly with
+       Byobu.
+
+       If  you run byobu(1) under sudo(8), you must use the -H option, such that
+       the user&apos;s $HOME directory environment variable is set properly.   Other&#8208;
+       wise,  byobu(1)  will  create  a bunch of directories in the $SUDO_USER&apos;s
+       $HOME, but will be owned  by  root.   To  prevent  this  from  happening,
+       byobu(1) will simply refuse to run if $USER does not own $HOME.
+
+       Byobu  requires  a suitable ulimit(3) values to run.  If you get an error
+       at startup saying, &apos;pipe: too many open files&apos;, then check your ulimit -a
+       values,  as  your  &quot;open  files&quot; or &quot;max user processes&quot; are too low.  In
+       this case, you will probably need to run simple screen(1)
+
+
+SEE ALSO
+       screen(1), byobu-config(1), byobu-export(1), byobu-status(1),  byobu-sta&#8208;
+       tus-detail(1), byobu-enable(1), byobu-launch(1), byobu-select-backend(1),
+       tmux(1)
+       http://launchpad.net/byobu
+
+
+AUTHOR
+       This manpage and the utility  were  written  by  Dustin  Kirkland  &lt;kirk&#8208;
+       land@ubuntu.com&gt; for Ubuntu systems (but may be used by others).  Permis&#8208;
+       sion is granted to copy, distribute and/or modify this document  and  the
+       utility under the terms of the GNU General Public License, Version 3 pub&#8208;
+       lished by the Free Software Foundation.
+
+       The complete text of the GNU General  Public  License  can  be  found  in
+       /usr/share/common-licenses/GPL    on   Debian/Ubuntu   systems,   or   in
+       /usr/share/doc/fedora-release-*/GPL on Fedora systems, or on the  web  at
+       http://www.gnu.org/licenses/gpl.txt.
+
+
+
+byobu                             19 June 2009                          byobu(1)
+
+</pre></body></html>

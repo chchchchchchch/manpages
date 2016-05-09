@@ -1,0 +1,66 @@
+<html>
+<head><meta charset=utf-8/>
+<title>RC4_set_key, RC4 - RC4 encryption</title></head>
+<body><pre>
+
+rc4(3SSL)                            OpenSSL                           rc4(3SSL)
+
+
+
+NAME
+       RC4_set_key, RC4 - RC4 encryption
+
+SYNOPSIS
+        #include &lt;openssl/rc4.h&gt;
+
+        void RC4_set_key(RC4_KEY *key, int len, const unsigned char *data);
+
+        void RC4(RC4_KEY *key, unsigned long len, const unsigned char *indata,
+                 unsigned char *outdata);
+
+DESCRIPTION
+       This library implements the Alleged RC4 cipher, which is described for
+       example in Applied Cryptography.  It is believed to be compatible with
+       RC4[TM], a proprietary cipher of RSA Security Inc.
+
+       RC4 is a stream cipher with variable key length.  Typically, 128 bit (16
+       byte) keys are used for strong encryption, but shorter insecure key sizes
+       have been widely used due to export restrictions.
+
+       RC4 consists of a key setup phase and the actual encryption or decryption
+       phase.
+
+       RC4_set_key() sets up the RC4_KEY key using the len bytes long key at
+       data.
+
+       RC4() encrypts or decrypts the len bytes of data at indata using key and
+       places the result at outdata.  Repeated RC4() calls with the same key
+       yield a continuous key stream.
+
+       Since RC4 is a stream cipher (the input is XORed with a pseudo-random key
+       stream to produce the output), decryption uses the same function calls as
+       encryption.
+
+       Applications should use the higher level functions EVP_EncryptInit(3)
+       etc. instead of calling the RC4 functions directly.
+
+RETURN VALUES
+       RC4_set_key() and RC4() do not return values.
+
+NOTE
+       Certain conditions have to be observed to securely use stream ciphers.
+       It is not permissible to perform multiple encryptions using the same key
+       stream.
+
+SEE ALSO
+       blowfish(3), des(3), rc2(3)
+
+HISTORY
+       RC4_set_key() and RC4() are available in all versions of SSLeay and
+       OpenSSL.
+
+
+
+1.0.1e                             2013-02-11                          rc4(3SSL)
+
+</pre></body></html>

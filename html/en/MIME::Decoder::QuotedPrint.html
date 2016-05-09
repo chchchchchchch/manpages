@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>MIME::Decoder::QuotedPrint - encode/decode a "quoted-printable" stream</title></head>
+<body><pre>
+
+MIME::Decoder::QuotedPrUser3Contributed Perl DocuMIME::Decoder::QuotedPrint(3pm)
+
+
+
+NAME
+       MIME::Decoder::QuotedPrint - encode/decode a &quot;quoted-printable&quot; stream
+
+SYNOPSIS
+       A generic decoder object; see MIME::Decoder for usage.
+
+DESCRIPTION
+       A MIME::Decoder subclass for the &quot;quoted-printable&quot; encoding.  The name
+       was chosen to jibe with the pre-existing MIME::QuotedPrint utility
+       package, which this class actually uses to translate each line.
+
+       &#183;   The decoder does a line-by-line translation from input to output.
+
+       &#183;   The encoder does a line-by-line translation, breaking lines so that
+           they fall under the standard 76-character limit for this encoding.
+
+       Note: just like MIME::QuotedPrint, we currently use the native &quot;\n&quot; for
+       line breaks, and not &quot;CRLF&quot;.  This may need to change in future versions.
+
+SEE ALSO
+       MIME::Decoder
+
+AUTHOR
+       Eryq (eryq@zeegee.com), ZeeGee Software Inc (http://www.zeegee.com).
+
+       All rights reserved.  This program is free software; you can redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+
+
+perl v5.14.2                       2012-06-08    MIME::Decoder::QuotedPrint(3pm)
+
+</pre></body></html>

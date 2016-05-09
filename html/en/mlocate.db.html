@@ -1,0 +1,88 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mlocate.db - a mlocate database</title></head>
+<body><pre>
+
+mlocate.db(5)                                                      mlocate.db(5)
+
+
+
+NAME
+       mlocate.db - a mlocate database
+
+
+DESCRIPTION
+       A  mlocate database starts with a file header: 8 bytes for a magic number
+       (&quot;\0mlocate&quot; like a C literal), 4 bytes for the configuration block  size
+       in  big  endian,  1  byte  for  file  format  version (0), 1 byte for the
+       &#8220;require visibility&#8221; flag (0 or 1), 2 bytes padding, and a NUL-terminated
+       path name of the root of the database.
+
+       The header is followed by a configuration block, included to ensure data&#8208;
+       bases are not reused if some configuration  changes  could  affect  their
+       contents.   The size of the configuration block in bytes is stored in the
+       file header.  The configuration block is a sequence of  variable  assign&#8208;
+       ments,  ordered by variable name.  Each variable assignment consists of a
+       NUL-terminated variable name and an ordered list of  NUL-terminated  val&#8208;
+       ues.  The value list is terminated by one more NUL character.  The order&#8208;
+       ing used is defined by the strcmp () function.
+
+       Currently defined variables are:
+
+       prune_bind_mounts
+              A single entry, the value of PRUNE_BIND_MOUNTS; one of the strings
+              0 or 1.
+
+
+       prunefs
+              The value of PRUNEFS, each entry is converted to uppercase.
+
+
+       prunepaths
+              The value of PRUNEPATHS.
+
+
+       The  rest of the file until EOF describes directories and their contents.
+       Each directory starts with a header: 8 bytes for directory time (seconds)
+       in  big endian, 4 bytes for directory time (nanoseconds) in big endian (0
+       if unknown, less than 1,000,000,000), 4 bytes padding, and  a  NUL-termi&#8208;
+       nated  path name of the the directory.  Directory contents, a sequence of
+       file entries sorted by name, follow.
+
+       Directory time is the maximum of st_ctime and st_mtime of the  directory.
+       updatedb(8)  uses the original data if the directory time in the database
+       and in the file system match exactly.  Directory time equal to  0  always
+       causes  rescanning of the directory: this is necessary to handle directo&#8208;
+       ries which were being updated while building the database.
+
+       Each file entry starts with a single byte, marking its type:
+
+       0      A non-directory file.  Followed  by  a  NUL-terminated  file  (not
+              path) name.
+
+
+       1      A  subdirectory.   Followed  by  a  NUL-terminated file (not path)
+              name.
+
+
+       2      Marks the end of the current directory.
+
+
+       locate(1) only reports file entries, directory  names  are  not  reported
+       because  they  are  reported  as an entry in their parent directory.  The
+       only exception is the root directory of the database, which is stored  in
+       the file header.
+
+
+AUTHOR
+       Miloslav Trmac &lt;mitr@redhat.com&gt;
+
+
+SEE ALSO
+       locate(1), updatedb.conf(5), updatedb(8)
+
+
+
+mlocate                             Jan 2007                       mlocate.db(5)
+
+</pre></body></html>

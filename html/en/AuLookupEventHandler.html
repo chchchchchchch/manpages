@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuLookupEventHandler - find the next handler for an event.</title></head>
+<body><pre>
+
+AuLookupEventHandler(3)                                  AuLookupEventHandler(3)
+
+
+
+Name
+       AuLookupEventHandler - find the next handler for an event.
+
+Synopsis
+       #include &lt;audio/audiolib.h&gt;
+
+       AuEventHandlerRec *AuLookupEventHandler(server, event, start)
+           AuServer *server;
+           AuEvent *event;
+           AuEventHandlerRec *start;
+
+Arguments
+       server    Specifies the connection to the audio server.
+
+       event     Specifies the event to find a handler for.
+
+       startwith Specifies the starting position.
+
+Description
+       AuLookupEventHandler  searches  the  list  of  registered  event handlers
+       starting with startwith, and returns the next event handler  or  NULL  if
+       there isnt one.
+
+See Also
+       AuDispatchEvent, AuRegisterEventHandler, AuUnregisterEventHandler.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audioutil                             1.9.3              AuLookupEventHandler(3)
+
+</pre></body></html>

@@ -1,0 +1,75 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wrap-and-sort - wrap long lines and sort items in Debian packaging files</title></head>
+<body><pre>
+
+WRAP-AND-SORT(1)                                                WRAP-AND-SORT(1)
+
+
+
+NAME
+       wrap-and-sort - wrap long lines and sort items in Debian packaging files
+
+SYNOPSIS
+       wrap-and-sort [options]
+
+
+DESCRIPTION
+       wrap-and-sort wraps the package lists in Debian control files. By default
+       the lists will only split into multiple lines if the entries  are  longer
+       than  80 characters. wrap-and-sort sorts the package lists in Debian con&#8208;
+       trol files and all .install  files.  Beside  that  wrap-and-sort  removes
+       trailing spaces in these files.
+
+       This  script  should  be  run  in  the  root of a Debian package tree. It
+       searches for control, control.in, copyright, copyright.in,  install,  and
+       *.install in the debian directory.
+
+
+OPTIONS
+       -h, --help
+              Show this help message and exit.
+
+       -a, --wrap-always
+              Wrap  all  package  lists  in  the Debian control file even if the
+              entries are shorter than 80 characters and could fit in  one  line
+              line.
+
+       -s, --short-indent
+              Only  indent  wrapped  lines by one space (default is in-line with
+              the field name).
+
+       -b, --sort-binary-packages
+              Sort binary package paragraphs by name.
+
+       -k, --keep-first
+              When sorting binary package paragraphs, leave the first one at the
+              top.   Unqualified debhelper(7) configuration files are applied to
+              the first package.
+
+       -n, --no-cleanup
+              Do not remove trailing whitespaces.
+
+       -d path, --debian-directory=path
+              Location of the debian directory (default: ./debian).
+
+       -f file, --file=file
+              Wrap and sort only the  specified  file.   You  can  specify  this
+              parameter  multiple  times.  All supported files will be processed
+              if no files are specified.
+
+       -v, --verbose
+              Print all files that are touched.
+
+
+AUTHORS
+       wrap-and-sort and this  manpage  have  been  written  by  Benjamin  Drung
+       &lt;bdrung@debian.org&gt;.
+
+       Both are released under the ISC license.
+
+
+
+DEBIAN                          Debian Utilities                WRAP-AND-SORT(1)
+
+</pre></body></html>

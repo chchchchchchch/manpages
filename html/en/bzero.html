@@ -1,0 +1,42 @@
+<html>
+<head><meta charset=utf-8/>
+<title>bzero - write zero-valued bytes</title></head>
+<body><pre>
+
+BZERO(3)                    Linux Programmer&apos;s Manual                   BZERO(3)
+
+
+
+NAME
+       bzero - write zero-valued bytes
+
+SYNOPSIS
+       #include &lt;strings.h&gt;
+
+       void bzero(void *s, size_t n);
+
+DESCRIPTION
+       The  bzero() function sets the first n bytes of the area starting at s to
+       zero (bytes containing &apos;\0&apos;).
+
+RETURN VALUE
+       None.
+
+CONFORMING TO
+       4.3BSD.  This function is deprecated (marked as LEGACY in  POSIX.1-2001):
+       use memset(3) in new programs.  POSIX.1-2008 removes the specification of
+       bzero().
+
+SEE ALSO
+       memset(3), swab(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2008-08-06                           BZERO(3)
+
+</pre></body></html>

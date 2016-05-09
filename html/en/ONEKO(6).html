@@ -1,0 +1,135 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ONEKO(6)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ONEKO(6)</title></head>
+<body><pre>
+
+ONEKO(6)                                                                ONEKO(6)
+
+
+
+NAME oneko - Creates a cute cat chasing around your mouse cursor.
+SYNOPSIS
+       oneko  [-help]  [-tora]  [-dog]  [-sakura] [-tomoyo] [-time n] [-speed n]
+       [-idle n] [-name name] [-towindow] [-toname name]  [-tofocus]  [-position
+       geometry] [-rv] [-noshape] [-fg] [-bg]
+
+DESCRIPTION
+       oneko  changes your mouse cursor into mouse and creates a little cute cat
+       and the cat start chasing around your mouse cursor.  If the  cat  catchup
+       the ``mouse&apos;&apos;, start sleeping.
+
+   Options
+       -help  Prints help message on usage.
+
+       -tora  Make cat into &quot;tora-neko&quot;, a cat wite tiger-like stripe.
+
+       -dog   Runs a dog instead of a cat.
+
+       -sakura
+              Runs Sakura Kinomoto instead of a cat.
+
+       -tomoyo
+              Runs Tomoyo Daidouji instead of a cat.
+
+       -time interval
+              Sets  interval  timer which determine intervals for cat animation.
+              Default value is 125000 and unit is micro-second.   Smaller  value
+              makes cat run faster.
+
+       -speed distance
+              Specify  the  distance  where cat jumps at one move in dot resolu&#8208;
+              tion.  Default is 16.
+
+       -idle speed
+              Specify the threshold of the speed which ``mouse&apos;&apos; running away to
+              wake cat up.
+
+       -name name
+              Specify the window name of cat.
+
+       -towindow
+              When  oneko  starts  with this option, you must select a window by
+              cursor.  Then cat appears and starts chasing the window instead of
+              mouse.  You can select another running oneko as the target window.
+              If root window is selected, cat chases mouse as usually.  When the
+              target  window is not in sight and not closed, cat chases mouse as
+              usually.  If the target window is closed, this program exit.
+
+       -toname name
+              Specify the window name of target to make cat chase it instead  of
+              mouse.   You  can specify another running oneko as the target win&#8208;
+              dow.  When the target window is not in sight and not  closed,  cat
+              chases  mouse  as  usually.   If the target window is closed, this
+              program exit.
+
+       -tofocus
+              Makes cat run to and on top of focus window.  When focus window is
+              not in sight, cat chases mouse as usually.
+
+       -position geometry
+              Specify  X and Y offsets in pixels to adjust position of cat rela&#8208;
+              tive to mouse pointer.
+
+       -rv    Reverse background color and foreground color.
+
+       -noshape
+              Don&apos;t use SHAPE extension.
+
+       -fg color
+              Foreground color.
+
+       -bg color
+              Background color.
+
+       -cursor cursornumber
+              Specify a cursos number to set when quitting. For example, 132  is
+              the default root cursor.
+
+   Resources
+       Application name is &quot;neko&quot;(or &quot;tora&quot;) and class name is &quot;Oneko&quot;.
+
+       tora   Set ``True&apos;&apos; if you want &quot;tora-neko&quot;.
+
+       time   Sets interval timer in micro-second.
+
+       speed  Sets distance to jump in pixel.
+
+       idle   Sets speed threshold to wake cat up when ``mouse&apos;&apos; running away.
+
+       noshape
+              Set ``True&apos;&apos; if you don&apos;t want to use SHAPE extension.
+
+       reverse
+              Set  ``True&apos;&apos;  if  you  want  to  switch foreground and background
+              color.
+
+       foreground
+              Foreground color.
+
+       background
+              Background color.
+
+Notes
+       While this program uses XGetDefault, be sure to use &quot;neko.resouce&quot;  form.
+       If you run this program as &quot;tora&quot;, by hard of soft link, the -tora option
+       is enabled by default.
+
+       BSD Daemon Copyright 1988 by Marshall Kirk McKusick. All Rights Reserved.
+
+       Sakura Kinomoto and Tomoyo Daidouji  are  characters  in  a  comic  strip
+       &quot;CARDCAPTOR  SAKURA&quot;  (CLAMP,  Kodansha),  with the sanction indicated in
+       CLAMP SCHOOL WEB CAMPUS (http://www.clamp.f-2.co.jp/).
+
+AUTHOR
+       Original xneko is written by Masayuki Koba and modified to oneko by  Tat&#8208;
+       suya  Kato,  and  modified  furthermore  by  John Lerchey, Eric Anderson,
+       Toshihiro Kanda and Kiichiroh Mukose.
+
+MAINTAINER
+       Send questions or problems to mukose@hbar.mp.es.osaka-u.ac.jp
+
+
+
+                                                                        ONEKO(6)
+
+</pre></body></html>

@@ -1,0 +1,52 @@
+<html>
+<head><meta charset=utf-8/>
+<title>strnlen - determine the length of a fixed-size string</title></head>
+<body><pre>
+
+STRNLEN(3)                  Linux Programmer&apos;s Manual                 STRNLEN(3)
+
+
+
+NAME
+       strnlen - determine the length of a fixed-size string
+
+SYNOPSIS
+       #include &lt;string.h&gt;
+
+       size_t strnlen(const char *s, size_t maxlen);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       strnlen():
+           Since glibc 2.10:
+               _XOPEN_SOURCE &gt;= 700 || _POSIX_C_SOURCE &gt;= 200809L
+           Before glibc 2.10:
+               _GNU_SOURCE
+
+DESCRIPTION
+       The  strnlen() function returns the number of bytes in the string pointed
+       to by s, excluding the terminating null bye (&apos;\0&apos;), but at  most  maxlen.
+       In  doing  this,  strnlen() looks only at the first maxlen bytes at s and
+       never beyond s+maxlen.
+
+RETURN VALUE
+       The strnlen() function returns strlen(s), if that is less than maxlen, or
+       maxlen  if  there  is  no  null  byte (&apos;\0&apos;) among the first maxlen bytes
+       pointed to by s.
+
+CONFORMING TO
+       POSIX.1-2008.
+
+SEE ALSO
+       strlen(3)
+
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2012-05-10                         STRNLEN(3)
+
+</pre></body></html>

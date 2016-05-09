@@ -1,0 +1,61 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wcscasecmp - compare two wide-character strings, ignoring case</title></head>
+<body><pre>
+
+WCSCASECMP(3)               Linux Programmer&apos;s Manual              WCSCASECMP(3)
+
+
+
+NAME
+       wcscasecmp - compare two wide-character strings, ignoring case
+
+SYNOPSIS
+       #include &lt;wchar.h&gt;
+
+       int wcscasecmp(const wchar_t *s1, const wchar_t *s2);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       wcscasecmp():
+           Since glibc 2.10:
+               _XOPEN_SOURCE &gt;= 700 || _POSIX_C_SOURCE &gt;= 200809L
+           Before glibc 2.10:
+               _GNU_SOURCE
+
+DESCRIPTION
+       The  wcscasecmp()  function  is the wide-character equivalent of the str&#8208;
+       casecmp(3) function.  It compares the wide-character string pointed to by
+       s1  and the wide-character string pointed to by s2, ignoring case differ&#8208;
+       ences (towupper(3), towlower(3)).
+
+RETURN VALUE
+       The wcscasecmp() function returns zero if the wide-character  strings  at
+       s1  and s2 are equal except for case distinctions.  It returns a positive
+       integer if s1 is greater than s2, ignoring case.  It returns  a  negative
+       integer if s1 is smaller than s2, ignoring case.
+
+VERSIONS
+       The wcscasecmp() function is provided in glibc since version 2.1.
+
+CONFORMING TO
+       POSIX.1-2008.  This function is not specified in POSIX.1-2001, and is not
+       widely available on other systems.
+
+NOTES
+       The behavior of wcscasecmp() depends on the LC_CTYPE category of the cur&#8208;
+       rent locale.
+
+SEE ALSO
+       strcasecmp(3), wcscmp(3)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+GNU                                2010-09-15                      WCSCASECMP(3)
+
+</pre></body></html>

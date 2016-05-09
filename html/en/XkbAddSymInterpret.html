@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbAddSymInterpret - Add a symbol interpretation to the list of symbol interpretations in an XkbCompatRec</title></head>
+<body><pre>
+
+XkbAddSymInterpret(3)             XKB FUNCTIONS            XkbAddSymInterpret(3)
+
+
+
+NAME
+       XkbAddSymInterpret  -  Add  a symbol interpretation to the list of symbol
+       interpretations in an XkbCompatRec
+
+SYNOPSIS
+       XkbSymInterpretPtr XkbAddSymInterpret (XkbDescPtr xkb, XkbSymInterpretPtr
+              si, Bool updateMap, XkbChangesPtr changes);
+
+ARGUMENTS
+       - xkb  keyboard description to be updated
+
+       - si   symbol interpretation to be added
+
+       - updateMap
+              True=&gt;apply compatibility map to keys
+
+       - changes
+              changes are put here
+
+DESCRIPTION
+       XkbAddSymInterpret  adds si to the list of symbol interpretations in xkb.
+       If updateMap is True, it (re)applies the compatibility map to all of  the
+       keys on the keyboard. If changes is non-NULL, it reports the parts of the
+       keyboard that were affected (unless updateMap is True, not much changes).
+       XkbAddSymInterpret returns a pointer to the actual new symbol interpreta&#8208;
+       tion in the list or NULL if it failed.
+
+
+
+X Version 11                      libX11 1.5.0             XkbAddSymInterpret(3)
+
+</pre></body></html>

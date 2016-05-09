@@ -1,0 +1,113 @@
+<html>
+<head><meta charset=utf-8/>
+<title>ggAddObserver, ggDelObserver, ggNotifyObservers, ggClearPublisher - Simple observer framework</title></head>
+<body><pre>
+
+ggAddObserver(3)                       GGI                      ggAddObserver(3)
+
+
+
+NAME
+       ggAddObserver,  ggDelObserver, ggNotifyObservers, ggClearPublisher - Sim&#8208;
+       ple observer framework
+
+SYNOPSIS
+       #include &lt;ggi/gg.h&gt;
+
+       typedef int (ggfunc_observer_update)(void *arg, int flag, void *data);
+
+       struct gg_observer {
+             ggfunc_observer_update     *update;
+             void                       *arg;
+             GG_LIST_ENTRY(gg_observer) _others;
+       };
+
+       struct gg_publisher {
+             GG_LIST_HEAD(gg_observer_list,  gg_observer)  observers;
+       };
+
+       #define INIT_PUBLISHER(pub) GG_LIST_INIT(&amp;((pub)-&gt;observers))
+
+       struct gg_observer * ggAddObserver(struct gg_publisher *,
+                                          ggfunc_observer_update *, void *);
+
+       void ggDelObserver(struct gg_observer *);
+
+       void ggNotifyObservers(struct gg_publisher *, int, void *);
+
+       void ggClearPublisher(struct gg_publisher *);
+
+
+DESCRIPTION
+       The observer pattern is very useful and commonly found in  many  software
+       packages,  even  if  not explicitly called that way.  The problem is that
+       every different software will often use a  particular  implementation  of
+       this  pattern,  depending  on  a specific use-case.  So usually everybody
+       prefers to roll its own.  LibGG observers are  defined  as  part  of  the
+       forth-coming   api  infrastructure,  as  light-weight  cooperation  model
+       between libraries. The model is very simple:
+
+       struct gg_publisher defines a channel on which observers  can  be  regis&#8208;
+       tered.  An  observer  is  simply an opaque value and a callback receiving
+       that value as first argument, a flag, and an opaque channel-specific mes&#8208;
+       sage.   The idea is that if you known the observable you&apos;re listening on,
+       you know the semantics behind the flag and message.  When the  observable
+       is triggered, all observers&apos; callbacks will be fired.
+
+       ggAddObserver registers a new observer on a publisher.
+
+       ggDelObserver unregisters the given observer from its publisher and frees
+       it.
+
+       ggNotifyObservers triggers all observers update functions for  that  pub&#8208;
+       lisher. The flag and message will be given to the observers&apos; update call&#8208;
+       backs. An observer *must not* call ggDelObserver on itself in the  update
+       function to unregister. Instead it must return a non-zero value.
+
+       ggClearPublisher frees all observers registered on the publisher.
+              If at least one is left, then there is probably a logical error in
+              the observer code, since it must already have been notified  some&#8208;
+              how  of  the  publisher going down, and unregistered all callbacks
+              before.
+
+
+RETURN VALUES
+       ggAddObserver returns a newly constructed observer  hook.  Normally,  the
+       caller  will  keep a reference to it to call if he needs to call ggDelOb&#8208;
+       server later.
+
+EXAMPLE
+       #include &lt;ggi/gg.h&gt;
+       #include &lt;stdio.h&gt;
+
+       int update(void* o, int f, void *d) {
+           printf(&quot;update called for observer %p, flag=%i, data=%p\n&quot;, o, f ,d);
+           if (o == 1) {
+              return 1; /* unregister */
+           }
+           return 0;
+       }
+
+       int main() {
+           struct gg_publisher pub;
+           struct gg_observer *o1, *o2;
+
+           INIT_PUBLISHER(&amp;pub);
+
+           o1 = ggAddObserver(&amp;pub, update, (void*)1);
+           o2 = ggAddObserver(&amp;pub, update, (void*)2);
+
+           ggNotifyObservers(&amp;pub, 0, NULL);
+           ggNotifyObservers(&amp;pub, 1, NULL);
+
+           ggClearPublisher(&amp;pub);
+
+           return 0;
+       }
+
+
+
+
+libgg-1.0.x                        2005-08-26                   ggAddObserver(3)
+
+</pre></body></html>

@@ -1,0 +1,113 @@
+<html>
+<head><meta charset=utf-8/>
+<title>apmsleep - go into suspend or standby mode and wake-up later</title></head>
+<body><pre>
+
+APMSLEEP(1)                                                          APMSLEEP(1)
+
+
+
+NAME
+       apmsleep - go into suspend or standby mode and wake-up later
+
+SYNOPSIS
+       apmsleep  [-sSnwhVd]  [--suspend]  [--standby] [--noapm] [--wait] [--pre&#8208;
+       cise] [--help]  [--version] [--debug] [+]hh:mm
+
+DESCRIPTION
+       Some computers, especially laptops, can wake-up from a low-power  suspend
+       to  DRAM mode using the Real-time-clock (RTC) chip.  Apmsleep can be used
+       to set the alarm time in the RTC and to go into suspend or standby  mode.
+       An  interrupt  from  the RTC causes the computer to wake-up.  The program
+       detects this event, by waiting for a leap in the kernel time  and  termi&#8208;
+       nates  successfully.  If  no time leap occurs within one minute, or some&#8208;
+       thing goes wrong, the exit value will be non-zero.
+
+       The wake-up time can be specified in two formats:
+
+       +hh:mm specifies a relative offset to the current time. The computer will
+       suspend  for  exactly  hh hours and mm minutes plus a few seconds to wake
+       up.  On some laptops, the timing is not completely accurate so it may  be
+       a few minutes (or more?) late.
+
+       hh:mm specifies absolute local time in 24-hour format. The time stored in
+       the RTC is not important.  You may change the time zone used, with the TZ
+       environment variable as usual. Daylight saving time is not obeyed in this
+       version, but might be in a future release.  WARNING: Do not  close  cover
+       of  laptop after suspending the laptop with apmsleep.  Most laptops over&#8208;
+       heat when running with closed cover.
+
+       Energy conservation with APM is little for  a  desktop.  Turning  of  the
+       screen will save 1/2, going into standby with drives turned off will save
+       another 1/6th of the current.
+
+       -V, --version
+              Print the apmsleep program version and exit immediately.
+
+       -s, --suspend
+              Put the machine into suspend mode if  possible  (default).  On  my
+              laptop, suspend mode turns off everything except the memory.
+
+       -S, --standby
+              Put  the  machine  into  standby  mode  if possible. On my laptop,
+              standby mode turns off screen, hard disk, and CPU.
+
+       -w, --wait
+              Wait indefinitely for the time leap.
+
+       -p, --precise
+              Wait for alarm time to match actual time. Do  not  wait  for  time
+              leap.  This might be useful even without APM.
+
+       -n, --noapm
+              Do not call apm bios to suspend computer, just set the alarm clock
+              and wait for time leap indefinitely.
+
+       -d, --debug
+              Print some information about what is going on.
+
+REQUIRED SYSTEM CONFIGURATION
+       Kernel The special character device /dev/rtc must exist  and  the  kernel
+              needs to be compiled with APM and RTC support.
+
+       BIOS   The computer must have the &apos;suspend to RAM&apos; feature enabled in the
+              BIOS; &apos;suspend to Disk&apos; will not work,  because  the  computer  is
+              turned  off completely. You do not need to enable the ALARM timer,
+              it will be activated by apmsleep. On some boards, you can  config&#8208;
+              ure  which  interrupts  can be used to awake from suspend mode. If
+              you have such a board, you might want to make sure  that  keyboard
+              (IRQ  1)  and RTC (IRQ 8) are among those interrupts. If your com&#8208;
+              puter does not wake up, try to enable &apos;modem ring&apos;  in  the  BIOS,
+              even if you do not have a modem.
+
+       Privileges
+              The  program  must  be  run as root or have the SUID attribute set
+              (see chmod(1)).
+
+BUGS
+       Apmsleep cannot detect which event terminated  the  suspension.  Possible
+       events  are:  keyboard or mouse activity, modem ring, alarm from RTC, any
+       other interrupt. Sometimes, the time leap is not detected properly (caus&#8208;
+       ing a wrong exit value).
+
+       Should  use  APM BIOS calls to set alarm clock (not yet supported by ker&#8208;
+       nel).
+
+       This program was tested on a Winbook XL laptop (Pentium)  only.   It  may
+       not function on your hardware.
+
+AUTHOR
+       Written by Peter Englmaier (ppe@mpe.mpg.de) and may be freely distributed
+       under the terms of the GNU General Public License.  The code is based  on
+       Paul  Gortmacher&apos;s RTC test/example program.  There is ABSOLUTELY NO WAR&#8208;
+       RANTY for this program.  The current maintainer is Peter Englmaier.
+
+SEE ALSO
+       xapm(1), apmd(8).
+
+
+
+
+                                  January 2004                       APMSLEEP(1)
+
+</pre></body></html>

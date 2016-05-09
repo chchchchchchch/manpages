@@ -1,0 +1,73 @@
+<html>
+<head><meta charset=utf-8/>
+<title>spuunmux —     demultiplexes subtitles from an existing mpeg2 program stream</title></head>
+<body><pre>
+
+spuunmux(1)                                                          spuunmux(1)
+
+
+
+NAME
+       spuunmux  &#8212;      demultiplexes  subtitles  from an existing mpeg2 program
+       stream
+
+
+SYNOPSIS
+       spuunmux [input file]  [input file ...]
+
+DESCRIPTION
+       spuunmux demultiplexes subtitles from an existing mpeg2 program stream
+
+
+OPTIONS
+       -o name   base name for script and images. Defaults to sub.
+
+
+       -v level  verbosity level. sub. Defaults to 0.
+
+
+       -f        resize images to full size. Defaults to 720x576.
+
+
+       -s stream number of the substream to extract. Defaults to 0.
+
+
+       -p file   name of file with dvd palette. If palette file ends with  .rgb,
+                 treated as a RGB else as a YCbCr color
+
+
+       -h        print this help
+
+
+       -V        print version number
+
+
+USAGE
+       spuunmux inputfile1 inputfile2
+
+
+       demultiplexes  subtitles  from  an  existing mpeg2 program stream. To use
+       stdin for demultiplexing, use - for the inputfile:
+
+
+       play_cell GoldFinger.iso 1 1 6 | spuunmux -
+
+
+CAVEATS
+       None.
+
+
+BUGS
+       None.
+
+
+AUTHOR
+       Marc Leeman This manual  page  was  written  by  Marc  Leeman  &lt;marc.lee&#8208;
+       man@gmail.com&gt;,  for the Debian GNU/Linux system (but may be used by oth&#8208;
+       ers).
+
+
+
+                                                                     spuunmux(1)
+
+</pre></body></html>

@@ -1,0 +1,81 @@
+<html>
+<head><meta charset=utf-8/>
+<title>drmModeGetResources - retrieve current display configuration information</title></head>
+<body><pre>
+
+drmModeGetResources(libdrm 2.4.40)            drmModeGetResources(libdrm 2.4.40)
+
+
+
+NAME
+       drmModeGetResources - retrieve current display configuration information
+
+SYNOPSIS
+       #include &lt;xf86drmMode.h&gt;
+
+       typedef struct _drmModeRes {
+
+            int count_fbs;
+            uint32_t *fbs;
+
+            int count_crtcs;
+            uint32_t *crtcs;
+
+            int count_connectors;
+            uint32_t *connectors;
+
+            int count_encoders;
+            uint32_t *encoders;
+
+            uint32_t min_width, max_width;
+            uint32_t min_height, max_height;
+       } drmModeRes, *drmModeResPtr;
+
+       drmModeResPtr drmModeGetResources(int fd);
+
+DESCRIPTION
+       This  function will allocate, populate, and return a drmModeRes structure
+       containing information about the current display configuration.
+
+       The count_fbs and fbs fields indicate the number of  currently  allocated
+       framebuffer  objects  (i.e.  objects that can be attached to a given CRTC
+       or sprite for display).
+
+       The count_crtcs and crtcs fields list the available CRTCs in the configu&#8208;
+       ration.   A CRTC is simply an object that can scan out a framebuffer to a
+       display sink, and contains mode timing and relative position information.
+       CRTCs  drive  encoders,  which  are  responsible for converting the pixel
+       stream into a specific display protocol (e.g. MIPI or HDMI).
+
+       The count_connectors and connectors fields list  the  available  physical
+       connectors  on  the  system.   Note that some of these may not be exposed
+       from the chassis (e.g. LVDS or eDP).  Connectors are attached to encoders
+       and  contain  information about the attached display sink (e.g. width and
+       height in mm, subpixel ordering, and various other properties).
+
+       The count_encoders and encoders fields list the available encoders on the
+       device.   Each  encoder may be associated with a CRTC, and may be used to
+       drive a particular encoder.
+
+       The min and max height fields indicate the maximum size of a  framebuffer
+       for this device (i.e. the scanout size limit).
+
+
+RETURN VALUE
+       Returns a drmModeRes structure pointer on success, 0 on failure.
+
+
+REPORTING BUGS
+       Bugs  in  this function should be reported to http://bugs.freedesktop.org
+       under the &quot;Mesa&quot; product, with &quot;Other&quot; or &quot;libdrm&quot; as the component.
+&#12;
+SEE ALSO
+       drmModeGetFB(3), drmModeAddFB(3), drmModeAddFB2(3), drmModeRmFB(3),  drm&#8208;
+       ModeDirtyFB(3),   drmModeGetCrtc(3),   drmModeSetCrtc(3),   drmModeGetEn&#8208;
+       coder(3), drmModeGetConnector(3)
+
+
+
+                                              drmModeGetResources(libdrm 2.4.40)
+
+</pre></body></html>

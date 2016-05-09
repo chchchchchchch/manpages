@@ -1,0 +1,90 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vga_getmousetype - returns the mouse type configured</title></head>
+<body><pre>
+
+vga_getmousetype(3)            Svgalib User Manual           vga_getmousetype(3)
+
+
+
+NAME
+       vga_getmousetype - returns the mouse type configured
+
+SYNOPSIS
+       #include &lt;vga.h&gt;
+
+       int vga_getmousetype(void);
+
+
+DESCRIPTION
+       This returns the mouse type configered in /etc/vga/libvga.config.
+
+       The  return value logically anded with MOUSE_TYPE_MASK is one of (defined
+       in (#include &lt;vgamouse.h&gt;):
+
+       MOUSE_NONE
+              There is no mouse installed. It is good style to check if there is
+              no mouse available first and then enable mouse support to avoid an
+              svgalib error message if you try  to  initialize  a  non  existing
+              mouse.   MOUSE_MICROSOFT  A Microsoft compatible mouse (2 buttons)
+              (default).
+       MOUSE_MOUSESYSTEMS
+              A MouseSystems compatible mouse (3 buttons).
+       MOUSE_MMSERIES
+              A MMSeries compatible mouse.
+       MOUSE_LOGITECH
+              An ordinary LogiTech compatible mouse.
+       MOUSE_BUSMOUSE
+              A busmouse.
+       MOUSE_PS2
+              A PS/2 busmouse.
+       MOUSE_LOGIMAN
+              An ordinary LogiTech LogiMan compatible mouse.
+       MOUSE_GPM
+              The GPM daemon is used.
+       MOUSE_SPACEBALL
+              A 3d SpaceTec Spaceball pointer device.
+       MOUSE_INTELLIMOUSE
+              A Microsoft IntelliMouse or Logitech MouseMan+ on serial port.
+       MOUSE_IMPS2
+              A Microsoft IntelliMouse or Logitech MouseMan+ on PS/2 port.
+
+       The return value may be ored with one or more of the following flags
+
+       MOUSE_CHG_DTR
+              change the setting of DTR to force the mouse to a given mode.
+       MOUSE_DTR_HIGH
+              set DTR to high instead of setting it to low (default).
+       MOUSE_CHG_RTS
+              change the setting of RTS to force the mouse to a given mode.
+       MOUSE_RTS_HIGH
+              set RTS to high instead of setting it to low (default).
+
+       Your application may use this info to perform specific actions (go into a
+       3d pointer device mode for example).
+
+SEE ALSO
+       svgalib(7),    vgagl(7),    libvga.config(5),    mousetest(6),   spin(6),
+       mouse_close(3),  mouse_getposition_6d(3),  mouse_getx(3),  mouse_init(3),
+       mouse_setposition(3),         mouse_setscale(3),        mouse_setwrap(3),
+       mouse_setxrange(3), mouse_update(3), mouse_waitforupdate(3), vga_init(3),
+       vga_setmousesupport(3), vga_waitevent(3)
+
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced function as well as of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)               27 July 1997               vga_getmousetype(3)
+
+</pre></body></html>

@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>vlc, qvlc, svlc, nvlc, rvlc, cvlc - the VLC media player</title></head>
+<body><pre>
+
+VLC(1)                                                                    VLC(1)
+
+
+
+NAME
+       vlc, qvlc, svlc, nvlc, rvlc, cvlc - the VLC media player
+
+SYNOPSIS
+       vlc [OPTIONS] [ITEMS]...
+
+DESCRIPTION
+       This manual page documents briefly the VLC multimedia player and server.
+
+
+OPTIONS
+       VLC follows the usual GNU command line syntax, with long options starting
+       with two dashes (`-&apos;).  For a precise description of options, please  use
+       &quot;vlc --help&quot;.
+
+       The  complete  list  of VLC options depends on what plugins are installed
+       because they  automatically  add  their  own  options.  Please  use  &quot;vlc
+       --longhelp --advanced&quot; for a complete list of available options.
+
+
+ITEMS
+       VLC recognizes several URL-style items:
+
+       *.mpg, *.vob, *.avi, *.mp3, *.ogg, *.opus
+              Various multimedia file formats
+
+       dvd://[&lt;device&gt;][@&lt;raw device&gt;][#[&lt;title&gt;][:[&lt;chapter&gt;][:&lt;angle&gt;]]]
+              DVD  device  (for  instance  dvd:///dev/dvd).  The  raw  device is
+              optional and must have been prepared beforehand.
+
+       vcd://[&lt;device&gt;][@{E|P|E|T|S}[&lt;number&gt;]]
+              VCD device (for instance vcd:///dev/cdrom).
+
+       udp://[@[&lt;multicast address&gt;][:&lt;local port&gt;]]
+              UDP stream, such as one sent  by  VLS  or  another  VLC.   Usually
+              &quot;udp://&quot; is enough.
+
+       http://&lt;server address&gt;[:&lt;server port&gt;]/[&lt;file&gt;]
+              HTTP stream
+
+       rtsp://&lt;server address&gt;[:&lt;server port&gt;]/&lt;stream name&gt;
+              RTSP Video On Demand stream
+
+       vlc://&lt;command&gt;
+              Execute  a  playlist command. Commands are: pause (pause execution
+              of other items), and quit (close VLC).
+
+
+SEE ALSO
+       Online documentation: http://www.videolan.org/doc/
+
+AUTHOR
+       This manual page was written by Sam Hocevar &lt;sam@zoy.org&gt;, for the Debian
+       GNU/Linux system (but may be used by others).
+
+
+
+                                  Feb 14, 2005                            VLC(1)
+
+</pre></body></html>

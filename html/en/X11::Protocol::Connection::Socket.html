@@ -1,0 +1,35 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X11::Protocol::Connection::Socket - Perl module base class for IO::Socket-based X11 connections</title></head>
+<body><pre>
+
+Protocol::Connection::SUsertContributed Perl DoProtocol::Connection::Socket(3pm)
+
+
+
+NAME
+       X11::Protocol::Connection::Socket - Perl module base class for
+       IO::Socket-based X11 connections
+
+SYNOPSIS
+         package X11::Protocol::Connection::WeirdSocket;
+         use X11::Protocol::Connection::Socket;
+         @ISA = (&apos;X11::Protocol::Connection::Socket&apos;)
+
+DESCRIPTION
+       This module defines get(), give() and fh() methods common to
+       X11::Protocol::Connection types that are based on IO::Socket. They expect
+       the object they are called with to be a reference to an IO::Socket.
+
+AUTHOR
+       Stephen McCamant &lt;SMCCAM@cpan.org&gt;.
+
+SEE ALSO
+       perl(1), X11::Protocol, X11::Protocol::Connection::INETSocket,
+       X11::Protocol::Connection::UNIXSocket, IO::Socket.
+
+
+
+perl v5.14.2                       2003-10-12  Protocol::Connection::Socket(3pm)
+
+</pre></body></html>

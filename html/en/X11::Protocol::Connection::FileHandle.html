@@ -1,0 +1,36 @@
+<html>
+<head><meta charset=utf-8/>
+<title>X11::Protocol::Connection::FileHandle - Perl module base class for FileHandle-based X11 connections</title></head>
+<body><pre>
+
+Protocol::Connection::FUseraContributed PerProtocol::Connection::FileHandle(3pm)
+
+
+
+NAME
+       X11::Protocol::Connection::FileHandle - Perl module base class for
+       FileHandle-based X11 connections
+
+SYNOPSIS
+         package X11::Protocol::Connection::WeirdFH;
+         use X11::Protocol::Connection::FileHandle;
+         @ISA = (&apos;X11::Protocol::Connection::FileHandle&apos;)
+
+DESCRIPTION
+       This module defines get(), give() and fh() methods common to
+       X11::Protocol::Connection types that are based on the FileHandle package.
+       They expect the object they are called with to be a reference to a
+       FileHandle.
+
+AUTHOR
+       Stephen McCamant &lt;SMCCAM@cpan.org&gt;.
+
+SEE ALSO
+       perl(1), X11::Protocol, X11::Protocol::Connection::INETFH,
+       X11::Protocol::Connection::UNIXFH, FileHandle.
+
+
+
+perl v5.14.2                       2003-10-Protocol::Connection::FileHandle(3pm)
+
+</pre></body></html>

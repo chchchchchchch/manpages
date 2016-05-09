@@ -1,0 +1,191 @@
+<html>
+<head><meta charset=utf-8/>
+<title>darktable - a digital photography workflow application</title></head>
+<body><pre>
+
+DARKTABLE(1)                        darktable                       DARKTABLE(1)
+
+
+
+NAME
+       darktable - a digital photography workflow application
+
+SYNOPSIS
+       &quot;darktable [options] [{IMG_1234.RAW,/path/to/load/}]&quot;
+
+       Options:
+
+           --help
+           --version
+           -d {all,cache,camctl,control,dev,fswatch,memory,opencl,perf,pwstorage,sql}
+           --library override.db
+           --disable-opencl
+           -t num_threads
+
+DESCRIPTION
+       darktable is a digital photography workflow application for Linux and Mac
+       OS X in the lines of Adobe Lightroom and Apple Aperture.
+
+       The application is designed to ease editing and consistent processing of
+       large photo sessions and provides a easy to use digital light-table and a
+       set of sophisticated postprocessing tools.
+
+       Most processing is done in 32-bit floating point per channel mode in
+       device independent CIE L*a*b* color space. darktable is also fully color
+       managed, which gives you full control over the look of the photos.
+
+       The application relies on a modern plug-in architecture thus making it
+       easy for 3rd party developers to extend the existing capabilities of the
+       application.  All light-table and darkroom features are implemented as
+       plug-ins, so you can create your plug-ins reusing existing code.
+
+COMMAND LINE ARGUMENTS
+       IMG_1234.CR2 or /path/to/load/
+           Loads the given image in darkroom mode, or imports the given folder.
+
+       -d control
+           Enable job queue debugging. If you redirect darktables output to
+           control.log and call ./tools/create_control_svg.sh control.log, you
+           will get a nice control.svg with a visualization of the threads&apos;
+           work.
+
+       -d cache
+           This will give you a lot of debugging info about the mipmap cache for
+           light table mode. If compiled in debug mode, this will also tell you
+           where in the code a certain buffer has last been locked.
+
+       -d perf
+           Use this for performance tweaking your darkroom modules. It will
+           rdtsc-measure the runtimes of all plugins and print them to stdout.
+
+       -d all
+           Enable all debugging output.
+
+       --library override.db
+           Uses override.db instead of the gconf/darktablerc specified library
+           file. Should be an absolute path.
+
+       --disable-opencl
+           For opencl builds only. Disables GPU computing at runtime. Useful to
+           check for bugs in our opencl code and to avoid buggy drivers on
+           certain machines.
+
+       -t num_threads
+           For openmp builds only. Overrides the default number of threads (=
+           number of cores).
+
+OTHER INFO
+       Please visit darktable&apos;s website for news, bug tracker and forum:
+       &lt;http://www.darktable.org&gt;
+
+KEYBINDINGS
+       All modes:
+
+       F11 Switch between fullscreen and normal modes of the application&apos;s
+           window
+
+       Tab Show/hide sidebars
+
+       e   Switch between light-table and darkroom modes
+
+       F7  Decrease contrast
+
+       F8  Increase contrast
+
+       Lighttable mode:
+
+       alt-1
+           Zoom in on image under cursor
+
+       alt-2, 3
+           Adjust zoom
+
+       alt-4
+           Zoom out completely
+
+       q   Zoom out to fit all images in one row inside viewport, center on
+           image under cursor
+
+       a, s, d, w
+           Move around (arrows also work)
+
+       1, 2, 3, 4, 5
+           Star rating
+
+       ctrl-backspace
+           Strip all stars (reject image)
+
+       F1, F2, F3, F4, F5
+           Color labels: toggle red, yellow, green, blue and magenta
+
+       ctrl-g, ctrl-shift-g
+           Move to top, bottom, respectively
+
+       ctrl-e
+           Export selected images
+
+       Darkroom mode:
+
+       alt-1, 2, 3
+           Zoom to 1:1, fill, and fit, respectively
+
+       ctrl-f
+           show/hide film strip
+
+       while cropping: Enter/Backspace
+           apply/revert currently selected cropping frame
+&#12;RELATED
+       darktable-faster first copies the library to ram and then starts dt. On
+       close, it is copied back, so even in case of crashes no data loss is
+       anticipated.
+       darktable-viewer screensaver version of dt. Shows the last active
+       collection in full screen as a slideshow.
+
+BUGS
+       Please use the mailing list to report all the bugs you run into.
+
+AUTHORS
+       The principal developer of darktable is Johannes Hanika. The (hopefully)
+       complete list of contributors to the project is:
+
+       * developers: Henrik Andersson, Johannes Hanika, Tobias Ellinghaus.
+
+       * ubuntu packaging, color management, video tutorials: Pascal de Bruijn.
+
+       * opencl pipeline: Ulrich Pegelow.
+
+       * networking, battle testing, translation expert: Alexandre Prokoudine.
+
+       * translation: Alexandre Prokoudine, Daniele Giorgis, Ger Siemerink,
+       Henrik Andersson, Josep Puigdemont, Micha&#197; Pr&#196;dotka, Mikko Ruohola,
+       Olivier Tribout, Roberto Quintero, Sebastien Delcoigne, Thomas Costis,
+       Tobias Ellinghaus.
+
+       * contributors: Alexandre Prokoudine Alexey Dokuchaev Ammon Riley Antony
+       Dovgal Boucman Brian Teague Bruce Guenter Cherrot Luo Denis Cheremisov
+       Edouard Gomez Edward Herr Franti&#197;&#161;ek &#197; id&#195;&#161;k Ger Siemerink Gianluigi
+       Calcaterra James C. McPherson Joao Trindade Jose Carlos Garcia Sogo
+       Micha&#197; Pr&#196;dotka Moritz Lipp Olivier Tribout Pascal de Bruijn Petr Styblo
+       Robert Bieber Rostyslav Pidgornyi Sergey Pavlov Simon Spannagel Terry
+       Jeffress Tim Harder Tom Vanderpoel Ulrich Pegelow jan maigl And all those
+       of you that made previous releases possible
+
+       This man page was written by Alexandre Prokoudine
+       &lt;alexandre.prokoudine@gmail.com&gt;.
+
+HISTORY
+       The project was started by Johannes Hanika in early 2009 to fill the gap
+       (or, rather, a black hole) of a digital photography workflow tool on
+       Linux.
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2009-2010 by Authors.
+
+       darktable is free software; you can redistribute it and/or modify it
+       under the terms of the GPL v3 or (at your option) any later version.
+
+
+
+darktable-1.0.4                       1986d                         DARKTABLE(1)
+
+</pre></body></html>

@@ -1,0 +1,81 @@
+<html>
+<head><meta charset=utf-8/>
+<title>sha224sum - compute and check SHA224 message digest</title></head>
+<body><pre>
+
+SHA224SUM(1)                      User Commands                     SHA224SUM(1)
+
+
+
+NAME
+       sha224sum - compute and check SHA224 message digest
+
+SYNOPSIS
+       sha224sum [OPTION]... [FILE]...
+
+DESCRIPTION
+       Print or check SHA224 (224-bit) checksums.  With no FILE, or when FILE is
+       -, read standard input.
+
+       -b, --binary
+              read in binary mode
+
+       -c, --check
+              read SHA224 sums from the FILEs and check them
+
+       -t, --text
+              read in text mode (default)
+
+   The following three options are useful only when verifying checksums:
+       --quiet
+              don&apos;t print OK for each successfully verified file
+
+       --status
+              don&apos;t output anything, status code shows success
+
+       -w, --warn
+              warn about improperly formatted checksum lines
+
+       --strict
+              with --check, exit non-zero for any invalid input
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       The sums are computed as described in RFC 3874.  When checking, the input
+       should  be a former output of this program.  The default mode is to print
+       a line with checksum, a character indicating type (`*&apos; for  binary,  `  &apos;
+       for text), and name for each FILE.
+
+AUTHOR
+       Written by Ulrich Drepper, Scott Miller, and David Madore.
+
+REPORTING BUGS
+       Report sha224sum bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report    sha224sum    translation    bugs   to   &lt;http://translationpro&#8208;
+       ject.org/team/&gt;
+
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The full documentation for sha224sum is maintained as a  Texinfo  manual.
+       If  the  info and sha224sum programs are properly installed at your site,
+       the command
+
+              info coreutils &apos;sha224sum invocation&apos;
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.12.197-032bb     September 2011                     SHA224SUM(1)
+
+</pre></body></html>

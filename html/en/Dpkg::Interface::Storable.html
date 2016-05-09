@@ -1,0 +1,55 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Dpkg::Interface::Storable - common methods related to object serialization</title></head>
+<body><pre>
+
+Dpkg::Interface::Storable(3)      libdpkg-perl      Dpkg::Interface::Storable(3)
+
+
+
+NAME
+       Dpkg::Interface::Storable - common methods related to object
+       serialization
+
+DESCRIPTION
+       Dpkg::Interface::Storable is only meant to be used as parent class for
+       other objects. It provides common methods that are all implemented on top
+       of two basic methods parse() and output().
+
+BASE METHODS
+       Those methods must be provided by the object that wish to inherit from
+       Dpkg::Interface::Storable so that the methods provided can work.
+
+       $obj-&gt;parse($fh, $desc)
+           This methods initialize the object with the data stored in the
+           filehandle. $desc is optional and is a textual description of the
+           filehandle used in error messages.
+
+       $string = $obj-&gt;output($fh)
+           This method returns a string representation of the object in $string
+           and it writes the same string to $fh (if it&apos;s defined).
+
+PROVIDED METHODS
+       $obj-&gt;load($filename)
+           Initialize the object with the data stored in the file. The file can
+           be compressed, it will be uncompressed on the fly by using a
+           Dpkg::Compression::FileHandle object. If $filename is &quot;-&quot;, then the
+           standard input is read (no compression is allowed in that case).
+
+       $obj-&gt;save($filename)
+           Store the object in the file. If the filename ends with a known
+           compression extension, it will be compressed on the fly by using a
+           Dpkg::Compression::FileHandle object. If $filename is &quot;-&quot;, then the
+           standard output is used (data are written uncompressed in that case).
+
+       &quot;$obj&quot;
+           Return a string representation of the object.
+
+AUTHOR
+       Rapha&#195;&#171;l Hertzog &lt;hertzog@debian.org&gt;.
+
+
+
+1.16.16                            2015-04-09       Dpkg::Interface::Storable(3)
+
+</pre></body></html>

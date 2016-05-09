@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>psmandup - print duplex on non duplex printers</title></head>
+<body><pre>
+
+PSMANDUP(1)                            FSF                           PSMANDUP(1)
+
+
+
+NAME
+       psmandup - print duplex on non duplex printers
+
+SYNOPSIS
+       psmandup FILE
+
+DESCRIPTION
+       Tries  to  produce  a  version  of the PostScript FILE to print in manual
+       Duplex.
+
+OPTIONS
+       -h, --help
+              display this help and exit
+
+       -v, --version
+              display version information and exit
+
+       -q, --quiet
+              don&apos;t print informational messages
+
+       -o, --output=FILE
+              save result in FILE.  If FILE is `-&apos;, send to stdout
+
+       -n, --no-fix
+              don&apos;t call fixps to fix PS problems in FILE
+
+       -f, --front
+              output only the front pages (recto) on the regular tray
+
+       -b, --back
+              output only the back pages (verso) on the manual feed tray
+
+       Produced output is meant for PS level  2  printers  which  don&apos;t  support
+       Duplex printing, but support Manual Feed.  Once the first set of pages is
+       printed (odd pages), manual feed is asked: introduce  the  odd  pages  to
+       print the even pages on the other side.
+
+       Because  there  is  usually  a  short time out for manually fed jobs, you
+       should really be next to the printer.  If ever the time out expired,  use
+       the option -b to send only the missing part.
+
+       Environment  variables FIXPS, PSSELECT and PSSET, if defined, are used to
+       find the tools.
+
+       News, updates and documentation: http://www.inf.enst.fr/~demaille/a2ps/
+
+AUTHOR
+       Written by Akim Demaille.
+
+REPORTING BUGS
+       Report bugs to &lt;bug-a2ps@gnu.org&gt;
+
+COPYRIGHT
+       Copyright &#169; 1998-1999 Akim Demaille, Miguel Santana
+       This is free software; see the source for copying conditions.   There  is
+       NO  warranty;  not  even  for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       a2ps(1), card(1), fixps(1), pdiff(1), psset(1), texi2dvi4a2ps(1).
+
+       The full documentation for psmandup is maintained as  a  Texinfo  manual.
+       If  the  info  and psmandup programs are properly installed at your site,
+       the command
+
+              info psmandup
+
+       should give you access to the complete manual.
+
+
+
+psmandup 2.1 (GNU a2ps 4.14)       March 2014                        PSMANDUP(1)
+
+</pre></body></html>

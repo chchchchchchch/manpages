@@ -1,0 +1,143 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hcitool - configure Bluetooth connections</title></head>
+<body><pre>
+
+HCITOOL(1)                 Linux System Administration                HCITOOL(1)
+
+
+
+NAME
+       hcitool - configure Bluetooth connections
+
+SYNOPSIS
+       hcitool [-h]
+       hcitool [-i &lt;hciX&gt;] [command [command parameters]]
+
+
+DESCRIPTION
+       hcitool  is used to configure Bluetooth connections and send some special
+       command to Bluetooth devices. If no command is given, or if the option -h
+       is used, hcitool prints some usage information and exits.
+
+OPTIONS
+       -h     Gives a list of possible commands
+
+       -i &lt;hciX&gt;
+              The  command is applied to device hciX , which must be the name of
+              an installed Bluetooth device. If not specified, the command  will
+              be sent to the first available Bluetooth device.
+
+COMMANDS
+       dev    Display local devices
+
+       inq    Inquire  remote  devices.  For  each  discovered device, Bluetooth
+              device address, clock offset and class are printed.
+
+       scan   Inquire remote devices. For each discovered  device,  device  name
+              are printed.
+
+       name &lt;bdaddr&gt;
+              Print device name of remote device with Bluetooth address bdaddr.
+
+       info &lt;bdaddr&gt;
+              Print device name, version and supported features of remote device
+              with Bluetooth address bdaddr.
+
+       spinq  Start periodic inquiry process. No inquiry results are printed.
+
+       epinq  Exit periodic inquiry process.
+
+       cmd &lt;ogf&gt; &lt;ocf&gt; [parameters]
+              Submit an arbitrary HCI command to local  device.   ogf,  ocf  and
+              parameters are hexadecimal bytes.
+
+       con    Display active baseband connections
+
+       cc [--role=m|s] [--pkt-type=&lt;ptype&gt;] &lt;bdaddr&gt;
+              Create baseband connection to remote device with Bluetooth address
+              bdaddr.  Option --pkt-type specifies  a  list  of  allowed  packet
+              types.   &lt;ptype&gt;  is a comma-separated list of packet types, where
+              the possible packet types are DM1, DM3, DM5, DH1, DH3,  DH5,  HV1,
+              HV2, HV3.  Default is to allow all packet types. Option --role can
+              have value m (do not allow role switch, stay master) or  s  (allow
+              role  switch,  become  slave  if  the peer asks to become master).
+              Default is m.
+
+       dc &lt;bdaddr&gt; [reason]
+              Delete baseband  connection  from  remote  device  with  Bluetooth
+              address  bdaddr.  The reason can be one of the Bluetooth HCI error
+              codes. Default is 19 for user ended connections. The value must be
+              given in decimal.
+
+       sr &lt;bdaddr&gt; &lt;role&gt;
+              Switch  role for the baseband connection from the remote device to
+              master or slave.
+
+       cpt &lt;bdaddr&gt; &lt;packet types&gt;
+              Change packet types for baseband connection to device  with  Blue&#8208;
+              tooth  address  bdaddr.  packet types is a comma-separated list of
+              packet types, where the possible packet types are DM1,  DM3,  DM5,
+              DH1, DH3, DH5, HV1, HV2, HV3.
+
+       rssi &lt;bdaddr&gt;
+              Display received signal strength information for the connection to
+              the device with Bluetooth address bdaddr.
+
+       lq &lt;bdaddr&gt;
+              Display link quality for the connection to the device  with  Blue&#8208;
+              tooth address bdaddr.
+
+       tpl &lt;bdaddr&gt; [type]
+              Display transmit power level for the connection to the device with
+              Bluetooth address bdaddr.  The type  can  be  0  for  the  current
+              transmit  power  level  (which  is  default)  or 1 for the maximum
+              transmit power level.
+
+       afh &lt;bdaddr&gt;
+              Display AFH channel map for the  connection  to  the  device  with
+              Bluetooth address bdaddr.
+
+       lp &lt;bdaddr&gt; [value]
+              With no value, displays link policy settings for the connection to
+              the device with Bluetooth address bdaddr.  If value is given, sets
+              the  link  policy settings for that connection to value.  Possible
+              values are RSWITCH, HOLD, SNIFF and PARK.
+
+       lst &lt;bdaddr&gt; [value]
+              With no value, displays link supervision timeout for  the  connec&#8208;
+              tion  to  the  device  with Bluetooth address bdaddr.  If value is
+              given, sets the link supervision timeout for  that  connection  to
+              value slots, or to infinite if value is 0.
+
+       auth &lt;bdaddr&gt;
+              Request  authentication  for  the  device  with  Bluetooth address
+              bdaddr.
+
+       enc &lt;bdaddr&gt; [encrypt enable]
+              Enable or disable the encryption for  the  device  with  Bluetooth
+              address bdaddr.
+
+       key &lt;bdaddr&gt;
+              Change  the  connection  link  key  for  the device with Bluetooth
+              address bdaddr.
+
+       clkoff &lt;bdaddr&gt;
+              Read the clock  offset  for  the  device  with  Bluetooth  address
+              bdaddr.
+
+       clock [bdaddr] [which clock]
+              Read  the clock for the device with Bluetooth address bdaddr.  The
+              clock can be 0 for the local clock or  1  for  the  piconet  clock
+              (which is default).
+
+AUTHORS
+       Written  by  Maxim  Krasnyansky  &lt;maxk@qualcomm.com&gt;  and Marcel Holtmann
+       &lt;marcel@holtmann.org&gt;
+&#12;       man page by Fabrizio Gennari &lt;fabrizio.gennari@philips.com&gt;
+
+
+
+BlueZ                              Nov 12 2002                        HCITOOL(1)
+
+</pre></body></html>

@@ -1,0 +1,44 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SOAP::Transport::LOOPBACK - Test loopback transport backend (Client only)</title></head>
+<body><pre>
+
+SOAP::Transport::LOOPBAUserpContributed Perl DocumSOAP::Transport::LOOPBACK(3pm)
+
+
+
+NAME
+       SOAP::Transport::LOOPBACK - Test loopback transport backend (Client only)
+
+DESCRIPTION
+       SOAP::Transport::LOOPBACK is a test transport backend for SOAP::Lite.
+
+       It just returns the XML request as response, thus allowing to test the
+       complete application stack of client applications from the front end down
+       to the transport layer without actually sending data over the wire.
+
+       Using this transport backend is triggered by setting a loopback:// URL.
+
+       Sending requests through this transport backend alway succeeds with the
+       following states:
+
+        status: 200 OK
+        code: 200
+        message: OK
+
+COPYRIGHT
+       Copyright (C) 2007 Martin Kutter. All rights reserved.
+
+       This file is part of SOAP-Lite, Copyright (C) 2000-2001 Paul Kulchenko.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+AUTHOR
+       Martin Kutter &lt;martin.kutter fen-net.de&gt;
+
+
+
+perl v5.12.4                       2011-08-15     SOAP::Transport::LOOPBACK(3pm)
+
+</pre></body></html>

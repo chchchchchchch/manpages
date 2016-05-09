@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtTranslateCoords - translate widget coordinates</title></head>
+<body><pre>
+
+XtTranslateCoords(3)              XT FUNCTIONS              XtTranslateCoords(3)
+
+
+
+NAME
+       XtTranslateCoords - translate widget coordinates
+
+SYNTAX
+       void XtTranslateCoords(Widget w, Position x, y, Position *rootx_return,
+              *rooty_return);
+
+ARGUMENTS
+       rootx_return
+       rooty_return
+                 Returns the root-relative x and y coordinates.
+
+       x
+       y         Specify the widget-relative x and y coordinates.
+
+       w         Specifies the widget.
+
+DESCRIPTION
+       While XtTranslateCoords is similar to the Xlib XTranslateCoordinates
+       function, it does not generate a server request because all the required
+       information already is in the widget&apos;s data structures.
+
+SEE ALSO
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3              XtTranslateCoords(3)
+
+</pre></body></html>

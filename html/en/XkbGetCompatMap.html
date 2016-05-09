@@ -1,0 +1,74 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbGetCompatMap - Fetch any combination of the current compatibility map components from the server</title></head>
+<body><pre>
+
+XkbGetCompatMap(3)                XKB FUNCTIONS               XkbGetCompatMap(3)
+
+
+
+NAME
+       XkbGetCompatMap  - Fetch any combination of the current compatibility map
+       components from the server
+
+SYNOPSIS
+       Status XkbGetCompatMap (Display *display, unsigned int which,  XkbDescRec
+              *xkb);
+
+ARGUMENTS
+       - display
+              connection to server
+
+       - which
+              mask of compatibility map components to fetch
+
+       - xkb  keyboard description where results placed
+
+DESCRIPTION
+       When  another  client modifies the compatibility map, you are notified if
+       you have selected for XkbCompatMapNotify events.  XkbGetCompatMap is par&#8208;
+       ticularly useful when you receive an event of this type, as it allows you
+       to update your program&apos;s version of the compatibility map  to  match  the
+       modified  version now in the server. If your program is dealing with mul&#8208;
+       tiple servers and needs to configure them all in a  similar  manner,  the
+       updated compatibility map may be used to reconfigure other servers.
+
+       XkbGetCompatMap fetches the components of the compatibility map specified
+       in which from the server specified by display and places them in the com&#8208;
+       pat  structure  of  the keyboard description xkb.  Valid values for which
+       are an inclusive OR of the values shown in Table 1.
+
+
+       c s s l l l  l  l  l.   Table  1  Compatibility  Map  Component  Masks  _
+       Mask Value     Affecting _ XkbSymInterpMask    (1&lt;&lt;0)    Symbol interpre&#8208;
+       tations    XkbGroupCompatMask  (1&lt;&lt;1)    Group     maps     XkbAllCompat&#8208;
+       Mask    (0x3)     All compatibility map components
+
+       If no compatibility map structure is allocated in xkb upon entry, XkbGet&#8208;
+       CompatMap allocates one. If one already exists, its  contents  are  over&#8208;
+       written with the returned results.
+
+       XkbGetCompatMap  fetches  compatibility  map  information  for the device
+       specified by the device_spec field of xkb.  Unless you have  specifically
+       modified  this field, it is the default keyboard device.  XkbGetCompatMap
+       returns Success if successful, BadAlloc if it is unable to obtain  neces&#8208;
+       sary  storage for either the return values or work space, BadMatch if the
+       dpy field of the xkb argument is non-NULL and does not match the  display
+       argument,  and BadLength under certain conditions caused by server or Xkb
+       implementation errors.
+
+DIAGNOSTICS
+       BadAlloc       Unable to allocate storage
+
+       BadLength      The length of a request is shorter  or  longer  than  that
+                      required to minimally contain the arguments
+
+       BadMatch       A  compatible  version  of  Xkb  was  not available in the
+                      server or an argument has correct type and range,  but  is
+                      otherwise invalid
+
+
+
+X Version 11                      libX11 1.5.0                XkbGetCompatMap(3)
+
+</pre></body></html>

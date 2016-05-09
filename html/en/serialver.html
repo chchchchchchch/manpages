@@ -1,0 +1,66 @@
+<html>
+<head><meta charset=utf-8/>
+<title>serialver - The Serial Version Command</title></head>
+<body><pre>
+
+serialver(1)                                                        serialver(1)
+
+
+
+Name
+       serialver - The Serial Version Command
+
+       The serialver command returns the serialVersionUID.
+
+SYNOPSIS
+       serialver [ options ] [ classnames ]
+
+
+          options
+             Command-line options, as specified in this document.
+
+          classnames
+             One or more class names
+
+
+DESCRIPTION
+       serialver  returns the serialVersionUID for one or more classes in a form
+       suitable for copying into an evolving class. When invoked with  no  argu&#8208;
+       ments it prints a usage line.
+
+OPTIONS
+          -classpath &lt;directories and zip/jar files separated by :&gt;
+             Set search path for application classes and resources.
+
+
+          -show
+             Displays  a  simple  user  interface. Enter the full class name and
+             press either the Enter key or the Show button to display the  seri&#8208;
+             alVersionUID.
+
+          -Joption
+             Pass option to the Java virtual machine, where option is one of the
+             options described on the reference page for the java(1). For  exam&#8208;
+             ple, -J-Xms48m sets the startup memory to 48 megabytes.
+
+
+NOTES
+       The  serialver command loads and initializes the specified classes in its
+       virtual machine, and by default, it does not set a security  manager.  If
+       serialver  is to be run with untrusted classes, a security manager can be
+       set with the following option:
+
+       -J-Djava.security.manager
+
+       and, if necessary, a security policy can be specified with the  following
+       option:
+
+       -J-Djava.security.policy=&lt;policy file&gt;
+
+SEE ALSO
+       java.io.ObjectStreamClass @
+       http://docs.oracle.com/javase/7/docs/api/java/io/ObjectStreamClass.html
+
+                                   16 Mar 2012                      serialver(1)
+
+</pre></body></html>

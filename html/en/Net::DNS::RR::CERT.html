@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::CERT - DNS CERT resource record</title></head>
+<body><pre>
+
+Net::DNS::RR::CERT(3pm)User Contributed Perl DocumentatioNet::DNS::RR::CERT(3pm)
+
+
+
+NAME
+       Net::DNS::RR::CERT - DNS CERT resource record
+
+SYNOPSIS
+       &quot;use Net::DNS::RR&quot;;
+
+DESCRIPTION
+       Class for DNS Certificate (CERT) resource records. (see RFC 2538)
+
+METHODS
+   format
+           print &quot;format = &quot;, $rr-&gt;format, &quot;\n&quot;;
+
+       Returns the format code for the certificate (in numeric form)
+
+   tag
+           print &quot;tag = &quot;, $rr-&gt;tag, &quot;\n&quot;;
+
+       Returns the key tag for the public key in the certificate
+
+   algorithm
+           print &quot;algorithm = &quot;, $rr-&gt;algorithm, &quot;\n&quot;;
+
+       Returns the algorithm used by the certificate (in numeric form)
+
+   certificate
+           print &quot;certificate = &quot;, $rr-&gt;certificate, &quot;\n&quot;;
+
+       Returns the data comprising the certificate itself (in raw binary form)
+
+COPYRIGHT
+       Copyright (c) 1997-2002 Michael Fuhr.
+
+       Portions Copyright (c) 2002-2004 Chris Reinhardt.
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       perl(1), Net::DNS, Net::DNS::Resolver, Net::DNS::Packet,
+       Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC 2782
+
+
+
+perl v5.14.2                       2009-12-30            Net::DNS::RR::CERT(3pm)
+
+</pre></body></html>

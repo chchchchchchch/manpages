@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XtLastEventProcessed, XtLastTimestampProcessed - last event, last timestamp processed</title></head>
+<body><pre>
+
+XtLastEventProcessed(3)           XT FUNCTIONS           XtLastEventProcessed(3)
+
+
+
+NAME
+       XtLastEventProcessed, XtLastTimestampProcessed - last event, last time&#8208;
+       stamp processed
+
+SYNTAX
+       XEvent* XtLastEventProcessed(Display* display);
+
+       Time XtLastTimestampProcessed(Display* display);
+
+ARGUMENTS
+       display   Specifies the open display connection.
+
+DESCRIPTION
+       XtLastEventProcessed returns the last event passed to XtDispatchEvent for
+       the specified display and NULL if there has been no event. The client
+       must not modify the contents of the returned event.
+
+       XtLastTimestampProcessed returns the timestamp of the last KeyPress,
+       KeyRelease, ButtonPress, ButtonRelease, MotionNotify, EnterNotify,
+       LeaveNotify, PropertyNotify, or SelectionClear event that has been passed
+       to XtDispatchEvent for the specified display and zero if there has been
+       no such event.
+
+SEE ALSO
+       X Toolkit Intrinsics - C Language Interface
+       Xlib - C Language X Interface
+
+
+
+X Version 11                       libXt 1.1.3           XtLastEventProcessed(3)
+
+</pre></body></html>

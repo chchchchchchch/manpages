@@ -1,0 +1,2098 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Log::Log4perl - Log4j implementation for Perl</title></head>
+<body><pre>
+
+Log::Log4perl(3pm)     User Contributed Perl Documentation    Log::Log4perl(3pm)
+
+
+
+NAME
+       Log::Log4perl - Log4j implementation for Perl
+
+SYNOPSIS
+               # Easy mode if you like it simple ...
+
+           use Log::Log4perl qw(:easy);
+           Log::Log4perl-&gt;easy_init($ERROR);
+
+           DEBUG &quot;This doesn&apos;t go anywhere&quot;;
+           ERROR &quot;This gets logged&quot;;
+
+               # ... or standard mode for more features:
+
+           Log::Log4perl::init(&apos;/etc/log4perl.conf&apos;);
+
+           --or--
+
+               # Check config every 10 secs
+           Log::Log4perl::init_and_watch(&apos;/etc/log4perl.conf&apos;,10);
+
+           --then--
+
+           $logger = Log::Log4perl-&gt;get_logger(&apos;house.bedrm.desk.topdrwr&apos;);
+
+           $logger-&gt;debug(&apos;this is a debug message&apos;);
+           $logger-&gt;info(&apos;this is an info message&apos;);
+           $logger-&gt;warn(&apos;etc&apos;);
+           $logger-&gt;error(&apos;..&apos;);
+           $logger-&gt;fatal(&apos;..&apos;);
+
+           #####/etc/log4perl.conf###############################
+           log4perl.logger.house              = WARN,  FileAppndr1
+           log4perl.logger.house.bedroom.desk = DEBUG, FileAppndr1
+
+           log4perl.appender.FileAppndr1      = Log::Log4perl::Appender::File
+           log4perl.appender.FileAppndr1.filename = desk.log
+           log4perl.appender.FileAppndr1.layout   = \
+                                   Log::Log4perl::Layout::SimpleLayout
+           ######################################################
+
+ABSTRACT
+           Log::Log4perl provides a powerful logging API for your application
+
+DESCRIPTION
+       Log::Log4perl lets you remote-control and fine-tune the logging behaviour
+       of your system from the outside. It implements the widely popular (Java-
+       based) Log4j logging package in pure Perl.
+
+       For a detailed tutorial on Log::Log4perl usage, please read
+
+           http://www.perl.com/pub/a/2002/09/11/log4perl.html
+
+       Logging beats a debugger if you want to know what&apos;s going on in your code
+       during runtime. However, traditional logging packages are too static and
+       generate a flood of log messages in your log files that won&apos;t help you.
+
+       &quot;Log::Log4perl&quot; is different. It allows you to control the number of
+       logging messages generated at three different levels:
+
+       &#183;   At a central location in your system (either in a configuration file
+           or in the startup code) you specify which components (classes,
+           functions) of your system should generate logs.
+
+       &#183;   You specify how detailed the logging of these components should be by
+           specifying logging levels.
+
+       &#183;   You also specify which so-called appenders you want to feed your log
+           messages to (&quot;Print it to the screen and also append it to
+           /tmp/my.log&quot;) and which format (&quot;Write the date first, then the file
+           name and line number, and then the log message&quot;) they should be in.
+
+       This is a very powerful and flexible mechanism. You can turn on and off
+       your logs at any time, specify the level of detail and make that
+       dependent on the subsystem that&apos;s currently executed.
+
+       Let me give you an example: You might find out that your system has a
+       problem in the &quot;MySystem::Helpers::ScanDir&quot; component. Turning on
+       detailed debugging logs all over the system would generate a flood of
+       useless log messages and bog your system down beyond recognition. With
+       &quot;Log::Log4perl&quot;, however, you can tell the system: &quot;Continue to log only
+       severe errors to the log file. Open a second log file, turn on full debug
+       logs in the &quot;MySystem::Helpers::ScanDir&quot; component and dump all messages
+       originating from there into the new log file&quot;. And all this is possible
+       by just changing the parameters in a configuration file, which your
+       system can re-read even while it&apos;s running!
+
+How to use it
+       The &quot;Log::Log4perl&quot; package can be initialized in two ways: Either via
+       Perl commands or via a &quot;log4j&quot;-style configuration file.
+
+   Initialize via a configuration file
+       This is the easiest way to prepare your system for using &quot;Log::Log4perl&quot;.
+       Use a configuration file like this:
+
+           ############################################################
+           # A simple root logger with a Log::Log4perl::Appender::File
+           # file appender in Perl.
+           ############################################################
+           log4perl.rootLogger=ERROR, LOGFILE
+
+           log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+           log4perl.appender.LOGFILE.filename=/var/log/myerrs.log
+           log4perl.appender.LOGFILE.mode=append
+
+           log4perl.appender.LOGFILE.layout=PatternLayout
+           log4perl.appender.LOGFILE.layout.ConversionPattern=[%r] %F %L %c - %m%n
+
+       These lines define your standard logger that&apos;s appending severe errors to
+       &quot;/var/log/myerrs.log&quot;, using the format
+
+           [millisecs] source-filename line-number class - message newline
+
+       Assuming that this configuration file is saved as &quot;log.conf&quot;, you need to
+       read it in in the startup section of your code, using the following
+       commands:
+
+         use Log::Log4perl;
+         Log::Log4perl-&gt;init(&quot;log.conf&quot;);
+
+       After that&apos;s done somewhere in the code, you can retrieve logger objects
+       anywhere in the code. Note that there&apos;s no need to carry any logger
+       references around with your functions and methods. You can get a logger
+       anytime via a singleton mechanism:
+
+           package My::MegaPackage;
+           use  Log::Log4perl;
+&#12;           sub some_method {
+               my($param) = @_;
+
+               my $log = Log::Log4perl-&gt;get_logger(&quot;My::MegaPackage&quot;);
+
+               $log-&gt;debug(&quot;Debug message&quot;);
+               $log-&gt;info(&quot;Info message&quot;);
+               $log-&gt;error(&quot;Error message&quot;);
+
+               ...
+           }
+
+       With the configuration file above, &quot;Log::Log4perl&quot; will write &quot;Error
+       message&quot; to the specified log file, but won&apos;t do anything for the
+       &quot;debug()&quot; and &quot;info()&quot; calls, because the log level has been set to
+       &quot;ERROR&quot; for all components in the first line of configuration file shown
+       above.
+
+       Why &quot;Log::Log4perl-&gt;get_logger&quot; and not &quot;Log::Log4perl-&gt;new&quot;? We don&apos;t
+       want to create a new object every time. Usually in OO-Programming, you
+       create an object once and use the reference to it to call its methods.
+       However, this requires that you pass around the object to all functions
+       and the last thing we want is pollute each and every function/method
+       we&apos;re using with a handle to the &quot;Logger&quot;:
+
+           sub function {  # Brrrr!!
+               my($logger, $some, $other, $parameters) = @_;
+           }
+
+       Instead, if a function/method wants a reference to the logger, it just
+       calls the Logger&apos;s static &quot;get_logger($category)&quot; method to obtain a
+       reference to the one and only possible logger object of a certain
+       category.  That&apos;s called a singleton if you&apos;re a Gamma fan.
+
+       How does the logger know which messages it is supposed to log and which
+       ones to suppress?  &quot;Log::Log4perl&quot; works with inheritance: The config
+       file above didn&apos;t specify anything about &quot;My::MegaPackage&quot;.  And yet,
+       we&apos;ve defined a logger of the category &quot;My::MegaPackage&quot;.  In this case,
+       &quot;Log::Log4perl&quot; will walk up the namespace hierarchy (&quot;My&quot; and then we&apos;re
+       at the root) to figure out if a log level is defined somewhere. In the
+       case above, the log level at the root (root always defines a log level,
+       but not necessarily an appender) defines that the log level is supposed
+       to be &quot;ERROR&quot; -- meaning that DEBUG and INFO messages are suppressed.
+       Note that this &apos;inheritance&apos; is unrelated to Perl&apos;s class inheritance, it
+       is merely related to the logger namespace.
+
+   Log Levels
+       There are six predefined log levels: &quot;FATAL&quot;, &quot;ERROR&quot;, &quot;WARN&quot;, &quot;INFO&quot;,
+       &quot;DEBUG&quot;, and &quot;TRACE&quot; (in descending priority). Your configured logging
+       level has to at least match the priority of the logging message.
+
+       If your configured logging level is &quot;WARN&quot;, then messages logged with
+       &quot;info()&quot;, &quot;debug()&quot;, and &quot;trace()&quot; will be suppressed.  &quot;fatal()&quot;,
+       &quot;error()&quot; and &quot;warn()&quot; will make their way through, because their
+       priority is higher or equal than the configured setting.
+
+       Instead of calling the methods
+
+           $logger-&gt;trace(&quot;...&quot;);  # Log a trace message
+           $logger-&gt;debug(&quot;...&quot;);  # Log a debug message
+           $logger-&gt;info(&quot;...&quot;);   # Log a info message
+           $logger-&gt;warn(&quot;...&quot;);   # Log a warn message
+           $logger-&gt;error(&quot;...&quot;);  # Log a error message
+           $logger-&gt;fatal(&quot;...&quot;);  # Log a fatal message
+
+       you could also call the &quot;log()&quot; method with the appropriate level using
+       the constants defined in &quot;Log::Log4perl::Level&quot;:
+
+           use Log::Log4perl::Level;
+
+           $logger-&gt;log($TRACE, &quot;...&quot;);
+           $logger-&gt;log($DEBUG, &quot;...&quot;);
+           $logger-&gt;log($INFO, &quot;...&quot;);
+           $logger-&gt;log($WARN, &quot;...&quot;);
+           $logger-&gt;log($ERROR, &quot;...&quot;);
+           $logger-&gt;log($FATAL, &quot;...&quot;);
+
+       But nobody does that, really. Neither does anyone need more logging
+       levels than these predefined ones. If you think you do, I would suggest
+       you look into steering your logging behaviour via the category mechanism.
+
+       If you need to find out if the currently configured logging level would
+       allow a logger&apos;s logging statement to go through, use the logger&apos;s
+       &quot;is_level()&quot; methods:
+
+           $logger-&gt;is_trace()    # True if trace messages would go through
+           $logger-&gt;is_debug()    # True if debug messages would go through
+           $logger-&gt;is_info()     # True if info messages would go through
+           $logger-&gt;is_warn()     # True if warn messages would go through
+           $logger-&gt;is_error()    # True if error messages would go through
+           $logger-&gt;is_fatal()    # True if fatal messages would go through
+
+       Example: &quot;$logger-&gt;is_warn()&quot; returns true if the logger&apos;s current level,
+       as derived from either the logger&apos;s category (or, in absence of that, one
+       of the logger&apos;s parent&apos;s level setting) is $WARN, $ERROR or $FATAL.
+
+       Also available are a series of more Java-esque functions which return the
+       same values. These are of the format &quot;isLevelEnabled()&quot;, so
+       &quot;$logger-&gt;isDebugEnabled()&quot; is synonymous to &quot;$logger-&gt;is_debug()&quot;.
+
+       These level checking functions will come in handy later, when we want to
+       block unnecessary expensive parameter construction in case the logging
+       level is too low to log the statement anyway, like in:
+
+           if($logger-&gt;is_error()) {
+               $logger-&gt;error(&quot;Erroneous array: @super_long_array&quot;);
+           }
+
+       If we had just written
+
+           $logger-&gt;error(&quot;Erroneous array: @super_long_array&quot;);
+
+       then Perl would have interpolated @super_long_array into the string via
+       an expensive operation only to figure out shortly after that the string
+       can be ignored entirely because the configured logging level is lower
+       than $ERROR.
+
+       The to-be-logged message passed to all of the functions described above
+       can consist of an arbitrary number of arguments, which the logging
+       functions just chain together to a single string. Therefore
+
+           $logger-&gt;debug(&quot;Hello &quot;, &quot;World&quot;, &quot;!&quot;);  # and
+           $logger-&gt;debug(&quot;Hello World!&quot;);
+
+       are identical.
+
+       Note that even if one of the methods above returns true, it doesn&apos;t
+       necessarily mean that the message will actually get logged.  What
+       is_debug() checks is that the logger used is configured to let a message
+       of the given priority (DEBUG) through. But after this check, Log4perl
+       will eventually apply custom filters and forward the message to one or
+       more appenders. None of this gets checked by is_xxx(), for the simple
+       reason that it&apos;s impossible to know what a custom filter does with a
+       message without having the actual message or what an appender does to a
+       message without actually having it log it.
+
+   Log and die or warn
+       Often, when you croak / carp / warn / die, you want to log those
+       messages.  Rather than doing the following:
+
+           $logger-&gt;fatal($err) &amp;&amp; die($err);
+
+       you can use the following:
+
+           $logger-&gt;logwarn();
+           $logger-&gt;logdie();
+
+       These print out log messages in the WARN and FATAL level, respectively,
+       and then call the built-in warn() and die() functions. Since there is an
+       ERROR level between WARN and FATAL, there are two additional helper
+       functions in case you&apos;d like to use ERROR for either warn() or die():
+
+           $logger-&gt;error_warn();
+           $logger-&gt;error_die();
+
+       Finally, there&apos;s the Carp functions that do just what the Carp functions
+       do, but with logging:
+
+           $logger-&gt;logcarp();        # warn w/ 1-level stack trace
+           $logger-&gt;logcluck();       # warn w/ full stack trace
+           $logger-&gt;logcroak();       # die w/ 1-level stack trace
+           $logger-&gt;logconfess();     # die w/ full stack trace
+
+   Appenders
+       If you don&apos;t define any appenders, nothing will happen. Appenders will be
+       triggered whenever the configured logging level requires a message to be
+       logged and not suppressed.
+
+       &quot;Log::Log4perl&quot; doesn&apos;t define any appenders by default, not even the
+       root logger has one.
+
+       &quot;Log::Log4perl&quot; already comes with a standard set of appenders:
+
+           Log::Log4perl::Appender::Screen
+           Log::Log4perl::Appender::ScreenColoredLevels
+           Log::Log4perl::Appender::File
+           Log::Log4perl::Appender::Socket
+           Log::Log4perl::Appender::DBI
+           Log::Log4perl::Appender::Synchronized
+           Log::Log4perl::Appender::RRDs
+
+       to log to the screen, to files and to databases.
+
+       On CPAN, you can find additional appenders like
+
+           Log::Log4perl::Layout::XMLLayout
+
+       by Guido Carls &lt;gcarls@cpan.org&gt;.  It allows for hooking up Log::Log4perl
+       with the graphical Log Analyzer Chainsaw (see &quot;Can I use Log::Log4perl
+       with log4j&apos;s Chainsaw?&quot; in Log::Log4perl::FAQ).
+
+   Additional Appenders via Log::Dispatch
+       &quot;Log::Log4perl&quot; also supports Dave Rolskys excellent &quot;Log::Dispatch&quot;
+       framework which implements a wide variety of different appenders.
+
+       Here&apos;s the list of appender modules currently available via
+       &quot;Log::Dispatch&quot;:
+&#12;              Log::Dispatch::ApacheLog
+              Log::Dispatch::DBI (by Tatsuhiko Miyagawa)
+              Log::Dispatch::Email,
+              Log::Dispatch::Email::MailSend,
+              Log::Dispatch::Email::MailSendmail,
+              Log::Dispatch::Email::MIMELite
+              Log::Dispatch::File
+              Log::Dispatch::FileRotate (by Mark Pfeiffer)
+              Log::Dispatch::Handle
+              Log::Dispatch::Screen
+              Log::Dispatch::Syslog
+              Log::Dispatch::Tk (by Dominique Dumont)
+
+       Please note that in order to use any of these additional appenders, you
+       have to fetch Log::Dispatch from CPAN and install it. Also the particular
+       appender you&apos;re using might require installing the particular module.
+
+       For additional information on appenders, please check the
+       Log::Log4perl::Appender manual page.
+
+   Appender Example
+       Now let&apos;s assume that we want to log &quot;info()&quot; or higher prioritized
+       messages in the &quot;Foo::Bar&quot; category to both STDOUT and to a log file, say
+       &quot;test.log&quot;.  In the initialization section of your system, just define
+       two appenders using the readily available &quot;Log::Log4perl::Appender::File&quot;
+       and &quot;Log::Log4perl::Appender::Screen&quot; modules:
+
+         use Log::Log4perl;
+
+            # Configuration in a string ...
+         my $conf = q(
+           log4perl.category.Foo.Bar          = INFO, Logfile, Screen
+
+           log4perl.appender.Logfile          = Log::Log4perl::Appender::File
+           log4perl.appender.Logfile.filename = test.log
+           log4perl.appender.Logfile.layout   = Log::Log4perl::Layout::PatternLayout
+           log4perl.appender.Logfile.layout.ConversionPattern = [%r] %F %L %m%n
+
+           log4perl.appender.Screen         = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.stderr  = 0
+           log4perl.appender.Screen.layout = Log::Log4perl::Layout::SimpleLayout
+         );
+
+            # ... passed as a reference to init()
+         Log::Log4perl::init( \$conf );
+
+       Once the initialization shown above has happened once, typically in the
+       startup code of your system, just use the defined logger anywhere in your
+       system:
+
+         ##########################
+         # ... in some function ...
+         ##########################
+         my $log = Log::Log4perl::get_logger(&quot;Foo::Bar&quot;);
+
+           # Logs both to STDOUT and to the file test.log
+         $log-&gt;info(&quot;Important Info!&quot;);
+
+       The &quot;layout&quot; settings specified in the configuration section define the
+       format in which the message is going to be logged by the specified
+       appender. The format shown for the file appender is logging not only the
+       message but also the number of milliseconds since the program has started
+       (%r), the name of the file the call to the logger has happened and the
+       line number there (%F and %L), the message itself (%m) and a OS-specific
+       newline character (%n):
+&#12;           [187] ./myscript.pl 27 Important Info!
+
+       The screen appender above, on the other hand, uses a &quot;SimpleLayout&quot;,
+       which logs the debug level, a hyphen (-) and the log message:
+
+           INFO - Important Info!
+
+       For more detailed info on layout formats, see &quot;Log Layouts&quot;.
+
+       In the configuration sample above, we chose to define a category logger
+       (&quot;Foo::Bar&quot;).  This will cause only messages originating from this
+       specific category logger to be logged in the defined format and
+       locations.
+
+   Logging newlines
+       There&apos;s some controversy between different logging systems as to when and
+       where newlines are supposed to be added to logged messages.
+
+       The Log4perl way is that a logging statement should not contain a
+       newline:
+
+           $logger-&gt;info(&quot;Some message&quot;);
+           $logger-&gt;info(&quot;Another message&quot;);
+
+       If this is supposed to end up in a log file like
+
+           Some message
+           Another message
+
+       then an appropriate appender layout like &quot;%m%n&quot; will take care of adding
+       a newline at the end of each message to make sure every message is
+       printed on its own line.
+
+       Other logging systems, Log::Dispatch in particular, recommend adding the
+       newline to the log statement. This doesn&apos;t work well, however, if you,
+       say, replace your file appender by a database appender, and all of a
+       sudden those newlines scattered around the code don&apos;t make sense anymore.
+
+       Assigning matching layouts to different appenders and leaving newlines
+       out of the code solves this problem. If you inherited code that has
+       logging statements with newlines and want to make it work with Log4perl,
+       read the Log::Log4perl::Layout::PatternLayout documentation on how to
+       accomplish that.
+
+   Configuration files
+       As shown above, you can define &quot;Log::Log4perl&quot; loggers both from within
+       your Perl code or from configuration files. The latter have the
+       unbeatable advantage that you can modify your system&apos;s logging behaviour
+       without interfering with the code at all. So even if your code is being
+       run by somebody who&apos;s totally oblivious to Perl, they still can adapt the
+       module&apos;s logging behaviour to their needs.
+
+       &quot;Log::Log4perl&quot; has been designed to understand &quot;Log4j&quot; configuration
+       files -- as used by the original Java implementation. Instead of
+       reiterating the format description in [2], let me just list three
+       examples (also derived from [2]), which should also illustrate how it
+       works:
+
+           log4j.rootLogger=DEBUG, A1
+           log4j.appender.A1=org.apache.log4j.ConsoleAppender
+           log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+           log4j.appender.A1.layout.ConversionPattern=%-4r %-5p %c %x - %m%n
+
+       This enables messages of priority &quot;DEBUG&quot; or higher in the root hierarchy
+       and has the system write them to the console.  &quot;ConsoleAppender&quot; is a
+       Java appender, but &quot;Log::Log4perl&quot; jumps through a significant number of
+       hoops internally to map these to their corresponding Perl classes,
+       &quot;Log::Log4perl::Appender::Screen&quot; in this case.
+
+       Second example:
+
+           log4perl.rootLogger=DEBUG, A1
+           log4perl.appender.A1=Log::Log4perl::Appender::Screen
+           log4perl.appender.A1.layout=PatternLayout
+           log4perl.appender.A1.layout.ConversionPattern=%d %-5p %c - %m%n
+           log4perl.logger.com.foo=WARN
+
+       This defines two loggers: The root logger and the &quot;com.foo&quot; logger.  The
+       root logger is easily triggered by debug-messages, but the &quot;com.foo&quot;
+       logger makes sure that messages issued within the &quot;Com::Foo&quot; component
+       and below are only forwarded to the appender if they&apos;re of priority
+       warning or higher.
+
+       Note that the &quot;com.foo&quot; logger doesn&apos;t define an appender. Therefore, it
+       will just propagate the message up the hierarchy until the root logger
+       picks it up and forwards it to the one and only appender of the root
+       category, using the format defined for it.
+
+       Third example:
+
+           log4j.rootLogger=debug, stdout, R
+           log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+           log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+           log4j.appender.stdout.layout.ConversionPattern=%5p (%F:%L) - %m%n
+           log4j.appender.R=org.apache.log4j.RollingFileAppender
+           log4j.appender.R.File=example.log
+           log4j.appender.R.layout=org.apache.log4j.PatternLayout
+           log4j.appender.R.layout.ConversionPattern=%p %c - %m%n
+
+       The root logger defines two appenders here: &quot;stdout&quot;, which uses
+       &quot;org.apache.log4j.ConsoleAppender&quot; (ultimately mapped by &quot;Log::Log4perl&quot;
+       to &quot;Log::Log4perl::Appender::Screen&quot;) to write to the screen. And &quot;R&quot;, a
+       &quot;org.apache.log4j.RollingFileAppender&quot; (mapped by &quot;Log::Log4perl&quot; to
+       &quot;Log::Dispatch::FileRotate&quot; with the &quot;File&quot; attribute specifying the log
+       file.
+
+       See Log::Log4perl::Config for more examples and syntax explanations.
+
+   Log Layouts
+       If the logging engine passes a message to an appender, because it thinks
+       it should be logged, the appender doesn&apos;t just write it out haphazardly.
+       There&apos;s ways to tell the appender how to format the message and add all
+       sorts of interesting data to it: The date and time when the event
+       happened, the file, the line number, the debug level of the logger and
+       others.
+
+       There&apos;s currently two layouts defined in &quot;Log::Log4perl&quot;:
+       &quot;Log::Log4perl::Layout::SimpleLayout&quot; and
+       &quot;Log::Log4perl::Layout::PatternLayout&quot;:
+
+       &quot;Log::Log4perl::SimpleLayout&quot;
+           formats a message in a simple way and just prepends it by the debug
+           level and a hyphen: &quot;&quot;$level - $message&quot;, for example &quot;FATAL - Can&apos;t
+           open password file&quot;.
+
+       &quot;Log::Log4perl::Layout::PatternLayout&quot;
+           on the other hand is very powerful and allows for a very flexible
+           format in &quot;printf&quot;-style. The format string can contain a number of
+           placeholders which will be replaced by the logging engine when it&apos;s
+           time to log the message:
+
+               %c Category of the logging event.
+               %C Fully qualified package (or class) name of the caller
+               %d Current date in yyyy/MM/dd hh:mm:ss format
+               %F File where the logging event occurred
+               %H Hostname (if Sys::Hostname is available)
+               %l Fully qualified name of the calling method followed by the
+                  callers source the file name and line number between
+                  parentheses.
+               %L Line number within the file where the log statement was issued
+               %m The message to be logged
+               %m{chomp} The message to be logged, stripped off a trailing newline
+               %M Method or function where the logging request was issued
+               %n Newline (OS-independent)
+               %p Priority of the logging event
+               %P pid of the current process
+               %r Number of milliseconds elapsed from program start to logging
+                  event
+               %R Number of milliseconds elapsed from last logging event to
+                  current logging event
+               %T A stack trace of functions called
+               %x The topmost NDC (see below)
+               %X{key} The entry &apos;key&apos; of the MDC (see below)
+               %% A literal percent (%) sign
+
+           NDC and MDC are explained in &quot;Nested Diagnostic Context (NDC)&quot; and
+           &quot;Mapped Diagnostic Context (MDC)&quot;.
+
+           Also, %d can be fine-tuned to display only certain characteristics of
+           a date, according to the SimpleDateFormat in the Java World
+           (http://java.sun.com/j2se/1.3/docs/api/java/text/SimpleDateFormat.html)
+
+           In this way, %d{HH:mm} displays only hours and minutes of the current
+           date, while %d{yy, EEEE} displays a two-digit year, followed by a
+           spelled-out (like &quot;Wednesday&quot;).
+
+           Similar options are available for shrinking the displayed category or
+           limit file/path components, %F{1} only displays the source file name
+           without any path components while %F logs the full path. %c{2} only
+           logs the last two components of the current category, &quot;Foo::Bar::Baz&quot;
+           becomes &quot;Bar::Baz&quot; and saves space.
+
+           If those placeholders aren&apos;t enough, then you can define your own
+           right in the config file like this:
+
+               log4perl.PatternLayout.cspec.U = sub { return &quot;UID $&lt;&quot; }
+
+           See Log::Log4perl::Layout::PatternLayout for further details on
+           customized specifiers.
+
+           Please note that the subroutines you&apos;re defining in this way are
+           going to be run in the &quot;main&quot; namespace, so be sure to fully qualify
+           functions and variables if they&apos;re located in different packages.
+
+           SECURITY NOTE: this feature means arbitrary perl code can be embedded
+           in the config file.  In the rare case where the people who have
+           access to your config file are different from the people who write
+           your code and shouldn&apos;t have execute rights, you might want to call
+
+               Log::Log4perl::Config-&gt;allow_code(0);
+
+           before you call init(). Alternatively you can supply a restricted set
+           of Perl opcodes that can be embedded in the config file as described
+           in &quot;Restricting what Opcodes can be in a Perl Hook&quot;.
+
+       All placeholders are quantifiable, just like in printf. Following this
+       tradition, &quot;%-20c&quot; will reserve 20 chars for the category and left-
+       justify it.
+
+       For more details on logging and how to use the flexible and the simple
+       format, check out the original &quot;log4j&quot; website under
+
+           http://jakarta.apache.org/log4j/docs/api/org/apache/log4j/SimpleLayout.html
+           http://jakarta.apache.org/log4j/docs/api/org/apache/log4j/PatternLayout.html
+
+   Penalties
+       Logging comes with a price tag. &quot;Log::Log4perl&quot; has been optimized to
+       allow for maximum performance, both with logging enabled and disabled.
+
+       But you need to be aware that there&apos;s a small hit every time your code
+       encounters a log statement -- no matter if logging is enabled or not.
+       &quot;Log::Log4perl&quot; has been designed to keep this so low that it will be
+       unnoticable to most applications.
+
+       Here&apos;s a couple of tricks which help &quot;Log::Log4perl&quot; to avoid unnecessary
+       delays:
+
+       You can save serious time if you&apos;re logging something like
+
+               # Expensive in non-debug mode!
+           for (@super_long_array) {
+               $logger-&gt;debug(&quot;Element: $_&quot;);
+           }
+
+       and @super_long_array is fairly big, so looping through it is pretty
+       expensive. Only you, the programmer, knows that going through that &quot;for&quot;
+       loop can be skipped entirely if the current logging level for the actual
+       component is higher than &quot;debug&quot;.  In this case, use this instead:
+
+               # Cheap in non-debug mode!
+           if($logger-&gt;is_debug()) {
+               for (@super_long_array) {
+                   $logger-&gt;debug(&quot;Element: $_&quot;);
+               }
+           }
+
+       If you&apos;re afraid that generating the parameters to the logging function
+       is fairly expensive, use closures:
+
+               # Passed as subroutine ref
+           use Data::Dumper;
+           $logger-&gt;debug(sub { Dumper($data) } );
+
+       This won&apos;t unravel $data via Dumper() unless it&apos;s actually needed because
+       it&apos;s logged.
+
+       Also, Log::Log4perl lets you specify arguments to logger functions in
+       message output filter syntax:
+
+           $logger-&gt;debug(&quot;Structure: &quot;,
+                          { filter =&gt; \&amp;Dumper,
+                            value  =&gt; $someref });
+
+       In this way, shortly before Log::Log4perl sending the message out to any
+       appenders, it will be searching all arguments for hash references and
+       treat them in a special way:
+
+       It will invoke the function given as a reference with the &quot;filter&quot; key
+       (&quot;Data::Dumper::Dumper()&quot;) and pass it the value that came with the key
+       named &quot;value&quot; as an argument.  The anonymous hash in the call above will
+       be replaced by the return value of the filter function.
+
+Categories
+       Categories are also called &quot;Loggers&quot; in Log4perl, both refer to the the
+       same thing and these terms are used interchangeably.  &quot;Log::Log4perl&quot;
+       uses categories to determine if a log statement in a component should be
+       executed or suppressed at the current logging level.  Most of the time,
+       these categories are just the classes the log statements are located in:
+
+           package Candy::Twix;
+
+           sub new {
+               my $logger = Log::Log4perl-&gt;new(&quot;Candy::Twix&quot;);
+               $logger-&gt;debug(&quot;Creating a new Twix bar&quot;);
+               bless {}, shift;
+           }
+
+           # ...
+
+           package Candy::Snickers;
+
+           sub new {
+               my $logger = Log::Log4perl-&gt;new(&quot;Candy.Snickers&quot;);
+               $logger-&gt;debug(&quot;Creating a new Snickers bar&quot;);
+               bless {}, shift;
+           }
+
+           # ...
+
+           package main;
+           Log::Log4perl-&gt;init(&quot;mylogdefs.conf&quot;);
+
+               # =&gt; &quot;LOG&gt; Creating a new Snickers bar&quot;
+           my $first = Candy::Snickers-&gt;new();
+               # =&gt; &quot;LOG&gt; Creating a new Twix bar&quot;
+           my $second = Candy::Twix-&gt;new();
+
+       Note that you can separate your category hierarchy levels using either
+       dots like in Java (.) or double-colons (::) like in Perl. Both notations
+       are equivalent and are handled the same way internally.
+
+       However, categories are just there to make use of inheritance: if you
+       invoke a logger in a sub-category, it will bubble up the hierarchy and
+       call the appropriate appenders.  Internally, categories are not related
+       to the class hierarchy of the program at all -- they&apos;re purely virtual.
+       You can use arbitrary categories -- for example in the following program,
+       which isn&apos;t oo-style, but procedural:
+
+           sub print_portfolio {
+
+               my $log = Log::Log4perl-&gt;new(&quot;user.portfolio&quot;);
+               $log-&gt;debug(&quot;Quotes requested: @_&quot;);
+
+               for(@_) {
+                   print &quot;$_: &quot;, get_quote($_), &quot;\n&quot;;
+               }
+           }
+
+           sub get_quote {
+
+               my $log = Log::Log4perl-&gt;new(&quot;internet.quotesystem&quot;);
+               $log-&gt;debug(&quot;Fetching quote: $_[0]&quot;);
+
+               return yahoo_quote($_[0]);
+           }
+
+       The logger in first function, &quot;print_portfolio&quot;, is assigned the
+       (virtual) &quot;user.portfolio&quot; category. Depending on the &quot;Log4perl&quot;
+       configuration, this will either call a &quot;user.portfolio&quot; appender, a
+       &quot;user&quot; appender, or an appender assigned to root -- without
+       &quot;user.portfolio&quot; having any relevance to the class system used in the
+       program.  The logger in the second function adheres to the
+       &quot;internet.quotesystem&quot; category -- again, maybe because it&apos;s bundled with
+       other Internet functions, but not because there would be a class of this
+       name somewhere.
+
+       However, be careful, don&apos;t go overboard: if you&apos;re developing a system in
+       object-oriented style, using the class hierarchy is usually your best
+       choice. Think about the people taking over your code one day: The class
+       hierarchy is probably what they know right up front, so it&apos;s easy for
+       them to tune the logging to their needs.
+
+   Turn off a component
+       &quot;Log4perl&quot; doesn&apos;t only allow you to selectively switch on a category of
+       log messages, you can also use the mechanism to selectively disable
+       logging in certain components whereas logging is kept turned on in
+       higher-level categories. This mechanism comes in handy if you find that
+       while bumping up the logging level of a high-level (i. e. close to root)
+       category, that one component logs more than it should,
+
+       Here&apos;s how it works:
+
+           ############################################################
+           # Turn off logging in a lower-level category while keeping
+           # it active in higher-level categories.
+           ############################################################
+           log4perl.rootLogger=DEBUG, LOGFILE
+           log4perl.logger.deep.down.the.hierarchy = ERROR, LOGFILE
+
+           # ... Define appenders ...
+
+       This way, log messages issued from within &quot;Deep::Down::The::Hierarchy&quot;
+       and below will be logged only if they&apos;re &quot;ERROR&quot; or worse, while in all
+       other system components even &quot;DEBUG&quot; messages will be logged.
+
+   Return Values
+       All logging methods return values indicating if their message actually
+       reached one or more appenders. If the message has been suppressed because
+       of level constraints, &quot;undef&quot; is returned.
+&#12;       For example,
+
+           my $ret = $logger-&gt;info(&quot;Message&quot;);
+
+       will return &quot;undef&quot; if the system debug level for the current category is
+       not &quot;INFO&quot; or more permissive.  If Log::Log4perl forwarded the message to
+       one or more appenders, the number of appenders is returned.
+
+       If appenders decide to veto on the message with an appender threshold,
+       the log method&apos;s return value will have them excluded. This means that if
+       you&apos;ve got one appender holding an appender threshold and you&apos;re logging
+       a message which passes the system&apos;s log level hurdle but not the appender
+       threshold, 0 will be returned by the log function.
+
+       The bottom line is: Logging functions will return a true value if the
+       message made it through to one or more appenders and a false value if it
+       didn&apos;t.  This allows for constructs like
+
+           $logger-&gt;fatal(&quot;@_&quot;) or print STDERR &quot;@_\n&quot;;
+
+       which will ensure that the fatal message isn&apos;t lost if the current level
+       is lower than FATAL or printed twice if the level is acceptable but an
+       appender already points to STDERR.
+
+   Pitfalls with Categories
+       Be careful with just blindly reusing the system&apos;s packages as categories.
+       If you do, you&apos;ll get into trouble with inherited methods.  Imagine the
+       following class setup:
+
+           use Log::Log4perl;
+
+           ###########################################
+           package Bar;
+           ###########################################
+           sub new {
+               my($class) = @_;
+               my $logger = Log::Log4perl::get_logger(__PACKAGE__);
+               $logger-&gt;debug(&quot;Creating instance&quot;);
+               bless {}, $class;
+           }
+           ###########################################
+           package Bar::Twix;
+           ###########################################
+           our @ISA = qw(Bar);
+
+           ###########################################
+           package main;
+           ###########################################
+           Log::Log4perl-&gt;init(\ qq{
+           log4perl.category.Bar.Twix = DEBUG, Screen
+           log4perl.appender.Screen = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.layout = SimpleLayout
+           });
+
+           my $bar = Bar::Twix-&gt;new();
+
+       &quot;Bar::Twix&quot; just inherits everything from &quot;Bar&quot;, including the
+       constructor &quot;new()&quot;.  Contrary to what you might be thinking at first,
+       this won&apos;t log anything.  Reason for this is the &quot;get_logger()&quot; call in
+       package &quot;Bar&quot;, which will always get a logger of the &quot;Bar&quot; category, even
+       if we call &quot;new()&quot; via the &quot;Bar::Twix&quot; package, which will make perl go
+       up the inheritance tree to actually execute &quot;Bar::new()&quot;. Since we&apos;ve
+       only defined logging behaviour for &quot;Bar::Twix&quot; in the configuration file,
+       nothing will happen.
+
+       This can be fixed by changing the &quot;get_logger()&quot; method in &quot;Bar::new()&quot;
+       to obtain a logger of the category matching the actual class of the
+       object, like in
+
+               # ... in Bar::new() ...
+           my $logger = Log::Log4perl::get_logger($class);
+
+       This way, you&apos;ll make sure the logger logs appropriately, no matter if
+       the method is inherited or called directly.  &quot;new()&quot; always gets the real
+       class name as an argument and all other methods can determine it via
+       &quot;ref($self)&quot;), so it shouldn&apos;t be a problem to get the right class every
+       time.
+
+   Initialize once and only once
+       It&apos;s important to realize that Log::Log4perl gets initialized once and
+       only once, typically at the start of a program or system. Calling
+       &quot;init()&quot; more than once will cause it to clobber the existing
+       configuration and replace it by the new one.
+
+       If you&apos;re in a traditional CGI environment, where every request is
+       handeled by a new process, calling &quot;init()&quot; every time is fine. In
+       persistent environments like &quot;mod_perl&quot;, however, Log::Log4perl should be
+       initialized either at system startup time (Apache offers startup handlers
+       for that) or via
+
+               # Init or skip if already done
+           Log::Log4perl-&gt;init_once($conf_file);
+
+       &quot;init_once()&quot; is identical to &quot;init()&quot;, just with the exception that it
+       will leave a potentially existing configuration alone and will only call
+       &quot;init()&quot; if Log::Log4perl hasn&apos;t been initialized yet.
+
+       If you&apos;re just curious if Log::Log4perl has been initialized yet, the
+       check
+
+           if(Log::Log4perl-&gt;initialized()) {
+               # Yes, Log::Log4perl has already been initialized
+           } else {
+               # No, not initialized yet ...
+           }
+
+       can be used.
+
+       If you&apos;re afraid that the components of your system are stepping on each
+       other&apos;s toes or if you are thinking that different components should
+       initialize Log::Log4perl seperately, try to consolidate your system to
+       use a centralized Log4perl configuration file and use Log4perl&apos;s
+       categories to separate your components.
+
+   Custom Filters
+       Log4perl allows the use of customized filters in its appenders to control
+       the output of messages. These filters might grep for certain text chunks
+       in a message, verify that its priority matches or exceeds a certain level
+       or that this is the 10th time the same message has been submitted -- and
+       come to a log/no log decision based upon these circumstantial facts.
+
+       Check out Log::Log4perl::Filter for detailed instructions on how to use
+       them.
+
+   Performance
+       The performance of Log::Log4perl calls obviously depends on a lot of
+       things.  But to give you a general idea, here&apos;s some rough numbers:
+
+       On a Pentium 4 Linux box at 2.4 GHz, you&apos;ll get through
+
+       &#183;   500,000 suppressed log statements per second
+
+       &#183;   30,000 logged messages per second (using an in-memory appender)
+
+       &#183;   init_and_watch delay mode: 300,000 suppressed, 30,000 logged.
+           init_and_watch signal mode: 450,000 suppressed, 30,000 logged.
+
+       Numbers depend on the complexity of the Log::Log4perl configuration.  For
+       a more detailed benchmark test, check the &quot;docs/benchmark.results.txt&quot;
+       document in the Log::Log4perl distribution.
+
+Cool Tricks
+       Here&apos;s a collection of useful tricks for the advanced &quot;Log::Log4perl&quot;
+       user.  For more, check the the FAQ, either in the distribution
+       (Log::Log4perl::FAQ) or on http://log4perl.sourceforge.net.
+
+   Shortcuts
+       When getting an instance of a logger, instead of saying
+
+           use Log::Log4perl;
+           my $logger = Log::Log4perl-&gt;get_logger();
+&#12;       it&apos;s often more convenient to import the &quot;get_logger&quot; method from
+       &quot;Log::Log4perl&quot; into the current namespace:
+
+           use Log::Log4perl qw(get_logger);
+           my $logger = get_logger();
+
+       Please note this difference: To obtain the root logger, please use
+       &quot;get_logger(&quot;&quot;)&quot;, call it without parameters (&quot;get_logger()&quot;), you&apos;ll get
+       the logger of a category named after the current package.  &quot;get_logger()&quot;
+       is equivalent to &quot;get_logger(__PACKAGE__)&quot;.
+
+   Alternative initialization
+       Instead of having &quot;init()&quot; read in a configuration file by specifying a
+       file name or passing it a reference to an open filehandle
+       (&quot;Log::Log4perl-&gt;init( \*FILE )&quot;), you can also pass in a reference to a
+       string, containing the content of the file:
+
+           Log::Log4perl-&gt;init( \$config_text );
+
+       Also, if you&apos;ve got the &quot;name=value&quot; pairs of the configuration in a
+       hash, you can just as well initialize &quot;Log::Log4perl&quot; with a reference to
+       it:
+
+           my %key_value_pairs = (
+               &quot;log4perl.rootLogger&quot;       =&gt; &quot;ERROR, LOGFILE&quot;,
+               &quot;log4perl.appender.LOGFILE&quot; =&gt; &quot;Log::Log4perl::Appender::File&quot;,
+               ...
+           );
+
+           Log::Log4perl-&gt;init( \%key_value_pairs );
+
+       Or also you can use a URL, see below:
+
+   Using LWP to parse URLs
+       (This section borrowed from XML::DOM::Parser by T.J. Mather).
+
+       The init() function now also supports URLs, e.g.
+       http://www.erols.com/enno/xsa.xml.  It uses LWP to download the file and
+       then calls parse() on the resulting string.  By default it will use a
+       LWP::UserAgent that is created as follows:
+
+        use LWP::UserAgent;
+        $LWP_USER_AGENT = LWP::UserAgent-&gt;new;
+        $LWP_USER_AGENT-&gt;env_proxy;
+
+       Note that env_proxy reads proxy settings from environment variables,
+       which is what I need to do to get thru our firewall. If you want to use a
+       different LWP::UserAgent, you can set it with
+
+           Log::Log4perl::Config::set_LWP_UserAgent($my_agent);
+
+       Currently, LWP is used when the filename (passed to parsefile) starts
+       with one of the following URL schemes: http, https, ftp, wais, gopher, or
+       file (followed by a colon.)
+
+       Don&apos;t use this feature with init_and_watch().
+
+   Automatic reloading of changed configuration files
+       Instead of just statically initializing Log::Log4perl via
+
+           Log::Log4perl-&gt;init($conf_file);
+
+       there&apos;s a way to have Log::Log4perl periodically check for changes in the
+       configuration and reload it if necessary:
+
+           Log::Log4perl-&gt;init_and_watch($conf_file, $delay);
+
+       In this mode, Log::Log4perl will examine the configuration file
+       $conf_file every $delay seconds for changes via the file&apos;s last
+       modification timestamp. If the file has been updated, it will be reloaded
+       and replace the current Log::Log4perl configuration.
+
+       The way this works is that with every logger function called (debug(),
+       is_debug(), etc.), Log::Log4perl will check if the delay interval has
+       expired. If so, it will run a -M file check on the configuration file. If
+       its timestamp has been modified, the current configuration will be dumped
+       and new content of the file will be loaded.
+
+       This convenience comes at a price, though: Calling time() with every
+       logging function call, especially the ones that are &quot;suppressed&quot; (!),
+       will slow down these Log4perl calls by about 40%.
+
+       To alleviate this performance hit a bit, &quot;init_and_watch()&quot; can be
+       configured to listen for a Unix signal to reload the configuration
+       instead:
+
+           Log::Log4perl-&gt;init_and_watch($conf_file, &apos;HUP&apos;);
+
+       This will set up a signal handler for SIGHUP and reload the configuration
+       if the application receives this signal, e.g. via the &quot;kill&quot; command:
+
+           kill -HUP pid
+
+       where &quot;pid&quot; is the process ID of the application. This will bring you
+       back to about 85% of Log::Log4perl&apos;s normal execution speed for
+       suppressed statements. For details, check out &quot;Performance&quot;. For more
+       info on the signal handler, look for &quot;SIGNAL MODE&quot; in
+       Log::Log4perl::Config::Watch.
+
+       If you have a somewhat long delay set between physical config file checks
+       or don&apos;t want to use the signal associated with the config file watcher,
+       you can trigger a configuration reload at the next possible time by
+       calling &quot;Log::Log4perl::Config-&gt;watcher-&gt;force_next_check()&quot;.
+
+       One thing to watch out for: If the configuration file contains a syntax
+       or other fatal error, a running application will stop with &quot;die&quot; if this
+       damaged configuration will be loaded during runtime, triggered either by
+       a signal or if the delay period expired and the change is detected. This
+       behaviour might change in the future.
+
+       To allow the application to intercept and control a configuration reload
+       in init_and_watch mode, a callback can be specified:
+
+           Log::Log4perl-&gt;init_and_watch($conf_file, 10, {
+                   preinit_callback =&gt; \&amp;callback });
+
+       If Log4perl determines that the configuration needs to be reloaded, it
+       will call the &quot;preinit_callback&quot; function without parameters. If the
+       callback returns a true value, Log4perl will proceed and reload the
+       configuration.  If the callback returns a false value, Log4perl will keep
+       the old configuration and skip reloading it until the next time around.
+       Inside the callback, an application can run all kinds of checks,
+       including accessing the configuration file, which is available via
+       &quot;Log::Log4perl::Config-&gt;watcher()-&gt;file()&quot;.
+
+   Variable Substitution
+       To avoid having to retype the same expressions over and over again,
+       Log::Log4perl&apos;s configuration files support simple variable substitution.
+       New variables are defined simply by adding
+
+           varname = value
+
+       lines to the configuration file before using
+
+           ${varname}
+
+       afterwards to recall the assigned values. Here&apos;s an example:
+
+           layout_class   = Log::Log4perl::Layout::PatternLayout
+           layout_pattern = %d %F{1} %L&gt; %m %n
+
+           log4perl.category.Bar.Twix = WARN, Logfile, Screen
+
+           log4perl.appender.Logfile  = Log::Log4perl::Appender::File
+           log4perl.appender.Logfile.filename = test.log
+           log4perl.appender.Logfile.layout = ${layout_class}
+           log4perl.appender.Logfile.layout.ConversionPattern = ${layout_pattern}
+
+           log4perl.appender.Screen  = Log::Log4perl::Appender::Screen
+           log4perl.appender.Screen.layout = ${layout_class}
+           log4perl.appender.Screen.layout.ConversionPattern = ${layout_pattern}
+&#12;       This is a convenient way to define two appenders with the same layout
+       without having to retype the pattern definitions.
+
+       Variable substitution via &quot;${varname}&quot; will first try to find an
+       explicitely defined variable. If that fails, it will check your shell&apos;s
+       environment for a variable of that name. If that also fails, the program
+       will &quot;die()&quot;.
+
+   Perl Hooks in the Configuration File
+       If some of the values used in the Log4perl configuration file need to be
+       dynamically modified by the program, use Perl hooks:
+
+           log4perl.appender.File.filename = \
+               sub { return getLogfileName(); }
+
+       Each value starting with the string &quot;sub {...&quot; is interpreted as Perl
+       code to be executed at the time the application parses the configuration
+       via &quot;Log::Log4perl::init()&quot;. The return value of the subroutine is used
+       by Log::Log4perl as the configuration value.
+
+       The Perl code is executed in the &quot;main&quot; package, functions in other
+       packages have to be called in fully-qualified notation.
+
+       Here&apos;s another example, utilizing an environment variable as a username
+       for a DBI appender:
+
+           log4perl.appender.DB.username = \
+               sub { $ENV{DB_USER_NAME } }
+
+       However, please note the difference between these code snippets and those
+       used for user-defined conversion specifiers as discussed in
+       Log::Log4perl::Layout::PatternLayout: While the snippets above are run
+       once when &quot;Log::Log4perl::init()&quot; is called, the conversion specifier
+       snippets are executed each time a message is rendered according to the
+       PatternLayout.
+
+       SECURITY NOTE: this feature means arbitrary perl code can be embedded in
+       the config file.  In the rare case where the people who have access to
+       your config file are different from the people who write your code and
+       shouldn&apos;t have execute rights, you might want to set
+
+           Log::Log4perl::Config-&gt;allow_code(0);
+
+       before you call init().  Alternatively you can supply a restricted set of
+       Perl opcodes that can be embedded in the config file as described in
+       &quot;Restricting what Opcodes can be in a Perl Hook&quot;.
+
+   Restricting what Opcodes can be in a Perl Hook
+       The value you pass to Log::Log4perl::Config-&gt;allow_code() determines
+       whether the code that is embedded in the config file is eval&apos;d
+       unrestricted, or eval&apos;d in a Safe compartment.  By default, a value of
+       &apos;1&apos; is assumed, which does a normal &apos;eval&apos; without any restrictions. A
+       value of &apos;0&apos; however prevents any embedded code from being evaluated.
+
+       If you would like fine-grained control over what can and cannot be
+       included in embedded code, then please utilize the following methods:
+
+        Log::Log4perl::Config-&gt;allow_code( $allow );
+        Log::Log4perl::Config-&gt;allowed_code_ops($op1, $op2, ... );
+        Log::Log4perl::Config-&gt;vars_shared_with_safe_compartment( [ \%vars | $package, \@vars ] );
+        Log::Log4perl::Config-&gt;allowed_code_ops_convenience_map( [ \%map | $name, \@mask ] );
+
+       Log::Log4perl::Config-&gt;allowed_code_ops() takes a list of opcode masks
+       that are allowed to run in the compartment.  The opcode masks must be
+       specified as described in Opcode:
+
+        Log::Log4perl::Config-&gt;allowed_code_ops(&apos;:subprocess&apos;);
+
+       This example would allow Perl operations like backticks, system, fork,
+       and waitpid to be executed in the compartment.  Of course, you probably
+       don&apos;t want to use this mask -- it would allow exactly what the Safe
+       compartment is designed to prevent.
+
+       Log::Log4perl::Config-&gt;vars_shared_with_safe_compartment() takes the
+       symbols which should be exported into the Safe compartment before the
+       code is evaluated.  The keys of this hash are the package names that the
+       symbols are in, and the values are array references to the literal symbol
+       names.  For convenience, the default settings export the &apos;%ENV&apos; hash from
+       the &apos;main&apos; package into the compartment:
+
+        Log::Log4perl::Config-&gt;vars_shared_with_safe_compartment(
+          main =&gt; [ &apos;%ENV&apos; ],
+        );
+
+       Log::Log4perl::Config-&gt;allowed_code_ops_convenience_map() is an accessor
+       method to a map of convenience names to opcode masks. At present, the
+       following convenience names are defined:
+
+        safe        = [ &apos;:browse&apos; ]
+        restrictive = [ &apos;:default&apos; ]
+
+       For convenience, if Log::Log4perl::Config-&gt;allow_code() is called with a
+       value which is a key of the map previously defined with
+       Log::Log4perl::Config-&gt;allowed_code_ops_convenience_map(), then the
+       allowed opcodes are set according to the value defined in the map. If
+       this is confusing, consider the following:
+
+        use Log::Log4perl;
+
+        my $config = &lt;&lt;&apos;END&apos;;
+         log4perl.logger = INFO, Main
+         log4perl.appender.Main = Log::Log4perl::Appender::File
+         log4perl.appender.Main.filename = \
+             sub { &quot;example&quot; . getpwuid($&lt;) . &quot;.log&quot; }
+         log4perl.appender.Main.layout = Log::Log4perl::Layout::SimpleLayout
+        END
+
+        $Log::Log4perl::Config-&gt;allow_code(&apos;restrictive&apos;);
+        Log::Log4perl-&gt;init( \$config );       # will fail
+        $Log::Log4perl::Config-&gt;allow_code(&apos;safe&apos;);
+        Log::Log4perl-&gt;init( \$config );       # will succeed
+
+       The reason that the first call to -&gt;init() fails is because the
+       &apos;restrictive&apos; name maps to an opcode mask of &apos;:default&apos;.  getpwuid() is
+       not part of &apos;:default&apos;, so -&gt;init() fails.  The &apos;safe&apos; name maps to an
+       opcode mask of &apos;:browse&apos;, which allows getpwuid() to run, so -&gt;init()
+       succeeds.
+
+       allowed_code_ops_convenience_map() can be invoked in several ways:
+
+       allowed_code_ops_convenience_map()
+           Returns the entire convenience name map as a hash reference in scalar
+           context or a hash in list context.
+
+       allowed_code_ops_convenience_map( \%map )
+           Replaces the entire conveniece name map with the supplied hash
+           reference.
+
+       allowed_code_ops_convenience_map( $name )
+           Returns the opcode mask for the given convenience name, or undef if
+           no such name is defined in the map.
+
+       allowed_code_ops_convenience_map( $name, \@mask )
+           Adds the given name/mask pair to the convenience name map.  If the
+           name already exists in the map, it&apos;s value is replaced with the new
+           mask.
+
+       as can vars_shared_with_safe_compartment():
+
+       vars_shared_with_safe_compartment()
+           Return the entire map of packages to variables as a hash reference in
+           scalar context or a hash in list context.
+
+       vars_shared_with_safe_compartment( \%packages )
+           Replaces the entire map of packages to variables with the supplied
+           hash reference.
+
+       vars_shared_with_safe_compartment( $package )
+           Returns the arrayref of variables to be shared for a specific
+           package.
+
+       vars_shared_with_safe_compartment( $package, \@vars )
+           Adds the given package / varlist pair to the map.  If the package
+           already exists in the map, it&apos;s value is replaced with the new
+           arrayref of variable names.
+
+       For more information on opcodes and Safe Compartments, see Opcode and
+       Safe.
+
+   Changing the Log Level on a Logger
+       Log4perl provides some internal functions for quickly adjusting the log
+       level from within a running Perl program.
+
+       Now, some people might argue that you should adjust your levels from
+       within an external Log4perl configuration file, but Log4perl is
+       everybody&apos;s darling.
+
+       Typically run-time adjusting of levels is done at the beginning, or in
+       response to some external input (like a &quot;more logging&quot; runtime command
+       for diagnostics).
+
+       You get the log level from a logger object with:
+
+           $current_level = $logger-&gt;level();
+
+       and you may set it with the same method, provided you first imported the
+       log level constants, with:
+
+           use Log::Log4perl::Level;
+
+       Then you can set the level on a logger to one of the constants,
+
+           $logger-&gt;level($ERROR); # one of DEBUG, INFO, WARN, ERROR, FATAL
+
+       To increase the level of logging currently being done, use:
+
+           $logger-&gt;more_logging($delta);
+
+       and to decrease it, use:
+
+           $logger-&gt;less_logging($delta);
+
+       $delta must be a positive integer (for now, we may fix this later ;).
+
+       There are also two equivalent functions:
+
+           $logger-&gt;inc_level($delta);
+           $logger-&gt;dec_level($delta);
+
+       They&apos;re included to allow you a choice in readability. Some folks will
+       prefer more/less_logging, as they&apos;re fairly clear in what they do, and
+       allow the programmer not to worry too much about what a Level is and
+       whether a higher Level means more or less logging. However, other folks
+       who do understand and have lots of code that deals with levels will
+       probably prefer the inc_level() and dec_level() methods as they want to
+       work with Levels and not worry about whether that means more or less
+       logging. :)
+
+       That diatribe aside, typically you&apos;ll use more_logging() or inc_level()
+       as such:
+
+           my $v = 0; # default level of verbosity.
+
+           GetOptions(&quot;v+&quot; =&gt; \$v, ...);
+
+           $logger-&gt;more_logging($v);  # inc logging level once for each -v in ARGV
+
+   Custom Log Levels
+       First off, let me tell you that creating custom levels is heavily
+       deprecated by the log4j folks. Indeed, instead of creating additional
+       levels on top of the predefined DEBUG, INFO, WARN, ERROR and FATAL, you
+       should use categories to control the amount of logging smartly, based on
+       the location of the log-active code in the system.
+
+       Nevertheless, Log4perl provides a nice way to create custom levels via
+       the create_custom_level() routine function. However, this must be done
+       before the first call to init() or get_logger(). Say you want to create a
+       NOTIFY logging level that comes after WARN (and thus before INFO).  You&apos;d
+       do such as follows:
+
+           use Log::Log4perl;
+           use Log::Log4perl::Level;
+&#12;           Log::Log4perl::Logger::create_custom_level(&quot;NOTIFY&quot;, &quot;WARN&quot;);
+
+       And that&apos;s it! create_custom_level() creates the following functions /
+       variables for level FOO:
+
+           $FOO_INT        # integer to use in L4p::Level::to_level()
+           $logger-&gt;foo()  # log function to log if level = FOO
+           $logger-&gt;is_foo()   # true if current level is &gt;= FOO
+
+       These levels can also be used in your config file, but note that your
+       config file probably won&apos;t be portable to another log4perl or log4j
+       environment unless you&apos;ve made the appropriate mods there too.
+
+   System-wide log levels
+       As a fairly drastic measure to decrease (or increase) the logging level
+       all over the system with one single configuration option, use the
+       &quot;threshold&quot; keyword in the Log4perl configuration file:
+
+           log4perl.threshold = ERROR
+
+       sets the system-wide (or hierarchy-wide according to the log4j
+       documentation) to ERROR and therefore deprives every logger in the system
+       of the right to log lower-prio messages.
+
+   Easy Mode
+       For teaching purposes (especially for [1]), I&apos;ve put &quot;:easy&quot; mode into
+       &quot;Log::Log4perl&quot;, which just initializes a single root logger with a
+       defined priority and a screen appender including some nice standard
+       layout:
+
+           ### Initialization Section
+           use Log::Log4perl qw(:easy);
+           Log::Log4perl-&gt;easy_init($ERROR);  # Set priority of root logger to ERROR
+
+           ### Application Section
+           my $logger = get_logger();
+           $logger-&gt;fatal(&quot;This will get logged.&quot;);
+           $logger-&gt;debug(&quot;This won&apos;t.&quot;);
+
+       This will dump something like
+
+           2002/08/04 11:43:09 ERROR&gt; script.pl:16 main::function - This will get logged.
+
+       to the screen. While this has been proven to work well familiarizing
+       people with &quot;Log::Logperl&quot; slowly, effectively avoiding to clobber them
+       over the head with a plethora of different knobs to fiddle with
+       (categories, appenders, levels, layout), the overall mission of
+       &quot;Log::Log4perl&quot; is to let people use categories right from the start to
+       get used to the concept. So, let&apos;s keep this one fairly hidden in the man
+       page (congrats on reading this far :).
+
+   Stealth loggers
+       Sometimes, people are lazy. If you&apos;re whipping up a 50-line script and
+       want the comfort of Log::Log4perl without having the burden of carrying a
+       separate log4perl.conf file or a 5-liner defining that you want to append
+       your log statements to a file, you can use the following features:
+
+           use Log::Log4perl qw(:easy);
+
+           Log::Log4perl-&gt;easy_init( { level   =&gt; $DEBUG,
+                                       file    =&gt; &quot;&gt;&gt;test.log&quot; } );
+
+               # Logs to test.log via stealth logger
+           DEBUG(&quot;Debug this!&quot;);
+           INFO(&quot;Info this!&quot;);
+           WARN(&quot;Warn this!&quot;);
+           ERROR(&quot;Error this!&quot;);
+
+           some_function();
+
+           sub some_function {
+                   # Same here
+               FATAL(&quot;Fatal this!&quot;);
+           }
+
+       In &quot;:easy&quot; mode, &quot;Log::Log4perl&quot; will instantiate a stealth logger named
+       $_default_logger and import it into the current package. Also, it will
+       introduce the convenience functions &quot;TRACE&quot;, &quot;DEBUG()&quot;, &quot;INFO()&quot;,
+       &quot;WARN()&quot;, &quot;ERROR()&quot;, &quot;FATAL()&quot;, and &quot;ALWAYS&quot; into the package namespace.
+       These functions simply take messages as arguments and forward them to
+       &quot;_default_logger-&gt;debug()&quot;, &quot;_default_logger-&gt;info()&quot; and so on.  If a
+       message should never be blocked, regardless of the log level, use the
+       &quot;ALWAYS&quot; function which corresponds to a log level of &quot;OFF&quot;:
+
+           ALWAYS &quot;This will be printed regardless of the log level&quot;;
+
+       The &quot;easy_init&quot; method can be called with a single level value to create
+       a STDERR appender and a root logger as in
+
+           Log::Log4perl-&gt;easy_init($DEBUG);
+
+       or, as shown below (and in the example above) with a reference to a hash,
+       specifying values for &quot;level&quot; (the logger&apos;s priority), &quot;file&quot; (the
+       appender&apos;s data sink), &quot;category&quot; (the logger&apos;s category&gt; and &quot;layout&quot;
+       for the appender&apos;s pattern layout specification.  All key-value pairs are
+       optional, they default to $DEBUG for &quot;level&quot;, &quot;STDERR&quot; for &quot;file&quot;, &quot;&quot;
+       (root category) for &quot;category&quot; and &quot;%d %m%n&quot; for &quot;layout&quot;:
+
+           Log::Log4perl-&gt;easy_init( { level    =&gt; $DEBUG,
+                                       file     =&gt; &quot;&gt;test.log&quot;,
+                                       utf8     =&gt; 1,
+                                       category =&gt; &quot;Bar::Twix&quot;,
+                                       layout   =&gt; &apos;%F{1}-%L-%M: %m%n&apos; } );
+
+       The &quot;file&quot; parameter takes file names preceded by &quot;&gt;&quot; (overwrite) and
+       &quot;&gt;&gt;&quot; (append) as arguments. This will cause
+       &quot;Log::Log4perl::Appender::File&quot; appenders to be created behind the
+       scenes. Also the keywords &quot;STDOUT&quot; and &quot;STDERR&quot; (no &quot;&gt;&quot; or &quot;&gt;&gt;&quot;) are
+       recognized, which will utilize and configure
+       &quot;Log::Log4perl::Appender::Screen&quot; appropriately. The &quot;utf8&quot; flag, if set
+       to a true value, runs a &quot;binmode&quot; command on the file handle to establish
+       a utf8 line discpline on the file, otherwise you&apos;ll get a &apos;wide character
+       in print&apos; warning message and probably not what you&apos;d expect as output.
+
+       The stealth loggers can be used in different packages, you just need to
+       make sure you&apos;re calling the &quot;use&quot; function in every package you&apos;re using
+       &quot;Log::Log4perl&quot;&apos;s easy services:
+
+           package Bar::Twix;
+           use Log::Log4perl qw(:easy);
+           sub eat { DEBUG(&quot;Twix mjam&quot;); }
+
+           package Bar::Mars;
+           use Log::Log4perl qw(:easy);
+           sub eat { INFO(&quot;Mars mjam&quot;); }
+
+           package main;
+
+           use Log::Log4perl qw(:easy);
+
+           Log::Log4perl-&gt;easy_init( { level    =&gt; $DEBUG,
+                                       file     =&gt; &quot;&gt;&gt;test.log&quot;,
+                                       category =&gt; &quot;Bar::Twix&quot;,
+                                       layout   =&gt; &apos;%F{1}-%L-%M: %m%n&apos; },
+                                     { level    =&gt; $DEBUG,
+                                       file     =&gt; &quot;STDOUT&quot;,
+                                       category =&gt; &quot;Bar::Mars&quot;,
+                                       layout   =&gt; &apos;%m%n&apos; },
+                                   );
+           Bar::Twix::eat();
+           Bar::Mars::eat();
+
+       As shown above, &quot;easy_init()&quot; will take any number of different logger
+       definitions as hash references.
+
+       Also, stealth loggers feature the functions &quot;LOGWARN()&quot;, &quot;LOGDIE()&quot;, and
+       &quot;LOGEXIT()&quot;, combining a logging request with a subsequent Perl warn() or
+       die() or exit() statement. So, for example
+
+           if($all_is_lost) {
+               LOGDIE(&quot;Terrible Problem&quot;);
+           }
+
+       will log the message if the package&apos;s logger is at least &quot;FATAL&quot; but
+       &quot;die()&quot; (including the traditional output to STDERR) in any case
+       afterwards.
+
+       See &quot;Log and die or warn&quot; for the similar &quot;logdie()&quot; and &quot;logwarn()&quot;
+       functions of regular (i.e non-stealth) loggers.
+
+       Similarily, &quot;LOGCARP()&quot;, &quot;LOGCLUCK()&quot;, &quot;LOGCROAK()&quot;, and &quot;LOGCONFESS()&quot;
+       are provided in &quot;:easy&quot; mode, facilitating the use of &quot;logcarp()&quot;,
+       &quot;logcluck()&quot;, &quot;logcroak()&quot;, and &quot;logconfess()&quot; with stealth loggers.
+
+       When using Log::Log4perl in easy mode, please make sure you understand
+       the implications of &quot;Pitfalls with Categories&quot;.
+
+       By the way, these convenience functions perform exactly as fast as the
+       standard Log::Log4perl logger methods, there&apos;s no performance penalty
+       whatsoever.
+
+   Nested Diagnostic Context (NDC)
+       If you find that your application could use a global (thread-specific)
+       data stack which your loggers throughout the system have easy access to,
+       use Nested Diagnostic Contexts (NDCs). Also check out &quot;Mapped Diagnostic
+       Context (MDC)&quot;, this might turn out to be even more useful.
+
+       For example, when handling a request of a web client, it&apos;s probably
+       useful to have the user&apos;s IP address available in all log statements
+       within code dealing with this particular request. Instead of passing this
+       piece of data around between your application functions, you can just use
+       the global (but thread-specific) NDC mechanism. It allows you to push
+       data pieces (scalars usually) onto its stack via
+
+           Log::Log4perl::NDC-&gt;push(&quot;San&quot;);
+           Log::Log4perl::NDC-&gt;push(&quot;Francisco&quot;);
+
+       and have your loggers retrieve them again via the &quot;%x&quot; placeholder in the
+       PatternLayout. With the stack values above and a PatternLayout format
+       like &quot;%x %m%n&quot;, the call
+
+           $logger-&gt;debug(&quot;rocks&quot;);
+
+       will end up as
+
+           San Francisco rocks
+
+       in the log appender.
+
+       The stack mechanism allows for nested structures.  Just make sure that at
+       the end of the request, you either decrease the stack one by one by
+       calling
+
+           Log::Log4perl::NDC-&gt;pop();
+           Log::Log4perl::NDC-&gt;pop();
+
+       or clear out the entire NDC stack by calling
+
+           Log::Log4perl::NDC-&gt;remove();
+
+       Even if you should forget to do that, &quot;Log::Log4perl&quot; won&apos;t grow the
+       stack indefinitely, but limit it to a maximum, defined in
+       &quot;Log::Log4perl::NDC&quot; (currently 5). A call to &quot;push()&quot; on a full stack
+       will just replace the topmost element by the new value.
+
+       Again, the stack is always available via the &quot;%x&quot; placeholder in the
+       Log::Log4perl::Layout::PatternLayout class whenever a logger fires. It
+       will replace &quot;%x&quot; by the blank-separated list of the values on the stack.
+       It does that by just calling
+
+           Log::Log4perl::NDC-&gt;get();
+
+       internally. See details on how this standard log4j feature is implemented
+       in Log::Log4perl::NDC.
+
+   Mapped Diagnostic Context (MDC)
+       Just like the previously discussed NDC stores thread-specific information
+       in a stack structure, the MDC implements a hash table to store key/value
+       pairs in.
+
+       The static method
+
+           Log::Log4perl::MDC-&gt;put($key, $value);
+
+       stores $value under a key $key, with which it can be retrieved later
+       (possibly in a totally different part of the system) by calling the &quot;get&quot;
+       method:
+
+           my $value = Log::Log4perl::MDC-&gt;get($key);
+
+       If no value has been stored previously under $key, the &quot;get&quot; method will
+       return &quot;undef&quot;.
+
+       Typically, MDC values are retrieved later on via the &quot;%X{...}&quot;
+       placeholder in &quot;Log::Log4perl::Layout::PatternLayout&quot;. If the &quot;get()&quot;
+       method returns &quot;undef&quot;, the placeholder will expand to the string
+       &quot;[undef]&quot;.
+
+       An application taking a web request might store the remote host like
+
+           Log::Log4perl::MDC-&gt;put(&quot;remote_host&quot;, $r-&gt;headers(&quot;HOST&quot;));
+
+       at its beginning and if the appender&apos;s layout looks something like
+
+           log4perl.appender.Logfile.layout.ConversionPattern = %X{remote_host}: %m%n
+
+       then a log statement like
+
+          DEBUG(&quot;Content delivered&quot;);
+
+       will log something like
+
+          adsl-63.dsl.snf.pacbell.net: Content delivered
+
+       later on in the program.
+
+       For details, please check Log::Log4perl::MDC.
+
+   Resurrecting hidden Log4perl Statements
+       Sometimes scripts need to be deployed in environments without having
+       Log::Log4perl installed yet. On the other hand, you dont&apos;t want to live
+       without your Log4perl statements -- they&apos;re gonna come in handy later.
+
+       So, just deploy your script with Log4perl statements commented out with
+       the pattern &quot;###l4p&quot;, like in
+
+           ###l4p DEBUG &quot;It works!&quot;;
+           # ...
+           ###l4p INFO &quot;Really!&quot;;
+
+       If Log::Log4perl is available, use the &quot;:resurrect&quot; tag to have Log4perl
+       resurrect those burried statements before the script starts running:
+
+           use Log::Log4perl qw(:resurrect :easy);
+
+           ###l4p Log::Log4perl-&gt;easy_init($DEBUG);
+           ###l4p DEBUG &quot;It works!&quot;;
+           # ...
+           ###l4p INFO &quot;Really!&quot;;
+
+       This will have a source filter kick in and indeed print
+
+           2004/11/18 22:08:46 It works!
+           2004/11/18 22:08:46 Really!
+
+       In environments lacking Log::Log4perl, just comment out the first line
+       and the script will run nevertheless (but of course without logging):
+
+           # use Log::Log4perl qw(:resurrect :easy);
+
+           ###l4p Log::Log4perl-&gt;easy_init($DEBUG);
+           ###l4p DEBUG &quot;It works!&quot;;
+           # ...
+           ###l4p INFO &quot;Really!&quot;;
+
+       because everything&apos;s a regular comment now. Alternatively, put the magic
+       Log::Log4perl comment resurrection line into your shell&apos;s PERL5OPT
+       environment variable, e.g. for bash:
+
+           set PERL5OPT=-MLog::Log4perl=:resurrect,:easy
+           export PERL5OPT
+
+       This will awaken the giant within an otherwise silent script like the
+       following:
+
+           #!/usr/bin/perl
+&#12;           ###l4p Log::Log4perl-&gt;easy_init($DEBUG);
+           ###l4p DEBUG &quot;It works!&quot;;
+
+       As of &quot;Log::Log4perl&quot; 1.12, you can even force all modules loaded by a
+       script to have their hidden Log4perl statements resurrected. For this to
+       happen, load &quot;Log::Log4perl::Resurrector&quot; before loading any modules:
+
+           use Log::Log4perl qw(:easy);
+           use Log::Log4perl::Resurrector;
+
+           use Foobar; # All hidden Log4perl statements in here will
+                       # be uncommented before Foobar gets loaded.
+
+           Log::Log4perl-&gt;easy_init($DEBUG);
+           ...
+
+       Check the &quot;Log::Log4perl::Resurrector&quot; manpage for more details.
+
+   Access defined appenders
+       All appenders defined in the configuration file or via Perl code can be
+       retrieved by the &quot;appender_by_name()&quot; class method. This comes in handy
+       if you want to manipulate or query appender properties after the Log4perl
+       configuration has been loaded via &quot;init()&quot;.
+
+       Note that internally, Log::Log4perl uses the &quot;Log::Log4perl::Appender&quot;
+       wrapper class to control the real appenders (like
+       &quot;Log::Log4perl::Appender::File&quot; or &quot;Log::Dispatch::FileRotate&quot;).  The
+       &quot;Log::Log4perl::Appender&quot; class has an &quot;appender&quot; attribute, pointing to
+       the real appender.
+
+       The reason for this is that external appenders like
+       &quot;Log::Dispatch::FileRotate&quot; don&apos;t support all of Log::Log4perl&apos;s appender
+       control mechanisms (like appender thresholds).
+
+       The previously mentioned method &quot;appender_by_name()&quot; returns a reference
+       to the real appender object. If you want access to the wrapper class
+       (e.g. if you want to modify the appender&apos;s threshold), use the hash
+       $Log::Log4perl::Logger::APPENDER_BY_NAME{...} instead, which holds
+       references to all appender wrapper objects.
+
+   Modify appender thresholds
+       To conveniently adjust appender thresholds (e.g. because a script uses
+       more_logging()), use
+
+              # decrease thresholds of all appenders
+           Log::Log4perl-&gt;appender_thresholds_adjust(-1);
+
+       This will decrease the thresholds of all appenders in the system by one
+       level, i.e. WARN becomes INFO, INFO becomes DEBUG, etc. To only modify
+       selected ones, use
+
+              # decrease thresholds of all appenders
+           Log::Log4perl-&gt;appender_thresholds_adjust(-1, [&apos;AppName1&apos;, ...]);
+
+       and pass the names of affected appenders in a ref to an array.
+
+Advanced configuration within Perl
+       Initializing Log::Log4perl can certainly also be done from within Perl.
+       At last, this is what &quot;Log::Log4perl::Config&quot; does behind the scenes.
+       Log::Log4perl&apos;s configuration file parsers are using a publically
+       available API to set up Log::Log4perl&apos;s categories, appenders and
+       layouts.
+
+       Here&apos;s an example on how to configure two appenders with the same layout
+       in Perl, without using a configuration file at all:
+
+         ########################
+         # Initialization section
+         ########################
+         use Log::Log4perl;
+         use Log::Log4perl::Layout;
+         use Log::Log4perl::Level;
+
+            # Define a category logger
+         my $log = Log::Log4perl-&gt;get_logger(&quot;Foo::Bar&quot;);
+
+            # Define a layout
+         my $layout = Log::Log4perl::Layout::PatternLayout-&gt;new(&quot;[%r] %F %L %m%n&quot;);
+
+            # Define a file appender
+         my $file_appender = Log::Log4perl::Appender-&gt;new(
+                                 &quot;Log::Log4perl::Appender::File&quot;,
+                                 name      =&gt; &quot;filelog&quot;,
+                                 filename  =&gt; &quot;/tmp/my.log&quot;);
+
+            # Define a stdout appender
+         my $stdout_appender =  Log::Log4perl::Appender-&gt;new(
+                                 &quot;Log::Log4perl::Appender::Screen&quot;,
+                                 name      =&gt; &quot;screenlog&quot;,
+                                 stderr    =&gt; 0);
+
+            # Have both appenders use the same layout (could be different)
+         $stdout_appender-&gt;layout($layout);
+         $file_appender-&gt;layout($layout);
+
+         $log-&gt;add_appender($stdout_appender);
+         $log-&gt;add_appender($file_appender);
+         $log-&gt;level($INFO);
+
+       Please note the class of the appender object is passed as a string to
+       &quot;Log::Log4perl::Appender&quot; in the first argument. Behind the scenes,
+       &quot;Log::Log4perl::Appender&quot; will create the necessary
+       &quot;Log::Log4perl::Appender::*&quot; (or &quot;Log::Dispatch::*&quot;) object and pass
+       along the name value pairs we provided to
+       &quot;Log::Log4perl::Appender-&gt;new()&quot; after the first argument.
+
+       The &quot;name&quot; value is optional and if you don&apos;t provide one,
+       &quot;Log::Log4perl::Appender-&gt;new()&quot; will create a unique one for you.  The
+       names and values of additional parameters are dependent on the
+       requirements of the particular appender class and can be looked up in
+       their manual pages.
+
+       A side note: In case you&apos;re wondering if &quot;Log::Log4perl::Appender-&gt;new()&quot;
+       will also take care of the &quot;min_level&quot; argument to the &quot;Log::Dispatch::*&quot;
+       constructors called behind the scenes -- yes, it does. This is because we
+       want the &quot;Log::Dispatch&quot; objects to blindly log everything we send them
+       (&quot;debug&quot; is their lowest setting) because we in &quot;Log::Log4perl&quot; want to
+       call the shots and decide on when and what to log.
+
+       The call to the appender&apos;s layout() method specifies the format (as a
+       previously created &quot;Log::Log4perl::Layout::PatternLayout&quot; object) in
+       which the message is being logged in the specified appender.  If you
+       don&apos;t specify a layout, the logger will fall back to
+       &quot;Log::Log4perl::SimpleLayout&quot;, which logs the debug level, a hyphen (-)
+       and the log message.
+
+       Layouts are objects, here&apos;s how you create them:
+
+               # Create a simple layout
+           my $simple = Log::Log4perl::SimpleLayout();
+
+               # create a flexible layout:
+               # (&quot;yyyy/MM/dd hh:mm:ss (file:lineno)&gt; message\n&quot;)
+           my $pattern = Log::Log4perl::Layout::PatternLayout(&quot;%d (%F:%L)&gt; %m%n&quot;);
+
+       Every appender has exactly one layout assigned to it. You assign the
+       layout to the appender using the appender&apos;s &quot;layout()&quot; object:
+
+           my $app =  Log::Log4perl::Appender-&gt;new(
+                         &quot;Log::Log4perl::Appender::Screen&quot;,
+                         name      =&gt; &quot;screenlog&quot;,
+                         stderr    =&gt; 0);
+
+               # Assign the previously defined flexible layout
+           $app-&gt;layout($pattern);
+
+               # Add the appender to a previously defined logger
+           $logger-&gt;add_appender($app);
+
+               # ... and you&apos;re good to go!
+           $logger-&gt;debug(&quot;Blah&quot;);
+               # =&gt; &quot;2002/07/10 23:55:35 (test.pl:207)&gt; Blah\n&quot;
+
+       It&apos;s also possible to remove appenders from a logger:
+
+           $logger-&gt;remove_appender($appender_name);
+
+       will remove an appender, specified by name, from a given logger.  Please
+       note that this does not remove an appender from the system.
+&#12;       To eradicate an appender from the system, you need to call
+       &quot;Log::Log4perl-&gt;eradicate_appender($appender_name)&quot; which will first
+       remove the appender from every logger in the system and then will delete
+       all references Log4perl holds to it.
+
+How about Log::Dispatch::Config?
+       Tatsuhiko Miyagawa&apos;s &quot;Log::Dispatch::Config&quot; is a very clever simplified
+       logger implementation, covering some of the log4j functionality. Among
+       the things that &quot;Log::Log4perl&quot; can but &quot;Log::Dispatch::Config&quot; can&apos;t
+       are:
+
+       &#183;   You can&apos;t assign categories to loggers. For small systems that&apos;s
+           fine, but if you can&apos;t turn off and on detailed logging in only a
+           tiny subsystem of your environment, you&apos;re missing out on a majorly
+           useful log4j feature.
+
+       &#183;   Defining appender thresholds. Important if you want to solve problems
+           like &quot;log all messages of level FATAL to STDERR, plus log all DEBUG
+           messages in &quot;Foo::Bar&quot; to a log file&quot;. If you don&apos;t have appenders
+           thresholds, there&apos;s no way to prevent cluttering STDERR with DEBUG
+           messages.
+
+       &#183;   PatternLayout specifications in accordance with the standard (e.g.
+           &quot;%d{HH:mm}&quot;).
+
+       Bottom line: Log::Dispatch::Config is fine for small systems with simple
+       logging requirements. However, if you&apos;re designing a system with lots of
+       subsystems which you need to control independantly, you&apos;ll love the
+       features of &quot;Log::Log4perl&quot;, which is equally easy to use.
+
+Using Log::Log4perl with wrapper functions and classes
+       If you don&apos;t use &quot;Log::Log4perl&quot; as described above, but from a wrapper
+       function, the pattern layout will generate wrong data for %F, %C, %L, and
+       the like. Reason for this is that &quot;Log::Log4perl&quot;&apos;s loggers assume a
+       static caller depth to the application that&apos;s using them.
+
+       If you&apos;re using one (or more) wrapper functions, &quot;Log::Log4perl&quot; will
+       indicate where your logger function called the loggers, not where your
+       application called your wrapper:
+
+           use Log::Log4perl qw(:easy);
+           Log::Log4perl-&gt;easy_init({ level =&gt; $DEBUG,
+                                      layout =&gt; &quot;%M %m%n&quot; });
+
+           sub mylog {
+               my($message) = @_;
+
+               DEBUG $message;
+           }
+
+           sub func {
+               mylog &quot;Hello&quot;;
+           }
+
+           func();
+
+       prints
+
+           main::mylog Hello
+
+       but that&apos;s probably not what your application expects. Rather, you&apos;d want
+
+           main::func Hello
+
+       because the &quot;func&quot; function called your logging function.
+
+       But don&apos;t dispair, there&apos;s a solution: Just register your wrapper package
+       with Log4perl beforehand. If Log4perl then finds that it&apos;s being called
+       from a registered wrapper, it will automatically step up to the next call
+       frame.
+
+           Log::Log4perl-&gt;wrapper_register(__PACKAGE__);
+
+           sub mylog {
+               my($message) = @_;
+
+               DEBUG $message;
+           }
+
+       Alternatively, you can increase the value of the global variable
+       $Log::Log4perl::caller_depth (defaults to 0) by one for every wrapper
+       that&apos;s in between your application and &quot;Log::Log4perl&quot;, then
+       &quot;Log::Log4perl&quot; will compensate for the difference:
+
+           sub mylog {
+               my($message) = @_;
+
+               local $Log::Log4perl::caller_depth =
+                     $Log::Log4perl::caller_depth + 1;
+               DEBUG $message;
+           }
+
+       Also, note that if you&apos;re writing a subclass of Log4perl, like
+
+           package MyL4pWrapper;
+           use Log::Log4perl;
+           our @ISA = qw(Log::Log4perl);
+
+       and you want to call get_logger() in your code, like
+
+           use MyL4pWrapper;
+
+           sub get_logger {
+               my $logger = Log::Log4perl-&gt;get_logger();
+           }
+
+       then the get_logger() call will get a logger for the &quot;MyL4pWrapper&quot;
+       category, not for the package calling the wrapper class as in
+
+           package UserPackage;
+           my $logger = MyL4pWrapper-&gt;get_logger();
+
+       To have the above call to get_logger return a logger for the
+       &quot;UserPackage&quot; category, you need to tell Log4perl that &quot;MyL4pWrapper&quot; is
+       a Log4perl wrapper class:
+
+           use MyL4pWrapper;
+           Log::Log4perl-&gt;wrapper_register(__PACKAGE__);
+
+           sub get_logger {
+                 # Now gets a logger for the category of the calling package
+               my $logger = Log::Log4perl-&gt;get_logger();
+           }
+
+       This feature works both for Log4perl-relaying classes like the wrapper
+       described above, and for wrappers that inherit from Log4perl use
+       Log4perl&apos;s get_logger function via inheritance, alike.
+
+Access to Internals
+       The following methods are only of use if you want to peek/poke in the
+       internals of Log::Log4perl. Be careful not to disrupt its inner workings.
+
+       &quot;Log::Log4perl-&gt;appenders()&quot;
+           To find out which appenders are currently defined (not only for a
+           particular logger, but overall), a &quot;appenders()&quot; method is available
+           to return a reference to a hash mapping appender names to their
+           Log::Log4perl::Appender object references.
+
+Dirty Tricks
+       infiltrate_lwp()
+           The famous LWP::UserAgent module isn&apos;t Log::Log4perl-enabled. Often,
+           though, especially when tracing Web-related problems, it would be
+           helpful to get some insight on what&apos;s happening inside
+           LWP::UserAgent. Ideally, LWP::UserAgent would even play along in the
+           Log::Log4perl framework.
+
+           A call to &quot;Log::Log4perl-&gt;infiltrate_lwp()&quot; does exactly this.  In a
+           very rude way, it pulls the rug from under LWP::UserAgent and
+           transforms its &quot;debug/conn&quot; messages into &quot;debug()&quot; calls of loggers
+           of the category &quot;LWP::UserAgent&quot;. Similarily, &quot;LWP::UserAgent&quot;&apos;s
+           &quot;trace&quot; messages are turned into &quot;Log::Log4perl&quot;&apos;s &quot;info()&quot; method
+           calls. Note that this only works for LWP::UserAgent versions &lt; 5.822,
+           because this (and probably later) versions miss debugging functions
+           entirely.
+
+       Suppressing &apos;duplicate&apos; LOGDIE messages
+           If a script with a simple Log4perl configuration uses logdie() to
+           catch errors and stop processing, as in
+
+               use Log::Log4perl qw(:easy) ;
+               Log::Log4perl-&gt;easy_init($DEBUG);
+&#12;               shaky_function() or LOGDIE &quot;It failed!&quot;;
+
+           there&apos;s a cosmetic problem: The message gets printed twice:
+
+               2005/07/10 18:37:14 It failed!
+               It failed! at ./t line 12
+
+           The obvious solution is to use LOGEXIT() instead of LOGDIE(), but
+           there&apos;s also a special tag for Log4perl that suppresses the second
+           message:
+
+               use Log::Log4perl qw(:no_extra_logdie_message);
+
+           This causes logdie() and logcroak() to call exit() instead of die().
+           To modify the script exit code in these occasions, set the variable
+           $Log::Log4perl::LOGEXIT_CODE to the desired value, the default is 1.
+
+       Redefine values without causing errors
+           Log4perl&apos;s configuration file parser has a few basic safety
+           mechanisms to make sure configurations are more or less sane.
+
+           One of these safety measures is catching redefined values. For
+           example, if you first write
+
+               log4perl.category = WARN, Logfile
+
+           and then a couple of lines later
+
+               log4perl.category = TRACE, Logfile
+
+           then you might have unintentionally overwritten the first value and
+           Log4perl will die on this with an error (suspicious configurations
+           always throw an error). Now, there&apos;s a chance that this is
+           intentional, for example when you&apos;re lumping together several
+           configuration files and actually want the first value to overwrite
+           the second. In this case use
+
+               use Log::Log4perl qw(:nostrict);
+
+           to put Log4perl in a more permissive mode.
+
+EXAMPLE
+       A simple example to cut-and-paste and get started:
+
+           use Log::Log4perl qw(get_logger);
+
+           my $conf = q(
+           log4perl.category.Bar.Twix         = WARN, Logfile
+           log4perl.appender.Logfile          = Log::Log4perl::Appender::File
+           log4perl.appender.Logfile.filename = test.log
+           log4perl.appender.Logfile.layout = \
+               Log::Log4perl::Layout::PatternLayout
+           log4perl.appender.Logfile.layout.ConversionPattern = %d %F{1} %L&gt; %m %n
+           );
+
+           Log::Log4perl::init(\$conf);
+
+           my $logger = get_logger(&quot;Bar::Twix&quot;);
+           $logger-&gt;error(&quot;Blah&quot;);
+
+       This will log something like
+
+           2002/09/19 23:48:15 t1 25&gt; Blah
+
+       to the log file &quot;test.log&quot;, which Log4perl will append to or create it if
+       it doesn&apos;t exist already.
+
+INSTALLATION
+       If you want to use external appenders provided with &quot;Log::Dispatch&quot;, you
+       need to install &quot;Log::Dispatch&quot; (2.00 or better) from CPAN, which itself
+       depends on &quot;Attribute-Handlers&quot; and &quot;Params-Validate&quot;. And a lot of other
+       modules, that&apos;s the reason why we&apos;re now shipping Log::Log4perl with its
+       own standard appenders and only if you wish to use additional ones,
+       you&apos;ll have to go through the &quot;Log::Dispatch&quot; installation process.
+
+       Log::Log4perl needs &quot;Test::More&quot;, &quot;Test::Harness&quot; and &quot;File::Spec&quot;, but
+       they already come with fairly recent versions of perl.  If not,
+       everything&apos;s automatically fetched from CPAN if you&apos;re using the CPAN
+       shell (CPAN.pm), because they&apos;re listed as dependencies.
+
+       &quot;Time::HiRes&quot; (1.20 or better) is required only if you need the fine-
+       grained time stamps of the %r parameter in
+       &quot;Log::Log4perl::Layout::PatternLayout&quot;.
+
+       Manual installation works as usual with
+
+           perl Makefile.PL
+           make
+           make test
+           make install
+
+       If you&apos;re running Windows (98, 2000, NT, XP etc.), and you&apos;re too lazy to
+       rummage through all of Log-Log4perl&apos;s dependencies, don&apos;t despair: We&apos;re
+       providing a PPM package which installs easily with your Activestate Perl.
+       Check &quot;how_can_i_install_log__log4perl_on_microsoft_windows&quot; in
+       Log::Log4perl::FAQ for details.
+
+DEVELOPMENT
+       Log::Log4perl is still being actively developed. We will always make sure
+       the test suite (approx. 500 cases) will pass, but there might still be
+       bugs. please check http://github.com/mschilli/log4perl for the latest
+       release. The api has reached a mature state, we will not change it unless
+       for a good reason.
+
+       Bug reports and feedback are always welcome, just email them to our
+       mailing list shown in the AUTHORS section. We&apos;re usually addressing them
+       immediately.
+
+REFERENCES
+       [1] Michael Schilli, &quot;Retire your debugger, log smartly with
+           Log::Log4perl!&quot;, Tutorial on perl.com, 09/2002,
+           http://www.perl.com/pub/a/2002/09/11/log4perl.html
+
+       [2] Ceki GA~XlcA~X, &quot;Short introduction to log4j&quot;,
+           http://jakarta.apache.org/log4j/docs/manual.html
+
+       [3] Vipan Singla, &quot;Don&apos;t Use System.out.println! Use Log4j.&quot;,
+           http://www.vipan.com/htdocs/log4jhelp.html
+
+       [4] The Log::Log4perl project home page: http://log4perl.com
+
+SEE ALSO
+       Log::Log4perl::Config, Log::Log4perl::Appender,
+       Log::Log4perl::Layout::PatternLayout,
+       Log::Log4perl::Layout::SimpleLayout, Log::Log4perl::Level,
+       Log::Log4perl::JavaMap Log::Log4perl::NDC,
+
+AUTHORS
+       Please contribute patches to the project page on Github:
+
+           http://github.com/mschilli/log4perl
+
+       Bug reports or requests for enhancements to the authors via our
+
+           MAILING LIST (questions, bug reports, suggestions/patches):
+           log4perl-devel@lists.sourceforge.net
+
+           Authors (please contact them via the list above, not directly)
+           Mike Schilli &lt;m@perlmeister.com&gt;
+           Kevin Goess &lt;cpan@goess.org&gt;
+
+           Contributors (in alphabetical order):
+           Ateeq Altaf, Cory Bennett, Jens Berthold, Jeremy Bopp, Hutton
+           Davidson, Chris R. Donnelly, Matisse Enzer, Hugh Esco, Anthony
+           Foiani, James FitzGibbon, Carl Franks, Dennis Gregorovic, Andy
+           Grundman, Paul Harrington, David Hull, Robert Jacobson, Jason Kohles,
+           Jeff Macdonald, Markus Peter, Brett Rann, Peter Rabbitson, Erik
+           Selberg, Aaron Straup Cope, Lars Thegler, David Viner, Mac Yang.
+
+COPYRIGHT AND LICENSE
+       Copyright 2002-2009 by Mike Schilli &lt;m@perlmeister.com&gt; and Kevin Goess
+       &lt;cpan@goess.org&gt;.
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself.
+
+
+
+perl v5.10.1                       2010-07-21                 Log::Log4perl(3pm)
+
+</pre></body></html>

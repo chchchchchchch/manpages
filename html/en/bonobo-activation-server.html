@@ -1,0 +1,40 @@
+<html>
+<head><meta charset=utf-8/>
+<title>bonobo-activation-server - GNOME component tracker</title></head>
+<body><pre>
+
+Bonobo Activation Server(1)                          Bonobo Activation Server(1)
+
+
+
+NAME
+       bonobo-activation-server - GNOME component tracker
+
+DESCRIPTION
+       This  application  tracks information about installed components and bro&#8208;
+       kers components, in conjunction with its client library;  libbonobo-acti&#8208;
+       vation.
+
+       It      reads      the     component     descriptions     from     ${pre&#8208;
+       fix}/lib/bonobo/servers/*.server.  These files provide an XML description
+       of  a  components  capabilities  which  can be queried and manipulated by
+       clients from the client library.
+
+       Bonobo-activation-server also ensures that the minimum neccessary  number
+       of servers for your display setup are running.
+
+       Bonobo-activation-server  executes  all  components  with the environment
+       inherited from the first process to start  the  server.  In  addition  to
+       using  your  prefix,  it  will examine the BONOBO_ACTIVATION_PATH and the
+       GNOME2_PATH environment variables to find .server files.
+
+       In  addition  it  examines  an   XML   configuration   file   in   ${pre&#8208;
+       fix}/etc/bonobo-activation/bonobo-activation-config.xml
+
+       For more information see http://www.gnome.org.
+
+
+
+                                                     Bonobo Activation Server(1)
+
+</pre></body></html>

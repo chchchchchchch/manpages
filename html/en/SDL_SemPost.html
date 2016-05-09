@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_SemPost - Unlock a semaphore.</title></head>
+<body><pre>
+
+SDL_SemPost(3)                  SDL API Reference                 SDL_SemPost(3)
+
+
+
+NAME
+       SDL_SemPost - Unlock a semaphore.
+
+SYNOPSIS
+       #include &quot;SDL.h&quot; #include &quot;SDL_thread.h&quot;
+
+       int SDL_SemPost(SDL_sem *sem);
+
+DESCRIPTION
+       SDL_SemPost unlocks the semaphore pointed to by sem and atomically incre&#8208;
+       ments the semaphores value. Threads that were blocking on  the  semaphore
+       may be scheduled after this call succeeds.
+
+       SDL_SemPost  should be called after a semaphore is locked by a successful
+       call to SDL_SemWait, SDL_SemTryWait or SDL_SemWaitTimeout.
+
+RETURN VALUE
+       Returns 0 if successful or -1 if there was an error  (leaving  the  sema&#8208;
+       phore unchanged).
+
+EXAMPLES
+       SDL_SemPost(my_sem);
+
+SEE ALSO
+       SDL_CreateSemaphore,  SDL_DestroySemaphore,  SDL_SemWait, SDL_SemTryWait,
+       SDL_SemWaitTimeout, SDL_SemValue
+
+
+
+SDL                          Tue 11 Sep 2001, 23:00               SDL_SemPost(3)
+
+</pre></body></html>

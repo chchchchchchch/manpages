@@ -1,0 +1,70 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::PixmapEntry - wrapper for GnomePixmapEntry</title></head>
+<body><pre>
+
+Gnome2::PixmapEntry(3pmUser Contributed Perl DocumentatiGnome2::PixmapEntry(3pm)
+
+
+
+NAME
+       Gnome2::PixmapEntry - wrapper for GnomePixmapEntry
+
+HIERARCHY
+         Glib::Object
+         +----Glib::InitiallyUnowned
+              +----Gtk2::Object
+                   +----Gtk2::Widget
+                        +----Gtk2::Container
+                             +----Gtk2::Box
+                                  +----Gtk2::VBox
+                                       +----Gnome2::FileEntry
+                                            +----Gnome2::PixmapEntry
+
+INTERFACES
+         Glib::Object::_Unregistered::AtkImplementorIface
+         Gtk2::Buildable
+         Gtk2::Orientable
+         Gtk2::Editable
+
+METHODS
+   widget = Gnome2::PixmapEntry-&gt;new ($history_id, $browse_dialog_title,
+       $do_preview)
+       &#183;   $history_id (string)
+
+       &#183;   $browse_dialog_title (string)
+
+       &#183;   $do_preview (boolean)
+
+   string = $pentry-&gt;get_filename
+   $pentry-&gt;set_pixmap_subdir ($subdir)
+       &#183;   $subdir (string)
+
+   $pentry-&gt;set_preview ($do_preview)
+       &#183;   $do_preview (boolean)
+
+   $pentry-&gt;set_preview_size ($preview_w, $preview_h)
+       &#183;   $preview_w (integer)
+
+       &#183;   $preview_h (integer)
+
+   widget = $pentry-&gt;preview_widget
+   widget = $pentry-&gt;scrolled_window
+PROPERTIES
+       &apos;do-preview&apos; (boolean : default false : readable / writable)
+           Whether the pixmap entry should have a preview.
+
+SEE ALSO
+       Gnome2, Glib::Object, Glib::InitiallyUnowned, Gtk2::Object, Gtk2::Widget,
+       Gtk2::Container, Gtk2::Box, Gtk2::VBox, Gnome2::FileEntry
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16           Gnome2::PixmapEntry(3pm)
+
+</pre></body></html>

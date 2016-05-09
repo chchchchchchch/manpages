@@ -1,0 +1,54 @@
+<html>
+<head><meta charset=utf-8/>
+<title>cert2spc - Transform multiple X.509 certificates to a Software Publisher Certificate</title></head>
+<body><pre>
+
+Mono(cert2spc)                                                    Mono(cert2spc)
+
+
+
+NAME
+       cert2spc  - Transform multiple X.509 certificates to a Software Publisher
+       Certificate
+
+SYNOPSIS
+       cert2spc certificate|crl [certificate|crl ...] outputfile.spc
+
+DESCRIPTION
+       Combine a list of X.509 certificates or X.509 CRL (Certificate Revocation
+       List)  into  a Software Publisher Certificate (PKCS#7 file). The SPC file
+       is required for signing a PE file (like an assembly) using signcode.
+
+PARAMETERS
+       certificate
+              One (or more) X.509 certificate to add (space separated).
+
+       crl    One (or more) X.509 CRL to add (space separated).
+
+       output.spc
+              Software Publisher Certificate to output. If  the  specified  file
+              exists it will be overwritten.
+
+AUTHOR
+       Written by Sebastien Pouliot
+
+COPYRIGHT
+       Copyright (C) 2002, 2003 Motus Technologies.  Released under BSD license.
+
+MAILING LISTS
+       Visit     http://lists.ximian.com/mailman/listinfo/mono-devel-list    for
+       details.
+
+WEB SITE
+       Visit http://www.mono-project.com for details
+
+SEE ALSO
+       makecert(1),signcode(1)
+
+
+
+
+
+                                                                  Mono(cert2spc)
+
+</pre></body></html>

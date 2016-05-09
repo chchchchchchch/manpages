@@ -1,0 +1,48 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Dpkg::Changelog::Parse - generic changelog parser for dpkg-parsechangelog</title></head>
+<body><pre>
+
+Dpkg::Changelog::Parse(3)         libdpkg-perl         Dpkg::Changelog::Parse(3)
+
+
+
+NAME
+       Dpkg::Changelog::Parse - generic changelog parser for dpkg-parsechangelog
+
+DESCRIPTION
+       This module provides a single function changelog_parse() which reproduces
+       all the features of dpkg-parsechangelog.
+
+   Functions
+       my $fields = changelog_parse(%opt)
+
+       This function will parse a changelog. In list context, it return as many
+       Dpkg::Control object as the parser did output. In scalar context, it will
+       return only the first one. If the parser didn&apos;t return any data, it will
+       return an empty in list context or undef on scalar context. If the parser
+       failed, it will die.
+
+       The parsing itself is done by an external program (searched in the
+       following list of directories: $opt{libdir},
+       /usr/local/lib/dpkg/parsechangelog, /usr/lib/dpkg/parsechangelog) That
+       program is named according to the format that it&apos;s able to parse. By
+       default it&apos;s either &quot;debian&quot; or the format name lookep up in the 40 last
+       lines of the changelog itself (extracted with this perl regular
+       expression &quot;\schangelog-format:\s+([0-9a-z]+)\W&quot;). But it can be
+       overridden with $opt{changelogformat}. The program expects the content of
+       the changelog file on its standard input.
+
+       The changelog file that is parsed is debian/changelog by default but it
+       can be overridden with $opt{file}.
+
+       All the other keys in %opt are forwarded as parameter to the external
+       parser. If the key starts with &quot;-&quot;, it&apos;s passed as is. If not, it&apos;s
+       passed as &quot;--&lt;key&gt;&quot;. If the value of the corresponding hash entry is
+       defined, then it&apos;s passed as the parameter that follows.
+
+
+
+1.16.16                            2015-04-09          Dpkg::Changelog::Parse(3)
+
+</pre></body></html>

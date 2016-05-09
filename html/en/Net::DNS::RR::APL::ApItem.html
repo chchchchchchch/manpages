@@ -1,0 +1,63 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Net::DNS::RR::APL::ApItem - DNS APL  ApItem</title></head>
+<body><pre>
+
+Net::DNS::RR::APL::ApItUserpContributed Perl DocumNet::DNS::RR::APL::ApItem(3pm)
+
+
+
+NAME
+       Net::DNS::RR::APL::ApItem - DNS APL  ApItem
+
+SYNOPSIS
+       use Net::DNS::RR::APL::ApItem;
+
+       my $apitem=Net::DNS::RR::APL::ApItem-&gt;new();
+
+DESCRIPTION
+       This is an object that contains the Address Prefixes with related
+       information such as address family and possible negation flags for the
+       APL RR. Please see the RFC3123 for details.
+
+Methods
+   new
+       Constructor method.
+
+       $apitem[0]=Net::DNS::RR::APL::ApItem-&gt;new(1:192.168.32.0/21);
+       $apitem[1]=Net::DNS::RR::APL::ApItem-&gt;new(!1:192.168.32.0/21);
+       $apitem[2]=Net::DNS::RR::APL::ApItem-&gt;new(2:FF00:0:0:0:0:0:0:0/8);
+
+       $empty=Net::DNS::RR::APL::ApItem();
+
+       Returns undef if the argument cannot be parsed.  Returns an object with
+       empty attributes when no argument is supplied.
+
+   string
+       Returns a string representation of the object in the
+       &apos;[!]afi:address/prefix&apos; format
+          $apl=$apitem[0]-&gt;string;
+
+   print
+       Prints the textual representation of the object.
+          $apitem[0]-&gt;print;
+          # same functionality as:
+          $apl=$apitem[0]-&gt;string;
+          print $apl;
+
+COPYRIGHT
+       Copyright (c) 2008 Olaf Kolkman (NLnet Labs)
+
+       All rights reserved.  This program is free software; you may redistribute
+       it and/or modify it under the same terms as Perl itself.
+
+SEE ALSO
+       Net::DNS::RR::APL, perl(1), Net::DNS, Net::DNS::Resolver,
+       Net::DNS::Packet, Net::DNS::Header, Net::DNS::Question, Net::DNS::RR, RFC
+       3123
+
+
+
+perl v5.14.2                       2009-12-30     Net::DNS::RR::APL::ApItem(3pm)
+
+</pre></body></html>

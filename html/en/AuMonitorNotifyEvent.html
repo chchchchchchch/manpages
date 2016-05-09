@@ -1,0 +1,95 @@
+<html>
+<head><meta charset=utf-8/>
+<title>AuMonitorNotifyEvent - monitor notify event structure</title></head>
+<body><pre>
+
+AuMonitorNotifyEvent(3)                                  AuMonitorNotifyEvent(3)
+
+
+
+Name
+       AuMonitorNotifyEvent - monitor notify event structure
+
+Structures
+       #include &lt;audio/audiolib.h&gt;
+
+       typedef union _AuEvent
+       {
+           . . .
+           AuMonitorNotifyEvent aumonitornotify;
+           . . .
+       }AuEvent;
+
+       typedef struct _AuMonitorNotifyEvent
+       {
+           int type;
+           AuUint32 serial;
+           AuBool send_event;
+           AuServer *server;
+           AuTime time;
+           AuFlowID flow;
+           unsigned char element_num;
+           unsigned char format;
+           unsigned char num_tracks;
+           unsigned short count;
+           unsigned short num_fields;
+           AuUint32 data;
+           AuUint32 data1;
+           AuUint32 data2;
+       }AuMonitorNotifyEvent;
+
+Members
+       type      The event type.  MonitorNotify events are type AuEventTypeMoni&#8208;
+                 torNotify.
+
+       serial    The serial ID of the event expanded from the 16 bit value  sent
+                 by the server.
+
+       send_event
+                 AuTrue if the event came from a SendEvent protocol request.
+
+       server    The  connection  to  the  audio  server that the event was read
+                 from.
+
+       time      The server time in milliseconds when the event was generated.
+
+       flow      Specifies the ID of the flow that caused the event.
+
+       element_num
+                 The index of  the  ExportMonitor  element  that  gnerated  this
+                 event.
+
+       format    The  format of the monitor data.  Currently, the following for&#8208;
+                 mats  are  defined:   AuFormatULAW8,   AuFormatLinearUnsigned8,
+                 AuFormatLinearSigned8,  AuFormatLinearSigned16MSB, AuFormatLin&#8208;
+                 earUnsigned16MSB, AuFormatSignedLinear16LSB,  and  AuFormatLin&#8208;
+                 earUnsigned16LSB.  Taken from the ExportMonitor element.
+
+       num_tracks
+                 The  number  of  tracks  in  the  monitor data.  Taken from the
+                 ExportMonitor element.
+&#12;       count     Always 0.
+
+       num_fields
+                 Always 2.
+
+       data      Monitor data.
+
+       data1     Monitor data.
+
+       data2     Monitor data.
+
+Description
+       MonitorNotify events will  be  sent  to  clients  with  flows  containing
+       ExportMonitor elements.
+
+See Also
+       AuAnyEvent, AuElementNotifyEvent, AuErrorEvent, AuGrabNotifyEvent.
+
+       audiolib - Network Audio System C Language Interface
+
+
+
+audiolib - events                     1.9.3              AuMonitorNotifyEvent(3)
+
+</pre></body></html>

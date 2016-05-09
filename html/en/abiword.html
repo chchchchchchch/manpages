@@ -1,0 +1,110 @@
+<html>
+<head><meta charset=utf-8/>
+<title>abiword — flexible cross-platform word processor</title></head>
+<body><pre>
+
+ABIWORD(1)                                                            ABIWORD(1)
+
+
+
+NAME
+       abiword &#8212; flexible cross-platform word processor
+
+SYNOPSIS
+       abiword [OPTIONS] [FILENAME...]
+
+DESCRIPTION
+       AbiWord  is  a full-featured, efficient word processing application suit&#8208;
+       able for a wide range of word processing tasks,  and  extensible  with  a
+       variety of plugins. It integrates with enchant(1) to provide spell-check&#8208;
+       ing.
+
+OPTIONS
+       -g WxH[+X+Y], --geometry=WxH[+X+Y]
+              Specifies window geometry at startup.
+
+       -E PLUGIN, --plugin=PLUGIN
+              Execute the specified plugin instead of the main application.
+
+       --import-extension=EXT
+              Import the given file as if it had extension EXT, overriding auto&#8208;
+              matic file type detection.
+
+       -u PROFILE, --userprofile=PROFILE
+              Use  PROFILE  to  read  and  store settings instead of the default
+              XDG_CONFIG_HOME/abiword/profile.
+
+       -t DEST, --to=DEST
+              Convert the given file to another format, writing  the  result  to
+              DEST.  The format of DEST is determined by its extension.
+              See also --to=FORMAT and --to-name.
+
+       -t FORMAT, --to=FORMAT
+              Convert  the given files(s) to the given format. Unless explicitly
+              specified with --to-name, the original filename will be used (with
+              a different extension, if necessary). See also EXAMPLES.
+
+              The more popular values for FORMAT include:
+
+                     lb   lx.   abw  T{ Abiword XML format (zabw for gzip, bzabw
+                     for bzip2 compression) T} dbk  DocBook  XML  doc  Microsoft
+                     Word binary format docx T{ Office Open XML (newer Microsoft
+                     Word versions) T} html Hypertext Markup Language kwd  KWord
+                     odt  OpenDocument   Text   pdf  Portable   Document  Format
+                     rtf  Rich  Text  Format  sxw  OpenOffice.org   Writer   1.0
+                     txt  Plain text
+
+       --to-name=DEST
+              Only  useful in conjunction with --to=FORMAT.  Specifies where the
+              converted document shall be written to.
+
+       --verbose=LEVEL
+              Set level of verbosity [0-2], 2 giving the most detailed output.
+
+       -h, --help
+              Display a short help message and exit.
+
+       --version
+              Report the version of AbiWord.
+
+ENVIRONMENT VARIABLES
+       HOME   Defines the user&apos;s home directory.
+&#12;       XDG_CONFIG_HOME
+              Defines the base directory relative to which user specific config&#8208;
+              uration files should be stored. (See the XDG Base Directory Speci&#8208;
+              fication for details.)
+
+FILES
+       XDG_CONFIG_HOME/abiword/profile
+              The default user profile file. (If XDG_CONFIG_HOME is  either  not
+              set or empty, a default equal to HOME/.config will be used.)
+
+EXAMPLES
+       To convert the document example.abw to RTF:
+           abiword --to=rtf example.abw
+       The resulting file will be named example.rtf.
+
+       To print a document:
+           abiword --to=ps --to-name=fd://1 FILENAME | lp
+
+REPORTING BUGS
+       Report    bugs    to    the    Bugzilla    bug    tracking    system   at
+       &lt;http://bugzilla.abisource.com&gt;.
+
+SEE ALSO
+       enchant(1)
+
+HISTORY
+       AbiWord was started in 1998 by  AbiSource  Inc.,  a  company  founded  by
+       SourceGear corporation. The initial plan was to build a free office suite
+       named AbiSuite, encompassing word processing, spreadsheet  and  presenta&#8208;
+       tion  applications.  As they didn&apos;t have a usable product when their ven&#8208;
+       ture capital was up, the code already developed (namely AbiWord) was made
+       open  source.   AbiWord development was subsequently taken over by volun&#8208;
+       teers and is driven by the community to date.
+
+
+
+AbiWord 2.9                        2012-04-26                         ABIWORD(1)
+
+</pre></body></html>

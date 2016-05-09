@@ -1,0 +1,63 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbFreeNames - Free symbolic names structures</title></head>
+<body><pre>
+
+XkbFreeNames(3)                   XKB FUNCTIONS                  XkbFreeNames(3)
+
+
+
+NAME
+       XkbFreeNames - Free symbolic names structures
+
+SYNOPSIS
+       void XkbFreeNames (XkbDescPtr xkb, unsigned int which, Bool free_map);
+
+ARGUMENTS
+       - xkb  keyboard description for which names are to be freed
+
+       - which
+              mask of names components to be freed
+
+       - free_map
+              True =&gt; XkbNamesRec structure itself should be freed
+
+DESCRIPTION
+       Do  not free symbolic names structures directly using free or XFree.  Use
+       XkbFreeNames instead.
+
+       The which parameter is the bitwise inclusive OR of the valid  names  mask
+       bits defined in Table 1.
+
+       Xkb  provides  several  functions  that work with symbolic names. Each of
+       these functions uses a mask to specify individual fields  of  the  struc&#8208;
+       tures  described above. These masks and their relationships to the fields
+       in a keyboard description are shown in Table 1.
+
+
+       c s s s l l l l.  Table 1 Symbolic Names Masks _ Mask Bit  Value     Key&#8208;
+       board  Field                      Component           _           XkbKey&#8208;
+       codesNameMask (1&lt;&lt;0)    Xkb-&gt;names     keycodes              XkbGeometry&#8208;
+       NameMask (1&lt;&lt;1)    Xkb-&gt;names     geometry                     XkbSymbol&#8208;
+       sNameMask  (1&lt;&lt;2)    Xkb-&gt;names     symbols                XkbPhysSymbol&#8208;
+       sNameMask   (1&lt;&lt;3)    Xkb-&gt;names     phys_symbols               XkbTypes&#8208;
+       NameMask    (1&lt;&lt;4)    Xkb-&gt;names     type                      XkbCompat&#8208;
+       NameMask   (1&lt;&lt;5)    Xkb-&gt;names     compat               XkbKeyTypeNames&#8208;
+       Mask (1&lt;&lt;6)    Xkb-&gt;map  type[*].name                    XkbKTLevelNames&#8208;
+       Mask (1&lt;&lt;7)    Xkb-&gt;map  type[*].lvl_names[*]          XkbIndicatorNames&#8208;
+       Mask    (1&lt;&lt;8)    Xkb-&gt;names     indicators[*]               XkbKeyNames&#8208;
+       Mask     (1&lt;&lt;9)    Xkb-&gt;names     keys[*],     num_keys    XkbKeyAliases&#8208;
+       Mask   (1&lt;&lt;10)   Xkb-&gt;names     key_aliases[*],  num_key_aliases  XkbVir&#8208;
+       tualModNamesMask   (1&lt;&lt;11)   Xkb-&gt;names     vmods[*]       XkbGroupNames&#8208;
+       Mask   (1&lt;&lt;12)   Xkb-&gt;names     groups[*]                     XkbRGNames&#8208;
+       Mask (1&lt;&lt;13)   Xkb-&gt;names     radio_groups[*],  num_rg XkbComponentNames&#8208;
+       Mask    (0x3f)    Xkb-&gt;names     keycodes,                      geometry,
+                      symbols,                         physical         symbols,
+                      types, and                compatibility  map  XkbAllNames&#8208;
+       Mask     (0x3fff)  Xkb-&gt;names     all name components
+
+
+
+X Version 11                      libX11 1.5.0                   XkbFreeNames(3)
+
+</pre></body></html>

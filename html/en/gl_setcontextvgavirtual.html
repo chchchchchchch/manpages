@@ -1,0 +1,56 @@
+<html>
+<head><meta charset=utf-8/>
+<title>gl_setcontextvgavirtual - set the context to a virtual mode</title></head>
+<body><pre>
+
+gl_setcontextvgavirtual(3)     Svgalib User Manual    gl_setcontextvgavirtual(3)
+
+
+
+NAME
+       gl_setcontextvgavirtual - set the context to a virtual mode
+
+
+SYNOPSIS
+       #include &lt;vgagl.h&gt;
+
+       int gl_setcontextvgavirtual(int mode);
+
+
+DESCRIPTION
+       Allocate a virtual screen in system memory identical to the graphics mode
+       (as defined in vga_setmode(3)), and make that the current  graphics  con&#8208;
+       text.
+
+       The  function  returns 0 for success and non-zero if the mode is not sup&#8208;
+       ported by the hardware.
+
+       The only thing you can do with a planar (mode X-like) 256 color  mode  is
+       aligned gl_putbox, and use it as a target for gl_copyscreen.
+
+
+SEE ALSO
+       svgalib(7),  vgagl(7), svgalib.conf(5), threedkit(7), testgl(1), current&#8208;
+       context(3), gl_allocatecontext(3), gl_copyboxfromcontext(3),  gl_copybox&#8208;
+       tocontext(3),   gl_copyscreen(3),   gl_freecontext(3),  gl_getcontext(3),
+       gl_setcontext(3), gl_setcontextheight(3), gl_setcontextvga(3), gl_setcon&#8208;
+       textvirtual(3), gl_setcontextwidth(3).
+
+
+AUTHOR
+       This  manual  page  was  edited  by  Michael Weller &lt;eowmob@exp-math.uni-
+       essen.de&gt;. The exact source of the referenced demo  as  well  as  of  the
+       original documentation is unknown.
+
+       It  is  very likely that both are at least to some extent are due to Harm
+       Hanemaayer &lt;H.Hanemaayer@inter.nl.net&gt;.
+
+       Occasionally this might be wrong. I hereby asked to  be  excused  by  the
+       original  author  and will happily accept any additions or corrections to
+       this first version of the svgalib manual.
+
+
+
+Svgalib (&gt;= 1.2.11)                2 Aug 1997         gl_setcontextvgavirtual(3)
+
+</pre></body></html>

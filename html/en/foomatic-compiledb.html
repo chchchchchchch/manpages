@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>foomatic-compiledb - Compile the Foomatic printer/driver database</title></head>
+<body><pre>
+
+FOOMATIC-COMPILEDB(1)                                      FOOMATIC-COMPILEDB(1)
+
+
+
+NAME
+       foomatic-compiledb - Compile the Foomatic printer/driver database
+
+SYNOPSIS
+       foomatic-compiledb [ -t type ] [ -f ] [ -j n ] [  driver ...  ]
+
+
+DESCRIPTION
+       foomatic-compiledb  generates  all  PPD files or Foomatic combo XML files
+       for all possible printer/driver combos, or only for a selected  range  of
+       drivers.  It generally should not be necessary except for people who want
+       to generate a set of Foomatic data files for distribution. For  configur&#8208;
+       ing  single  printers foomatic-ppdfile(1) and especially foomatic-config&#8208;
+       ure(1) will automagically compute just what they need.
+
+
+   Options
+       -t type   Output file type, either ppd or xml.
+
+
+       -f        Force: Write into the destination directory even if it  already
+                 exists.
+
+
+       -j n      n = number of work processes to run
+
+
+       driver ...
+                 only generate data files for these driver(s)
+
+
+SEE ALSO
+       foomatic-ppdfile(1),foomatic-configure(1)
+
+
+EXIT STATUS
+       foomatic-compiledb returns 0 unless something unexpected happens.
+
+
+AUTHORS
+       Manfred   Wassmann   &lt;manolo@NCC-1701.B.Shuttle.de&gt;  and  Till  Kamppeter
+       &lt;till.kamppeter@gmx.net&gt; for the foomatic project using output  from  the
+       associated binary.
+
+
+BUGS
+       Existing  files  are  always conserved instead of older files being over&#8208;
+       written. So deleting the destination directory (rm -rf dir)  and  calling
+       foomatic-compiledb without the -f option is recommended.
+
+       Please post bug reports on
+
+       http://lists.freestandards.org/mailman/listinfo/printing-foomatic
+
+
+
+
+Foomatic Project                   2001-05-07              FOOMATIC-COMPILEDB(1)
+
+</pre></body></html>

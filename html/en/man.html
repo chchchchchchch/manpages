@@ -1,0 +1,312 @@
+<html>
+<head><meta charset=utf-8/>
+<title>man - macros to format man pages</title></head>
+<body><pre>
+
+MAN(7)                      Linux Programmer&apos;s Manual                     MAN(7)
+
+
+
+NAME
+       man - macros to format man pages
+
+SYNOPSIS
+       groff -Tascii -man file ...
+
+       groff -Tps -man file ...
+
+       man [section] title
+
+DESCRIPTION
+       This  manual  page explains the groff an.tmac macro package (often called
+       the man macro package).  This macro package should be used by  developers
+       when  writing  or  porting  man pages for Linux.  It is fairly compatible
+       with other versions of this macro package, so porting  man  pages  should
+       not  be  a major problem (exceptions include the NET-2 BSD release, which
+       uses a totally different macro package called mdoc; see mdoc(7)).
+
+       Note that NET-2 BSD mdoc man pages can be used with groff simply by spec&#8208;
+       ifying  the  -mdoc  option instead of the -man option.  Using the -mandoc
+       option is, however, recommended, since  this  will  automatically  detect
+       which macro package is in use.
+
+       For  conventions  that  should be employed when writing man pages for the
+       Linux man-pages package, see man-pages(7).
+
+   Title line
+       The first command in a man page (after comment lines, that is, lines that
+       start with .\&quot;) should be
+
+              .TH title section date source manual
+
+       For  details  of the arguments that should be supplied to the TH command,
+       see man-pages(7).
+
+       Note that BSD mdoc-formatted pages begin with the Dd command, not the  TH
+       command.
+
+   Sections
+       Sections are started with .SH followed by the heading name.
+
+       The only mandatory heading is NAME, which should be the first section and
+       be followed on the next line by a one-line description of the program:
+
+              .SH NAME
+              item \- description
+
+       It is extremely important that this format is followed, and that there is
+       a  backslash  before  the  single dash which follows the item name.  This
+       syntax is used by the mandb(8) program to  create  a  database  of  short
+       descriptions  for the whatis(1) and apropos(1) commands.  (See lexgrog(1)
+       for further details on the syntax of the NAME section.)
+
+       For a list of other sections that might appear in a manual page, see man-
+       pages(7).
+
+   Fonts
+       The commands to select the type face are:
+
+       .B  Bold
+
+       .BI Bold  alternating with italics (especially useful for function speci&#8208;
+           fications)
+
+       .BR Bold alternating with Roman (especially useful for referring to other
+           manual pages)
+
+       .I  Italics
+
+       .IB Italics alternating with bold
+
+       .IR Italics alternating with Roman
+
+       .RB Roman alternating with bold
+
+       .RI Roman alternating with italics
+
+       .SB Small alternating with bold
+
+       .SM Small (useful for acronyms)
+
+       Traditionally,  each  command  can  have up to six arguments, but the GNU
+       implementation removes this limitation (you might  still  want  to  limit
+       yourself to 6 arguments for portability&apos;s sake).  Arguments are delimited
+       by spaces.  Double quotes can be used to specify an argument  which  con&#8208;
+       tains  spaces.   All  of the arguments will be printed next to each other
+       without intervening spaces, so that the .BR command can be used to  spec&#8208;
+       ify  a  word  in  bold followed by a mark of punctuation in Roman.  If no
+       arguments are given, the command is applied  to  the  following  line  of
+       text.
+
+   Other Macros and Strings
+       Below  are  other  relevant  macros and predefined strings.  Unless noted
+       otherwise, all macros cause a break (end the current line of text).  Many
+       of  these  macros  set  or  use the &quot;prevailing indent.&quot;  The &quot;prevailing
+       indent&quot; value is set by any macro with the parameter i below; macros  may
+       omit  i  in  which case the current prevailing indent will be used.  As a
+       result, successive indented paragraphs can use the  same  indent  without
+       respecifying  the  indent value.  A normal (nonindented) paragraph resets
+       the prevailing indent value  to  its  default  value  (0.5  inches).   By
+       default a given indent is measured in ens; try to use ens or ems as units
+       for indents, since these will automatically adjust to font size  changes.
+       The other key macro definitions are:
+
+   Normal Paragraphs
+       .LP      Same as .PP (begin a new paragraph).
+
+       .P       Same as .PP (begin a new paragraph).
+
+       .PP      Begin a new paragraph and reset prevailing indent.
+
+   Relative Margin Indent
+       .RS i    Start  relative  margin  indent:  moves the left margin i to the
+                right (if i is omitted, the prevailing indent value is used).  A
+                new  prevailing  indent  is set to 0.5 inches.  As a result, all
+                following paragraph(s) will be indented until the  corresponding
+                .RE.
+
+       .RE      End  relative  margin  indent and restores the previous value of
+                the prevailing indent.
+
+   Indented Paragraph Macros
+       .HP i    Begin paragraph with a hanging indent (the  first  line  of  the
+                paragraph  is  at  the left margin of normal paragraphs, and the
+                rest of the paragraph&apos;s lines are indented).
+
+       .IP x i  Indented paragraph with optional hanging tag.  If the tag  x  is
+                omitted,  the  entire  following paragraph is indented by i.  If
+                the tag x is provided, it is hung at the left margin before  the
+                following  indented  paragraph (this is just like .TP except the
+                tag is included with the command instead of being on the follow&#8208;
+                ing  line).  If the tag is too long, the text after the tag will
+                be moved down to the next line (text will not be  lost  or  gar&#8208;
+                bled).  For bulleted lists, use this macro with \(bu (bullet) or
+                \(em (em dash) as the tag, and for numbered lists, use the  num&#8208;
+                ber  or  letter followed by a period as the tag; this simplifies
+                translation to other formats.
+
+       .TP i    Begin paragraph with hanging tag.  The tag is given on the  next
+                line, but its results are like those of the .IP command.
+
+   Hypertext Link Macros
+       (Feature  supported  with  groff  only.)   In order to use hypertext link
+       macros, it is necessary to load the  www.tmac  macro  package.   Use  the
+       request .mso www.tmac to do this.
+
+       .URL url link trailer
+                Inserts  a hypertext link to the URI (URL) url, with link as the
+                text of the link.   The  trailer  will  be  printed  immediately
+                afterward.   When generating HTML this should translate into the
+                HTML command &lt;A HREF=&quot;url&quot;&gt;link&lt;/A&gt;trailer.
+
+                This and other related macros are new, and many tools  won&apos;t  do
+                anything  with them, but since many tools (including troff) will
+                simply ignore undefined macros (or at worst insert  their  text)
+                these are safe to insert.
+
+                It  can  be  useful to define your own URL macro in manual pages
+                for the benefit of those viewing it with  a  roff  viewer  other
+                than  groff.  That way, the URL, link text, and trailer text (if
+                any) are still visible.
+
+                Here&apos;s an example:
+                      .de URL
+                      \\$2 \(laURL: \\$1 \(ra\\$3
+                      ..
+                      .if \n[.g] .mso www.tmac
+                      .TH ...
+                      (later in the page)
+                      This software comes from the
+                      .URL &quot;http://www.gnu.org/&quot; &quot;GNU Project&quot; &quot; of the&quot;
+                      .URL &quot;http://www.fsf.org/&quot; &quot;Free Software Foundation&quot; .
+
+                In the above, if groff is being used, the www.tmac  macro  pack&#8208;
+                age&apos;s  definition  of  the  URL macro will supersede the locally
+                defined one.
+
+       A number of other link macros are available.  See groff_www(7)  for  more
+       details.
+
+   Miscellaneous Macros
+       .DT      Reset  tabs  to  default tab values (every 0.5 inches); does not
+                cause a break.
+
+       .PD d    Set inter-paragraph vertical distance to d (if omitted, d=0.4v);
+                does not cause a break.
+
+       .SS t    Subheading  t (like .SH, but used for a subsection inside a sec&#8208;
+                tion).
+
+   Predefined Strings
+       The man package has the following predefined strings:
+
+       \*R    Registration Symbol: &#174;
+
+       \*S    Change to default font size
+&#12;       \*(Tm  Trademark Symbol: &#8482;
+
+       \*(lq  Left angled double quote: &#8220;
+
+       \*(rq  Right angled double quote: &#8221;
+
+   Safe Subset
+       Although technically man is a troff macro package,  in  reality  a  large
+       number  of other tools process man page files that don&apos;t implement all of
+       troff&apos;s abilities.  Thus, it&apos;s best to avoid some of troff&apos;s more  exotic
+       abilities  where  possible to permit these other tools to work correctly.
+       Avoid using the various troff preprocessors (if you must,  go  ahead  and
+       use  tbl(1), but try to use the IP and TP commands instead for two-column
+       tables).  Avoid using computations; most other tools can&apos;t process  them.
+       Use  simple  commands  that  are easy to translate to other formats.  The
+       following troff macros are believed to be safe (though in many cases they
+       will  be  ignored by translators): \&quot;, ., ad, bp, br, ce, de, ds, el, ie,
+       if, fi, ft, hy, ig, in, na, ne, nf, nh, ps, so, sp, ti, tr.
+
+       You may also use many troff escape sequences (those  sequences  beginning
+       with  \).   When  you  need  to include the backslash character as normal
+       text, use \e.  Other sequences you may use, where x or xx are any charac&#8208;
+       ters  and  N  is  any digit, include: \&apos;, \`, \-, \., \&quot;, \%, \*x, \*(xx,
+       \(xx, \$N, \nx, \n(xx, \fx, and \f(xx.  Avoid using the escape  sequences
+       for drawing graphics.
+
+       Do not use the optional parameter for bp (break page).  Use only positive
+       values for sp (vertical space).  Don&apos;t define a macro (de) with the  same
+       name  as a macro in this or the mdoc macro package with a different mean&#8208;
+       ing; it&apos;s likely that such redefinitions will be ignored.  Every positive
+       indent  (in)  should  be paired with a matching negative indent (although
+       you should be using the RS and RE macros instead).   The  condition  test
+       (if,ie)  should only have &apos;t&apos; or &apos;n&apos; as the condition.  Only translations
+       (tr) that can be ignored should be used.  Font changes  (ft  and  the  \f
+       escape  sequence)  should only have the values 1, 2, 3, 4, R, I, B, P, or
+       CW (the ft command may also have no parameters).
+
+       If you use capabilities beyond these, check the results carefully on sev&#8208;
+       eral  tools.   Once  you&apos;ve  confirmed  that the additional capability is
+       safe, let the maintainer of this document know about the safe command  or
+       sequence that should be added to this list.
+
+FILES
+       /usr/share/groff/[*/]tmac/an.tmac
+       /usr/man/whatis
+
+NOTES
+       By  all  means include full URLs (or URIs) in the text itself; some tools
+       such as man2html(1) can automatically turn  them  into  hypertext  links.
+       You  can also use the new URL macro to identify links to related informa&#8208;
+       tion.    If   you   include   URLs,   use    the    full    URL    (e.g.,
+       &#10216;http://www.kernelnotes.org&#10217;) to ensure that tools can automatically find
+       the URLs.
+
+       Tools processing these files should open the file and examine  the  first
+       nonwhitespace  character.  A period (.) or single quote (&apos;) at the begin&#8208;
+       ning of a line indicates a troff-based file (such as  man  or  mdoc).   A
+       left  angle bracket (&lt;) indicates an SGML/XML-based file (such as HTML or
+       Docbook).  Anything else suggests simple ASCII  text  (e.g.,  a  &quot;catman&quot;
+       result).
+
+       Many  man  pages begin with &#180;\&quot; followed by a space and a list of charac&#8208;
+       ters, indicating how the page is to be preprocessed.   For  portability&apos;s
+       sake  to non-troff translators we recommend that you avoid using anything
+       other than tbl(1), and Linux can detect that automatically.  However, you
+       might want to include this information so your man page can be handled by
+       other (less capable) systems.  Here are the definitions of the preproces&#8208;
+       sors invoked by these characters:
+
+       e  eqn(1)
+
+       g  grap(1)
+
+       p  pic(1)
+
+       r  refer(1)
+
+       t  tbl(1)
+
+       v  vgrind(1)
+
+BUGS
+       Most  of  the  macros  describe  formatting (e.g., font type and spacing)
+       instead of marking semantic content (e.g., this text is  a  reference  to
+       another  page),  compared to formats like mdoc and DocBook (even HTML has
+       more semantic markings).  This situation makes it harder to vary the  man
+       format for different media, to make the formatting consistent for a given
+       media, and to automatically insert cross-references.  By sticking to  the
+       safe  subset described above, it should be easier to automate transition&#8208;
+       ing to a different reference page format in the future.
+
+       The Sun macro TX is not implemented.
+
+SEE ALSO
+       apropos(1), groff(1),  lexgrog(1),  man(1),  man2html(1),  groff_mdoc(7),
+       whatis(1), groff_man(7), groff_www(7), man-pages(7), mdoc(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-08-05                             MAN(7)
+
+</pre></body></html>

@@ -1,0 +1,38 @@
+<html>
+<head><meta charset=utf-8/>
+<title>FcFileScan - scan a font file</title></head>
+<body><pre>
+
+FcFileScan(3)                                                      FcFileScan(3)
+
+
+
+NAME
+       FcFileScan - scan a font file
+
+SYNOPSIS
+       #include &lt;fontconfig.h&gt;
+
+       FcBool  FcFileScan  (FcFontSet  *set, FcStrSet *dirs, FcFileCache *cache,
+       FcBlanks *blanks, const FcChar8 *file, FcBool force);
+
+DESCRIPTION
+       Scans a single file and adds all fonts found to set.  If force is FcTrue,
+       then  the  file  is  scanned  even  if associated information is found in
+       cache.  If file is a directory, it is added to dirs.  Whether  fonts  are
+       found  depends on fontconfig policy as well as the current configuration.
+       Internally, fontconfig will ignore BDF and PCF fonts  which  are  not  in
+       Unicode (or the effectively equivalent ISO Latin-1) encoding as those are
+       not usable by Unicode-based applications. The  configuration  can  ignore
+       fonts  based  on  filename  or  contents of the font file itself. Returns
+       FcFalse if any of the fonts cannot be added (due to allocation  failure).
+       Otherwise returns FcTrue.
+
+VERSION
+       Fontconfig version 2.9.0
+
+
+
+                                  16 April 2012                    FcFileScan(3)
+
+</pre></body></html>

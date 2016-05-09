@@ -1,0 +1,1257 @@
+<html>
+<head><meta charset=utf-8/>
+<title>tidy - validate, correct, and pretty-print HTML files</title></head>
+<body><pre>
+
+tidy(1)                           User commands                          tidy(1)
+
+
+
+NAME
+       tidy - validate, correct, and pretty-print HTML files
+       (version: 25 March 2009)
+
+SYNOPSIS
+       tidy [option ...] [file ...] [option ...] [file ...]
+
+DESCRIPTION
+       Tidy  reads  HTML, XHTML and XML files and writes cleaned up markup.  For
+       HTML variants, it detects and corrects  many  common  coding  errors  and
+       strives  to produce visually equivalent markup that is both W3C compliant
+       and works on most browsers. A common use of Tidy is to convert plain HTML
+       to  XHTML.   For  generic  XML files, Tidy is limited to correcting basic
+       well-formedness errors and pretty printing.
+
+       If no input file is specified, Tidy reads the standard input.  If no out&#8208;
+       put file is specified, Tidy writes the tidied markup to the standard out&#8208;
+       put.  If no error file is specified, Tidy writes messages to the standard
+       error.   For  command  line  options  that expect a numerical argument, a
+       default is assumed if no meaningful value can be found.
+
+OPTIONS
+   File manipulation
+       -output &lt;file&gt;, -o &lt;file&gt;
+              write output to the specified &lt;file&gt; (output-file: &lt;file&gt;)
+
+       -config &lt;file&gt;
+              set configuration options from the specified &lt;file&gt;
+
+
+       -file &lt;file&gt;, -f &lt;file&gt;
+              write errors and warnings to  the  specified  &lt;file&gt;  (error-file:
+              &lt;file&gt;)
+
+       -modify, -m
+              modify the original input files (write-back: yes)
+
+   Processing directives
+       -indent, -i
+              indent element content (indent: auto)
+
+       -wrap &lt;column&gt;, -w &lt;column&gt;
+              wrap  text  at the specified &lt;column&gt;. 0 is assumed if &lt;column&gt; is
+              missing. When this option is omitted, the default of the  configu&#8208;
+              ration option &quot;wrap&quot; applies.  (wrap: &lt;column&gt;)
+
+       -upper, -u
+              force tags to upper case (uppercase-tags: yes)
+
+       -clean, -c
+              replace FONT, NOBR and CENTER tags by CSS (clean: yes)
+
+       -bare, -b
+              strip out smart quotes and em dashes, etc.  (bare: yes)
+
+       -numeric, -n
+              output numeric rather than named entities (numeric-entities: yes)
+
+       -errors, -e
+              show only errors and warnings (markup: no)
+
+       -quiet, -q
+              suppress nonessential output (quiet: yes)
+&#12;       -omit  omit optional end tags (hide-endtags: yes)
+
+       -xml   specify the input is well formed XML (input-xml: yes)
+
+       -asxml, -asxhtml
+              convert HTML to well formed XHTML (output-xhtml: yes)
+
+       -ashtml
+              force XHTML to well formed HTML (output-html: yes)
+
+       -access &lt;level&gt;
+              do  additional  accessibility  checks (&lt;level&gt; = 0, 1, 2, 3). 0 is
+              assumed if &lt;level&gt; is missing.  (accessibility-check: &lt;level&gt;)
+
+   Character encodings
+       -raw   output values above 127 without conversion to entities
+
+
+       -ascii use ISO-8859-1 for input, US-ASCII for output
+
+
+       -latin0
+              use ISO-8859-15 for input, US-ASCII for output
+
+
+       -latin1
+              use ISO-8859-1 for both input and output
+
+
+       -iso2022
+              use ISO-2022 for both input and output
+
+
+       -utf8  use UTF-8 for both input and output
+
+
+       -mac   use MacRoman for input, US-ASCII for output
+
+
+       -win1252
+              use Windows-1252 for input, US-ASCII for output
+
+
+       -ibm858
+              use IBM-858 (CP850+Euro) for input, US-ASCII for output
+
+
+       -utf16le
+              use UTF-16LE for both input and output
+
+
+       -utf16be
+              use UTF-16BE for both input and output
+
+
+       -utf16 use UTF-16 for both input and output
+
+
+       -big5  use Big5 for both input and output
+
+
+       -shiftjis
+              use Shift_JIS for both input and output
+
+
+       -language &lt;lang&gt;
+              set the two-letter language code &lt;lang&gt;  (for  future  use)  (lan&#8208;
+              guage: &lt;lang&gt;)
+
+   Miscellaneous
+       -version, -v
+              show the version of Tidy
+
+
+       -help, -h, -?
+              list the command line options
+
+
+       -xml-help
+              list the command line options in XML format
+
+
+       -help-config
+              list all configuration options
+
+
+       -xml-config
+              list all configuration options in XML format
+
+
+       -show-config
+              list the current configuration settings
+
+
+USAGE
+       Use --optionX valueX for the detailed configuration option &quot;optionX&quot; with
+       argument &quot;valueX&quot;.  See also below under Detailed  Configuration  Options
+       as to how to conveniently group all such options in a single config file.
+
+       Input/Output  default to stdin/stdout respectively. Single letter options
+       apart from -f and -o may be combined as in:
+
+          tidy -f errs.txt -imu foo.html
+
+       For further info on HTML see http://www.w3.org/MarkUp.
+
+       For more information about HTML Tidy, visit  the  project  home  page  at
+       http://tidy.sourceforge.net.  Here, you will find links to documentation,
+       mailing lists (with searchable archives) and links to report bugs.
+
+ENVIRONMENT
+       HTML_TIDY
+              Name of the default configuration file.  This should be  an  abso&#8208;
+              lute  path,  since  you  will  probably invoke tidy from different
+              directories.  The value of HTML_TIDY will be parsed after the com&#8208;
+              piled-in default (defined with -DTIDY_CONFIG_FILE), but before any
+              of the files specified using -config.
+
+EXIT STATUS
+       0      All input files were processed successfully.
+
+       1      There were warnings.
+
+       2      There were errors.
+
+
+______________________________
+
+DETAILED CONFIGURATION OPTIONS
+       This section describes the Detailed (i.e., &quot;expanded&quot;) Options, which may
+       be  specified  by preceding each option with -- at the command line, fol&#8208;
+       lowed by its desired value, OR by placing the options  and  values  in  a
+       configuration  file,  and telling tidy to read that file with the -config
+       standard option.
+
+SYNOPSIS
+       tidy --option1 value1 --option2 value2 [standard options ...]
+       tidy -config config-file [standard options ...]
+
+WARNING
+       The options detailed here do  not  include  the  &quot;standard&quot;  command-line
+       options  (i.e.,  those  preceded  by a single &apos;-&apos;) described above in the
+       first section of this man page.
+
+DESCRIPTION
+       A list of options for configuring the behavior  of  Tidy,  which  can  be
+       passed either on the command line, or specified in a configuration file.
+
+       A  Tidy  configuration  file  is simply a text file, where each option is
+       listed on a separate line in the form
+
+          option1: value1
+          option2: value2
+          etc.
+
+       The permissible values for a given option depend on  the  option&apos;s  Type.
+       There are five types: Boolean, AutoBool, DocType, Enum, and String. Bool&#8208;
+       ean types allow any of yes/no,  y/n,  true/false,  t/f,  1/0.   AutoBools
+       allow  auto in addition to the values allowed by Booleans.  Integer types
+       take non-negative integers.  String types generally have no defaults, and
+       you should provide them in non-quoted form (unless you wish the output to
+       contain the literal quotes).
+
+       Enum, Encoding, and DocType &quot;types&quot; have a  fixed  repertoire  of  items;
+       consult the Example[s] provided below for the option[s] in question.
+
+       You  only need to provide options and values for those whose defaults you
+       wish to override, although you may wish to include some already-defaulted
+       options and values for the sake of documentation and explicitness.
+
+       Here  is  a  sample config file, with at least one example of each of the
+       five Types:
+
+
+           // sample Tidy configuration options
+           output-xhtml: yes
+           add-xml-decl: no
+           doctype: strict
+           char-encoding: ascii
+           indent: auto
+           wrap: 76
+           repeated-attributes: keep-last
+           error-file: errs.txt
+
+       Below is a summary and brief description of each of the options. They are
+       listed  alphabetically  within each category.  There are five categories:
+       HTML, XHTML, XML options,  Diagnostics  options,  Pretty  Print  options,
+       Character Encoding options, and Miscellaneous options.
+
+OPTIONS
+   HTML, XHTML, XML options:
+       add-xml-decl
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option specifies if Tidy should add the XML declaration when
+              outputting XML or XHTML. Note that if the input  already  includes
+              an  &lt;?xml  ... ?&gt; declaration then this option will be ignored. If
+              the encoding for the output is different from &quot;ascii&quot;, one of  the
+              utf  encodings  or  &quot;raw&quot;,  the  declaration  is  always  added as
+              required by the XML standard.
+
+
+                                        See also: char-encoding, output-encoding
+
+       add-xml-space
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should add  xml:space=&quot;preserve&quot;  to
+              elements  such as &lt;PRE&gt;, &lt;STYLE&gt; and &lt;SCRIPT&gt; when generating XML.
+              This is needed if the whitespace in such elements is to be  parsed
+              appropriately without having access to the DTD.
+
+       alt-text
+
+              Type:    String
+              Default: -
+              Default: -
+
+              This  option specifies the default &quot;alt=&quot; text Tidy uses for &lt;IMG&gt;
+              attributes. This feature is dangerous  as  it  suppresses  further
+              accessibility  warnings. You are responsible for making your docu&#8208;
+              ments accessible to people who can not see the images!
+
+       anchor-as-name
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  controls  the  deletion  or  addition  of  the  name
+              attribute  in  elements  where  it  can serve as anchor. If set to
+              &quot;yes&quot;, a name attribute, if not already existing, is  added  along
+              an existing id attribute if the DTD allows it. If set to &quot;no&quot;, any
+              existing name attribute is removed if an id  attribute  exists  or
+              has been added.
+
+       assume-xml-procins
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if Tidy should change the parsing of pro&#8208;
+              cessing instructions to require ?&gt; as the terminator  rather  than
+              &gt;. This option is automatically set if the input is in XML.
+
+       bare
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should strip Microsoft specific HTML
+              from Word 2000 documents, and output spaces rather than non-break&#8208;
+              ing spaces where they exist in the input.
+
+       clean
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies if Tidy should strip out surplus presenta&#8208;
+              tional tags and attributes  replacing  them  by  style  rules  and
+              structural  markup as appropriate. It works well on the HTML saved
+              by Microsoft Office products.
+
+
+                                                        See also: drop-font-tags
+
+       css-prefix
+
+              Type:    String
+              Default: -
+              Default: -
+&#12;              This option specifies the prefix that Tidy uses for styles  rules.
+              By default, &quot;c&quot; will be used.
+
+       decorate-inferred-ul
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should decorate inferred UL elements
+              with some CSS markup to avoid indentation to the right.
+
+       doctype
+
+              Type:    DocType
+              Default: auto
+              Example: omit, auto, strict, transitional, user
+
+              This option specifies the DOCTYPE declaration generated  by  Tidy.
+              If  set  to &quot;omit&quot; the output won&apos;t contain a DOCTYPE declaration.
+              If set to &quot;auto&quot; (the default) Tidy will  use  an  educated  guess
+              based  upon the contents of the document. If set to &quot;strict&quot;, Tidy
+              will set the DOCTYPE to the strict DTD. If  set  to  &quot;loose&quot;,  the
+              DOCTYPE is set to the loose (transitional) DTD. Alternatively, you
+              can supply a string for the formal public identifier (FPI).
+
+              For example:
+              doctype: &quot;-//ACME//DTD HTML 3.14159//EN&quot;
+
+              If you specify the FPI for an XHTML document, Tidy  will  set  the
+              system  identifier  to an empty string. For an HTML document, Tidy
+              adds a system identifier only if one was already present in  order
+              to  preserve the processing mode of some browsers. Tidy leaves the
+              DOCTYPE  for  generic  XML  documents  unchanged.  --doctype  omit
+              implies --numeric-entities yes. This option does not offer a vali&#8208;
+              dation of the document conformance.
+
+       drop-empty-paras
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should discard empty paragraphs.
+
+       drop-font-tags
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should discard &lt;FONT&gt;  and  &lt;CENTER&gt;
+              tags  without  creating the corresponding style rules. This option
+              can be set independently of the clean option.
+
+
+                                                                 See also: clean
+
+       drop-proprietary-attributes
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy  should  strip  out  proprietary
+              attributes, such as MS data binding attributes.
+
+       enclose-block-text
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy  should  insert a &lt;P&gt; element to
+              enclose any text it finds in any element that allows mixed content
+              for HTML transitional but not HTML strict.
+
+       enclose-text
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option specifies if Tidy should enclose any text it finds in
+              the body element within a &lt;P&gt; element. This  is  useful  when  you
+              want to take existing HTML and use it with a style sheet.
+
+       escape-cdata
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should convert &lt;![CDATA[]]&gt; sections
+              to normal text.
+
+       fix-backslash
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should replace backslash  characters
+              &quot;\&quot; in URLs by forward slashes &quot;/&quot;.
+
+       fix-bad-comments
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if Tidy should replace unexpected hyphens
+              with &quot;=&quot; characters when it comes  across  adjacent  hyphens.  The
+              default  is  yes. This option is provided for users of Cold Fusion
+              which uses the comment syntax: &lt;!--- ---&gt;
+
+       fix-uri
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should check attribute  values  that
+              carry  URIs  for  illegal characters and if such are found, escape
+              them as HTML 4 recommends.
+
+       hide-comments
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should print out comments.
+
+       hide-endtags
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should omit optional  end-tags  when
+              generating  the  pretty  printed markup. This option is ignored if
+              you are outputting to XML.
+&#12;       indent-cdata
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should indent &lt;![CDATA[]]&gt; sections.
+
+       input-xml
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should use  the  XML  parser  rather
+              than the error correcting HTML parser.
+
+       join-classes
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should combine class names to gener&#8208;
+              ate a single new class name, if  multiple  class  assignments  are
+              detected on an element.
+
+
+                                      See also: join-styles, repeated-attributes
+
+       join-styles
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option specifies if Tidy should combine styles to generate a
+              single new style, if multiple style values are detected on an ele&#8208;
+              ment.
+
+
+                                     See also: join-classes, repeated-attributes
+
+       literal-attributes
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option specifies if Tidy should ensure that whitespace char&#8208;
+              acters within attribute values are passed through unchanged.
+
+       logical-emphasis
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should replace any occurrence of &lt;I&gt;
+              by  &lt;EM&gt; and any occurrence of &lt;B&gt; by &lt;STRONG&gt;. In both cases, the
+              attributes are preserved unchanged. This option can be  set  inde&#8208;
+              pendently of the clean and drop-font-tags options.
+
+       lower-literals
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy  should  convert the value of an
+              attribute that takes a list of predefined values  to  lower  case.
+              This is required for XHTML documents.
+
+       merge-divs
+
+              Type:    AutoBool
+              Default: auto
+              Example: auto, y/n, yes/no, t/f, true/false, 1/0
+
+              Can  be  used  to modify behavior of -c (--clean yes) option. This
+              option specifies  if  Tidy  should  merge  nested  &lt;div&gt;  such  as
+              &quot;&lt;div&gt;&lt;div&gt;...&lt;/div&gt;&lt;/div&gt;&quot;.  If  set to &quot;auto&quot;, the attributes of
+              the inner &lt;div&gt; are moved to the outer one. As well, nested  &lt;div&gt;
+              with ID attributes are not merged. If set to &quot;yes&quot;, the attributes
+              of the inner &lt;div&gt; are discarded with the exception of &quot;class&quot; and
+              &quot;style&quot;.
+
+
+                                                    See also: clean, merge-spans
+
+       merge-spans
+
+              Type:    AutoBool
+              Default: auto
+              Example: auto, y/n, yes/no, t/f, true/false, 1/0
+
+              Can  be  used  to modify behavior of -c (--clean yes) option. This
+              option specifies if  Tidy  should  merge  nested  &lt;span&gt;  such  as
+              &quot;&lt;span&gt;&lt;span&gt;...&lt;/span&gt;&lt;/span&gt;&quot;. The algorithm is identical to the
+              one used by --merge-divs.
+
+
+                                                     See also: clean, merge-divs
+
+       ncr
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should allow numeric character  ref&#8208;
+              erences.
+
+       new-blocklevel-tags
+
+              Type:    Tag names
+              Default: -
+              Example: tagX, tagY, ...
+
+              This  option  specifies  new block-level tags. This option takes a
+              space or comma separated list of tag names. Unless you declare new
+              tags,  Tidy  will  refuse  to  generate a tidied file if the input
+              includes previously unknown tags. Note you can&apos;t change  the  con&#8208;
+              tent model for elements such as &lt;TABLE&gt;, &lt;UL&gt;, &lt;OL&gt; and &lt;DL&gt;. This
+              option is ignored in XML mode.
+
+
+                         See also: new-empty-tags, new-inline-tags, new-pre-tags
+
+       new-empty-tags
+
+              Type:    Tag names
+              Default: -
+              Example: tagX, tagY, ...
+
+              This option specifies new empty inline tags. This option  takes  a
+              space or comma separated list of tag names. Unless you declare new
+              tags, Tidy will refuse to generate a  tidied  file  if  the  input
+              includes  previously  unknown tags. Remember to also declare empty
+              tags as either inline or blocklevel. This option is ignored in XML
+              mode.
+
+
+                    See also: new-blocklevel-tags, new-inline-tags, new-pre-tags
+
+       new-inline-tags
+
+              Type:    Tag names
+              Default: -
+              Example: tagX, tagY, ...
+
+              This option specifies new non-empty inline tags. This option takes
+              a space or comma separated list of tag names. Unless  you  declare
+              new  tags, Tidy will refuse to generate a tidied file if the input
+              includes previously unknown tags. This option is  ignored  in  XML
+              mode.
+
+
+                     See also: new-blocklevel-tags, new-empty-tags, new-pre-tags
+
+       new-pre-tags
+
+              Type:    Tag names
+              Default: -
+              Example: tagX, tagY, ...
+
+              This option specifies new tags that are to be processed in exactly
+              the same way as HTML&apos;s &lt;PRE&gt; element. This option takes a space or
+              comma  separated  list  of tag names. Unless you declare new tags,
+              Tidy will refuse to generate a tidied file if the  input  includes
+              previously  unknown  tags.  Note  you can not as yet add new CDATA
+              elements (similar to &lt;SCRIPT&gt;). This  option  is  ignored  in  XML
+              mode.
+
+
+                  See also: new-blocklevel-tags, new-empty-tags, new-inline-tags
+
+       numeric-entities
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if Tidy should output entities other than
+              the built-in HTML entities (&amp;amp;, &amp;lt;, &amp;gt; and &amp;quot;)  in  the
+              numeric  rather than the named entity form. Only entities compati&#8208;
+              ble with the DOCTYPE declaration generated are used. Entities that
+              can  be  represented  in the output encoding are translated corre&#8208;
+              spondingly.
+
+
+                                            See also: doctype, preserve-entities
+
+       output-html
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should generate pretty printed  out&#8208;
+              put, writing it as HTML.
+
+       output-xhtml
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option specifies if Tidy should generate pretty printed out&#8208;
+              put, writing it as extensible HTML. This option causes Tidy to set
+              the  DOCTYPE  and  default namespace as appropriate to XHTML. If a
+              DOCTYPE or namespace is given they will  checked  for  consistency
+              with the content of the document. In the case of an inconsistency,
+              the corrected values will appear in the output. For  XHTML,  enti&#8208;
+              ties  can be written as named or numeric entities according to the
+              setting of the &quot;numeric-entities&quot; option.  The  original  case  of
+              tags  and  attributes  will  be  preserved,  regardless  of  other
+              options.
+
+       output-xml
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should pretty print output,  writing
+              it as well-formed XML. Any entities not defined in XML 1.0 will be
+              written as numeric entities to allow them to be parsed  by  a  XML
+              parser.  The  original  case  of  tags and attributes will be pre&#8208;
+              served, regardless of other options.
+
+       preserve-entities
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if  Tidy  should  preserve  the  well-formed
+              entitites as found in the input.
+
+       quote-ampersand
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should output unadorned &amp; characters
+              as &amp;amp;.
+
+       quote-marks
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should output &quot; characters as &amp;quot;
+              as is preferred by some editing environments. The apostrophe char&#8208;
+              acter &apos; is written out as &amp;#39; since many web browsers don&apos;t  yet
+              support &amp;apos;.
+
+       quote-nbsp
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy should output non-breaking space
+              characters as entities, rather than as the Unicode character value
+              160 (decimal).
+
+       repeated-attributes
+
+              Type:    enum
+              Default: keep-last
+              Example: keep-first, keep-last
+
+              This  option  specifies  if  Tidy  should  keep  the first or last
+              attribute, if  an  attribute  is  repeated,  e.g.  has  two  align
+              attributes.
+
+
+                                             See also: join-classes, join-styles
+
+       replace-color
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy should replace numeric values in
+              color attributes by HTML/XHTML color  names  where  defined,  e.g.
+              replace &quot;#ffffff&quot; with &quot;white&quot;.
+
+       show-body-only
+
+              Type:    AutoBool
+              Default: no
+              Example: auto, y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if Tidy should print only the contents of
+              the body tag as an HTML fragment. If set to &quot;auto&quot;, this  is  per&#8208;
+              formed only if the body tag has been inferred. Useful for incorpo&#8208;
+              rating existing whole pages as a portion  of  another  page.  This
+              option has no effect if XML output is requested.
+
+       uppercase-attributes
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy should output attribute names in
+              upper case. The  default  is  no,  which  results  in  lower  case
+              attribute  names, except for XML input, where the original case is
+              preserved.
+
+       uppercase-tags
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should output  tag  names  in  upper
+              case.  The  default  is no, which results in lower case tag names,
+              except for XML input, where the original case is preserved.
+
+       word-2000
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should go to great  pains  to  strip
+              out  all  the  surplus  stuff Microsoft Word 2000 inserts when you
+              save Word documents as &quot;Web pages&quot;. Doesn&apos;t handle embedded images
+              or  VML. You should consider using Word&apos;s &quot;Save As: Web Page, Fil&#8208;
+              tered&quot;.
+
+   Diagnostics options:
+       accessibility-check
+
+              Type:    enum
+              Default: 0 (Tidy Classic)
+              Example: 0 (Tidy Classic), 1 (Priority 1 Checks),  2  (Priority  2
+              Checks), 3 (Priority 3 Checks)
+
+              This  option  specifies  what  level of accessibility checking, if
+              any, that Tidy should do. Level 0 is equivalent to Tidy  Classic&apos;s
+              accessibility checking. For more information on Tidy&apos;s accessibil&#8208;
+              ity checking, visit the Adaptive Technology Resource Centre at the
+              University of Toronto at http://www.aprompt.ca/Tidy/accessibility&#8208;
+              checks.html.
+
+       show-errors
+
+              Type:    Integer
+              Default: 6
+              Example: 0, 1, 2, ...
+
+              This option specifies the number Tidy uses to determine if further
+              errors should be shown. If set to 0, then no errors are shown.
+
+       show-warnings
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies if Tidy should suppress warnings. This can
+              be useful when a few errors are hidden in a flurry of warnings.
+
+   Pretty Print options:
+       break-before-br
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should output a  line  break  before
+              each &lt;BR&gt; element.
+
+       indent
+
+              Type:    AutoBool
+              Default: no
+              Example: auto, y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies if Tidy should indent block-level tags. If
+              set to &quot;auto&quot;, this option causes Tidy to decide whether or not to
+              indent  the content of tags such as TITLE, H1-H6, LI, TD, TD, or P
+              depending on whether or not the  content  includes  a  block-level
+              element.  You  are  advised to avoid setting indent to yes as this
+              can expose layout bugs in some browsers.
+
+
+                                                         See also: indent-spaces
+
+       indent-attributes
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should begin each attribute on a new
+              line.
+
+       indent-spaces
+
+              Type:    Integer
+              Default: 2
+              Example: 0, 1, 2, ...
+
+              This  option  specifies  the  number of spaces Tidy uses to indent
+              content, when indentation is enabled.
+
+
+                                                                See also: indent
+
+       markup
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should  generate  a  pretty  printed
+              version  of  the  markup.  Note  that Tidy won&apos;t generate a pretty
+              printed version if it finds significant errors (see force-output).
+
+       punctuation-wrap
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should line wrap after some  Unicode
+              or Chinese punctuation characters.
+
+       sort-attributes
+
+              Type:    enum
+              Default: none
+              Example: none, alpha
+
+              This  option  specifies that tidy should sort attributes within an
+              element using the specified sort algorithm. If set to &quot;alpha&quot;, the
+              algorithm is an ascending alphabetic sort.
+
+       split
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              Currently not used. Tidy Classic only.
+
+       tab-size
+
+              Type:    Integer
+              Default: 8
+              Example: 0, 1, 2, ...
+
+              This option specifies the number of columns that Tidy uses between
+              successive tab stops. It is used to map tabs to spaces when  read&#8208;
+              ing the input. Tidy never outputs tabs.
+
+       vertical-space
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy  should add some empty lines for
+              readability.
+
+       wrap
+
+              Type:    Integer
+              Default: 68
+              Example: 0 (no wrapping), 1, 2, ...
+
+              This option specifies the right margin Tidy uses  for  line  wrap&#8208;
+              ping.  Tidy  tries  to  wrap lines so that they do not exceed this
+              length. Set wrap to zero if you want to disable line wrapping.
+
+       wrap-asp
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy  should  line  wrap  text  contained
+              within ASP pseudo elements, which look like: &lt;% ... %&gt;.
+
+       wrap-attributes
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies if Tidy should line wrap attribute values,
+              for easier editing. This option can be set independently of  wrap-
+              script-literals.
+&#12;                                                  See also: wrap-script-literals
+
+       wrap-jste
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy  should line wrap text contained
+              within JSTE pseudo elements, which look like: &lt;# ... #&gt;.
+
+       wrap-php
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy  should  line  wrap  text  contained
+              within PHP pseudo elements, which look like: &lt;?php ... ?&gt;.
+
+       wrap-script-literals
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy should line wrap string literals
+              that appear in script attributes. Tidy wraps  long  script  string
+              literals by inserting a backslash character before the line break.
+
+
+                                                       See also: wrap-attributes
+
+       wrap-sections
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if  Tidy  should line wrap text contained
+              within &lt;![ ... ]&gt; section tags.
+
+   Character Encoding options:
+       ascii-chars
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              Can be used to modify behavior of -c (--clean yes) option. If  set
+              to &quot;yes&quot; when using -c, &amp;emdash;, &amp;rdquo;, and other named charac&#8208;
+              ter entities are downgraded to their closest ascii equivalents.
+
+
+                                                                 See also: clean
+
+       char-encoding
+
+              Type:    Encoding
+              Default: ascii
+              Example: raw, ascii, latin0, latin1, utf8, iso2022, mac,  win1252,
+              ibm858, utf16le, utf16be, utf16, big5, shiftjis
+
+              This  option  specifies  the character encoding Tidy uses for both
+              the  input  and  output.  For  ascii,  Tidy  will  accept  Latin-1
+              (ISO-8859-1) character values, but will use entities for all char&#8208;
+              acters whose value &gt; 127. For raw, Tidy will output  values  above
+              127 without translating them into entities. For latin1, characters
+              above 255 will be written as entities. For utf8, Tidy assumes that
+              both input and output is encoded as UTF-8. You can use iso2022 for
+              files  encoded  using  the  ISO-2022  family  of  encodings   e.g.
+              ISO-2022-JP. For mac and win1252, Tidy will accept vendor specific
+              character values, but will use entities for all  characters  whose
+              value &gt; 127. For unsupported encodings, use an external utility to
+              convert to and from UTF-8.
+
+
+                                       See also: input-encoding, output-encoding
+
+       input-encoding
+
+              Type:    Encoding
+              Default: latin1
+              Example: raw, ascii, latin0, latin1, utf8, iso2022, mac,  win1252,
+              ibm858, utf16le, utf16be, utf16, big5, shiftjis
+
+              This  option  specifies  the  character encoding Tidy uses for the
+              input. See char-encoding for more info.
+
+
+                                                         See also: char-encoding
+
+       language
+
+              Type:    String
+              Default: -
+              Default: -
+
+              Currently not used, but this option specifies  the  language  Tidy
+              uses (for instance &quot;en&quot;).
+
+       newline
+
+              Type:    enum
+              Default: Platform dependent
+              Example: LF, CRLF, CR
+
+              The  default  is  appropriate to the current platform: CRLF on PC-
+              DOS, MS-Windows and OS/2, CR on Classic Mac OS, and LF  everywhere
+              else (Unix and Linux).
+
+       output-bom
+
+              Type:    AutoBool
+              Default: auto
+              Example: auto, y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies  if Tidy should write a Unicode Byte Order
+              Mark character (BOM; also known as Zero Width No-Break Space;  has
+              value  of  U+FEFF)  to the beginning of the output; only for UTF-8
+              and UTF-16 output encodings. If set to &quot;auto&quot;, this option  causes
+              Tidy to write a BOM to the output only if a BOM was present at the
+              beginning of the input. A BOM is always written for XML/XHTML out&#8208;
+              put using UTF-16 output encodings.
+
+       output-encoding
+
+              Type:    Encoding
+              Default: ascii
+              Example:  raw, ascii, latin0, latin1, utf8, iso2022, mac, win1252,
+              ibm858, utf16le, utf16be, utf16, big5, shiftjis
+
+              This option specifies the character encoding  Tidy  uses  for  the
+              output.  See  char-encoding  for  more info. May only be different
+              from input-encoding for Latin encodings  (ascii,  latin0,  latin1,
+              mac, win1252, ibm858).
+
+
+                                                         See also: char-encoding
+
+   Miscellaneous options:
+       error-file
+
+              Type:    String
+              Default: -
+              Default: -
+
+              This  option  specifies  the  error  file Tidy uses for errors and
+              warnings. Normally errors and warnings are output to &quot;stderr&quot;.
+
+
+                                                           See also: output-file
+
+       force-output
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should produce output even if errors
+              are  encountered.  Use  this option with care - if Tidy reports an
+              error, this means Tidy was not able to, or is not sure how to, fix
+              the error, so the resulting output may not reflect your intention.
+
+       gnu-emacs
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should change the format for report&#8208;
+              ing errors and warnings to a format that is more easily parsed  by
+              GNU Emacs.
+
+       gnu-emacs-file
+
+              Type:    String
+              Default: -
+              Default: -
+
+              Used internally.
+
+       keep-time
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This  option  specifies if Tidy should keep the original modifica&#8208;
+              tion time of files that Tidy modifies in place. The default is no.
+              Setting the option to yes allows you to tidy files without causing
+              these files to be uploaded to a web server when using a tool  such
+              as SiteCopy. Note this feature is not supported on some platforms.
+
+       output-file
+
+              Type:    String
+              Default: -
+              Default: -
+
+              This  option  specifies the output file Tidy uses for markup. Nor&#8208;
+              mally markup is written to &quot;stdout&quot;.
+
+
+                                                            See also: error-file
+
+       quiet
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should output  the  summary  of  the
+              numbers  of  errors  and warnings, or the welcome or informational
+              messages.
+&#12;       slide-style
+
+              Type:    String
+              Default: -
+              Default: -
+
+              Currently not used. Tidy Classic only.
+
+       tidy-mark
+
+              Type:    Boolean
+              Default: yes
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should add a  meta  element  to  the
+              document  head to indicate that the document has been tidied. Tidy
+              won&apos;t add a meta element if one is already present.
+
+       write-back
+
+              Type:    Boolean
+              Default: no
+              Example: y/n, yes/no, t/f, true/false, 1/0
+
+              This option specifies if Tidy should write back the tidied  markup
+              to  the  same file it read from. You are advised to keep copies of
+              important files before tidying them,  as  on  rare  occasions  the
+              result may not be what you expect.
+
+SEE ALSO
+       HTML Tidy Project Page at http://tidy.sourceforge.net
+
+AUTHOR
+       Tidy  was written by Dave Raggett &lt;dsr@w3.org&gt;, and is now maintained and
+       developed by  the  Tidy  team  at  http://tidy.sourceforge.net/.   It  is
+       released under the MIT Licence.
+
+       Generated automatically with HTML Tidy released on 25 March 2009.
+
+
+
+HTML Tidy 25 March 2009   $Date: 2007/02/01 12:25:21 $                   tidy(1)
+
+</pre></body></html>

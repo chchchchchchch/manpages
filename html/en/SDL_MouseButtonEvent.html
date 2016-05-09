@@ -1,0 +1,50 @@
+<html>
+<head><meta charset=utf-8/>
+<title>SDL_MouseButtonEvent - Mouse button event structure</title></head>
+<body><pre>
+
+SDL_MouseButtonEvent(3)         SDL API Reference        SDL_MouseButtonEvent(3)
+
+
+
+NAME
+       SDL_MouseButtonEvent - Mouse button event structure
+
+STRUCTURE DEFINITION
+       typedef struct{
+         Uint8 type;
+         Uint8 button;
+         Uint8 state;
+         Uint16 x, y;
+       } SDL_MouseButtonEvent;
+
+STRUCTURE DATA
+       type                SDL_MOUSEBUTTONDOWN or SDL_MOUSEBUTTONUP
+
+       button              The  mouse  button  index  (SDL_BUTTON_LEFT, SDL_BUT&#8208;
+                           TON_MIDDLE, SDL_BUTTON_RIGHT)
+
+       state               SDL_PRESSED or SDL_RELEASED
+
+       x, y                The X/Y coordinates of  the  mouse  at  press/release
+                           time
+
+DESCRIPTION
+       SDL_MouseButtonEvent  is a member of the SDL_Event union and is used when
+       an event of type SDL_MOUSEBUTTONDOWN or SDL_MOUSEBUTTONUP is reported.
+
+       When a mouse button press or release is detected then number of the  but&#8208;
+       ton  pressed  (from  1 to 255, with 1 usually being the left button and 2
+       the right) is placed into button, the position of  the  mouse  when  this
+       event  occured  is  stored in the x and the y fields. Like SDL_KeyboardE&#8208;
+       vent, information on whether the event was a press or a release event  is
+       stored in both the type and state fields, but this should be obvious.
+
+SEE ALSO
+       SDL_Event, SDL_MouseMotionEvent
+
+
+
+SDL                          Tue 11 Sep 2001, 22:59      SDL_MouseButtonEvent(3)
+
+</pre></body></html>

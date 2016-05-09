@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XkbAllocDeviceInfo - Obtain an XkbDeviceInfoRec structure</title></head>
+<body><pre>
+
+XkbAllocDeviceInfo(3)             XKB FUNCTIONS            XkbAllocDeviceInfo(3)
+
+
+
+NAME
+       XkbAllocDeviceInfo - Obtain an XkbDeviceInfoRec structure
+
+SYNOPSIS
+       XkbDeviceInfoPtr  XkbAllocDeviceInfo  (unsigned int device_spec, unsigned
+              int n_buttons, unsigned int sz_leds);
+
+ARGUMENTS
+       - device_spec
+              device ID with which structure will be used
+
+       - n_buttons
+              number of button actions to allocate space for
+
+       - sz_leds
+              number of LED feedbacks to allocate space for
+
+DESCRIPTION
+       XkbAllocDeviceInfo allocates space for an XkbDeviceInfoRec structure  and
+       initializes  that structure&apos;s device_spec field with the device ID speci&#8208;
+       fied by device_spec.  If n_buttons is nonzero, n_buttons  XkbActions  are
+       linked  into  the  XkbDeviceInfoRec structure and initialized to zero. If
+       sz_leds is nonzero, sz_leds XkbDeviceLedInfoRec structures are also allo&#8208;
+       cated and linked into the XkbDeviceInfoRec structure. If you request Xkb&#8208;
+       DeviceLedInfoRec structures be allocated using  this  request,  you  must
+       initialize them explicitly.
+
+       To obtain an XkbDeviceLedInfoRec structure, use XkbAllocDeviceLedInfo.
+
+STRUCTURES
+       Information  about  X  Input  Extension  devices is transferred between a
+       client program and the Xkb extension in an XkbDeviceInfoRec structure:
+
+           typedef struct {
+               char *               name;          /&#8727; name for device */
+               Atom                 type;          /&#8727; name for class of devices */
+               unsigned short       device_spec;   /&#8727; device of interest */
+               Bool                 has_own_state; /&#8727; True=&gt;this device has its own state */
+               unsigned short       supported;     /&#8727; bits indicating supported capabilities */
+               unsigned short       unsupported;   /&#8727; bits indicating unsupported capabilities */
+               unsigned short       num_btns;      /&#8727; number of entries in btn_acts */
+               XkbAction *          btn_acts;      /&#8727; button actions */
+               unsigned short       sz_leds;       /&#8727; total number of entries in LEDs vector */
+               unsigned short       num_leds;      /&#8727; number of valid entries in LEDs vector */
+               unsigned short       dflt_kbd_fb;   /&#8727; input extension ID of default (core kbd) indicator */
+               unsigned short       dflt_led_fb;   /&#8727; input extension ID of default indicator feedback */
+               XkbDeviceLedInfoPtr  leds;          /&#8727; LED descriptions */
+           } XkbDeviceInfoRec, *XkbDeviceInfoPtr;
+
+
+           typedef struct {
+               unsigned short      led_class;        /&#8727; class for this LED device*/
+               unsigned short      led_id;           /&#8727; ID for this LED device */
+               unsigned int        phys_indicators;  /&#8727; bits for which LEDs physically present */
+               unsigned int        maps_present;     /&#8727; bits for which LEDs have maps in maps */
+               unsigned int        names_present;    /&#8727; bits for which LEDs are in names */
+               unsigned int        state;            /&#8727; 1 bit =&gt; corresponding LED is on */
+               Atom                names[XkbNumIndicators];   /&#8727; names for LEDs */
+               XkbIndicatorMapRec  maps;             /&#8727; indicator maps for each LED */
+           } XkbDeviceLedInfoRec, *XkbDeviceLedInfoPtr;
+
+SEE ALSO
+       XkbAllocDeviceLedInfo(3)
+
+
+
+X Version 11                      libX11 1.5.0             XkbAllocDeviceInfo(3)
+
+</pre></body></html>

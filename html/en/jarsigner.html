@@ -1,0 +1,1007 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jarsigner - JAR Signing and Verification Tool</title></head>
+<body><pre>
+
+jarsigner(1)                                                        jarsigner(1)
+
+
+
+Name
+       jarsigner - JAR Signing and Verification Tool
+
+       Generates  signatures for Java ARchive (JAR) files, and verifies the sig&#8208;
+       natures of signed JAR files.
+
+SYNOPSIS
+       jarsigner [ options ] jar-file alias
+       jarsigner -verify [ options ] jar-file [alias...]
+
+
+       The jarsigner -verify command can take zero or more keystore alias  names
+       after  the  jar  filename.  When specified, jarsigner will check that the
+       certificate used to verify each signed entry in the jar file matches  one
+       of  the  keystore aliases. The aliases are defined in the keystore speci&#8208;
+       fied by -keystore, or the default keystore.
+
+DESCRIPTION
+       The jarsigner tool is used for two purposes:
+
+          1. to sign Java ARchive (JAR) files, and
+
+          2. to verify the signatures and integrity of signed JAR files.
+
+
+       The JAR feature enables the packaging of class files, images, sounds, and
+       other digital data in a single file for faster and easier distribution. A
+       tool named jar(1) enables developers to produce JAR files.  (Technically,
+       any  zip file can also be considered a JAR file, although when created by
+       jar or processed by jarsigner, JAR files also  contain  a  META-INF/MANI&#8208;
+       FEST.MF file.)
+
+       A  digital  signature is a string of bits that is computed from some data
+       (the data being &quot;signed&quot;) and the private key of  an  entity  (a  person,
+       company,  etc.).  Like  a  handwritten signature, a digital signature has
+       many useful characteristics:
+
+          o Its authenticity can be verified, via a computation  that  uses  the
+            public  key  corresponding  to  the private key used to generate the
+            signature.
+
+          o It cannot be forged, assuming the private key is kept secret.
+
+          o It is a function of the data signed and thus can&apos;t be claimed to  be
+            the signature for other data as well.
+
+          o The  signed  data cannot be changed; if it is, the signature will no
+            longer verify as being authentic.
+
+
+       In order for an entity&apos;s signature to be generated for a file, the entity
+       must  first  have  a public/private key pair associated with it, and also
+       one or more certificates authenticating its public key. A certificate  is
+       a  digitally signed statement from one entity, saying that the public key
+       of some other entity has a particular value.
+
+       jarsigner uses key and certificate information from a keystore to  gener&#8208;
+       ate digital signatures for JAR files. A keystore is a database of private
+       keys and their associated X.509  certificate  chains  authenticating  the
+       corresponding  public  keys. The keytool(1) utility is used to create and
+       administer keystores.
+&#12;       jarsigner uses an entity&apos;s private  key  to  generate  a  signature.  The
+       signed  JAR  file contains, among other things, a copy of the certificate
+       from the keystore for the public key corresponding  to  the  private  key
+       used  to sign the file. jarsigner can verify the digital signature of the
+       signed JAR file using the certificate inside it (in its  signature  block
+       file).
+
+       jarsigner can generate signatures that include a timestamp, thus enabling
+       systems/deployer (including Java Plug-in) to check whether the  JAR  file
+       was  signed  while  the signing certificate was still valid. In addition,
+       APIs will allow applications to obtain the timestamp information.
+
+       At this time, jarsigner can only sign JAR files created by the SDK jar(1)
+       tool or zip files. (JAR files are the same as zip files, except they also
+       have a META-INF/MANIFEST.MF file. Such a file will automatically be  cre&#8208;
+       ated when jarsigner signs a zip file.)
+
+       The  default  jarsigner  behavior is to sign a JAR (or zip) file. Use the
+       -verify option to instead have it verify a signed JAR file.
+
+   Keystore Aliases
+       All keystore entities are accessed via unique aliases.
+
+       When using jarsigner to sign a JAR file, you must specify the  alias  for
+       the keystore entry containing the private key needed to generate the sig&#8208;
+       nature.  For  example,  the  following  will  sign  the  JAR  file  named
+       &quot;MyJARFile.jar&quot;,  using  the private key associated with the alias &quot;duke&quot;
+       in the keystore named &quot;mystore&quot; in the &quot;working&quot; directory. Since no out&#8208;
+       put  file  is  specified, it overwrites MyJARFile.jar with the signed JAR
+       file.
+
+           jarsigner -keystore /working/mystore -storepass &lt;keystore password&gt;
+             -keypass &lt;private key password&gt; MyJARFile.jar duke
+
+
+       Keystores are protected with a password, so the store  password  must  be
+       specified.  You  will  be  prompted for it if you don&apos;t specify it on the
+       command line. Similarly, private keys are protected in a keystore with  a
+       password,  so  the private key&apos;s password must be specified, and you will
+       be prompted for it if you don&apos;t specify it on the  command  line  and  it
+       isn&apos;t the same as the store password.
+
+   Keystore Location
+       jarsigner  has  a -keystore option for specifying the URL of the keystore
+       to be used. The keystore is by default stored in a file  named  .keystore
+       in the user&apos;s home directory, as determined by the user.home system prop&#8208;
+       erty. On Solaris systems user.home defaults to the user&apos;s home directory.
+
+       Note that the input stream from the -keystore option  is  passed  to  the
+       KeyStore.load method. If NONE is specified as the URL, then a null stream
+       is passed to the KeyStore.load method. NONE should be  specified  if  the
+       KeyStore  is  not  file-based,  for  example, if it resides on a hardware
+       token device.
+
+   Keystore Implementation
+       The  KeyStore  class  provided  in  the  java.security  package  supplies
+       well-defined  interfaces  to  access and modify the information in a key&#8208;
+       store. It is possible for there to be multiple different concrete  imple&#8208;
+       mentations,  where  each  implementation is that for a particular type of
+       keystore.
+
+       Currently, there are two command-line tools that  make  use  of  keystore
+       implementations  (keytool and jarsigner), and also a GUI-based tool named
+       Policy Tool. Since KeyStore is publicly available, Java 2 SDK  users  can
+       write additional security applications that use it.
+&#12;       There is a built-in default implementation, provided by Sun Microsystems.
+       It implements the keystore as a file, utilizing  a  proprietary  keystore
+       type (format) named &quot;JKS&quot;. It protects each private key with its individ&#8208;
+       ual password, and also protects the integrity of the entire keystore with
+       a (possibly different) password.
+
+       Keystore  implementations  are  provider-based.  More  specifically,  the
+       application interfaces supplied by KeyStore are implemented in terms of a
+       &quot;Service  Provider  Interface&quot;  (SPI).  That is, there is a corresponding
+       abstract KeystoreSpi class, also  in  the  java.security  package,  which
+       defines  the  Service  Provider  Interface  methods that &quot;providers&quot; must
+       implement. (The term &quot;provider&quot; refers to a package or a set of  packages
+       that supply a concrete implementation of a subset of services that can be
+       accessed by the Java Security API.) Thus, to provide a keystore implemen&#8208;
+       tation,  clients  must implement a provider and supply a KeystoreSpi sub&#8208;
+       class implementation, as described in How to Implement a Provider for the
+       Java Cryptography Architecture @
+       http://docs.oracle.com/javase/7/docs/technotes/guides/secu&#8208;
+       rity/crypto/HowToImplAProvider.html.
+
+       Applications can choose different types of keystore implementations from
+       different providers, using the &quot;getInstance&quot; factory method supplied in
+       the KeyStore class. A keystore type defines the storage and data format
+       of the keystore information, and the algorithms used to protect private
+       keys in the keystore and the integrity of the keystore itself. Keystore
+       implementations of different types are not compatible.
+
+       keytool works on any file-based keystore implementation. (It treats the
+       keystore location that is passed to it at the command line as a filename
+       and converts it to a FileInputStream, from which it loads the keystore
+       information.) The jarsigner and policytool tools, on the other hand, can
+       read a keystore from any location that can be specified using a URL.
+
+       For jarsigner and keytool, you can specify a keystore type at the command
+       line, via the -storetype option. For Policy Tool, you can specify a key&#8208;
+       store type via the &quot;Change Keystore&quot; command in the Edit menu.
+
+       If you don&apos;t explicitly specify a keystore type, the tools choose a key&#8208;
+       store implementation based simply on the value of the keystore.type prop&#8208;
+       erty specified in the security properties file. The security properties
+       file is called java.security, and it resides in the SDK security proper&#8208;
+       ties directory, java.home/lib/security, where java.home is the runtime
+       environment&apos;s directory (the jre directory in the SDK or the top-level
+       directory of the Java 2 Runtime Environment).
+
+       Each tool gets the keystore.type value and then examines all the cur&#8208;
+       rently-installed providers until it finds one that implements keystores
+       of that type. It then uses the keystore implementation from that
+       provider.
+
+       The KeyStore class defines a static method named getDefaultType that lets
+       applications and applets retrieve the value of the keystore.type prop&#8208;
+       erty. The following line of code creates an instance of the default key&#8208;
+       store type (as specified in the keystore.type property):
+
+           KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+
+
+       The default keystore type is &quot;jks&quot; (the proprietary type of the keystore
+       implementation provided by Sun). This is specified by the following line
+       in the security properties file:
+
+           keystore.type=jks
+
+
+       Note: Case doesn&apos;t matter in keystore type designations. For example,
+       &quot;JKS&quot; would be considered the same as &quot;jks&quot;.
+
+       To have the tools utilize a keystore implementation other than the
+       default, change that line to specify a different keystore type. For exam&#8208;
+       ple, if you have a provider package that supplies a keystore implementa&#8208;
+       tion for a keystore type called &quot;pkcs12&quot;, change the line to
+
+           keystore.type=pkcs12
+
+
+       Note that if you us the PKCS#11 provider package, you should refer to the
+       KeyTool and JarSigner @
+       http://docs.oracle.com/javase/7/docs/technotes/guides/secu&#8208;
+       rity/p11guide.html#KeyToolJarSigner section of the Java PKCS#11 Reference
+       Guide for details.
+
+   Supported Algorithms
+       By default, jarsigner signs a JAR file using one of the following:
+
+          o DSA (Digital Signature Algorithm) with the SHA1 digest algorithm
+
+          o RSA algorithm with the SHA256 digest algorithm.
+
+          o EC (Elliptic Curve) cryptography algorithm with the SHA256 with
+            ECDSA (Elliptic Curve Digital Signature Algorithm).
+
+
+       That is, if the signer&apos;s public and private keys are DSA keys, jarsigner
+       will sign the JAR file using the &quot;SHA1withDSA&quot; algorithm. If the signer&apos;s
+       keys are RSA keys, jarsigner will attempt to sign the JAR file using the
+       &quot;SHA256withRSA&quot; algorithm. If the signer&apos;s keys are EC keys, jarsigner
+       will sign the JAR file using the &quot;SHA256withECDSA&quot; algorithm.
+
+       These default signature algorithms can be overridden using the -sigalg
+       option.
+
+   The Signed JAR File
+       When jarsigner is used to sign a JAR file, the output signed JAR file is
+       exactly the same as the input JAR file, except that it has two additional
+       files placed in the META-INF directory:
+
+          o a signature file, with a .SF extension, and
+
+          o a signature block file, with a .DSA, .RSA, or .EC extension.
+
+
+       The base file names for these two files come from the value of the -sig&#8208;
+       File option. For example, if the option appears as
+
+       -sigFile MKSIGN
+
+
+       The files are named &quot;MKSIGN.SF&quot; and &quot;MKSIGN.DSA&quot;.
+
+       If no -sigfile option appears on the command line, the base file name for
+       the .SF and .DSA files will be the first 8 characters of the alias name
+       specified on the command line, all converted to upper case. If the alias
+       name has fewer than 8 characters, the full alias name is used. If the
+       alias name contains any characters that are not allowed in a signature
+       file name, each such character is converted to an underscore (&quot;_&quot;) char&#8208;
+       acter in forming the file name. Legal characters include letters, digits,
+       underscores, and hyphens.
+
+       The Signature (.SF) File
+
+       A signature file (the .SF file) looks similar to the manifest file that
+       is always included in a JAR file when jarsigner is used to sign the file.
+       That is, for each source file included in the JAR file, the .SF file has
+       three lines, just as in the manifest file, listing the following:
+
+          o the file name,
+
+          o the name of the digest algorithm used (SHA), and
+
+          o a SHA digest value.
+
+
+       In the manifest file, the SHA digest value for each source file is the
+       digest (hash) of the binary data in the source file. In the .SF file, on
+       the other hand, the digest value for a given source file is the hash of
+       the three lines in the manifest file for the source file.
+
+       The signature file also, by default, includes a header containing a hash
+       of the whole manifest file. The presence of the header enables verifica&#8208;
+       tion optimization, as described in JAR File Verification.
+
+       The Signature Block File
+
+       The .SF file is signed and the signature is placed in the signature block
+       file. This file also contains, encoded inside it, the certificate or cer&#8208;
+       tificate chain from the keystore which authenticates the public key cor&#8208;
+       responding to the private key used for signing. The file has the exten&#8208;
+       sion .DSA, .RSA, or .EC depending on the digest algorithm used.
+
+   Signature Timestamp
+       jarsigner tool can generate and store a signature timestamp when signing
+       a JAR file. In addition, jarsigner supports alternative signing mecha&#8208;
+       nisms. This behavior is optional and is controlled by the user at the
+       time of signing through these options:
+
+          o -tsa url
+
+          o -tsacert alias
+
+          o -altsigner class
+
+          o -altsignerpath classpathlist
+
+
+       Each of these options is detailed in the Options section below.
+
+   JAR File Verification
+       A successful JAR file verification occurs if the signature(s) are valid,
+       and none of the files that were in the JAR file when the signatures were
+       generated have been changed since then. JAR file verification involves
+       the following steps:
+
+          1. Verify the signature of the .SF file itself.
+             That is, the verification ensures that the signature stored in each
+             signature block (.DSA) file was in fact generated using the private
+             key corresponding to the public key whose certificate (or certifi&#8208;
+             cate chain) also appears in the .DSA file. It also ensures that the
+             signature is a valid signature of the corresponding signature (.SF)
+             file, and thus the .SF file has not been tampered with.
+
+          2. Verify the digest listed in each entry in the .SF file with each
+             corresponding section in the manifest.
+             The .SF file by default includes a header containing a hash of the
+             entire manifest file. When the header is present, then the verifi&#8208;
+             cation can check to see whether or not the hash in the header
+             indeed matches the hash of the manifest file. If that is the case,
+             verification proceeds to the next step.
+             If that is not the case, a less optimized verification is required
+             to ensure that the hash in each source file information section in
+             the .SF file equals the hash of its corresponding section in the
+             manifest file (see The Signature (.SF) File).
+             One reason the hash of the manifest file that is stored in the .SF
+             file header may not equal the hash of the current manifest file
+             would be because one or more files were added to the JAR file
+             (using the jar tool) after the signature (and thus the .SF file)
+             was generated. When the jar tool is used to add files, the manifest
+             file is changed (sections are added to it for the new files), but
+             the .SF file is not. A verification is still considered successful
+             if none of the files that were in the JAR file when the signature
+             was generated have been changed since then, which is the case if
+             the hashes in the non-header sections of the .SF file equal the
+             hashes of the corresponding sections in the manifest file.
+
+          3. Read each file in the JAR file that has an entry in the .SF file.
+             While reading, compute the file&apos;s digest, and then compare the
+             result with the digest for this file in the manifest section. The
+             digests should be the same, or verification fails.
+
+
+       If any serious verification failures occur during the verification
+       process, the process is stopped and a security exception is thrown. It is
+       caught and displayed by jarsigner.
+
+   Multiple Signatures for a JAR File
+       A JAR file can be signed by multiple people simply by running the jar&#8208;
+       signer tool on the file multiple times, specifying the alias for a dif&#8208;
+       ferent person each time, as in:
+
+         jarsigner myBundle.jar susan
+         jarsigner myBundle.jar kevin
+
+
+       When a JAR file is signed multiple times, there are multiple .SF and .DSA
+       files in the resulting JAR file, one pair for each signature. Thus, in
+       the example above, the output JAR file includes files with the following
+       names:
+
+         SUSAN.SF
+         SUSAN.DSA
+         KEVIN.SF
+         KEVIN.DSA
+
+
+       Note: It is also possible for a JAR file to have mixed signatures, some
+       generated by the JDK 1.1 javakey tool and others by jarsigner. That is,
+       jarsigner can be used to sign JAR files already previously signed using
+       javakey.
+
+OPTIONS
+       The various jarsigner options are listed and described below. Note:
+
+          o All option names are preceded by a minus sign (-).
+
+          o The options may be provided in any order.
+
+          o Items in italics (option values) represent the actual values that
+            must be supplied.
+
+          o The -keystore, -storepass, -keypass, -sigfile, -sigalg, -digestalg,
+            and -signedjar options are only relevant when signing a JAR file,
+            not when verifying a signed JAR file. Similarly, an alias is only
+            specified on the command line when signing a JAR file.
+&#12;
+          -keystore url
+             Specifies the URL that tells the keystore location. This defaults
+             to the file .keystore in the user&apos;s home directory, as determined
+             by the &quot;user.home&quot; system property.
+             A keystore is required when signing, so you must explicitly specify
+             one if the default keystore does not exist (or you want to use one
+             other than the default).
+             A keystore is not required when verifying, but if one is specified,
+             or the default exists, and the -verbose option was also specified,
+             additional information is output regarding whether or not any of
+             the certificates used to verify the JAR file are contained in that
+             keystore.
+             Note: the -keystore argument can actually be a file name (and path)
+             specification rather than a URL, in which case it will be treated
+             the same as a &quot;file:&quot; URL. That is,
+               -keystore filePathAndName
+             is treated as equivalent to
+               -keystore file:filePathAndName
+             If the Sun PKCS#11 provider has been configured in the java.secu&#8208;
+             rity security properties file (located in the JRE&apos;s
+             $JAVA_HOME/lib/security directory), then keytool and jarsigner can
+             operate on the PKCS#11 token by specifying these options:
+
+             o -keystore NONE
+
+             o -storetype PKCS11
+          For example, this command lists the contents of the configured PKCS#11
+          token:
+             jarsigner -keystore NONE -storetype PKCS11 -list
+
+          -storetype storetype
+             Specifies the type of keystore to be instantiated. The default key&#8208;
+             store type is the one that is specified as the value of the &quot;key&#8208;
+             store.type&quot; property in the security properties file, which is
+             returned by the static getDefaultType method in java.security.Key&#8208;
+             Store.
+             The PIN for a PCKS#11 token can also be specified using the
+             -storepass option. If none has been specified, keytool and jar&#8208;
+             signer will prompt for the token PIN. If the token has a protected
+             authentication path (such as a dedicated PIN-pad or a biometric
+             reader), then the -protected option must be specified and no pass&#8208;
+             word options can be specified.
+
+          -storepass[:env | :file] argument
+             Specifies the password which is required to access the keystore.
+             This is only needed when signing (not verifying) a JAR file. In
+             that case, if a -storepass option is not provided at the command
+             line, the user is prompted for the password.
+             If the modifier env or file is not specified, then the password has
+             the value argument. Otherwise, the password is retrieved as fol&#8208;
+             lows:
+
+             o env: Retrieve the password from the environment variable named
+               argument
+
+             o file: Retrieve the password from the file named argument
+          Note: The password shouldn&apos;t be specified on the command line or in a
+          script unless it is for testing purposes, or you are on a secure sys&#8208;
+          tem.
+
+          -keypass[:env | :file] argument
+             Specifies the password used to protect the private key of the key&#8208;
+             store entry addressed by the alias specified on the command line.
+             The password is required when using jarsigner to sign a JAR file.
+             If no password is provided on the command line, and the required
+             password is different from the store password, the user is prompted
+             for it.
+             If the modifier env or file is not specified, then the password has
+             the value argument. Otherwise, the password is retrieved as fol&#8208;
+             lows:
+
+             o env: Retrieve the password from the environment variable named
+               argument
+
+             o file: Retrieve the password from the file named argument
+          Note: The password shouldn&apos;t be specified on the command line or in a
+          script unless it is for testing purposes, or you are on a secure sys&#8208;
+          tem.
+
+          -sigfile file
+             Specifies the base file name to be used for the generated .SF and
+             .DSA files. For example, if file is &quot;DUKESIGN&quot;, the generated .SF
+             and .DSA files will be named &quot;DUKESIGN.SF&quot; and &quot;DUKESIGN.DSA&quot;, and
+             will be placed in the &quot;META-INF&quot; directory of the signed JAR file.
+             The characters in file must come from the set &quot;a-zA-Z0-9_-&quot;. That
+             is, only letters, numbers, underscore, and hyphen characters are
+             allowed. Note: All lowercase characters will be converted to upper&#8208;
+             case for the .SF and .DSA file names.
+             If no -sigfile option appears on the command line, the base file
+             name for the .SF and .DSA files will be the first 8 characters of
+             the alias name specified on the command line, all converted to
+             upper case. If the alias name has fewer than 8 characters, the full
+             alias name is used. If the alias name contains any characters that
+             are not legal in a signature file name, each such character is con&#8208;
+             verted to an underscore (&quot;_&quot;) character in forming the file name.
+
+          -sigalg algorithm
+             Specifies the name of the signature algorithm to use to sign the
+             JAR file.
+             See Appendix A @
+             http://docs.oracle.com/javase/7/docs/technotes/guides/secu&#8208;
+             rity/crypto/CryptoSpec.html#AppA of the Java Cryptography Architec&#8208;
+             ture for a list of standard signature algorithm names. This algo&#8208;
+             rithm must be compatible with the private key used to sign the JAR
+             file. If this option is not specified, SHA1withDSA, SHA256withRSA,
+             or SHA256withECDSA will be used depending on the type of private
+             key. There must either be a statically installed provider supplying
+             an implementation of the specified algorithm or the user must spec&#8208;
+             ify one with the -providerClass option, otherwise the command will
+             not succeed.
+
+          -digestalg algorithm
+             Specifies the name of the message digest algorithm to use when
+             digesting the entries of a jar file.
+             See Appendix A @
+             http://docs.oracle.com/javase/7/docs/technotes/guides/secu&#8208;
+             rity/crypto/CryptoSpec.html#AppA of the Java Cryptography Architec&#8208;
+             ture for a list of standard message digest algorithm names. If this
+             option is not specified, SHA256 will be used. There must either be
+             a statically installed provider supplying an implementation of the
+             specified algorithm or the user must specify one with the
+             -providerClass option, otherwise the command will not succeed.
+
+          -signedjar file
+             Specifies the name to be used for the signed JAR file.
+             If no name is specified on the command line, the name used is the
+             same as the input JAR file name (the name of the JAR file to be
+             signed); in other words, that file is overwritten with the signed
+             JAR file.
+
+          -verify
+             If this appears on the command line, the specified JAR file will be
+             verified, not signed. If the verification is successful, &quot;jar veri&#8208;
+             fied&quot; will be displayed. If you try to verify an unsigned JAR file,
+             or a JAR file signed with an unsupported algorithm (e.g., RSA when
+             you don&apos;t have an RSA provider installed), the following is dis&#8208;
+             played: &quot;jar is unsigned. (signatures missing or not parsable)&quot;
+             It is possible to verify JAR files signed using either jarsigner or
+             the JDK 1.1 javakey tool, or both.
+             For further information on verification, see JAR File Verification.
+
+          -certs
+             If this appears on the command line, along with the -verify and
+             -verbose options, the output includes certificate information for
+             each signer of the JAR file. This information includes
+
+             o the name of the type of certificate (stored in the .DSA file)
+               that certifies the signer&apos;s public key
+
+             o if the certificate is an X.509 certificate (more specifically, an
+               instance of java.security.cert.X509Certificate): the distin&#8208;
+               guished name of the signer
+          The keystore is also examined. If no keystore value is specified on
+          the command line, the default keystore file (if any) will be checked.
+          If the public key certificate for a signer matches an entry in the
+          keystore, then the following information will also be displayed:
+
+             o in parentheses, the alias name for the keystore entry for that
+               signer. If the signer actually comes from a JDK 1.1 identity
+               database instead of from a keystore, the alias name will appear
+               in brackets instead of parentheses.
+
+          -certchain file
+             Specifies the certificate chain to be used, if the certificate
+             chain associated with the private key of the keystore entry,
+             addressed by the alias specified on the command line, is not com&#8208;
+             plete. This may happen if the keystore is located on a hardware
+             token where there is not enough capacity to hold a complete cer&#8208;
+             tificate chain. The file can be a sequence of X.509 certificates
+             concatenated together, or a single PKCS#7 formatted data block,
+             either in binary encoding format or in printable encoding format
+             (also known as BASE64 encoding) as defined by the Internet RFC 1421
+             standard.
+
+          -verbose
+             If this appears on the command line, it indicates &quot;verbose&quot; mode,
+             which causes jarsigner to output extra information as to the
+             progress of the JAR signing or verification.
+
+          -internalsf
+             In the past, the .DSA (signature block) file generated when a JAR
+             file was signed used to include a complete encoded copy of the .SF
+             file (signature file) also generated. This behavior has been
+             changed. To reduce the overall size of the output JAR file, the
+             .DSA file by default doesn&apos;t contain a copy of the .SF file any&#8208;
+             more. But if -internalsf appears on the command line, the old
+             behavior is utilized. This option is mainly useful for testing; in
+             practice, it should not be used, since doing so eliminates a useful
+             optimization.
+
+          -sectionsonly
+             If this appears on the command line, the .SF file (signature file)
+             generated when a JAR file is signed does not include a header con&#8208;
+             taining a hash of the whole manifest file. It just contains infor&#8208;
+             mation and hashes related to each individual source file included
+             in the JAR file, as described in The Signature (.SF) File .
+             By default, this header is added, as an optimization. When the
+             header is present, then whenever the JAR file is verified, the ver&#8208;
+             ification can first check to see whether or not the hash in the
+             header indeed matches the hash of the whole manifest file. If so,
+             verification proceeds to the next step. If not, it is necessary to
+             do a less optimized verification that the hash in each source file
+             information section in the .SF file equals the hash of its corre&#8208;
+             sponding section in the manifest file.
+             For further information, see JAR File Verification.
+             This option is mainly useful for testing; in practice, it should
+             not be used, since doing so eliminates a useful optimization.
+
+          -protected
+             Either true or false. This value should be specified as true if a
+             password must be given via a protected authentication path such as
+             a dedicated PIN reader.
+
+          -providerClass provider-class-name
+             Used to specify the name of cryptographic service provider&apos;s master
+             class file when the service provider is not listed in the security
+             properties file, java.security.
+             Used in conjunction with the -providerArg ConfigFilePath option,
+             keytool and jarsigner will install the provider dynamically (where
+             ConfigFilePath is the path to the token configuration file). Here&apos;s
+             an example of a command to list a PKCS#11 keystore when the Sun
+             PKCS#11 provider has not been configured in the security properties
+             file.
+             jarsigner -keystore NONE -storetype PKCS11 \
+                       -providerClass sun.security.pkcs11.SunPKCS11 \
+                       -providerArg /foo/bar/token.config \
+                       -list
+
+          -providerName providerName
+             If more than one provider has been configured in the java.security
+             security properties file, you can use the -providerName option to
+             target a specific provider instance. The argument to this option is
+             the name of the provider.
+             For the Sun PKCS#11 provider, providerName is of the form
+             SunPKCS11-TokenName, where TokenName is the name suffix that the
+             provider instance has been configured with, as detailed in the con&#8208;
+             figuration attributes table @
+             http://docs.oracle.com/javase/7/docs/technotes/guides/secu&#8208;
+             rity/p11guide.html#ATTRS. For example, the following command lists
+             the contents of the PKCS#11 keystore provider instance with name
+             suffix SmartCard:
+             jarsigner -keystore NONE -storetype PKCS11 \
+                     -providerName SunPKCS11-SmartCard \
+                     -list
+
+          -Jjavaoption
+             Passes through the specified javaoption string directly to the Java
+             interpreter. (jarsigner is actually a &quot;wrapper&quot; around the inter&#8208;
+             preter.) This option should not contain any spaces. It is useful
+             for adjusting the execution environment or memory usage. For a list
+             of possible interpreter options, type java -h or java -X at the
+             command line.
+
+          -tsa url
+             If &quot;-tsa http://example.tsa.url&quot; appears on the command line when
+             signing a JAR file then a timestamp is generated for the signature.
+             The URL, http://example.tsa.url, identifies the location of the
+             Time Stamping Authority (TSA). It overrides any URL found via the
+             -tsacert option. The -tsa option does not require the TSA&apos;s public
+             key certificate to be present in the keystore.
+             To generate the timestamp, jarsigner communicates with the TSA
+             using the Time-Stamp Protocol (TSP) defined in RFC 3161 @
+             http://www.ietf.org/rfc/rfc3161.txt. If successful, the timestamp
+             token returned by the TSA is stored along with the signature in the
+             signature block file.
+
+          -tsacert alias
+             If &quot;-tsacert alias&quot; appears on the command line when signing a JAR
+             file then a timestamp is generated for the signature. The alias
+             identifies the TSA&apos;s public key certificate in the keystore that is
+             currently in effect. The entry&apos;s certificate is examined for a Sub&#8208;
+             ject Information Access extension that contains a URL identifying
+             the location of the TSA.
+             The TSA&apos;s public key certificate must be present in the keystore
+             when using -tsacert.
+
+          -altsigner class
+             Specifies that an alternative signing mechanism be used. The
+             fully-qualified class name identifies a class file that extends the
+             com.sun.jarsigner.ContentSigner abstract class. The path to this
+             class file is defined by the -altsignerpath option. If the -alt&#8208;
+             signer option is used, jarsigner uses the signing mechanism pro&#8208;
+             vided by the specified class. Otherwise, jarsigner uses its default
+             signing mechanism.
+             For example, to use the signing mechanism provided by a class named
+             com.sun.sun.jarsigner.AuthSigner, use the jarsigner option &quot;-alt&#8208;
+             signer com.sun.jarsigner.AuthSigner&quot;
+
+          -altsignerpath classpathlist
+             Specifies the path to the class file (the class file name is speci&#8208;
+             fied with the -altsigner option described above) and any JAR files
+             it depends on. If the class file is in a JAR file, then this speci&#8208;
+             fies the path to that JAR file, as shown in the example below.
+             An absolute path or a path relative to the current directory may be
+             specified. If classpathlist contains multiple paths or JAR files,
+             they should be separated with a colon (:) on Solaris and a
+             semi-colon (;) on Windows. This option is not necessary if the
+             class is already in the search path.
+             Example of specifying the path to a jar file that contains the
+             class file:
+             -altsignerpath /home/user/lib/authsigner.jar
+             Note that the JAR file name is included.
+             Example of specifying the path to the jar file that contains the
+             class file:
+             -altsignerpath /home/user/classes/com/sun/tools/jarsigner/
+             Note that the JAR file name is omitted.
+
+          -strict
+             During the signing or verifying process, some warning messages may
+             be shown. If this option appears on the command line, the exit code
+             of the tool will reflect the warning messages that are found. Read
+             the &quot;WARNINGS&quot; section for details.
+
+          -verbose:sub-options
+             For the verifying process, the -verbose option takes sub-options to
+             determine how much information will be shown. If -certs is also
+             specified, the default mode (or sub-option all) displays each entry
+             as it is being processed and following that, the certificate infor&#8208;
+             mation for each signer of the JAR file. If -certs and the -ver&#8208;
+             bose:grouped sub-option are specified, entries with the same signer
+             info are grouped and displayed together along with their certifi&#8208;
+             cate information. If -certs and the -verbose:summary sub-option are
+             specified, then entries with the same signer info are grouped and
+             displayed together along with their certificate information but
+             details about each entry are summarized and displayed as &quot;one entry
+             (and more)&quot;. See the examples section for more information.
+
+
+EXAMPLES
+   Signing a JAR File
+       Suppose you have a JAR file named &quot;bundle.jar&quot; and you&apos;d like to sign it
+       using the private key of the user whose keystore alias is &quot;jane&quot; in the
+       keystore named &quot;mystore&quot; in the &quot;working&quot; directory. You can use the fol&#8208;
+       lowing to sign the JAR file and name the signed JAR file &quot;sbundle.jar&quot;:
+
+           jarsigner -keystore /working/mystore -storepass &lt;keystore password&gt;
+             -keypass &lt;private key password&gt; -signedjar sbundle.jar bundle.jar jane
+
+
+       Note that there is no -sigfile specified in the command above, so the
+       generated .SF and .DSA files to be placed in the signed JAR file will
+       have default names based on the alias name. That is, they will be named
+       JANE.SF and JANE.DSA.
+
+       If you want to be prompted for the store password and the private key
+       password, you could shorten the above command to
+
+           jarsigner -keystore /working/mystore
+             -signedjar sbundle.jar bundle.jar jane
+
+
+       If the keystore to be used is the default keystore (the one named &quot;.key&#8208;
+       store&quot; in your home directory), you don&apos;t need to specify a keystore, as
+       in:
+
+           jarsigner -signedjar sbundle.jar bundle.jar jane
+
+
+       Finally, if you want the signed JAR file to simply overwrite the input
+       JAR file (bundle.jar), you don&apos;t need to specify a -signedjar option:
+
+           jarsigner bundle.jar jane
+
+
+   Verifying a Signed JAR File
+       To verify a signed JAR file, that is, to verify that the signature is
+       valid and the JAR file has not been tampered with, use a command such as
+       the following:
+
+           jarsigner -verify sbundle.jar
+
+
+       If the verification is successful,
+
+           jar verified.
+
+
+       is displayed. Otherwise, an error message appears.
+
+       You can get more information if you use the -verbose option. A sample use
+       of jarsigner with the -verbose option is shown below, along with sample
+       output:
+
+           jarsigner -verify -verbose sbundle.jar
+
+                  198 Fri Sep 26 16:14:06 PDT 1997 META-INF/MANIFEST.MF
+                  199 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.SF
+                 1013 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.DSA
+           smk   2752 Fri Sep 26 16:12:30 PDT 1997 AclEx.class
+           smk    849 Fri Sep 26 16:12:46 PDT 1997 test.class
+
+             s = signature was verified
+             m = entry is listed in manifest
+             k = at least one certificate was found in keystore
+
+           jar verified.
+
+
+   Verification with Certificate Information
+       If you specify the -certs option when verifying, along with the -verify
+       and -verbose options, the output includes certificate information for
+       each signer of the JAR file, including the certificate type, the signer
+       distinguished name information (if and only if it&apos;s an X.509 certifi&#8208;
+       cate), and, in parentheses, the keystore alias for the signer if the pub&#8208;
+       lic key certificate in the JAR file matches that in a keystore entry. For
+       example,
+
+           jarsigner -keystore /working/mystore -verify -verbose -certs myTest.jar
+
+                  198 Fri Sep 26 16:14:06 PDT 1997 META-INF/MANIFEST.MF
+                  199 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.SF
+                 1013 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.DSA
+                  208 Fri Sep 26 16:23:30 PDT 1997 META-INF/JAVATEST.SF
+                 1087 Fri Sep 26 16:23:30 PDT 1997 META-INF/JAVATEST.DSA
+           smk   2752 Fri Sep 26 16:12:30 PDT 1997 Tst.class
+
+             X.509, CN=Test Group, OU=Java Software, O=Sun Microsystems, L=CUP, S=CA, C=US (javatest)
+             X.509, CN=Jane Smith, OU=Java Software, O=Sun, L=cup, S=ca, C=us (jane)
+
+             s = signature was verified
+             m = entry is listed in manifest
+             k = at least one certificate was found in keystore
+
+           jar verified.
+
+
+       If the certificate for a signer is not an X.509 certificate, there is no
+       distinguished name information. In that case, just the certificate type
+       and the alias are shown. For example, if the certificate is a PGP cer&#8208;
+       tificate, and the alias is &quot;bob&quot;, you&apos;d get
+
+             PGP, (bob)
+
+
+   Verification of a JAR File that Includes Identity Database Signers
+       If a JAR file has been signed using the JDK 1.1 javakey tool, and thus
+       the signer is an alias in an identity database, the verification output
+       includes an &quot;i&quot; symbol. If the JAR file has been signed by both an alias
+       in an identity database and an alias in a keystore, both &quot;k&quot; and &quot;i&quot;
+       appear.
+
+       When the -certs option is used, any identity database aliases are shown
+       in square brackets rather than the parentheses used for keystore aliases.
+       For example:
+
+           jarsigner -keystore /working/mystore -verify -verbose -certs writeFile.jar
+
+                  198 Fri Sep 26 16:14:06 PDT 1997 META-INF/MANIFEST.MF
+                  199 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.SF
+                 1013 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.DSA
+                  199 Fri Sep 27 12:22:30 PDT 1997 META-INF/DUKE.SF
+                 1013 Fri Sep 27 12:22:30 PDT 1997 META-INF/DUKE.DSA
+          smki   2752 Fri Sep 26 16:12:30 PDT 1997 writeFile.html
+
+             X.509, CN=Jane Smith, OU=Java Software, O=Sun, L=cup, S=ca, C=us (jane)
+             X.509, CN=Duke, OU=Java Software, O=Sun, L=cup, S=ca, C=us [duke]
+
+             s = signature was verified
+             m = entry is listed in manifest
+             k = at least one certificate was found in keystore
+             i = at least one certificate was found in identity scope
+
+           jar verified.
+
+
+       Note that the alias &quot;duke&quot; is in brackets to denote that it is an iden&#8208;
+       tity database alias, not a keystore alias.
+
+WARNINGS
+       During the signing/verifying process, jarsigner may display various warn&#8208;
+       ings. These warning codes are defined as follows:
+                hasExpiringCert         2
+                    This jar contains entries whose signer certificate will expire within six months
+
+                hasExpiredCert          4
+                    This jar contains entries whose signer certificate has expired.
+
+                notYetValidCert         4
+                    This jar contains entries whose signer certificate is not yet valid.
+
+                chainNotValidated       4
+                    This jar contains entries whose certificate chain cannot be correctly validated.
+
+                badKeyUsage             8
+                    This jar contains entries whose signer certificate&apos;s KeyUsage extension doesn&apos;t allow code signing.
+
+                badExtendedKeyUsage     8
+                    This jar contains entries whose signer certificate&apos;s ExtendedKeyUsage extension
+                    doesn&apos;t allow code signing.
+
+                badNetscapeCertType     8
+                    This jar contains entries whose signer certificate&apos;s NetscapeCertType extension
+                    doesn&apos;t allow code signing.
+
+                hasUnsignedEntry        16
+                    This jar contains unsigned entries which have not been integrity-checked.
+
+                notSignedByAlias        32
+                    This jar contains signed entries which are not signed by the specified alias(es)
+
+                aliasNotInStore         32
+                    This jar contains signed entries that are not signed by alias in this keystore
+
+
+
+       When the -strict option is provided, an OR-value of warnings detected
+       will be returned as the exit code of the tool. For example, if a certifi&#8208;
+       cate used to sign an entry is expired and has a keyUsage extension that
+       does not allow it to sign a file, an exit code 12 (=4+8) will be
+       returned.
+
+       Note: Exit codes are reused because only 0-255 is legal for Unix. In any
+       case, if the signing/verifying process fails, the following exit code
+       will be returned:
+
+       failure                 1
+
+
+   Compatibility with JDK 1.1
+       The keytool and jarsigner tools completely replace the javakey tool pro&#8208;
+       vided in JDK 1.1. These new tools provide more features than javakey,
+       including the ability to protect the keystore and private keys with pass&#8208;
+       words, and the ability to verify signatures in addition to generating
+       them.
+
+       The new keystore architecture replaces the identity database that javakey
+       created and managed. There is no backwards compatibility between the key&#8208;
+       store format and the database format used by javakey in 1.1. However,
+
+          o It is possible to import the information from an identity database
+            into a keystore, via the keytool -identitydb command.
+
+          o jarsigner can sign JAR files also previously signed using javakey.
+
+          o jarsigner can verify JAR files signed using javakey. Thus, it recog&#8208;
+            nizes and can work with signer aliases that are from a JDK 1.1 iden&#8208;
+            tity database rather than a Java 2 SDK keystore.
+
+
+       The following table explains how JAR files that were signed in JDK 1.1.x
+       are treated in the Java 2 platform.
+
+       JAR File Type   Identity in 1.1 database   Trusted Iden&#8208;   Policy File     Privileges Granted
+                                                  tity imported   grants privi&#8208;
+                                                  into Java 2     leges to
+                                                  Platform key&#8208;   Iden&#8208;
+                                                  store from      tity/Alias
+                                                  1.1 database
+                                                  (4)
+       Signed JAR      NO                         NO              NO              Default privileges
+                                                                                  granted to all
+                                                                                  code.
+       Unsigned JAR    NO                         NO              NO              Default privileges
+                                                                                  granted to all
+                                                                                  code.
+       Signed JAR      NO                         YES             NO              Default privileges
+                                                                                  granted to all
+                                                                                  code.
+       Signed JAR      YES/Untrusted              NO              NO              Default privileges
+                                                                                  granted to all
+                                                                                  code. (3)
+       Signed JAR      YES/Untrusted              NO              YES             Default privileges
+                                                                                  granted to all
+                                                                                  code. (1,3)
+       Signed JAR      NO                         YES             YES             Default privileges
+                                                                                  granted to all
+                                                                                  code plus privi&#8208;
+                                                                                  leges granted in
+                                                                                  policy file.
+       Signed JAR      YES/Trusted                YES             YES             Default privileges
+                                                                                  granted to all
+                                                                                  code plus privi&#8208;
+                                                                                  leges granted in
+                                                                                  policy file. (2)
+       Signed JAR      YES/Trusted                NO              NO              All privileges
+       Signed JAR      YES/Trusted                YES             NO              All privileges (1)
+       Signed JAR      YES/Trusted                NO              YES             All privileges (1)
+
+
+       Notes:
+
+          1. If an identity/alias is mentioned in the policy file, it must be
+             imported into the keystore for the policy file to have any effect
+             on privileges granted.
+
+          2. The policy file/keystore combination has precedence over a trusted
+             identity in the identity database.
+
+          3. Untrusted identities are ignored in the Java 2 platform.
+
+          4. Only trusted identities can be imported into Java 2 SDK keystores.
+
+
+SEE ALSO
+          o jar(1) tool documentation
+
+          o keytool(1) tool documentation
+
+          o the Security @
+            http://docs.oracle.com/javase/tutorial/security/index.html trail of
+            the Java Tutorial @
+            http://docs.oracle.com/javase/tutorial/index.html for examples of
+            the use of the jarsigner tool
+
+
+                                   16 Mar 2012                      jarsigner(1)
+
+</pre></body></html>

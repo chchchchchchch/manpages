@@ -1,0 +1,69 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XPropertyEvent - PropertyNotify event structure</title></head>
+<body><pre>
+
+XPropertyEvent(3)                XLIB FUNCTIONS                XPropertyEvent(3)
+
+
+
+NAME
+       XPropertyEvent - PropertyNotify event structure
+
+STRUCTURES
+       The structure for PropertyNotify events contains:
+
+       typedef struct {
+            int type;                /* PropertyNotify */
+            unsigned long serial;    /* # of last request processed by server */
+            Bool send_event;         /* true if this came from a SendEvent request */
+            Display *display;        /* Display the event was read from */
+            Window window;
+            Atom atom;
+            Time time;
+            int state;               /* PropertyNewValue or PropertyDelete */
+       } XPropertyEvent;
+
+       When you receive this event, the structure members are set as follows.
+
+       The type member is set to the event type constant name that uniquely
+       identifies it.  For example, when the X server reports a GraphicsExpose
+       event to a client application, it sends an XGraphicsExposeEvent structure
+       with the type member set to GraphicsExpose.  The display member is set to
+       a pointer to the display the event was read on.  The send_event member is
+       set to True if the event came from a SendEvent protocol request.  The
+       serial member is set from the serial number reported in the protocol but
+       expanded from the 16-bit least-significant bits to a full 32-bit value.
+       The window member is set to the window that is most useful to toolkit
+       dispatchers.
+
+       The window member is set to the window whose associated property was
+       changed.  The atom member is set to the property&apos;s atom and indicates
+       which property was changed or desired.  The time member is set to the
+       server time when the property was changed.  The state member is set to
+       indicate whether the property was changed to a new value or deleted and
+       can be PropertyNewValue or PropertyDelete.  The state member is set to
+       PropertyNewValue when a property of the window is changed using XChange&#8208;
+       Property or XRotateWindowProperties (even when adding zero-length data
+       using XChangeProperty) and when replacing all or part of a property with
+       identical data using XChangeProperty or XRotateWindowProperties.  The
+       state member is set to PropertyDelete when a property of the window is
+       deleted using XDeleteProperty or, if the delete argument is True,
+       XGetWindowProperty.
+
+SEE ALSO
+       XAnyEvent(3), XButtonEvent(3), XCreateWindowEvent(3), XCirculateEvent(3),
+       XCirculateRequestEvent(3), XColormapEvent(3), XConfigureEvent(3), XCon&#8208;
+       figureRequestEvent(3), XCrossingEvent(3), XDestroyWindowEvent(3), XEr&#8208;
+       rorEvent(3), XExposeEvent(3), XFocusChangeEvent(3), XGetWindowProp&#8208;
+       erty(3), XGraphicsExposeEvent(3), XGravityEvent(3), XKeymapEvent(3),
+       XMapEvent(3), XMapRequestEvent(3), XReparentEvent(3), XResiz&#8208;
+       eRequestEvent(3), XSelectionClearEvent(3), XSelectionEvent(3), XSelec&#8208;
+       tionRequestEvent(3), XUnmapEvent(3), XVisibilityEvent(3)
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0                 XPropertyEvent(3)
+
+</pre></body></html>

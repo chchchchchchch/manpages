@@ -1,0 +1,100 @@
+<html>
+<head><meta charset=utf-8/>
+<title>jcmd - Diagnostic Command</title></head>
+<body><pre>
+
+jcmd(1)                                                                  jcmd(1)
+
+
+
+Name
+       jcmd - Diagnostic Command
+
+       jcmd  is  a utility to send diagnostic command requests to a running Java
+       Virtual Machine.
+
+SYNOPSIS
+           jcmd [ option ]
+           jcmd &lt;pid | main class&gt; PerfCounter.print
+           jcmd &lt;pid | main class&gt; command [arguments]
+           jcmd &lt;pid | main class&gt; -f file
+
+
+DESCRIPTION
+       jcmd is a utility to send diagnostic command requests to a  Java  Virtual
+       Machine supporting this feature.
+
+       Used  without  arguments  or  with the -l option, jcmd prints the list of
+       running Java processes with their process id, their main class and  their
+       command line arguments.
+
+       When  a process id is specified on the command line, jcmd sends the diag&#8208;
+       nostic command request to the process with this id.
+
+       When a main class is specified on the command line, jcmd sends the  diag&#8208;
+       nostic  command  request to all Java processes for which the command line
+       argument is a substring of the Java process&apos; main class.
+
+       With the PerfCounter.print argument, jcmd prints the performance counters
+       available on the targeted Java process(es).
+
+       With the -f option, jcmd sends to the targeted Java process(es) the diag&#8208;
+       nostic commands stored in the file file.
+
+OPTIONS
+       Options are mutually exclusive. Options, if used, should  follow  immedi&#8208;
+       ately after the command name.
+
+          -l Prints  the  list  of running Java processes with their process id,
+             their main class and their command line arguments.
+
+          -h Prints a help message.
+
+          -help
+             Prints a help message.
+
+
+PARAMETERS
+          pid
+             Identifies  the  process  that  receives  the  diagnostic   command
+             requests. The process must be a Java process. To get a list of Java
+             processes running on a machine, use jps(1) or jcmd(1).
+
+          main class
+             Main class of the process  that  receives  the  diagnostic  command
+             requests.  When  matching  processes,  any process whose main class
+             name contains the specified string as a substring will be  matched.
+             If  several running Java processes share this main class, the diag&#8208;
+             nostic command request is sent to all these  processes.  To  get  a
+             list of Java processes running on a machine, use jps(1) or jcmd(1).
+
+          command [arguments]
+             Invoke  the  diagnostic command called command on the targeted Java
+             process(es). The list of available diagnostic commands for a  given
+             process  can  be  obtained  by  invoking  the  help command on this
+             process. Each diagnostic command has  its  own  set  of  arguments,
+             which  can be obtained by invoking the the command name followed by
+             help.
+
+          PerfCounter.print
+             Print the performance  counters  available  on  the  targeted  Java
+             process(es).  The  list  of  performance counters may vary with the
+             Java process.
+
+          -f file
+             Read commands from file  and  invoke  them  on  the  targeted  Java
+             process(es).  In  file,  each  command  must be written on a single
+             line. Lines starting with # are ignored. Processing  of  file  ends
+             when all lines have been invoked or when a line containing the stop
+             keyword is read.
+
+
+SEE ALSO
+          o jps(1)
+
+
+       jps(1)
+
+                                   10 Jul 2012                           jcmd(1)
+
+</pre></body></html>

@@ -1,0 +1,67 @@
+<html>
+<head><meta charset=utf-8/>
+<title>XReparentEvent - ReparentNotify event structure</title></head>
+<body><pre>
+
+XReparentEvent(3)                XLIB FUNCTIONS                XReparentEvent(3)
+
+
+
+NAME
+       XReparentEvent - ReparentNotify event structure
+
+STRUCTURES
+       The structure for ReparentNotify events contains:
+
+       typedef struct {
+            int type;                /* ReparentNotify */
+            unsigned long serial;    /* # of last request processed by server */
+            Bool send_event;         /* true if this came from a SendEvent request */
+            Display *display;        /* Display the event was read from */
+            Window event;
+            Window window;
+            Window parent;
+            int x, y;
+            Bool override_redirect;
+       } XReparentEvent;
+
+       When you receive this event, the structure members are set as follows.
+
+       The type member is set to the event type constant name that uniquely
+       identifies it.  For example, when the X server reports a GraphicsExpose
+       event to a client application, it sends an XGraphicsExposeEvent structure
+       with the type member set to GraphicsExpose.  The display member is set to
+       a pointer to the display the event was read on.  The send_event member is
+       set to True if the event came from a SendEvent protocol request.  The
+       serial member is set from the serial number reported in the protocol but
+       expanded from the 16-bit least-significant bits to a full 32-bit value.
+       The window member is set to the window that is most useful to toolkit
+       dispatchers.
+
+       The event member is set either to the reparented window or to the old or
+       the new parent, depending on whether StructureNotify or SubstructureNo&#8208;
+       tify was selected.  The window member is set to the window that was
+       reparented.  The parent member is set to the new parent window.  The x
+       and y members are set to the reparented window&apos;s coordinates relative to
+       the new parent window&apos;s origin and define the upper-left outer corner of
+       the reparented window.  The override_redirect member is set to the over&#8208;
+       ride-redirect attribute of the window specified by the window member.
+       Window manager clients normally should ignore this window if the over&#8208;
+       ride_redirect member is True.
+
+SEE ALSO
+       XAnyEvent(3), XButtonEvent(3), XCreateWindowEvent(3), XCirculateEvent(3),
+       XCirculateRequestEvent(3), XColormapEvent(3), XConfigureEvent(3), XCon&#8208;
+       figureRequestEvent(3), XCrossingEvent(3), XDestroyWindowEvent(3), XEr&#8208;
+       rorEvent(3), XExposeEvent(3), XFocusChangeEvent(3), XGraphicsEx&#8208;
+       poseEvent(3), XGravityEvent(3), XKeymapEvent(3), XMapEvent(3), XMapRe&#8208;
+       questEvent(3), XPropertyEvent(3), XResizeRequestEvent(3), XSelection&#8208;
+       ClearEvent(3), XSelectionEvent(3), XSelectionRequestEvent(3), XUn&#8208;
+       mapEvent(3), XVisibilityEvent(3)
+       Xlib - C Language X Interface
+
+
+
+X Version 11                      libX11 1.5.0                 XReparentEvent(3)
+
+</pre></body></html>

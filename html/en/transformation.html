@@ -1,0 +1,200 @@
+<html>
+<head><meta charset=utf-8/>
+<title>libcaca canvas transformation -</title></head>
+<body><pre>
+
+libcaca canvas transformation(3caca) libcacalibcaca canvas transformation(3caca)
+
+
+
+NAME
+       libcaca canvas transformation -
+
+   Functions
+       __extern int caca_invert (caca_canvas_t *)
+           Invert a canvas&apos; colours.
+       __extern int caca_flip (caca_canvas_t *)
+           Flip a canvas horizontally.
+       __extern int caca_flop (caca_canvas_t *)
+           Flip a canvas vertically.
+       __extern int caca_rotate_180 (caca_canvas_t *)
+           Rotate a canvas.
+       __extern int caca_rotate_left (caca_canvas_t *)
+           Rotate a canvas, 90 degrees counterclockwise.
+       __extern int caca_rotate_right (caca_canvas_t *)
+           Rotate a canvas, 90 degrees counterclockwise.
+       __extern int caca_stretch_left (caca_canvas_t *)
+           Rotate and stretch a canvas, 90 degrees counterclockwise.
+       __extern int caca_stretch_right (caca_canvas_t *)
+           Rotate and stretch a canvas, 90 degrees clockwise.
+
+Detailed Description
+       These functions perform horizontal and vertical canvas flipping.
+
+Function Documentation
+   __extern int caca_invert (caca_canvas_t *cv) Invert a canvas&apos; colours (black
+       becomes white, red becomes cyan, etc.) without changing the characters in
+       it.
+       This function never fails.
+
+       Parameters:
+           cv The canvas to invert.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_add_dirty_rect().
+
+   __extern int caca_flip (caca_canvas_t *cv) Flip a canvas horizontally,
+       choosing characters that look like the mirrored version wherever
+       possible. Some characters will stay unchanged by the process, but the
+       operation is guaranteed to be involutive: performing it again gives back
+       the original canvas.
+       This function never fails.
+
+       Parameters:
+           cv The canvas to flip.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_add_dirty_rect(), and CACA_MAGIC_FULLWIDTH.
+
+   __extern int caca_flop (caca_canvas_t *cv) Flip a canvas vertically, choosing
+       characters that look like the mirrored version wherever possible. Some
+       characters will stay unchanged by the process, but the operation is
+       guaranteed to be involutive: performing it again gives back the original
+       canvas.
+       This function never fails.
+
+       Parameters:
+           cv The canvas to flop.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_add_dirty_rect().
+
+   __extern int caca_rotate_180 (caca_canvas_t *cv) Apply a 180-degree
+       transformation to a canvas, choosing characters that look like the
+       upside-down version wherever possible. Some characters will stay
+       unchanged by the process, but the operation is guaranteed to be
+       involutive: performing it again gives back the original canvas.
+       This function never fails.
+
+       Parameters:
+           cv The canvas to rotate.
+
+       Returns:
+           This function always returns 0.
+
+       References caca_add_dirty_rect(), and CACA_MAGIC_FULLWIDTH.
+
+   __extern int caca_rotate_left (caca_canvas_t *cv) Apply a 90-degree
+       transformation to a canvas, choosing characters that look like the
+       rotated version wherever possible. Characters cells are rotated two-by-
+       two. Some characters will stay unchanged by the process, some others will
+       be replaced by close equivalents. Fullwidth characters at odd horizontal
+       coordinates will be lost. The operation is not guaranteed to be
+       reversible at all.
+       Note that the width of the canvas is divided by two and becomes the new
+       height. Height is multiplied by two and becomes the new width. If the
+       original width is an odd number, the division is rounded up.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EBUSY The canvas is in use by a display driver and cannot be rotated.
+
+       &#183; ENOMEM Not enough memory to allocate the new canvas size. If this
+         happens, the previous canvas handle is still valid.
+
+       Parameters:
+           cv The canvas to rotate left.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       References caca_add_dirty_rect().
+
+   __extern int caca_rotate_right (caca_canvas_t *cv) Apply a 90-degree
+       transformation to a canvas, choosing characters that look like the
+       rotated version wherever possible. Characters cells are rotated two-by-
+       two. Some characters will stay unchanged by the process, some others will
+       be replaced by close equivalents. Fullwidth characters at odd horizontal
+       coordinates will be lost. The operation is not guaranteed to be
+       reversible at all.
+       Note that the width of the canvas is divided by two and becomes the new
+       height. Height is multiplied by two and becomes the new width. If the
+       original width is an odd number, the division is rounded up.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EBUSY The canvas is in use by a display driver and cannot be rotated.
+
+       &#183; ENOMEM Not enough memory to allocate the new canvas size. If this
+         happens, the previous canvas handle is still valid.
+
+       Parameters:
+           cv The canvas to rotate right.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       References caca_add_dirty_rect().
+
+   __extern int caca_stretch_left (caca_canvas_t *cv) Apply a 90-degree
+       transformation to a canvas, choosing characters that look like the
+       rotated version wherever possible. Some characters will stay unchanged by
+       the process, some others will be replaced by close equivalents. Fullwidth
+       characters will be lost. The operation is not guaranteed to be reversible
+       at all.
+       Note that the width and height of the canvas are swapped, causing its
+       aspect ratio to look stretched.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EBUSY The canvas is in use by a display driver and cannot be rotated.
+
+       &#183; ENOMEM Not enough memory to allocate the new canvas size. If this
+         happens, the previous canvas handle is still valid.
+
+       Parameters:
+           cv The canvas to rotate left.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       References caca_add_dirty_rect().
+
+   __extern int caca_stretch_right (caca_canvas_t *cv) Apply a 270-degree
+       transformation to a canvas, choosing characters that look like the
+       rotated version wherever possible. Some characters will stay unchanged by
+       the process, some others will be replaced by close equivalents. Fullwidth
+       characters will be lost. The operation is not guaranteed to be reversible
+       at all.
+       Note that the width and height of the canvas are swapped, causing its
+       aspect ratio to look stretched.
+
+       If an error occurs, -1 is returned and errno is set accordingly:
+
+       &#183; EBUSY The canvas is in use by a display driver and cannot be rotated.
+
+       &#183; ENOMEM Not enough memory to allocate the new canvas size. If this
+         happens, the previous canvas handle is still valid.
+
+       Parameters:
+           cv The canvas to rotate right.
+
+       Returns:
+           0 in case of success, -1 if an error occurred.
+
+       References caca_add_dirty_rect().
+
+Author
+       Generated automatically by Doxygen for libcaca from the source code.
+
+
+
+Version 0.99.beta18              Fri Apr 6 2libcaca canvas transformation(3caca)
+
+</pre></body></html>

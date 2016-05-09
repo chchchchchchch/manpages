@@ -1,0 +1,83 @@
+<html>
+<head><meta charset=utf-8/>
+<title>hp-query - Model Query Utility</title></head>
+<body><pre>
+
+hp-query(1)                       User Manuals                       hp-query(1)
+
+
+
+NAME
+       hp-query - Model Query Utility
+
+DESCRIPTION
+       Query a printer model for static model information. Designed to be called
+       from other processes.
+
+SYNOPSIS
+       hp-query [MODE] [OPTIONS]
+
+MODE
+       Run in non-interactive mode:
+              -n or --non-interactive
+
+OPTIONS
+       Set the logging level:
+              -l&lt;level&gt; or --logging=&lt;level&gt; &lt;level&gt;: none, info*, error,  warn,
+              debug (*default)
+
+       Run in debug mode:
+              -g (same as option: -ldebug)
+
+       This help information:
+              -h or --help
+
+       Specify model by device URI:
+              -d&lt;device_uri&gt; or --device=&lt;device_uri&gt;
+
+       Specify normalized model name:
+              -m&lt;model_name&gt; or --model=&lt;model_name&gt; (normalized models.dat for&#8208;
+              mat)
+
+       Specify raw model name:
+              -r&lt;model_name&gt; or --raw=&lt;model_name&gt; (raw  model  name  from  MDL:
+              field of device ID)
+
+       Specify key to query:
+              -k&lt;key&gt; or --key=&lt;key&gt; (or, use -a/--all to return all keys)
+
+       Query all keys:
+              -a or --all (default separator is a LF)
+
+       Specify the separator when multiple keys are queried:
+              -s&lt;sep&gt;  --sep=&lt;sep&gt;  (character  or &apos;tab&apos;, &apos;newline&apos;, &apos;cr&apos;, &apos;lf&apos;,
+              &apos;crlf&apos;)(only valid when used with -a/--all)
+
+       Suppress trailing linefeed:
+              -x
+
+SEE ALSO
+       hp-info
+
+AUTHOR
+       HPLIP (Hewlett-Packard Linux Imaging and Printing)  is  an  HP  developed
+       solution  for  printing,  scanning,  and  faxing with HP inkjet and laser
+       based printers in Linux.
+
+REPORTING BUGS
+       The HPLIP Launchpad.net site https://launchpad.net/hplip is available  to
+       get  help,  report  bugs,  make suggestions, discuss the HPLIP project or
+       otherwise contact the HPLIP Team.
+&#12;COPYRIGHT
+       Copyright (c) 2001-14 Hewlett-Packard Development Company, L.P.
+
+       This software comes with ABSOLUTELY NO WARRANTY.  This is free  software,
+       and  you are welcome to distribute it under certain conditions. See COPY&#8208;
+       ING file for more details.
+
+
+
+
+Linux                                  0.2                           hp-query(1)
+
+</pre></body></html>

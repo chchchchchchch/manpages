@@ -1,0 +1,88 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Biber::Input::file::bibtex - look in a BibTeX file for an entry and create it if found</title></head>
+<body><pre>
+
+Biber::Input::file::bibUser3Contributed Perl DocuBiber::Input::file::bibtex(3pm)
+
+
+
+   init_cache
+           Invalidate the T::B object cache. Used only in tests when e.g. we change the encoding
+           settings and therefore must force a re-read of the data
+
+   TBSIG
+            Signal handler to catch fatal Text::BibTex SEGFAULTS. It has bugs
+            and we want to say at least something if it coredumps
+
+   extract_entries
+          Main data extraction routine.
+          Accepts a data source identifier, preprocesses the file and then
+          looks for the passed keys, creating entries when it finds them and
+          passes out an array of keys it didn&apos;t find.
+
+   create_entry
+          Create a Biber::Entry object from a Text::BibTeX object
+
+   cache_data
+          Caches file data into T::B objects indexed by the original
+          datasource key, decoded into UTF8
+
+   preprocess_file
+          Convert file to UTF-8 and potentially decode LaTeX macros to UTF-8
+
+   parsename
+           Given a name string, this function returns a Biber::Entry::Name object
+           with all parts of the name resolved according to the BibTeX conventions.
+
+           parsename(&apos;John Doe&apos;)
+           returns an object which internally looks a bit like this:
+
+           { firstname     =&gt; &apos;John&apos;,
+             firstname_i   =&gt; [&apos;J&apos;],
+             lastname      =&gt; &apos;Doe&apos;,
+             lastname_i    =&gt; [&apos;D&apos;],
+             prefix        =&gt; undef,
+             prefix_i      =&gt; undef,
+             suffix        =&gt; undef,
+             suffix_i      =&gt; undef,
+             namestring    =&gt; &apos;Doe, John&apos;,
+             nameinitstring =&gt; &apos;Doe_J&apos;,
+             strip          =&gt; {&apos;firstname&apos; =&gt; 0,
+                                &apos;lastname&apos;  =&gt; 0,
+                                &apos;prefix&apos;    =&gt; 0,
+                                &apos;suffix&apos;    =&gt; 0}
+             }
+
+NAME
+       Biber::Input::file::bibtex - look in a BibTeX file for an entry and
+       create it if found
+
+DESCRIPTION
+       Provides the extract_entries() method to get entries from a BibTeX data
+       source and instantiate Biber::Entry objects for what it finds
+
+AUTHOR
+       Francois Charette, &quot;&lt;firmicus at ankabut.net&gt;&quot; Philip Kime &quot;&lt;philip at
+       kime.org.uk&gt;&quot;
+
+BUGS
+       Please report any bugs or feature requests on our sourceforge tracker at
+       &lt;https://sourceforge.net/tracker2/?func=browse&amp;group_id=228270&gt;.
+
+COPYRIGHT &amp; LICENSE
+       Copyright 2009-2012 Francois Charette and Philip Kime, all rights
+       reserved.
+
+       This module is free software.  You can redistribute it and/or modify it
+       under the terms of the Artistic License 2.0.
+
+       This program is distributed in the hope that it will be useful, but
+       without any warranty; without even the implied warranty of
+       merchantability or fitness for a particular purpose.
+
+
+
+perl v5.14.2                       2012-06-17    Biber::Input::file::bibtex(3pm)
+
+</pre></body></html>

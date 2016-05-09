@@ -1,0 +1,43 @@
+<html>
+<head><meta charset=utf-8/>
+<title>debpkg - wrapper for dpkg</title></head>
+<body><pre>
+
+DEBPKG(1)                                                              DEBPKG(1)
+
+
+
+NAME
+       debpkg - wrapper for dpkg
+
+SYNOPSIS
+       debpkg dpkg-options
+
+DESCRIPTION
+       debpkg simply invokes dpkg(1) but first becomes superuser so that dpkg is
+       able to install and remove packages.  It also cleans the environment  and
+       resets          PATH          to          a         sane         default:
+       &quot;/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11&quot; so that  local  versions  of
+       programs are not run by accident.
+
+REQUIREMENTS
+       debpkg  must  be given superuser privileges in some way to function prop&#8208;
+       erly.  Access to debpkg with those privileges is the same as having supe&#8208;
+       ruser access to your machine.  debpkg will abort if it finds that it nei&#8208;
+       ther being run by root nor setuid root.
+
+       The devscripts package has been designed  to  allow  debpkg  to  be  made
+       setuid  root.  This works by using a compiled wrapper script, which means
+       that suidperl is not required.  See dpkg-statoverride(8) if you  wish  to
+       make  this  program setuid root.  sudo or super could also conceivably be
+       used.
+
+AUTHOR
+       Christoph Lameter  &lt;clameter@debian.org&gt;;  minor  modifications  made  by
+       Julian Gilbey &lt;jdg@debian.org&gt;.
+
+
+
+DEBIAN                          Debian Utilities                       DEBPKG(1)
+
+</pre></body></html>

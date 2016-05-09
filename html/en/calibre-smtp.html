@@ -1,0 +1,93 @@
+<html>
+<head><meta charset=utf-8/>
+<title>calibre-smtp - part of calibre</title></head>
+<body><pre>
+
+CALIBRE-SMTP(1)                      calibre                     CALIBRE-SMTP(1)
+
+
+
+NAME
+       calibre-smtp - part of calibre
+
+SYNOPSIS
+       calibre-smtp  [options] [from to text]
+
+DESCRIPTION
+       Send  mail  using the SMTP protocol. calibre-smtp has two modes of opera&#8208;
+       tion. In the compose mode you specify from to and text and these are used
+       to  build  and  send  an  email message. In the filter mode, calibre-smtp
+       reads a complete email message from STDIN and sends it.
+
+       text is the body of the email message.  If text is not specified, a  com&#8208;
+       plete email message is read from STDIN.  from is the email address of the
+       sender and to is the email address of  the  recipient.  When  a  complete
+       email  is read from STDIN, from and to are only used in the SMTP negotia&#8208;
+       tion, the message headers are not modified.
+
+       Whenever you pass arguments to calibre-smtp that  have  spaces  in  them,
+       enclose the arguments in quotation marks.
+
+OPTIONS
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show this help message and exit
+
+       -l, --localhost
+              Host name of localhost. Used when connecting to SMTP server.
+
+       -o, --outbox
+              Path to maildir folder to store failed email messages in.
+
+       -f, --fork
+              Fork  and  deliver  message in background. If you use this option,
+              you should also use --outbox to handle delivery failures.
+
+       -t, --timeout
+              Timeout for connection
+
+       -v, --verbose
+              Be more verbose
+
+   COMPOSE MAIL
+       Options to compose an email. Ignored if text is not specified
+
+       -a, --attachment
+              File to attach to the email
+
+       -s, --subject
+              Subject of the email
+
+   SMTP RELAY
+       Options to use an SMTP relay server to send mail.  calibre  will  try  to
+       send the email directly unless --relay is specified.
+
+       -r, --relay
+              An SMTP relay server to use to send mail.
+
+       --port Port  to  connect  to  on  relay  server. Default is to use 465 if
+              encryption method is SSL and 25 otherwise.
+
+       -u, --username
+              Username for relay
+
+       -p, --password
+              Password for relay
+
+       -e, --encryption-method
+              Encryption method to use when connecting  to  relay.  Choices  are
+              TLS,  SSL  and  NONE.  Default  is  TLS. WARNING: Choosing NONE is
+              highly insecure
+
+SEE ALSO
+       The User Manual is available at http://manual.calibre-ebook.com
+
+       Created by Kovid Goyal &lt;kovid@kovidgoyal.net&gt;
+
+
+
+calibre-smtp (calibre 0.8.51)     January 2013                   CALIBRE-SMTP(1)
+
+</pre></body></html>

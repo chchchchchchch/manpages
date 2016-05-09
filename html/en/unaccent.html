@@ -1,0 +1,78 @@
+<html>
+<head><meta charset=utf-8/>
+<title>unaccent - remove accents from input stream or a string</title></head>
+<body><pre>
+
+unaccent(1)                                                          unaccent(1)
+
+
+
+NAME
+       unaccent - remove accents from input stream or a string
+
+
+SYNOPSIS
+       unaccent [--debug_low] [--debug_high] [-h] charset [string] [expected]
+
+DESCRIPTION
+       With a single argument, unaccent reads data from stdin, replaces accented
+       letters by their unaccented equivalent and writes the result  on  stdout.
+       If  the  second argument (&apos;string&apos;) is provided unaccent transforms it by
+       replacing accented letters by their unaccented equivalent. The result  is
+       printed  on  the standard output.  The charset of the input string or the
+       data read from stdin is specified by the &apos;charset&apos; argument  (ISO-8859-15
+       for instance). The output is printed using the same charset.
+
+       If  the &apos;expected&apos; argument is provided, the output string is compared to
+       it. If they are not equal unaccent exits on error.
+
+       unaccent relies on the iconv(3) library to  convert  from  the  specified
+       charset  to UTF-16BE (or UTF-16 if UTF-16BE is not available). You should
+       check the manual pages for available charsets. On GNU/Linux the command
+
+       iconv -l
+
+       shows all available charsets.
+
+
+OPTIONS
+       --debug_low
+              Prints  human  readable  information  about   the   unaccentuation
+              process. See unac(3) for more information.
+
+
+       --debug_high
+              Prints very detailed information about the unaccentuation process.
+              See unac(3) for more information.
+
+
+       --help -h
+              Prints a short usage and exits.
+
+
+EXAMPLES
+       Remove accents from the string &#233;t&#233; and check that the result is ete.
+
+       unaccent ISO-8859-1 &#233;t&#233; ete
+
+
+       Remove accents from file myfile and put the result in  file  myfile.unac&#8208;
+       cent
+
+       unaccent ISO-8859-1 &lt; myfile &gt; myfile.unaccent
+
+
+SEE ALSO
+       unac(3), iconv(3)
+
+
+AUTHOR
+       Loic Dachary loic@senga.org
+       http://www.senga.org/unac/
+
+
+
+
+                                      local                          unaccent(1)
+
+</pre></body></html>

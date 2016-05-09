@@ -1,0 +1,41 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mdatopbm - convert a Microdesign .mda or .mdp file into a portable bitmap</title></head>
+<body><pre>
+
+mdatopbm(1)                                                          mdatopbm(1)
+
+
+
+NAME
+       mdatopbm - convert a Microdesign .mda or .mdp file into a portable bitmap
+
+SYNOPSIS
+       mdatopbm [-a][-d][-i][--] [ mdafile ]
+
+DESCRIPTION
+       Reads  a  MicroDesign  file  as input.  Reads from stdin if input file is
+       omitted.  Produces a portable bitmap as output.
+
+OPTIONS
+       -a     Output the PBM in ASCII rather than binary.
+
+       -d     Double the height of the output file, to compensate for the aspect
+              ratio used in MicroDesign files.
+
+       -i     Invert the colours used.
+
+       --     End of options (use this if the filename starts with &quot;-&quot;)
+
+SEE ALSO
+       pbmtomda(1), pbm(5)
+
+AUTHOR
+       Copyright (C) 1999 John Elliott &lt;jce@seasip.demon.co.uk&gt;.
+
+
+
+
+                                   3 June 1999                       mdatopbm(1)
+
+</pre></body></html>

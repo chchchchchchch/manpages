@@ -1,0 +1,76 @@
+<html>
+<head><meta charset=utf-8/>
+<title>seteuid, setegid - set effective user or group ID</title></head>
+<body><pre>
+
+SETEUID(2)                  Linux Programmer&apos;s Manual                 SETEUID(2)
+
+
+
+NAME
+       seteuid, setegid - set effective user or group ID
+
+SYNOPSIS
+       #include &lt;sys/types.h&gt;
+       #include &lt;unistd.h&gt;
+
+       int seteuid(uid_t euid);
+       int setegid(gid_t egid);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       seteuid(), setegid():
+           _BSD_SOURCE || _POSIX_C_SOURCE &gt;= 200112L || _XOPEN_SOURCE &gt;= 600
+
+DESCRIPTION
+       seteuid()  sets  the  effective user ID of the calling process.  Unprivi&#8208;
+       leged user processes may only set the effective user ID to the real  user
+       ID, the effective user ID or the saved set-user-ID.
+
+       Precisely the same holds for setegid() with &quot;group&quot; instead of &quot;user&quot;.
+
+RETURN VALUE
+       On success, zero is returned.  On error, -1 is returned, and errno is set
+       appropriately.
+
+ERRORS
+       EPERM  The calling process is not privileged (Linux: does  not  have  the
+              CAP_SETUID  capability in the case of seteuid(), or the CAP_SETGID
+              capability in the case of setegid()) and euid (respectively, egid)
+              is not the real user (group) ID, the effective user (group) ID, or
+              the saved set-user-ID (saved set-group-ID).
+
+CONFORMING TO
+       4.3BSD, POSIX.1-2001.
+
+NOTES
+       Setting the effective user (group) ID to  the  saved  set-user-ID  (saved
+       set-group-ID)  is  possible since Linux 1.1.37 (1.1.38).  On an arbitrary
+       system one should check _POSIX_SAVED_IDS.
+
+       Under  libc4,  libc5  and  glibc  2.0  seteuid(euid)  is  equivalent   to
+       setreuid(-1,  euid)  and  hence  may change the saved set-user-ID.  Under
+       glibc 2.1 and later it is equivalent to setresuid(-1, euid, -1) and hence
+       does  not change the saved set-user-ID.  Analogous remarks hold for sete&#8208;
+       gid(), with  the  difference  that  the  change  in  implementation  from
+       setregid(-1,  egid)  to  setresgid(-1, egid, -1) occurred in glibc 2.2 or
+       2.3 (dependeing on the hardware architecture).
+
+       According to POSIX.1, seteuid() (setegid()) need not permit  euid  (egid)
+       to  be  the same value as the current effective user (group) ID, and some
+       implementations do not permit this.
+
+SEE ALSO
+       geteuid(2), setresuid(2), setreuid(2), setuid(2),  capabilities(7),  cre&#8208;
+       dentials(7)
+
+COLOPHON
+       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
+       description of the project, and information about reporting bugs, can  be
+       found at http://www.kernel.org/doc/man-pages/.
+
+
+
+Linux                              2012-07-02                         SETEUID(2)
+
+</pre></body></html>

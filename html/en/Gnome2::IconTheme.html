@@ -1,0 +1,110 @@
+<html>
+<head><meta charset=utf-8/>
+<title>Gnome2::IconTheme - wrapper for GnomeIconTheme</title></head>
+<body><pre>
+
+Gnome2::IconTheme(3pm) User Contributed Perl DocumentationGnome2::IconTheme(3pm)
+
+
+
+NAME
+       Gnome2::IconTheme - wrapper for GnomeIconTheme
+
+HIERARCHY
+         Glib::Object
+         +----Gnome2::IconTheme
+
+METHODS
+   icontheme = Gnome2::IconTheme-&gt;new
+   boolean = $theme-&gt;get_allow_svg
+   $theme-&gt;set_allow_svg ($allow_svg)
+       &#183;   $allow_svg (boolean)
+
+   $theme-&gt;append_search_path ($path)
+       &#183;   $path (string)
+
+   $theme-&gt;set_custom_theme ($theme_name)
+       &#183;   $theme_name (string)
+
+   string = $theme-&gt;get_example_icon_name
+   boolean = $theme-&gt;has_icon ($icon_name)
+       &#183;   $icon_name (string)
+
+   list = $theme-&gt;list_icons ($context=undef)
+       &#183;   $context (string)
+
+       Returns a list of icons.
+
+   list = $icon_theme-&gt;lookup ($thumbnail_factory, $file_uri, $custom_icon,
+       $file_info, $mime_type, $flags)
+       &#183;   $thumbnail_factory (Gnome2::ThumbnailFactory or undef)
+
+       &#183;   $file_uri (string)
+
+       &#183;   $custom_icon (scalar)
+
+       &#183;   $file_info (Gnome2::VFS::FileInfo)
+
+       &#183;   $mime_type (string)
+
+       &#183;   $flags (Gnome2::IconLookupFlags)
+
+       Returns the icon name and a GnomeIconLookupFlags.
+
+   list = $theme-&gt;lookup_icon ($icon_name, $size)
+       &#183;   $icon_name (string)
+
+       &#183;   $size (integer)
+
+       Returns the filename, the icon data and the base size.
+
+   list = $icon_theme-&gt;lookup_sync ($thumbnail_factory, $file_uri, $custom_icon,
+       $flags)
+       &#183;   $thumbnail_factory (Gnome2::ThumbnailFactory or undef)
+
+       &#183;   $file_uri (string)
+
+       &#183;   $custom_icon (scalar)
+
+       &#183;   $flags (Gnome2::IconLookupFlags)
+
+       Returns the icon name and a GnomeIconLookupFlags.
+
+   $theme-&gt;prepend_search_path ($path)
+       &#183;   $path (string)
+
+   boolean = $theme-&gt;rescan_if_needed
+   list = $theme-&gt;get_search_path
+       Returns a list of paths.
+
+   $theme-&gt;set_search_path (...)
+       &#183;   ... (list) of paths
+
+SIGNALS
+       changed (Gnome2::IconTheme)
+
+ENUMS AND FLAGS
+   flags Gnome2::IconLookupFlags
+       &#183;   &apos;none&apos; / &apos;GNOME_ICON_LOOKUP_FLAGS_NONE&apos;
+
+       &#183;   &apos;embedding-text&apos; / &apos;GNOME_ICON_LOOKUP_FLAGS_EMBEDDING_TEXT&apos;
+
+       &#183;   &apos;show-small-images-as-themselves&apos; /
+           &apos;GNOME_ICON_LOOKUP_FLAGS_SHOW_SMALL_IMAGES_AS_THEMSELVES&apos;
+
+       &#183;   &apos;allow-svg-as-themselves&apos; /
+           &apos;GNOME_ICON_LOOKUP_FLAGS_ALLOW_SVG_AS_THEMSELVES&apos;
+
+SEE ALSO
+       Gnome2, Glib::Object
+
+COPYRIGHT
+       Copyright (C) 2003-2004 by the gtk2-perl team.
+
+       This software is licensed under the LGPL.  See Gnome2 for a full notice.
+
+
+
+perl v5.14.2                       2011-11-16             Gnome2::IconTheme(3pm)
+
+</pre></body></html>

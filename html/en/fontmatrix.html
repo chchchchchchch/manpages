@@ -1,0 +1,122 @@
+<html>
+<head><meta charset=utf-8/>
+<title>fontmatrix - a powerful open source font manager</title></head>
+<body><pre>
+
+fontmatrix(1)                                                      fontmatrix(1)
+
+
+
+NAME
+       fontmatrix - a powerful open source font manager
+
+
+SYNOPSIS
+       fontmatrix [-h|--help]
+
+DESCRIPTION
+       Fontmatrix  is an open source font manager originally developed on Linux,
+       but now runs on OSX as well.
+
+
+       This man page only provides summaries of some aspects  of  the  program&apos;s
+       use.  It&apos;s  main purpose is to make sure you can find the full documenta&#8208;
+       tion quickly and easily.
+
+OPTIONS
+       The definitive options are in the program&apos;s usage statement. Run: fontma&#8208;
+       trix --help to view the usage statement.
+
+
+       -l, --lang xx
+              Overrides  the  system  locale and runs Fontmatrix in language xx.
+              The language is specified with the same POSIX language codes  that
+              are  used  in the LANG and LC_ALL environment variables. For exam&#8208;
+              ple, English can be selected with &apos;en&apos; (generic English),  &apos;en_GB&apos;
+              (British  English),  &apos;en_US&apos;  (American  english), etc. Similarly,
+              Deutsch can be selected with &apos;de&apos; or &apos;de_DE&apos;.
+
+
+              -la, --langs-available
+              Print a list of languages for which  user  interface  translations
+              are  available. To use that language run Fontmatrix as &apos;fontmatrix
+              -l xx&apos; where xx is the short language  code,  or  set  the  locale
+              environment variables as described below.
+
+       -v, --version
+              Prints the Fontmatrix version number and exits.
+
+       -f, --file
+              Open  the  specified  file.  It&apos;s possible to simply pass the file
+              name as an unqualified argument instead of using this,  though  if
+              the  name  begins with a - you will need to use --, eg &apos;fontmatrix
+              -- -myfile.sla&apos;.
+
+       -h, --help
+              Print a brief usage summary.
+
+       -ns, --no-splash
+              Suppresses display of the splash screen during SCribus start-up.
+
+ENVIRONMENT
+       Fontmatrix respects the standard locale environment variables. Others may
+       be  used through underlying libraries, such as Qt, or by programs used by
+       Fontmatrix.  LC_ALL,  LC_MESSAGES,  LANG  POSIX  locale.  See  locale(1).
+       Fontmatrix uses these three environment variables, in the listed order of
+       precedence, to select the language (including the user interface transla&#8208;
+       tion) to use. If none are set, it will fall back on the locale set by the
+       underlying Qt library.
+
+       PATH   Fontmatrix may search the PATH for external tools if  their  paths
+              are  not  specified  absolutely.  This is currently most likely to
+              affect you if you have multiple copies of fontforge(1)  installed.
+              You  can  set an absolute path to the correct fontforge(1) in your
+              Fontmatrix preferences and bypass the PATH search.
+
+       A few important environment variables from other programs are  summarised
+       here for convenience, though you should check the original program&apos;s doc&#8208;
+       umentation if you are having trouble.
+
+
+       FILES
+
+       $HOME/.fontmatrix/
+              User preferences are  stored  in  $HOME/.fontmatrix/  on  Unix  or
+              Linux. Most other paths are configurable from the Fontmatrix pref&#8208;
+              erences.  $HOME/.fonts/
+
+       $HOME/.fonts.conf
+
+       /etc/fonts
+              Fontconfig, the library used by Fontmatrix  to  locate  fonts,  is
+              normally    configured    with   files   in   /etc/fonts,   mainly
+              /etc/fonts/fonts.conf and /etc/fonts/local.conf . It may also  use
+              a  config  file $HOME/.fonts.conf and fonts in $HOME/.fonts/ . See
+              fonts.conf(5) and the fontconfig documentation for  more  informa&#8208;
+              tion.  Note that Fontmatrix may also use its internal font path to
+              locate more fonts - see  the  Preferences  dialog  and  fontmatrix
+              help.
+
+RELATED SOFTWARE AND AFFILIATES
+       Scribus - http://www.scribus.net
+
+       Other  affiliates  may  be  listed  in  the  footer on http://www.fontma&#8208;
+       trix.net/
+
+
+
+BUGS
+       See https://gna.org/bugs/?group=undertype for the Fontmatrix on-line sta&#8208;
+       tus tracker, which is used to track bug reports and feature requests.  If
+       you intend to submit a bug report or feature request, please  search  the
+       bug database first.
+
+AUTHORS
+       Please  see  the  About  Fontmatrix option in the Help menu for a list of
+       authors, translators, and contributors.
+
+
+
+Peter Linnell                  Updated 2008-05-18                  fontmatrix(1)
+
+</pre></body></html>

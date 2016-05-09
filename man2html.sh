@@ -1,77 +1,97 @@
 #!/bin/bash
 
- # TODO: id for anchor link
 
-  MANBASE="/usr/share/man/man"
-  HTMLDIR="html/en"
- #GROFF="groff -ekpstR -mtty-char -mandoc -Tutf8 -rLL=80n"
   GROFF="groff -mandoc -T utf8 -P -cbuof"
+  MANBASE="/usr/share/man/man"
+  HTMLDIR="html/en"; TMP=tmp.txt
 
-  TMP=tmp.txt
-
-  echo > collect.txt
+# CONVERT ALL FILES YOU FIND IN THE MAN DIRECTORY
+# ---------------------------------------------------------------------- #
 
   for MANSRC in `find ${MANBASE}* -name "*.*"`
    do
-      echo "----"; echo "$MANSRC"
-      if [ `echo "$MANSRC" | grep "z$" | #
-            wc -l` -gt 0 ]; then
-            CAT="zcat"; else CAT="cat"
-      fi
+      echo "----"; echo "$MANSRC" # PRINT SOME INFORMATION
 
-      eval "$CAT" "$MANSRC"    | #
-      eval "$GROFF -rLL=2000n" | #
-      recode utf-8..h0 > $TMP    #
+      if [ `echo "$MANSRC" | grep "z$" | # CHECK IF .gz
+            wc -l` -gt 0 ]; then CAT="zcat"; else CAT="cat";fi
 
-      L=`grep -in "^NAME$" $TMP | head -n 1 | #
-         cut -d ":" -f 1`; L=`expr $L + 1`
+    # WRITE TO TEMPORARY FILE
+    # ------------------------------------------------------------------ #
+      eval "$CAT" "$MANSRC"    | # RUN CAT ON MANSRC
+      eval "$GROFF -rLL=2000n" | # RUN GROFF EXTRAWIDE
+      recode utf-8..h0 > $TMP    # RECODE FOR HTML
 
-      TITLE=`sed -n "${L}p" $TMP | recode h0..utf8 | sed 's/^[ ]*//'`
+    # FIND TITLE (= NAME + DESCRIPTION)
+    # ------------------------------------------------------------------ #
+      L=`grep -in "^NAME$" $TMP | head -n 1 | # FIND NAME (=LINE NUMBER)
+         cut -d ":" -f 1`; L=`expr $L + 1`    # INCREASE LINE NUMBER + 1
+      TITLE=`sed -n "${L}p" $TMP | # SELECT TITLE (=ONE AFTER NAME)
+             recode h0..utf8     | # BACK TO UNICODE
+             sed 's/^[ ]*//'`      # DELETE LEADING BLANKS
 
+    # IF TITLE IS SET
+    # ------------------------------------------------------------------ #
       if [ `echo $TITLE | wc -c` -gt 1 ];then
 
-            NAMES=`echo $TITLE | #
-                   sed 's/ [-—]* .*$//' | #
-                   sed 's/^[ ]*//'`
-            DESCRIPTION=`echo $TITLE | #
-                         sed 's/^.* [-—]* //'`
-            echo "$TITLE"; echo
-            LISTITEM="<span class=\"m\">"
+        echo "$TITLE";                # PRINT SOME INFORMATION
 
-            eval "$CAT" "$MANSRC"  | #
-            eval "$GROFF -rLL=80n" | #
-            recode utf-8..h0           > $TMP
+        NAMES=`echo $TITLE          | # DISPLAY FULL TITLE 
+               sed 's/ [-—]* .*$//' | # DELETE ALL AFTER ' - '
+               sed 's/^[ ]*//'`       # DELETE LEADING BLANKS
+        DESCRIPTION=`echo $TITLE        | # DISPLAY FULL TITLE
+                     sed 's/^.* [-—]* //'` # DELETE ALL IN FRONT OF ' - '
 
-            for NAME in `echo $NAMES | #
-                         sed 's/,/\n/g'`
-             do
-                HTML="$HTMLDIR/${NAME}.html"
-                echo "$NAME"
-                LISTITEM="${LISTITEM}\
-                <a href=\"${NAME}.html\">$NAME</a>, "
+      # COLLECT FOR LIST
+      # ---------------------------------------------------------------- #
+        LISTITEM="<span class=\"m\">"
 
-                echo "<html>"                        >  $HTML
-                echo "<head><meta charset="utf-8"/>" >> $HTML
-                echo "<title>$TITLE</title></head>"  >> $HTML
-                echo "<body><pre>"                   >> $HTML
-                echo ""                              >> $HTML
-                cat $TMP                             >> $HTML
-                echo ""                              >> $HTML
-                echo "</pre></body></html>"          >> $HTML
+      # WRITE TO TEMPORARY FILE
+      # ---------------------------------------------------------------- #
+        eval "$CAT" "$MANSRC"  | # RUN CAT ON MANSRC
+        eval "$GROFF -rLL=80n" | # RUN GROFF 80c
+        recode utf-8..h0 > $TMP  # RECODE FOR HTML
 
-            done
-            echo "$DESCRIPTION"
-            LISTITEM=`echo ${LISTITEM} | #
-                      sed 's/,$//'`" - \
-           <span class=\"d\">$DESCRIPTION</span> </span>"
+      # MAKE IDENTICAL HTML PAGE FOR EACH NAME
+      # ---------------------------------------------------------------- #
+        for NAME in `echo $NAMES | #
+                     sed 's/,/\n/g'`
+         do
+          # SET HTML FILE
+          # ------------------------------------------------ #
+            HTML="$HTMLDIR/${NAME}.html"
 
-            echo $LISTITEM >> collect.txt
+          # COLLECT FOR LIST
+          # ------------------------------------------------ #
+            ID=`echo $NAME | md5sum | cut -c 1-6`
+            LISTITEM="${LISTITEM}\
+            <a href=\"${NAME}.html\" id=\"$ID\">$NAME</a>, "
+
+          # WRITE HTML FILE
+          # ------------------------------------------------ #
+            echo "<html>"                           >  $HTML
+            echo "<head><meta charset="utf-8"/>"    >> $HTML
+            echo "<title>$TITLE</title></head>"     >> $HTML
+            echo "<body><pre>"                      >> $HTML
+            echo ""                                 >> $HTML
+            cat $TMP                                >> $HTML
+            echo ""                                 >> $HTML
+            echo "</pre></body></html>"             >> $HTML
+        done
+
+      # COLLECT FOR LIST
+      # ---------------------------------------------------------------- #
+        LISTITEM=`echo ${LISTITEM} | #
+                  sed 's/,$//'`" - \
+       <span class=\"d\">$DESCRIPTION</span> </span>"
+       echo $LISTITEM >> collect.txt
+
       fi
-
-
+      # ---------------------------------------------------------------- #
   done
 
+# CLEAN UP
+# ---------------------------------------------------------------------- #
+  rm $TMP
 
 exit 0;
-
 

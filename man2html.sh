@@ -9,7 +9,7 @@
 # CONVERT ALL FILES YOU FIND IN THE MAN DIRECTORY
 # ---------------------------------------------------------------------- #
 
-  for MANSRC in `find ${MANBASE}* -name "*.*" | head -n 10`
+  for MANSRC in `find ${MANBASE}* -name "*.*" | grep cowsay`
    do
       echo "----"; echo "$MANSRC" # PRINT SOME INFORMATION
 
@@ -51,7 +51,7 @@
       # MAKE IDENTICAL HTML PAGE FOR EACH NAME
       # ---------------------------------------------------------------- #
         for NAME in `echo $NAMES   | # NAMES SEPARATED BY ,
-                     sed 's/,/\n/g'` # KOMMA TO NEWLINES
+                     sed 's/[,/]/\n/g'` # KOMMA TO NEWLINES
          do
           # SET HTML FILE
           # ------------------------------------------------ #
@@ -84,7 +84,7 @@
         </head><body><p>" | #
   tr -s ' ' | sed 's/> </></g' > $INDEX
 
-  for HTML in `ls $HTMLDIR | grep ".html$"`
+  for HTML in `ls $HTMLDIR | grep ".html$" | head -n 10`
    do
       LI="<span class=\"m\">"
       TITLE=`grep '<title>' $HTMLDIR/$HTML     | # GREP <title>

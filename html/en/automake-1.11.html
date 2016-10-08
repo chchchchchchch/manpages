@@ -1,0 +1,160 @@
+<html>
+<head><meta charset=utf-8/>
+<title>automake - manual page for automake 1.11.6</title></head>
+<body><pre>
+
+AUTOMAKE(1)                       User Commands                      AUTOMAKE(1)
+
+
+
+NAME
+       automake - manual page for automake 1.11.6
+
+SYNOPSIS
+       automake [OPTION] ... [Makefile]...
+
+DESCRIPTION
+       Generate Makefile.in for configure from Makefile.am.
+
+   Operation modes:
+       --help print this help, then exit
+
+       --version
+              print version number, then exit
+
+       -v, --verbose
+              verbosely list files processed
+
+       --no-force
+              only update Makefile.in&apos;s that are out of date
+
+       -W, --warnings=CATEGORY
+              report the warnings falling in CATEGORY
+
+   Dependency tracking:
+       -i, --ignore-deps
+              disable dependency tracking code
+
+       --include-deps
+              enable dependency tracking code
+
+   Flavors:
+       --cygnus
+              assume program is part of Cygnus-style tree
+
+       --foreign
+              set strictness to foreign
+
+       --gnits
+              set strictness to gnits
+
+       --gnu  set strictness to gnu
+
+   Library files:
+       -a, --add-missing
+              add missing standard files to package
+
+       --libdir=DIR
+              directory storing library files
+
+       -c, --copy
+              with -a, copy missing files (default is symlink)
+
+       -f, --force-missing
+              force update of standard files
+
+   Warning categories include:
+       `gnu&apos;  GNU coding standards (default in gnu and gnits modes)
+
+       `obsolete&apos;
+              obsolete features or constructions
+&#12;       `override&apos;
+              user redefinitions of Automake rules or variables
+
+       `portability&apos;
+              portability issues (default in gnu and gnits modes)
+
+       `extra-portability&apos;
+              extra portability issues related to obscure tools
+
+       `syntax&apos;
+              dubious syntactic constructs (default)
+
+       `unsupported&apos;
+              unsupported or incomplete features (default)
+
+       `all&apos;  all the warnings
+
+       `no-CATEGORY&apos;
+              turn off warnings in CATEGORY
+
+       `none&apos; turn off all the warnings
+
+       `error&apos;
+              treat warnings as errors
+
+   Files automatically distributed if found (always):
+       ABOUT-GNU
+              INSTALL             config.guess        ltcf-gcj.sh
+
+       ABOUT-NLS
+              NEWS                config.rpath        ltconfig
+
+       AUTHORS
+              README              config.sub          ltmain.sh
+
+       BACKLOG
+              THANKS              depcomp             mdate-sh
+
+       COPYING
+              TODO                elisp-comp          missing
+
+       COPYING.DOC
+              ansi2knr.1          install-sh          mkinstalldirs
+
+       COPYING.LESSER
+              ansi2knr.c          libversion.in       py-compile
+
+       COPYING.LIB
+              ar-lib              ltcf-c.sh           texinfo.tex
+
+       ChangeLog
+              compile             ltcf-cxx.sh         ylwrap
+
+   Files automatically distributed if found (under certain conditions):
+       acconfig.h
+              config.h.bot        configure           configure.in
+
+       aclocal.m4
+              config.h.top        configure.ac        stamp-vti
+
+AUTHOR
+       Written by Tom Tromey &lt;tromey@redhat.com&gt;
+
+              and Alexandre Duret-Lutz &lt;adl@gnu.org&gt;.
+
+REPORTING BUGS
+       Report bugs to &lt;bug-automake@gnu.org&gt;.
+       GNU Automake home page: &lt;http://www.gnu.org/software/automake/&gt;.
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;.
+
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv2+: GNU GPL
+       version 2 or later &lt;http://gnu.org/licenses/gpl-2.0.html&gt;
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The  full  documentation  for automake is maintained as a Texinfo manual.
+       If the info and automake programs are properly installed  at  your  site,
+       the command
+
+              info automake
+
+       should give you access to the complete manual.
+
+
+
+automake 1.11.6                     July 2012                        AUTOMAKE(1)
+
+</pre></body></html>

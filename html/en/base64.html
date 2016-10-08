@@ -1,88 +1,69 @@
 <html>
 <head><meta charset=utf-8/>
-<title>base64 - base64-encode/decode binary data</title></head>
+<title>base64 - base64 encode/decode data and print to standard output</title></head>
 <body><pre>
 
-base64(3tcl)          Text encoding &amp; decoding binary data          base64(3tcl)
+BASE64(1)                         User Commands                        BASE64(1)
 
 
-
-________________________________________________________________________________
 
 NAME
-       base64 - base64-encode/decode binary data
+       base64 - base64 encode/decode data and print to standard output
 
 SYNOPSIS
-       package require Tcl  8
-
-       package require base64  ?2.4.2?
-
-       ::base64::encode ?-maxlen maxlen? ?-wrapchar wrapchar? string
-
-       ::base64::decode string
-
-_________________________________________________________________
+       base64 [OPTION]... [FILE]
 
 DESCRIPTION
-       This  package  provides  procedures to encode binary data into base64 and
-       back.
+       Base64 encode or decode FILE, or standard input, to standard output.
 
-       ::base64::encode ?-maxlen maxlen? ?-wrapchar wrapchar? string
-              Base64 encodes the given binary string  and  returns  the  encoded
-              result.  Inserts the character wrapchar every maxlen characters of
-              output. wrapchar defaults to newline. maxlen defaults to 76.
+       -d, --decode
+              decode data
 
-              Note well: If your string is not simple ascii you should  fix  the
-              string encoding before doing base64 encoding. See the examples.
+       -i, --ignore-garbage
+              when decoding, ignore non-alphabet characters
 
-              The  command will throw an error for negative values of maxlen, or
-              if maxlen is not an integer number.
+       -w, --wrap=COLS
+              wrap  encoded  lines  after COLS character (default 76).  Use 0 to
+              disable line wrapping
 
-       ::base64::decode string
-              Base64 decodes the given string and returns the binary data.   The
-              decoder ignores whitespace in the string.
+       --help display this help and exit
 
-EXAMPLES
-              % base64::encode &quot;Hello, world&quot;
-              SGVsbG8sIHdvcmxk
+       --version
+              output version information and exit
 
+       With no FILE, or when FILE is -, read standard input.
 
+       The data are encoded as described for the base64 alphabet  in  RFC  3548.
+       When decoding, the input may contain newlines in addition to the bytes of
+       the formal base64 alphabet.  Use --ignore-garbage to attempt  to  recover
+       from any other non-alphabet bytes in the encoded stream.
 
-              % base64::encode [string repeat xyz 20]
-              eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6
-              eHl6eHl6eHl6
-              % base64::encode -wrapchar &quot;&quot; [string repeat xyz 20]
-              eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6
+AUTHOR
+       Written by Simon Josefsson.
 
-
-
-              # NOTE: base64 encodes BINARY strings.
-              % set chemical [encoding convertto utf-8 &quot;C\u2088H\u2081\u2080N\u2084O\u2082&quot;]
-              % set encoded [base64::encode $chemical]
-              Q+KCiEjigoHigoBO4oKET+KCgg==
-              % set caffeine [encoding convertfrom utf-8 [base64::decode $encoded]]
-
-
-BUGS, IDEAS, FEEDBACK
-       This  document,  and  the  package it describes, will undoubtedly contain
-       bugs and other problems.  Please report such in the  category  base64  of
-       the  Tcllib SF Trackers [http://sourceforge.net/tracker/?group_id=12883].
-       Please also report any ideas for enhancements you  may  have  for  either
-       package and/or documentation.
-
-KEYWORDS
-       base64, encoding
-
-CATEGORY
-       Text processing
+REPORTING BUGS
+       Report base64 bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report base64 translation bugs to &lt;http://translationproject.org/team/&gt;
 
 COPYRIGHT
-       Copyright (c) 2000, Eric Melski
-       Copyright (c) 2001, Miguel Sofer
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The  full documentation for base64 is maintained as a Texinfo manual.  If
+       the info and base64 programs are properly installed  at  your  site,  the
+       command
+
+              info coreutils &apos;base64 invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-
-base64                                2.4.2                         base64(3tcl)
+GNU coreutils 8.12.197-032bb     September 2011                        BASE64(1)
 
 </pre></body></html>

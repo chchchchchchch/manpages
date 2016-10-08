@@ -1,350 +1,163 @@
 <html>
 <head><meta charset=utf-8/>
-<title>stat, fstat, lstat - get file status</title></head>
+<title>stat - display file or file system status</title></head>
 <body><pre>
 
-STAT(2)                     Linux Programmer&apos;s Manual                    STAT(2)
+STAT(1)                           User Commands                          STAT(1)
 
 
 
 NAME
-       stat, fstat, lstat - get file status
+       stat - display file or file system status
 
 SYNOPSIS
-       #include &lt;sys/types.h&gt;
-       #include &lt;sys/stat.h&gt;
-       #include &lt;unistd.h&gt;
-
-       int stat(const char *path, struct stat *buf);
-       int fstat(int fd, struct stat *buf);
-       int lstat(const char *path, struct stat *buf);
-
-   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
-
-       lstat():
-           _BSD_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
-           _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
-           || /* Since glibc 2.10: */ _POSIX_C_SOURCE &gt;= 200112L
+       stat [OPTION]... FILE...
 
 DESCRIPTION
-       These functions return information about  a  file.   No  permissions  are
-       required on the file itself, but&#8212;in the case of stat() and lstat() &#8212; exe&#8208;
-       cute (search) permission is required on all of the  directories  in  path
-       that lead to the file.
+       Display file or file system status.
 
-       stat() stats the file pointed to by path and fills in buf.
+       -L, --dereference
+              follow links
 
-       lstat()  is  identical to stat(), except that if path is a symbolic link,
-       then the link itself is stat-ed, not the file that it refers to.
+       -f, --file-system
+              display file system status instead of file status
 
-       fstat() is identical to stat(), except that the file  to  be  stat-ed  is
-       specified by the file descriptor fd.
+       -c  --format=FORMAT
+              use  the specified FORMAT instead of the default; output a newline
+              after each use of FORMAT
 
-       All  of  these  system  calls return a stat structure, which contains the
-       following fields:
+       --printf=FORMAT
+              like --format, but interpret backslash escapes, and do not  output
+              a  mandatory  trailing newline.  If you want a newline, include \n
+              in FORMAT
 
-           struct stat {
-               dev_t     st_dev;     /* ID of device containing file */
-               ino_t     st_ino;     /* inode number */
-               mode_t    st_mode;    /* protection */
-               nlink_t   st_nlink;   /* number of hard links */
-               uid_t     st_uid;     /* user ID of owner */
-               gid_t     st_gid;     /* group ID of owner */
-               dev_t     st_rdev;    /* device ID (if special file) */
-               off_t     st_size;    /* total size, in bytes */
-               blksize_t st_blksize; /* blocksize for file system I/O */
-               blkcnt_t  st_blocks;  /* number of 512B blocks allocated */
-               time_t    st_atime;   /* time of last access */
-               time_t    st_mtime;   /* time of last modification */
-               time_t    st_ctime;   /* time of last status change */
-           };
+       -t, --terse
+              print the information in terse form
 
-       The st_dev field describes the device on which this file  resides.   (The
-       major(3)  and minor(3) macros may be useful to decompose the device ID in
-       this field.)
+       --help display this help and exit
 
-       The st_rdev field describes the device that this file (inode) represents.
+       --version
+              output version information and exit
 
-       The st_size field gives the size of the file (if it is a regular file  or
-       a  symbolic link) in bytes.  The size of a symbolic link is the length of
-       the pathname it contains, without a terminating null byte.
-&#12;       The st_blocks field indicates the number of blocks allocated to the file,
-       512-byte  units.  (This may be smaller than st_size/512 when the file has
-       holes.)
+       The valid format sequences for files (without --file-system):
 
-       The st_blksize field gives the &quot;preferred&quot; blocksize for  efficient  file
-       system  I/O.   (Writing  to a file in smaller chunks may cause an ineffi&#8208;
-       cient read-modify-rewrite.)
+       %a     Access rights in octal
 
-       Not all of the Linux file systems implement all of the time fields.  Some
-       file system types allow mounting in such a way that file and/or directory
-       accesses do not cause an update of the  st_atime  field.   (See  noatime,
-       nodiratime,   and  relatime  in  mount(8),  and  related  information  in
-       mount(2).)  In addition, st_atime is not updated if a file is opened with
-       the O_NOATIME; see open(2).
+       %A     Access rights in human readable form
 
-       The  field  st_atime  is  changed  by  file  accesses,  for  example,  by
-       execve(2), mknod(2), pipe(2), utime(2) and read(2)  (of  more  than  zero
-       bytes).  Other routines, like mmap(2), may or may not update st_atime.
+       %b     Number of blocks allocated (see %B)
 
-       The  field  st_mtime  is  changed  by file modifications, for example, by
-       mknod(2), truncate(2), utime(2) and write(2) (of more than  zero  bytes).
-       Moreover,  st_mtime of a directory is changed by the creation or deletion
-       of files in that directory.   The  st_mtime  field  is  not  changed  for
-       changes in owner, group, hard link count, or mode.
+       %B     The size in bytes of each block reported by %b
 
-       The  field st_ctime is changed by writing or by setting inode information
-       (i.e., owner, group, link count, mode, etc.).
+       %C     SELinux security context string
 
-       The following POSIX macros are defined to check the file type  using  the
-       st_mode field:
+       %d     Device number in decimal
 
-           S_ISREG(m)  is it a regular file?
+       %D     Device number in hex
 
-           S_ISDIR(m)  directory?
+       %f     Raw mode in hex
 
-           S_ISCHR(m)  character device?
+       %F     File type
 
-           S_ISBLK(m)  block device?
+       %g     Group ID of owner
 
-           S_ISFIFO(m) FIFO (named pipe)?
+       %G     Group name of owner
 
-           S_ISLNK(m)  symbolic link?  (Not in POSIX.1-1996.)
+       %h     Number of hard links
 
-           S_ISSOCK(m) socket?  (Not in POSIX.1-1996.)
+       %i     Inode number
 
-       The following flags are defined for the st_mode field:
+       %m     Mount point
+&#12;       %n     File name
 
-           lB  l  l.   S_IFMT    0170000   bit mask for the file type bit fields
-           S_IFSOCK  0140000   socket     S_IFLNK   0120000   symbolic      link
-           S_IFREG   0100000   regular   file  S_IFBLK   0060000   block  device
-           S_IFDIR   0040000   directory  S_IFCHR   0020000   character   device
-           S_IFIFO   0010000   FIFO      S_ISUID   0004000   set     UID     bit
-           S_ISGID   0002000   set-group-ID        bit        (see        below)
-           S_ISVTX   0001000   sticky  bit  (see below) S_IRWXU   00700     mask
-           for file owner permissions S_IRUSR   00400     owner has read permis&#8208;
-           sion      S_IWUSR   00200     owner      has     write     permission
-           S_IXUSR   00100     owner        has        execute        permission
-           S_IRWXG   00070     mask         for         group        permissions
-           S_IRGRP   00040     group         has         read         permission
-           S_IWGRP   00020     group         has         write        permission
-           S_IXGRP   00010     group        has        execute        permission
-           S_IRWXO   00007     mask  for  permissions  for others (not in group)
-           S_IROTH   00004     others        have        read         permission
-           S_IWOTH   00002     others        have        write        permission
-           S_IXOTH   00001     others have execute permission
-&#12;       The set-group-ID bit (S_ISGID) has several special uses.  For a directory
-       it  indicates  that BSD semantics is to be used for that directory: files
-       created there inherit their group ID from the  directory,  not  from  the
-       effective group ID of the creating process, and directories created there
-       will also get the S_ISGID bit set.  For a file that  does  not  have  the
-       group  execution bit (S_IXGRP) set, the set-group-ID bit indicates manda&#8208;
-       tory file/record locking.
+       %N     Quoted file name with dereference if symbolic link
 
-       The sticky bit (S_ISVTX) on a directory means that a file in that  direc&#8208;
-       tory  can  be  renamed  or  deleted only by the owner of the file, by the
-       owner of the directory, and by a privileged process.
+       %o     I/O block size
 
-RETURN VALUE
-       On success, zero is returned.  On error, -1 is returned, and errno is set
-       appropriately.
+       %s     Total size, in bytes
 
-ERRORS
-       EACCES Search permission is denied for one of the directories in the path
-              prefix of path.  (See also path_resolution(7).)
+       %t     Major device type in hex
 
-       EBADF  fd is bad.
+       %T     Minor device type in hex
 
-       EFAULT Bad address.
+       %u     User ID of owner
 
-       ELOOP  Too many symbolic links encountered while traversing the path.
+       %U     User name of owner
 
-       ENAMETOOLONG
-              path is too long.
+       %w     Time of file birth, human-readable; - if unknown
 
-       ENOENT A component of path does not exist, or path is an empty string.
+       %W     Time of file birth, seconds since Epoch; 0 if unknown
 
-       ENOMEM Out of memory (i.e., kernel memory).
+       %x     Time of last access, human-readable
 
-       ENOTDIR
-              A component of the path prefix of path is not a directory.
+       %X     Time of last access, seconds since Epoch
 
-       EOVERFLOW
-              path or fd refers to a file whose size, inode number, or number of
-              blocks  cannot  be  represented in, respectively, the types off_t,
-              ino_t, or blkcnt_t.  This error can occur when,  for  example,  an
-              application  compiled  on  a  32-bit platform without -D_FILE_OFF&#8208;
-              SET_BITS=64 calls stat() on a file whose  size  exceeds  (1&lt;&lt;31)-1
-              bytes.
+       %y     Time of last modification, human-readable
 
-CONFORMING TO
-       These system calls conform to SVr4, 4.3BSD, POSIX.1-2001.
+       %Y     Time of last modification, seconds since Epoch
 
-       According  to  POSIX.1-2001, lstat() on a symbolic link need return valid
-       information only in the st_size field and the file-type component of  the
-       st_mode field of the stat structure.  POSIX.-2008 tightens the specifica&#8208;
-       tion, requiring lstat() to return valid information in all fields  except
-       the permission bits in st_mode.
+       %z     Time of last change, human-readable
 
-       Use  of  the st_blocks and st_blksize fields may be less portable.  (They
-       were introduced in BSD.  The interpretation differs between systems,  and
-       possibly  on  a single system when NFS mounts are involved.)  If you need
-       to obtain  the  definition  of  the  blkcnt_t  or  blksize_t  types  from
-       &lt;sys/stat.h&gt;,  then  define  _XOPEN_SOURCE  with the value 500 or greater
-       (before including any header files).
+       %Z     Time of last change, seconds since Epoch
 
-       POSIX.1-1990 did not describe the  S_IFMT,  S_IFSOCK,  S_IFLNK,  S_IFREG,
-       S_IFBLK,  S_IFDIR,  S_IFCHR,  S_IFIFO,  S_ISVTX  constants,  but  instead
-       demanded the use of the macros S_ISDIR(), etc.  The S_IF*  constants  are
-       present in POSIX.1-2001 and later.
+       Valid format sequences for file systems:
 
-       The S_ISLNK() and S_ISSOCK() macros are not in POSIX.1-1996, but both are
-       present in POSIX.1-2001; the former is  from  SVID  4,  the  latter  from
-       SUSv2.
+       %a     Free blocks available to non-superuser
 
-       UNIX  V7  (and later systems) had S_IREAD, S_IWRITE, S_IEXEC, where POSIX
-       prescribes the synonyms S_IRUSR, S_IWUSR, S_IXUSR.
+       %b     Total data blocks in file system
 
-   Other Systems
-       Values that have been (or are) in use on various systems:
+       %c     Total file nodes in file system
 
-       l l l l l.  hex  name ls   octal     description
-       f000 S_IFMT         170000    mask for file type
-       0000           000000    T{ SCO out-of-service inode; BSD unknown type;
-       SVID-v2 and XPG2 have both 0 and 0100000 for ordinary file T}
-       1000 S_IFIFO   p|   010000    FIFO (named pipe)
-       2000 S_IFCHR   c    020000    character special (V7)
-       3000 S_IFMPC        030000    multiplexed character special (V7)
-       4000 S_IFDIR   d/   040000    directory (V7)
-       5000 S_IFNAM        050000    T{ XENIX named special file with two sub&#8208;
-       types, distinguished by st_rdev values 1, 2 T}
-       0001 S_INSEM   s    000001    XENIX semaphore subtype of IFNAM
-       0002 S_INSHD   m    000002    XENIX shared data subtype of IFNAM
-       6000 S_IFBLK   b    060000    block special (V7)
-       7000 S_IFMPB        070000    multiplexed block special (V7)
-       8000 S_IFREG   -    100000    regular (V7)
-       9000 S_IFCMP        110000    VxFS compressed
-       9000 S_IFNWK   n    110000    network special (HP-UX)
-       a000 S_IFLNK   l@   120000    symbolic link (BSD)
-       b000 S_IFSHAD       130000    T{ Solaris shadow inode for ACL (not seen
-       by user space) T} c000 S_IFSOCK  s=   140000    socket (BSD; also
-       &quot;S_IFSOC&quot; on VxFS) d000 S_IFDOOR  D&gt;   150000    Solaris door
-       e000 S_IFWHT   w%   160000    BSD whiteout (not used for inode)
-       0200 S_ISVTX        001000    T{ sticky bit: save swapped text even after
-       use (V7)
-       reserved (SVID-v2)
-       On nondirectories: don&apos;t cache this file (SunOS)
-       On directories: restricted deletion flag (SVID-v4.2) T}
-       0400 S_ISGID        002000    T{ set-group-ID on execution (V7)
-       for directories: use BSD semantics for propagation of GID T}
-       0400 S_ENFMT        002000    T{ System V file locking enforcement
-       (shared with S_ISGID) T} 0800 S_ISUID        004000    set-user-ID on
-       execution (V7) 0800 S_CDF          004000    T{ directory is a context
-       dependent file (HP-UX) T}
+       %d     Free file nodes in file system
 
-       A sticky command appeared in Version 32V AT&amp;T UNIX.
+       %f     Free blocks in file system
 
-NOTES
-       Since kernel 2.5.48, the stat structure  supports  nanosecond  resolution
-       for the three file timestamp fields.  Glibc exposes the nanosecond compo&#8208;
-       nent of each field  using  names  of  the  form  st_atim.tv_nsec  if  the
-       _BSD_SOURCE  or _SVID_SOURCE feature test macro is defined.  These fields
-       are specified in POSIX.1-2008, and, starting  with  version  2.12,  glibc
-       also  exposes  these  field  names if _POSIX_C_SOURCE is defined with the
-       value 200809L or greater, or _XOPEN_SOURCE is defined with the value  700
-       or  greater.   If none of the aforementioned macros are defined, then the
-       nanosecond values are exposed with names of the  form  st_atimensec.   On
-       file  systems  that  do  not support subsecond timestamps, the nanosecond
-       fields are returned with the value 0.
+       %i     File System ID in hex
 
-       On Linux, lstat() will generally not trigger automounter action,  whereas
-       stat() will (but see fstatat(2)).
+       %l     Maximum length of filenames
 
-       For most files under the /proc directory, stat() does not return the file
-       size in the st_size field; instead the field is returned with  the  value
-       0.
+       %n     File name
 
-   Underlying kernel interface
-       Over  time, increases in the size of the stat structure have led to three
-       successive versions of stat(): sys_stat() (slot  __NR_oldstat),  sys_new&#8208;
-       stat()  (slot  __NR_stat),  and  sys_stat64()  (new  in  kernel 2.4; slot
-       __NR_stat64).  The glibc stat() wrapper function hides these details from
-       applications,  invoking  the  most recent version of the system call pro&#8208;
-       vided by the kernel, and repacking the returned information  if  required
-       for old binaries.  Similar remarks apply for fstat() and lstat().
+       %s     Block size (for faster transfers)
 
-EXAMPLE
-       The  following  program  calls stat() and displays selected fields in the
-       returned stat structure.
+       %S     Fundamental block size (for block counts)
 
-       #include &lt;sys/types.h&gt;
-       #include &lt;sys/stat.h&gt;
-       #include &lt;time.h&gt;
-       #include &lt;stdio.h&gt;
-       #include &lt;stdlib.h&gt;
+       %t     Type in hex
 
-       int
-       main(int argc, char *argv[])
-       {
-           struct stat sb;
+       %T     Type in human readable form
 
-           if (argc != 2) {
-               fprintf(stderr, &quot;Usage: %s &lt;pathname&gt;\n&quot;, argv[0]);
-               exit(EXIT_FAILURE);
-           }
+       NOTE: your shell may have its own version of stat, which  usually  super&#8208;
+       sedes  the version described here.  Please refer to your shell&apos;s documen&#8208;
+       tation for details about the options it supports.
 
-           if (stat(argv[1], &amp;sb) == -1) {
-               perror(&quot;stat&quot;);
-               exit(EXIT_FAILURE);
-           }
+AUTHOR
+       Written by Michael Meskes.
 
-           printf(&quot;File type:                &quot;);
+REPORTING BUGS
+       Report stat bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report stat translation bugs to &lt;http://translationproject.org/team/&gt;
 
-           switch (sb.st_mode &amp; S_IFMT) {
-           case S_IFBLK:  printf(&quot;block device\n&quot;);            break;
-           case S_IFCHR:  printf(&quot;character device\n&quot;);        break;
-           case S_IFDIR:  printf(&quot;directory\n&quot;);               break;
-           case S_IFIFO:  printf(&quot;FIFO/pipe\n&quot;);               break;
-           case S_IFLNK:  printf(&quot;symlink\n&quot;);                 break;
-           case S_IFREG:  printf(&quot;regular file\n&quot;);            break;
-           case S_IFSOCK: printf(&quot;socket\n&quot;);                  break;
-           default:       printf(&quot;unknown?\n&quot;);                break;
-           }
-
-           printf(&quot;I-node number:            %ld\n&quot;, (long) sb.st_ino);
-
-           printf(&quot;Mode:                     %lo (octal)\n&quot;,
-                   (unsigned long) sb.st_mode);
-
-           printf(&quot;Link count:               %ld\n&quot;, (long) sb.st_nlink);
-           printf(&quot;Ownership:                UID=%ld   GID=%ld\n&quot;,
-                   (long) sb.st_uid, (long) sb.st_gid);
-
-           printf(&quot;Preferred I/O block size: %ld bytes\n&quot;,
-                   (long) sb.st_blksize);
-           printf(&quot;File size:                %lld bytes\n&quot;,
-                   (long long) sb.st_size);
-           printf(&quot;Blocks allocated:         %lld\n&quot;,
-                   (long long) sb.st_blocks);
-
-           printf(&quot;Last status change:       %s&quot;, ctime(&amp;sb.st_ctime));
-           printf(&quot;Last file access:         %s&quot;, ctime(&amp;sb.st_atime));
-           printf(&quot;Last file modification:   %s&quot;, ctime(&amp;sb.st_mtime));
-
-           exit(EXIT_SUCCESS);
-       }
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       access(2), chmod(2), chown(2), fstatat(2), readlink(2),  utime(2),  capa&#8208;
-       bilities(7), symlink(7)
+       stat(2)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+       The full documentation for stat is maintained as a  Texinfo  manual.   If
+       the  info and stat programs are properly installed at your site, the com&#8208;
+       mand
+
+              info coreutils &apos;stat invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-Linux                              2012-11-11                            STAT(2)
+GNU coreutils 8.12.197-032bb     September 2011                          STAT(1)
 
 </pre></body></html>

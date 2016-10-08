@@ -1,107 +1,64 @@
 <html>
 <head><meta charset=utf-8/>
-<title>basename, dirname - parse pathname components</title></head>
+<title>dirname - strip last component from file name</title></head>
 <body><pre>
 
-BASENAME(3)                 Linux Programmer&apos;s Manual                BASENAME(3)
+DIRNAME(1)                        User Commands                       DIRNAME(1)
 
 
 
 NAME
-       basename, dirname - parse pathname components
+       dirname - strip last component from file name
 
 SYNOPSIS
-       #include &lt;libgen.h&gt;
-
-       char *dirname(char *path);
-
-       char *basename(char *path);
+       dirname NAME
+       dirname OPTION
 
 DESCRIPTION
-       Warning: there are two different functions basename() - see below.
+       Output  NAME  with  its  last  non-slash  component  and trailing slashes
+       removed; if NAME contains no /&apos;s, output `.&apos; (meaning the current  direc&#8208;
+       tory).
 
-       The  functions  dirname() and basename() break a null-terminated pathname
-       string into directory  and  filename  components.   In  the  usual  case,
-       dirname() returns the string up to, but not including, the final &apos;/&apos;, and
-       basename() returns the component following the final &apos;/&apos;.   Trailing  &apos;/&apos;
-       characters are not counted as part of the pathname.
+       --help display this help and exit
 
-       If  path does not contain a slash, dirname() returns the string &quot;.&quot; while
-       basename() returns a copy of path.  If path is the string &quot;/&quot;, then  both
-       dirname()  and  basename()  return  the  string  &quot;/&quot;.   If path is a NULL
-       pointer or points to an empty string, then both dirname() and  basename()
-       return the string &quot;.&quot;.
+       --version
+              output version information and exit
 
-       Concatenating  the  string  returned  by dirname(), a &quot;/&quot;, and the string
-       returned by basename() yields a complete pathname.
+EXAMPLES
+       dirname /usr/bin/
+              Output &quot;/usr&quot;.
 
-       Both dirname() and basename() may modify the contents of path, so it  may
-       be desirable to pass a copy when calling one of these functions.
+       dirname stdio.h
+              Output &quot;.&quot;.
 
-       These  functions may return pointers to statically allocated memory which
-       may be overwritten by subsequent calls.  Alternatively, they may return a
-       pointer  to  some  part  of  path, so that the string referred to by path
-       should not be modified or freed until the pointer returned by  the  func&#8208;
-       tion is no longer required.
+AUTHOR
+       Written by David MacKenzie and Jim Meyering.
 
-       The  following  list  of  examples  (taken  from SUSv2) shows the strings
-       returned by dirname() and basename() for different paths:
+REPORTING BUGS
+       Report dirname bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report dirname translation bugs to &lt;http://translationproject.org/team/&gt;
 
-       path         dirname    basename
-       &quot;/usr/lib&quot;    &quot;/usr&quot;    &quot;lib&quot;
-       &quot;/usr/&quot;       &quot;/&quot;       &quot;usr&quot;
-       &quot;usr&quot;         &quot;.&quot;       &quot;usr&quot;
-       &quot;/&quot;           &quot;/&quot;       &quot;/&quot;
-       &quot;.&quot;           &quot;.&quot;       &quot;.&quot;
-       &quot;..&quot;          &quot;.&quot;       &quot;..&quot;
-
-RETURN VALUE
-       Both dirname() and basename() return pointers to null-terminated strings.
-       (Do not pass these pointers to free(3).)
-
-CONFORMING TO
-       POSIX.1-2001.
-
-NOTES
-       There  are  two  different  versions  of  basename()  - the POSIX version
-       described above, and the GNU version, which one gets after
-
-           #define _GNU_SOURCE         /* See feature_test_macros(7) */
-           #include &lt;string.h&gt;
-&#12;       The GNU version never modifies its argument, and returns the empty string
-       when  path  has  a trailing slash, and in particular also when it is &quot;/&quot;.
-       There is no GNU version of dirname().
-
-       With glibc, one gets the POSIX version of basename() when  &lt;libgen.h&gt;  is
-       included, and the GNU version otherwise.
-
-BUGS
-       In the glibc implementation of the POSIX versions of these functions they
-       modify their argument, and segfault when called with a static string like
-       &quot;/usr/&quot;.  Before glibc 2.2.1, the glibc version of dirname() did not cor&#8208;
-       rectly handle pathnames with trailing &apos;/&apos;  characters,  and  generated  a
-       segfault if given a NULL argument.
-
-EXAMPLE
-           char *dirc, *basec, *bname, *dname;
-           char *path = &quot;/etc/passwd&quot;;
-
-           dirc = strdup(path);
-           basec = strdup(path);
-           dname = dirname(dirc);
-           bname = basename(basec);
-           printf(&quot;dirname=%s, basename=%s\n&quot;, dname, bname);
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       basename(1), dirname(1)
+       basename(1), readlink(1)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+       The full documentation for dirname is maintained as a Texinfo manual.  If
+       the info and dirname programs are properly installed at  your  site,  the
+       command
+
+              info coreutils &apos;dirname invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-GNU                                2009-03-30                        BASENAME(3)
+GNU coreutils 8.12.197-032bb     September 2011                       DIRNAME(1)
 
 </pre></body></html>

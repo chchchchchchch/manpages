@@ -1,118 +1,63 @@
 <html>
 <head><meta charset=utf-8/>
-<title>fallocate - manipulate file space</title></head>
+<title>fallocate - preallocate space to a file</title></head>
 <body><pre>
 
-FALLOCATE(2)                Linux Programmer&apos;s Manual               FALLOCATE(2)
+FALLOCATE(1)                      User Commands                     FALLOCATE(1)
 
 
 
 NAME
-       fallocate - manipulate file space
+       fallocate - preallocate space to a file
 
 SYNOPSIS
-       #define _GNU_SOURCE             /* See feature_test_macros(7) */
-       #include &lt;fcntl.h&gt;
-
-       int fallocate(int fd, int mode, off_t offset, off_t len);
+       fallocate [-n] [-o offset] -l length filename
 
 DESCRIPTION
-       This  is  a  nonportable,  Linux-specific system call.  For the portable,
-       POSIX.1-specified method of ensuring that space is allocated for a  file,
-       see posix_fallocate(3).
+       fallocate is used to preallocate blocks to a file.  For filesystems which
+       support the fallocate system call, this is  done  quickly  by  allocating
+       blocks  and  marking  them  as uninitialized, requiring no IO to the data
+       blocks.  This is much faster than creating a  file  by  filling  it  with
+       zeros.
 
-       fallocate()  allows  the caller to directly manipulate the allocated disk
-       space for the file referred to by fd for the byte range starting at  off&#8208;
-       set and continuing for len bytes.
+       As of the Linux Kernel v2.6.31, the fallocate system call is supported by
+       the btrfs, ext4, ocfs2, and xfs filesystems.
 
-       The  mode  argument determines the operation to be performed on the given
-       range.  Details of the supported operations are given in the  subsections
-       below.
+       The exit code returned by fallocate is 0 on success and 1 on failure.
 
-   Allocating disk space
-       The  default  operation (i.e., mode is zero) of fallocate() allocates and
-       initializes to zero the disk space within the range specified  by  offset
-       and  len.  The file size (as reported by stat(2)) will be changed if off&#8208;
-       set+len is greater than the file size.   This  default  behavior  closely
-       resembles the behavior of the posix_fallocate(3) library function, and is
-       intended as a method of optimally implementing that function.
+OPTIONS
+       The length and offset arguments may be followed by binary (2^N)  suffixes
+       KiB,  MiB,  GiB, TiB, PiB and EiB (the &quot;iB&quot; is optional, e.g. &quot;K&quot; has the
+       same meaning as &quot;KiB&quot;) or decimal (10^N) suffixes KB, MB, GB, PB and EB.
 
-       After a successful call, subsequent writes into the  range  specified  by
-       offset and len are guaranteed not to fail because of lack of disk space.
+       -h, --help
+              Print help and exit.
 
-       If the FALLOC_FL_KEEP_SIZE flag is specified in mode, the behavior of the
-       call is similar, but the file size will not be changed even if offset+len
-       is  greater  than  the file size.  Preallocating zeroed blocks beyond the
-       end of the file in this manner is useful for optimizing append workloads.
+       -n, --keep-size
+              Do not modify the apparent length of the  file.  This  may  effec&#8208;
+              tively allocate blocks past EOF, which can be removed with a trun&#8208;
+              cate.
 
-       Because allocation is done in block size chunks, fallocate() may allocate
-       a larger range of disk space than was specified.
+       -o, --offset offset
+              Specifies the beginning offset of the allocation, in bytes.
 
-   Deallocating file space
-       Specifying  the  FALLOC_FL_PUNCH_HOLE flag (available since Linux 2.6.38)
-       in mode deallocates space (i.e., creates a hole) in the byte range start&#8208;
-       ing  at offset and continuing for len bytes.  Within the specified range,
-       partial file system blocks are zeroed, and whole file system  blocks  are
-       removed  from  the  file.  After a successful call, subsequent reads from
-       this range will return zeroes.
+       -l, --length length
+              Specifies the length of the allocation, in bytes.
 
-       The FALLOC_FL_PUNCH_HOLE flag must be ORed  with  FALLOC_FL_KEEP_SIZE  in
-       mode;  in  other  words,  even when punching off the end of the file, the
-       file size (as reported by stat(2)) does not change.
-
-       Not all file systems  support  FALLOC_FL_PUNCH_HOLE;  if  a  file  system
-       doesn&apos;t support the operation, an error is returned.
-
-RETURN VALUE
-       fallocate() returns zero on success, and -1 on failure.
-
-ERRORS
-       EBADF  fd is not a valid file descriptor, or is not opened for writing.
-&#12;       EFBIG  offset+len exceeds the maximum file size.
-
-       EINTR  A signal was caught during execution.
-
-       EINVAL offset was less than 0, or len was less than or equal to 0.
-
-       EIO    An I/O error occurred while reading from or writing to a file sys&#8208;
-              tem.
-
-       ENODEV fd does not refer to a regular file or a directory.  (If fd  is  a
-              pipe or FIFO, a different error results.)
-
-       ENOSPC There  is  not enough space left on the device containing the file
-              referred to by fd.
-
-       ENOSYS This kernel does not implement fallocate().
-
-       EOPNOTSUPP
-              The file system containing the file referred to  by  fd  does  not
-              support  this  operation; or the mode is not supported by the file
-              system containing the file referred to by fd.
-
-       EPERM  The file referred to by fd is marked  immutable  (see  chattr(1)).
-              Or:  mode  specifies FALLOC_FL_PUNCH_HOLE and the file referred to
-              by fd is marked append-only (see chattr(1)).
-
-       ESPIPE fd refers to a pipe or FIFO.
-
-VERSIONS
-       fallocate() is available on Linux since kernel 2.6.23.  Support  is  pro&#8208;
-       vided by glibc since version 2.10.
-
-CONFORMING TO
-       fallocate() is Linux-specific.
+AUTHORS
+       Eric Sandeen &lt;sandeen@redhat.com&gt;
+       Karel Zak &lt;kzak@redhat.com&gt;
 
 SEE ALSO
-       ftruncate(2), posix_fadvise(3), posix_fallocate(3)
+       fallocate(2), posix_fallocate(3), truncate(1)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
-
+AVAILABILITY
+       The fallocate command is part of the util-linux package and is  available
+       from ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
 
 
-Linux                              2012-04-23                       FALLOCATE(2)
+
+
+util-linux                          July 2009                       FALLOCATE(1)
 
 </pre></body></html>

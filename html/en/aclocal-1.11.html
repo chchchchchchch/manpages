@@ -1,0 +1,104 @@
+<html>
+<head><meta charset=utf-8/>
+<title>aclocal - manual page for aclocal 1.11.6</title></head>
+<body><pre>
+
+ACLOCAL(1)                        User Commands                       ACLOCAL(1)
+
+
+
+NAME
+       aclocal - manual page for aclocal 1.11.6
+
+SYNOPSIS
+       aclocal [OPTIONS] ...
+
+DESCRIPTION
+       Generate `aclocal.m4&apos; by scanning `configure.ac&apos; or `configure.in&apos;
+
+OPTIONS
+       --automake-acdir=DIR
+              directory holding automake-provided m4 files
+
+       --system-acdir=DIR
+              directory holding third-party system-wide files
+
+       --diff[=COMMAND]
+              run  COMMAND  [diff -u] on M4 files that would be changed (implies
+              --install and --dry-run)
+
+       --dry-run
+              pretend to, but do not actually update any file
+
+       --force
+              always update output file
+
+       --help print this help, then exit
+
+       -I DIR add directory to search list for .m4 files
+
+       --install
+              copy third-party files to the first -I directory
+
+       --output=FILE
+              put output in FILE (default aclocal.m4)
+
+       --print-ac-dir
+              print name of directory holding system-wide third-party m4  files,
+              then exit
+
+       --verbose
+              don&apos;t be silent
+
+       --version
+              print version number, then exit
+
+       -W, --warnings=CATEGORY
+              report the warnings falling in CATEGORY
+
+   Warning categories include:
+       `syntax&apos;
+              dubious syntactic constructs (default)
+
+       `unsupported&apos;
+              unknown macros (default)
+
+       `all&apos;  all the warnings (default)
+
+       `no-CATEGORY&apos;
+              turn off warnings in CATEGORY
+
+       `none&apos; turn off all the warnings
+&#12;       `error&apos;
+              treat warnings as errors
+
+AUTHOR
+       Written by Tom Tromey &lt;tromey@redhat.com&gt;
+
+              and Alexandre Duret-Lutz &lt;adl@gnu.org&gt;.
+
+REPORTING BUGS
+       Report bugs to &lt;bug-automake@gnu.org&gt;.
+       GNU Automake home page: &lt;http://www.gnu.org/software/automake/&gt;.
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;.
+
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv2+: GNU GPL
+       version 2 or later &lt;http://gnu.org/licenses/gpl-2.0.html&gt;
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The full documentation for aclocal is maintained as a Texinfo manual.  If
+       the info and aclocal programs are properly installed at  your  site,  the
+       command
+
+              info aclocal
+
+       should give you access to the complete manual.
+
+
+
+aclocal 1.11.6                      July 2012                         ACLOCAL(1)
+
+</pre></body></html>

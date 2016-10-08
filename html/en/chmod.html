@@ -1,150 +1,151 @@
 <html>
 <head><meta charset=utf-8/>
-<title>chmod, fchmod - change permissions of a file</title></head>
+<title>chmod - change file mode bits</title></head>
 <body><pre>
 
-CHMOD(2)                    Linux Programmer&apos;s Manual                   CHMOD(2)
+CHMOD(1)                          User Commands                         CHMOD(1)
 
 
 
 NAME
-       chmod, fchmod - change permissions of a file
+       chmod - change file mode bits
 
 SYNOPSIS
-       #include &lt;sys/stat.h&gt;
-
-       int chmod(const char *path, mode_t mode);
-       int fchmod(int fd, mode_t mode);
-
-   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
-
-       fchmod():
-           _BSD_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
-           _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
-           || /* Since glibc 2.12: */ _POSIX_C_SOURCE &gt;= 200809L
+       chmod [OPTION]... MODE[,MODE]... FILE...
+       chmod [OPTION]... OCTAL-MODE FILE...
+       chmod [OPTION]... --reference=RFILE FILE...
 
 DESCRIPTION
-       These system calls change the permissions of a file.  They differ only in
-       how the file is specified:
+       This  manual  page documents the GNU version of chmod.  chmod changes the
+       file mode bits of each given file according to mode, which can be  either
+       a  symbolic  representation of changes to make, or an octal number repre&#8208;
+       senting the bit pattern for the new mode bits.
 
-       * chmod() changes the permissions of the file specified whose pathname is
-         given in path, which is dereferenced if it is a symbolic link.
+       The format of a symbolic  mode  is  [ugoa...][[+-=][perms...]...],  where
+       perms  is  either  zero  or more letters from the set rwxXst, or a single
+       letter from the set ugo.  Multiple symbolic modes can be given, separated
+       by commas.
 
-       * fchmod() changes the permissions of the file referred to  by  the  open
-         file descriptor fd.
+       A  combination  of  the  letters ugoa controls which users&apos; access to the
+       file will be changed: the user who owns it (u), other users in the file&apos;s
+       group (g), other users not in the file&apos;s group (o), or all users (a).  If
+       none of these are given, the effect is as if a were given, but bits  that
+       are set in the umask are not affected.
 
-       The  new file permissions are specified in mode, which is a bit mask cre&#8208;
-       ated by ORing together zero or more of the following:
+       The  operator  +  causes  the  selected file mode bits to be added to the
+       existing file mode bits of each file; - causes them to be removed; and  =
+       causes  them to be added and causes unmentioned bits to be removed except
+       that a directory&apos;s unmentioned  set  user  and  group  ID  bits  are  not
+       affected.
 
-       S_ISUID  (04000)  set-user-ID  (set  process   effective   user   ID   on
-                         execve(2))
+       The  letters  rwxXst  select  file mode bits for the affected users: read
+       (r), write (w), execute (or search for directories)  (x),  execute/search
+       only  if  the  file  is a directory or already has execute permission for
+       some user (X), set user or group ID on execution (s), restricted deletion
+       flag or sticky bit (t).  Instead of one or more of these letters, you can
+       specify exactly one of the letters ugo: the permissions  granted  to  the
+       user  who  owns  the file (u), the permissions granted to other users who
+       are members of the file&apos;s group (g), and the permissions granted to users
+       that are in neither of the two preceding categories (o).
 
-       S_ISGID  (02000)  set-group-ID   (set   process  effective  group  ID  on
-                         execve(2); mandatory locking, as described in fcntl(2);
-                         take  a  new  file&apos;s  group  from  parent directory, as
-                         described in chown(2) and mkdir(2))
+       A  numeric mode is from one to four octal digits (0-7), derived by adding
+       up the bits with values 4, 2, and 1.  Omitted digits are  assumed  to  be
+       leading zeros.  The first digit selects the set user ID (4) and set group
+       ID (2) and restricted deletion or  sticky  (1)  attributes.   The  second
+       digit selects permissions for the user who owns the file: read (4), write
+       (2), and execute (1); the third selects permissions for  other  users  in
+       the  file&apos;s  group,  with the same values; and the fourth for other users
+       not in the file&apos;s group, with the same values.
 
-       S_ISVTX  (01000)  sticky bit (restricted deletion flag, as  described  in
-                         unlink(2))
+       chmod never changes the permissions of symbolic links; the  chmod  system
+       call  cannot  change  their permissions.  This is not a problem since the
+       permissions of symbolic links are never used.  However, for each symbolic
+       link  listed  on  the  command line, chmod changes the permissions of the
+       pointed-to file.  In contrast, chmod ignores symbolic  links  encountered
+       during recursive directory traversals.
 
-       S_IRUSR  (00400)  read by owner
+SETUID AND SETGID BITS
+       chmod  clears  the set-group-ID bit of a regular file if the file&apos;s group
+       ID does not match the user&apos;s effective group ID or one of the user&apos;s sup&#8208;
+       plementary  group IDs, unless the user has appropriate privileges.  Addi&#8208;
+       tional restrictions may cause the set-user-ID and  set-group-ID  bits  of
+       MODE  or  RFILE  to  be ignored.  This behavior depends on the policy and
+       functionality of the underlying chmod system call.  When in doubt,  check
+       the underlying system behavior.
 
-       S_IWUSR  (00200)  write by owner
+       chmod  preserves  a  directory&apos;s set-user-ID and set-group-ID bits unless
+       you explicitly specify otherwise.  You can set or  clear  the  bits  with
+       symbolic modes like u+s and g-s, and you can set (but not clear) the bits
+       with a numeric mode.
 
-       S_IXUSR  (00100)  execute/search  by owner (&quot;search&quot; applies for directo&#8208;
-                         ries, and means that entries within the  directory  can
-                         be accessed)
+RESTRICTED DELETION FLAG OR STICKY BIT
+       The restricted deletion flag or sticky bit is a single bit, whose  inter&#8208;
+       pretation depends on the file type.  For directories, it prevents unpriv&#8208;
+       ileged users from removing or renaming a file  in  the  directory  unless
+       they  own  the file or the directory; this is called the restricted dele&#8208;
+       tion flag for the directory, and  is  commonly  found  on  world-writable
+       directories  like /tmp.  For regular files on some older systems, the bit
+       saves the program&apos;s text image on the swap device so it  will  load  more
+       quickly when run; this is called the sticky bit.
 
-       S_IRGRP  (00040)  read by group
+OPTIONS
+       Change the mode of each FILE to MODE.
 
-       S_IWGRP  (00020)  write by group
+       -c, --changes
+              like verbose but report only when a change is made
 
-       S_IXGRP  (00010)  execute/search by group
+       --no-preserve-root
+              do not treat `/&apos; specially (the default)
 
-       S_IROTH  (00004)  read by others
+       --preserve-root
+              fail to operate recursively on `/&apos;
 
-       S_IWOTH  (00002)  write by others
+       -f, --silent, --quiet
+              suppress most error messages
 
-       S_IXOTH  (00001)  execute/search by others
+       -v, --verbose
+              output a diagnostic for every file processed
 
-       The  effective  UID  of  the  calling process must match the owner of the
-       file, or the  process  must  be  privileged  (Linux:  it  must  have  the
-       CAP_FOWNER capability).
+       --reference=RFILE
+              use RFILE&apos;s mode instead of MODE values
 
-       If  the  calling  process  is  not  privileged  (Linux: does not have the
-       CAP_FSETID capability), and the group of the  file  does  not  match  the
-       effective  group ID of the process or one of its supplementary group IDs,
-       the S_ISGID bit will be turned off, but this will not cause an  error  to
-       be returned.
+       -R, --recursive
+              change files and directories recursively
 
-       As  a security measure, depending on the file system, the set-user-ID and
-       set-group-ID execution bits may be turned off if a file is written.   (On
-       Linux  this  occurs  if  the writing process does not have the CAP_FSETID
-       capability.)  On some file systems, only the superuser can set the sticky
-       bit,  which may have a special meaning.  For the sticky bit, and for set-
-       user-ID and set-group-ID bits on directories, see stat(2).
+       --help display this help and exit
 
-       On NFS file systems, restricting the permissions will immediately  influ&#8208;
-       ence  already  open  files,  because  the  access  control is done on the
-       server, but open files are maintained by the client.  Widening  the  per&#8208;
-       missions may be delayed for other clients if attribute caching is enabled
-       on them.
+       --version
+              output version information and exit
 
-RETURN VALUE
-       On success, zero is returned.  On error, -1 is returned, and errno is set
-       appropriately.
+       Each MODE is of the form `[ugoa]*([-+=]([rwxXst]*|[ugo]))+&apos;.
 
-ERRORS
-       Depending  on  the  file  system, other errors can be returned.  The more
-       general errors for chmod() are listed below:
+AUTHOR
+       Written by David MacKenzie and Jim Meyering.
 
-       EACCES Search permission is denied on a component  of  the  path  prefix.
-              (See also path_resolution(7).)
+REPORTING BUGS
+       Report chmod bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report chmod translation bugs to &lt;http://translationproject.org/team/&gt;
 
-       EFAULT path points outside your accessible address space.
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
-       EIO    An I/O error occurred.
+SEE ALSO
+       chmod(2)
+&#12;       The  full  documentation for chmod is maintained as a Texinfo manual.  If
+       the info and chmod programs are properly installed at your site, the com&#8208;
+       mand
 
-       ELOOP  Too many symbolic links were encountered in resolving path.
+              info coreutils &apos;chmod invocation&apos;
 
-       ENAMETOOLONG
-              path is too long.
-
-       ENOENT The file does not exist.
-
-       ENOMEM Insufficient kernel memory was available.
-
-       ENOTDIR
-              A component of the path prefix is not a directory.
-
-       EPERM  The  effective  UID  does not match the owner of the file, and the
-              process is not privileged (Linux: it does not have the  CAP_FOWNER
-              capability).
-
-       EROFS  The named file resides on a read-only file system.
-
-       The general errors for fchmod() are listed below:
-
-       EBADF  The file descriptor fd is not valid.
-
-       EIO    See above.
-
-       EPERM  See above.
-
-       EROFS  See above.
-
-CONFORMING TO
-       4.4BSD, SVr4, POSIX.1-2001.
-&#12;SEE ALSO
-       chown(2), execve(2), fchmodat(2), open(2), stat(2), path_resolution(7)
-
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
-
+       should give you access to the complete manual.
 
 
-Linux                              2010-09-26                           CHMOD(2)
+
+GNU coreutils 8.12.197-032bb     September 2011                         CHMOD(1)
 
 </pre></body></html>

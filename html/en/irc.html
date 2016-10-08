@@ -1,278 +1,236 @@
 <html>
 <head><meta charset=utf-8/>
-<title>irc - Create IRC connection and interface.</title></head>
+<title>ircII - interface to the Internet Relay Chat system</title></head>
 <body><pre>
 
-irc(3tcl)                  Low Level Tcl IRC Interface                 irc(3tcl)
+IRCII(1)                                                                IRCII(1)
 
 
-
-________________________________________________________________________________
 
 NAME
-       irc - Create IRC connection and interface.
+       ircII - interface to the Internet Relay Chat system
 
 SYNOPSIS
-       package require Tcl
-
-       package require irc  ?0.6.1?
-
-       ::irc::config ?key? ?value?
-
-       ::irc::connection
-
-       ::irc::connections
-
-       net registerevent event script
-
-       net getevent event script
-
-       net eventexists event script
-
-       net connect hostname ?port?
-
-       net config ?key? ?value?
-
-       net log level message
-
-       net logname
-
-       net connected
-
-       net sockname
-
-       net peername
-
-       net socket
-
-       net user username localhostname localdomainname userinfo
-
-       net nick nick
-
-       net ping target
-
-       net serverping
-
-       net join channel ?key?
-
-       net part channel ?message?
-
-       net quit ?message?
-
-       net privmsg target message
-
-       net notice target message
-
-       net ctcp target message
-
-       net kick channel target ?message?
-
-       net mode target args
-&#12;       net topic channel message
-
-       net invite channel target
-
-       net send text
-
-       net destroy
-
-       who ?address?
-
-       action
-
-       target
-
-       additional
-
-       header
-
-       msg
-
-_________________________________________________________________
+       irc  [-c chan] [-p portno] [-P portno] [-b] [-f] [-F] [-s] [-S] [-t] [-T]
+       [-d] [nickname [server list]] [-a] [-v] [-q] [-h hostname ] [-icb] [-irc]
 
 DESCRIPTION
-       This  package  provides  low-level commands to deal with the IRC protocol
-       (Internet Relay Chat) for immediate and interactive multi-cast communica&#8208;
-       tion.
+       The ircII program is a full screen, termcap based interface  to  Internet
+       Relay  Chat.   It  gives  full access to all of the normal IRC functions,
+       plus a variety of additional options.
 
-       ::irc::config ?key? ?value?
-              Sets  configuration  ?key? to ?value?. The configuration keys cur&#8208;
-              rently defined are the boolean flags  logger  and  debug.   logger
-              makes  irc  use  the  logger  package  for  printing  error. debug
-              requires logger and prints extra debug output.   If  no  ?key?  or
-              ?value? is given the current values are returned.
+OPTIONS
+       -c chan
+              Automatically join channel chan.
 
-       ::irc::connection
-              The  command  creates a new object to deal with an IRC connection.
-              Creating this IRC object does not automatically create the network
-              connection.   It  returns a new irc namespace command which can be
-              used to interact with the new IRC connection.  NOTE: the old  form
-              of the connection command, which took a hostname and port as argu&#8208;
-              ments, is deprecated.  Use connect instead to specify this  infor&#8208;
-              mation.
+       -p portno
+              Set the IRC port number to portno (default: 6667, the standard IRC
+              port).   Only  supply this if you connect to a server which uses a
+              port other than 6667.
 
-       ::irc::connections
-              Returns  a  list  of all the current connections that were created
-              with connection
+       -P portno
+              Set the ICB port number to portno (default: 7326, the standard ICB
+              port).
 
-PER-CONNECTION COMMANDS
-       In the following list of available connection methods  net  represents  a
-       connection command as returned by ::irc::connection.
+       -b     Load  the  .ircrc  file  before connection to a server, not after&#8208;
+              wards.
 
-       net registerevent event script
-              Registers  a  callback  handler  for  the  specific event.  Events
-              available are those  described  in  RFC  1459  http://www.rfc-edi&#8208;
-              tor.org/rfc/rfc1459.txt.   In  addition,  there  are several other
-              events defined.  defaultcmd adds a command that is  called  if  no
-              other  callback  is present.  EOF is called if the connection sig&#8208;
-              nals an End of File condition. The events  defaultcmd,  defaultnu&#8208;
-              meric,  and  defaultevent are required.  script is executed in the
-              connection namespace, which can take advantage of several commands
-              (see Callback Commands below) to aid in the parsing of data.
+       -f     Use flow control (^S and ^Q) to stop/start the display.   Normally
+              these  are  both bound to other functions within irc.  This switch
+              is ignored if the  -d switch is used.
 
-       net getevent event script
-              Returns the current handler for the event if one exists. Otherwise
-              an empty string is returned.
-&#12;       net eventexists event script
-              Returns a boolean value indicating the existence of the event han&#8208;
-              dler.
+       -F     Don&apos;t use flow control (^S and ^Q)  to  stop  start  the  display.
+              This switch is ignored if the  -d switch is used.
 
-       net connect hostname ?port?
-              This  causes the socket to be established.  ::irc::connection cre&#8208;
-              ated the namespace and the commands to be used, but did not  actu&#8208;
-              ally  open the socket. This is done here.  NOTE: the older form of
-              &#180;connect&apos; did not require the user to specify a hostname and port,
-              which were specified with &apos;connection&apos;.  That form is deprecated.
+       -s     Don&apos;t  start  up  the  ircio  process to connect to the IRC server
+              (default).
 
-       net config ?key? ?value?
-              The  same  as  ::irc::config but sets and gets options for the net
-              connection only.
+       -S     Start up the ircio process to connect to the IRC server.
 
-       net log level message
-              If logger is turned on by config this will write a log message  at
-              level.
+       -t     Don&apos;t use the termcap ti and te sequences when starting and  exit&#8208;
+              ing (default).
 
-       net logname
-              Returns the name of the logger instance if logger is turned on.
+       -T     Do  use  the termcap ti and te sequences when starting and exiting
+              if they exist.
 
-       net connected
-              Returns a boolean value indicating if this connection is connected
-              to a server.
+       -d     Start in &quot;dumb&quot; mode.  All input is taken directly from stdin  and
+              all  output  goes  to  stdout  without using any of the termcap(5)
+              screen control codes.
 
-       net sockname
-              Returns a 3 element list consisting of the ip address,  the  host&#8208;
-              name,  and  the  port  of the local end of the connection, if cur&#8208;
-              rently connected.
+       nickname
+              Set the nickname  (overrides  the  environment  variable  IRCNICK;
+              default: the username).
 
-       net peername
-              Returns a 3 element list consisting of the ip address,  the  host&#8208;
-              name,  and  the  port of the remote end of the connection, if cur&#8208;
-              rently connected.
+       server Set  the  list  of servers with which irc will try to connect upon
+              startup.  This list is also used by the program&apos;s /server command.
+              The format for lines in the list is:
 
-       net socket
-              Return the Tcl channel for the socket used by the connection.
+              hostname [:portno[:password[:nick]]] for IRC connections.  For ICB
+              connections, the format is:
 
-       net user username localhostname localdomainname userinfo
-              Sends USER command to server.  username is the username  you  want
-              to  appear.   localhostname  is the host portion of your hostname,
-              localdomainname is your domain  name,  and  userinfo  is  a  short
-              description of who you are. The 2nd and 3rd arguments are normally
-              ignored by the IRC server.
+              ICB/hostname [:portno[::nick[:group[:mode]]]] with group being the
+              initial  group  and  mode being the initial group mode.  See /HELP
+              ICB for more information about ICB.
 
-       net nick nick
-              NICK command.  nick is the nickname you wish to use for  the  par&#8208;
-              ticular connection.
+              If the  hostname  is  in  the  format  :servergroup:host.com  then
+              servergroup is taken to be the Server Group for this server entry.
 
-       net ping target
-              Send a CTCP PING to target.
+       -a     This  adds  the normal irc server list to the command line list of
+              irc servers.
 
-       net serverping
-              PING the server.
+       -v     Print the version and release date of ircII and exit.
 
-       net join channel ?key?
-              channel  is the IRC channel to join.  IRC channels typically begin
-              with a hashmark (&quot;#&quot;) or ampersand (&quot;&amp;&quot;).
+       -q     Start up irc quickly -- don&apos;t load the IRCRC file.
 
-       net part channel ?message?
-              Makes the client leave channel.  Some  networks  may  support  the
-              optional argument message
+       -h hostname
+              This option instructs ircII to use the given hostname as the local
+              address.  Useful only on multi-homed hosts.
 
-       net quit ?message?
-              Instructs  the  IRC  server  to  close the current connection. The
-              package will use a generic default if no message was specified.
+       -icb   Use ICB connections by default.
 
-       net privmsg target message
-              Sends message to target, which can be either a channel, or another
-              user, in which case their nick is used.
+       -irc   Use IRC connections by default.
 
-       net notice target message
-              Sends a notice with message message to target, which can be either
-              a channel, or another user, in which case their nick is used.
+DETAILED DESCRIPTION
+   The Screen:
+       The  screen is split into two parts, separated by an inverse-video status
+       line (if supported).  The upper (larger)  part  of  the  screen  displays
+       responses  from  the  IRC server.  The lower part of the screen (a single
+       line) accepts keyboard input.
 
-       net ctcp target message
-              Sends a CTCP of type message to target
+       Some terminals do not support certain  features  required  by  ircII,  in
+       which  case  you  receive  a  message  stating this.  If this occurs, try
+       changing the terminal type or run ircII with the -d option.
 
-       net kick channel target ?message?
-              Kicks the user target from the channel  channel  with  a  message.
-              The latter can be left out.
+   Irc Commands:
+       Any line beginning with the slash character &apos;/&apos; is regarded as  an  ircII
+       command (the command character may be changed; type &apos;/help set cmdchar&apos;).
+       Any line not beginning with this character is treated as a message to  be
+       sent  to  the  current  channel.   To produce a listing of commands, type
+       &apos;/help ?&apos;.  To receive information about the commands type  &apos;/help  &lt;com&#8208;
+       mand&gt; &apos;.
 
-       net mode target args
-              Sets  the mode args on the target target. target may be a channel,
-              a channel user, or yourself.
+   The .ircrc File:
+       When  ircII is executed, it checks the user&apos;s home directory for a .ircrc
+       file, executing the commands in the file.  Commands in this file  do  not
+       need to have a leading slash character &apos;/&apos;.  This allows predefinition of
+       aliases and other features.
 
-       net topic channel message
-              Sets the topic on channel to message specifying  an  empty  string
-              will remove the topic.
+EXAMPLES
+       irc -c #users -p 5555
+              Connect IRC to port number 5555 of the default host and  enter  on
+              channel #users.
 
-       net invite channel target
-              Invites target to join the channel channel
+       irc Mermaid
+              Use the nickname &quot;Mermaid&quot;.
 
-       net send text
-              Sends text to the IRC server.
+       irc Mermaid server1:5000 server2::passwd server3
+              Use the nickname &quot;Mermaid&quot; and the modified server list.
 
-       net destroy
-              Deletes  the  connection and its associated namespace and informa&#8208;
-              tion.
+       irc piglet3 :ln:irc1.lamenet.org :ln:irc1.lamenet.org
+              Use    the    nickname    &quot;piglet3&quot;,   initially   connecting   to
+              irc.au.lamenet.org, with  also  irc.us.lamenet.org  added  to  the
+              server list, both having a server group name &quot;ln&quot;.
 
-CALLBACK COMMANDS
-       These commands can be used within callbacks
+       irc oink ICB/www.icb.net
+              Use the nick &quot;oink&quot; making an ICB connection to www.icb.net.
 
-       who ?address?
-              Returns the nick  of  the  user  who  performed  a  command.   The
-              optional  keyword address causes the command to return the user in
-              the format &quot;username@address&quot;.
+       irc -d Use dumb mode.
 
-       action Returns the action performed, such as KICK, PRIVMSG, MODE,  etc...
-              Normally not useful, as callbacks are bound to a particular event.
+       irc -f Allow use of ^S/^Q to stop/start screen display.
+&#12;       irc -e elisa
+              Interface IRC with a program called elisa.
 
-       target Returns the target of a particular command, such as the channel or
-              user to whom a PRIVMSG is sent.
+       setenv IRCNICK Mermaid
+       setenv IRCNAME &quot;The one and only :)&quot;
 
-       additional
-              Returns a list of any additional arguments after the target.
+       irc    Set  the  username (if not specified elsewhere) to &quot;Mermaid&quot;.  The
+              user&apos;s name (when provided inside parentheses  in  response  to  a
+              WHOIS command) is set to &quot;The one and only :)&quot;.
 
-       header Returns the entire event header (everything up  to  the  :)  as  a
-              proper list.
+FILES
+       /usr/bin/ircII        the executable program
 
-       msg    Returns the message portion of the command (the part after the :).
+       ~/.ircrc              default initialization file
 
-BUGS, IDEAS, FEEDBACK
-       This  document,  and  the  package it describes, will undoubtedly contain
-       bugs and other problems.  Please report such in the category irc  of  the
-       Tcllib   SF   Trackers  [http://sourceforge.net/tracker/?group_id=12883].
-       Please also report any ideas for enhancements you  may  have  for  either
-       package and/or documentation.
+       ~/.irc/               directory  you can put your own ircII scripts into,
+                             that can then be loaded with /load
+
+       /etc/irc/             directory  containing  message-of-the-day,   master
+                             initialization,   help   files  and  ircII  scripts
+                             /etc/irc/script/local is the master  initialization
+                             file  for  the site, loaded before .ircrc is.  This
+                             is a Debian GNU/Linux conffile.
+
+       /usr/share/ircII/     shared repository for help, translation tables  and
+                             distributed scripts.
+
+THE HELP FILES
+       All  of the ircII commands are fully described in the help files package.
+       The best way to start here is with the /HELP ?  command as this prints  a
+       listing of all available help files.
+
+SIGNALS
+       ircII handles the following signals
+
+       SIGUSR1
+              Closes all DCC connections and EXEC&apos;ed processes.
+
+       SIGUSR2
+              Drops ircII back to the command line.
+
+ENVIRONMENT VARIABLES
+       It  can be helpful to predefine certain variables in in the .cshrc, .pro&#8208;
+       file, or .login file:
+
+       IRCNICK
+              The user&apos;s IRC nickname.
+
+       IRCNAME
+              The user&apos;s IRC realname (otherwise retreived from /etc/passwd)
+
+       IRCSERVER
+              The default IRC server(s) (see server option for details)
+
+       IRCSERVERSFILE
+              The file containing the default list of  server(s),  usually  PRE&#8208;
+              FIX/lib/irc/ircII.servers.   This  file  should contain one server
+              entry per line.
+
+       HOME   Overrides the default home path in /etc/passwd.
+
+       TERM   The type of terminal in use.
+
+FILES
+       ircII uses the following files under the library directory, usually  PRE&#8208;
+       FIX/share/irc.
+
+       ircII.servers
+              The  initial  list  of servers if none are provided on the command
+              line.
+
+       ircII.motd
+              Message of the day.  This file is displayed only once each time it
+              is changed.
 
 SEE ALSO
-       rfc 1459
+       ircd(8)
 
-KEYWORDS
-       chat, irc
-&#12;CATEGORY
-       Networking
+BUGS
+       Please  notify  the current developer of the software of any bugs in cur&#8208;
+       rent versions.
+
+AUTHORS
+       Program written by Michael  Sandrof  (ms5n+@andrew.cmu.edu).   Now  being
+       maintained  by  Matthew Green (mrg@eterna.com.au). Debian specific exten&#8208;
+       sions by the Debian Maintainer Bernd Eckenfels (ecki@debian.org).   Names
+       of  contributors and contact address can be retrieved with the /info com&#8208;
+       mand.     This     manual     page     written     by     Darren     Reed
+       (avalon@coombs.anu.EDU.AU),  revised  by  R.  P. C. Rodgers (rodgers@max&#8208;
+       well.mmwb.ucsf.edu),   by   the    lynX,    and    by    Matthew    Green
+       (mrg@eterna.com.au).
 
 
 
-irc                                   0.6.1                            irc(3tcl)
+                                 31 October 2002                        IRCII(1)
 
 </pre></body></html>

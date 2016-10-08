@@ -1,104 +1,191 @@
 <html>
 <head><meta charset=utf-8/>
-<title>lp - line printer devices</title></head>
+<title>lp - print files</title></head>
 <body><pre>
 
-LP(4)                       Linux Programmer&apos;s Manual                      LP(4)
+lp(1)                              Apple Inc.                              lp(1)
 
 
 
 NAME
-       lp - line printer devices
+       lp - print files
 
 SYNOPSIS
-       #include &lt;linux/lp.h&gt;
-
-CONFIGURATION
-       lp[0&#8211;2]  are  character devices for the parallel line printers; they have
-       major number 6 and minor number 0&#8211;2.  The minor numbers correspond to the
-       printer port base addresses 0x03bc, 0x0378 and 0x0278.  Usually they have
-       mode 220 and are owned by root and group lp.  You can use  printer  ports
-       either  with polling or with interrupts.  Interrupts are recommended when
-       high traffic is expected, for example, for laser printers.  For usual dot
-       matrix printers polling will usually be enough.  The default is polling.
+       lp [ -E ] [ -U username ] [ -c ] [ -d destination[/instance] ] [ -h host&#8208;
+       name[:port] ] [ -m ] [ -n num-copies ] [ -o option[=value] ] [ -q  prior&#8208;
+       ity  ]  [  -s  ]  [  -t title ] [ -H handling ] [ -P page-list ] [ -- ] [
+       file(s) ]
+       lp [ -E ] [ -U username ] [ -c ] [ -h hostname[:port] ] [ -i job-id  ]  [
+       -n  num-copies  ] [ -o option[=value] ] [ -q priority ] [ -t title ] [ -H
+       handling ] [ -P page-list ]
 
 DESCRIPTION
-       The following ioctl(2) calls are supported:
+       lp submits files for printing or alters a pending job. Use a filename  of
+       &quot;-&quot; to force printing from the standard input.
 
-       int ioctl(int fd, LPTIME, int arg)
-              Sets  the  amount of time that the driver sleeps before rechecking
-              the printer when the printer&apos;s buffer appears to be filled to arg.
-              If  you  have  a fast printer, decrease this number; if you have a
-              slow printer then increase it.  This is in hundredths of a second,
-              the  default 2 being 0.02 seconds.  It only influences the polling
-              driver.
+THE DEFAULT DESTINATION
+       CUPS  provides many ways to set the default destination. The &quot;LPDEST&quot; and
+       &quot;PRINTER&quot; environment variables are consulted first. If neither are  set,
+       the  current default set using the lpoptions(1) command is used, followed
+       by the default set using the lpadmin(8) command.
 
-       int ioctl(int fd, LPCHAR, int arg)
-              Sets the maximum number of busy-wait iterations which the  polling
-              driver does while waiting for the printer to get ready for receiv&#8208;
-              ing a character to arg.  If printing is too  slow,  increase  this
-              number;  if  the  system gets too slow, decrease this number.  The
-              default is 1000.  It only influences the polling driver.
+OPTIONS
+       The following options are recognized by lp:
 
-       int ioctl(int fd, LPABORT, int arg)
-              If arg is 0, the printer driver will retry on errors, otherwise it
-              will abort.  The default is 0.
+       --
+            Marks the end of options; use this to print a file whose name begins
+            with a dash (-).
 
-       int ioctl(int fd, LPABORTOPEN, int arg)
-              If  arg  is  0,  open(2) will be aborted on error, otherwise error
-              will be ignored.  The default is to ignore it.
+       -E
+            Forces encryption when connecting to the server.
 
-       int ioctl(int fd, LPCAREFUL, int arg)
-              If arg is 0, then the out-of-paper, offline and error signals  are
-              required  to  be  false on all writes, otherwise they are ignored.
-              The default is to ignore them.
+       -U username
+            Specifies the username to use when connecting to the server.
 
-       int ioctl(int fd, LPWAIT, int arg)
-              Sets the number of busy waiting iterations to wait before strobing
-              the  printer to accept a just-written character, and the number of
-              iterations to wait before turning the strobe off  again,  to  arg.
-              The  specification  says this time should be 0.5 microseconds, but
-              experience has shown the delay  caused  by  the  code  is  already
-              enough.   For  that  reason, the default value is 0.  This is used
-              for both the polling and the interrupt driver.
+       -c
+            This option is provided for backwards-compatibility only. On systems
+            that support it, this option forces the print file to be  copied  to
+            the spool directory before printing. In CUPS, print files are always
+            sent to the scheduler via IPP which has the same effect.
 
-       int ioctl(int fd, LPSETIRQ, int arg)
-              This ioctl(2) requires superuser privileges.  It takes an int con&#8208;
-              taining  the  new  IRQ as argument.  As a side effect, the printer
-              will be reset.  When arg is 0, the polling driver  will  be  used,
-              which is also default.
+       -d destination
+            Prints files to the named printer.
 
-       int ioctl(int fd, LPGETIRQ, int *arg)
-              Stores the currently used IRQ in arg.
-&#12;       int ioctl(int fd, LPGETSTATUS, int *arg)
-              Stores  the  value  of  the status port in arg.  The bits have the
-              following meaning:
+       -h hostname[:port]
+            Chooses an alternate server.
 
-              l    l.     LP_PBUSY  inverted    busy    input,    active    high
-              LP_PACK   unchanged      acknowledge     input,     active     low
-              LP_POUTPA unchanged  out-of-paper  input,  active   high   LP_PSE&#8208;
-              LECD     unchanged    selected    input,   active   high   LP_PER&#8208;
-              RORP     unchanged error input, active low
+       -i job-id
+            Specifies an existing job to modify.
 
-              Refer to your printer manual for the meaning of the signals.  Note
-              that undocumented bits may also be set, depending on your printer.
+       -m
+            Sends an email when the job is completed.
 
-       int ioctl(int fd, LPRESET)
-              Resets the printer.  No argument is used.
+       -n copies
+            Sets the number of copies to print from 1 to 100.
 
-FILES
-       /dev/lp*
+       -o &quot;name=value [name=value ...]&quot;
+            Sets one or more job options.
+
+       -q priority
+            Sets the job priority from 1 (lowest) to 100 (highest). The  default
+            priority is 50.
+
+       -s
+            Do not report the resulting job IDs (silent mode.)
+
+       -t &quot;name&quot;
+            Sets the job name.
+
+       -H hh:mm
+
+       -H hold
+
+       -H immediate
+
+       -H restart
+
+       -H resume
+            Specifies  when the job should be printed. A value of immediate will
+            print the file immediately, a value of hold will hold the job indef&#8208;
+            initely,  and  a  UTC time value (HH:MM) will hold the job until the
+            specified UTC (not local) time. Use a value of resume  with  the  -i
+            option  to  resume  a  held job.  Use a value of restart with the -i
+            option to restart a completed job.
+
+       -P page-list
+            Specifies which pages to print in the document. The list can contain
+            a  list  of  numbers  and  ranges  (#-#)  separated  by commas (e.g.
+            1,3-5,16). The page numbers refer to the output pages  and  not  the
+            document&apos;s  original pages - options like &quot;number-up&quot; can affect the
+            numbering of the pages.
+
+COMMON JOB OPTIONS
+       Aside from the printer-specific options reported by the lpoptions(1) com&#8208;
+       mand, the following generic options are available:
+
+       -o media=size
+            Sets  the page size to size. Most printers support at least the size
+            names &quot;a4&quot;, &quot;letter&quot;, and &quot;legal&quot;.
+
+       -o landscape
+
+       -o orientation-requested=4
+            Prints the job in landscape (rotated 90 degrees).
+
+       -o sides=one-sided
+
+       -o sides=two-sided-long-edge
+
+       -o sides=two-sided-short-edge
+            Prints on one or two sides of the paper. The value  &quot;two-sided-long-
+            edge&quot;  is  normally  used  when printing portrait (unrotated) pages,
+            while &quot;two-sided-short-edge&quot; is used for landscape pages.
+
+       -o fitplot
+            Scales the print file to fit on the page.
+
+       -o number-up=2
+
+       -o number-up=4
+
+       -o number-up=6
+
+       -o number-up=9
+
+       -o number-up=16
+            Prints multiple document pages on each output page.
+&#12;       -o scaling=number
+            Scales image files to use up to number percent of the page.   Values
+            greater  than 100 cause the image file to be printed across multiple
+            pages.
+
+       -o cpi=N
+            Sets the number of characters per inch to use when printing  a  text
+            file. The default is 10.
+
+       -o lpi=N
+            Sets  the number of lines per inch to use when printing a text file.
+            The default is 6.
+
+       -o page-bottom=N
+
+       -o page-left=N
+
+       -o page-right=N
+
+       -o page-top=N
+            Sets the page margins when printing text files. The  values  are  in
+            points - there are 72 points to the inch.
+
+EXAMPLES
+       Print a double-sided legal document to a printer called &quot;foo&quot;:
+           lp -d foo -o media=legal -o sides=two-sided-long-edge filename
+
+       Print an image across 4 pages:
+           lp -d bar -o scaling=200 filename
+
+       Print  a text file with 12 characters per inch, 8 lines per inch, and a 1
+       inch left margin:
+           lp -d bar -o cpi=12 -o lpi=8 -o page-left=72 filename
+
+COMPATIBILITY
+       Unlike the System V printing system, CUPS allows printer names to contain
+       any  printable  character  except SPACE, TAB, &quot;/&quot;, or &quot;#&quot;.  Also, printer
+       and class names are not case-sensitive.
+
+       The &quot;q&quot; option accepts a different range of values than  the  Solaris  lp
+       command, matching the IPP job priority values (1-100, 100 is highest pri&#8208;
+       ority) instead of the Solaris values (0-39, 0 is highest priority).
 
 SEE ALSO
-       chmod(1), chown(1), mknod(1), lpcntl(8), tunelp(8)
+       cancel(1), lpadmin(8), lpmove(8), lpoptions(1), lpstat(1),
+       http://localhost:631/help
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
-
+COPYRIGHT
+       Copyright 2007-2011 by Apple Inc.
 
 
-Linux                              1995-01-15                              LP(4)
+
+3 October 2011                        CUPS                                 lp(1)
 
 </pre></body></html>

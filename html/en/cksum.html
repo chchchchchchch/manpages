@@ -1,131 +1,53 @@
 <html>
 <head><meta charset=utf-8/>
-<title>cksum - Calculate a cksum(1) compatible checksum</title></head>
+<title>cksum - checksum and count the bytes in a file</title></head>
 <body><pre>
 
-cksum(3tcl)                 Cyclic Redundancy Checks                 cksum(3tcl)
+CKSUM(1)                          User Commands                         CKSUM(1)
 
 
-
-________________________________________________________________________________
 
 NAME
-       cksum - Calculate a cksum(1) compatible checksum
+       cksum - checksum and count the bytes in a file
 
 SYNOPSIS
-       package require Tcl  8.2
-
-       package require cksum  ?1.1.3?
-
-       ::crc::cksum  ?-format format? ?-chunksize size? [ -channel chan | -file&#8208;
-       name file | string ]
-
-       ::crc::CksumInit
-
-       ::crc::CksumUpdate token data
-
-       ::crc::CksumFinal token
-
-_________________________________________________________________
+       cksum [FILE]...
+       cksum [OPTION]
 
 DESCRIPTION
-       This package provides a Tcl  implementation  of  the  cksum(1)  algorithm
-       based upon information provided at in the GNU implementation of this pro&#8208;
-       gram as part of the GNU Textutils 2.0 package.
+       Print CRC checksum and byte counts of each FILE.
 
-COMMANDS
-       ::crc::cksum ?-format format? ?-chunksize size? [ -channel chan |  -file&#8208;
-       name file | string ]
-              The  command  takes  string  data  or  a  channel or file name and
-              returns a checksum value calculated using the cksum(1)  algorithm.
-              The  result is formatted using the format(3tcl) specifier provided
-              or as an unsigned integer (%u) by default.
+       --help display this help and exit
 
-OPTIONS
-       -channel name
-              Return a checksum for the data read from a  channel.  The  command
-              will read data from the channel until the eof is true. If you need
-              to be able to process events during this calculation see the  PRO&#8208;
-              GRAMMING INTERFACE section
+       --version
+              output version information and exit
 
-       -filename name
-              This  is  a convenience option that opens the specified file, sets
-              the encoding to binary and then acts as if the -channel option had
-              been used. The file is closed on completion.
+AUTHOR
+       Written by Q. Frank Xia.
 
-       -format string
-              Return the checksum using an alternative format template.
-
-PROGRAMMING INTERFACE
-       The  cksum  package  implements  the checksum using a context variable to
-       which additional data can be added at any time. This is expecially useful
-       in  an  event  based environment such as a Tk application or a web server
-       package. Data to be checksummed may be  handled  incrementally  during  a
-       fileevent  handler  in  discrete chunks. This can improve the interactive
-       nature of a GUI application and can help to avoid excessive  memory  con&#8208;
-       sumption.
-
-       ::crc::CksumInit
-              Begins  a  new cksum context. Returns a token ID that must be used
-              for the remaining functions. An optional seed may be specified  if
-              required.
-
-       ::crc::CksumUpdate token data
-              Add  data to the checksum identified by token. Calling CksumUpdate
-              $token &quot;abcd&quot; is equivalent to  calling  CksumUpdate  $token  &quot;ab&quot;
-              followed by CksumUpdate $token &quot;cb&quot;. See EXAMPLES.
-
-       ::crc::CksumFinal token
-              Returns the checksum value and releases any resources held by this
-              token. Once this command completes the token will be invalid.  The
-              result is a 32 bit integer value.
-
-EXAMPLES
-              % crc::cksum &quot;Hello, World!&quot;
-              2609532967
-
-
-              % crc::cksum -format 0x%X &quot;Hello, World!&quot;
-              0x9B8A5027
-
-
-              % crc::cksum -file cksum.tcl
-              1828321145
-
-
-              % set tok [crc::CksumInit]
-              % crc::CksumUpdate $tok &quot;Hello, &quot;
-              % crc::CksumUpdate $tok &quot;World!&quot;
-              % crc::CksumFinal $tok
-              2609532967
-
-
-AUTHORS
-       Pat Thoyts
-
-BUGS, IDEAS, FEEDBACK
-       This  document,  and  the  package it describes, will undoubtedly contain
-       bugs and other problems.  Please report such in the category crc  of  the
-       Tcllib   SF   Trackers  [http://sourceforge.net/tracker/?group_id=12883].
-       Please also report any ideas for enhancements you  may  have  for  either
-       package and/or documentation.
-
-SEE ALSO
-       crc32(3tcl), sum(3tcl)
-
-KEYWORDS
-       checksum,  cksum,  crc,  crc32,  cyclic redundancy check, data integrity,
-       security
-
-CATEGORY
-       Hashes, checksums, and encryption
+REPORTING BUGS
+       Report cksum bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report cksum translation bugs to &lt;http://translationproject.org/team/&gt;
 
 COPYRIGHT
-       Copyright (c) 2002, Pat Thoyts
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       The  full  documentation for cksum is maintained as a Texinfo manual.  If
+       the info and cksum programs are properly installed at your site, the com&#8208;
+       mand
+
+              info coreutils &apos;cksum invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-
-crc                                   1.1.3                          cksum(3tcl)
+GNU coreutils 8.12.197-032bb     September 2011                         CKSUM(1)
 
 </pre></body></html>

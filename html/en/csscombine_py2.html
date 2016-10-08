@@ -1,0 +1,51 @@
+<html>
+<head><meta charset=utf-8/>
+<title>csscombine - Utility to combine several stylesheets into one.</title></head>
+<body><pre>
+
+csscombine(1)                       cssutils                       csscombine(1)
+
+
+
+NAME
+       csscombine - Utility to combine several stylesheets into one.
+
+SYNOPSIS
+       csscombine [options...] path...
+
+DESCRIPTION
+       csscombine may be used to combine several sheets loaded from a main sheet
+       via @import rules. Nested  @import  rules  are  resolved  since  cssutils
+       0.9.6a1.
+
+       The  resulting  combined  sheet  (optionally minified) is sent to stdout,
+       info and error messages are handled by the normal cssutils log.
+
+       csscombine may also be used to change the encoding of the stylesheet if a
+       target encoding is given.
+
+OPTIONS
+       -h, --help
+              Show help message and exit.
+
+       -m, --minify
+              Saves minified version of combined files, default is false.
+
+       -s SOURCEENCODING, --sourceencoding=SOURCEENCODING
+              Encoding of input, defaulting to &quot;css&quot;. If given, overwrites other
+              encoding information like @charset declarations.
+
+       -t TARGETENCODING, --targetencoding=TARGETENCODING
+              Encoding of output, defaulting to &quot;UTF-8&quot;.
+
+       -u URL, --url=URL
+              URL to parse, path... is ignored if URL is given.
+
+SEE ALSO
+       /usr/share/doc/python-cssutils-doc/docs/html/docs/index.html
+
+
+
+                                  April 9, 2011                    csscombine(1)
+
+</pre></body></html>

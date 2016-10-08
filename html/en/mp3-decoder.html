@@ -1,0 +1,195 @@
+<html>
+<head><meta charset=utf-8/>
+<title>mpg321 — Simple and lightweight command line MP3 player</title></head>
+<body><pre>
+
+MPG321(1)                                                              MPG321(1)
+
+
+
+NAME
+       mpg321 &#8212; Simple and lightweight command line MP3 player
+
+SYNOPSIS
+       mpg321 [options] file(s) | URL(s) | -
+
+DESCRIPTION
+       mpg321 is a free command-line mp3 player, which uses the mad audio decod&#8208;
+       ing library. mpg321 was written to be a drop-in replacement for the  (by-
+       then)  non-free  mpg123 player.  Some functions remain unimplemented, but
+       mpg321 should function as a basic drop-in replacement for  mpg123  front-
+       ends  such  as  gqmpeg, and those programs which use mpg123 to decode mp3
+       files (like gtoaster, and other CD-recording software).
+
+OPTIONS
+       -o devicetype
+                 Set the output device type to devicetype.   devicetype  can  be
+                 one of:
+
+                 oss - the Linux Open Sound System;
+
+                 sun - the Sun audio system;
+
+                 alsa - the Advanced Linux Sound Architecture;
+
+                 alsa09 - the Advanced Linux Sound Architecture, version 0.9;
+
+                 esd - the Enlightened Sound Daemon;
+
+                 arts - the analog real-time synthesiser
+
+                 See -a device, below.
+
+       -a device, --audiodevice device
+                 Use device for audio-out instead of the default device, depend&#8208;
+                 ing on the output device you&apos;ve chosen (via -o devicetype).  By
+                 default this is the native sound device.  Generally this is the
+                 device for devicetype (or the default system device) to use for
+                 output (i.e. /dev/sound/dsp1).
+
+
+                 This option has no effect with -o arts.
+
+                 For  -o esd, specify the host on which esd is running; defaults
+                 to localhost.
+
+                 For -o alsa, specify audio  device  using  the  hw:x,y  syntax,
+                 where  x and y are numbers, default is hw:0,0.  For example, if
+                 there is only one device installed, in most cases,  the  device
+                 should  be  named  hw:0,0.   When there is only one device, the
+                 device should always have the same name and numbers.
+
+       -g N, --gain N
+                 Set gain (volume) to N (1-100).
+
+       -k N, --skip N
+                 Skip N frames into the file being played.
+
+       -n N, --frames N
+                 Decode only the first N frames of the stream. By  default,  the
+                 entire stream is decoded.
+&#12;       -@ list, --list list
+                 Use  the file list for a playlist. The list should be in a for&#8208;
+                 mat of filenames followed by a line feed. Multiple -@ or --list
+                 specifiers  will  be ignored; only the last -@ or --list option
+                 will be used. The playlist is concatenated with filenames spec&#8208;
+                 ified  on  the  command-line  to produce one master playlist. A
+                 filename of &apos;-&apos; will cause standard  input  to  be  read  as  a
+                 playlist.
+
+
+       -z, --shuffle
+                 Shuffle playlists and files specified on the command-line. Pro&#8208;
+                 duces a randomly-sorted playlist which is then  played  through
+                 once.
+
+       -Z, --random
+                 Randomise  playlists  and  files specified on the command-line.
+                 Files are played through, choosing at random; this  means  that
+                 random files will be played for as long as mpg321 is running.
+
+       -v, --verbose
+                 Be  more verbose. Show current byte, bytes remaining, time, and
+                 time remaining, as well as more information about the mp3 file.
+
+       -s, --stdout
+                 Use standard output instead of an audio device for output. Out&#8208;
+                 put is in 16-bit PCM, little-endian.
+
+       -w N, --wav N
+                 Write  to  wav  file  N instead of using the audio device. This
+                 option will be preferred if --cdr or --au  are  specified  too.
+                 Specifying &apos;-&apos; for N will cause the file to be written to stan&#8208;
+                 dard output.
+
+       --cdr N   Write to cdr file N instead of using the audio device. Specify&#8208;
+                 ing  &apos;-&apos;  for  N  will cause the file to be written to standard
+                 output.
+
+       --au N    Write to au file N instead of using the audio device.  Specify&#8208;
+                 ing  &apos;-&apos;  for  N  will cause the file to be written to standard
+                 output.
+
+       -t, --test
+                 Test mode; do no output at all.
+
+
+       -q, --quiet
+                 Quiet mode; suppress output of mpg123 boilerplate and file  and
+                 song name.
+
+
+       -B        Read  recursively  the  given directories. Allows you to define
+                 only the directory or directories and then  mpg321  recursively
+                 plays all the songs.
+
+
+       -F        Turn on FFT analysis on PCM data. Remote mode only
+
+
+       -S        Report song to AudioScrobbler (last.fm).
+
+
+       -x        Set xterm title setting
+
+
+       -b        Number of decoded frames for the output buffer.
+&#12;
+       -K        Enable Basic Keys.
+
+
+       -R        &quot;Remote  control&quot;  mode.  Useful for front-ends. Allows seeking
+                 and   pausing   of   mp3   files.   See    README.remote    (in
+                 /usr/share/doc/mpg321 on Debian and some other systems.)
+
+
+       -3, --restart
+                 Restart  &quot;remote  shell&quot;.  Used  only  when in &quot;Remote control&quot;
+                 mode.
+
+       --stereo  Force stereo output: duplicates mono stream  on  second  output
+                 channel.  Useful  for  output for devices that don&apos;t understand
+                 mono, such as some CD players.
+
+
+       --aggressive
+                 Aggressive mode; try to get  higher  priority  on  the  system.
+                 Needs root permissions.
+
+
+       --skip-printing-frames=N
+                 Skip  N  frames between printing a frame status update, in both
+                 Remote Control (-R) and verbose (-v) mode. Can help CPU  utili&#8208;
+                 sation on slower machines. This is an mpg321-specific option.
+
+
+       -l N, --loop N
+                 Loop song or playlist N times.If N is 0 means infinite times.
+
+       --help, --longhelp
+                 Show summary of options.
+
+       -V, --version
+                 Show version of program.
+
+Basic keys:
+        * or /   Increase or decrease volume.
+
+        n        Skip song.
+
+        m        Mute/unmute.
+
+AUTHOR
+       This manual page was written by Joe Drew &lt;drew@debian.org&gt;.
+
+       Maintained by Nanakos Chrysostomos &lt;nanakos@wired-net.gr&gt;.
+
+       Permission  is  granted  to  copy, distribute and/or modify this document
+       under the terms of the BSD license.  On Debian systems, this can be found
+       in /usr/share/common-licenses/BSD.
+
+
+
+                                                                       MPG321(1)
+
+</pre></body></html>

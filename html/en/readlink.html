@@ -1,144 +1,77 @@
 <html>
 <head><meta charset=utf-8/>
-<title>readlink - read value of a symbolic link</title></head>
+<title>readlink - print value of a symbolic link or canonical file name</title></head>
 <body><pre>
 
-READLINK(2)                 Linux Programmer&apos;s Manual                READLINK(2)
+READLINK(1)                       User Commands                      READLINK(1)
 
 
 
 NAME
-       readlink - read value of a symbolic link
+       readlink - print value of a symbolic link or canonical file name
 
 SYNOPSIS
-       #include &lt;unistd.h&gt;
-
-       ssize_t readlink(const char *path, char *buf, size_t bufsiz);
-
-   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
-
-       readlink():
-           _BSD_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
-           _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED || _POSIX_C_SOURCE &gt;= 200112L
+       readlink [OPTION]... FILE
 
 DESCRIPTION
-       readlink() places the contents of the symbolic link path  in  the  buffer
-       buf,  which  has  size bufsiz.  readlink() does not append a null byte to
-       buf.  It will truncate the contents (to a length of  bufsiz  characters),
-       in case the buffer is too small to hold all of the contents.
+       Print value of a symbolic link or canonical file name
 
-RETURN VALUE
-       On  success,  readlink()  returns  the number of bytes placed in buf.  On
-       error, -1 is returned and errno is set to indicate the error.
+       -f, --canonicalize
+              canonicalize  by following every symlink in every component of the
+              given name recursively; all but the last component must exist
 
-ERRORS
-       EACCES Search permission is denied for a component of  the  path  prefix.
-              (See also path_resolution(7).)
+       -e, --canonicalize-existing
+              canonicalize by following every symlink in every component of  the
+              given name recursively, all components must exist
 
-       EFAULT buf extends outside the process&apos;s allocated address space.
+       -m, --canonicalize-missing
+              canonicalize  by following every symlink in every component of the
+              given name recursively, without requirements on  components  exis&#8208;
+              tence
 
-       EINVAL bufsiz is not positive.
+       -n, --no-newline
+              do not output the trailing newline
 
-       EINVAL The named file is not a symbolic link.
+       -q, --quiet,
 
-       EIO    An I/O error occurred while reading from the file system.
+       -s, --silent
+              suppress most error messages
 
-       ELOOP  Too  many symbolic links were encountered in translating the path&#8208;
-              name.
+       -v, --verbose
+              report error messages
 
-       ENAMETOOLONG
-              A pathname, or a component of a pathname, was too long.
+       --help display this help and exit
 
-       ENOENT The named file does not exist.
+       --version
+              output version information and exit
 
-       ENOMEM Insufficient kernel memory was available.
+AUTHOR
+       Written by Dmitry V. Levin.
 
-       ENOTDIR
-              A component of the path prefix is not a directory.
+REPORTING BUGS
+       Report readlink bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report readlink translation bugs to &lt;http://translationproject.org/team/&gt;
 
-CONFORMING TO
-       4.4BSD (readlink() first appeared in 4.2BSD), POSIX.1-2001.
-
-NOTES
-       In versions of glibc up to and including glibc 2.4, the  return  type  of
-       readlink() was declared as int.  Nowadays, the return type is declared as
-       ssize_t, as (newly) required in POSIX.1-2001.
-
-       Using a statically sized buffer might not provide  enough  room  for  the
-       symbolic link contents.  The required size for the buffer can be obtained
-       from the stat.st_size value returned by a call to lstat(2) on  the  link.
-       However,  the  number of bytes written by readlink() should be checked to
-       make sure that the size of the symbolic link did not increase between the
-       calls.  Dynamically allocating the buffer for readlink() also addresses a
-       common portability problem when using PATH_MAX for the  buffer  size,  as
-       this  constant  is  not  guaranteed to be defined per POSIX if the system
-       does not have such limit.
-
-EXAMPLE
-       The following program allocates the buffer needed by  readlink()  dynami&#8208;
-       cally  from  the  information provided by lstat(), making sure there&apos;s no
-       race condition between the calls.
-
-       #include &lt;sys/types.h&gt;
-       #include &lt;sys/stat.h&gt;
-       #include &lt;stdio.h&gt;
-       #include &lt;stdlib.h&gt;
-       #include &lt;unistd.h&gt;
-
-       int
-       main(int argc, char *argv[])
-       {
-           struct stat sb;
-           char *linkname;
-           ssize_t r;
-
-           if (argc != 2) {
-               fprintf(stderr, &quot;Usage: %s &lt;pathname&gt;\n&quot;, argv[0]);
-               exit(EXIT_FAILURE);
-           }
-
-           if (lstat(argv[1], &amp;sb) == -1) {
-               perror(&quot;lstat&quot;);
-               exit(EXIT_FAILURE);
-           }
-
-           linkname = malloc(sb.st_size + 1);
-           if (linkname == NULL) {
-               fprintf(stderr, &quot;insufficient memory\n&quot;);
-               exit(EXIT_FAILURE);
-           }
-
-           r = readlink(argv[1], linkname, sb.st_size + 1);
-
-           if (r &lt; 0) {
-               perror(&quot;lstat&quot;);
-               exit(EXIT_FAILURE);
-           }
-
-           if (r &gt; sb.st_size) {
-               fprintf(stderr, &quot;symlink increased in size &quot;
-                               &quot;between lstat() and readlink()\n&quot;);
-               exit(EXIT_FAILURE);
-           }
-
-           linkname[sb.st_size] = &apos;\0&apos;;
-
-           printf(&quot;&apos;%s&apos; points to &apos;%s&apos;\n&quot;, argv[1], linkname);
-
-           exit(EXIT_SUCCESS);
-       }
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       readlink(1), lstat(2), readlinkat(2), stat(2),  symlink(2),  path_resolu&#8208;
-       tion(7), symlink(7)
+       readlink(2)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+       The  full  documentation  for readlink is maintained as a Texinfo manual.
+       If the info and readlink programs are properly installed  at  your  site,
+       the command
+
+              info coreutils &apos;readlink invocation&apos;
+&#12;       should give you access to the complete manual.
 
 
 
-Linux                              2011-09-20                        READLINK(2)
+GNU coreutils 8.12.197-032bb     September 2011                      READLINK(1)
 
 </pre></body></html>

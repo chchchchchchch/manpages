@@ -1,0 +1,230 @@
+<html>
+<head><meta charset=utf-8/>
+<title>f2py - Fortran to Python interface generator</title></head>
+<body><pre>
+
+F2PY(1)                                                                  F2PY(1)
+
+
+
+NAME
+       f2py - Fortran to Python interface generator
+
+SYNOPSIS
+       (1) To construct extension module sources:
+
+       f2py  [&lt;options&gt;] &lt;fortran files&gt; [[[only:]||[skip:]] &lt;fortran functions&gt;
+       ] [: &lt;fortran files&gt; ...]
+
+       (2) To compile fortran files and build extension modules:
+
+       f2py -c [&lt;options&gt;, &lt;config_fc options&gt;, &lt;extra options&gt;] &lt;fortran files&gt;
+
+       (3) To generate signature files:
+
+       f2py -h &lt;filename.pyf&gt; ...&lt; same options as in (1) &gt;
+
+DESCRIPTION
+       This program generates a Python C/API  file  (&lt;modulename&gt;module.c)  that
+       contains  wrappers  for  given Fortran or C functions so that they can be
+       called from Python.  With the -c option the corresponding extension  mod&#8208;
+       ules are built.
+
+OPTIONS
+       -h &lt;filename&gt;
+              Write  signatures  of  the fortran routines to file &lt;filename&gt; and
+              exit. You can then edit &lt;filename&gt; and use it instead of  &lt;fortran
+              files&gt;.  If  &lt;filename&gt;==stdout then the signatures are printed to
+              stdout.
+
+       &lt;fortran functions&gt;
+              Names of fortran routines for which Python C/API functions will be
+              generated. Default is all that are found in &lt;fortran files&gt;.
+
+       skip:  Ignore fortran functions that follow until `:&apos;.
+
+       only:  Use only fortran functions that follow until `:&apos;.
+
+       :      Get back to &lt;fortran files&gt; mode.
+
+       -m &lt;modulename&gt;
+              Name  of  the  module; f2py generates a Python/C API file &lt;module&#8208;
+              name&gt;module.c or extension module &lt;modulename&gt;.  Default is &#180;unti&#8208;
+              tled&#180;.
+
+       --[no-]lower
+              Do  [not]  lower the cases in &lt;fortran files&gt;. By default, --lower
+              is assumed with -h key, and --no-lower without -h key.
+
+       --build-dir &lt;dirname&gt;
+              All f2py generated files are  created  in  &lt;dirname&gt;.  Default  is
+              tempfile.mktemp().
+
+       --overwrite-signature
+              Overwrite existing signature file.
+
+       --[no-]latex-doc
+              Create    (or    not)    &lt;modulename&gt;module.tex.     Default    is
+              --no-latex-doc.
+
+       --short-latex
+              Create &apos;incomplete&apos; LaTeX document  (without  commands  \document&#8208;
+              class, \tableofcontents, and \begin{document}, \end{document}).
+
+       --[no-]rest-doc
+              Create (or not) &lt;modulename&gt;module.rst.  Default is --no-rest-doc.
+
+       --debug-capi
+              Create  C/API  code  that reports the state of the wrappers during
+              runtime. Useful for debugging.
+
+       -include&#180;&lt;includefile&gt;&#180;
+              Add CPP #include  statement  to  the  C/API  code.   &lt;includefile&gt;
+              should  be  in  the  format  of either `&quot;filename.ext&quot;&apos; or `&lt;file&#8208;
+              name.ext&gt;&apos;.  As a  result  &lt;includefile&gt;  will  be  included  just
+              before  wrapper  functions  part  in the C/API code. The option is
+              depreciated, use `usercode` statement in signature files instead.
+
+       --[no-]wrap-functions
+              Create  Fortran  subroutine  wrappers  to  Fortran  77  functions.
+              --wrap-functions  is  default because it ensures maximum portabil&#8208;
+              ity/compiler independence.
+
+       --help-link [..]
+              List system resources found by system_info.py. [..] may contain  a
+              list of resources names. See also --link-&lt;resource&gt; switch below.
+
+       --quiet
+              Run quietly.
+
+       --verbose
+              Run with extra verbosity.
+
+       -v     Print f2py version ID and exit.
+
+       --include_paths path1:path2:...
+              Search include files (that f2py will scan) from the given directo&#8208;
+              ries.
+
+CONFIG_FC OPTIONS
+       The following options are effective only when -c switch is used.
+
+       --help-compiler
+              List available Fortran compilers [DEPRECIATED].
+
+       --fcompiler=&lt;name&gt;
+              Specify Fortran compiler type by vendor.
+
+       --compiler=&lt;name&gt;
+              Specify C compiler type (as defined by distutils)
+
+       --fcompiler-exec=&lt;path&gt;
+              Specify the path to F77 compiler [DEPRECIATED].
+
+       --f90compiler-exec=&lt;path&gt;
+              Specify the path to F90 compiler [DEPRECIATED].
+
+       --help-fcompiler
+              List available Fortran compilers and exit.
+
+       --f77exec=&lt;path&gt;
+              Specify the path to F77 compiler.
+
+       --f90exec=&lt;path&gt;
+              Specify the path to F90 compiler.
+
+       --f77flags=&quot;...&quot;
+              Specify F77 compiler flags.
+
+       --f90flags=&quot;...&quot;
+              Specify F90 compiler flags.
+&#12;       --opt=&quot;...&quot;
+              Specify optimization flags.
+
+       --arch=&quot;...&quot;
+              Specify architecture specific optimization flags.
+
+       --noopt
+              Compile without optimization.
+
+       --noarch
+              Compile without arch-dependent optimization.
+
+       --debug
+              Compile with debugging information.
+
+EXTRA OPTIONS
+       The following options are effective only when -c switch is used.
+
+       --link-&lt;resource&gt;
+              Link extension module with &lt;resource&gt; as defined  by  numpy_distu&#8208;
+              tils/system_info.py.  E.g. to link with optimized LAPACK libraries
+              (vecLib on MacOSX, ATLAS elsewhere),  use  --link-lapack_opt.  See
+              also --help-link switch.
+
+
+       -L/path/to/lib/ -l&lt;libname&gt;
+
+       -D&lt;define&gt; -U&lt;name&gt; -I/path/to/include/
+
+       &lt;filename&gt;.o &lt;filename&gt;.so &lt;filename&gt;.a
+
+
+       -DPREPEND_FORTRAN    -DNO_APPEND_FORTRAN   -DUPPERCASE_FORTRAN   -DUNDER&#8208;
+       SCORE_G77
+              Macros that might be required with non-gcc Fortran compilers.
+
+
+       -DF2PY_REPORT_ATEXIT
+              To print out a performance report of F2PY  interface  when  python
+              exits. Available for Linux.
+
+
+       -DF2PY_REPORT_ON_ARRAY_COPY=&lt;int&gt;
+              To  send  a message to stderr whenever F2PY interface makes a copy
+              of an array. Integer &lt;int&gt; sets the threshold for array sizes when
+              a message should be shown.
+
+
+REQUIREMENTS
+       Python 1.5.2 or higher (2.x is supported).
+
+       Numerical Python 13 or higher (20.x,21.x,22.x,23.x are supported).
+
+       Optional Numarray 0.9 or higher partially supported.
+
+       numpy_distutils from Scipy (can be downloaded from F2PY homepage)
+
+SEE ALSO
+       python(1)
+
+BUGS
+       For instructions on reporting bugs, see
+
+         http://cens.ioc.ee/projects/f2py2e/FAQ.html
+
+AUTHOR
+       Pearu Peterson &lt;pearu@cens.ioc.ee&gt;
+
+INTERNET RESOURCES
+       Main website: http://cens.ioc.ee/projects/f2py2e/
+&#12;       User&apos;s Guide: http://cens.ioc.ee/projects/f2py2e/usersguide/
+
+       Mailing list: http://cens.ioc.ee/mailman/listinfo/f2py-users/
+
+       Scipy website: http://www.numpy.org
+
+COPYRIGHT
+       Copyright (c) 1999, 2000, 2001, 2002, 2003, 2004, 2005 Pearu Peterson
+
+LICENSE
+       NumPy License
+
+VERSION
+       2.45.241
+
+
+
+                                                                         F2PY(1)
+
+</pre></body></html>

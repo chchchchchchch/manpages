@@ -1,96 +1,82 @@
 <html>
 <head><meta charset=utf-8/>
-<title>uname - get name and information about current kernel</title></head>
+<title>uname - print system information</title></head>
 <body><pre>
 
-UNAME(2)                    Linux Programmer&apos;s Manual                   UNAME(2)
+UNAME(1)                          User Commands                         UNAME(1)
 
 
 
 NAME
-       uname - get name and information about current kernel
+       uname - print system information
 
 SYNOPSIS
-       #include &lt;sys/utsname.h&gt;
-
-       int uname(struct utsname *buf);
+       uname [OPTION]...
 
 DESCRIPTION
-       uname()  returns  system  information in the structure pointed to by buf.
-       The utsname struct is defined in &lt;sys/utsname.h&gt;:
+       Print certain system information.  With no OPTION, same as -s.
 
-           struct utsname {
-               char sysname[];    /* Operating system name (e.g., &quot;Linux&quot;) */
-               char nodename[];   /* Name within &quot;some implementation-defined
-                                     network&quot; */
-               char release[];    /* Operating system release (e.g., &quot;2.6.28&quot;) */
-               char version[];    /* Operating system version */
-               char machine[];    /* Hardware identifier */
-           #ifdef _GNU_SOURCE
-               char domainname[]; /* NIS or YP domain name */
-           #endif
-           };
+       -a, --all
+              print  all information, in the following order, except omit -p and
+              -i if unknown:
 
-       The length of the arrays in a struct utsname is unspecified (see  NOTES);
-       the fields are terminated by a null byte (&apos;\0&apos;).
+       -s, --kernel-name
+              print the kernel name
 
-RETURN VALUE
-       On success, zero is returned.  On error, -1 is returned, and errno is set
-       appropriately.
+       -n, --nodename
+              print the network node hostname
 
-ERRORS
-       EFAULT buf is not valid.
+       -r, --kernel-release
+              print the kernel release
 
-CONFORMING TO
-       SVr4, POSIX.1-2001.  There is no uname() call in 4.3BSD.
+       -v, --kernel-version
+              print the kernel version
 
-       The domainname member (the NIS or YP domain name) is a GNU extension.
+       -m, --machine
+              print the machine hardware name
 
-NOTES
-       This is a system call, and the  operating  system  presumably  knows  its
-       name,  release and version.  It also knows what hardware it runs on.  So,
-       four of the fields of the struct are meaningful.  On the other hand,  the
-       field  nodename  is meaningless: it gives the name of the present machine
-       in some undefined network, but typically machines are in  more  than  one
-       network and have several names.  Moreover, the kernel has no way of know&#8208;
-       ing about such things, so it has to be told what  to  answer  here.   The
-       same holds for the additional domainname field.
+       -p, --processor
+              print the processor type or &quot;unknown&quot;
 
-       To  this  end  Linux  uses the system calls sethostname(2) and setdomain&#8208;
-       name(2).  Note that there is no standard that says that the hostname  set
-       by  sethostname(2) is the same string as the nodename field of the struct
-       returned by uname() (indeed, some systems allow a 256-byte  hostname  and
-       an  8-byte nodename), but this is true on Linux.  The same holds for set&#8208;
-       domainname(2) and the domainname field.
+       -i, --hardware-platform
+              print the hardware platform or &quot;unknown&quot;
 
-       The length of the fields in the struct varies.  Some operating systems or
-       libraries  use  a  hardcoded  9  or  33  or 65 or 257.  Other systems use
-       SYS_NMLN or _SYS_NMLN or UTSLEN or _UTSNAME_LENGTH.  Clearly, it is a bad
-       idea  to  use any of these constants; just use sizeof(...).  Often 257 is
-       chosen in order to have room for an internet hostname.
-&#12;       Part of the utsname information is  also  accessible  via  /proc/sys/ker&#8208;
-       nel/{ostype, hostname, osrelease, version, domainname}.
+       -o, --operating-system
+              print the operating system
 
-   Underlying kernel interface
-       Over  time,  increases  in  the size of the utsname structure have led to
-       three   successive   versions   of    uname():    sys_olduname()    (slot
-       __NR_oldolduname),  sys_uname()  (slot __NR_olduname), and sys_newuname()
-       (slot __NR_uname).  The first one used length 9 for all fields; the  sec&#8208;
-       ond  used  65; the third also uses 65 but adds the domainname field.  The
-       glibc uname() wrapper function hides  these  details  from  applications,
-       invoking  the most recent version of the system call provided by the ker&#8208;
-       nel.
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+AUTHOR
+       Written by David MacKenzie.
+
+REPORTING BUGS
+       Report uname bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report uname translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       uname(1), getdomainname(2), gethostname(2)
+       arch(1), uname(2)
 
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       The full documentation for uname is maintained as a Texinfo  manual.   If
+       the info and uname programs are properly installed at your site, the com&#8208;
+       mand
+
+              info coreutils &apos;uname invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-Linux                              2008-12-03                           UNAME(2)
+GNU coreutils 8.12.197-032bb     September 2011                         UNAME(1)
 
 </pre></body></html>

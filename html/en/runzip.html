@@ -1,0 +1,140 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rzip - a large-file compression program</title></head>
+<body><pre>
+
+rzip(1)                                                                  rzip(1)
+
+
+
+NAME
+       rzip - a large-file compression program
+
+SYNOPSIS
+       rzip [OPTIONS] &lt;files...&gt;
+
+DESCRIPTION
+       rzip  is  a  file compression program designed to do particularly well on
+       very large files containing long distance redundancy.
+
+OPTIONS SUMMARY
+       Here is a summary of the options to rzip.
+
+
+
+       -0, --worst            fastest (worst) compression
+       -6                     default compression level
+       -9, --best             slowest (best) compression
+       -d, --decompress       decompress
+       -f, --force            force overwrite of any existing files
+       -o, --output FILENAME  specify the output file name
+       -k, --keep             keep existing files
+       -L, --level LEVEL      set compression level
+       -P, --progress         show compression progress
+       -S, --suffix SUFFIX    specify compressed suffix (default &apos;.rz&apos;)
+       -v, --verbose          increase verbosity
+       -V, --version          show version
+
+
+
+
+OPTIONS
+       -h --help
+              Print an options summary page
+
+       -V --version
+              Print the rzip version number
+
+       -0 (or --worst) to -9 (or --best) --level
+              Set the compression level from 0 to 9. The default is to use level
+              6, which is a reasonable compromise between speed and compression.
+              The compression level is also strongly related to how much  memory
+              rzip  uses,  so  if you are running rzip on a machine with limited
+              amounts of memory then you will probably want to choose a  smaller
+              level.
+
+       -d --decompress
+              Decompress. If this option is not used then rzip looks at the name
+              used to launch the program. If it  contains  the  string  &apos;runzip&apos;
+              then the -d option is automatically set.
+
+       -o --output
+              Set  the output file name. If this option is not set then the out&#8208;
+              put file name is chosen based on the input name  and  the  suffix.
+              The  -o option cannot be used if more than one file name is speci&#8208;
+              fied on the command line.
+
+       -S --suffix
+              Set the compression suffix. The default is &apos;.rz&apos;.
+
+       -f --force
+              If this option is not specified then rzip will not  overwrite  any
+              existing  files.  If  you  set this option then rzip will silently
+              overwrite any files as needed.
+
+       -k --keep
+              If this option is not specified then rzip will delete  the  source
+              file  after  successful  compression  or  decompression. When this
+              option is specified then the source files are not deleted.
+
+       -P --progress
+              If this option is specified then rzip  will  show  the  percentage
+              progress while compressing.
+
+INSTALLATION
+       Just install rzip in your search path.
+
+COMPRESSION ALGORITHM
+       rzip  operates  in  two  stages.  The first stage finds and encodes large
+       chunks of duplicated data over potentially very  long  distances  (up  to
+       nearly  a gigabyte) in the input file. The second stage is to use a stan&#8208;
+       dard compression algorithm (bzip2) to compress the output  of  the  first
+       stage.
+
+       The  key  difference  between rzip and other well known compression algo&#8208;
+       rithms is its ability to take advantage of very long distance redundency.
+       The well known deflate algorithm used in gzip uses a maximum history buf&#8208;
+       fer of 32k. The block sorting algorithm used in bzip2 is limited to  900k
+       of  history.  The history buffer in rzip can be up to 900MB long, several
+       orders of magnitude larger than gzip or bzip2.
+
+       It is quite common these days to need to compress files that contain long
+       distance redundancies. For example, when compressing a set of home direc&#8208;
+       tories several users might have copies of the same file, or of quite sim&#8208;
+       ilar  files.  It is also common to have a single file that contains large
+       duplicated chunks over long  distances,  such  as  pdf  files  containing
+       repeated  copies  of  the  same image. Most compression programs won&apos;t be
+       able to take advantage of this redundency, and thus might achieve a  much
+       lower compression ratio than rzip can achieve.
+
+HISTORY
+       The  ideas behind rzip were first implemented in 1998 while I was working
+       on rsync. That version was too slow to be practical, and was replaced  by
+       this version in 2003.
+
+BUGS
+       Unlike most Unix compression programs, rzip cannot compress or decompress
+       to or from standard input or standard output. This is due to  the  nature
+       of the algorithm that rzip uses and cannot easily be fixed.
+
+CREDITS
+       Thanks to the following people for their contributions to rzip
+
+       o      Paul Russell for many suggestions and the debian packaging
+
+       o      The authors of bzlib for an excellent library
+
+AUTHOR
+       rzip was written by Andrew Tridgell http://samba.org/~tridge/
+
+       If  you  wish  to report a problem or make a suggestion then please email
+       bugs-rzip@tridgell.net
+
+       rzip is released under the GNU General Public License version 2 or later.
+       Please see the file COPYING for license details.
+
+
+
+                                  October 2003                           rzip(1)
+
+</pre></body></html>

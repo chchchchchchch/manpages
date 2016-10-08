@@ -1,151 +1,124 @@
 <html>
 <head><meta charset=utf-8/>
-<title>locale - description of multilanguage support</title></head>
+<title>locale - Get locale-specific information.</title></head>
 <body><pre>
 
-LOCALE(7)                   Linux Programmer&apos;s Manual                  LOCALE(7)
+LOCALE(1)                       Debian GNU/Linux                       LOCALE(1)
 
 
 
 NAME
-       locale - description of multilanguage support
+       locale - Get locale-specific information.
 
 SYNOPSIS
-       #include &lt;locale.h&gt;
+       locale [ -a &#9130; -m]
+
+       locale [ -ck ] name...
 
 DESCRIPTION
-       A  locale  is  a set of language and cultural rules.  These cover aspects
-       such as language for messages, different  character  sets,  lexicographic
-       conventions,  and  so  on.   A  program needs to be able to determine its
-       locale and act accordingly to be portable to different cultures.
+       The locale program writes information about the current locale environ&#8208;
+       ment, or all locales, to standard output.
 
-       The header &lt;locale.h&gt; declares data types, functions and macros which are
-       useful in this task.
+       When invoked without arguments, locale summarizes the current locale
+       environment for each locale category defined by the LC_* environment
+       variables.
 
-       The functions it declares are setlocale(3) to set the current locale, and
-       localeconv(3) to get information about number formatting.
+       -a, --all-locales
 
-       There are different categories for  local  information  a  program  might
-       need;  they  are declared as macros.  Using them as the first argument to
-       the setlocale(3) function, it is possible to set  one  of  these  to  the
-       desired locale:
+               Write names of available locales.
 
-       LC_COLLATE
-              This  is  used  to change the behavior of the functions strcoll(3)
-              and strxfrm(3), which are used to compare  strings  in  the  local
-              alphabet.  For example, the German sharp s is sorted as &quot;ss&quot;.
+       -m, --charmaps
+
+               Write names of available charmaps.
+
+
+       Output Format:
+
+       -c, --category-name
+
+               Write names of selected categories.
+
+       -k, --keyword-name
+
+               Write names and values of selected keywords.
+
+
+ENVIRONMENT VARIABLES
+       These environment variables affect each locale categories for all locale-
+       aware programs:
 
        LC_CTYPE
-              This  changes the behavior of the character handling and classifi&#8208;
-              cation functions, such  as  isupper(3)  and  toupper(3),  and  the
-              multibyte character functions such as mblen(3) or wctomb(3).
 
-       LC_MONETARY
-              changes  the information returned by localeconv(3) which describes
-              the way numbers are usually printed, with details such as  decimal
-              point  versus  decimal comma.  This information is internally used
-              by the function strfmon(3).
+               Character classification and case conversion.
 
-       LC_MESSAGES
-              changes the language messages are displayed in and what an  affir&#8208;
-              mative  or negative answer looks like.  The GNU C-library contains
-              the gettext(3), ngettext(3), and rpmatch(3) functions to ease  the
-              use  of  these  information.   The GNU gettext family of functions
-              also obey the environment variable LANGUAGE (containing  a  colon-
-              separated  list  of  locales)  if  the  category is set to a valid
-              locale other than &quot;C&quot;.
+       LC_COLLATE
 
-       LC_NUMERIC
-              changes the information used by the printf(3) and scanf(3)  family
-              of  functions,  when  they are advised to use the locale-settings.
-              This information can also be read with the localeconv(3) function.
+               Collation order.
 
        LC_TIME
-              changes the behavior of the strftime(3) function  to  display  the
-              current  time  in  a locally acceptable form; for example, most of
-              Europe uses a 24-hour clock versus the 12-hour clock used  in  the
-              United States.
 
-       LC_ALL All of the above.
+               Date and time formats.
 
-       If  the  second  argument  to  setlocale(3)  is empty string, &quot;&quot;, for the
-       default locale, it is determined using the following steps:
+       LC_NUMERIC
 
-       1.     If there is a non-null environment variable LC_ALL, the  value  of
-              LC_ALL is used.
+               Non-monetary numeric formats.
 
-       2.     If  an environment variable with the same name as one of the cate&#8208;
-              gories above exists and is non-null, its value is  used  for  that
-              category.
+       LC_MONETARY
 
-       3.     If  there  is  a  non-null environment variable LANG, the value of
-              LANG is used.
+               Monetary formats.
 
-       Values about local numeric formatting is made available in a struct lconv
-       returned  by the localeconv(3) function, which has the following declara&#8208;
-       tion:
+       LC_MESSAGES
+&#12;               Formats of informative and diagnostic messages and
+               interactive responses.
 
-         struct lconv {
+       LC_PAPER
 
-             /* Numeric (nonmonetary) information */
+               Paper size.
 
-             char *decimal_point;     /* Radix character */
-             char *thousands_sep;     /* Separator for digit groups to left
-                                         of radix character */
-             char *grouping; /* Each element is the number of digits in a
-                                group; elements with higher indices are
-                                further left.  An element with value CHAR_MAX
-                                means that no further grouping is done.  An
-                                element with value 0 means that the previous
-                                element is used for all groups further left. */
+       LC_NAME
 
-             /* Remaining fields are for monetary information */
+               Name formats.
 
-             char *int_curr_symbol;   /* First three chars are a currency symbol
-                                         from ISO 4217.  Fourth char is the
-                                         separator.  Fifth char is &apos;\0&apos;. */
-             char *currency_symbol;   /* Local currency symbol */
-             char *mon_decimal_point; /* Radix character */
-             char *mon_thousands_sep; /* Like thousands_sep above */
-             char *mon_grouping;      /* Like grouping above */
-             char *positive_sign;     /* Sign for positive values */
-             char *negative_sign;     /* Sign for negative values */
-             char  int_frac_digits;   /* International fractional digits */
-             char  frac_digits;       /* Local fractional digits */
-             char  p_cs_precedes;     /* 1 if currency_symbol precedes a
-                                         positive value, 0 if succeeds */
-             char  p_sep_by_space;    /* 1 if a space separates currency_symbol
-                                         from a positive value */
-             char  n_cs_precedes;     /* 1 if currency_symbol precedes a
-                                         negative value, 0 if succeeds */
-             char  n_sep_by_space;    /* 1 if a space separates currency_symbol
-                                         from a negative value */
-             /* Positive and negative sign positions:
-                0 Parentheses surround the quantity and currency_symbol.
-                1 The sign string precedes the quantity and currency_symbol.
-                2 The sign string succeeds the quantity and currency_symbol.
-                3 The sign string immediately precedes the currency_symbol.
-                4 The sign string immediately succeeds the currency_symbol. */
-             char  p_sign_posn;
-             char  n_sign_posn;
-         };
+       LC_ADDRESS
 
-CONFORMING TO
-       POSIX.1-2001.
+               Address formats and location information.
 
-       The GNU gettext functions are specified in LI18NUX2000.
-&#12;SEE ALSO
-       locale(1), localedef(1), gettext(3), localeconv(3), ngettext(3), nl_lang&#8208;
-       info(3),  rpmatch(3),  setlocale(3), strcoll(3), strfmon(3), strftime(3),
-       strxfrm(3)
+       LC_TELEPHONE
 
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+               Telephone number formats.
+
+       LC_MEASUREMENT
+
+               Measurement units (Metric or Other).
+
+       LC_IDENTIFICATION
+
+               Metadata about the locale information.
+
+       This environment variable can switch against multiple locale database:
+
+       LOCPATH
+
+               The directory where locale data is stored.  By default, /usr/lib/locale is used.
 
 
 
-Linux                              2008-12-05                          LOCALE(7)
+FILES
+       /usr/share/i18n/SUPPORTED
+               List of supported values (and their associated encoding) for the
+               locale name.  This representation is recommended over
+               --all-locales one, due being the system wide supported values.
+AUTHOR
+       locale was written by Ulrich Drepper for the GNU C Library.
+       This manpage was written by Joel Klecker &lt;espy@debian.org&gt; for the Debian
+       GNU/Linux system, and expanded by Alastair McKinstry &lt;mckinstry@com&#8208;
+       puter.org&gt;
+SEE ALSO
+       locale(5), locale(7), setlocale(3)
+
+
+
+
+3rd Berkeley Distribution          2004-12-16                          LOCALE(1)
 
 </pre></body></html>

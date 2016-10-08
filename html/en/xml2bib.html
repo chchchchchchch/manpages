@@ -1,0 +1,349 @@
+<html>
+<head><meta charset=utf-8/>
+<title>bibutils - bibliography conversion utilities</title></head>
+<body><pre>
+
+BIBUTILS(1)                       User Commands                      BIBUTILS(1)
+
+
+
+NAME
+       bibutils - bibliography conversion utilities
+
+SYNOPSIS
+       format2xml [OPTIONS] [file.format]
+
+       xml2format [OPTIONS] [file.xml]
+
+DESCRIPTION
+       The bibutils program set inter-converts between various bibliography
+       formats using Library of Congress[1]&apos;s Metadata Object Description Schema
+       (MODS)[2]version 3.1. For example, one can convert RIS-format files to
+       Bibtex by doing two transformations: RIS-&gt;MODS-&gt;Bibtex.
+
+CONVERTING TO MODS
+   Overview
+       ll.  Command   Description T{ bib2xml T}   T{ convert bibtex to MODS T} T{ biblatex2xml T}   T{ convert biblatex to MODS T}
+       T{ copac2xml T}   T{ convert COPAC[3]format references to MODS T} T{ ebi2xml T}   T{ convert EBI XML to MODS T} T{ end2xml
+       T}   T{ convert EndNote (Refer format) to MODS T} T{ endx2xml T}   T{ convert EndNote XML to MODS T} T{ isi2xml T}   T{
+       convert ISI web of science to MODS T} T{ med2xml T}   T{ convert Pubmed XML references to MODS T} T{ modsclean T}   T{ a
+       MODS to MODS converter T} T{ ris2xml T}   T{ convert RIS format to MODS T} T{ wordbib2xml T}   T{ convert Word2007
+       bibliography XML to MODS T}
+
+
+   Common Options Converting to MODS
+       Several flags available for the end2xml, endx2xml, bib2xml, ris2xml,
+       med2xml, and copac2xml programs. Most options have both a short and a
+       long version.
+
+       lll.             T{ -h T}   T{ --help T}   T{ display help T} T{ -v T}   T{ --version T}   T{ display version T} T{ -a
+       T}   T{ --add-refcount T}   T{ add &quot;_#&quot;, where # is reference count to reference id T} T{ -s T}   T{ --single-refperfile
+       T}   T{ put one reference per file name by the reference number T} T{ -i T}   T{ --input-encoding T}   T{ interpret the
+       input file as using the requested character set (use w/o argument for current list derived from character sets at
+       www.kostis.net[4]) unicode is now a character set option T} T{ -u T}   T{ --unicode-characters T}   T{ encode unicode
+       characters directly in the file rather than as XML entities T} T{ -un T}   T{ --unicode-no-bom T}   T{ as -u, but don&apos;t
+       include a byte order mark T} T{ -x T}   T{ --xml-entities T}   T{ encode unicode characters as XML entities (opposite of
+       -u) T} T{ -nl T}   T{ --no-latex T}   T{ do not convert latex-style character combinations T} T{ -s T}   T{
+       --single-refperfile T}   T{ one reference per output file T} T{ -d T}   T{ --drop-key T}   T{ don&apos;t put citation key in the
+       mods id field T} T{ -c T}   T{ --corporation-file T}   T{ with argument specifying a file containing a list of corporation
+       names to be placed in &lt;name type=&quot;corporate&quot;&gt;&lt;/name&gt; instead of type=&quot;personal&quot; and eliminate name mangling T} T{ -a
+       T}   T{ --asis T}   T{ with argument specifying a file containing a list of names be treated verbatim T} T{ -nt T}   T{
+       --nosplit-title T}   T{ don&apos;t split titles into TITLE/SUBTITLE pairs T} T{
+
+       T}   T{ --verbose T}   T{ verbose output T} T{
+
+       T}   T{ --debug T}   T{ very verbose output (mostly for debugging) T}
+
+
+   bib2xml
+       bib2xml converts a bibtex-formatted reference file to an XML-intermediate
+       bibliography file. Specify file(s) to be converted on the command line.
+       Files containing bibtex substitutions strings should be specified before
+       the files where substitutions are specified (or in the same file before
+       their use). If no files are specified, then bibtex information will be
+       read from standard input.
+
+           bib2xml bibtex_file.bib &gt; output_file.xml
+
+   biblatex2xml
+       bib2xml converts a biblatex (not to be confused with bibtex) formatted
+       reference file to an XML-intermediate bibliography file. .
+&#12;           bib2xml biblatex_file.bib &gt; output_file.xml
+
+   copac2xml
+       copac2xmlconverts a COPAC formatted reference file to a MODS
+       XML-intermediate bibliography file.
+
+   end2xml
+       end2xml converts a text endnote-formatted reference file to an
+       XML-intermediate bibliography file. This program will not work on the
+       binary library; the file needs to be exported first. Endnote tagged
+       formats (&quot;Refer&quot; format export) look like Example 1, &#8220;Example refer
+       format file&#8221;. There are very nice instructions for making sure that you
+       are properly exporting this at
+       http://www.sonnysoftware.com/endnoteimport.html[5]
+
+       Usage for end2xml is the same as bib2xml.
+
+           end2xml endnote_file.end &gt; output_file.xml
+
+   ebi2xml
+       ebi2xml converts a EBI XML file to a MODS XML-intermediate bibliography
+       file.
+
+   endx2xml
+       endx2xml converts a EndNote-XML exported reference file to a MODS
+       XML-intermediate bibliography file. This program will not work on the
+       binary library; the file needs to be exported first.
+
+   isi2xml
+       isi2xml converts an ISI-web-of-science-formatted reference file to an
+       XML-intermediate bibliography file.
+
+       Usage for isi2xml is the same as bib2xml.
+
+           isi2xml input_file.isi &gt; output_file.xml
+
+   ris2xml
+       ris2xml converts a RIS-formatted reference file to an XML-intermediate
+       bibliography file.  ris2xml usage is as end2xml and bib2xml
+
+           ris2xml ris_file.ris &gt;   output_file.xml
+
+   wordbib2xml
+       ris2xml converts a RIS-formatted reference file to an XML-intermediate
+       bibliography file.  ris2xml usage is as end2xml and bib2xml
+
+CONVERTING FROM MODS
+   Overview
+       ll.  Command   Description T{ xml2ads T}   T{ convert MODS into the SAO/NASA ADS format T} T{ xml2bib T}   T{ convert MODS
+       into bibtex T} T{ xml2end T}   T{ convert MODS into format for EndNote T} T{ xml2isi T}   T{ convert MODS to ISI format T}
+       T{ xml2ris T}   T{ convert MODS into RIS format T} T{ xml2wordbib T}   T{ convert MODS into Word 2007 bibliography format
+       T}
+
+
+   Common Options Converting from MODS
+       Note that --output-encoding refers to the input file
+
+       lll.             T{ -h T}   T{ --help T}   T{ display help T} T{ -v T}   T{ --version T}   T{ display version T} T{ -o
+       T}   T{ --output-encoding T}   T{ interpret the input file as using the requested character set (use w/o argument for
+       current list derived from character sets at www.kostis.net[4]) unicode is now a character set option T} T{ -s T}   T{
+       --single-refperfile T}   T{ put one reference per file name by the reference number T} T{ -nb T}   T{ --no-bom T}   T{ do
+       not write Byte Order Mark if writing UTF8 T}
+
+
+   xml2bib
+       xml2bib converts the MODS XML bibliography into a bibtex-formatted
+       reference file.  xml2bib usage is as for other tools
+
+           xml2bib xml_file.xml &gt; output_file.bib
+
+       Since the BibTeX reference format is fairly flexible and seems to have
+       the greatest number of personal preferences, it has also accumulated a
+       number of specific options that are not available for other formats.
+
+       Starting with 3.24, xml2bib output uses lowercase tags and mixed case
+       reference types for better interaction with other software. The older
+       behavior with all uppercase tags/reference types can still be generated
+       using the command-line switch -U/--uppercase.
+
+       xml2bib-specific Options:
+           lll.             T{ -fc T}   T{ --finalcomma T}   T{ add final comma in the bibtex output for those that want it T} T{
+           -sd T}   T{ --singledash T}   T{ use one dash instead of two (longer dash in latex) between numbers in page output T}
+           T{ -b T}   T{ --brackets T}   T{ use brackets instead of quotation marks around field data T} T{ -w T}   T{
+           --whitespace T}   T{ add beautifying whitespace to output T} T{ -U T}   T{ --uppercase T}   T{ use all uppercase for
+           tags (field names) and reference types (pre-3.24 behavior) T} T{ -sk T}   T{ --strictkey T}   T{ only use alphanumeric
+           characters for bibtex citation keys T}
+
+
+   xml2ads
+       xml2ads converts the MODS XML bibliography to the Smithsonian
+       Astrophysical Observatory (SAO)/National Aeronautics and Space
+       Administration (NASA) Astrophyics Data System or ADS reference format[6]
+       (which is very similar to the tagged Endnote style).  xml2ads usage is as
+       for other tools
+
+           xml2ads xml_file.xml &gt; output_file.ads
+
+   xml2ris
+       xml2ris converts the MODS XML bibliography to RIS-formatted bibliography
+       file.  xml2ris usage is as for other tools
+
+           xml2ris xml_file.xml &gt; output_file.ris
+
+   xml2end
+       xml2end converts the MODS XML bibliography to tagged Endnote
+       (refer-format) bibliography file.  xml2end usage is as for other tools
+
+           xml2end xml_file.xml &gt;  output_file.end
+
+   xml2wordbib
+       xml2wordbib converts the MODS XML bibliography to Word 2007-formatted XML
+       bibliography file.  xml2wordbib usage is as for other tools
+
+           xml2wordbib xml_file.xml &gt;  output_file.word.xml
+
+       xml2wordbib was called xml2word in versions of bibutils prior to 3.40. It
+       was renamed to avoid confusion with other tools. Hopefully this will not
+       break too many scripts already in use.
+
+EXAMPLES
+       Example 1. Example refer format file
+
+           %0 Journal Article
+           %A C. D. Putnam
+           %A C. S. Pikaard
+           %D 1992
+           %T Cooperative binding of the Xenopus RNA polymerase I
+              transcription factor xUBF to repetitive ribosomal gene enhancers
+           %J Mol Cell Biol
+           %V 12
+           %P 4970-4980
+           %F Putnam1992
+&#12;   xml2bib Output Variations
+       Example 2. Default
+
+                      @Article{Putnam1992,
+                      author=&quot;C. D. Putnam
+                      and C. S. Pikaard&quot;,
+                      year=&quot;1992&quot;,
+                      month=&quot;Nov&quot;,
+                      title=&quot;Cooperative binding of the
+                      Xenopus RNA polymerase I transcription
+                      factor xUBF to repetitive ribosomal
+                      gene enhancers&quot;,
+                      journal=&quot;Mol Cell Biol&quot;,
+                      volume=&quot;12&quot;,
+                      pages=&quot;4970--4980&quot;,
+                      number=&quot;11&quot;}
+
+
+       Example 3. Final Comma
+
+                      @Article{Putnam1992,
+                      author=&quot;C. D. Putnam
+                      and C. S. Pikaard&quot;,
+                      year=&quot;1992&quot;,
+                      month=&quot;Nov&quot;,
+                      title=&quot;Cooperative binding of the
+                      Xenopus RNA polymerase I transcription
+                      factor xUBF to repetitive ribosomal
+                      gene enhancers&quot;,
+                      journal=&quot;Mol Cell Biol&quot;,
+                      volume=&quot;12&quot;,
+                      pages=&quot;4970--4980&quot;,
+                      number=&quot;11&quot;,}
+
+
+       Example 4. Single Dash
+
+                      @Article{Putnam1992,
+                      author=&quot;C. D. Putnam
+                      and C. S. Pikaard&quot;,
+                      year=&quot;1992&quot;,
+                      month=&quot;Nov&quot;,
+                      title=&quot;Cooperative binding of the
+                      Xenopus RNA polymerase I transcription
+                      factor xUBF to repetitive ribosomal
+                      gene enhancers&quot;,
+                      journal=&quot;Mol Cell Biol&quot;,
+                      volume=&quot;12&quot;,
+                      pages=&quot;4970-4980&quot;,
+                      number=&quot;11&quot;}
+
+
+       Example 5. Whitespace
+
+           @Article{Putnam1992,
+             author =      &quot;C. D. Putnam
+                           and C. S. Pikaard&quot;,
+             year =        &quot;1992&quot;,
+             month =       &quot;Jan&quot;,
+             title =       &quot;Cooperative binding of
+           the Xenopus RNA polymerase I transcription
+           factor xUBF to repetitive ribosomal gene
+           enhancers&quot;,
+             journal =     &quot;Mol Cell Biol&quot;,
+             volume =      &quot;12&quot;,
+             pages =       &quot;4970--4980&quot;
+           }
+
+       Example 6. Brackets
+
+                    @Article{Putnam1992,
+                    author={Putnam, C. D.
+                    and Pikaard, C. S.},
+                    title={Cooperative binding of the Xenopus
+                    RNA polymerase I transcription factor xUBF
+                    to repetitive ribosomal gene enhancers},
+                    journal={Mol Cell Biol},
+                    year={1992},
+                    month={Nov},
+                    volume={12},
+                    number={11},
+                    pages={4970--4980}
+                    }
+
+
+       Example 7. Uppercase
+
+                      @ARTICLE{Putnam1992,
+                      AUTHOR=&quot;Putnam, C. D.
+                      and Pikaard, C. S.&quot;,
+                      TITLE=&quot;Cooperative binding of the Xenopus
+                      RNA polymerase I transcription factor xUBF
+                      to repetitive ribosomal gene enhancers&quot;,
+                      JOURNAL=&quot;Mol Cell Biol&quot;,
+                      YEAR=&quot;1992&quot;,
+                      MONTH=&quot;Nov&quot;,
+                      VOLUME=&quot;12&quot;,
+                      NUMBER=&quot;11&quot;,
+                      PAGES=&quot;4970--4980&quot;
+                      }
+
+
+LICENSE
+       All versions of bibutils are relased under the GNU Public License (GPL).
+       In a nutshell, feel free to download, run, and modify these programs as
+       required. If you re-release these, you need to release the modified
+       version of the source. (And I&apos;d appreciate patches as well...if you care
+       enough to make the change, then I&apos;d like to see what you&apos;re adding or
+       fixing.)
+
+       Chris Putnam, Ludwig Institute for Cancer Research[7]
+
+COPYRIGHT
+       Copyright &#169; 2010 David Bremner (Manual)
+       Copyright &#169; 2008 Christopher Putnam (Software and Manual)
+
+       This manual page is distributed under the terms of version 2 of the GNU
+       General Public License.
+
+
+NOTES
+        1. Library of Congress
+           http://www.loc.gov
+
+        2. Metadata Object Description Schema (MODS)
+           http://www.loc.gov/standards/mods/
+
+        3. COPAC
+           http://copac.ac.uk/
+
+        4. www.kostis.net
+           http://www.kostis.net/
+
+        5. http://www.sonnysoftware.com/endnoteimport.html
+           http://www.sonnysoftware.com/endnoteimport.html
+
+        6. ADS reference format
+           http://doc.adsabs.harvard.edu/abs_doc/help_pages/taggedformat.html
+
+        7. Chris Putnam, Ludwig Institute for Cancer Research
+           http://www.scripps.edu/~cdputnam/
+
+
+
+bibutils 4.12                   December 10, 2010                    BIBUTILS(1)
+
+</pre></body></html>

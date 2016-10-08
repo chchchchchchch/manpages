@@ -1,0 +1,58 @@
+<html>
+<head><meta charset=utf-8/>
+<title>erb - an embedded Ruby language interpreter</title></head>
+<body><pre>
+
+ERB1.9(1)                                                              ERB1.9(1)
+
+
+
+NAME
+       erb - an embedded Ruby language interpreter
+
+SYNOPSIS
+       erb1.9.1 [switches] [inputfile]
+
+DESCRIPTION
+       erb  interprets  a Ruby code embedded text file. For example, erb enables
+       you to embed a Ruby code to a HTML file.  A Ruby block starts  with  `&lt;%&apos;
+       and  ends  with `%&gt;&apos;. erb replaces the block with its output.  If `&lt;%&apos; is
+       followed by `=&apos;, eRuby replaces the block with a value of the block.   If
+       `&lt;%&apos; is followed by `#&apos;, the block is ignored as a comment.
+
+OPTIONS
+       -x     print ruby script
+
+       -n     print ruby script with line number
+
+       -v     enables verbose mode
+
+       -d     set debugging flags (set $DEBUG to true)
+
+       -r library
+              load a library
+
+       -K kcode
+              specifies KANJI code-set (euc or sjis) or UTF-8 (utf8)
+
+       -S safe_level
+              set $SAFE (0..4)
+
+       -T trim_mode
+              specify trim_mode (0..2)
+
+       -P     disregard the lin which starts in &quot;%&quot;
+
+SEE ALSO
+       eruby(1)
+
+AUTHOR
+       This  document  stands  on  eruby(1)  which  is  written  by  Shugo Maeda
+       &lt;shugo@ruby-lang.org&gt;.
+
+
+
+
+                                   April 2003                          ERB1.9(1)
+
+</pre></body></html>

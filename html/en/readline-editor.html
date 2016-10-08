@@ -1,0 +1,438 @@
+<html>
+<head><meta charset=utf-8/>
+<title>rlwrap - readline wrapper</title></head>
+<body><pre>
+
+rlwrap(1)                                                              rlwrap(1)
+
+
+
+NAME
+       rlwrap - readline wrapper
+
+SYNOPSIS
+       rlwrap [rlwrap-options] command ...
+
+DESCRIPTION
+       rlwrap  runs  the  specified command, intercepting user input in order to
+       provide readline&apos;s line editing, persistent history and completion.
+
+       rlwrap tries to be completely transparent - you (or your shell) shouldn&apos;t
+       notice  any  difference  between  command and rlwrap command - except the
+       added readline functionality, of course.  This should even hold true when
+       you  are re-directing, piping and sending signals from and to command, or
+       when command manipulates its terminal settings.
+
+       There  are  many  options  to  add  (programmable)   completion,   handle
+       multi-line  input,  colour  and  re-write prompts. If you don&apos;t need them
+       (and you probably don&apos;t), you can skip the rest of this manpage.
+
+OPTIONS
+       -a, --always-readline [&lt;password_prompt&gt;]
+              Always remain in &quot;readline mode&quot;, regardless of command&apos;s terminal
+              settings.  Use this option if you want to use rlwrap with commands
+              that already use readline.  NB: With this option, rlwrap will echo
+              (and save) passwords, unless you give command&apos;s password prompt as
+              an argument.  The argument  is  optional;  if  given,  it  has  to
+              directly follow the option  without an intervening space.
+
+              On  a  linux  machine you can use the -N (--no-children) option to
+              prevent the wrapping of pagers and editors  called  from  command;
+              this should make them much more usable
+
+              Many commands that need --always-readline may also need -t dumb to
+              prevent terminal control sequences from confusing rlwrap (although
+              this will annoy the above-mentioned pagers and editors)
+
+
+       -A, --ansi-colour-aware
+              Prompts that use colour will confuse rlwrap, especially at the end
+              of long input lines. This option will make rlwrap  better  behaved
+              in  such cases.  If the prompt contains anything fancier than ANSI
+              colour codes, this option may actually make things worse.
+
+       -b, --break-chars &lt;list_of_characters&gt;
+              Consider the specified  characters  word-breaking  (whitespace  is
+              always  word-breaking).  This  determines  what  is  considered  a
+              &quot;word&quot;, both when completing and when building a  completion  word
+              list from files specified by -f options following (not preceding!)
+              it.  Default list (){}[],+-=&amp;^%$#@&quot;&quot;;|\ Unless -c is specified,  /
+              and . (period) are included in the default list.
+
+       -c, --complete-filenames
+              Complete  filenames (filename completion is always case-sensitive,
+              even with the -i option) When doing this, rlwrap  keeps  track  of
+              commands working directory.
+
+       -C, --command-name &lt;command_name&gt;|&lt;N&gt;
+              Use command_name instead of command to determine the names of his&#8208;
+              tory and completion files, and to initialise readline  (as  speci&#8208;
+              fied  in  ~/.inputrc). A numeric argument N &gt; 0 means: use the Nth
+              argument counting backwards from the end of the argument list
+
+       -D, --history-no-dupes n
+              How agressively to weed out duplicate entries from the input  his&#8208;
+              tory.  If n = 0, all inputs are kept in the history list, if n = 1
+              (this is the default) consecutive duplicates are dropped from  the
+              list,  while  n = 2 will make rlwrap drop all previous occurrences
+              of the current input from the list.
+
+       -f, --file file
+              Split file into words and add them to the  completion  word  list.
+              This  option  can be given more than once, and adds to the default
+              completion list in  $RLWRAP_HOME or /usr/share/rlwrap/completions.
+
+       -g, --forget-matching regexp
+              Forget (i.e. drop from history list) all input  lines  that  match
+              the  POSIX  1003.2 regular expression regexp.  The match is always
+              case-insensitive. regexp may be an ordinary string. For more about
+              regular expressions, see  regex (7)
+
+       -h, --help
+              Print a short help message.
+
+       -H, --history-filename file
+              Read  command  history   from  file  (and  write  it back there if
+              --histsize &gt;= 0)
+
+       -i, --case-insensitive
+              Ignore case when completing (filename completion remains case-sen&#8208;
+              sitive). This option has to come before any -f options.
+
+       -I, --pass-sigint-as-sigterm
+              Send  a  TERM signal to command when an INT is received (e.g. when
+              you press CTRL-C).
+
+       -l, --logfile file
+              When in readline mode, append command&apos;s output (including  echo&apos;ed
+              user input) to file (creating file when it doesn&apos;t exist).
+
+       -n, --no-warnings
+              Don&apos;t print warnings.
+
+       -N, --no-children
+              (linux  only)  Don&apos;t  rlwrap  command&apos;s  children: whenever rlwrap
+              notices that command is  waiting  for  one  of  its  children,  it
+              switches  to direct mode, handing down all keypresses immediately.
+              With this option commands that  need  --always-readline  can  call
+              editors and pagers and still be usable.
+
+       -m, --multi-line [&lt;newline_substitute&gt;]
+              Enable  multi-line  input  using  a &quot;newline substitute&quot; character
+              sequence (&quot; \ &quot;, [space-backslash-space] by default). Newline sub&#8208;
+              stitutes  are  translated  to newlines before sending the input to
+              command.  With this  option,  you  can  call  an  external  editor
+              $RLWRAP_EDITOR   on   the   (expanded)   current  input  with  the
+              rlwrap_call_editor  key  (CTRL-^  by  default)  The  argument   is
+              optional;  if given, it has to directly follow the option  without
+              an intervening space.
+
+       -o, --one-shot
+              Send an EOF to command after accepting the first line of input
+
+       -O, --only-cook regexp
+              Only ever &quot;cook&quot; prompts that match regexp
+
+       -p, --prompt-colour [&lt;colour_name&gt;|&lt;Colour_name&gt;|&lt;colour_spec&gt;]
+              Use one of the colour names black, red, green, yellow, blue, cyan,
+              purple (=magenta) or white, or an ANSI-conformant &lt;colour_spec&gt; to
+              colour any prompt displayed by command. An uppercase  colour  name
+              (Yellow  or  YELLOW  )  gives a bold prompt.  Prompts that already
+              contain (colour) escape sequences or one of the  readline  &quot;ignore
+              markers&quot;  (ASCII  0x01  and  0x02)  are  not coloured. This option
+              implies  --ansi-colour-aware.   &lt;colour   spec&gt;   has   the   form
+              &lt;attr&gt;;&lt;fg&gt;[;&lt;bg&gt;]  Example:  -p&apos;1;31&apos; will give a bold red prompt
+              on the current background (this is the default when no argument is
+              given).  Google for &apos;ANSI color&apos; to learn more about colour codes.
+              The argument is optional; if given, it has to directly follow  the
+              option  without an intervening space.
+
+       -P, --pre-given text
+              Start  rlwrap  with   text in its edit buffer (this will automati&#8208;
+              cally set the --always-readline option).
+
+       -q, --quote-characters &lt;list_of_characters&gt;
+              Assume that the given characters act as quotes, e.g. when matching
+              parentheses.  Take care to escape the list properly for your shell
+              (example: -q &quot;\&quot;&apos;&quot;, which happens to be the default,  or  -q  &quot;\&quot;&quot;
+              which will be better for Lisp users)
+
+       -r, --remember
+              Put all words seen on in- and output on the completion list.
+
+       -R, --renice
+              Make  rlwrap  nicer  than  command (cf nice (1)). This may prevent
+              rlwrap from interrupting command to display a prompt when  command
+              is still &quot;thinking&quot; about what to output next.
+
+       -s, --histsize &lt;N&gt;
+              Limit  the  history list to N entries, truncating the history file
+              (default: 300). A negative size -N means the same as N, but treats
+              the history file as read-only.
+
+       -S, --substitute-prompt &lt;prompt&gt;
+              Substitute  the specified prompt for  command&apos;s own prompt. Mainly
+              useful when  command doesn&apos;t have a prompt.
+
+       -t, --set-term-name &lt;name&gt;
+              Set command&apos;s TERM to &lt;name&gt;. Programs that  confuse  rlwrap  with
+              fancy screen control codes can sometimes be tamed by specifying -t
+              dumb
+
+       -v, --version
+              Print rlwrap version.
+
+       -w, --wait-before-prompt &lt;timeout&gt;
+              In order to determine if   command&apos;s  last  output  is  a  prompt,
+              rlwrap  waits  timeout millisecs after receiving it.  Only when no
+              more output has arrived, it is cooked (coloured,  filtered  and/or
+              replaced  by  a  substitute  prompt)  and  displayed  as a prompt.
+              Before this the prompt is displayed &quot;uncooked&quot;. Most  users  won&apos;t
+              notice,  but  heavy  cookers  can prepend the timeout with a minus
+              sign, making rlwrap hold back the prompt until it has been  cooked
+              (&quot;patient mode&quot;). This will prevent flashing of the prompt, but it
+              will also interfere with long output lines and make switches  from
+              direct to readline mode less reliable. Default timeout: 40 ms
+
+       -z, --filter &lt;filter&gt;
+              Use a filter to change rlwrap&apos;s behaviour. A filter can be used to
+              keep certain input out of the history, to change  the  prompt,  to
+              implement  simple macros or programmable completion.. rlwrap comes
+              with a special perl module (cf. RlwrapFilter(3pm)) for easy filter
+              writing.  A  number of example filters are installed in the direc&#8208;
+              tory  /usr/share/rlwrap/filters.  &quot;rlwrap  -z  &lt;filter&gt;&quot;  displays
+              information  about  a  filter,  &quot;rlwrap -z listing&quot; lists all cur&#8208;
+              rently installed filters.  If &lt;filter&gt; needs arguments, you should
+              quote the whole filter command line:
+
+                  rlwrap -z &apos;filter args&apos; command
+
+              If  this command line contains shell metacharacters, rlwrap passes
+              it to the system shell for parsing.
+
+EXAMPLES
+       Run nc (netcat) with command-line editing and history
+          rlwrap nc
+
+       Wrap smbclient (which uses readline itself), keep passwords  out  of  the
+       history and don&apos;t wrap commands launched from smbclient (like more)
+          rlwrap -aPassword: -N smbclient //PEANUT/C
+
+       Wrap  gauche  (a  Scheme  interpreter)  with  a  bold blue prompt, enable
+       mult-line editing and don&apos;t consider single quotes as quotes (so that the
+       parentheses in (print &apos;q) match)
+          rlwrap -pBlue -m -q&apos;&quot;&apos; gosh
+
+       Get a list of all currently installed filters
+          rlwrap -z listing
+
+       Get help for the filter pipeto
+          rlwrap -z pipeto
+
+       Wrap  sqlite3, use the pipeto filter to be able to pipe the output of SQL
+       commands through grep and/or less, complete (case-insensitively)  on  the
+       SQL keywords in &apos;sql_words&apos;
+          rlwrap -a -z pipeto -i -f sql_words sqlite3 contacts.db
+
+       In  a  shell  script,  use rlwrap in &apos;one-shot&apos; mode as a replacement for
+       read
+          order=`rlwrap -S &apos;Your pizza? &apos;-H past_orders -P Margherita -o cat`
+
+
+DIRECT MODE AND READLINE MODE
+       Most simple console commands put your terminal either in &quot;cooked&quot;  or  in
+       &quot;raw&quot;  mode.  In  cooked  mode the terminal will wait until you press the
+       ENTER key before handing the entire line to  the  program,  in  raw  mode
+       every key you press is handed down immediately. In cooked mode you gener&#8208;
+       ally can use the backspace key, but not the  arrow  keys,  to  edit  your
+       input.  Most  simple  console commands use cooked mode whenever they want
+       whole input lines, and raw mode when they want  single  keypresses.  More
+       sophisticated  commands tend to use raw mode all the time; they may some&#8208;
+       times be rlwrappable with the -a (and -N) options.
+
+       When you rlwrap command, rlwrap will run it a in a separate session, with
+       its  own &quot;pseudo-terminal&quot; (pty), and monitor this pty to see whether the
+       pty is in raw mode or in cooked mode. In the first case, rlwrap will copy
+       all  input and output directly between command and your terminal (&quot;direct
+       mode&quot;). In the second case, rlwrap will use readline to edit  your  input
+       (&quot;readline  mode&quot;),  and  monitor command&apos;s output - every last line that
+       doesn&apos;t end with a newline is a potential prompt. How it handles  such  a
+       candidate prompt depends on its being in &quot;patient&quot; or &quot;impatient&quot; mode:
+
+PATIENT AND IMPATIENT MODE
+       If  command  writes a lot of output, it tends to be written (and read) in
+       &quot;chunks&quot;. Not all chunks will end with a newline, and we need to  distin&#8208;
+       guish  their  last  lines  from  real  prompts,  especially if we want to
+       re-write (&quot;cook&quot;) prompts. rlwrap solves this (almost) by waiting a  lit&#8208;
+       tle,  to  see if there is more to come. &quot;A little&quot; is 40 msec by default,
+       but this can be changed with the -w option.  Normally rlwrap  writes  the
+       suspected  prompt as soon as it is received, replacing it with a &quot;cooked&quot;
+       version afer the wait time. This is called &quot;impatient&quot; mode. If you don&apos;t
+       like  the  flashing  effect  (which  will  only occur when you &quot;cook&quot; the
+       prompt heavily) you can put rlwrap in &quot;patient  mode&quot;  by   specifying  a
+       negative  value  with  -w  (e.g.  -w -40). Rlwrap will then hold back the
+       prompt and only print if after cooking.
+
+COOKING PROMPTS
+       If and when rlwrap decides that it has a prompt, it will perform a number
+       of actions on it, depending on the given options: filtering (-z), substi&#8208;
+       tuting (-S) and colouring (-p), in this  order.  The  resulting  &quot;cooked&quot;
+       prompt is then printed (after erasing the &quot;raw&quot; prompt, if necessary)
+
+SPECIAL KEYS
+       Control + O
+              Accept  the  current  line,  but don&apos;t put it in the history list.
+              This     action     has     a      readline      command      name
+              rlwrap-accept-line-and-forget
+
+       Control + ^
+              Use  an  external editor to edit the current input (this will only
+              work if the -m option is set). This action has a readline  command
+              name  rlwrap-call-editor
+
+       These  special  keys  were  chosen because are not currently bound to any
+       readline action. If you don&apos;t like them, (or your window manager swallows
+       them) they can be re-bound more sensibly by including lines like the fol&#8208;
+       lowing in your ~/.inputrc:
+
+          &quot;\M-\C-m&quot;: rlwrap-accept-line-and-forget # ESC-ENTER
+          &quot;\C-xe&quot;:   rlwrap-call-editor            # CTRL-x e
+
+       cf. the readline(3) manpage for more about re-binding keys
+
+ENVIRONMENT
+       RLWRAP_HOME:
+              directory in which the history and completion files are kept.
+
+       RLWRAP_EDITOR (or else EDITOR, or else VISUAL):
+              editor to use for multi-line input. Example:
+
+           export RLWRAP_EDITOR=&quot;microemacs -l%L:%C&quot;
+           export RLWRAP_EDITOR=&quot;vi +%L&quot;
+
+       The last example is the default; %L and %C are replaced by line and  col&#8208;
+       umn numbers corresponding to the cursor position in rlwrap&apos;s edit buffer
+
+       RLWRAP_FILTERDIR:
+              Any  executable along your PATH can in theory be used as a filter,
+              but because filters have to follow a  rather  outlandish  protocol
+              (cf.  RlwrapFilter  (3))  it is a good idea to keep them separate.
+              This is why rlwrap adds a special filter directory to  $PATH  just
+              before    launching    a    filter.    By    default,    this   is
+              /usr/share/rlwrap/filters, but $RLWRAP_FILTERDIR is used if set.
+
+SIGNALS
+       A number of signals are forwarded to command: HUP INT QUIT USR1 USR2 TERM
+       and  (by way of resizing command&apos;s terminal) WINCH. Some care is taken to
+       handle TSTP (usually a result of a CTRL-Z from the terminal)  sensibly  -
+       for  example,  after suspending rlwrap in the middle of a line edit, con&#8208;
+       tinuing (by typing &apos;fg&apos;) will land you at the exact spot where  you  sus&#8208;
+       pended it.
+
+       Filters  that  take more than 1 second to respond can be interrupted by a
+       CTRL-C from the terminal (although rlwrap will not survive this)
+
+       If command changes the keystrokes that send a particular signal from  the
+       keyboard (like emacs, which uses CTRL-G instead of CTRL-C) rlwrap will do
+       the same.
+
+       When command is killed by a signal, rlwrap will clean up, reset its  sig&#8208;
+       nal handlers an then commit suicide by sending the same signal to itself.
+       This means that your shell sees the same exit status  as  it  would  have
+       seen without rlwrap.
+
+
+REDIRECTION
+       When  the  standard  input  is not a terminal, editing input doesn&apos;t make
+       sense, so rlwrap will ignore all options and simply execute command. When
+       stdout  (or stderr) is not a terminal, rlwrap will re-open it to /dev/tty
+       (the users terminal) after it has started  command,   so  that  command&apos;s
+       output  is  redirected  as  expected, but keyboard input and rlwrap error
+       messages are still visible.
+
+       The upshot of this is that rlwrap command behaves more or less like  com&#8208;
+       mand when redirecting.
+
+
+EXIT STATUS
+       non-zero after a rlwrap error, or else command&apos;s exit status. rlwrap will
+       always leave the terminal in a tidy state, even after a crash.
+
+FILES
+       rlwrap expects its history and completion files in $RLWRAP_HOME, but uses
+       .dotfiles  in the user&apos;s home directory if this variable is not set. This
+       will quickly become messy if you use rlwrap a lot.
+
+       $RLWRAP_HOME/command_history, ~/.command_history
+              History for command
+
+       $RLWRAP_HOME/command_completions, ~/.command_completions
+              Per-user completion word list for  command.  rlwrap  never  writes
+              into  this list, but one can combine -l and -f options to to simu&#8208;
+              late the effect of a -r option that works across invocations.
+
+       /usr/share/rlwrap/completions/command
+              System-wide completion word list for command. This  file  is  only
+              consulted if the per-user completion word list is not found.
+
+       $INPUTRC, ~/.inputrc
+              Individual  readline initialisation file (See readline (3) for its
+              format). rlwrap sets its application name to command  (unless  you
+              use  the  -C  option), enabling different behaviours for different
+              commands.  One could e.g. put the following lines in ~/.inputrc:
+
+                 $if coqtop
+                     set show-all-if-ambiguous On
+                 $endif
+
+              making rlwrap show all completions whenever it runs coqtop
+
+BUGS and LIMITATIONS
+       Though it is flexible, delivers the goods (readline  functionality),  and
+       adheres  to the Unix &quot;many small tools&quot; paradigm, rlwrap  is a kludge. It
+       cannot know anything about command&apos;s internal  state,  which  makes  con&#8208;
+       text-sensitive  completion  impossible.  Using  the readline library from
+       within command is still the best option.
+
+       Also, because &quot;it takes two to tango&quot; there is no way for rlwrap to  syn&#8208;
+       chronise its internal state with command, resulting in a number of subtle
+       race conditions, where e.g. command may have changed  the  state  of  its
+       terminal  before  rlwrap  has read command output that was written before
+       the state change. You will  notice  these  races  especially  on  a  busy
+       machine and with heavy &quot;cooking&quot; and filtering, when suddenly (and unpre&#8208;
+       dictably) promtps or command output are garbled or incorrectly coloured.
+
+       Filtering is a very recent addition, and should be considered alpha qual&#8208;
+       ity.
+
+       rlwrap  can  try, but often fails to, handle prompts that contain control
+       characters.  A flter may be used to clean up the prompt.
+
+
+VERSION
+       This manpage documents rlwrap version 0.37
+
+AUTHORS
+       The readline library (written by Chet  Ramey)  does  all  the  hard  work
+       behind  the  scenes,  the  pty-handling  code  has been taken practically
+       unchanged from rxvt-2.7.10 (currently maintained by Geoff C.  Wing),  and
+       completion  word  lists  are  managed  by  Damian  Ivereigh&apos;s libredblack
+       library. The few remaining  lines  of  code  were  written  by  Hans  Lub
+       (hanslub42@gmail.com).
+
+SEE ALSO
+       readline(3), RlwrapFilter(3pm)
+
+
+
+
+
+
+
+
+
+
+
+                                 January 4, 2010                       rlwrap(1)
+
+</pre></body></html>

@@ -1,193 +1,492 @@
 <html>
 <head><meta charset=utf-8/>
-<title>tar - Tar file creation, extraction & manipulation</title></head>
+<title>tar — The GNU version of the tar archiving utility</title></head>
 <body><pre>
 
-tar(3tcl)                       Tar file handling                      tar(3tcl)
-
-
-
-________________________________________________________________________________
+TAR(1)                    BSD General Commands Manual                   TAR(1)
 
 NAME
-       tar - Tar file creation, extraction &amp; manipulation
+     tar &#8212; The GNU version of the tar archiving utility
 
 SYNOPSIS
-       package require Tcl  8.4
-
-       package require tar  ?0.7?
-
-       ::tar::contents tarball ?-chan?
-
-       ::tar::stat tarball ?file? ?-chan?
-
-       ::tar::untar tarball args
-
-       ::tar::get tarball fileName ?-chan?
-
-       ::tar::create tarball files args
-
-       ::tar::add tarball files args
-
-       ::tar::remove tarball files
-
-_________________________________________________________________
+     tar [-] A --catenate --concatenate | c --create | d --diff --compare |
+         --delete | r --append | t --list | --test-label | u --update | x
+         --extract --get [options] [pathname ...]
 
 DESCRIPTION
-       ::tar::contents tarball ?-chan?
-              Returns a list of the files contained in tarball. The order is not
-              sorted and depends on the order files were stored in the archive.
+     Tar stores and extracts files from a tape or disk archive.
 
-              If the option -chan is present tarball is interpreted as  an  open
-              channel.   It  is assumed that the channel was opened for reading,
-              and configured for binary input.  The command will not  close  the
-              channel.
+     The first argument to tar should be a function; either one of the letters
+     Acdrtux, or one of the long function names.  A function letter need not be
+     prefixed with ``-&apos;&apos;, and may be combined with other single-letter options.
+     A long function name must be prefixed with --.  Some options take a parame&#8208;
+     ter; with the single-letter form these must be given as separate arguments.
+     With the long form, they may be given by appending =value to the option.
 
-       ::tar::stat tarball ?file? ?-chan?
-              Returns  a  nested dict containing information on the named ?file?
-              in tarball, or all files if none is specified. The top  level  are
-              pairs of filename and info. The info is a dict with the keys &quot;mode
-              uid gid size mtime type linkname uname gname devmajor devminor&quot;
+FUNCTION LETTERS
+     Main operation mode:
+
+     -A, --catenate, --concatenate
+           append tar files to an archive
+
+     -c, --create
+           create a new archive
+
+     -d, --diff, --compare
+           find differences between archive and file system
+
+     --delete
+           delete from the archive (not on mag tapes!)
+
+     -r, --append
+           append files to the end of an archive
+
+     -t, --list
+           list the contents of an archive
+
+     --test-label
+           test the archive volume label and exit
+
+     -u, --update
+           only append files newer than copy in archive
+
+     -x, --extract, --get
+           extract files from an archive
+
+OTHER OPTIONS
+     Operation modifiers:
+
+     -[0-7][lmh]
+           specify drive and density
+
+     -a, --auto-compress
+           use archive suffix to determine the compression program
+
+     --add-file=FILE
+           add given FILE to the archive (useful if its name starts with a dash)
+
+     --anchored
+           patterns match file name start
+
+     --no-anchored
+           patterns match after any `/&apos; (default for exclusion)
+
+     --atime-preserve
+           preserve access times on dumped files, either by restoring the times
+
+     --no-auto-compress
+           do not use archive suffix to determine the compression program
+
+     -b, --blocking-factor BLOCKS
+           BLOCKS x 512 bytes per record
+
+     -B, --read-full-records
+           reblock as we read (for 4.2BSD pipes)
+
+     --backup
+           backup before removal, choose version CONTROL
+
+     -C, --directory DIR
+           change to directory DIR
+
+     --check-device
+           check device numbers when creating incremental archives (default)
+
+     --no-check-device
+           do not check device numbers when creating incremental archives
+
+     --checkpoint
+           display progress messages every NUMBERth record (default 10)
+
+     --checkpoint-action=ACTION
+           execute ACTION on each checkpoint
+
+     --delay-directory-restore
+           delay setting modification times and permissions of extracted
+
+     --no-delay-directory-restore
+           cancel the effect of --delay-directory-restore option
+
+     --exclude=PATTERN
+           exclude files, given as a PATTERN
+
+     --exclude-backups
+           exclude backup and lock files
+
+     --exclude-caches
+           exclude contents of directories containing CACHEDIR.TAG,
+
+     --exclude-caches-all
+           exclude directories containing CACHEDIR.TAG
+
+     --exclude-caches-under
+           exclude everything under directories containing CACHEDIR.TAG
+
+     --exclude-tag=FILE
+           exclude contents of directories containing FILE, except
+
+     --exclude-tag-all=FILE
+           exclude directories containing FILE
+
+     --exclude-tag-under=FILE
+           exclude everything under directories containing FILE
+
+     --exclude-vcs
+           exclude version control system directories
+
+     -f, --file ARCHIVE
+           use archive file or device ARCHIVE
+
+     -F, --info-script, --new-volume-script NAME
+           run script at end of each tape (implies -M)
+
+     --force-local
+           archive file is local even if it has a colon
+
+     --full-time
+           print file time to its full resolution
+
+     -g, --listed-incremental FILE
+           handle new GNU-format incremental backup
+
+     -G, --incremental
+           handle old GNU-format incremental backup
+
+     --group=NAME
+           force NAME as group for added files
+
+     -h, --dereference
+           follow symlinks; archive and dump the files they point to
+
+     -H, --format FORMAT
+           create archive of the given formatFORMAT is one of the following:
+
+           --format=gnu
+                 GNU tar 1.13.x format
+
+           --format=oldgnu
+                 GNU format as per tar &lt;= 1.12
+
+           --format=pax
+                 POSIX 1003.1-2001 (pax) format
+
+           --format=posix
+                 same as pax
+
+           --format=ustar
+                 POSIX 1003.1-1988 (ustar) format
+
+           --format=v7
+                 old V7 tar format
+
+     --hard-dereference
+           follow hard links; archive and dump the files they refer to
+
+     -i, --ignore-zeros
+           ignore zeroed blocks in archive (means EOF)
+
+     -I, --use-compress-program PROG
+           filter through PROG (must accept -d)
+
+     --ignore-case
+           ignore case
+
+     --no-ignore-case
+           case sensitive matching (default)
+
+     --ignore-command-error
+           ignore exit codes of children
+
+     --no-ignore-command-error
+           treat non-zero exit codes of children as error
+
+     --ignore-failed-read
+           do not exit with nonzero on unreadable files
+
+     --index-file=FILE
+           send verbose output to FILE
+
+     -j, --bzip2
 
 
-              % ::tar::stat tarball.tar
-              foo.jpg {mode 0644 uid 1000 gid 0 size 7580 mtime 811903867 type file linkname {} uname user gname wheel devmajor 0 devminor 0}
+     -J, --xz
 
 
-       If the option -chan is present tarball is interpreted as an open channel.
-       It is assumed that the channel was opened for reading, and configured for
-       binary input.  The command will not close the channel.
+     -k, --keep-old-files
+           don&apos;t replace existing files when extracting
 
-       ::tar::untar tarball args
-              Extracts tarball. -file and -glob limit the  extraction  to  files
-              which  exactly match or pattern match the given argument. No error
-              is thrown if no files match. Returns a list of filenames extracted
-              and  the  file  size. The size will be null for non regular files.
-              Leading path seperators are stripped so paths will always be rela&#8208;
-              tive.
+     -K, --starting-file MEMBER-NAME
+           begin at member MEMBER-NAME in the archive
 
-              -dir dirName
-                     Directory to extract to. Uses pwd if none is specified
-&#12;              -file fileName
-                     Only  extract  the file with this name. The name is matched
-                     against the complete path stored in the  archive  including
-                     directories.
+     --keep-newer-files
+           don&apos;t replace existing files that are newer than their archive copies
 
-              -glob pattern
-                     Only  extract  files  patching this glob style pattern. The
-                     pattern is matched against the complete path stored in  the
-                     archive.
+     -l, --check-links
+           print a message if not all links are dumped
 
-              -nooverwrite
-                     Dont overwrite files that already exist
+     -L, --tape-length NUMBER
+           change tape after writing NUMBER x 1024 bytes
 
-              -nomtime
-                     Leave  the  file  modification  time  as  the  current time
-                     instead of setting it to the value in the archive.
+     --level=NUMBER
+           dump level for created listed-incremental archive
 
-              -noperms
-                     In Unix, leave the file permissions as  the  current  umask
-                     instead of setting them to the values in the archive.
-
-              -chan  If this option is present tarball is interpreted as an open
-                     channel.  It is assumed that the  channel  was  opened  for
-                     reading, and configured for binary input.  The command will
-                     not close the channel.
+     --lzip
 
 
-
-              % foreach {file size} [::tar::untar tarball.tar -glob *.jpg] {
-              puts &quot;Extracted $file ($size bytes)&quot;
-              }
+     --lzma
 
 
-       ::tar::get tarball fileName ?-chan?
-              Returns the contents of fileName from the tarball
+     --lzop
 
 
+     -m, --touch
+           don&apos;t extract file modified time
 
-              % set readme [::tar::get tarball.tar doc/README] {
-              % puts $readme
-              }
+     -M, --multi-volume
+           create/list/extract multi-volume archive
+
+     --mode=CHANGES
+           force (symbolic) mode CHANGES for added files
+
+     --mtime=DATE-OR-FILE
+           set mtime for added files from DATE-OR-FILE
+
+     -n, --seek
+           archive is seekable
+
+     -N, --newer, --after-date DATE-OR-FILE
+           only store files newer than DATE-OR-FILE
+
+     --newer-mtime=DATE
+           compare date and time when data changed only
+
+     --null
+           -T reads null-terminated names, disable -C
+
+     --no-null
+           disable the effect of the previous --null option
+
+     --numeric-owner
+           always use numbers for user/group names
+
+     -O, --to-stdout
+           extract files to standard output
+
+     --occurrence
+           process only the NUMBERth occurrence of each file in the archive;
+
+     --old-archive, --portability
+           same as --format=v7
+
+     --one-file-system
+           stay in local file system when creating archive
+
+     --overwrite
+           overwrite existing files when extracting
+
+     --overwrite-dir
+           overwrite metadata of existing directories when extracting (default)
+
+     --no-overwrite-dir
+           preserve metadata of existing directories
+
+     --owner=NAME
+           force NAME as owner for added files
+
+     -p, --preserve-permissions, --same-permissions
+           extract information about file permissions (default for superuser)
+
+     -P, --absolute-names
+           don&apos;t strip leading `/&apos;s from file names
+
+     --pax-option=keyword[[:]=value][,keyword[[:]=value]]...
+           control pax keywords
+
+     --posix
+           same as --format=posix
+
+     --preserve
+           same as both -p and -s
+
+     --quote-chars=STRING
+           additionally quote characters from STRING
+
+     --no-quote-chars=STRING
+           disable quoting for characters from STRING
+
+     --quoting-style=STYLE
+           set name quoting style; see below for valid STYLE values
+
+     -R, --block-number
+           show block number within archive with each message
+
+     --record-size=NUMBER
+           NUMBER of bytes per record, multiple of 512
+
+     --recursion
+           recurse into directories (default)
+
+     --no-recursion
+           avoid descending automatically in directories
+
+     --recursive-unlink
+           empty hierarchies prior to extracting directory
+
+     --remove-files
+           remove files after adding them to the archive
+
+     --restrict
+           disable use of some potentially harmful options
+
+     --rmt-command=COMMAND
+           use given rmt COMMAND instead of rmt
+
+     --rsh-command=COMMAND
+           use remote COMMAND instead of rsh
+
+     -s, --preserve-order, --same-order
+           sort names to extract to match archive
+
+     -S, --sparse
+           handle sparse files efficiently
+
+     --same-owner
+           try extracting files with the same ownership as exists in the archive
+           (default for superuser)
+
+     --no-same-owner
+           extract files as yourself (default for ordinary users)
+
+     --no-same-permissions
+           apply the user&apos;s umask when extracting permissions from the archive
+           (default for ordinary users)
+
+     --no-seek
+           archive is not seekable
+
+     --show-defaults
+           show tar defaults
+
+     --show-omitted-dirs
+           when listing or extracting, list each directory that does not match
+           search criteria
+
+     --show-transformed-names, --show-stored-names
+           show file or archive names after transformation
+
+     --sparse-version=MAJOR[.MINOR]
+           set version of the sparse format to use (implies --sparse)
+
+     --strip-components=NUMBER
+           strip NUMBER leading components from file names on extraction
+
+     --suffix=STRING
+           backup before removal, override usual suffix (&apos;~&apos; unless overridden
+           by environment variable SIMPLE_BACKUP_SUFFIX)
+
+     -T, --files-from FILE
+           get names to extract or create from FILE
+
+     --to-command=COMMAND
+           pipe extracted files to another program
+
+     --totals
+           print total bytes after processing the archive;
+
+     --transform, --xform EXPRESSION
+           use sed replace EXPRESSION to transform file names
+
+     -U, --unlink-first
+           remove each file prior to extracting over it
+&#12;     --unquote
+           unquote filenames read with -T (default)
+
+     --no-unquote
+           do not unquote filenames read with -T
+
+     --utc
+           print file modification times in UTC
+
+     -v, --verbose
+           verbosely list files processed
+
+     -V, --label TEXT
+           create archive with volume name TEXT; at list/extract time, use TEXT
+           as a globbing pattern for volume name
+
+     --volno-file=FILE
+           use/update the volume number in FILE
+
+     -w, --interactive, --confirmation
+           ask for confirmation for every action
+
+     -W, --verify
+           attempt to verify the archive after writing it
+
+     --warning=KEYWORD
+           warning control
+
+     --wildcards
+           use wildcards (default for exclusion)
+
+     --wildcards-match-slash
+           wildcards match `/&apos; (default for exclusion)
+
+     --no-wildcards-match-slash
+           wildcards do not match `/&apos;
+
+     --no-wildcards
+           verbatim string matching
+
+     -X, --exclude-from FILE
+           exclude patterns listed in FILE
+
+     -z, --gzip, --gunzip --ungzip
 
 
-       If the option -chan is present tarball is interpreted as an open channel.
-       It is assumed that the channel was opened for reading, and configured for
-       binary input.  The command will not close the channel.
-
-       ::tar::create tarball files args
-              Creates a new tar file containing the files. files must be  speci&#8208;
-              fied as a single argument which is a proper list of filenames.
-
-              -dereference
-                     Normally create will store links as an actual link pointing
-                     at a file that may or may not exist in the archive.  Speci&#8208;
-                     fying  this  option  will cause the actual file point to by
-                     the link to be stored instead.
-
-              -chan  If this option is present tarball is interpreted as an open
-                     channel.   It  is  assumed  that the channel was opened for
-                     writing, and configured for  binary  output.   The  command
-                     will not close the channel.
+     -Z, --compress, --uncompress
 
 
+ENVIRONMENT
+     The behavior of tar is controlled by the following environment variables,
+     among others:
 
-              % ::tar::create new.tar [glob -nocomplain file*]
-              % ::tar::contents new.tar
-              file1 file2 file3
+     SIMPLE_BACKUP_SUFFIX
+             Backup prefix to use when extracting, if --suffix is not specified.
+             The backup suffix defaults to `~&apos; if neither is specified.
 
+     TAR_OPTIONS
+             Options to prepend to those specified on the command line, sepa&#8208;
+             rated by whitespace.  Embedded backslashes may be used to escape
+             whitespace or backslashes within an option.
 
-       ::tar::add tarball files args
-              Appends  files  to  the end of the existing tarball. files must be
-              specified as a single argument which is a  proper  list  of  file&#8208;
-              names.
+     TAPE    Device or file to use for the archive if --file is not specified.
+             If this environment variable is unset, use stdin or stdout instead.
 
-              -dereference
-                     Normally add will store links as an actual link pointing at
-                     a file that may or may not exist in the archive. Specifying
-                     this option will cause the actual file point to by the link
-                     to be stored instead.
+     TAR_LONGLINK_100
 
-              -prefix string
-                     Normally add will store files under exactly the name speci&#8208;
-                     fied  as argument. Specifying a ?-prefix? causes the string
-                     to be prepended to every name.
+EXAMPLES
+     Create archive.tar from files foo and bar.
+           tar -cf archive.tar foo bar
+     List all files in archive.tar verbosely.
+           tar -tvf archive.tar
+     Extract all files from archive.tar.
+           tar -xf archive.tar
 
-              -quick The only sure way to find the position in the tarball where
-                     new  files  can  be  added is to read it from start, but if
-                     tarball was written with a &quot;blocksize&quot; of 1 (as this  pack&#8208;
-                     age  does) then one can alternatively find this position by
-                     seeking from the end. The ?-quick? option tells add  to  do
-                     the latter.
+SEE ALSO
+     tar(5), symlink(7), rmt(8)
 
+HISTORY
+     The tar command appeared in Version 7 AT&amp;T UNIX.
 
-       ::tar::remove tarball files
-              Removes  files  from the tarball. No error will result if the file
-              does not exist in the tarball. Directory write permission and free
-              disk  space equivalent to at least the size of the tarball will be
-              needed.
+BUGS
+     The GNU folks, in general, abhor man pages, and create info documents
+     instead.  Unfortunately, the info document describing tar is licensed under
+     the GFDL with invariant cover texts, which makes it impossible to include
+     any text from that document in this man page.  Most of the text in this
+     document was automatically extracted from the usage text in the source.  It
+     may not completely describe all features of the program.
 
-
-              % ::tar::remove new.tar {file2 file3}
-              % ::tar::contents new.tar
-              file3
-
-
-BUGS, IDEAS, FEEDBACK
-       This document, and the package it  describes,  will  undoubtedly  contain
-       bugs  and  other problems.  Please report such in the category tar of the
-       Tcllib  SF   Trackers   [http://sourceforge.net/tracker/?group_id=12883].
-       Please  also  report  any  ideas for enhancements you may have for either
-       package and/or documentation.
-
-KEYWORDS
-       archive, tape archive, tar
-
-CATEGORY
-       File formats
-
-
-
-tar                                    0.7                             tar(3tcl)
+                                  Jan 2, 2013
 
 </pre></body></html>

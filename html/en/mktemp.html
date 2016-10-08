@@ -1,74 +1,82 @@
 <html>
 <head><meta charset=utf-8/>
-<title>mktemp - make a unique temporary filename</title></head>
+<title>mktemp - create a temporary file or directory</title></head>
 <body><pre>
 
-MKTEMP(3)                   Linux Programmer&apos;s Manual                  MKTEMP(3)
+MKTEMP(1)                         User Commands                        MKTEMP(1)
 
 
 
 NAME
-       mktemp - make a unique temporary filename
+       mktemp - create a temporary file or directory
 
 SYNOPSIS
-       #include &lt;stdlib.h&gt;
-
-       char *mktemp(char *template);
-
-   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
-
-       mktemp():
-           Since glibc 2.12:
-               _BSD_SOURCE || _SVID_SOURCE ||
-                   (_XOPEN_SOURCE &gt;= 500 ||
-                        _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED) &amp;&amp;
-                   !(_POSIX_C_SOURCE &gt;= 200112L || _XOPEN_SOURCE &gt;= 600)
-           Before glibc 2.12:
-               _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE &gt;= 500 ||
-               _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
+       mktemp [OPTION]... [TEMPLATE]
 
 DESCRIPTION
-       The mktemp() function generates a unique  temporary  filename  from  tem&#8208;
-       plate.   The last six characters of template must be XXXXXX and these are
-       replaced with a string that makes the filename unique.  Since it will  be
-       modified,  template must not be a string constant, but should be declared
-       as a character array.
+       Create  a  temporary file or directory, safely, and print its name.  TEM&#8208;
+       PLATE must contain at least 3 consecutive `X&apos;s  in  last  component.   If
+       TEMPLATE  is  not specified, use tmp.XXXXXXXXXX, and --tmpdir is implied.
+       Files are created u+rw, and directories u+rwx, minus umask restrictions.
 
-RETURN VALUE
-       The mktemp() function always returns template.  If a unique name was cre&#8208;
-       ated,  the  last  six bytes of template will have been modified in such a
-       way that the resulting name is unique (i.e., does not exist already) If a
-       unique name could not be created, template is made an empty string.
+       -d, --directory
+              create a directory, not a file
 
-ERRORS
-       EINVAL The last six characters of template were not XXXXXX.
+       -u, --dry-run
+              do not create anything; merely print a name (unsafe)
 
-CONFORMING TO
-       4.3BSD,   POSIX.1-2001.    POSIX.1-2008   removes  the  specification  of
-       mktemp().
+       -q, --quiet
+              suppress diagnostics about file/dir-creation failure
 
-NOTES
-       The prototype is in &lt;unistd.h&gt; for libc4, libc5, glibc1;  glibc2  follows
-       the Single UNIX Specification and has the prototype in &lt;stdlib.h&gt;.
+       --suffix=SUFF
+              append SUFF to TEMPLATE.   SUFF  must  not  contain  slash.   This
+              option is implied if TEMPLATE does not end in X.
 
-BUGS
-       Never  use  mktemp().   Some  implementations  follow  4.3BSD and replace
-       XXXXXX by the current process ID and a single letter, so that at most  26
-       different  names  can  be  returned.  Since on the one hand the names are
-       easy to guess, and on the other hand there  is  a  race  between  testing
-       whether  the name exists and opening the file, every use of mktemp() is a
-       security risk.  The race is avoided by mkstemp(3).
+       --tmpdir[=DIR]
+              interpret  TEMPLATE relative to DIR.  If DIR is not specified, use
+              $TMPDIR if set, else /tmp.  With this option, TEMPLATE must not be
+              an  absolute  name.  Unlike with -t, TEMPLATE may contain slashes,
+              but mktemp creates only the final component
+
+       -p DIR use DIR as a prefix; implies -t [deprecated]
+
+       -t     interpret TEMPLATE as a single file name component, relative to  a
+              directory:  $TMPDIR,  if set; else the directory specified via -p;
+              else /tmp [deprecated]
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+AUTHOR
+       Written by Jim Meyering and Eric Blake.
+
+REPORTING BUGS
+       Report mktemp bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report mktemp translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       mkstemp(3), tempnam(3), tmpfile(3), tmpnam(3)
+       mkstemp(3), mkdtemp(3), mktemp(3)
 
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       The full documentation for mktemp is maintained as a Texinfo manual.   If
+       the  info  and  mktemp  programs are properly installed at your site, the
+       command
+
+              info coreutils &apos;mktemp invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-GNU                                2010-09-20                          MKTEMP(3)
+GNU coreutils 8.12.197-032bb     September 2011                        MKTEMP(1)
 
 </pre></body></html>

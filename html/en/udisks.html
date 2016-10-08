@@ -1,164 +1,134 @@
 <html>
 <head><meta charset=utf-8/>
-<title>udisks - Storage Management</title></head>
+<title>udisks - udisks command line tool</title></head>
 <body><pre>
 
-UDISKS(7)                            udisks                            UDISKS(7)
+UDISKS(1)                            udisks                            UDISKS(1)
 
 
 
 NAME
-       udisks - Storage Management
+       udisks - udisks command line tool
+
+SYNOPSIS
+       udisks [OPTIONS]
 
 DESCRIPTION
-       udisks provides an interface to enumerate storage devices and perform
-       operations on them. Any application can access the org.freedesktop.UDisks
-       service on the system message bus. Some operations (such as formatting
-       disks etc.) is restricted using polkit.
+       udisks is a simple command line client for the udisks(7) system bus
+       service.
 
-DEVICE INFORMATION
-       On Linux, udisks relies on recent versions of udev(7) and the kernel.
-       Influential device properties in the udev database include:
+OPTIONS
+       --dump
+           Dump all information about all devices. Please include this when
+           filing bugs.
 
-       UDISKS_PRESENTATION_HIDE
-           If set to 1 this is a hint to presentation level software that the
-           device should not be shown to the user.
+       --enumerate
+           Lists all object paths of devices know to the daemon.
 
-       UDISKS_PRESENTATION_NOPOLICY
-           If set to 1 this is a hint to presentation level software that the
-           device should not be automounted or autoassembled (for e.g.
-           components of a multi-disk device).
+       --enumerate-device-files
+           Lists all device files of devices know to the daemon.
 
-       UDISKS_DISABLE_POLLING
-           If set to 1 this will disable the polling of drives for media
-           changes, for devices which do not send out media notifications by
-           themselves (this mostly affects CD drives). Some CD drives cause bad
-           effects such as very high CPU usage when being polled.
+       --monitor
+           Connect to the daemon and print a line every time an event happens.
 
-       UDISKS_PRESENTATION_NAME
-           The name to user for the device when presenting it to the user.
+       --monitor-detail
+           Like --monitor but prints the full details of the device whenever an
+           event happens.
 
-       UDISKS_PRESENTATION_ICON_NAME
-           The icon to use when presenting the device to the user. If set, the
-           name must follow the freedesktop.org icon theme specification.
+       --show-info device_file
+           Shows information about device_file.
 
-       UDISKS_AUTOMOUNT_HINT
-           A variable to influence whether a device should be automounted.
-           Possible values include &quot;always&quot; (to hint that a device should always
-           be automounted) and &quot;never&quot; (to hint that a device should never be
-           automounted). Note that this is only a hint - the auto-mounter might
-           not honor it.
+       --inhibit-polling device_file [-- program arg ...]
+           Inhibits polling on device_file. If no program is given, polling is
+           inhibited until Ctrl+C is pressed. Otherwise the program is spawned
+           and the polling is only inhibited until the program terminates.
 
-       UDISKS_SYSTEM_INTERNAL
-           If set, this will override the usual bus type based detection of
-           whether a device is considered &quot;system internal&quot;. &quot;0&quot; means
-           &quot;removable&quot; (i. e. eligible for automounting, and normal users can
-           mount), any other value means &quot;system internal&quot; (i. e. no
-           automounting, and only administrators can mount).
+       --poll-for-media device_file
+           Polls device_file to perform media detection.
 
-       The ID_DRIVE_* properties are used to describe what kind of physical
-       media can be used in a device. These are typically set on the main block
-       device (e.g.  /dev/sdb) and more than one these properties can be set if
-       the device supports multiple kinds of media.
+       --inhibit-all-polling [-- program arg ...]
+           Inhibits polling on all devices. If no program is given, polling is
+           inhibited until Ctrl+C is pressed. Otherwise the program is spawned
+           and the polling is only inhibited until the program terminates.
 
-       ID_DRIVE_EJECTABLE
-           Whether the media in the drive is physically ejectable. Only set this
-           to 1 (or 0) if the drive truly uses (or doesn&apos;t) ejectable media. In
-           particular, it is not necessary to set this for e.g. iPod or Kindle
-           devices where it is necessary to send a command via eject(1) since
-           the desktop user session will offer this option for removable devices
-           regardless of whether they are ejectable. If this property is not
-           set, a heuristic will be used to determine if the media is ejectable
-           (drives using optical, Zip or Jaz media are considered ejectable).
+       --mount device_file [--mount-fstype fstype] [--mount-options options]
+           Mounts the device represented by device_file using the file system
+           fstype and a comma-separated list of options.
 
-       ID_DRIVE_DETACHABLE
-           Whether the device is detachable. It is only meaningful to set this
-           to 0 (to avoid marking a device as detachable) since the code for
-           detaching the device is part of udisks itself. If this property is
-           not set, a heuristic will be used to determine if the drive is
-           detachable (currently only devices connected through USB are
-           detachable).
+       --unmount device_file [--unmount-options options]
+           Unmounts the device represented by device_file using a
+           comma-separated list of options.
 
-       ID_DRIVE_CAN_SPINDOWN
-           Whether the device can spin down. It is only meaningful to set this
-           to 0 (to avoid marking a device as being capable of spinning down)
-           since the code for spinning down the device is part of udisks itself.
-           If this property is not set, a heuristic will be used to determine if
-           the drive can spin down (currently only ATA devices, including those
-           USB devices with a SAT layer) can be spun down).
+       --detach device_file [--detach-options options]
+           Detaches (e.g. powering down the physical port the device is
+           connected to) the device represented by device_file using a
+           comma-separated list of options.
 
-       ID_DRIVE_FLASH
-           The device is compatible with flash.
+       --eject device_file [--eject-options options]
+           Ejects media from the device represented by device_file using a
+           comma-separated list of options.
 
-       ID_DRIVE_FLASH_CF
-           The device is compatible with Compact Flash.
+       --ata-smart-refresh device_file [--ata-smart-wakeup]
+           Refreshes ATA SMART data for device_file. If the disk is sleeping it
+           will not be woken up unless --ata-smart-wakeup is passed. will be
+           used.
 
-       ID_DRIVE_FLASH_MS
-           The device is compatible with Memory Stick.
+       --ata-smart-refresh device_file --ata-smart-simulate blob
+           Read ATA SMART data from blob for device_file. This can only be done
+           by the super user and is typically used for testing that clients
+           relying on the ATA SMART data provided by udisks behave correctly.
+           The libatasmart git repository at
+           http://git.0pointer.de/?p=libatasmart.git;a=summary contains a
+           collection of blobs from failing disks.
 
-       ID_DRIVE_FLASH_SM
-           The device is compatible with SmartMedia.
+       --inhibit [-- program arg ...]
+           Inhibits clients from invoking methods on the daemon that require
+           authorization (all methods will return the
+           org.freedesktop.UDisks.Error.Inhibited error) if the caller is not
+           the super user. This is typically used by OS installers and other
+           programs that expects full control of the system, specifically to
+           avoid automounting devices. Only the super user can do this.
 
-       ID_DRIVE_FLASH_SD
-           The device is compatible with SecureDigital.
+           If no program is given, the daemon is inhibited until Ctrl+C is
+           pressed. Otherwise the program is spawned and the daemon is only
+           inhibited until the program terminates.
 
-       ID_DRIVE_FLASH_SDHC
-           The device is compatible with High-Capacity SecureDigital.
+       --set-spindown device_file --spindown-timeout seconds
+       [-- program arg ...]
+           Configures disk spindown timeout on device_file to seconds. See the
+           section called &#8220;SPINNING DOWN DISKS&#8221; for important information before
+           using this option.
 
-       ID_DRIVE_FLASH_MMC
-           The device is compatible with MultiMediaCard.
+           If no program is given, the spindown time will be used until Ctrl+C
+           is pressed. Otherwise the program is spawned and the the spindown
+           timeout will only be used until the program terminates.
 
-       ID_DRIVE_FLOPPY
-           The device is compatible with floppy disk.
+       --set-spindown-all --spindown-timeout seconds [-- program arg ...]
+           Configures disk spindown timeout on all disks that can be spun down
+           to seconds. See the section called &#8220;SPINNING DOWN DISKS&#8221; for
+           important information before using this option.
 
-       ID_DRIVE_FLOPPY_ZIP
-           The device is compatible with Zip.
+           If no program is given, the spindown time will be used until Ctrl+C
+           is pressed. Otherwise the program is spawned and the the spindown
+           timeout will only be used until the program terminates.
 
-       ID_DRIVE_FLOPPY_JAZ
-           The device is compatible with Jaz.
+       --help
+           Show help options.
 
-       The ID_DRIVE_MEDIA_* properties describe the current media in a device.
-       As with the ID_DRIVE_* properties, these properties are typically set on
-       the main block device (e.g.  /dev/sdb). Typically only one of these
-       properties are set.
+SPINNING DOWN DISKS
+       Caution should be exercised when configuring disk spin down timeouts.
 
-       ID_DRIVE_MEDIA_FLASH
-           The physical media currently inserted into the device is flash.
+       Note that every time a disk is spun down, the &#8220;start-stop-count&#8221; ATA
+       SMART attribute will increase by 1 and most disks are only good for a
+       limited number (typically 50,000 but it varies by manufacturer and
+       model). In addition, the drive may take as long as 30 seconds to respond
+       to subsequent disk access &#8211; most drives are typically faster, see the
+       &#8220;spin-up-time&#8221; ATA SMART attribute.
 
-       ID_DRIVE_MEDIA_FLASH_CF
-           The physical media currently inserted into the device is Compact
-           Flash.
-
-       ID_DRIVE_MEDIA_FLASH_MS
-           The physical media currently inserted into the device is Memory
-           Stick.
-
-       ID_DRIVE_MEDIA_FLASH_SM
-           The physical media currently inserted into the device is SmartMedia.
-
-       ID_DRIVE_MEDIA_FLASH_SD
-           The physical media currently inserted into the device is
-           SecureDigital.
-
-       ID_DRIVE_MEDIA_FLASH_SDHC
-           The physical media currently inserted into the device is
-           High-Capacity SecureDigital.
-
-       ID_DRIVE_MEDIA_FLASH_MMC
-           The physical media currently inserted into the device is
-           MultiMediaCard.
-
-       ID_DRIVE_MEDIA_FLOPPY
-           The physical media currently inserted into the device is floppy disk.
-
-       ID_DRIVE_MEDIA_FLOPPY_ZIP
-           The physical media currently inserted into the device is Zip.
-
-       ID_DRIVE_MEDIA_FLOPPY_JAZ
-           The physical media currently inserted into the device is Jaz.
-
-REMOTE CLIENTS
-       TODO: write me.
+       On the other hand, cautious use (e.g. using conservative timeouts) of the
+       ability to spin down disks, can be a good way to trade power consumption
+       (typically 8 vs 1 Watts for 3.5&quot; drives) and heat emission for a slightly
+       higher latency.
 
 AUTHOR
        Written by David Zeuthen david@fubar.dk with a lot of help from many
@@ -170,10 +140,10 @@ BUGS
        http://bugs.freedesktop.org/enter_bug.cgi?product=udisks.
 
 SEE ALSO
-       udev(7), polkit(8), udisks-daemon(8), udisks-tcp-bridge(1), udisks(1)
+       udisks-daemon(8), udisks(7),
 
 
 
-udisks                             March 2008                          UDISKS(7)
+udisks                             April 2008                          UDISKS(1)
 
 </pre></body></html>

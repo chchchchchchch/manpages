@@ -1,80 +1,62 @@
 <html>
 <head><meta charset=utf-8/>
-<title>mkfifo - make a FIFO special file (a named pipe)</title></head>
+<title>mkfifo - make FIFOs (named pipes)</title></head>
 <body><pre>
 
-MKFIFO(3)                   Linux Programmer&apos;s Manual                  MKFIFO(3)
+MKFIFO(1)                         User Commands                        MKFIFO(1)
 
 
 
 NAME
-       mkfifo - make a FIFO special file (a named pipe)
+       mkfifo - make FIFOs (named pipes)
 
 SYNOPSIS
-       #include &lt;sys/types.h&gt;
-       #include &lt;sys/stat.h&gt;
-
-       int mkfifo(const char *pathname, mode_t mode);
+       mkfifo [OPTION]... NAME...
 
 DESCRIPTION
-       mkfifo()  makes  a  FIFO special file with name pathname.  mode specifies
-       the FIFO&apos;s permissions.  It is modified by the  process&apos;s  umask  in  the
-       usual way: the permissions of the created file are (mode &amp; ~umask).
+       Create named pipes (FIFOs) with the given NAMEs.
 
-       A  FIFO special file is similar to a pipe, except that it is created in a
-       different way.  Instead of being an anonymous communications  channel,  a
-       FIFO special file is entered into the file system by calling mkfifo().
+       Mandatory arguments to long options are mandatory for short options too.
 
-       Once  you  have  created a FIFO special file in this way, any process can
-       open it for reading or writing, in the same  way  as  an  ordinary  file.
-       However,  it  has  to  be open at both ends simultaneously before you can
-       proceed to do any input or output operations on it.  Opening a  FIFO  for
-       reading  normally blocks until some other process opens the same FIFO for
-       writing, and vice versa.  See fifo(7) for nonblocking  handling  of  FIFO
-       special files.
+       -m, --mode=MODE
+              set file permission bits to MODE, not a=rw - umask
 
-RETURN VALUE
-       On  success  mkfifo() returns 0.  In the case of an error, -1 is returned
-       (in which case, errno is set appropriately).
+       -Z, --context=CTX
+              set the SELinux security context of each NAME to CTX
 
-ERRORS
-       EACCES One of the directories in pathname did not allow search  (execute)
-              permission.
+       --help display this help and exit
 
-       EEXIST pathname already exists.  This includes the case where pathname is
-              a symbolic link, dangling or not.
+       --version
+              output version information and exit
 
-       ENAMETOOLONG
-              Either the total length of pathname is greater than  PATH_MAX,  or
-              an  individual  filename  component  has  a  length  greater  than
-              NAME_MAX.  In the GNU system, there is no imposed limit on overall
-              filename  length,  but  some  file systems may place limits on the
-              length of a component.
+AUTHOR
+       Written by David MacKenzie.
 
-       ENOENT A directory component in pathname does not exist or is a  dangling
-              symbolic link.
+REPORTING BUGS
+       Report mkfifo bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report mkfifo translation bugs to &lt;http://translationproject.org/team/&gt;
 
-       ENOSPC The directory or file system has no room for the new file.
-
-       ENOTDIR
-              A  component  used  as  a directory in pathname is not, in fact, a
-              directory.
-
-       EROFS  pathname refers to a read-only file system.
-
-CONFORMING TO
-       POSIX.1-2001.
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       mkfifo(1), close(2), open(2), read(2), stat(2), umask(2), write(2), mkfi&#8208;
-       foat(3), fifo(7)
-&#12;COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+       mkfifo(3)
+
+       The  full documentation for mkfifo is maintained as a Texinfo manual.  If
+       the info and mkfifo programs are properly installed  at  your  site,  the
+       command
+
+              info coreutils &apos;mkfifo invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-GNU                                2008-06-12                          MKFIFO(3)
+GNU coreutils 8.12.197-032bb     September 2011                        MKFIFO(1)
 
 </pre></body></html>

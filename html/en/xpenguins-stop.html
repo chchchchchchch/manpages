@@ -1,0 +1,320 @@
+<html>
+<head><meta charset=utf-8/>
+<title>xpenguins - cute little penguins that walk along the tops of your windows</title></head>
+<body><pre>
+
+XPenguins(1)                                                        XPenguins(1)
+
+
+
+NAME
+       xpenguins - cute little penguins that walk along the tops of your windows
+
+SYNOPSIS
+       xpenguins [-option ...]
+
+DESCRIPTION
+       XPenguins  is  a program for animating cute cartoons/animals in your root
+       window.  By default it will be penguins - they drop in from  the  top  of
+       the screen, walk along the tops of your windows, up the side of your win&#8208;
+       dows, levitate, skateboard, and do other similarly  exciting  things.  Be
+       careful  when  you  move windows as the little guys squash easily. If you
+       send the program an interupt signal (such as by hitting Ctrl-C) they will
+       burst.   XPenguins  is  now  themeable, so it is easy to select something
+       else to animate instead of penguins, or even (with a little artistic tal&#8208;
+       ent) define your own; see the THEMES section below.
+
+OPTIONS
+       In  all  the  following  cases  a double dash can be replaced by a single
+       dash.
+
+       -a, --no-angels
+               Do not show any cherubim flying up to heaven  when  a  toon  gets
+               squashed.
+
+       -b, --no-blood
+               Do not show any gory death sequences.
+
+       -c dir, --config-dir dir
+               Look  for  config files and themes in this directory. The default
+               is usually /usr/share/xpenguins.
+
+       -d display, --display display
+               Send the toons to the specified X display. In the absence of this
+               option, the display specified by the DISPLAY environment variable
+               is used.
+
+       -h, --help
+               Print out a message describing the available options.
+
+
+       -i, --theme-info
+               Print out the auxiliary  information  about  a  theme  and
+               exit. Use the -t option to select the theme to describe.
+
+       --random-theme
+               Start with a random theme.
+
+       -l, --list-themes
+               List the available themes, one on each line, and exit.
+
+       -m delay, --delay delay
+               Set  the  delay  between  each  frame in milliseconds. The
+               default is defined by the theme.
+
+       -n number, --penguins number
+               The number of toons to start, up to a maximum of 256.  The
+               default is defined by the theme.
+
+       -p, --ignorepopups
+               Toons  fall  through `popup&apos; windows (those with the save-
+               under attribute set), such as  tooltips.  Note  that  this
+               also includes the KDE panel.
+
+       -r, --rectwin
+               Toons  regard  all  windows  as  rectangular.  This option
+               results in faster calculation of window positions, but  if
+               you use one of those fancy new window managers with shaped
+               windows then your toons might sometimes look like  they&apos;re
+               walking on thin air.
+
+       -s, --squish
+               Enable  the penguins to be squished using any of the mouse
+               buttons. Note that this disables any existing function  of
+               the mouse buttons on the root window.
+
+       -t theme, --theme theme
+               Use  the  named  theme.  The  default is Penguins.  If the
+               theme has spaces in its name then you can use  underscores
+               instead,  or  alternatively  just  put  the name in double
+               quotes. This option can be called multiple  times  to  run
+               several themes simultaneously.
+
+       -q, --quiet
+               Suppress the exit message when an interupt is received.
+
+       -v, --version
+               Print out the current version number and quit.
+
+       --all   Load all available themes and run them simultaneously.
+
+       --id window
+               Send toons to the window with this ID, instead of the root
+               window or whichever window is appropriate for the  current
+               desktop  environment.  Note  that  the  ID  of  X  clients
+               reported by xwininfo is rarely that of the foremost  visi&#8208;
+               ble window that should be used here.
+
+       --nice loadaverage1 loadaverage2
+               Start  killing  toons  when the 1-min averaged system load
+               exceeds loadaverage1; when it  exceeds  loadaverage2  kill
+               them  all.  The  toons will reappear when the load average
+               comes down. The load is checked every 5 seconds by looking
+               in  /proc/loadavg,  so this option only works under unices
+               that implement this particular pseudo file (probably  just
+               Linux).  When  there are no toons on the screen, XPenguins
+               uses only a miniscule amount of CPU time - it  just  wakes
+               up every 5 seconds to recheck the load.
+
+THEMES
+       The system themes are usually kept in /usr/share/xpenguins/themes,
+       and these can be augmented or overridden by the user&apos;s  themes  in
+       $HOME/.xpenguins/themes.   Each  theme  has  its  own subdirectory
+       which to be valid must contain a file called config.  The name  of
+       the  theme is taken from the directory name, although because many
+       install scripts choke on directory names  containing  spaces,  all
+       spaces  in  a  theme name are represented in the directory name by
+       underscores. Any directory name containing spaces is  inaccessible
+       by xpenguins.
+
+       In  addition  to the config file, the theme directory contains the
+       toon images that make up the theme in the form of xpm image files.
+       Additionally,  there  should be an about file which gives informa&#8208;
+       tion on the creator of the theme, the license under  which  it  is
+       distributed and various other things. This file is principally for
+       use by xpenguins_applet, an applet for GNOME that allows different
+       themes to be selected at the click of a button.
+&#12;       The  config  file has a reasonably straightforward format. You can
+       either read this rather terse description of it or you can have  a
+       look  at  the config file for the default Penguins theme, which is
+       usually installed at  /usr/share/xpenguins/themes/Penguins/config,
+       and  is reasonably well commented. We&apos;ll first establish some sim&#8208;
+       ple terminology. Say you have  a  Farmyard  theme  with  cows  and
+       sheep.  The  cows  and  sheep are types of toon, while the various
+       things they get up to (walking,  mooing  and  so  on)  are  termed
+       activities.   Each  activity  has its own xpm image file, in which
+       the frames of the animation are laid out horizontally. Some activ&#8208;
+       ities  (notably  walking)  use  different  images depending on the
+       direction the toon is moving in. In this case the frames  for  the
+       two directions are laid out one above the other in the image.
+
+       As  in  shell scripts, comments are initiated with the # character
+       and hide the remainder of the line. The format  is  entirely  free
+       except that there is an arbitrary limit on the length of a line of
+       512 characters.  Spaces, tabs and newlines all  count  equally  as
+       white space. Data is entered as a sequence of key value pairs, all
+       separated by white space. Neither the keys nor the values are case
+       sensitive,  except  where  the  value is a filename. The following
+       keys are understood:
+
+       delay delay
+               Set the recommended delay between frames in milliseconds.
+
+       toon toon
+               Begin defining a new toon called toon.  If only  one  type
+               of toon is present in the theme then this key may be omit&#8208;
+               ted.
+
+       number number
+               Set the default number of toons of  the  current  type  to
+               start.
+
+       define activity
+               Begin  defining an activity for the current toon. The cur&#8208;
+               rently understood activities are walker, faller,  tumbler,
+               climber,  floater,  runner,  explosion,  squashed, zapped,
+               splatted, angel, exit and action?, where  ?  is  a  number
+               between  0  and 6.  Once you&apos;ve seen the program in action
+               you should be able to guess which is which. A valid  theme
+               must  contain at least walkers and fallers.  Additionally,
+               you may define a default activity (with  define  default);
+               any properties (such as width and speed) set here are then
+               adopted by the activities defined from then on, if they do
+               not  themselves explicitly define those properties.  After
+               an activity has been declared with define,  the  following
+               properties may be assigned:
+
+       pixmap xpmfile
+               The  file containing the image data for the activity. Note
+               that you may not set a default pixmap.
+
+       width width
+               The width of each frame of the animation in pixels.
+
+       height height
+               The height of each frame of the animation in pixels.
+
+       frames frames
+               The number of frames in the animation.
+
+       directions directions
+               The number of directions for the activity (can be 1 or 2).
+&#12;       speed speed
+               The initial speed of the toon when engaged in this  activ&#8208;
+               ity, in pixels per frame.
+
+       acceleration acceleration
+               The rate at which the speed increases, in pixels per frame
+               squared. This property is not utilised by all activities.
+
+       terminal_velocity terminal_velocity
+               The maximum speed in pixels per frame, again not  utilised
+               by all activities.
+
+       loop loop
+               Only  understood  by the actions; indicates how many times
+               to repeat the action. If negative, then the  probility  of
+               stopping  the  action every time the action is complete is
+               -1/loop.
+
+       Some notes regarding the various activities. If you design  a  new
+       theme,  feel  free to make the splatted, squashed, zapped and exit
+       animations as gory and bloody as you like,  but  please  keep  the
+       explosion activity nice and tame; that way those of a nervous dis&#8208;
+       position can employ the --no-blood option which replaces all these
+       violent deaths with a tasteful explosion that wouldn&apos;t offend your
+       grandmother. Xpm images files are a factor of two smaller  if  you
+       can  limit  the  number of colours in the image such that only one
+       character need be used to represent each colour; this  also  makes
+       XPenguins  start  up  much  more  rapidly. Rarely are more than 64
+       colours required.
+
+       So that&apos;s about it for the config file, now for  the  about  file.
+       This  is  very  simple. Again comments are initialised by a #.  An
+       entry consists of a key at the start of a line,  followed  by  the
+       corresponding value which is read up to the next newline. The fol&#8208;
+       lowing keys are understood, although none are compulsory.
+
+       artist  Used to  list  the  artist(s)  who  created  the  original
+               images.
+
+       maintainer
+               The  person  who  compiled  the  images  into an XPenguins
+               theme. It is useful if an email address can also  be  pro&#8208;
+               vided.
+
+       date    The  date  when  the theme was last modified. My preferred
+               format is day of the month, name of the month in  english,
+               full year.  For example: 24 April 2001.
+
+       icon    The  name of an image file that can be used as an icon for
+               the theme; XPM and PNG are suitable formats.
+
+       license The name of the license under which the theme is  distrib&#8208;
+               uted (e.g. GPL).
+
+       copyright
+               The year and holder of the copyright.
+
+       comment Any  other  essential information, such as the theme&apos;s web
+               site, as brief as possible.
+
+               Please test any about files you create by looking  at  how
+               the  information is displayed by the xpenguins_applet pro&#8208;
+               gram.
+
+
+AUTHOR
+       Robin Hogan &lt;R.J.Hogan@reading.ac.uk&gt;.
+&#12;CREDITS
+       Inspiration provided by Rick Jansen &lt;rick@sara.nl&gt; in the form  of
+       the  classic xsnow.  Most penguin images were taken from Pingus, a
+       free  lemmings  clone  that   can   be   found   at   &lt;http://pin&#8208;
+       gus.seul.org/&gt;;   these   images  were  designed  by  Joel  Fauche
+       &lt;joel.fauche@wanadoo.fr&gt;  and  Craig  Timpany  &lt;timpany@es.co.nz&gt;.
+       Additional  images  in version 2 by Rob Gietema &lt;tycoon@planetdes&#8208;
+       cent.com&gt; and Robin Hogan.
+
+NOTES
+       XPenguins can load an X server and/or network  (although  the  CPU
+       time used is small), and if a large number of penguins are spawned
+       then they may begin to flicker, depending on the speed  of  the  X
+       server.
+
+       The xpenguins homepage is located at:
+
+       http://xpenguins.seul.org/
+
+BUGS
+       A  new feature since version 2.1 is the ability to draw to windows
+       other than the root window in situations where the window  manager
+       or  desktop environment places a large window over the root window
+       that would otherwise obscure the toons.  Currently  XPenguins  can
+       draw  to the KDE Desktop (KDE 2.0 and 2.1), Enlightenment desktops
+       greater than 0 (E16), the Nautilus desktop and  the  virtual  root
+       window  of certain window managers like amiwm.  Of course, simpler
+       window managers that don&apos;t mess around like this will  still  work
+       (sawfish,  blackbox and countless others). It cannot work with CDE
+       and probably never will. Future versions of KDE, Enlightenment and
+       Nautilus  may  not work; the classic symptom of this is that XPen&#8208;
+       guins sits there as if it&apos;s doing something, but no toons are vis&#8208;
+       ible.  If  this  happens,  try running the program with one of the
+       simpler window manager listed above, or visit  the  XPenguins  web
+       site  and download the latest version. If there are icons drawn on
+       the root window then the toons will erase them when they walk over
+       them,  although  an  expose event will be sent to the window every
+       100 frames to redraw them.
+
+FILES
+       $HOME/.xpenguins/themes/*
+       /usr/share/xpenguins/themes/*
+       /proc/loadavg
+
+SEE ALSO
+       xsnow(1), xroach(1), xwininfo(1) pingus(6)
+
+
+
+XPenguins 2.2                    1 October 2001                     XPenguins(1)
+
+</pre></body></html>

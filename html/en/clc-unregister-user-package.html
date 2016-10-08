@@ -1,0 +1,46 @@
+<html>
+<head><meta charset=utf-8/>
+<title>clc-(un)register-user-package - registers a user asdf system</title></head>
+<body><pre>
+
+clc-register-user-package(1)                        clc-register-user-package(1)
+
+
+
+NAME
+       clc-(un)register-user-package - registers a user asdf system
+
+
+SYNOPSIS
+       clc-register-user-package package-file
+
+       clc-unregister-user-package package-file
+
+
+DESCRIPTION
+       Registers  a  user defined system into the common lisp controller system.
+       This means that any Common Lisp implementation will know how to find  the
+       system.
+
+       The  system  file itself will be symlinked from the ~/.clc/systems direc&#8208;
+       tory and the system will be recorded in the ~/.clc/user-packages.db file.
+
+       No removal of old fasl files during upgrades of Common  Lisp  Implementa&#8208;
+       tions  will be done, nor will the fasls of different implementations will
+       be separated by clc , it is expected that the users who require this will
+       create  a  full  Debian package or create a symlink in /usr/share/common-
+       lisp/systems/ to the system file.
+
+
+BUGS
+       Bug reports should be sent to the Debian BTS, preferably with reportbug.
+
+
+AUTHOR
+       Peter  Van   Eynde   (pvaneynd@debian.org)   and   Kevin   M.   Rosenberg
+       (kmr@debian.org) 2001-2008.
+
+
+7th Edition                       June 11, 2008     clc-register-user-package(1)
+
+</pre></body></html>

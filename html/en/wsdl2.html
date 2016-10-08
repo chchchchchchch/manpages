@@ -1,0 +1,92 @@
+<html>
+<head><meta charset=utf-8/>
+<title>wsdl - Mono's Web Service Proxy Generator</title></head>
+<body><pre>
+
+wsdl(1)                                                                  wsdl(1)
+
+
+
+NAME
+       wsdl - Mono&apos;s Web Service Proxy Generator
+
+SYNOPSIS
+       wsdl [options] [path | url]
+
+DESCRIPTION
+       wsdl is a tool for generating proxy classes that can be used to access to
+       web services.  The tool reads a WSDL document from the provided  path  or
+       url, and downloads referenced schemas or other WSDL documents if needed.
+
+       This  tool  is  used  to  target the 1.x API, for targetting the 2.x API,
+       please use the wsdl2 tool.
+
+OPTIONS
+       The following options are available:
+
+       -appsettingurlkey:key -urlkey:key
+              Specifies that the url for the services should be  read  from  the
+              &lt;appsettings&gt;  section  of  the configuration file, using the pro&#8208;
+              vided key.
+
+       -appsettingbaseurl:url , -baseurl:url
+              Specifies a base URL for the service. The final URL will  be  con&#8208;
+              structed  by  combining  this  value  with  the  URL read from the
+              -appsettingurlkey option, and the -type:typename, assembly  Gener&#8208;
+              ate  a  proxy  for a compiled web service class. The URL parameter
+              can be used to  providethe  location  of  the  service.   location
+              attribute specified in the WSDL document.
+
+       -language:language , -l
+              Language  of  the code to generate. It can be CS for C# (default),
+              Boo for Boo and VB for Visual.Basic.
+
+       Alternatively you can specify a full type name for a CodeProvider, for
+              example, you could use this to generate  code  for  the  imaginary
+              &quot;MyLan&quot; language which has the following full type:
+                   wsdl myservice.wsdl -language:MyLan.MyLanCodeProvider, MyLan.CodeDom, Version=1.0.0.0, Culture=neutral, PublicKeyToken=xxyy&apos;
+
+       -namespace:name , -n:name
+              The  namespace of the generated classes. If none is specified, the
+              default namespace is used.
+
+       -out:filename , -o:filename
+              The target file for generated code.
+
+       -protocol:protocol , -p:protocol
+              The protocol for which to generate code. It can be Soap (default),
+              HttpGet or HttpPost.
+
+       -sample:METHOD
+              This  will display XML request and reply of the sample invocations
+              to that SOAP message.  You can use the -protocol: option to render
+              the message in different forms.
+
+       -server
+              Generate a server skeleton instead of a client proxy.
+
+       -nologo
+              Supress the startup logo.
+
+       -u:username , -user:username
+              The user name to use when connecting to the server.
+&#12;       -p:password , -password:password
+              The password to use when connecting to the server.
+
+       -d:domain , -domain:domain
+              The domain to use when connecting to the server.
+
+AUTHORS
+       Lluis Sanchez Gual (lluis@ximian.com)
+
+LICENSE
+       wsdl is released under the terms of the GNU GPL.
+
+SEE ALSO
+       disco(1), soapsuds(1), mono(1), mcs(1), wsdl2(1)
+
+
+
+                                                                         wsdl(1)
+
+</pre></body></html>

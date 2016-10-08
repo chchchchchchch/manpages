@@ -1,124 +1,77 @@
 <html>
 <head><meta charset=utf-8/>
-<title>unshare - disassociate parts of the process execution context</title></head>
+<title>unshare - run program with some namespaces unshared from parent</title></head>
 <body><pre>
 
-UNSHARE(2)                  Linux Programmer&apos;s Manual                 UNSHARE(2)
+UNSHARE(1)                        User Commands                       UNSHARE(1)
 
 
 
 NAME
-       unshare - disassociate parts of the process execution context
+       unshare - run program with some namespaces unshared from parent
 
 SYNOPSIS
-       #define _GNU_SOURCE             /* See feature_test_macros(7) */
-       #include &lt;sched.h&gt;
-
-       int unshare(int flags);
+       unshare [options] program [arguments]
 
 DESCRIPTION
-       unshare() allows a process to disassociate parts of its execution context
-       that are currently being shared with other processes.  Part of the execu&#8208;
-       tion  context,  such  as the mount namespace, is shared implicitly when a
-       new process is created using fork(2) or vfork(2), while other parts, such
-       as  virtual  memory,  may  be  shared by explicit request when creating a
-       process using clone(2).
+       Unshares specified namespaces from parent process and then executes spec&#8208;
+       ified program. Unshareable namespaces are:
 
-       The main use of unshare() is to allow a process  to  control  its  shared
-       execution context without creating a new process.
+       mount namespace
+              mounting and unmounting filesystems will not affect  rest  of  the
+              system (CLONE_NEWNS flag),
 
-       The flags argument is a bit mask that specifies which parts of the execu&#8208;
-       tion context should be unshared.  This argument  is  specified  by  ORing
-       together zero or more of the following constants:
+       UTS namespace
+              setting  hostname,  domainname  will not affect rest of the system
+              (CLONE_NEWUTS flag),
 
-       CLONE_FILES
-              Reverse  the effect of the clone(2) CLONE_FILES flag.  Unshare the
-              file descriptor table, so  that  the  calling  process  no  longer
-              shares its file descriptors with any other process.
+       IPC namespace
+              process will have  independent  namespace  for  System  V  message
+              queues,  semaphore  sets  and shared memory segments (CLONE_NEWIPC
+              flag),
 
-       CLONE_FS
-              Reverse  the  effect  of the clone(2) CLONE_FS flag.  Unshare file
-              system attributes, so that the calling process  no  longer  shares
-              its  root  directory,  current directory, or umask attributes with
-              any other process.  chroot(2), chdir(2), or umask(2)
+       network namespace
+              process will have independent IPv4 and  IPv6  stacks,  IP  routing
+              tables, firewall rules, the /proc/net and /sys/class/net directory
+              trees, sockets etc. (CLONE_NEWNET flag).
 
-       CLONE_NEWIPC (since Linux 2.6.19)
-              This flag has the same effect as the clone(2)  CLONE_NEWIPC  flag.
-              Unshare  the  System  V IPC namespace, so that the calling process
-              has a private copy of the System V  IPC  namespace  which  is  not
-              shared with any other process.  Specifying this flag automatically
-              implies CLONE_SYSVSEM as well.  Use of CLONE_NEWIPC  requires  the
-              CAP_SYS_ADMIN capability.
+       See the clone(2) for exact semantics of the flags.
 
-       CLONE_NEWNET (since Linux 2.6.24)
-              This  flag  has the same effect as the clone(2) CLONE_NEWNET flag.
-              Unshare the network namespace, so  that  the  calling  process  is
-              moved  into  a  new network namespace which is not shared with any
-              previously   existing   process.    CLONE_NEWNET   requires    the
-              CAP_SYS_ADMIN capability.
+OPTIONS
+       -h, --help
+              Print a help message,
 
-       CLONE_NEWNS
-              This  flag  has  the same effect as the clone(2) CLONE_NEWNS flag.
-              Unshare the mount namespace, so that the  calling  process  has  a
-              private  copy  of its namespace which is not shared with any other
-              process.  Specifying this flag automatically implies  CLONE_FS  as
-              well.  Use of CLONE_NEWNS requires the CAP_SYS_ADMIN capability.
+       -m, --mount
+              Unshare the mount namespace,
 
-       CLONE_SYSVSEM (since Linux 2.6.26)
-              This  flag reverses the effect of the clone(2) CLONE_SYSVSEM flag.
-              Unshare System V  semaphore  undo  values,  so  that  the  calling
-              process  has  a  private  copy  which is not shared with any other
-              process.  Use of CLONE_SYSVSEM requires the CAP_SYS_ADMIN capabil&#8208;
-              ity.
+       -u, --uts
+              Unshare the UTS namespace,
 
-       CLONE_NEWUTS (since Linux 2.6.19)
-              This  flag  has the same effect as the clone(2) CLONE_NEWUTS flag.
-              Unshare the UTS IPC namespace, so that the calling process  has  a
-              private  copy  of  the  UTS namespace which is not shared with any
-              other process.  Use of  CLONE_NEWUTS  requires  the  CAP_SYS_ADMIN
-              capability.
+       -i, --ipc
+              Unshare the IPC namespace,
 
-       If  flags is specified as zero, then unshare() is a no-op; no changes are
-       made to the calling process&apos;s execution context.
-
-RETURN VALUE
-       On success, zero returned.  On failure, -1 is returned and errno  is  set
-       to indicate the error.
-
-ERRORS
-       EINVAL An invalid bit was specified in flags.
-
-       ENOMEM Cannot  allocate  sufficient memory to copy parts of caller&apos;s con&#8208;
-              text that need to be unshared.
-
-       EPERM  The calling process did not have the required privileges for  this
-              operation.
-
-VERSIONS
-       The unshare() system call was added to Linux in kernel 2.6.16.
-
-CONFORMING TO
-       The unshare() system call is Linux-specific.
+       -n, --net
+              Unshare the network namespace.
 
 NOTES
-       Not  all  of the process attributes that can be shared when a new process
-       is created using clone(2) can be unshared using unshare().   In  particu&#8208;
-       lar, as at kernel 2.6.16, unshare() does not implement flags that reverse
-       the effects of CLONE_SIGHAND, CLONE_SYSVSEM, CLONE_THREAD,  or  CLONE_VM.
-       Such functionality may be added in the future, if required.
+       The unshare command drops potential privileges before executing the  tar&#8208;
+       get program. This allows to setuid unshare.
 
 SEE ALSO
-       clone(2), fork(2), vfork(2)
+       unshare(2), clone(2)
 
-       Documentation/unshare.txt in the Linux kernel source tree
+BUGS
+       None known so far.
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+AUTHOR
+       Mikhail Gusarov &lt;dottedmag@dottedmag.net&gt;
+
+AVAILABILITY
+       The  unshare  command  is part of the util-linux package and is available
+       from ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
 
 
 
-Linux                              2010-10-30                         UNSHARE(2)
+util-linux                        October 2008                        UNSHARE(1)
 
 </pre></body></html>

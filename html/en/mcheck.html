@@ -1,145 +1,45 @@
 <html>
 <head><meta charset=utf-8/>
-<title>mcheck, mcheck_check_all, mcheck_pedantic, mprobe - heap consistency checking</title></head>
+<title>mcheck - verify all files on an MS-DOS formatted disk</title></head>
 <body><pre>
 
-MCHECK(3)                   Linux Programmer&apos;s Manual                  MCHECK(3)
+mcheck(1)                                                              mcheck(1)
 
 
 
 NAME
-       mcheck,  mcheck_check_all,  mcheck_pedantic,  mprobe  -  heap consistency
-       checking
+       mcheck - verify all files on an MS-DOS formatted disk
 
 SYNOPSIS
-       #include &lt;mcheck.h&gt;
-
-       int mcheck(void (*abortfunc)(enum mcheck_status mstatus));
-
-       int mcheck_pedantic(void (*abortfunc)(enum mcheck_status mstatus));
-
-       void mcheck_check_all(void);
-
-       enum mcheck_status mprobe(void *ptr);
-
+       mcheck [msdosdrive]
 
 DESCRIPTION
-       The mcheck() function installs a set of debugging hooks for the malloc(3)
-       family of memory-allocation functions.  These hooks cause certain consis&#8208;
-       tency checks to be performed on the state of the heap.   The  checks  can
-       detect  application  errors  such  as freeing a block of memory more than
-       once or corrupting the bookkeeping data structures that immediately  pre&#8208;
-       cede a block of allocated memory.
+       mcheck  is a script that verifies all files on a MS-DOS formatted disk by
+       reading them using mtype(1)
 
-       To  be  effective,  the mcheck() function must be called before the first
-       call to malloc(3) or a related function.  In cases where this  is  diffi&#8208;
-       cult to ensure, linking the program with -mcheck inserts an implicit call
-       to mcheck() (with a NULL argument) before the first  call  to  a  memory-
-       allocation function.
-
-       The  mcheck_pedantic()  function  is  similar  to  mcheck(), but performs
-       checks on all allocated blocks  whenever  one  of  the  memory-allocation
-       functions is called.  This can be very slow!
-
-       The  mcheck_check_all()  function  causes an immediate check on all allo&#8208;
-       cated blocks.  This call is only effective if mcheck() is called  before&#8208;
-       hand.
-
-       If  the  system detects an inconsistency in the heap, the caller-supplied
-       function pointed to by abortfunc is invoked with a single argument  argu&#8208;
-       ment,  mstatus,  that  indicates what type of inconsistency was detected.
-       If abortfunc is NULL, a default  function  prints  an  error  message  on
-       stderr and calls abort(3).
-
-       The  mprobe() function performs a consistency check on the block of allo&#8208;
-       cated memory pointed to by ptr.  The mcheck() function should  be  called
-       beforehand (otherwise mprobe() returns MCHECK_DISABLED).
-
-       The following list describes the values returned by mprobe() or passed as
-       the mstatus argument when abortfunc is invoked:
-
-       MCHECK_DISABLED (mprobe() only)
-              mcheck() was not called before the first memory  allocation  func&#8208;
-              tion was called.  Consistency checking is not possible.
-
-       MCHECK_OK (mprobe() only)
-              No inconsistency detected.
-
-       MCHECK_HEAD
-              Memory preceding an allocated block was clobbered.
-
-       MCHECK_TAIL
-              Memory following an allocated block was clobbered.
-&#12;       MCHECK_FREE
-              A block of memory was freed twice.
-
-RETURN VALUE
-       mcheck() and mcheck_pedantic() return 0 on success, or -1 on error.
-
-VERSIONS
-       The  mcheck_pedantic()  and  mcheck_check_all()  functions  are available
-       since glibc 2.2.  The mcheck() and mprobe() functions are  present  since
-       at least glibc 2.0
-
-CONFORMING TO
-       These functions are GNU extensions.
-
-NOTES
-       Linking  a  program with -lmcheck and using the MALLOC_CHECK_ environment
-       variable (described in mallopt(3)) cause the same kinds of errors  to  be
-       detected.   But,  using MALLOC_CHECK_ does not require the application to
-       be relinked.
+       The optional argument specifies the MS-DOS drive letter of the disk to be
+       checked. A: is used by default.
 
 
-EXAMPLE
-       The program below calls mcheck() with a NULL argument and then frees  the
-       same  block  of  memory  twice.  The following shell session demonstrates
-       what happens when running the program:
+LICENSE
+       Copyright (C) 1994 David C. Niemi (niemi@tuxers.net)
 
-           $ ./a.out
-           About to free
+       The  author  requires that any copies or derived works include this copy&#8208;
+       right notice; no other restrictions are placed on its use.
 
-           About to free a second time
-           block freed twice
-           Aborted (core dumped)
 
-   Program source
+AUTHOR
+       mcheck was written by David C. Niemi &lt;niemi@tuxers.net&gt;
 
-       #include &lt;stdlib.h&gt;
-       #include &lt;stdio.h&gt;
-       #include &lt;mcheck.h&gt;
+       This manual page was written by  Rabin  Vincent  &lt;r.vincent@iu-bremen.de&gt;
+       for the Debian GNU/Linux system (but may be used by others).
 
-       int
-       main(int argc, char *argv[])
-       {
-           char *p;
-
-           if (mcheck(NULL) != 0) {
-               fprintf(stderr, &quot;mcheck() failed\n&quot;);
-
-               exit(EXIT_FAILURE);
-           }
-
-           p = malloc(1000);
-
-           fprintf(stderr, &quot;About to free\n&quot;);
-           free(p);
-           fprintf(stderr, &quot;\nAbout to free a second time\n&quot;);
-           free(p);
-
-           exit(EXIT_SUCCESS);
-       }
 
 SEE ALSO
-       malloc(3), mallopt(3), mtrace(3)
-
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       mtools(1), mdir(1), mtype(1)
 
 
 
-GNU                                2012-04-18                          MCHECK(3)
+mtools                              May 2003                           mcheck(1)
 
 </pre></body></html>

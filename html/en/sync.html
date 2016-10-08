@@ -1,72 +1,54 @@
 <html>
 <head><meta charset=utf-8/>
-<title>sync - synchronize data on disk with memory</title></head>
+<title>sync - flush file system buffers</title></head>
 <body><pre>
 
-SYNC(8)                     Linux Programmer&apos;s Manual                    SYNC(8)
+SYNC(1)                           User Commands                          SYNC(1)
 
 
 
 NAME
-       sync - synchronize data on disk with memory
+       sync - flush file system buffers
 
 SYNOPSIS
-       sync [--help] [--version]
+       sync [OPTION]
 
 DESCRIPTION
-       sync  writes  any  data buffered in memory out to disk.  This can include
-       (but is not  limited  to)  modified  superblocks,  modified  inodes,  and
-       delayed  reads  and  writes.  This must be implemented by the kernel; The
-       sync program does nothing but exercise the sync(2) system call.
+       Force changed blocks to disk, update the super block.
 
-       The kernel keeps data in memory to avoid  doing  (relatively  slow)  disk
-       reads  and  writes.   This  improves  performance,  but  if  the computer
-       crashes, data may be lost or the file system corrupted as a result.  sync
-       ensures that everything in memory is written to disk.
-
-       sync should be called before the processor is halted in an unusual manner
-       (e.g., before causing a kernel panic when debugging new kernel code).  In
-       general,  the  processor  should  be  halted  using  the  shutdown(8)  or
-       reboot(8) or halt(8) commands, which will attempt to put the system in  a
-       quiescent  state  before  calling  sync(2).   (Various implementations of
-       these commands exist; consult your documentation;  on  some  systems  one
-       should not call reboot(8) and halt(8) directly.)
-
-OPTIONS
-       --help Print a usage message on standard output and exit successfully.
+       --help display this help and exit
 
        --version
-              Print  version  information on standard output, then exit success&#8208;
-              fully.
+              output version information and exit
 
-       --     Terminate option list.
+AUTHOR
+       Written by Jim Meyering.
 
-ENVIRONMENT
-       The variables LANG, LC_ALL, LC_CTYPE,  and  LC_MESSAGES  have  the  usual
-       meaning.
+REPORTING BUGS
+       Report sync bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report sync translation bugs to &lt;http://translationproject.org/team/&gt;
 
-CONFORMING TO
-       POSIX.2.
-
-NOTES
-       On  Linux, sync is only guaranteed to schedule the dirty blocks for writ&#8208;
-       ing; it can actually take a short time before all the blocks are  finally
-       written.   The  reboot(8)  and halt(8) commands take this into account by
-       sleeping for a few seconds after calling sync(2).
-
-       This page describes sync as found in  the  fileutils-4.0  package;  other
-       versions may differ slightly.
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       sync(2), halt(8), reboot(8), update(8)
+       sync(2)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+       The  full  documentation  for sync is maintained as a Texinfo manual.  If
+       the info and sync programs are properly installed at your site, the  com&#8208;
+       mand
+
+              info coreutils &apos;sync invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-GNU                                1998-11-01                            SYNC(8)
+GNU coreutils 8.12.197-032bb     September 2011                          SYNC(1)
 
 </pre></body></html>

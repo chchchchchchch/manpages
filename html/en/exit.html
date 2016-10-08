@@ -1,95 +1,77 @@
 <html>
 <head><meta charset=utf-8/>
-<title>exit - cause normal process termination</title></head>
+<title>_exit, _Exit - terminate the calling process</title></head>
 <body><pre>
 
-EXIT(3)                     Linux Programmer&apos;s Manual                    EXIT(3)
+_EXIT(2)                    Linux Programmer&apos;s Manual                   _EXIT(2)
 
 
 
 NAME
-       exit - cause normal process termination
+       _exit, _Exit - terminate the calling process
 
 SYNOPSIS
+       #include &lt;unistd.h&gt;
+
+       void _exit(int status);
+
        #include &lt;stdlib.h&gt;
 
-       void exit(int status);
+       void _Exit(int status);
+
+   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       _Exit():
+           _XOPEN_SOURCE &gt;= 600 || _ISOC99_SOURCE || _POSIX_C_SOURCE &gt;= 200112L;
+           or cc -std=c99
 
 DESCRIPTION
-       The  exit()  function  causes normal process termination and the value of
-       status &amp; 0377 is returned to the parent (see wait(2)).
+       The  function  _exit() terminates the calling process &quot;immediately&quot;.  Any
+       open file descriptors belonging to the process are closed;  any  children
+       of the process are inherited by process 1, init, and the process&apos;s parent
+       is sent a SIGCHLD signal.
 
-       All functions registered with atexit(3) and on_exit(3) are called, in the
-       reverse  order  of  their registration.  (It is possible for one of these
-       functions to use atexit(3) or on_exit(3) to register an additional  func&#8208;
-       tion to be executed during exit processing; the new registration is added
-       to the front of the list of functions that remain to be called.)  If  one
-       of  these  functions  does  not return (e.g., it calls _exit(2), or kills
-       itself with a signal), then none of the remaining  functions  is  called,
-       and further exit processing (in particular, flushing of stdio(3) streams)
-       is abandoned.  If a function has been  registered  multiple  times  using
-       atexit(3) or on_exit(3), then it is called as many times as it was regis&#8208;
-       tered.
+       The value status is returned to the parent process as the process&apos;s  exit
+       status, and can be collected using one of the wait(2) family of calls.
 
-       All open stdio(3) streams are flushed and closed.  Files created by  tmp&#8208;
-       file(3) are removed.
-
-       The  C  standard  specifies two constants, EXIT_SUCCESS and EXIT_FAILURE,
-       that may be passed to exit() to indicate successful or unsuccessful  ter&#8208;
-       mination, respectively.
+       The function _Exit() is equivalent to _exit().
 
 RETURN VALUE
-       The exit() function does not return.
+       These functions do not return.
 
 CONFORMING TO
-       SVr4, 4.3BSD, POSIX.1-2001, C89, C99.
+       SVr4, POSIX.1-2001, 4.3BSD.  The function _Exit() was introduced by C99.
 
 NOTES
-       It  is  undefined  what  happens if one of the functions registered using
-       atexit(3) and on_exit(3) calls either exit() or longjmp(3).
+       For a discussion on the effects of an exit, the transmission of exit sta&#8208;
+       tus, zombie processes, signals sent, and so on, see exit(3).
 
-       The use of EXIT_SUCCESS and EXIT_FAILURE is slightly  more  portable  (to
-       non-UNIX environments) than the use of 0 and some nonzero value like 1 or
-       -1.  In particular, VMS uses a different convention.
+       The function _exit() is like exit(3), but does  not  call  any  functions
+       registered with atexit(3) or on_exit(3).  Whether it flushes standard I/O
+       buffers and removes temporary files created with tmpfile(3) is  implemen&#8208;
+       tation-dependent.   On  the  other  hand,  _exit()  does  close open file
+       descriptors, and this may cause an unknown  delay,  waiting  for  pending
+       output  to  finish.   If the delay is undesired, it may be useful to call
+       functions like tcflush(3) before calling _exit().   Whether  any  pending
+       I/O  is  canceled, and which pending I/O may be canceled upon _exit(), is
+       implementation-dependent.
 
-       BSD has attempted to standardize exit codes; see the file &lt;sysexits.h&gt;.
-
-       After exit(), the exit status must be transmitted to the parent  process.
-       There  are  three  cases.  If the parent has set SA_NOCLDWAIT, or has set
-       the SIGCHLD handler to SIG_IGN, the status is discarded.  If  the  parent
-       was  waiting  on  the  child  it is notified of the exit status.  In both
-       cases the exiting process dies immediately.  If the parent has not  indi&#8208;
-       cated  that  it is not interested in the exit status, but is not waiting,
-       the exiting process turns into a &quot;zombie&quot; process (which is nothing but a
-       container  for  the single byte representing the exit status) so that the
-       parent can learn the exit status when it later calls one of  the  wait(2)
-       functions.
-
-       If the implementation supports the SIGCHLD signal, this signal is sent to
-       the parent.  If the parent has set SA_NOCLDWAIT, it is undefined  whether
-       a SIGCHLD signal is sent.
-&#12;       If  the  process  is a session leader and its controlling terminal is the
-       controlling terminal of the session, then each process in the  foreground
-       process  group  of this controlling terminal is sent a SIGHUP signal, and
-       the terminal is disassociated  from  this  session,  allowing  it  to  be
-       acquired by a new controlling process.
-
-       If the exit of the process causes a process group to become orphaned, and
-       if any member of the newly orphaned process  group  is  stopped,  then  a
-       SIGHUP  signal  followed by a SIGCONT signal will be sent to each process
-       in this process group.  See setpgid(2) for  an  explanation  of  orphaned
-       process groups.
+       In glibc up to version 2.3, the _exit() wrapper function invoked the ker&#8208;
+       nel  system call of the same name.  Since glibc 2.3, the wrapper function
+       invokes exit_group(2), in order to terminate all  of  the  threads  in  a
+       process.
 
 SEE ALSO
-       _exit(2), setpgid(2), wait(2), atexit(3), on_exit(3), tmpfile(3)
+       execve(2),  exit_group(2),  fork(2),  kill(2),  wait(2),  wait4(2), wait&#8208;
+       pid(2), atexit(3), exit(3), on_exit(3), termios(3)
 
 COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
        found at http://www.kernel.org/doc/man-pages/.
 
 
 
-Linux                              2009-09-20                            EXIT(3)
+Linux                              2010-09-20                           _EXIT(2)
 
 </pre></body></html>

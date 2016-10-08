@@ -1,123 +1,99 @@
 <html>
 <head><meta charset=utf-8/>
-<title>flock - apply or remove an advisory lock on an open file</title></head>
+<title>flock - manage locks from shell scripts</title></head>
 <body><pre>
 
-
-FLOCK(2)                    Linux Programmer&apos;s Manual                   FLOCK(2)
+FLOCK(1)                          User Commands                         FLOCK(1)
 
 
 
 NAME
-       flock - apply or remove an advisory lock on an open file
+       flock - manage locks from shell scripts
 
 SYNOPSIS
-       #include &lt;sys/file.h&gt;
+       flock [-sxon] [-w timeout] lockfile [-c] command...
 
-       int flock(int fd, int operation);
+       flock [-sxon] [-w timeout] lockdir [-c] command...
+
+       flock [-sxun] [-w timeout] fd
 
 DESCRIPTION
-       Apply  or  remove an advisory lock on the open file specified by fd.  The
-       argument operation is one of the following:
+       This utility manages flock(2) locks from within shell scripts or the com&#8208;
+       mand line.
 
-           LOCK_SH  Place a shared lock.  More  than  one  process  may  hold  a
-                    shared lock for a given file at a given time.
+       The first and second forms wraps the lock around the executing a command,
+       in  a manner similar to su(1) or newgrp(1).  It locks a specified file or
+       directory, which is created (assuming  appropriate  permissions),  if  it
+       does not already exist.
 
-           LOCK_EX  Place  an  exclusive  lock.   Only  one  process may hold an
-                    exclusive lock for a given file at a given time.
+       The  third  form  is convenient inside shell scripts, and is usually used
+       the following manner:
 
-           LOCK_UN  Remove an existing lock held by this process.
+       (
+         flock -n 9 || exit 1
+         # ... commands executed under lock ...
+       ) 9&gt;/var/lock/mylockfile
 
-       A call to flock() may block if an incompatible lock is  held  by  another
-       process.   To make a nonblocking request, include LOCK_NB (by ORing) with
-       any of the above operations.
+       The mode used to open the file doesn&apos;t matter to flock;  using  &gt;  or  &gt;&gt;
+       allows  the lockfile to be created if it does not already exist, however,
+       write permission is required; using &lt;  requires  that  the  file  already
+       exists but only read permission is required.
 
-       A single file may not  simultaneously  have  both  shared  and  exclusive
-       locks.
+       By default, if the lock cannot be immediately acquired, flock waits until
+       the lock is available.
 
-       Locks  created  by  flock() are associated with an open file table entry.
-       This means that duplicate file  descriptors  (created  by,  for  example,
-       fork(2)  or dup(2)) refer to the same lock, and this lock may be modified
-       or released using any of these descriptors.   Furthermore,  the  lock  is
-       released  either  by an explicit LOCK_UN operation on any of these dupli&#8208;
-       cate descriptors, or when all such descriptors have been closed.
+OPTIONS
+       -s, --shared
+              Obtain a shared lock, sometimes called a read lock.
 
-       If a process uses open(2) (or similar) to obtain more than one descriptor
-       for  the  same  file,  these  descriptors  are  treated  independently by
-       flock().  An attempt to lock the file using one of these file descriptors
-       may  be  denied by a lock that the calling process has already placed via
-       another descriptor.
+       -x, -e, --exclusive
+              Obtain an exclusive lock, sometimes called a write lock.  This  is
+              the default.
 
-       A process may only hold one type of lock (shared or exclusive) on a file.
-       Subsequent flock() calls on an already locked file will convert an exist&#8208;
-       ing lock to the new lock mode.
+       -u, --unlock
+              Drop  a lock.  This is usually not required, since a lock is auto&#8208;
+              matically dropped when the file is closed.   However,  it  may  be
+              required  in  special  cases,  for example if the enclosed command
+              group may have forked a background process  which  should  not  be
+              holding the lock.
 
-       Locks created by flock() are preserved across an execve(2).
+       -n, --nb, --nonblock
+              Fail  (with an exit code of 1) rather than wait if the lock cannot
+              be immediately acquired.
 
-       A shared or exclusive lock can be placed on a file regardless of the mode
-       in which the file was opened.
+       -w, --wait, --timeout seconds
+              Fail (with an exit code of 1)  if  the  lock  cannot  be  acquired
+              within seconds seconds.  Decimal fractional values are allowed.
 
-RETURN VALUE
-       On success, zero is returned.  On error, -1 is returned, and errno is set
-       appropriately.
+       -o, --close
+              Close the file descriptor on which the lock is held before execut&#8208;
+              ing command.  This is useful if command  spawns  a  child  process
+              which should not be holding the lock.
 
-ERRORS
-       EBADF  fd is not an open file descriptor.
+       -c, --command command
+              Pass a single command to the shell with -c.
 
-       EINTR  While waiting to acquire a  lock,  the  call  was  interrupted  by
-              delivery of a signal caught by a handler; see signal(7).
+       -h, --help
+              Print a help message.
 
-       EINVAL operation is invalid.
-&#12;       ENOLCK The kernel ran out of memory for allocating lock records.
+AUTHOR
+       Written by H. Peter Anvin &lt;hpa@zytor.com&gt;.
 
-       EWOULDBLOCK
-              The file is locked and the LOCK_NB flag was selected.
-
-CONFORMING TO
-       4.4BSD  (the  flock()  call  first  appeared  in  4.2BSD).   A version of
-       flock(), possibly implemented in terms of fcntl(2), appears on most  UNIX
-       systems.
-
-NOTES
-       flock()  does  not  lock files over NFS.  Use fcntl(2) instead: that does
-       work over NFS, given a sufficiently recent version of Linux and a  server
-       which supports locking.
-
-       Since  kernel  2.0,  flock()  is  implemented as a system call in its own
-       right rather than being emulated in the  GNU  C  library  as  a  call  to
-       fcntl(2).   This  yields  true  BSD  semantics:  there  is no interaction
-       between the types of lock placed by flock()  and  fcntl(2),  and  flock()
-       does not detect deadlock.
-
-       flock() places advisory locks only; given suitable permissions on a file,
-       a process is free to ignore the use of flock() and  perform  I/O  on  the
-       file.
-
-       flock()  and  fcntl(2)  locks  have  different  semantics with respect to
-       forked processes and dup(2).  On systems  that  implement  flock()  using
-       fcntl(2), the semantics of flock() will be different from those described
-       in this manual page.
-
-       Converting a lock (shared to exclusive, or vice versa) is not  guaranteed
-       to  be atomic: the existing lock is first removed, and then a new lock is
-       established.  Between these two steps, a pending lock request by  another
-       process  may  be  granted,  with  the  result  that the conversion either
-       blocks, or fails if LOCK_NB was specified.  (This  is  the  original  BSD
-       behavior, and occurs on many other implementations.)
+COPYRIGHT
+       Copyright &#169; 2003-2006 H. Peter Anvin.
+       This  is  free software; see the source for copying conditions.  There is
+       NO warranty; not even for MERCHANTABILITY or  FITNESS  FOR  A  PARTICULAR
+       PURPOSE.
 
 SEE ALSO
-       close(2), dup(2), execve(2), fcntl(2), fork(2), open(2), lockf(3)
+       flock(2)
 
-       Documentation/filesystem/locks.txt in the Linux kernel source tree (Docu&#8208;
-       mentation/locks.txt in older kernels)
-
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+AVAILABILITY
+       The flock command is part of the util-linux package and is available from
+       ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
 
 
 
-Linux                              2009-07-25                           FLOCK(2)
+util-linux                        February 2006                         FLOCK(1)
 
 </pre></body></html>

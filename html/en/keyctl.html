@@ -1,120 +1,582 @@
 <html>
 <head><meta charset=utf-8/>
-<title>keyctl - manipulate the kernel's key management facility</title></head>
+<title>keyctl - Key management facility control</title></head>
 <body><pre>
 
-KEYCTL(2)                  Linux Key Management Calls                  KEYCTL(2)
+KEYCTL(1)                Linux Key Management Utilities                KEYCTL(1)
 
 
 
 NAME
-       keyctl - manipulate the kernel&apos;s key management facility
+       keyctl - Key management facility control
 
 SYNOPSIS
-       #include &lt;keyutils.h&gt;
-
-       long keyctl(int cmd, ...);
+       keyctl --version
+       keyctl show [-x] [&lt;keyring&gt;]
+       keyctl add &lt;type&gt; &lt;desc&gt; &lt;data&gt; &lt;keyring&gt;
+       keyctl padd &lt;type&gt; &lt;desc&gt; &lt;keyring&gt;
+       keyctl request &lt;type&gt; &lt;desc&gt; [&lt;dest_keyring&gt;]
+       keyctl request2 &lt;type&gt; &lt;desc&gt; &lt;info&gt; [&lt;dest_keyring&gt;]
+       keyctl prequest2 &lt;type&gt; &lt;desc&gt; [&lt;dest_keyring&gt;]
+       keyctl update &lt;key&gt; &lt;data&gt;
+       keyctl pupdate &lt;key&gt;
+       keyctl newring &lt;name&gt; &lt;keyring&gt;
+       keyctl revoke &lt;key&gt;
+       keyctl clear &lt;keyring&gt;
+       keyctl link &lt;key&gt; &lt;keyring&gt;
+       keyctl unlink &lt;key&gt; [&lt;keyring&gt;]
+       keyctl search &lt;keyring&gt; &lt;type&gt; &lt;desc&gt; [&lt;dest_keyring&gt;]
+       keyctl read &lt;key&gt;
+       keyctl pipe &lt;key&gt;
+       keyctl print &lt;key&gt;
+       keyctl list &lt;keyring&gt;
+       keyctl rlist &lt;keyring&gt;
+       keyctl describe &lt;keyring&gt;
+       keyctl rdescribe &lt;keyring&gt; [sep]
+       keyctl chown &lt;key&gt; &lt;uid&gt;
+       keyctl chgrp &lt;key&gt; &lt;gid&gt;
+       keyctl setperm &lt;key&gt; &lt;mask&gt;
+       keyctl session
+       keyctl session - [&lt;prog&gt; &lt;arg1&gt; &lt;arg2&gt; ...]
+       keyctl session &lt;name&gt; [&lt;prog&gt; &lt;arg1&gt; &lt;arg2&gt; ...]
+       keyctl instantiate &lt;key&gt; &lt;data&gt; &lt;keyring&gt;
+       keyctl pinstantiate &lt;key&gt; &lt;keyring&gt;
+       keyctl negate &lt;key&gt; &lt;timeout&gt; &lt;keyring&gt;
+       keyctl reject &lt;key&gt; &lt;timeout&gt; &lt;error&gt; &lt;keyring&gt;
+       keyctl timeout &lt;key&gt; &lt;timeout&gt;
+       keyctl security &lt;key&gt;
+       keyctl reap [-v]
+       keyctl purge &lt;type&gt;
+       keyctl purge [-i] [-p] &lt;type&gt; &lt;desc&gt;
+       keyctl purge -s &lt;type&gt; &lt;desc&gt;
 
 DESCRIPTION
-       keyctl() has a number of functions available:
+       This  program  is  used to control the key management facility in various
+       ways using a variety of subcommands.
 
-       KEYCTL_GET_KEYRING_ID
-              Ask for a keyring&apos;s ID.
+KEY IDENTIFIERS
+       The key identifiers passed to or returned from keyctl  are,  in  general,
+       positive  integers.  There are, however, some special values with special
+       meanings that can be passed as arguments:
 
-       KEYCTL_JOIN_SESSION_KEYRING
-              Join or start named session keyring.
+       (*) No key: 0
 
-       KEYCTL_UPDATE
-              Update a key.
+       (*) Thread keyring: @t or -1
 
-       KEYCTL_REVOKE
-              Revoke a key.
+       Each thread may have its own keyring. This is searched first, before  all
+       others. The thread keyring is replaced by (v)fork, exec and clone.
 
-       KEYCTL_CHOWN
-              Set ownership of a key.
+       (*) Process keyring: @p or -2
 
-       KEYCTL_SETPERM
-              Set perms on a key.
+       Each  process  (thread  group)  may  have its own keyring. This is shared
+       between all members of a group and will  be  searched  after  the  thread
+       keyring. The process keyring is replaced by (v)fork and exec.
 
-       KEYCTL_DESCRIBE
-              Describe a key.
+       (*) Session keyring: @s or -3
 
-       KEYCTL_CLEAR
-              Clear contents of a keyring.
+       Each  process  subscribes  to  a session keyring that is inherited across
+       (v)fork, exec and clone. This is searched after the process keyring. Ses&#8208;
+       sion  keyrings  can be named and an extant keyring can be joined in place
+       of a process&apos;s current session keyring.
 
-       KEYCTL_LINK
-              Link a key into a keyring.
+       (*) User specific keyring: @u or -4
 
-       KEYCTL_UNLINK
-              Unlink a key from a keyring.
+       This keyring is shared between all the processes owned  by  a  particular
+       user. It isn&apos;t searched directly, but is normally linked to from the ses&#8208;
+       sion keyring.
 
-       KEYCTL_SEARCH
-              Search for a key in a keyring.
+       (*) User default session keyring: @us or -5
 
-       KEYCTL_READ
-              Read a key or keyring&apos;s contents.
+       This is the default session keyring for a  particular  user.  Login  pro&#8208;
+       cesses  that  change to a particular user will bind to this session until
+       another session is set.
 
-       KEYCTL_INSTANTIATE
-              Instantiate a partially constructed key.
+       (*) Group specific keyring: @g or -6
 
-       KEYCTL_NEGATE
-              Negate a partially constructed key.
+       This is a place holder for a group specific keyring, but is not  actually
+       implemented yet in the kernel.
 
-       KEYCTL_SET_REQKEY_KEYRING
-              Set default request-key keyring.
+       (*) Assumed request_key authorisation key: @a or -7
 
-       KEYCTL_SET_TIMEOUT
-              Set timeout on a key.
+       This  selects  the authorisation key provided to the request_key() helper
+       to permit it to access the callers keyrings and  instantiate  the  target
+       key.
 
-       KEYCTL_ASSUME_AUTHORITY
-              Assume authority to instantiate key.
-&#12;       These are wrapped by libkeyutils into individual functions to permit com&#8208;
-       piler the compiler to check types.  See the See Also section at the  bot&#8208;
-       tom.
+COMMAND SYNTAX
+       Any non-ambiguous shortening of a command name may be used in lieu of the
+       full command name. This facility should not be used in scripting  as  new
+       commands may be added in future that then cause ambiguity.
 
-RETURN VALUE
-       On  success  keyctl()  returns the serial number of the key it found.  On
-       error, the value -1 will be returned and errno will have been set  to  an
-       appropriate error.
+       (*) Display the package version number
+
+       keyctl --version
+
+       This command prints the package version number and build date and exits:
+
+              testbox&gt;keyctl --version
+              keyctl from keyutils-1.5.3 (Built 2011-08-24)
+
+       (*) Show process keyrings
+
+       keyctl show [-x] [&lt;keyring&gt;]
+
+       By default this command recursively shows what keyrings a process is sub&#8208;
+       scribed to and what keys and keyrings they  contain.   If  a  keyring  is
+       specified  then  that keyring will be dumped instead.  If -x is specified
+       then the keyring IDs will be dumped in hex instead of decimal.
+
+       (*) Add a key to a keyring
+
+       keyctl add &lt;type&gt; &lt;desc&gt; &lt;data&gt; &lt;keyring&gt;
+       keyctl padd &lt;type&gt; &lt;desc&gt; &lt;keyring&gt;
+
+       This command creates a key of the specified type and description; instan&#8208;
+       tiates  it  with the given data and attaches it to the specified keyring.
+       It then prints the new key&apos;s ID on stdout:
+
+              testbox&gt;keyctl add user mykey stuff @u
+              26
+
+       The padd variant of the command reads the data  from  stdin  rather  than
+       taking it from the command line:
+
+              testbox&gt;echo -n stuff | keyctl padd user mykey @u
+              26
+
+       (*) Request a key
+
+       keyctl request &lt;type&gt; &lt;desc&gt; [&lt;dest_keyring&gt;]
+       keyctl request2 &lt;type&gt; &lt;desc&gt; &lt;info&gt; [&lt;dest_keyring&gt;]
+       keyctl prequest2 &lt;type&gt; &lt;desc&gt; [&lt;dest_keyring&gt;]
+
+       These  three  commands  request the lookup of a key of the given type and
+       description. The process&apos;s keyrings will be searched, and if a  match  is
+       found  the matching key&apos;s ID will be printed to stdout; and if a destina&#8208;
+       tion keyring is given, the key will be added to that keyring also.
+
+       If there is no key, the first command will simply return the error ENOKEY
+       and  fail.  The  second and third commands will create a partial key with
+       the type and description, and call out to /sbin/request-key with that key
+       and the extra information supplied. This will then attempt to instantiate
+       the key in some manner, such that a valid key is obtained.
+
+       The third command is like the second, except that the callout information
+       is read from stdin rather than being passed on the command line.
+
+       If  a  valid key is obtained, the ID will be printed and the key attached
+       as if the original search had succeeded.
+
+       If there wasn&apos;t a valid key obtained, a temporary negative  key  will  be
+       attached to the destination keyring if given and the error &quot;Requested key
+       not available&quot; will be given.
+
+              testbox&gt;keyctl request2 user debug:hello wibble
+              23
+              testbox&gt;echo -n wibble | keyctl prequest2 user debug:hello
+              23
+              testbox&gt;keyctl request user debug:hello
+              23
+
+       (*) Update a key
+
+       keyctl update &lt;key&gt; &lt;data&gt;
+       keyctl pupdate &lt;key&gt;
+
+       This command replaces the data attached to a key with a new set of  data.
+       If  the  type of the key doesn&apos;t support update then error &quot;Operation not
+       supported&quot; will be returned.
+
+              testbox&gt;keyctl update 23 zebra
+
+       The pupdate variant of the command reads the data from stdin rather  than
+       taking it from the command line:
+
+              testbox&gt;echo -n zebra | keyctl pupdate 23
+
+       (*) Create a keyring
+
+       keyctl newring &lt;name&gt; &lt;keyring&gt;
+
+       This  command creates a new keyring of the specified name and attaches it
+       to the specified keyring. The ID of the new keyring will  be  printed  to
+       stdout if successful.
+&#12;              testbox&gt;keyctl newring squelch @us
+              27
+
+       (*) Revoke a key
+
+       keyctl revoke &lt;key&gt;
+
+       This command marks a key as being revoked. Any further operations on that
+       key (apart from unlinking it) will return error &quot;Key has been revoked&quot;.
+
+              testbox&gt;keyctl revoke 26
+              testbox&gt;keyctl describe 26
+              keyctl_describe: Key has been revoked
+
+       (*) Clear a keyring
+
+       keyctl clear &lt;keyring&gt;
+
+       This command unlinks all the keys  attached  to  the  specified  keyring.
+       Error  &quot;Not  a  directory&quot; will be returned if the key specified is not a
+       keyring.
+
+              testbox&gt;keyctl clear 27
+
+       (*) Link a key to a keyring
+
+       keyctl link &lt;key&gt; &lt;keyring&gt;
+
+       This command makes a link from the key to the keyring if  there&apos;s  enough
+       capacity to do so. Error &quot;Not a directory&quot; will be returned if the desti&#8208;
+       nation is not a keyring. Error &quot;Permission denied&quot; will  be  returned  if
+       the  key  doesn&apos;t  have link permission or the keyring doesn&apos;t have write
+       permission. Error &quot;File table overflow&quot; will be returned if  the  keyring
+       is full. Error &quot;Resource deadlock avoided&quot; will be returned if an attempt
+       was made to introduce a recursive link.
+
+              testbox&gt;keyctl link 23 27
+              testbox&gt;keyctl link 27 27
+              keyctl_link: Resource deadlock avoided
+
+       (*) Unlink a key from a keyring or the session keyring tree
+
+       keyctl unlink &lt;key&gt; [&lt;keyring&gt;]
+
+       If the keyring is specified, this command removes a link to the key  from
+       the  keyring. Error &quot;Not a directory&quot; will be returned if the destination
+       is not a keyring. Error &quot;Permission  denied&quot;  will  be  returned  if  the
+       keyring  doesn&apos;t have write permission. Error &quot;No such file or directory&quot;
+       will be returned if the key is not linked to by the keyring.
+
+       If the keyring is not specified,  this  command  performs  a  depth-first
+       search of the session keyring tree and removes all the links to the nomi&#8208;
+       nated key that it finds (and that it is permitted to remove).  It  prints
+       the number of successful unlinks before exiting.
+
+              testbox&gt;keyctl unlink 23 27
+
+       (*) Search a keyring
+
+       keyctl search &lt;keyring&gt; &lt;type&gt; &lt;desc&gt; [&lt;dest_keyring&gt;]
+
+       This command non-recursively searches a keyring for a key of a particular
+       type and description. If found, the ID of the key will be printed on std&#8208;
+       out  and  the key will be attached to the destination keyring if present.
+       Error &quot;Requested key not available&quot; will be returned if the  key  is  not
+       found.
+
+              testbox&gt;keyctl search @us user debug:hello
+              23
+              testbox&gt;keyctl search @us user debug:bye
+              keyctl_search: Requested key not available
+
+       (*) Read a key
+
+       keyctl read &lt;key&gt;
+       keyctl pipe &lt;key&gt;
+       keyctl print &lt;key&gt;
+
+       These commands read the payload of a key. &quot;read&quot; prints it on stdout as a
+       hex dump, &quot;pipe&quot; dumps the raw data to stdout and  &quot;print&quot;  dumps  it  to
+       stdout  directly  if  it&apos;s entirely printable or as a hexdump preceded by
+       &quot;:hex:&quot; if not.
+
+       If the key type does not support  reading  of  the  payload,  then  error
+       &quot;Operation not supported&quot; will be returned.
+
+              testbox&gt;keyctl read 26
+              1 bytes of data in key:
+              62
+              testbox&gt;keyctl print 26
+              b
+              testbox&gt;keyctl pipe 26
+              btestbox&gt;
+
+       (*) List a keyring
+
+       keyctl list &lt;keyring&gt;
+       keyctl rlist &lt;keyring&gt;
+
+       These  commands  list  the  contents of a key as a keyring. &quot;list&quot; pretty
+       prints the contents and &quot;rlist&quot; just produces a space-separated  list  of
+       key IDs.
+
+       No attempt is made to check that the specified keyring is a keyring.
+
+              testbox&gt;keyctl list @us
+              2 keys in keyring:
+                     22: vrwsl----------  4043    -1 keyring: _uid.4043
+                     23: vrwsl----------  4043  4043 user: debug:hello
+              testbox&gt;keyctl rlist @us
+              22 23
+
+       (*) Describe a key
+
+       keyctl describe &lt;keyring&gt;
+       keyctl rdescribe &lt;keyring&gt; [sep]
+
+       These commands fetch a description of a keyring. &quot;describe&quot; pretty prints
+       the description in the same fashion as the  &quot;list&quot;  command;  &quot;rdescribe&quot;
+       prints the raw data returned from the kernel.
+
+              testbox&gt;keyctl describe @us
+                     -5:  vrwsl----------   4043     -1  keyring:  _uid_ses.4043
+              testbox&gt;keyctl                    rdescribe                    @us
+              keyring;4043;-1;3f1f0000;_uid_ses.4043
+
+       The  raw  string is &quot;&lt;type&gt;;&lt;uid&gt;;&lt;gid&gt;;&lt;perms&gt;;&lt;description&gt;&quot;, where uid
+       and gid are the decimal user and group IDs, perms is the permissions mask
+       in  hex,  type  and description are the type name and description strings
+       (neither of which will contain semicolons).
+
+       (*) Change the access controls on a key
+
+       keyctl chown &lt;key&gt; &lt;uid&gt;
+       keyctl chgrp &lt;key&gt; &lt;gid&gt;
+
+       These two commands change the UID and GID associated  with  evaluating  a
+       key&apos;s  permissions  mask. The UID also governs which quota a key is taken
+       out of.
+
+       The chown command is not currently supported; attempting it will earn the
+       error &quot;Operation not supported&quot; at best.
+
+       For  non-superuser users, the GID may only be set to the process&apos;s GID or
+       a GID in the process&apos;s groups list. The superuser  may  set  any  GID  it
+       likes.
+
+              testbox&gt;sudo keyctl chown 27 0
+              keyctl_chown: Operation not supported
+              testbox&gt;sudo keyctl chgrp 27 0
+
+       (*) Set the permissions mask on a key
+
+       keyctl setperm &lt;key&gt; &lt;mask&gt;
+
+       This  command  changes the permission control mask on a key. The mask may
+       be specified as a hex number if it begins &quot;0x&quot;, an  octal  number  if  it
+       begins &quot;0&quot; or a decimal number otherwise.
+
+       The hex numbers are a combination of:
+
+              Possessor UID       GID       Other     Permission Granted
+              ========  ========  ========  ========  ==================
+              01000000  00010000  00000100  00000001  View
+              02000000  00020000  00000200  00000002  Read
+              04000000  00040000  00000400  00000004  Write
+              08000000  00080000  00000800  00000008  Search
+              10000000  00100000  00001000  00000010  Link
+              20000000  00200000  00002000  00000020  Set Attribute
+              3f000000  003f0000  00003f00  0000003f  All
+
+       View  permits  the  type, description and other parameters of a key to be
+       viewed.
+
+       Read permits the payload (or keyring list) to be read if supported by the
+       type.
+
+       Write permits the payload (or keyring list) to be modified or updated.
+
+       Search  on  a  key  permits  it to be found when a keyring to which it is
+       linked is searched.
+
+       Link permits a key to be linked to a keyring.
+
+       Set Attribute permits a key to have its owner, group membership,  permis&#8208;
+       sions mask and timeout changed.
+
+              testbox&gt;keyctl setperm 27 0x1f1f1f00
+
+       (*) Start a new session with fresh keyrings
+
+       keyctl session
+       keyctl session - [&lt;prog&gt; &lt;arg1&gt; &lt;arg2&gt; ...]
+       keyctl session &lt;name&gt; [&lt;prog&gt; &lt;arg1&gt; &lt;arg2&gt; ...]
+
+       These commands join or create a new keyring and then run a shell or other
+       program with that keyring as the session key.
+&#12;       The variation with no arguments just creates an anonymous session keyring
+       and attaches that as the session keyring; it then exec&apos;s $SHELL.
+
+       The variation with a dash in place of a name creates an anonymous session
+       keyring and attaches that as the session keyring; it then exec&apos;s the sup&#8208;
+       plied command, or $SHELL if one isn&apos;t supplied.
+
+       The variation with a name supplied creates or joins the named keyring and
+       attaches that as the session keyring; it then exec&apos;s  the  supplied  com&#8208;
+       mand, or $SHELL if one isn&apos;t supplied.
+
+              testbox&gt;keyctl rdescribe @s
+              keyring;4043;-1;3f1f0000;_uid_ses.4043
+
+              testbox&gt;keyctl session
+              Joined session keyring: 28
+              testbox&gt;keyctl rdescribe @s
+              keyring;4043;4043;3f1f0000;_ses.24082
+
+              testbox&gt;keyctl session -
+              Joined session keyring: 29
+              testbox&gt;keyctl rdescribe @s
+              keyring;4043;4043;3f1f0000;_ses.24139
+
+              testbox&gt;keyctl session - keyctl rdescribe @s
+              Joined session keyring: 30
+              keyring;4043;4043;3f1f0000;_ses.24185
+
+              testbox&gt;keyctl session fish
+              Joined session keyring: 34
+              testbox&gt;keyctl rdescribe @s
+              keyring;4043;4043;3f1f0000;fish
+
+              testbox&gt;keyctl session fish keyctl rdesc @s
+              Joined session keyring: 35
+              keyring;4043;4043;3f1f0000;fish
+
+       (*) Instantiate a key
+
+       keyctl instantiate &lt;key&gt; &lt;data&gt; &lt;keyring&gt;
+       keyctl pinstantiate &lt;key&gt; &lt;keyring&gt;
+       keyctl negate &lt;key&gt; &lt;timeout&gt; &lt;keyring&gt;
+       keyctl reject &lt;key&gt; &lt;timeout&gt; &lt;error&gt; &lt;keyring&gt;
+
+       These commands are used to attach data to a partially set up key (as cre&#8208;
+       ated by the kernel and passed to /sbin/request-key).  &quot;instantiate&quot; marks
+       a  key as being valid and attaches the data as the payload.  &quot;negate&quot; and
+       &quot;reject&quot; mark a key as invalid and sets a timeout on it so that it&apos;ll  go
+       away  after  a while.  This prevents a lot of quickly sequential requests
+       from slowing the system down overmuch when they all fail, as  all  subse&#8208;
+       quent  requests  will  then fail with error &quot;Requested key not found&quot; (if
+       negated) or the specified error (if rejected) until the negative key  has
+       expired.
+
+       Reject&apos;s  error  argument  can  either  be  a UNIX error number or one of
+       &apos;rejected&apos;, &apos;expired&apos; or &apos;revoked&apos;.
+
+       The newly instantiated key will be attached to the specified keyring.
+
+       These commands may only be run from the program run by  request-key  -  a
+       special  authorisation  key  is  set up by the kernel and attached to the
+       request-key&apos;s session keyring. This special key is revoked once  the  key
+       to which it refers has been instantiated one way or another.
+
+              testbox&gt;keyctl instantiate $1 &quot;Debug $3&quot; $4
+              testbox&gt;keyctl negate $1 30 $4
+              testbox&gt;keyctl reject $1 30 64 $4
+
+       The  pinstantiate variant of the command reads the data from stdin rather
+       than taking it from the command line:
+
+              testbox&gt;echo -n &quot;Debug $3&quot; | keyctl pinstantiate $1 $4
+
+       (*) Set the expiry time on a key
+
+       keyctl timeout &lt;key&gt; &lt;timeout&gt;
+
+       This command is used to set the timeout on a key, or  clear  an  existing
+       timeout  if the value specified is zero. The timeout is given as a number
+       of seconds into the future.
+
+              testbox&gt;keyctl timeout $1 45
+
+       (*) Retrieve a key&apos;s security context
+
+       keyctl security &lt;key&gt;
+
+       This command is used to retrieve a key&apos;s LSM security context.  The label
+       is printed on stdout.
+
+              testbox&gt;keyctl security @s
+              unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+       (*) Give the parent process a new session keyring
+
+       keyctl new_session
+
+       This  command  is used to give the invoking process (typically a shell) a
+       new session keyring, discarding its old session keyring.
+
+              testbox&gt; keyctl session foo
+              Joined session keyring: 723488146
+              testbox&gt; keyctl show
+              Session Keyring
+                     -3 --alswrv      0     0  keyring: foo
+              testbox&gt; keyctl new_session
+              490511412
+              testbox&gt; keyctl show
+              Session Keyring
+                     -3 --alswrv      0     0  keyring: _ses
+
+       Note that this affects the parent of the process that invokes the  system
+       call,  and  so may only affect processes with matching credentials.  Fur&#8208;
+       thermore, the change does not take effect till the  parent  process  next
+       transitions  from  kernel space to user space - typically when the wait()
+       system call returns.
+
+       (*) Remove dead keys from the session keyring tree
+
+       keyctl reap
+
+       This command performs  a  depth-first  search  of  the  caller&apos;s  session
+       keyring  tree  and attempts to unlink any key that it finds that is inac&#8208;
+       cessible due to expiry, revocation, rejection or negation.  It  does  not
+       attempt  to remove live keys that are unavailable simply due to a lack of
+       granted permission.
+
+       A key that is designated reapable will only be removed from a keyring  if
+       the  caller  has Write permission on that keyring, and only keyrings that
+       grant Search permission to the caller will be searched.
+
+       The command prints the number of keys reaped before it exits.  If the  -v
+       flag  is  passed then the reaped keys are listed as they&apos;re being reaped,
+       together with the success or failure of the unlink.
+
+       (*) Remove matching keys from the session keyring tree
+
+       keyctl purge &lt;type&gt;
+       keyctl purge [-i] [-p] &lt;type&gt; &lt;desc&gt;
+       keyctl purge -s &lt;type&gt; &lt;desc&gt;
+
+       These commands perform a depth-first search to find matching keys in  the
+       caller&apos;s session keyring tree and attempts to unlink them.  The number of
+       keys successfully unlinked is printed at the end.
+
+       The keyrings must grant Read and View permission  to  the  caller  to  be
+       searched,  and  the  keys  to be removed must also grant View permission.
+       Keys can only be removed from keyrings that grant Write permission.
+
+       The first variant purges all keys of the specified type.
+
+       The second variant purges all keys of the specified type that also  match
+       the  given  description literally.  The -i flag allows a case-independent
+       match and the -p flag allows a prefix match.
+
+       The third variant purges all keys of  the  specified  type  and  matching
+       description  using  the  key type&apos;s comparator in the kernel to match the
+       description.  This permits the key type to match a key with a variety  of
+       descriptions.
 
 ERRORS
-       EACCES A key operation wasn&apos;t permitted.
+       There are a number of common errors returned by this program:
 
-       EDQUOT The  key quota for the caller&apos;s user would be exceeded by creating
-              a key or linking it to the keyring.
+       &quot;Not a directory&quot; - a key wasn&apos;t a keyring.
 
-       EKEYEXPIRED
-              An expired key was found or specified.
+       &quot;Requested key not found&quot; - the looked for key isn&apos;t available.
 
-       EKEYREJECTED
-              A rejected key was found or specified.
+       &quot;Key has been revoked&quot; - a revoked key was accessed.
 
-       EKEYREVOKED
-              A revoked key was found or specified.
+       &quot;Key has expired&quot; - an expired key was accessed.
 
-       ENOKEY No matching key was found or an invalid key was specified.
+       &quot;Permission  denied&quot;  -  permission was denied by a UID/GID/mask combina&#8208;
+       tion.
 
-LINKING
-       Although this is a Linux system call, it is not present in libc  but  can
-       be found rather in libkeyutils.  When linking, -lkeyutils should be spec&#8208;
-       ified to the linker.
 
 SEE ALSO
-       keyctl(1), add_key(2), request_key(2), keyctl_set_timeout(3),
-       keyctl_chown(3), keyctl_clear(3), keyctl_describe(3),
-       keyctl_describe_alloc(3), keyctl_get_keyring_ID(3),
-       keyctl_instantiate(3), keyctl_join_session_keyring(3), keyctl_link(3),
-       keyctl_negate(3), keyctl_revoke(3), keyctl_search(3), keyctl_setperm(3),
-       keyctl_set_reqkey_keyring(3), keyctl_set_timeout(3), keyctl_read(3),
-       keyctl_read_alloc(3), keyctl_unlink(3), keyctl_update(3), request-key(8)
-
-COLOPHON
-       This page is part of release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       keyctl(1), request-key.conf(5)
 
 
 
-Linux                              2010-02-25                          KEYCTL(2)
+Linux                              17 Nov 2005                         KEYCTL(1)
 
 </pre></body></html>

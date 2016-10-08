@@ -1,57 +1,58 @@
 <html>
 <head><meta charset=utf-8/>
-<title>tzselect - select a timezone</title></head>
+<title>tzselect - view timezones</title></head>
 <body><pre>
 
-TZSELECT(8)                Linux System Administration               TZSELECT(8)
+TZSELECT(1)               Debian Timezone Configuration              TZSELECT(1)
 
 
 
 NAME
-       tzselect - select a timezone
+       tzselect - view timezones
 
 SYNOPSIS
        tzselect
 
 DESCRIPTION
-       The  tzselect  program  asks  the  user for information about the current
-       location, and outputs the resulting timezone description to standard out&#8208;
-       put.  The output is suitable as a value for the TZ environment variable.
+       This  manual  page  explains how you can use the tzselect utility to view
+       the installed timezone. It comes handy when you want to know what time it
+       is in other countries, or if you just wonder what timezones exist.
 
-       All  interaction  with  the  user is done via standard input and standard
-       error.
+       tzselect is called without any parameters from the shell. It shows a list
+       of about one dozen geographic areas one can roughly recognize  as  conti&#8208;
+       nents.  After  choosing  a geographic area by number, a list of countries
+       and cities in this area will be shown.
 
-EXIT STATUS
-       The exit status is zero if a timezone was successfully obtained from  the
-       user, nonzero otherwise.
+       You can press the Enter key to reprint the list. To  choose  a  timezone,
+       just  press  the  number  left to it.  If your input is invalid, the list
+       will be reprinted.
 
-ENVIRONMENT
-       AWK    Name of a Posix-compliant awk program (default: awk).
+       You may press Ctrl-C to interrupt the script at any time.
 
-       TZDIR  Name  of  the  directory  containing timezone data files (default:
-              /usr/share/zoneinfo).
+       Note that tzselect will not actually change the  timezone  for  you.  Use
+       &apos;dpkg-reconfigure tzdata&apos; to achieve this.
 
 FILES
-       TZDIR/iso3166.tab
-              Table of ISO 3166 2-letter country codes and country names.
-
-       TZDIR/zone.tab
-              Table of country codes, latitude and  longitude,  TZ  values,  and
-              descriptive comments.
-
-       TZDIR/TZ
-              Time zone data file for timezone TZ.
+       /usr/share/zoneinfo/
 
 SEE ALSO
-       tzfile(5), zdump(8), zic(8)
+       hwclock(8)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+AUTHOR
+       Copyright 1998 Marcus Brinkmann &lt;brinkmd@debian.org&gt;
+
+       Please see nroff source for legal notice.
 
 
 
-                                   2007-05-18                        TZSELECT(8)
+
+
+
+
+
+
+
+
+Debian                            12 June 1998                       TZSELECT(1)
 
 </pre></body></html>

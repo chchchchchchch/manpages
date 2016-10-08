@@ -3,7 +3,7 @@
 <title>gtk-update-icon-cache - Icon theme caching utility</title></head>
 <body><pre>
 
-GTK-UPDATE-ICON-C(1)              User Commands             GTK-UPDATE-ICON-C(1)
+GTK-UPDATE-ICON-C(1)             [FIXME: manual]            GTK-UPDATE-ICON-C(1)
 
 
 
@@ -12,19 +12,19 @@ NAME
 
 SYNOPSIS
        gtk-update-icon-cache [--force] [--ignore-theme-index] [--index-only]
-                             [--source NAME] [--quiet] [--validate] PATH
+                             [--source [name]] [--quiet] [--validate] {iconpath}
 
 DESCRIPTION
-       gtk-update-icon-cache creates mmapable cache files for icon themes.
+       gtk-update-icon-cache creates mmap()able cache files for icon themes.
 
-       It expects to be given the PATH to a icon theme directory containing an
+       It expects to be given the path to a icon theme directory containing an
        index.theme, e.g.  /usr/share/icons/hicolor, and writes a
        icon-theme.cache containing cached information about the icons in the
        directory tree below the given directory.
 
        GTK+ can use the cache files created by gtk-update-icon-cache to avoid a
        lot of system call and disk seek overhead when the application starts.
-       Since the format of the cache files allows them to be mmaped shared
+       Since the format of the cache files allows them to be mmap()ed shared
        between multiple applications, the overall memory consumption is reduced
        as well.
 
@@ -33,7 +33,7 @@ OPTIONS
            Overwrite an existing cache file even if it appears to be uptodate.
 
        --ignore-theme-index, -t
-           Don&apos;t check for the existence of index.theme in the icon theme
+           Don&apos;t check for the existence of &apos;index.theme&apos; in the icon theme
            directory. Without this option, gtk-update-icon-cache refuses to
            create an icon cache in a directory which does not appear to be the
            toplevel directory of an icon theme.
@@ -42,7 +42,7 @@ OPTIONS
            Don&apos;t include image data in the cache.
 
        --source, -c
-           Output a C header file declaring a constant NAME with the contents of
+           Output a C header file declaring a constant name with the contents of
            the icon cache.
 
        --quiet, -q
@@ -56,6 +56,6 @@ BUGS
 
 
 
-User Commands                      05/02/2012               GTK-UPDATE-ICON-C(1)
+[FIXME: source]                    02/06/2012               GTK-UPDATE-ICON-C(1)
 
 </pre></body></html>

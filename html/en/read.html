@@ -1,198 +1,106 @@
 <html>
 <head><meta charset=utf-8/>
-<title>read, write, etc - basic file operations</title></head>
+<title>read - read from a file descriptor</title></head>
 <body><pre>
 
-Gnome2::VFS::Handle(3pmUser Contributed Perl DocumentatiGnome2::VFS::Handle(3pm)
+READ(2)                     Linux Programmer&apos;s Manual                    READ(2)
 
 
 
 NAME
-       read, write, etc - basic file operations
-
-METHODS
-   result = $handle-&gt;close
-   list = $handle-&gt;get_file_info ($options)
-       &#183;   $options (Gnome2::VFS::FileInfoOptions)
-
-       Returns a GnomeVFSResult and a GnomeVFSFileInfo.
-
-   result = $handle-&gt;forget_cache ($offset, $size)
-       &#183;   $offset (unsigned)
-
-       &#183;   $size (unsigned)
-
-       Since: vfs 2.12
-
-   list = $handle-&gt;read ($bytes)
-       &#183;   $bytes (unsigned)
-
-       Returns a GnomeVFSResult, the number of bytes read and the buffer
-       containing the read content.
-
-   result = $handle-&gt;seek ($whence, $offset)
-       &#183;   $whence (Gnome2::VFS::SeekPosition)
-
-       &#183;   $offset (unsigned)
-
-   list = $handle-&gt;tell
-       Returns a GnomeVFSResult and the offset.
-
-   result = $handle-&gt;truncate ($length)
-       &#183;   $length (unsigned)
-
-   list = $handle-&gt;write ($buffer, $bytes)
-       &#183;   $buffer (string)
-
-       &#183;   $bytes (unsigned)
-
-       Returns a GnomeVFSResult and the number of bytes written.
-
-ENUMS AND FLAGS
-   flags Gnome2::VFS::FileInfoOptions
-       &#183;   &apos;default&apos; / &apos;GNOME_VFS_FILE_INFO_DEFAULT&apos;
-
-       &#183;   &apos;get-mime-type&apos; / &apos;GNOME_VFS_FILE_INFO_GET_MIME_TYPE&apos;
-
-       &#183;   &apos;force-fast-mime-type&apos; / &apos;GNOME_VFS_FILE_INFO_FORCE_FAST_MIME_TYPE&apos;
-
-       &#183;   &apos;force-slow-mime-type&apos; / &apos;GNOME_VFS_FILE_INFO_FORCE_SLOW_MIME_TYPE&apos;
-
-       &#183;   &apos;follow-links&apos; / &apos;GNOME_VFS_FILE_INFO_FOLLOW_LINKS&apos;
-
-       &#183;   &apos;get-access-rights&apos; / &apos;GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS&apos;
-
-       &#183;   &apos;name-only&apos; / &apos;GNOME_VFS_FILE_INFO_NAME_ONLY&apos;
-
-       &#183;   &apos;get-acl&apos; / &apos;GNOME_VFS_FILE_INFO_GET_ACL&apos;
-
-       &#183;   &apos;get-selinux-context&apos; / &apos;GNOME_VFS_FILE_INFO_GET_SELINUX_CONTEXT&apos;
-
-   enum Gnome2::VFS::Result
-       &#183;   &apos;ok&apos; / &apos;GNOME_VFS_OK&apos;
-&#12;       &#183;   &apos;error-not-found&apos; / &apos;GNOME_VFS_ERROR_NOT_FOUND&apos;
-
-       &#183;   &apos;error-generic&apos; / &apos;GNOME_VFS_ERROR_GENERIC&apos;
-
-       &#183;   &apos;error-internal&apos; / &apos;GNOME_VFS_ERROR_INTERNAL&apos;
-
-       &#183;   &apos;error-bad-parameters&apos; / &apos;GNOME_VFS_ERROR_BAD_PARAMETERS&apos;
-
-       &#183;   &apos;error-not-supported&apos; / &apos;GNOME_VFS_ERROR_NOT_SUPPORTED&apos;
-
-       &#183;   &apos;error-io&apos; / &apos;GNOME_VFS_ERROR_IO&apos;
-
-       &#183;   &apos;error-corrupted-data&apos; / &apos;GNOME_VFS_ERROR_CORRUPTED_DATA&apos;
-
-       &#183;   &apos;error-wrong-format&apos; / &apos;GNOME_VFS_ERROR_WRONG_FORMAT&apos;
-
-       &#183;   &apos;error-bad-file&apos; / &apos;GNOME_VFS_ERROR_BAD_FILE&apos;
-
-       &#183;   &apos;error-too-big&apos; / &apos;GNOME_VFS_ERROR_TOO_BIG&apos;
-
-       &#183;   &apos;error-no-space&apos; / &apos;GNOME_VFS_ERROR_NO_SPACE&apos;
-
-       &#183;   &apos;error-read-only&apos; / &apos;GNOME_VFS_ERROR_READ_ONLY&apos;
-
-       &#183;   &apos;error-invalid-uri&apos; / &apos;GNOME_VFS_ERROR_INVALID_URI&apos;
-
-       &#183;   &apos;error-not-open&apos; / &apos;GNOME_VFS_ERROR_NOT_OPEN&apos;
-
-       &#183;   &apos;error-invalid-open-mode&apos; / &apos;GNOME_VFS_ERROR_INVALID_OPEN_MODE&apos;
-
-       &#183;   &apos;error-access-denied&apos; / &apos;GNOME_VFS_ERROR_ACCESS_DENIED&apos;
-
-       &#183;   &apos;error-too-many-open-files&apos; / &apos;GNOME_VFS_ERROR_TOO_MANY_OPEN_FILES&apos;
-
-       &#183;   &apos;error-eof&apos; / &apos;GNOME_VFS_ERROR_EOF&apos;
-
-       &#183;   &apos;error-not-a-directory&apos; / &apos;GNOME_VFS_ERROR_NOT_A_DIRECTORY&apos;
-
-       &#183;   &apos;error-in-progress&apos; / &apos;GNOME_VFS_ERROR_IN_PROGRESS&apos;
-
-       &#183;   &apos;error-interrupted&apos; / &apos;GNOME_VFS_ERROR_INTERRUPTED&apos;
-
-       &#183;   &apos;error-file-exists&apos; / &apos;GNOME_VFS_ERROR_FILE_EXISTS&apos;
-
-       &#183;   &apos;error-loop&apos; / &apos;GNOME_VFS_ERROR_LOOP&apos;
-
-       &#183;   &apos;error-not-permitted&apos; / &apos;GNOME_VFS_ERROR_NOT_PERMITTED&apos;
-
-       &#183;   &apos;error-is-directory&apos; / &apos;GNOME_VFS_ERROR_IS_DIRECTORY&apos;
-
-       &#183;   &apos;error-no-memory&apos; / &apos;GNOME_VFS_ERROR_NO_MEMORY&apos;
-
-       &#183;   &apos;error-host-not-found&apos; / &apos;GNOME_VFS_ERROR_HOST_NOT_FOUND&apos;
-
-       &#183;   &apos;error-invalid-host-name&apos; / &apos;GNOME_VFS_ERROR_INVALID_HOST_NAME&apos;
-
-       &#183;   &apos;error-host-has-no-address&apos; / &apos;GNOME_VFS_ERROR_HOST_HAS_NO_ADDRESS&apos;
-
-       &#183;   &apos;error-login-failed&apos; / &apos;GNOME_VFS_ERROR_LOGIN_FAILED&apos;
-
-       &#183;   &apos;error-cancelled&apos; / &apos;GNOME_VFS_ERROR_CANCELLED&apos;
-
-       &#183;   &apos;error-directory-busy&apos; / &apos;GNOME_VFS_ERROR_DIRECTORY_BUSY&apos;
-
-       &#183;   &apos;error-directory-not-empty&apos; / &apos;GNOME_VFS_ERROR_DIRECTORY_NOT_EMPTY&apos;
-
-       &#183;   &apos;error-too-many-links&apos; / &apos;GNOME_VFS_ERROR_TOO_MANY_LINKS&apos;
-&#12;       &#183;   &apos;error-read-only-file-system&apos; /
-           &apos;GNOME_VFS_ERROR_READ_ONLY_FILE_SYSTEM&apos;
-
-       &#183;   &apos;error-not-same-file-system&apos; / &apos;GNOME_VFS_ERROR_NOT_SAME_FILE_SYSTEM&apos;
-
-       &#183;   &apos;error-name-too-long&apos; / &apos;GNOME_VFS_ERROR_NAME_TOO_LONG&apos;
-
-       &#183;   &apos;error-service-not-available&apos; /
-           &apos;GNOME_VFS_ERROR_SERVICE_NOT_AVAILABLE&apos;
-
-       &#183;   &apos;error-service-obsolete&apos; / &apos;GNOME_VFS_ERROR_SERVICE_OBSOLETE&apos;
-
-       &#183;   &apos;error-protocol-error&apos; / &apos;GNOME_VFS_ERROR_PROTOCOL_ERROR&apos;
-
-       &#183;   &apos;error-no-master-browser&apos; / &apos;GNOME_VFS_ERROR_NO_MASTER_BROWSER&apos;
-
-       &#183;   &apos;error-no-default&apos; / &apos;GNOME_VFS_ERROR_NO_DEFAULT&apos;
-
-       &#183;   &apos;error-no-handler&apos; / &apos;GNOME_VFS_ERROR_NO_HANDLER&apos;
-
-       &#183;   &apos;error-parse&apos; / &apos;GNOME_VFS_ERROR_PARSE&apos;
-
-       &#183;   &apos;error-launch&apos; / &apos;GNOME_VFS_ERROR_LAUNCH&apos;
-
-       &#183;   &apos;error-timeout&apos; / &apos;GNOME_VFS_ERROR_TIMEOUT&apos;
-
-       &#183;   &apos;error-nameserver&apos; / &apos;GNOME_VFS_ERROR_NAMESERVER&apos;
-
-       &#183;   &apos;error-locked&apos; / &apos;GNOME_VFS_ERROR_LOCKED&apos;
-
-       &#183;   &apos;error-deprecated-function&apos; / &apos;GNOME_VFS_ERROR_DEPRECATED_FUNCTION&apos;
-
-       &#183;   &apos;error-invalid-filename&apos; / &apos;GNOME_VFS_ERROR_INVALID_FILENAME&apos;
-
-       &#183;   &apos;error-not-a-symbolic-link&apos; / &apos;GNOME_VFS_ERROR_NOT_A_SYMBOLIC_LINK&apos;
-
-       &#183;   &apos;num-errors&apos; / &apos;GNOME_VFS_NUM_ERRORS&apos;
-
-   enum Gnome2::VFS::SeekPosition
-       &#183;   &apos;start&apos; / &apos;GNOME_VFS_SEEK_START&apos;
-
-       &#183;   &apos;current&apos; / &apos;GNOME_VFS_SEEK_CURRENT&apos;
-
-       &#183;   &apos;end&apos; / &apos;GNOME_VFS_SEEK_END&apos;
+       read - read from a file descriptor
+
+SYNOPSIS
+       #include &lt;unistd.h&gt;
+
+       ssize_t read(int fd, void *buf, size_t count);
+
+DESCRIPTION
+       read()  attempts  to  read up to count bytes from file descriptor fd into
+       the buffer starting at buf.
+
+       If count is zero, read() returns zero and has no other results.  If count
+       is greater than SSIZE_MAX, the result is unspecified.
+
+RETURN VALUE
+       On  success,  the number of bytes read is returned (zero indicates end of
+       file), and the file position is advanced by this number.  It  is  not  an
+       error  if this number is smaller than the number of bytes requested; this
+       may happen for example because fewer bytes are actually  available  right
+       now  (maybe because we were close to end-of-file, or because we are read&#8208;
+       ing from a pipe, or from a terminal), or because read()  was  interrupted
+       by  a  signal.  On error, -1 is returned, and errno is set appropriately.
+       In this case it is left unspecified whether the file  position  (if  any)
+       changes.
+
+ERRORS
+       EAGAIN The  file  descriptor  fd refers to a file other than a socket and
+              has been marked  nonblocking  (O_NONBLOCK),  and  the  read  would
+              block.
+
+       EAGAIN or EWOULDBLOCK
+              The file descriptor fd refers to a socket and has been marked non&#8208;
+              blocking (O_NONBLOCK), and the  read  would  block.   POSIX.1-2001
+              allows  either  error  to  be returned for this case, and does not
+              require these constants to have the  same  value,  so  a  portable
+              application should check for both possibilities.
+
+       EBADF  fd is not a valid file descriptor or is not open for reading.
+
+       EFAULT buf is outside your accessible address space.
+
+       EINTR  The call was interrupted by a signal before any data was read; see
+              signal(7).
+
+       EINVAL fd is attached to an object which is unsuitable  for  reading;  or
+              the file was opened with the O_DIRECT flag, and either the address
+              specified in buf, the value specified in  count,  or  the  current
+              file offset is not suitably aligned.
+
+       EINVAL fd  was created via a call to timerfd_create(2) and the wrong size
+              buffer was given to  read();  see  timerfd_create(2)  for  further
+              information.
+
+       EIO    I/O  error.  This will happen for example when the process is in a
+              background process group, tries to read from its controlling  tty,
+              and either it is ignoring or blocking SIGTTIN or its process group
+              is orphaned.  It may also occur when  there  is  a  low-level  I/O
+              error while reading from a disk or tape.
+
+       EISDIR fd refers to a directory.
+&#12;       Other  errors  may occur, depending on the object connected to fd.  POSIX
+       allows a read() that is interrupted after reading some data to return  -1
+       (with errno set to EINTR) or to return the number of bytes already read.
+
+CONFORMING TO
+       SVr4, 4.3BSD, POSIX.1-2001.
+
+NOTES
+       On  NFS  file systems, reading small amounts of data will only update the
+       timestamp the first time, subsequent calls may not do so.  This is caused
+       by  client  side  attribute  caching, because most if not all NFS clients
+       leave st_atime (last file access time) updates to the server  and  client
+       side  reads  satisfied  from  the  client&apos;s cache will not cause st_atime
+       updates on the server as there are no server side reads.  UNIX  semantics
+       can  be  obtained by disabling client side attribute caching, but in most
+       situations this will substantially increase server load and decrease per&#8208;
+       formance.
+
+       Many  file  systems  and disks were considered to be fast enough that the
+       implementation of O_NONBLOCK was deemed unnecessary.  So, O_NONBLOCK  may
+       not be available on files and/or disks.
 
 SEE ALSO
-       Gnome2::VFS
+       close(2),  fcntl(2),  ioctl(2),  lseek(2), open(2), pread(2), readdir(2),
+       readlink(2), readv(2), select(2), write(2), fread(3)
 
-COPYRIGHT
-       Copyright (C) 2003-2007 by the gtk2-perl team.
-
-       This software is licensed under the LGPL.  See Gnome2::VFS for a full
-       notice.
-
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
 
 
-perl v5.14.2                       2011-11-15           Gnome2::VFS::Handle(3pm)
+
+Linux                              2009-02-23                            READ(2)
 
 </pre></body></html>

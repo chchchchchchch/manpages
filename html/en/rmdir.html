@@ -1,88 +1,67 @@
 <html>
 <head><meta charset=utf-8/>
-<title>rmdir - delete a directory</title></head>
+<title>rmdir - remove empty directories</title></head>
 <body><pre>
 
-RMDIR(2)                    Linux Programmer&apos;s Manual                   RMDIR(2)
+RMDIR(1)                          User Commands                         RMDIR(1)
 
 
 
 NAME
-       rmdir - delete a directory
+       rmdir - remove empty directories
 
 SYNOPSIS
-       #include &lt;unistd.h&gt;
-
-       int rmdir(const char *pathname);
+       rmdir [OPTION]... DIRECTORY...
 
 DESCRIPTION
-       rmdir() deletes a directory, which must be empty.
+       Remove the DIRECTORY(ies), if they are empty.
 
-RETURN VALUE
-       On success, zero is returned.  On error, -1 is returned, and errno is set
-       appropriately.
+       --ignore-fail-on-non-empty
 
-ERRORS
-       EACCES Write access to the directory containing pathname was not allowed,
-              or  one  of the directories in the path prefix of pathname did not
-              allow search permission.  (See also path_resolution(7).
+              ignore each failure that is solely because a directory
 
-       EBUSY  pathname is currently in use by the system or  some  process  that
-              prevents  its  removal.  On Linux this means pathname is currently
-              used as a mount point or is the  root  directory  of  the  calling
-              process.
+              is non-empty
 
-       EFAULT pathname points outside your accessible address space.
+       -p, --parents
+              remove DIRECTORY and its ancestors; e.g., `rmdir -p a/b/c&apos; is sim&#8208;
+              ilar to `rmdir a/b/c a/b a&apos;
 
-       EINVAL pathname has .  as last component.
+       -v, --verbose
+              output a diagnostic for every directory processed
 
-       ELOOP  Too many symbolic links were encountered in resolving pathname.
+       --help display this help and exit
 
-       ENAMETOOLONG
-              pathname was too long.
+       --version
+              output version information and exit
 
-       ENOENT A  directory component in pathname does not exist or is a dangling
-              symbolic link.
+AUTHOR
+       Written by David MacKenzie.
 
-       ENOMEM Insufficient kernel memory was available.
+REPORTING BUGS
+       Report rmdir bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report rmdir translation bugs to &lt;http://translationproject.org/team/&gt;
 
-       ENOTDIR
-              pathname, or a component used as a directory in pathname, is  not,
-              in fact, a directory.
-
-       ENOTEMPTY
-              pathname  contains  entries other than . and .. ; or, pathname has
-              ..  as its final component.  POSIX.1-2001 also allows  EEXIST  for
-              this condition.
-
-       EPERM  The directory containing pathname has the sticky bit (S_ISVTX) set
-              and the process&apos;s effective user ID is neither the user ID of  the
-              file  to  be  deleted nor that of the directory containing it, and
-              the process is not privileged (Linux: does not have the CAP_FOWNER
-              capability).
-
-       EPERM  The  file  system containing pathname does not support the removal
-              of directories.
-
-       EROFS  pathname refers to a directory on a read-only file system.
-
-CONFORMING TO
-       SVr4, 4.3BSD, POSIX.1-2001.
-&#12;BUGS
-       Infelicities in the protocol underlying NFS can cause the unexpected dis&#8208;
-       appearance of directories which are still being used.
+COPYRIGHT
+       Copyright &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU  GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       rm(1),  rmdir(1),  chdir(2),  chmod(2),  mkdir(2),  rename(2), unlink(2),
-       unlinkat(2)
+       rmdir(2)
 
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       The full documentation for rmdir is maintained as a Texinfo  manual.   If
+       the info and rmdir programs are properly installed at your site, the com&#8208;
+       mand
+
+              info coreutils &apos;rmdir invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-Linux                              2008-05-08                           RMDIR(2)
+GNU coreutils 8.12.197-032bb     September 2011                         RMDIR(1)
 
 </pre></body></html>

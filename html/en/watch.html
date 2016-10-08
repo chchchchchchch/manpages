@@ -1,131 +1,153 @@
 <html>
 <head><meta charset=utf-8/>
-<title>watch - call Tcl procedures before and after each command</title></head>
+<title>watch - execute a program periodically, showing output fullscreen</title></head>
 <body><pre>
 
-watch(n)                      BLT Built-In Commands                     watch(n)
+WATCH(1)                          User Commands                         WATCH(1)
 
 
-
-________________________________________________________________________________
 
 NAME
-       watch - call Tcl procedures before and after each command
+       watch - execute a program periodically, showing output fullscreen
 
 SYNOPSIS
-       watch create watchName ?options?
-
-       watch activate watchName
-
-       watch deactivate watchName
-
-       watch delete watchName
-
-       watch configure watchName ?options
-
-       watch info watchName
-
-       watch names
-_________________________________________________________________
+       watch [options] command
 
 DESCRIPTION
-       The  watch  command  arranges for Tcl procedures to be invoked before and
-       after the execution of each Tcl command.
+       watch  runs  command  repeatedly,  displaying  its output and errors (the
+       first screenfull).  This allows you to watch the  program  output  change
+       over  time.  By default, the program is run every 2 seconds.  By default,
+       watch will run until interrupted.
 
-INTRODUCTION
-       When an error occurs in Tcl, the global variable errorInfo will contain a
-       stack-trace  of the active procedures when the error occured.  Sometimes,
-       however, the stack trace is insufficient.  You may need to  know  exactly
-       where  in the program&apos;s execution the error occured.  In cases like this,
-       a more general tracing facility would be useful.
+OPTIONS
+       -d, --differences [permanent]
+              Highlight the differences between successive updates.  Option will
+              read  optional  argument  that  changes highlight to be permanent,
+              allowing to see what has changed at least once since first  itera&#8208;
+              tion.
 
-       The watch command lets you designate Tcl procedures to be invoked  before
-       and  after the execution of each Tcl command.  This means you can display
-       the command line and  its  results  for  each  command  as  it  executes.
-       Another  use  is  to  profile your Tcl commands.  You can profile any Tcl
-       command (like if and set), not just Tcl procedures.
+       -n, --interval seconds
+              Specify  update interval.  The command will not allow quicker than
+              0.1 second interval, in which the smaller values are converted.
 
-EXAMPLE
-       The following example use watch to trace Tcl commands (printing to  stan&#8208;
-       dard error) both before and after they are executed.
+       -p, --precise
+              Make watch attempt to run command every interval seconds.  Try  it
+              with  ntptime and notice how the fractional seconds stays (nearly)
+              the same, as  opposed  to  normal  mode  where  they  continuously
+              increase.
 
-              proc preCmd { level command argv } {
-                  set name [lindex $argv 0]
-                  puts stderr &quot;$level $name =&gt; $command&quot;
-              }
+       -t, --no-title
+              Turn  off  the  header  showing the interval, command, and current
+              time at the top of the display, as well  as  the  following  blank
+              line.
 
-              proc postCmd { level command argv retcode results } {
-                  set name [lindex $argv 0]
-                  puts stderr &quot;$level $name =&gt; $argv0= ($retcode) $results&quot;
-              }
-              watch create trace \
-                -postcmd postCmd -precmd preCmd
+       -b, --beep
+              Beep if command has a non-zero exit.
+
+       -e, --errexit
+              Freeze updates on command error, and exit after a key press.
+
+       -g, --chgexit
+              Exit when the output of command changes.
+
+       -c, --color
+              Interpret ANSI color sequences.
+
+       -x, --exec
+              command  is  given  to  sh -c which means that you may need to use
+              extra quoting to get the desired effect.   This  with  the  --exec
+              option, which passes the command to exec(2) instead.
+
+       -h, --help
+              Display help text and exit.
+
+       -v, --version
+              Display version information and exit.
+
+NOTE
+       Note  that POSIX option processing is used (i.e., option processing stops
+       at the first non-option argument).  This means that flags  after  command
+       don&apos;t get interpreted by watch itself.
+&#12;EXAMPLES
+       To watch for mail, you might do
+
+              watch -n 60 from
+
+       To watch the contents of a directory change, you could use
+
+              watch -d ls -l
+
+       If you&apos;re only interested in files owned by user joe, you might use
+
+              watch -d &apos;ls -l | fgrep joe&apos;
+
+       To see the effects of quoting, try these out
+
+              watch echo $$
+              watch echo &apos;$$&apos;
+              watch echo &quot;&apos;&quot;&apos;$$&apos;&quot;&apos;&quot;
+
+       To see the effect of precision time keeping, try adding -p to
+
+              watch -n 10 sleep 1
+
+       You can watch for your administrator to install the latest kernel with
+
+              watch uname -r
+
+       (Note  that -p isn&apos;t guaranteed to work across reboots, especially in the
+       face of ntpdate or other bootup time-changing mechanisms)
+
+BUGS
+       Upon terminal resize, the screen will not be  correctly  repainted  until
+       the  next  scheduled  update.   All --differences highlighting is lost on
+       that update as well.
+
+       Non-printing characters are stripped from program output.  Use  &quot;cat  -v&quot;
+       as part of the command pipeline if you want to see them.
+
+       Combining Characters that are supposed to display on the character at the
+       last column on the screen may display one column early, or they  may  not
+       display at all.
+
+       Combining  Characters  never  count  as  different in --differences mode.
+       Only the base character counts.
+
+       Blank lines directly after a line which ends in the last  column  do  not
+       display.
+
+       --precise  mode  doesn&apos;t yet have advanced temporal distortion technology
+       to compensate for a command that takes more than interval seconds to exe&#8208;
+       cute.   watch also can get into a state where it rapid-fires as many exe&#8208;
+       cutions of command as it can to catch up from a previous executions  run&#8208;
+       ning  longer  than  interval  (for  example, netstat taking ages on a DNS
+       lookup).
+
+EXIT STATUS
+              0      Success.
+              1      Various failures.
+              2      Forking the process to watch failed.
+              3      Replacing child process stdout with write side pipe failed.
+              4      Command execution failed.
+              5      Closign child process write pipe failed.
+              7      IPC pipe creation failed.
+              8      Getting child process return value with waitpid(2)  failed,
+                     or command exited up on error.
+              other  The  watch will propagate command exit status as child exit
+                     status.
+AUTHORS
+       The original watch was written by Tony Rems &#10216;rembo@unisoft.com&#10217; in  1991,
+       with  mods  and  corrections by Francois Pinard.  It was reworked and new
+       features added by Mike Coleman &#10216;mkc@acm.org&#10217; in 1999. The beep, exec, and
+       error  handling  features were added by Morty Abzug &#10216;morty@frakir.org&#10217; in
+       2008.  On a not so dark and stormy morning  in  March  of  2003,  Anthony
+       DeRobertis  &#10216;asd@suespammers.org&#10217;  got  sick  of  his watches that should
+       update every minute eventually updating many  seconds  after  the  minute
+       started,  and  added microsecond precision.  Unicode support was added in
+       2009 by Jarrod Lowe &#10216;procps@rrod.net&#10217;
 
 
-OPERATIONS
-       The following operations are available for the watch command:
 
-       watch activate watchName
-              Activates  the  watch,  causing  Tcl commands the be traced to the
-              maximum depth selected.
-&#12;       watch create watchName ?options?...
-              Creates a new watch watchName. It&apos;s  an  error  if  another  watch
-              watchName  already  exists  and an error message will be returned.
-              Options may have any of the values accepted by the watch configure
-              command.  This command returns the empty string.
-
-       watch configure watchName ?options...?
-              Queries  or modifies the configuration options of the watch watch&#8208;
-              Name.  WatchName is the name of a watch.  Options may have any  of
-              the following values:
-
-              -active boolean
-                     Specifies  if the watch is active.  By default, watches are
-                     active when created.
-
-              -postcmd string
-                     Specifies a Tcl procedure to be  called  immediately  after
-                     each  Tcl  command.   String is name of a Tcl procedure and
-                     any extra arguments to be passed to it.  Before  string  is
-                     invoked,  five  more arguments are appended: 1) the current
-                     level 2) the current command line 3) a list containing  the
-                     command  after  substitutions  and  split into words 4) the
-                     return code of the command, and 5) the results of the  com&#8208;
-                     mand.  The return status of the postcmd procedure is always
-                     ignored.
-
-              -precmd string
-                     Specifies a Tcl procedure to be called  immediately  before
-                     each  Tcl  command.   String is name of a Tcl procedure and
-                     any extra arguments to be passed to it.  Before  string  is
-                     invoked, three arguments are appended: 1) the current level
-                     2) the current command line, and 3) a list  containing  the
-                     command  after  substitutions  and  split  into words.  The
-                     return status of the -precmd procedure is always ignored.
-
-              -maxlevel number
-                     Specifies the maximum evaluation depth to  watch  Tcl  com&#8208;
-                     mands.  The default maximum level is 10000.
-
-       watch deactivate watchName
-              Deactivates  the  watch.  The -precmd and -postcmd procedures will
-              no longer be invoked.
-
-       watch info watchName
-              Returns the configuration information associated  with  the  watch
-              watchName.  WatchName is the name of a watch.
-
-       watch names ?state?
-              Lists  the  names  of the watches for a given state.  State may be
-              one of the following: active, idle, or ignore.  If a  state  argu&#8208;
-              ment isn&apos;t specified,
-               all watches are listed.
-
-KEYWORDS
-       debug, profile
-
-
-
-BLT                                    2.4                              watch(n)
+procps-ng                           June 2011                           WATCH(1)
 
 </pre></body></html>

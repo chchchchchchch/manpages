@@ -1,124 +1,213 @@
 <html>
 <head><meta charset=utf-8/>
-<title>time - overview of time and timers</title></head>
+<title>time - run programs and summarize system resource usage</title></head>
 <body><pre>
 
-TIME(7)                     Linux Programmer&apos;s Manual                    TIME(7)
+TIME(1)                                                                  TIME(1)
 
 
 
 NAME
-       time - overview of time and timers
+       time - run programs and summarize system resource usage
+
+SYNOPSIS
+       time   [ -apqvV ] [ -f FORMAT ] [ -o FILE ]
+              [ --append ] [ --verbose ] [ --quiet ] [ --portability ]
+              [ --format=FORMAT ] [ --output=FILE ] [ --version ]
+              [ --help ] COMMAND [ ARGS ]
 
 DESCRIPTION
-   Real time and process time
-       Real  time is defined as time measured from some fixed point, either from
-       a standard point in the past (see the description of the Epoch and calen&#8208;
-       dar  time  below),  or from some point (e.g., the start) in the life of a
-       process (elapsed time).
+       time run the program COMMAND with any given arguments ARG....  When
+       COMMAND finishes, time displays information about resources used by
+       COMMAND (on the standard error output, by default).  If COMMAND exits
+       with non-zero status, time displays a warning message and the exit
+       status.
 
-       Process time is defined as the amount of CPU  time  used  by  a  process.
-       This is sometimes divided into user and system components.  User CPU time
-       is the time spent executing code in user mode.  System CPU  time  is  the
-       time  spent  by  the  kernel  executing  in  system mode on behalf of the
-       process (e.g., executing system calls).  The time(1) command can be  used
-       to  determine  the  amount of CPU time consumed during the execution of a
-       program.  A program can determine the amount of CPU time it has  consumed
-       using times(2), getrusage(2), or clock(3).
+       time determines which information to display about the resources used by
+       the COMMAND from the string FORMAT.  If no format is specified on the
+       command line, but the TIME environment variable is set, its value is used
+       as the format.  Otherwise, a default format built into time is used.
 
-   The Hardware Clock
-       Most  computers  have a (battery-powered) hardware clock which the kernel
-       reads at boot time in order to initialize the software clock.   For  fur&#8208;
-       ther details, see rtc(4) and hwclock(8).
+       Options to time must appear on the command line before COMMAND.  Anything
+       on the command line after COMMAND is passed as arguments to COMMAND.
 
-   The Software Clock, HZ, and Jiffies
-       The accuracy of various system calls that set timeouts, (e.g., select(2),
-       sigtimedwait(2)) and measure CPU time (e.g., getrusage(2)) is limited  by
-       the  resolution  of  the software clock, a clock maintained by the kernel
-       which measures time in jiffies.  The size of a jiffy is determined by the
-       value of the kernel constant HZ.
 
-       The value of HZ varies across kernel versions and hardware platforms.  On
-       i386 the situation is as follows: on kernels up to and  including  2.4.x,
-       HZ was 100, giving a jiffy value of 0.01 seconds; starting with 2.6.0, HZ
-       was raised to 1000, giving  a  jiffy  of  0.001  seconds.   Since  kernel
-       2.6.13,  the HZ value is a kernel configuration parameter and can be 100,
-       250 (the default) or 1000, yielding a  jiffies  value  of,  respectively,
-       0.01,  0.004, or 0.001 seconds.  Since kernel 2.6.20, a further frequency
-       is available: 300, a number that divides  evenly  for  the  common  video
-       frame rates (PAL, 25 HZ; NTSC, 30 HZ).
+OPTIONS
+       -o FILE, --output=FILE
+              Write the resource use statistics to FILE instead of to the
+              standard error stream.  By default, this overwrites the file,
+              destroying the file&apos;s previous contents.  This option is useful
+              for collecting information on interactive programs and programs
+              that produce output on the standard error stream.
 
-       The  times(2)  system  call  is  a special case.  It reports times with a
-       granularity defined by the kernel constant USER_HZ.  User-space  applica&#8208;
-       tions    can    determine    the    value    of   this   constant   using
-       sysconf(_SC_CLK_TCK).
+       -a, --append
+              Append the resource use information to the output file instead of
+              overwriting it.  This option is only useful with the `-o&apos; or
+              `--output&apos; option.
 
-   High-Resolution Timers
-       Before Linux 2.6.21, the accuracy of timer and sleep  system  calls  (see
-       below) was also limited by the size of the jiffy.
+       -f FORMAT, --format FORMAT
+              Use FORMAT as the format string that controls the output of time.
+              See the below more information.
 
-       Since Linux 2.6.21, Linux supports high-resolution timers (HRTs), option&#8208;
-       ally configurable via CONFIG_HIGH_RES_TIMERS.  On a system that  supports
-       HRTs,  the  accuracy  of  sleep  and timer system calls is no longer con&#8208;
-       strained by the jiffy, but instead can be as  accurate  as  the  hardware
-       allows  (microsecond  accuracy  is  typical of modern hardware).  You can
-       determine whether high-resolution timers are supported  by  checking  the
-       resolution returned by a call to clock_getres(2) or looking at the &quot;reso&#8208;
-       lution&quot; entries in /proc/timer_list.
+       --help Print a summary of the command line options and exit.
 
-       HRTs are not supported on all hardware architectures.  (Support  is  pro&#8208;
-       vided on x86, arm, and powerpc, among others.)
-&#12;   The Epoch
-       UNIX  systems  represent  time  in  seconds  since  the Epoch, 1970-01-01
-       00:00:00 +0000 (UTC).
+       -p, --portability
+              Use the following format string, for conformance with POSIX
+              standard 1003.2:
+                        real %e
+                        user %U
+                        sys %S
 
-       A program can determine the calendar time  using  gettimeofday(2),  which
-       returns  time  (in  seconds and microseconds) that have elapsed since the
-       Epoch; time(2) provides similar information, but only  with  accuracy  to
-       the  nearest  second.   The  system  time can be changed using settimeof&#8208;
-       day(2).
+       -v, --verbose
+              Use the built-in verbose format, which displays each available
+              piece of information on the program&apos;s resource use on its own
+              line, with an English description of its meaning.
 
-   Broken-down time
-       Certain library functions use a structure of type tm to represent broken-
-       down time, which stores time value separated out into distinct components
-       (year, month, day,  hour,  minute,  second,  etc.).   This  structure  is
-       described  in  ctime(3),  which  also  describes  functions  that convert
-       between calendar time and broken-down  time.   Functions  for  converting
-       between broken-down time and printable string representations of the time
-       are described in ctime(3), strftime(3), and strptime(3).
+       --quiet
+              Do not report the status of the program even if it is different
+              from zero.
 
-   Sleeping and Setting Timers
-       Various system calls and functions allow a program to sleep (suspend exe&#8208;
-       cution)   for   a   specified   period   of   time;   see   nanosleep(2),
-       clock_nanosleep(2), and sleep(3).
+       -V, --version
+              Print the version number of time and exit.
+&#12;
+FORMATTING THE OUTPUT
+       The format string FORMAT controls the contents of the time output.  The
+       format string can be set using the `-f&apos; or `--format&apos;, `-v&apos; or
+       `--verbose&apos;, or `-p&apos; or `--portability&apos; options.  If they are not given,
+       but the TIME environment variable is set, its value is used as the format
+       string.  Otherwise, a built-in default format is used.  The default
+       format is:
+         %Uuser %Ssystem %Eelapsed %PCPU (%Xtext+%Ddata %Mmax)k
+         %Iinputs+%Ooutputs (%Fmajor+%Rminor)pagefaults %Wswaps
 
-       Various system calls allow a process to set a timer that expires at  some
-       point  in the future, and optionally at repeated intervals; see alarm(2),
-       getitimer(2), timerfd_create(2), and timer_create(2).
+       The format string usually consists of `resource specifiers&apos; interspersed
+       with plain text.  A percent sign (`%&apos;) in the format string causes the
+       following character to be interpreted as a resource specifier, which is
+       similar to the formatting characters in the printf(3) function.
 
-   Timer Slack
-       Since Linux 2.6.28, it is possible to control the &quot;timer slack&quot; value for
-       a  thread.  The timer slack is the length of time by which the kernel may
-       delay the wake-up of certain system calls  that  block  with  a  timeout.
-       Permitting this delay allows the kernel to coallesce wake-up events, thus
-       possibly reducing the number of system wake-ups and  saving  power.   For
-       more details, see the description of PR_SET_TIMERSLACK in prctl(2).
+       A backslash (`\&apos;) introduces a `backslash escape&apos;, which is translated
+       into a single printing character upon output.  `\t&apos; outputs a tab
+       character, `\n&apos; outputs a newline, and `\\&apos; outputs a backslash.  A
+       backslash followed by any other character outputs a question mark (`?&apos;)
+       followed by a backslash, to indicate that an invalid backslash escape was
+       given.
+
+       Other text in the format string is copied verbatim to the output.  time
+       always prints a newline after printing the resource use information, so
+       normally format strings do not end with a newline character (or `\n&apos;).
+
+       There are many resource specifications.  Not all resources are measured
+       by all versions of Unix, so some of the values might be reported as zero.
+       Any character following a percent sign that is not listed in the table
+       below causes a question mark (`?&apos;) to be output, followed by that
+       character, to indicate that an invalid resource specifier was given.
+
+       The resource specifiers, which are a superset of those recognized by the
+       tcsh(1) builtin `time&apos; command, are:
+              %      A literal `%&apos;.
+              C      Name and command line arguments of the command being timed.
+              D      Average size of the process&apos;s unshared data area, in
+                     Kilobytes.
+              E      Elapsed real (wall clock) time used by the process, in
+                     [hours:]minutes:seconds.
+              F      Number of major, or I/O-requiring, page faults that
+                     occurred while the process was running.  These are faults
+                     where the page has actually migrated out of primary memory.
+              I      Number of file system inputs by the process.
+              K      Average total (data+stack+text) memory use of the process,
+                     in Kilobytes.
+              M      Maximum resident set size of the process during its
+                     lifetime, in Kilobytes.
+              O      Number of file system outputs by the process.
+              P      Percentage of the CPU that this job got.  This is just user
+                     + system times divided by the total running time.  It also
+                     prints a percentage sign.
+              R      Number of minor, or recoverable, page faults.  These are
+                     pages that are not valid (so they fault) but which have not
+                     yet been claimed by other virtual pages.  Thus the data in
+                     the page is still valid but the system tables must be
+                     updated.
+              S      Total number of CPU-seconds used by the system on behalf of
+                     the process (in kernel mode), in seconds.
+              U      Total number of CPU-seconds that the process used directly
+                     (in user mode), in seconds.
+              W      Number of times the process was swapped out of main memory.
+              X      Average amount of shared text in the process, in Kilobytes.
+              Z      System&apos;s page size, in bytes.  This is a per-system
+                     constant, but varies between systems.
+              c      Number of times the process was context-switched
+                     involuntarily (because the time slice expired).
+              e      Elapsed real (wall clock) time used by the process, in
+                     seconds.
+              k      Number of signals delivered to the process.
+              p      Average unshared stack size of the process, in Kilobytes.
+              r      Number of socket messages received by the process.
+              s      Number of socket messages sent by the process.
+              t      Average resident set size of the process, in Kilobytes.
+              w      Number of times that the program was context-switched
+                     voluntarily, for instance while waiting for an I/O
+                     operation to complete.
+              x      Exit status of the command.
+
+EXAMPLES
+       To run the command `wc /etc/hosts&apos; and show the default information:
+            time wc /etc/hosts
+
+       To run the command `ls -Fs&apos; and show just the user, system, and total
+       time:
+            time -f &quot;\t%E real,\t%U user,\t%S sys&quot; ls -Fs
+
+       To edit the file BORK and have `time&apos; append the elapsed time and number
+       of signals to the file `log&apos;, reading the format string from the
+       environment variable `TIME&apos;:
+            export TIME=&quot;\t%E,\t%k&quot; # If using bash or ksh
+            setenv TIME &quot;\t%E,\t%k&quot; # If using csh or tcsh
+            time -a -o log emacs bork
+
+       Users of the bash shell need to use an explicit path in order to run the
+       external time command and not the shell builtin variant.  On system where
+       time is installed in /usr/bin, the first example would become
+            /usr/bin/time wc /etc/hosts
+
+ACCURACY
+       The elapsed time is not collected atomically with the execution of the
+       program; as a result, in bizarre circumstances (if the time command gets
+       stopped or swapped out in between when the program being timed exits and
+       when time calculates how long it took to run), it could be much larger
+       than the actual execution time.
+
+       When the running time of a command is very nearly zero, some values
+       (e.g., the percentage of CPU used) may be reported as either zero (which
+       is wrong) or a question mark.
+
+       Most information shown by time is derived from the wait3(2) system call.
+       The numbers are only as good as those returned by wait3(2).  On systems
+       that do not have a wait3(2) call that returns status information, the
+       times(2) system call is used instead.  However, it provides much less
+       information than wait3(2), so on those systems time reports the majority
+       of the resources as zero.
+
+       The `%I&apos; and `%O&apos; values are allegedly only `real&apos; input and output and
+       do not include those supplied by caching devices.  The meaning of `real&apos;
+       I/O reported by `%I&apos; and `%O&apos; may be muddled for workstations, especially
+       diskless ones.
+
+DIAGNOSTICS
+       The time command returns when the program exits, stops, or is terminated
+       by a signal.  If the program exited normally, the return value of time is
+       the return value of the program it executed and measured.  Otherwise, the
+       return value is 128 plus the number of the signal which caused the
+       program to stop or terminate.
+AUTHOR
+       time was written by David MacKenzie.  This man page was added by Dirk
+       Eddelbuettel &lt;edd@debian.org&gt;, the Debian GNU/Linux maintainer, for use
+       by the Debian GNU/Linux distribution but may of course be used by others.
 
 SEE ALSO
-       date(1), time(1), adjtimex(2), alarm(2), clock_gettime(2),
-       clock_nanosleep(2), getitimer(2), getrlimit(2), getrusage(2),
-       gettimeofday(2), nanosleep(2), stat(2), time(2), timer_create(2),
-       timerfd_create(2), times(2), utime(2), adjtime(3), clock(3),
-       clock_getcpuclockid(3), ctime(3), pthread_getcpuclockid(3), sleep(3),
-       strftime(3), strptime(3), timeradd(3), usleep(3), rtc(4), hwclock(8)
-
-COLOPHON
-       This page is part of release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       tcsh(1), printf(3)
 
 
 
-Linux                              2012-10-28                            TIME(7)
+                                Debian GNU/Linux                         TIME(1)
 
 </pre></body></html>

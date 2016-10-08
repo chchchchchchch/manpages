@@ -1,58 +1,33 @@
 <html>
 <head><meta charset=utf-8/>
-<title>setsid - creates a session and sets the process group ID</title></head>
+<title>setsid - run a program in a new session</title></head>
 <body><pre>
 
-SETSID(2)                   Linux Programmer&apos;s Manual                  SETSID(2)
+SETSID(1)                         User Commands                        SETSID(1)
 
 
 
 NAME
-       setsid - creates a session and sets the process group ID
+       setsid - run a program in a new session
 
 SYNOPSIS
-       #include &lt;unistd.h&gt;
-
-       pid_t setsid(void);
+       setsid program [arg...]
 
 DESCRIPTION
-       setsid()  creates  a  new session if the calling process is not a process
-       group leader.  The calling process is the leader of the new session,  the
-       process  group  leader  of  the new process group, and has no controlling
-       tty.  The process group ID and session ID of the calling process are  set
-       to  the PID of the calling process.  The calling process will be the only
-       process in this new process group and in this new session.
-
-RETURN VALUE
-       On success, the (new) session ID of the calling process is returned.   On
-       error, (pid_t) -1 is returned, and errno is set to indicate the error.
-
-ERRORS
-       EPERM  The  process group ID of any process equals the PID of the calling
-              process.  Thus, in  particular,  setsid()  fails  if  the  calling
-              process is already a process group leader.
-
-CONFORMING TO
-       SVr4, POSIX.1-2001.
-
-NOTES
-       A  child  created via fork(2) inherits its parent&apos;s session ID.  The ses&#8208;
-       sion ID is preserved across an execve(2).
-
-       A process group leader is a process with process group ID  equal  to  its
-       PID.   In  order  to  be  sure  that  setsid()  will succeed, fork(2) and
-       _exit(2), and have the child do setsid().
+       setsid runs a program in a new session.
 
 SEE ALSO
-       getsid(2), setpgid(2), setpgrp(2), tcgetsid(3), credentials(7)
+       setsid(2)
 
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+AUTHOR
+       Rick Sladkey &lt;jrs@world.std.com&gt;
+
+AVAILABILITY
+       The  setsid  command  is  part of the util-linux package and is available
+       from ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
 
 
 
-Linux                              2008-12-03                          SETSID(2)
+util-linux                        November 1993                        SETSID(1)
 
 </pre></body></html>

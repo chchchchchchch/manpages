@@ -1,460 +1,98 @@
 <html>
 <head><meta charset=utf-8/>
-<title>logger - System to control logging of events.</title></head>
+<title>logger — a shell command interface to the syslog(3) system log module</title></head>
 <body><pre>
 
-logger(3tcl)            Object Oriented logging facility            logger(3tcl)
-
-
-
-________________________________________________________________________________
+LOGGER(1)                        User Commands                       LOGGER(1)
 
 NAME
-       logger - System to control logging of events.
+     logger &#8212; a shell command interface to the syslog(3) system log module
 
 SYNOPSIS
-       package require Tcl  8.2
-
-       package require logger  ?0.9?
-
-       logger::init service
-
-       logger::import  ?-all?  ?-force?  ?-prefix prefix? ?-namespace namespace?
-       service
-
-       logger::initNamespace ns ?level?
-
-       logger::services
-
-       logger::enable level
-
-       logger::disable level
-
-       logger::setlevel level
-
-       logger::levels
-
-       logger::servicecmd service
-
-       ${log}::debug message
-
-       ${log}::info message
-
-       ${log}::notice message
-
-       ${log}::warn message
-
-       ${log}::error message
-
-       ${log}::critical message
-
-       ${log}::alert message
-
-       ${log}::emergency message
-
-       ${log}::setlevel level
-
-       ${log}::enable level
-
-       ${log}::disable level
-
-       ${log}::lvlchangeproc command
-
-       ${log}::lvlchangeproc
-
-       ${log}::logproc level
-
-       ${log}::logproc level command
-
-       ${log}::logproc level argname body
-
-       ${log}::services
-
-       ${log}::servicename
-
-       ${log}::currentloglevel
-
-       ${log}::delproc command
-
-       ${log}::delproc
-
-       ${log}::delete
-
-       ${log}::trace command
-
-       ${log}::trace on
-
-       ${log}::trace off
-
-       ${log}::trace status ?procName? ?...?
-
-       ${log}::trace add procName ?...?
-
-       ${log}::trace add ?-ns? nsName ?...?
-
-       ${log}::trace remove procName ?...?
-
-       ${log}::trace remove ?-ns? nsName ?...?
-
-_________________________________________________________________
+     logger [-dhisV] [-f file] [-n server] [-P port] [-p pri] [-t tag]
+            [-u socket] [message]
 
 DESCRIPTION
-       The logger package provides a flexible system for logging  messages  from
-       different services, at priority levels, with different commands.
-
-       To begin using the logger package, we do the following:
-
-                  package require logger
-                  set log [logger::init myservice]
-                  ${log}::notice &quot;Initialized myservice logging&quot;
-
-                  ... code ...
-
-                  ${log}::notice &quot;Ending myservice logging&quot;
-                  ${log}::delete
-
-
-       In the above code, after the package is loaded, the following things hap&#8208;
-       pen:
-
-       logger::init service
-              Initializes the service service for logging.   The  service  names
-              are actually Tcl namespace names, so they are separated with &apos;::&apos;.
-              When a logger service is  initialized,  it  &quot;inherits&quot;  properties
-              from  its parents.  For instance, if there were a service foo, and
-              we did a logger::init foo::bar (to create a bar service underneath
-              foo), bar would copy the current configuration of the foo service,
-              although it would of course, also be possible to  then  separately
-              configure  bar.  If a logger service is initialized and the parent
-              does not yet exist, the parent is also created.   The  new  logger
-              service  is  initialized  with  the default loglevel set with log&#8208;
-              ger::setlevel.
-
-       logger::import ?-all? ?-force? ?-prefix  prefix?  ?-namespace  namespace?
-       service
-              Import  the  logger  service  commands into the current namespace.
-              Without the -all option only the commands corresponding to the log
-              levels  are  imported. If -all is given, all the ${log}::cmd style
-              commands are imported. If the import would overwrite a command  an
-              error  is  returned  and  no  command  is imported. Use the -force
-              option to force the import and overwrite existing commands without
-              complaining.   If  the  -prefix  option is given, the commands are
-              imported with the given prefix prepended to their names.   If  the
-              -namespace  option  is  given,  the commands are imported into the
-              given namespace. If the namespace does not exist, it  is  created.
-              If a namespace without a leading :: is given, it is interpreted as
-              a child namespace to the current namespace.
-
-       logger::initNamespace ns ?level?
-              Convenience command for setting up a namespace for  logging.  Cre&#8208;
-              ates a logger service named after the namespace ns (a :: prefix is
-              stripped), imports all the log commands into  the  namespace,  and
-              sets  the default logging level, either to the specified level, or
-              the default level, &quot;warn&quot;.
-
-       logger::services
-              Returns a list of all the available services.
-
-       logger::enable level
-              Globally enables logging at and &quot;above&quot; the given  level.   Levels
-              are debug, info, notice, warn, error, critical, alert, emergency.
-
-       logger::disable level
-              Globally  disables logging at and &quot;below&quot; the given level.  Levels
-              are those listed above.
+     logger makes entries in the system log.  It provides a shell command inter&#8208;
+     face to the syslog(3) system log module.
 
-       logger::setlevel level
-              Globally enable logging at and &quot;above&quot; the given level. Levels are
-              those  listed above. This command changes the default loglevel for
-              new loggers created with logger::init.
+     Options:
 
-       logger::levels
-              Returns a list of the available  log  levels  (also  listed  above
-              under enable).
+     -d, --udp
+              Use datagram (UDP) instead of the default stream connection (TCP).
 
-       logger::servicecmd service
-              Returns the ${log} token created by logger::init for this service.
+     -i, --id
+              Log the process ID of the logger process with each line.
 
-       ${log}::debug message
+     -f, --file file
+              Log the contents of the specified file.  This option cannot be
+              combined with a command-line message.
 
-       ${log}::info message
+     -h, --help
+              Display a help text and exit.
 
-       ${log}::notice message
+     -n, --server server
+              Write to the specified remote syslog server using UDP instead of
+              to the builtin syslog routines.
 
-       ${log}::warn message
+     -P, --port port
+              Use the specified UDP port.  The default port number is 514.
 
-       ${log}::error message
+     -p, --priority priority
+              Enter the message into the log with the specified priority.  The
+              priority may be specified numerically or as a facility.level pair.
+              For example, -p local3.info logs the message as informational in
+              the local3 facility.  The default is user.notice.
 
-       ${log}::critical message
+     -s, --stderr
+              Output the message to standard error as well as to the system log.
 
-       ${log}::alert message
+     -t, --tag tag
+              Mark every line to be logged with the specified tag.
 
-       ${log}::emergency message
-              These  are  the commands called to actually log a message about an
-              event.  ${log} is the variable obtained from logger::init.
+     -u, --socket socket
+              Write to the specified socket instead of to the builtin syslog
+              routines.
 
-       ${log}::setlevel level
-              Enable logging, in the service referenced by ${log}, and its chil&#8208;
-              dren,  at and above the level specified, and disable logging below
-              it.
+     -V, --version
+              Display version information and exit.
 
-       ${log}::enable level
-              Enable logging, in the service referenced by ${log}, and its chil&#8208;
-              dren,  at  and above the level specified.  Note that this does not
-              disable logging below this  level,  so  you  should  probably  use
-              setlevel instead.
+     --       End the argument list. This is to allow the message to start with
+              a hyphen (-).
 
-       ${log}::disable level
-              Disable  logging,  in  the  service  referenced by ${log}, and its
-              children, at and below the level specified. Note  that  this  does
-              not  enable  logging  above this level, so you should probably use
-              setlevel instead.  Disabling the loglevel emergency switches  log&#8208;
-              ging off for the service and its children.
+     message  Write the message to log; if not specified, and the -f flag is not
+              provided, standard input is logged.
 
-       ${log}::lvlchangeproc command
+     The logger utility exits 0 on success, and &gt;0 if an error occurs.
 
-       ${log}::lvlchangeproc
-              Set  the  script to call when the log instance in question changes
-              its log level.  If called without a command it  returns  the  cur&#8208;
-              rently   registered   command.  The  command  gets  two  arguments
-              appended, the old and the new loglevel. The  callback  is  invoked
-              after  all changes have been done.  If child loggers are affected,
-              their callbacks are called before their parents callback.
+     Valid facility names are: auth, authpriv (for security information of a
+     sensitive nature), cron, daemon, ftp, kern (can&apos;t be generated from user
+     process), lpr, mail, news, security (deprecated synonym for auth), syslog,
+     user, uucp, and local0 to local7, inclusive.
 
+     Valid level names are: alert, crit, debug, emerg, err, error (deprecated
+     synonym for err), info, notice, panic (deprecated synonym for emerg), warn&#8208;
+     ing, warn (deprecated synonym for warning).  For the priority order and
+     intended purposes of these levels, see syslog(3).
 
-                proc lvlcallback {old new} {
-                    puts &quot;Loglevel changed from $old to $new&quot;
-                }
-                ${log}::lvlchangeproc lvlcallback
+EXAMPLES
+           logger System rebooted
 
+           logger -p local0.notice -t HOSTIDM -f /dev/idmc
 
-       ${log}::logproc level
+           logger -n loghost.example.com System rebooted
 
-       ${log}::logproc level command
+SEE ALSO
+     syslog(3), syslogd(8)
 
-       ${log}::logproc level argname body
-              This command comes in three forms - the third, older one is depre&#8208;
-              cated  and may be removed from future versions of the logger pack&#8208;
-              age.  The current set version takes one argument, a command to  be
-              executed  when the level is called.  The callback command takes on
-              argument, the text to be logged. If called only with a valid level
-              logproc  returns  the  name of the command currently registered as
-              callback command.  logproc specifies which  command  will  perform
-              the  actual  logging  for a given level.  The logger package ships
-              with default commands for all log levels, but with logproc  it  is
-              possible  to  replace  them  with custom code.  This would let you
-              send your logs over the network, to a database, or anything  else.
-              For example:
+STANDARDS
+     The logger command is expected to be IEEE Std 1003.2 (&#8220;POSIX.2&#8221;) compati&#8208;
+     ble.
 
+AVAILABILITY
+     The logger command is part of the util-linux package and is available from
+     ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
 
-                  proc logtoserver {txt} {
-                      variable socket
-                      puts $socket &quot;Notice: $txt&quot;
-                  }
-
-                  ${log}::logproc notice logtoserver
-
-
-              Trace  logs  are slightly different: instead of a plain text argu&#8208;
-              ment, the argument provided to the logproc is  a  dictionary  con&#8208;
-              sisting  of  the enter or leave keyword along with another dictio&#8208;
-              nary of details about the trace.  These include:
-
-              &#183;      proc - Name of the procedure being traced.
-
-              &#183;      level - The stack level for the procedure invocation  (from
-                     info level).
-
-              &#183;      script  -  The  name  of the file in which the procedure is
-                     defined, or an empty string if defined in interactive mode.
-
-              &#183;      caller - The name of the procedure  calling  the  procedure
-                     being  traced,  or  an  empty  string  if the procedure was
-                     called from the global scope (stack level 0).
-
-              &#183;      procargs - A dictionary consisting of the  names  of  argu&#8208;
-                     ments  to  the procedure paired with values given for those
-                     arguments (enter traces only).
-
-              &#183;      status - The Tcl return  code  (e.g.  ok,  continue,  etc.)
-                     (leave traces only).
-
-              &#183;      result  - The value returned by the procedure (leave traces
-                     only).
-
-       ${log}::services
-              Returns a list of the registered logging services which are  chil&#8208;
-              dren of this service.
-
-       ${log}::servicename
-              Returns the name of this service.
-
-       ${log}::currentloglevel
-              Returns  the  currently  enabled log level for this service. If no
-              logging is enabled returns none.
-
-       ${log}::delproc command
-
-       ${log}::delproc
-              Set the script to call  when  the  log  instance  in  question  is
-              deleted.   If  called  without  a command it returns the currently
-              registered command.  For example:
-
-
-                  ${log}::delproc [list closesock $logsock]
-
-
-       ${log}::delete
-              This command deletes a particular logging service, and  its  chil&#8208;
-              dren.  You must call this to clean up the resources used by a ser&#8208;
-              vice.
-
-       ${log}::trace command
-              This command controls logging of enter/leave traces for  specified
-              procedures.  It is used to enable and disable tracing, query trac&#8208;
-              ing status, and specify procedures are to be traced.   Trace  han&#8208;
-              dlers  are  unregistered  when  tracing is disabled.  As a result,
-              there is not performance impact to a library when tracing is  dis&#8208;
-              abled, just as with other log level commands.
-
-
-                proc tracecmd { dict } {
-                    puts $dict
-                }
-
-                set log [::logger::init example]
-                ${log}::logproc trace tracecmd
-
-                proc foo { args } {
-                    puts &quot;In foo&quot;
-                    bar 1
-                    return &quot;foo_result&quot;
-                }
-
-                proc bar { x } {
-                    puts &quot;In bar&quot;
-                    return &quot;bar_result&quot;
-                }
-
-                ${log}::trace add foo bar
-                ${log}::trace on
-
-                foo
-
-              # Output:
-              enter {proc ::foo level 1 script {} caller {} procargs {args {}}}
-              In foo
-              enter {proc ::bar level 2 script {} caller ::foo procargs {x 1}}
-              In bar
-              leave {proc ::bar level 2 script {} caller ::foo status ok result bar_result}
-              leave {proc ::foo level 1 script {} caller {} status ok result foo_result}
-
-
-       ${log}::trace on
-              Turns on trace logging for procedures registered through the trace
-              add command.  This is similar to the enable command for other log&#8208;
-              ging  levels, but allows trace logging to take place at any level.
-              The trace logging mechanism takes advantage of the execution trace
-              feature of Tcl 8.4 and later.  The trace on command will return an
-              error if called from earlier versions of Tcl.
-
-       ${log}::trace off
-              Turns off trace logging for procedures registered for  trace  log&#8208;
-              ging  through  the trace add command.  This is similar to the dis&#8208;
-              able command for other logging levels, but allows trace logging to
-              take place at any level.  Procedures are not unregistered, so log&#8208;
-              ging for them can be turned back on with  the  trace  on  command.
-              There is no overhead imposed by trace registration when trace log&#8208;
-              ging is disabled.
-
-       ${log}::trace status ?procName? ?...?
-              This command returns a list of the procedures currently registered
-              for  trace logging, or a flag indicating whether or not a trace is
-              registered for one or more specified procedures.
-
-       ${log}::trace add procName ?...?
-
-       ${log}::trace add ?-ns? nsName ?...?
-              This command registers one  or  more  procedures  for  logging  of
-              entry/exit traces.  Procedures can be specified via a list of pro&#8208;
-              cedure names or namespace  names  (in  which  case  all  procedure
-              within  the namespace are targeted by the operation).  By default,
-              each name is first interpreted as a procedure name  or  glob-style
-              search  pattern,  and  if not found its interpreted as a namespace
-              name.  The -ns option can be used to force interpretation  of  all
-              provided arguments as namespace names.  Procedures must be defined
-              prior to registering them for tracing through the trace  add  com&#8208;
-              mand.   Any procedure or namespace names/patterns that don&apos;t match
-              any existing procedures will be silently ignored.
-
-       ${log}::trace remove procName ?...?
-
-       ${log}::trace remove ?-ns? nsName ?...?
-              This command unregisters one or more procedures so that they  will
-              no  longer  have  trace  logging performed, with the same matching
-              rules as that of the trace add command.
-
-IMPLEMENTATION
-       The logger package is implemented in such a way as to optimize  (for  Tcl
-       8.4  and newer) log procedures which are disabled.  They are aliased to a
-       proc which has no body, which is compiled to a no op in  bytecode.   This
-       should  make  the peformance hit minimal.  If you really want to pull out
-       all the stops, you can replace the ${log} token in  your  code  with  the
-       actual namespace and command (${log}::warn becomes ::logger::tree::myser&#8208;
-       vice::warn), so that no variable lookup is done.  This puts  the  perfor&#8208;
-       mance of disabled logger commands very close to no logging at all.
-
-       The  &quot;object  orientation&quot;  is  done  through  a hierarchy of namespaces.
-       Using an actual object oriented system would probably be a better way  of
-       doing things, or at least provide for a cleaner implementation.
-
-       The service &quot;object orientation&quot; is done with namespaces.
-
-LOGPROCS AND CALLSTACK
-       The  logger  package takes extra care to keep the logproc out of the call
-       stack.  This enables logprocs to execute code in  the  callers  scope  by
-       using uplevel or linking to local variables by using upvar. This may fire
-       traces with all usual side effects.
-
-
-                   # Print caller and current vars in the calling proc
-                   proc log_local_var {txt} {
-                        set caller [info level -1]
-                        set vars [uplevel 1 info vars]
-                        foreach var [lsort $vars] {
-                           if {[uplevel 1 [list array exists $var]] == 1} {
-                           lappend val $var &lt;Array&gt;
-                           } else {
-                           lappend val $var [uplevel 1 [list set $var]]
-                           }
-                        }
-                        puts &quot;$txt&quot;
-                        puts &quot;Caller: $caller&quot;
-                        puts &quot;Variables in callers scope:&quot;
-                        foreach {var value} $val {
-                        puts &quot;$var = $value&quot;
-                        }
-                   }
-
-                   # install as logproc
-                   ${log}::logproc debug log_local_var
-
-
-BUGS, IDEAS, FEEDBACK
-       This document, and the package it  describes,  will  undoubtedly  contain
-       bugs  and  other  problems.  Please report such in the category logger of
-       the Tcllib SF Trackers  [http://sourceforge.net/tracker/?group_id=12883].
-       Please  also  report  any  ideas for enhancements you may have for either
-       package and/or documentation.
-
-KEYWORDS
-       log, log level, logger, service
-
-CATEGORY
-       Programming tools
-
-
-
-log                                    0.8                          logger(3tcl)
+util-linux                      August 2011                         util-linux
 
 </pre></body></html>

@@ -1,48 +1,59 @@
 <html>
 <head><meta charset=utf-8/>
-<title>sleep - sleep for the specified number of seconds</title></head>
+<title>sleep - delay for a specified amount of time</title></head>
 <body><pre>
 
-SLEEP(3)                    Linux Programmer&apos;s Manual                   SLEEP(3)
+SLEEP(1)                          User Commands                         SLEEP(1)
 
 
 
 NAME
-       sleep - sleep for the specified number of seconds
+       sleep - delay for a specified amount of time
 
 SYNOPSIS
-       #include &lt;unistd.h&gt;
-
-       unsigned int sleep(unsigned int seconds);
+       sleep NUMBER[SUFFIX]...
+       sleep OPTION
 
 DESCRIPTION
-       sleep() makes the calling thread sleep until seconds seconds have elapsed
-       or a signal arrives which is not ignored.
+       Pause  for  NUMBER seconds.  SUFFIX may be `s&apos; for seconds (the default),
+       `m&apos; for minutes, `h&apos; for hours or `d&apos; for days.  Unlike most  implementa&#8208;
+       tions  that require NUMBER be an integer, here NUMBER may be an arbitrary
+       floating point number.  Given two or more arguments, pause for the amount
+       of time specified by the sum of their values.
 
-RETURN VALUE
-       Zero if the requested time has elapsed, or the number of seconds left  to
-       sleep, if the call was interrupted by a signal handler.
+       --help display this help and exit
 
-CONFORMING TO
-       POSIX.1-2001.
+       --version
+              output version information and exit
 
-BUGS
-       sleep()  may  be  implemented using SIGALRM; mixing calls to alarm(2) and
-       sleep() is a bad idea.
+AUTHOR
+       Written by Jim Meyering and Paul Eggert.
 
-       Using longjmp(3) from a signal  handler  or  modifying  the  handling  of
-       SIGALRM while sleeping will cause undefined results.
+REPORTING BUGS
+       Report sleep bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report sleep translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       alarm(2), nanosleep(2), signal(2), signal(7)
+       sleep(3)
 
-COLOPHON
-       This  page  is  part  of  release 3.44 of the Linux man-pages project.  A
-       description of the project, and information about reporting bugs, can  be
-       found at http://www.kernel.org/doc/man-pages/.
+       The  full  documentation for sleep is maintained as a Texinfo manual.  If
+       the info and sleep programs are properly installed at your site, the com&#8208;
+       mand
+
+              info coreutils &apos;sleep invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-GNU                                2010-02-03                           SLEEP(3)
+GNU coreutils 8.12.197-032bb     September 2011                         SLEEP(1)
 
 </pre></body></html>

@@ -1,128 +1,110 @@
 <html>
 <head><meta charset=utf-8/>
-<title>umount - unmount file systems</title></head>
+<title>umount, umount2 - unmount file system</title></head>
 <body><pre>
 
-UMOUNT(8)                     System Administration                    UMOUNT(8)
+UMOUNT(2)                   Linux Programmer&apos;s Manual                  UMOUNT(2)
 
 
 
 NAME
-       umount - unmount file systems
+       umount, umount2 - unmount file system
 
 SYNOPSIS
-       umount [-hV]
+       #include &lt;sys/mount.h&gt;
 
-       umount -a [-dflnrv] [-t vfstype] [-O options]
-       umount [-dflnrv] {dir|device}...
+       int umount(const char *target);
+
+       int umount2(const char *target, int flags);
 
 DESCRIPTION
-       The  umount  command  detaches the file system(s) mentioned from the file
-       hierarchy.  A file system is specified by giving the directory  where  it
-       has  been  mounted.  Giving  the  special device on which the file system
-       lives may also work, but is obsolete, mainly because it will fail in case
-       this device was mounted on more than one directory.
+       umount() and umount2() remove the attachment of the (topmost) file system
+       mounted on target.
 
-       Note that a file system cannot be unmounted when it is `busy&apos; - for exam&#8208;
-       ple, when there are open files on it, or when some process has its  work&#8208;
-       ing  directory there, or when a swap file on it is in use.  The offending
-       process could even be umount itself - it opens libc, and libc in its turn
-       may open for example locale files.  A lazy unmount avoids this problem.
+       Appropriate privilege (Linux: the CAP_SYS_ADMIN capability)  is  required
+       to unmount file systems.
 
-       Options for the umount command:
+       Linux  2.1.116  added  the  umount2()  system call, which, like umount(),
+       unmounts a target, but allows additional flags controlling  the  behavior
+       of the operation:
 
-       -V     Print version and exit.
+       MNT_FORCE (since Linux 2.1.116)
+              Force  unmount even if busy.  This can cause data loss.  (Only for
+              NFS mounts.)
 
-       -h     Print help message and exit.
+       MNT_DETACH (since Linux 2.4.11)
+              Perform a lazy unmount: make the mount point unavailable  for  new
+              accesses,  and  actually  perform the unmount when the mount point
+              ceases to be busy.
 
-       -v     Verbose mode.
+       MNT_EXPIRE (since Linux 2.6.8)
+              Mark the mount point as expired.  If a mount  point  is  not  cur&#8208;
+              rently  in  use,  then an initial call to umount2() with this flag
+              fails with the error EAGAIN, but marks the mount point as expired.
+              The  mount  point  remains expired as long as it isn&apos;t accessed by
+              any  process.   A  second  umount2()  call  specifying  MNT_EXPIRE
+              unmounts  an  expired  mount point.  This flag cannot be specified
+              with either MNT_FORCE or MNT_DETACH.
 
-       -n     Unmount without writing in /etc/mtab.
+       UMOUNT_NOFOLLOW (since Linux 2.6.34)
+              Don&apos;t dereference target if it is  a  symbolic  link.   This  flag
+              allows  security  problems  to be avoided in set-user-ID-root pro&#8208;
+              grams that allow unprivileged users to unmount file systems.
 
-       -r     In case unmounting fails, try to remount read-only.
+RETURN VALUE
+       On success, zero is returned.  On error, -1 is returned, and errno is set
+       appropriately.
 
-       -d     In  case  the  unmounted  device was a loop device, also free this
-              loop device.
+ERRORS
+       The  error  values  given  below result from file-system type independent
+       errors.  Each file system type may have its own special  errors  and  its
+       own special behavior.  See the Linux kernel source code for details.
 
-       -i     Don&apos;t call the /sbin/umount.&lt;filesystem&gt; helper even if it exists.
-              By  default  /sbin/umount.&lt;filesystem&gt;  helper  is  called  if one
-              exists.
+       EAGAIN A  call  to umount2() specifying MNT_EXPIRE successfully marked an
+              unbusy file system as expired.
 
-       -a     All of the file systems  described  in  /etc/mtab  are  unmounted.
-              (With  umount  version  2.7  and later: the proc filesystem is not
-              unmounted.)
+       EBUSY  target could not be unmounted because it is busy.
 
-       -t vfstype
-              Indicate that the actions should only be taken on file systems  of
-              the  specified  type.   More  than  one type may be specified in a
-              comma separated list.  The list of file system types can  be  pre&#8208;
-              fixed  with no to specify the file system types on which no action
-              should be taken.
+       EFAULT target points outside the user address space.
 
-       -O options
-              Indicate that the actions should only be  taken  on  file  systems
-              with  the  specified  options in /etc/fstab.  More than one option
-              type may be specified in a comma separated list.  Each option  can
-              be  prefixed with no to specify options for which no action should
-              be taken.
+       EINVAL target is not a  mount  point.   Or,  umount2()  was  called  with
+              MNT_EXPIRE and either MNT_DETACH or MNT_FORCE.
 
-       -f     Force unmount (in case of an unreachable NFS  system).   (Requires
-              kernel 2.1.116 or later.)
-&#12;       -l     Lazy  unmount. Detach the filesystem from the filesystem hierarchy
-              now, and cleanup all references to the filesystem as soon as it is
-              not busy anymore.  (Requires kernel 2.4.11 or later.)
+       ENAMETOOLONG
+              A pathname was longer than MAXPATHLEN.
 
-       --no-canonicalize
-              Don&apos;t  canonicalize  paths. For more details about this option see
-              the mount(8) man page.
+       ENOENT A pathname was empty or had a nonexistent component.
 
-       --fake Causes everything to be done except for the  actual  system  call;
-              this  ``fakes&apos;&apos;  unmounting  the  filesystem.   It can  be used to
-              remove entries from /etc/mtab that were unmounted earlier with the
-              -n option.
+       ENOMEM The  kernel  could  not  allocate a free page to copy filenames or
+              data into.
 
+       EPERM  The caller does not have the required privileges.
 
-THE LOOP DEVICE
-       The umount command will free the loop device (if any) associated with the
-       mount, in case it finds the option `loop=...&apos; in /etc/mtab, or  when  the
-       -d  option  was given.  Any pending loop devices can be freed using `los&#8208;
-       etup -d&apos;, see losetup(8).
+VERSIONS
+       MNT_DETACH and MNT_EXPIRE are only available in glibc since version 2.11.
 
+CONFORMING TO
+       These functions are Linux-specific and should not  be  used  in  programs
+       intended to be portable.
 
 NOTES
-       The syntax of external umount helpers is:
-
-       /sbin/umount.&lt;suffix&gt; {dir|device} [-nlfvr] [-t type.subtype]
-
-       where the &lt;suffix&gt; is filesystem type  or  a  value  from  &quot;uhelper=&quot;  or
-       &quot;helper=&quot;  mtab option.  The -t option is used  for filesystems with sub&#8208;
-       types support (for example /sbin/mount.fuse -t fuse.sshfs).
-
-       The uhelper= (unprivileged umount helper) is possible to  use  when  non-
-       root  user  wants  to  umount  a  mountpoint  which is not defined in the
-       /etc/fstab file (e.g devices mounted by udisk).
-
-       The  helper=  mount  option  redirects  all  umount   requests   to   the
-       /sbin/umount.&lt;helper&gt; independently on UID.
-
-
-FILES
-       /etc/mtab table of mounted file systems
-
+       The  original  umount()  function  was called as umount(device) and would
+       return ENOTBLK when called with something other than a block device.   In
+       Linux  0.98p4 a call umount(dir) was added, in order to support anonymous
+       devices.  In Linux 2.3.99-pre7 the call umount(device) was removed, leav&#8208;
+       ing  only  umount(dir) (since now devices can be mounted in more than one
+       place, so specifying the device does not suffice).
 
 SEE ALSO
-       umount(2), mount(8), losetup(8).
+       mount(2), path_resolution(7), mount(8), umount(8)
 
-
-HISTORY
-       A umount command appeared in Version 6 AT&amp;T UNIX.
-
-AVAILABILITY
-       The  umount  command  is  part of the util-linux package and is available
-       from ftp://ftp.kernel.org/pub/linux/utils/util-linux/.
+COLOPHON
+       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
+       description  of the project, and information about reporting bugs, can be
+       found at http://www.kernel.org/doc/man-pages/.
 
 
 
-util-linux                         March 2010                          UMOUNT(8)
+Linux                              2010-06-19                          UMOUNT(2)
 
 </pre></body></html>

@@ -1,68 +1,63 @@
 <html>
 <head><meta charset=utf-8/>
-<title>nice - change process priority</title></head>
+<title>nice - run a program with modified scheduling priority</title></head>
 <body><pre>
 
-NICE(2)                     Linux Programmer&apos;s Manual                    NICE(2)
+NICE(1)                           User Commands                          NICE(1)
 
 
 
 NAME
-       nice - change process priority
+       nice - run a program with modified scheduling priority
 
 SYNOPSIS
-       #include &lt;unistd.h&gt;
-
-       int nice(int inc);
-
-   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
-
-       nice(): _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE
+       nice [OPTION] [COMMAND [ARG]...]
 
 DESCRIPTION
-       nice()  adds  inc  to  the nice value for the calling process.  (A higher
-       nice value means a low priority.)  Only the superuser may specify a nega&#8208;
-       tive  increment,  or  priority  increase.   The  range for nice values is
-       described in getpriority(2).
+       Run  COMMAND with an adjusted niceness, which affects process scheduling.
+       With no COMMAND, print the current niceness.  Nicenesses range  from  -20
+       (most favorable scheduling) to 19 (least favorable).
 
-RETURN VALUE
-       On success, the new nice value is returned (but  see  NOTES  below).   On
-       error, -1 is returned, and errno is set appropriately.
+       -n, --adjustment=N
+              add integer N to the niceness (default 10)
 
-ERRORS
-       EPERM  The  calling process attempted to increase its priority by supply&#8208;
-              ing a negative inc but has insufficient privileges.   Under  Linux
-              the  CAP_SYS_NICE capability is required.  (But see the discussion
-              of the RLIMIT_NICE resource limit in setrlimit(2).)
+       --help display this help and exit
 
-CONFORMING TO
-       SVr4, 4.3BSD, POSIX.1-2001.  However, the Linux and (g)libc (earlier than
-       glibc  2.2.4)  return value is nonstandard, see below.  SVr4 documents an
-       additional EINVAL error code.
+       --version
+              output version information and exit
 
-NOTES
-       SUSv2 and POSIX.1-2001 specify that nice() should  return  the  new  nice
-       value.   However,  the Linux syscall and the nice() library function pro&#8208;
-       vided in older versions of (g)libc (earlier than glibc 2.2.4) return 0 on
-       success.  The new nice value can be found using getpriority(2).
+       NOTE:  your  shell may have its own version of nice, which usually super&#8208;
+       sedes the version described here.  Please refer to your shell&apos;s  documen&#8208;
+       tation for details about the options it supports.
 
-       Since glibc 2.2.4, nice() is implemented as a library function that calls
-       getpriority(2) to obtain the new nice value to be returned to the caller.
-       With  this  implementation, a successful call can legitimately return -1.
-       To reliably detect an error, set errno to 0 before the  call,  and  check
-       its value when nice() returns -1.
+AUTHOR
+       Written by David MacKenzie.
+
+REPORTING BUGS
+       Report nice bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: &lt;http://www.gnu.org/software/coreutils/&gt;
+       General help using GNU software: &lt;http://www.gnu.org/gethelp/&gt;
+       Report nice translation bugs to &lt;http://translationproject.org/team/&gt;
+
+COPYRIGHT
+       Copyright  &#169; 2011 Free Software Foundation, Inc.  License GPLv3+: GNU GPL
+       version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+       This is free software: you are free to change and redistribute it.  There
+       is NO WARRANTY, to the extent permitted by law.
 
 SEE ALSO
-       nice(1),  renice(1),  fork(2),  getpriority(2), setpriority(2), capabili&#8208;
-       ties(7)
+       nice(2)
 
-COLOPHON
-       This page is part of release 3.44 of  the  Linux  man-pages  project.   A
-       description  of the project, and information about reporting bugs, can be
-       found at http://www.kernel.org/doc/man-pages/.
+       The  full  documentation  for nice is maintained as a Texinfo manual.  If
+       the info and nice programs are properly installed at your site, the  com&#8208;
+       mand
+
+              info coreutils &apos;nice invocation&apos;
+
+       should give you access to the complete manual.
 
 
 
-Linux                              2007-07-26                            NICE(2)
+GNU coreutils 8.12.197-032bb     September 2011                          NICE(1)
 
 </pre></body></html>

@@ -1,0 +1,189 @@
+<html>
+<head><meta charset=utf-8/>
+<title>weather - command-line tool to obtain weather conditions and forecasts</title></head>
+<body><pre>
+
+weather(1)                                                            weather(1)
+
+
+
+NAME
+       weather - command-line tool to obtain weather conditions and forecasts
+
+SYNOPSIS
+       weather [ options ] [ alias1 | search1 [ alias2 | search2 [...]]]
+
+DESCRIPTION
+       This  command-line utility is intended to provide quick access to current
+       weather conditions and forecasts.  Presently, it is capable of  returning
+       data for localities throughout the USA and some select locations globally
+       by retrieving and formatting  decoded  METARs  (Meteorological  Aerodrome
+       Reports)  from NOAA (the USA National Oceanic and Atmospheric Administra&#8208;
+       tion) and forecasts/alerts from NWS (the USA National  Weather  Service).
+       The  tool is written to function in the same spirit as other command-line
+       informational  utilities  like  cal(1),  calendar(1)  and  dict(1).    It
+       retrieves  arbitrary weather data via precompiled correlations or custom-
+       tailored aliases (system-wide or on a per-user basis).
+
+       Behavior can be determined by command-line options and  specification  of
+       zero or more location aliases and search terms.
+
+       Aliases  are  defined  in  weatherrc(5)  files,  as a convenient means of
+       grouping URIs together using a short name.  Specifying  multiple  aliases
+       or location search terms on the command line causes the utility to output
+       data for each, as if it had been invoked multiple  times.   If  none  are
+       specified,  then  an alias of default is checked for a defargs option and
+       any alias names listed within it (comma-separated) are applied instead.
+
+       Searches utilize location correlation sets in INI-style text files  named
+       airports,  places, stations, zctas and zones.  A precomputed copy is dis&#8208;
+       tributed with the source, but can be rebuilt from updated data sources as
+       needed  by placing them in the current working directory and running with
+       the --build-sets option (see the comments at the top of any location cor&#8208;
+       relation  set  file  for  instructions  on  where  to  find  updated data
+       sources).  Positive search results are cached and sourced as  aliases  on
+       subsequent runs for as long as the correlation sets remain unchanged, and
+       are cleared automatically once the correlation sets are updated.
+
+       Retrieved data is also cached automatically for a short period  of  time,
+       adjustable  with the cacheage configuration option or --cacheage command-
+       line option.  This helps throttle load against NOAA/NWS servers  in  case
+       the  utility  is  repeatedly  re-run requesting the same data, but can be
+       overridden with the cache_data configuration  option  or  --no-cache-data
+       command-line option.
+
+OPTIONS
+       A summary of options is included below.
+
+       --version
+              show program&apos;s version number and exit
+
+       -h, --help
+              show a help message and exit
+
+       -a, --alert
+              include local alert notices
+
+       --atypes=ATYPES
+              list  of  alert  notification  types to display (ex: tornado_warn&#8208;
+              ing,urgent_weather_message)
+
+       --build-sets
+              (re)build location correlation sets
+&#12;       --cacheage=CACHEAGE
+              duration in seconds to refresh cached data (ex: 900)
+
+       --cachedir=CACHEDIR
+              directory for storing cached searches and data (ex: ~/.weather)
+
+       -f, --forecast
+              include a local forecast
+
+       --headers=HEADERS
+              list of conditions headers to display (ex: temperature,wind)
+
+       --imperial
+              filter/convert conditions for US/UK units
+
+       --info output detailed information for your search
+
+       -l, --list
+              list all configured aliases and cached searches
+
+       --longlist
+              display details of all configured aliases
+
+       -m, --metric
+              filter/convert conditions for metric units
+
+       -n, --no-conditions
+              disable output of current conditions
+
+       --no-cache
+              disable all caching (searches and data)
+
+       --no-cache-data
+              disable retrieved data caching
+
+       --no-cache-search
+              disable search result caching
+
+       -q, --quiet
+              skip preambles and don&apos;t indent
+
+       --setpath=SETPATH
+              directory search path for correlation sets (ex: .:~/.weather)
+
+       -v, --verbose
+              show full decoded feeds
+
+EXAMPLES
+       weather
+              View output for the default alias, if one has been defined (other&#8208;
+              wise display usage/syntax similar to --help)
+
+       weather rdu
+              Display weather conditions at the airport with IATA/FAA code RDU.
+
+       weather --info raleigh
+              Show  a  list of FIPS codes for United States Census Bureau places
+              containing the word raleigh (or the proximity information if  only
+              one match was found).
+
+       weather &quot;^ral[ie]{2}gh city.*nc$&quot;
+              Get the current weather conditions from the nearest station to the
+              Census place name matching the regular expression provided.
+
+       weather -fv fips3755000
+              Get the full decoded METAR from the nearest station, and the fore&#8208;
+              cast  data for the nearest zone to the Census place with FIPS code
+              3755000 with no special filtering or formatting.
+
+       weather --forecast --no-cache-data 27613
+              Ignore any recent cached METAR or forecast data and display  fresh
+              output for the nearest station and zone to the Census ZCTA (essen&#8208;
+              tially USPS ZIP code) 27613.
+
+       weather home work
+              Show current conditions for both the home and work aliases in that
+              order.
+
+       weather 35.878573,-78.727813
+
+       weather 35-52-43n,78-43-40w
+
+       weather &quot;35-52n, 78-43w&quot;
+              Display weather conditions for the nearest station to an arbitrary
+              set of global coordinates in latitude,longitude  order  either  in
+              decimal  format  or  degree, degree-minute or degree-minute-second
+              formats, optionally using signed or cardinal  hemisphere  designa&#8208;
+              tions  with or without spacing.  Note that the cut-off for maximum
+              acceptable distance is hard-coded at 0.1 radians (roughly 637km or
+              396mi).
+
+INPUT FILES
+       weather  may  additionally  obtain  configuration data from a system-wide
+       configuration file, a per-user configuration file, and a local  directory
+       configuration  file.   The  file  format  and  configuration  options are
+       described in weatherrc(5).  They are aggregated in the following order:
+
+       /etc/weatherrc
+              the system-wide configuration
+
+       ~/.weather/weatherrc or ~/.weatherrc
+              the per-user configuration
+
+       ./weatherrc
+              the local directory configuration
+
+AUTHOR
+       Utility and manual written by Jeremy Stanley &lt;fungi@yuggoth.org&gt;.
+
+SEE ALSO
+       weatherrc(5)
+
+
+
+2.0                                2012-06-24                         weather(1)
+
+</pre></body></html>

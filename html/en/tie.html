@@ -1,62 +1,46 @@
 <html>
 <head><meta charset=utf-8/>
-<title>tie - Array persistence, standard data sources</title></head>
+<title>tie - merge or apply WEB change files</title></head>
 <body><pre>
 
-tie(3tcl)                      Tcl Data Structures                     tie(3tcl)
+TIE(1)                                                                    TIE(1)
 
 
-
-________________________________________________________________________________
 
 NAME
-       tie - Array persistence, standard data sources
+       tie - merge or apply WEB change files
 
 SYNOPSIS
-       package require Tcl  8.4
-
-       package require tie::std::log  ?1.1?
-
-       package require tie::std::array  ?1.1?
-
-       package require tie::std::rarray  ?1.1?
-
-       package require tie::std::file  ?1.1?
-
-       package require tie::std::growfile  ?1.1?
-
-       package require tie::std::dsource  ?1.1?
-
-_________________________________________________________________
+       tie -c|-m outputfile masterfile changefile...
 
 DESCRIPTION
-       The  packages listed as requirements for this document are internal pack&#8208;
-       ages providing the standard data sources of package tie, as described  in
-       section STANDARD DATA SOURCE TYPES of tie&apos;s documentation.
+       The  tie  program  is used to process multiple change files used with the
+       WEB system for literate programming.  The WEB  programs  allow  to  apply
+       patches  to a source file (the masterfile) by means of a number of change
+       files (often only a single change file is allowed).  Tie can be  used  to
+       either  merge  up  to  32  change files into a single one or to apply the
+       changes to the masterfile in order to create a new one.  Output of either
+       the new change file or the patched master file goes into outputfile.
 
-       They  are  automatically  loaded  and registered by tie when it itself is
-       requested, and as such there is no need to request  them  on  their  own,
-       although it is possible to do so.
+OPTIONS
+       -c     Create a single change file from the given changefiles.
 
-BUGS, IDEAS, FEEDBACK
-       This  document,  and  the packages it describes, will undoubtedly contain
-       bugs and other problems.  Please report such in the category tie  of  the
-       Tcllib   SF   Trackers  [http://sourceforge.net/tracker/?group_id=12883].
-       Please also report any ideas for enhancements you  may  have  for  either
-       package and/or documentation.
+       -m     Create a new master file by applying the given changefiles.
 
-KEYWORDS
-       array, database, file, metakit, persistence, tie, untie
+ENVIRONMENT
+       The environment variable WEBINPUTS is used to search for the input files,
+       or the system default if WEBINPUTS  is  not  set.   See  tex(1)  for  the
+       details of the searching.
 
-CATEGORY
-       Programming tools
+SEE ALSO
+       web(1), ctie(1), cweb(1).
 
-COPYRIGHT
-       Copyright (c) 2008 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+AUTHOR
+       Klaus Guntermann, TH Darmstadt, Institut f. Theoretische Informatik.  Man
+       page by Joachim Schnitter, TH Darmstadt, Phys. Chemie I.
 
 
 
-
-tie                                    1.1                             tie(3tcl)
+Web2C 2012                        7 April 2010                            TIE(1)
 
 </pre></body></html>
